@@ -1,0 +1,181 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Searching Algorithms</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+</head><body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Lists and Arrays: Algorithms and Operations</a></div>
+  <header>
+    <h1>Searching Algorithms</h1>
+  </header><main>
+    <div class="slide-card">
+      <div class="slide-header"><span class="slide-num">1</span><h2>Searching Algorithms</h2><span class="chevron">▶</span></div>
+      <div class="slide-body">
+        <p>Searching is one of the most fundamental operations in computer science. Whether you are looking up a contact in a phone book, finding a product in an online store's inventory, or checking whether a username already exists in a database, some form of a <strong>searching algorithm</strong> is running behind the scenes. A searching algorithm is a step-by-step procedure that scans through a data structure — most commonly an array or list — to locate a target value, retrieve its position, or confirm that it does not exist in the collection. Choosing the right searching algorithm can mean the difference between a program that responds instantly and one that slows to a crawl under real-world data volumes.</p>
+
+<p>The two most widely used searching algorithms for arrays and lists are <strong>linear search</strong> and <strong>binary search</strong>. They differ in their requirements, their strategies, and critically, their <em>time complexity</em> — the mathematical relationship between the size of the input and the number of steps the algorithm must perform. Understanding both algorithms deeply, including when to reach for each one, is an essential skill for any developer working with data.</p>
+
+<p><strong>Linear search</strong> is the simpler of the two. Its core idea is disarmingly straightforward: start at the first element of the array and inspect each element one by one, moving left to right, until you either find the target value or exhaust every element. Because it visits elements in sequence, it is sometimes called a <em>sequential search</em>. The beauty of linear search is its universality — it places <em>no preconditions</em> on the data. The array can be sorted or unsorted, it can contain strings or numbers or objects, and linear search will still work correctly.</p>
+
+<p>The trade-off for that universality is efficiency. In the <strong>best case</strong>, the target is the very first element, and the algorithm finishes in a single step — O(1). In the <strong>average case</strong>, the target sits somewhere in the middle, requiring roughly n/2 comparisons. In the <strong>worst case</strong> — the target is the last element or is absent entirely — the algorithm must inspect all <em>n</em> elements, giving it a worst-case time complexity of <strong>O(n)</strong>. For small arrays this is perfectly acceptable. But imagine searching through an array of one million elements: in the worst case, that is one million comparisons. For large datasets, linear search quickly becomes impractical.</p>
+
+<p>Here is how linear search is implemented in JavaScript:</p>
+
+<pre><code>function linearSearch(arr, target) {
+  for (let i = 0; i &lt; arr.length; i++) {
+    if (arr[i] === target) {
+      return i; // Target found — return its index
+    }
+  }
+  return -1; // Target not found
+}
+
+// Example usage
+const fruits = ["mango", "apple", "cherry", "banana", "grape"];
+
+console.log(linearSearch(fruits, "banana")); // Output: 3
+console.log(linearSearch(fruits, "kiwi"));   // Output: -1
+</code></pre>
+
+<p>Walking through this implementation step by step clarifies every design decision. The <code>for</code> loop begins at index <code>0</code> and runs as long as <code>i</code> is less than <code>arr.length</code>, ensuring every element is reachable. Inside the loop, the <strong>strict equality operator</strong> (<code>===</code>) is used intentionally: unlike loose equality (<code>==</code>), it checks both value <em>and</em> type, preventing subtle bugs where, for example, the number <code>3</code> would incorrectly match the string <code>"3"</code>. When a match is found, the function immediately returns the index — there is no reason to keep searching once the target is located. If the loop completes without a match, the function returns <code>-1</code>, the conventional sentinel value in JavaScript (mirroring the behavior of built-in methods like <code>Array.prototype.indexOf</code>) to signal that the target was not found.</p>
+
+<p>An alternative using <code>forEach</code> is also possible, though it requires a workaround since <code>forEach</code> cannot break early:</p>
+
+<pre><code>function linearSearchForEach(arr, target) {
+  let result = -1;
+  arr.forEach((element, index) =&gt; {
+    if (element === target) {
+      result = index;
+    }
+  });
+  return result;
+}
+</code></pre>
+
+<p>Notice that the <code>for</code> loop version is generally preferred for searching because it can <em>return early</em> the moment a match is found, whereas <code>forEach</code> always visits every element regardless. This early-exit behavior is a meaningful performance advantage when the target appears near the beginning of a large array.</p>
+
+<p><strong>Binary search</strong> takes a radically different approach and achieves dramatically better performance — but only under one strict condition: <strong>the array must be sorted</strong>. If the array is sorted in ascending order, binary search can exploit that structure to eliminate large swaths of the search space with every single comparison. Instead of checking elements one by one, it repeatedly halves the remaining search range.</p>
+
+<p>The algorithm works as follows. Maintain two pointers, <code>low</code> and <code>high</code>, that define the boundaries of the current search range. Initially, <code>low</code> is <code>0</code> (the first index) and <code>high</code> is <code>arr.length - 1</code> (the last index). Calculate the <em>midpoint</em> index as <code>Math.floor((low + high) / 2)</code>. Compare the element at the midpoint to the target:</p>
+
+<ul>
+  <li>If <code>arr[mid] === target</code>, the search is complete — return <code>mid</code>.</li>
+  <li>If <code>arr[mid] &lt; target</code>, the target must lie in the <em>right half</em> of the current range, so move <code>low</code> to <code>mid + 1</code>.</li>
+  <li>If <code>arr[mid] &gt; target</code>, the target must lie in the <em>left half</em>, so move <code>high</code> to <code>mid - 1</code>.</li>
+</ul>
+
+<p>Repeat this process until either the target is found or <code>low</code> exceeds <code>high</code>, which means the boundaries have crossed and the target does not exist in the array.</p>
+
+<p>Here is a concrete JavaScript implementation:</p>
+
+<pre><code>function binarySearch(arr, target) {
+  let low = 0;
+  let high = arr.length - 1;
+
+  while (low &lt;= high) {
+    let mid = Math.floor((low + high) / 2);
+
+    if (arr[mid] === target) {
+      return mid; // Target found
+    } else if (arr[mid] &lt; target) {
+      low = mid + 1; // Search the right half
+    } else {
+      high = mid - 1; // Search the left half
+    }
+  }
+
+  return -1; // Target not found
+}
+
+// Example usage
+const numbers = [2, 5, 8, 12, 16, 23, 38, 45, 56, 72, 91];
+
+console.log(binarySearch(numbers, 23));  // Output: 5
+console.log(binarySearch(numbers, 10));  // Output: -1
+</code></pre>
+
+<p>Let's trace through <code>binarySearch(numbers, 23)</code> to make the mechanics vivid. The array has 11 elements (indices 0–10), so <code>low = 0</code>, <code>high = 10</code>.</p>
+
+<ul>
+  <li><strong>Iteration 1:</strong> <code>mid = Math.floor((0 + 10) / 2) = 5</code>. <code>arr[5] = 23</code>. That equals the target — return <code>5</code>. Done in one step!</li>
+</ul>
+
+<p>Now trace <code>binarySearch(numbers, 10)</code> to see a miss:</p>
+
+<ul>
+  <li><strong>Iteration 1:</strong> <code>low = 0</code>, <code>high = 10</code>, <code>mid = 5</code>. <code>arr[5] = 23</code>. Since <code>23 &gt; 10</code>, set <code>high = 4</code>.</li>
+  <li><strong>Iteration 2:</strong> <code>low = 0</code>, <code>high = 4</code>, <code>mid = 2</code>. <code>arr[2] = 8</code>. Since <code>8 &lt; 10</code>, set <code>low = 3</code>.</li>
+  <li><strong>Iteration 3:</strong> <code>low = 3</code>, <code>high = 4</code>, <code>mid = 3</code>. <code>arr[3] = 12</code>. Since <code>12 &gt; 10</code>, set <code>high = 2</code>.</li>
+  <li><strong>Iteration 4:</strong> <code>low = 3</code>, <code>high = 2</code>. Now <code>low &gt; high</code> — the loop exits. Return <code>-1</code>.</li>
+</ul>
+
+<p>The algorithm determined that <code>10</code> is absent in just <strong>3 comparisons</strong> against an 11-element array. With a linear search, the worst case would have required up to 11 comparisons. This difference becomes exponentially more significant as arrays grow. An array of 1,000,000 elements requires at most <strong>20 comparisons</strong> with binary search (since log₂(1,000,000) ≈ 19.9), whereas linear search could require up to 1,000,000. This is what the time complexity notation <strong>O(log n)</strong> captures: every time the array size doubles, binary search only needs <em>one additional comparison</em>.</p>
+
+<p>One subtle but important implementation detail is the midpoint calculation. Using <code>Math.floor((low + high) / 2)</code> avoids fractional (non-integer) indices that would break array access. In lower-level languages like Java or C, there is also a risk of integer overflow when <code>low + high</code> exceeds the maximum integer value — a safer formulation there would be <code>low + Math.floor((high - low) / 2)</code>. In JavaScript, numbers are 64-bit floating-point, so overflow is not a practical concern for typical array sizes, but it is good practice to know about this nuance.</p>
+
+<p>Comparing the two algorithms side by side sharpens the decision of when to use each:</p>
+
+<ul>
+  <li><strong>Time complexity:</strong> Linear search is <em>O(n)</em> in the worst case. Binary search is <em>O(log n)</em> in the worst case. For large datasets, this is an enormous difference. Searching 1 billion elements linearly could require 1 billion steps; binary search would need at most 30.</li>
+  <li><strong>Preconditions:</strong> Linear search works on any array — sorted, unsorted, mixed types. Binary search <em>requires a sorted array</em>. If your data is unsorted and sorting it first would cost O(n log n), you must weigh whether the subsequent search savings justify that upfront cost. For a single search on unsorted data, linear search is often the better choice. For many repeated searches on the same dataset, sorting once and using binary search repeatedly pays off decisively.</li>
+  <li><strong>Implementation complexity:</strong> Linear search is trivial to write and almost impossible to get wrong. Binary search, while not complex, has several edge cases — off-by-one errors in pointer updates and the loop condition — that make careful implementation important.</li>
+  <li><strong>Practical use cases:</strong> Linear search is ideal for small arrays, unsorted data, or situations where simplicity and readability outweigh raw performance. Binary search shines in performance-critical applications: searching large sorted price lists, looking up words in a dictionary, implementing autocomplete features, or any scenario where the data is already maintained in sorted order.</li>
+</ul>
+
+<p>It is also worth noting that JavaScript's standard library provides built-in methods that internally use these strategies. <code>Array.prototype.indexOf</code> and <code>Array.prototype.find</code> both perform linear searches. When working with sorted data where you need maximum performance, implementing binary search explicitly — or using a library that provides it — gives you the O(log n) guarantee. Understanding the algorithms behind these abstractions empowers you to make informed choices about when the built-in methods are sufficient and when you need to reach for something more efficient.</p>
+        <div class="notes"><strong>Notes</strong>Covers all listed subtopics in depth: definition of searching algorithms, linear search concept and O(n) complexity, JavaScript implementation of linear search with for loop and forEach comparison, binary search concept and O(log n) complexity, JavaScript implementation of binary search with step-by-step trace, and a thorough head-to-head comparison including preconditions, complexity, use cases, and practical notes.</div>
+      </div></div>
+  </main>
+  <script>
+    document.querySelectorAll('.slide-header').forEach(function(h){
+      h.addEventListener('click',function(){
+        var b=this.nextElementSibling,c=this.querySelector('.chevron'),o=b.classList.contains('open');
+        b.classList.toggle('open',!o);c.style.transform=o?'':'rotate(90deg)';
+      });});
+    var f=document.querySelector('.slide-body');
+    if(f){f.classList.add('open');var c=f.previousElementSibling.querySelector('.chevron');if(c)c.style.transform='rotate(90deg)';}
+  </script>
+
+<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
+</body></html>

@@ -1,0 +1,217 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Core Data Operations on Lists and Arrays</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+</head><body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Lists and Arrays: Structure and Introduction to Big O Notation</a></div>
+  <header>
+    <h1>Core Data Operations on Lists and Arrays</h1>
+  </header><main>
+    <div class="slide-card">
+      <div class="slide-header"><span class="slide-num">1</span><h2>Core Data Operations on Lists and Arrays</h2><span class="chevron">▶</span></div>
+      <div class="slide-body">
+        <p>Lists and arrays are among the most fundamental data structures in computer science, and virtually every algorithm ever written depends on them in some form. Before you can meaningfully compare data structures or reason about algorithmic efficiency, you need a solid understanding of the four core operations that define how data is manipulated inside these structures: <strong>accessing elements</strong>, <strong>searching for elements</strong>, <strong>inserting elements</strong>, and <strong>deleting elements</strong>. Each of these operations has a cost — measured in terms of how much work the computer must do — and that cost is not fixed. It changes depending on where in the structure the operation occurs, how large the structure has grown, and how the structure is organized in memory. This topic builds the foundation for all efficiency analysis that follows by examining each operation carefully, exploring why it behaves the way it does, and developing intuition for comparing costs across different positions and scenarios.</p>
+
+<p><strong>Accessing Elements</strong></p>
+
+<p>When you store a collection of values in an array, those values are laid out in a contiguous block of memory. This means the elements sit side by side, one after another, with no gaps between them. This physical arrangement is not accidental — it is what makes element access so powerful. Because the computer knows exactly where the array begins (the <em>base address</em>) and exactly how much space each element occupies (the <em>element size</em>), it can calculate the memory address of any element instantly using a simple formula:</p>
+
+<pre><code>address of element[i] = base_address + (i × element_size)</code></pre>
+
+<p>In a <strong>zero-based indexing</strong> system (used by languages like C, Java, Python, and JavaScript), the first element is at index 0, the second at index 1, and so on. The formula above applies directly. In a <strong>one-based indexing</strong> system (used by languages like Lua and traditional FORTRAN), the first element is at index 1, and the formula adjusts slightly:</p>
+
+<pre><code>address of element[i] = base_address + ((i - 1) × element_size)</code></pre>
+
+<p>Either way, the key insight is the same: <strong>no scanning is required</strong>. The computer does not need to start at the beginning and count through elements one by one. It performs a single arithmetic calculation and jumps directly to the correct memory location. This is called <em>direct addressing</em> or <em>random access</em>.</p>
+
+<p>Consider a concrete example. Suppose you have an array of integers, each occupying 4 bytes, and the array starts at memory address 1000:</p>
+
+<pre><code>Index:    0     1     2     3     4
+Value:   [12]  [47]  [83]  [21]  [59]
+Address: 1000  1004  1008  1012  1016</code></pre>
+
+<p>To access the element at index 3, the computer computes <code>1000 + (3 × 4) = 1012</code> and reads directly from address 1012, retrieving the value 21. It does not matter whether the array has 5 elements or 5 million — the calculation is exactly the same and takes the same amount of time. This makes element access a <strong>constant-time operation</strong>, commonly written as <em>O(1)</em> in algorithmic notation. The number of elements in the array has zero effect on how long access takes.</p>
+
+<p>This is one of the most important properties of arrays. Many other data structures, such as linked lists, do not offer this guarantee. In a linked list, each element stores a pointer to the next element rather than being stored contiguously, so accessing the fifth element requires following four pointer jumps from the beginning. Arrays sidestep this entirely through their memory layout.</p>
+
+<p><strong>Searching for Elements</strong></p>
+
+<p>Accessing an element when you already know its index is easy. But what if you only know the <em>value</em> you are looking for and need to find out where it is — or whether it exists at all? This is the searching problem, and the most straightforward approach is a <strong>linear search</strong>, also called a sequential search.</p>
+
+<p>In a linear search, you begin at the first element and compare it to your target value. If they match, you are done. If not, you move to the next element and compare again. You keep going until you either find the target or exhaust the entire list. Here is a simple example in pseudocode:</p>
+
+<pre><code>function linearSearch(list, target):
+    for i from 0 to length(list) - 1:
+        if list[i] == target:
+            return i       // found at index i
+    return -1              // not found</code></pre>
+
+<p>The cost of this operation depends entirely on where the target happens to be. In the <strong>best case</strong>, the target is the very first element, and the search terminates after a single comparison — that is O(1). In the <strong>worst case</strong>, the target is the last element, or it does not exist at all, and the search must examine every single element — that is O(n), where n is the number of elements. On <strong>average</strong>, assuming the target is equally likely to be anywhere, the search will examine about half the elements, which is still O(n) in asymptotic terms.</p>
+
+<p>To make this concrete, imagine searching for the value 83 in the following list:</p>
+
+<pre><code>[12, 47, 83, 21, 59]</code></pre>
+
+<p>The search checks index 0 (value 12, no match), then index 1 (value 47, no match), then index 2 (value 83, match found). Three comparisons were needed. If you were instead searching for the value 59, you would need five comparisons. If you were searching for 99, which does not exist, you would need all five comparisons before concluding it is absent.</p>
+
+<p>This linear growth in search time is a significant limitation when lists are large. A list with one million elements might require up to one million comparisons to confirm a value is absent. This is why <strong>search efficiency</strong> is a central concern when selecting data structures. If a list is sorted, a much faster binary search is possible. If a hash-based structure is used, lookups can be reduced to near-constant time. But for unsorted arrays and general lists, linear search is the baseline, and understanding its cost is essential for appreciating why alternative structures and algorithms are worth the additional complexity.</p>
+
+<p><strong>Inserting Elements</strong></p>
+
+<p>Insertion is where the contiguous memory layout of arrays starts to work against you. Adding a new element is straightforward only when the element goes at the very end of the array — you simply place it in the next available slot. But inserting at an arbitrary position requires more work.</p>
+
+<p>Consider an array with five elements where you want to insert the value 99 at index 2:</p>
+
+<pre><code>Before: [12, 47, 83, 21, 59]
+                ^
+         insert 99 here
+
+Step 1 - shift elements right to make room:
+         [12, 47, 83, 83, 21, 59]   (copy index 3 to index 4, then shift backward)
+         [12, 47, 83, 83, 21, 59]
+         ...actually, shift from the end:
+         Index 4 → Index 5: 59 moves to position 5
+         Index 3 → Index 4: 21 moves to position 4
+         Index 2 → Index 3: 83 moves to position 3
+
+Step 2 - place new value:
+After:  [12, 47, 99, 83, 21, 59]</code></pre>
+
+<p>Notice that before placing 99, every element from index 2 onward had to shift one position to the right. If you insert at index 0 — the very beginning — then <em>every single element</em> in the array must shift, making this the most expensive insertion position. If you insert at the end, no shifting is required at all, making it the cheapest.</p>
+
+<p>More precisely:</p>
+
+<ul>
+<li><strong>Insert at the end:</strong> No shifting required. O(1) time (assuming the array has capacity).</li>
+<li><strong>Insert at position i:</strong> Elements at indices i through n-1 must all shift right by one. This requires n - i shift operations.</li>
+<li><strong>Insert at the beginning (index 0):</strong> All n elements must shift. O(n) time.</li>
+</ul>
+
+<p>In pseudocode, an array insertion at index <code>pos</code> looks like this:</p>
+
+<pre><code>function insertAt(array, pos, value, length):
+    for i from length - 1 down to pos:
+        array[i + 1] = array[i]   // shift each element right
+    array[pos] = value
+    length = length + 1</code></pre>
+
+<p>The loop runs <code>length - pos</code> times. When <code>pos</code> is 0, that is <code>length</code> iterations — every element moves. When <code>pos</code> equals <code>length</code> (inserting at the end), the loop runs zero times. This variability is critical: <strong>the cost of insertion is not a fixed property of the operation itself but depends on where in the structure the insertion occurs</strong>. A data structure that supports frequent insertions at arbitrary positions may perform poorly if it is implemented as a plain array, because those insertions carry a hidden O(n) cost each time.</p>
+
+<p><strong>Deleting Elements</strong></p>
+
+<p>Deletion is the mirror image of insertion. When you remove an element from the middle of an array, the gap it leaves behind must be closed by shifting all subsequent elements one position to the left. Otherwise the array would have a hole in it, which would corrupt the contiguous structure and break index-based access.</p>
+
+<p>Suppose you delete the element at index 1 from the following array:</p>
+
+<pre><code>Before: [12, 47, 83, 21, 59]
+              ^
+         delete this (index 1)
+
+Shift elements left to fill the gap:
+         Index 1 ← Index 2: 83 moves to position 1
+         Index 2 ← Index 3: 21 moves to position 2
+         Index 3 ← Index 4: 59 moves to position 3
+
+After:  [12, 83, 21, 59, _]
+         (last slot is now unused; length decreases by 1)</code></pre>
+
+<p>As with insertion, the cost depends heavily on position:</p>
+
+<ul>
+<li><strong>Delete at the end:</strong> No shifting required. Simply reduce the length by one. O(1) time.</li>
+<li><strong>Delete at position i:</strong> Elements at indices i+1 through n-1 must all shift left by one. That is n - i - 1 shift operations.</li>
+<li><strong>Delete at the beginning (index 0):</strong> All remaining n-1 elements must shift. O(n) time — the most expensive case.</li>
+</ul>
+
+<p>Here is a pseudocode implementation:</p>
+
+<pre><code>function deleteAt(array, pos, length):
+    for i from pos to length - 2:
+        array[i] = array[i + 1]   // shift each element left
+    length = length - 1</code></pre>
+
+<p>A frequently overlooked point is that <strong>deletion from the beginning is particularly expensive</strong>. If you are using an array to implement a queue — where items are added at the end and removed from the front — every dequeue operation costs O(n) because of the shifting required. This is why circular buffers, linked lists, and deque structures exist: they offer more efficient deletion from the front.</p>
+
+<p><strong>Comparing Operation Costs Across Positions</strong></p>
+
+<p>One of the most illuminating ways to develop intuition about data structure performance is to systematically compare the same operation at different positions. The following table summarizes the cost of each core operation on a plain array of n elements:</p>
+
+<pre><code>Operation         | Beginning (index 0) | Middle (index i) | End (index n-1)
+------------------|---------------------|------------------|----------------
+Access            | O(1)                | O(1)             | O(1)
+Linear Search     | O(1) best case      | O(i) average     | O(n) worst case
+Insert            | O(n)                | O(n - i)         | O(1)
+Delete            | O(n)                | O(n - i - 1)     | O(1)</code></pre>
+
+<p>Several patterns emerge from this comparison. First, <strong>access is uniformly O(1) everywhere</strong> — the great strength of arrays. Second, <strong>operations at the end are the cheapest</strong> for insertion and deletion, requiring no shifting at all. Third, <strong>operations at the beginning are the most expensive</strong> for insertion and deletion, requiring the maximum amount of shifting. Fourth, operations in the middle are somewhere in between, and as the middle position approaches the beginning, the cost approaches O(n).</p>
+
+<p>This asymmetry explains a great deal about algorithm design choices. When you see code that always appends to the end of a list rather than inserting at the front, there is often a performance reason behind that choice. When you see a data structure like a stack (which only adds and removes from one end), you now understand why it can guarantee O(1) push and pop operations — it deliberately avoids the expensive positions.</p>
+
+<p>Consider a practical scenario: you are building a list of transactions and occasionally need to insert a high-priority transaction at the very front. On a small list of 10 elements, inserting at index 0 shifts 10 elements — barely noticeable. On a list of one million elements, inserting at index 0 shifts one million elements — potentially a serious performance problem. Understanding how cost scales with position and size lets you anticipate these issues before they become bottlenecks.</p>
+
+<p><strong>Why These Operations Form the Basis of Efficiency Analysis</strong></p>
+
+<p>Every algorithm that processes collections of data — sorting, searching, graph traversal, text processing, database querying — is ultimately composed of some combination of these four operations. A sorting algorithm rearranges elements, which requires accessing them, comparing them (a form of searching), and moving them (which involves insertions and deletions). A database index speeds up search at the cost of slower insertions and deletions. A recommendation engine scans lists to find matches. There is no escaping these primitives.</p>
+
+<p>This is why establishing their costs on arrays and lists is not merely an academic exercise. It creates a <strong>consistent vocabulary for comparing data structures</strong>. When someone says a linked list has O(1) insertion at the front while an array has O(n) insertion at the front, you can now understand exactly what that means and why. When someone recommends using a hash table for fast lookups instead of scanning an array, the inefficiency of O(n) linear search is the explicit motivation.</p>
+
+<p>More broadly, measuring these baseline costs establishes the concept of <strong>scaling behavior</strong> — how an operation's cost grows as the data size grows. An operation that takes twice as long for twice as much data (O(n)) is fundamentally different from one that takes the same time regardless of data size (O(1)), and that difference becomes enormous at scale. A social media platform storing data for a billion users cannot afford O(n) operations on its core data paths; the same operation that runs in microseconds on a test dataset of 100 records would take seconds or minutes at production scale.</p>
+
+<p>By studying these four operations carefully on arrays and lists — the simplest and most common data structures — you build the analytical foundation needed to evaluate any data structure or algorithm you will encounter. Every more advanced topic in data structures and algorithms is, at its core, an attempt to do better than the baseline costs you have just learned about: to search faster than O(n), to insert more cheaply than O(n), to access more cleverly than a flat index. Understanding the baseline is what makes those improvements meaningful.</p>
+        <div class="notes"><strong>Notes</strong>The topic intentionally avoids introducing Big-O notation as a formal system (that belongs in a dedicated complexity topic) while still using O(1) and O(n) as descriptive shorthand that most learners will encounter. The pseudocode examples are kept language-agnostic and readable. The memory-address formula section reinforces why zero-based vs one-based indexing is a language design choice rather than a mathematical necessity.</div>
+      </div></div>
+  </main>
+  <script>
+    document.querySelectorAll('.slide-header').forEach(function(h){
+      h.addEventListener('click',function(){
+        var b=this.nextElementSibling,c=this.querySelector('.chevron'),o=b.classList.contains('open');
+        b.classList.toggle('open',!o);c.style.transform=o?'':'rotate(90deg)';
+      });});
+    var f=document.querySelector('.slide-body');
+    if(f){f.classList.add('open');var c=f.previousElementSibling.querySelector('.chevron');if(c)c.style.transform='rotate(90deg)';}
+  </script>
+
+<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
+</body></html>

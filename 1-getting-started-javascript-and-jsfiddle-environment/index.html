@@ -3,279 +3,359 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Module 1: Getting Started: JavaScript and JSFiddle Environment — COP3530</title>
+  <title>Module 1: Getting Started – COP3530 Data Structures</title>
   <style>
     /* ── Reset & Base ── */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     body {
-      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-      background: #f4f6f9;
-      color: #1e2a3a;
-      min-height: 100vh;
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      font-size: 1rem;
       line-height: 1.6;
+      background-color: #f4f6f9;
+      color: #2c3e50;
     }
 
-    /* ── Top Banner ── */
-    header {
-      background: linear-gradient(135deg, #1a3a5c 0%, #25547a 60%, #1e7fa8 100%);
-      color: #ffffff;
-      padding: 2.5rem 1.5rem 2rem;
-    }
-
-    .header-inner {
-      max-width: 960px;
+    /* ── Page Shell ── */
+    .page-wrapper {
+      max-width: 1080px;
       margin: 0 auto;
+      padding: 2.5rem 1.5rem 4rem;
+    }
+
+    /* ── Header ── */
+    .page-header {
+      background: linear-gradient(135deg, #1a3a5c 0%, #2e6da4 100%);
+      color: #fff;
+      border-radius: 10px;
+      padding: 2.2rem 2.4rem;
+      margin-bottom: 2.4rem;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.14);
     }
 
     .course-label {
-      display: inline-block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      opacity: 0.82;
+      margin-bottom: 0.45rem;
+    }
+
+    .page-header h1 {
+      font-size: clamp(1.35rem, 3vw, 2rem);
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 0.9rem;
+    }
+
+    .page-header p {
+      font-size: 0.97rem;
+      opacity: 0.9;
+      max-width: 72ch;
+    }
+
+    /* ── Section Label ── */
+    .section-label {
       font-size: 0.75rem;
       font-weight: 700;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.09em;
       text-transform: uppercase;
-      background: rgba(255,255,255,0.15);
-      border: 1px solid rgba(255,255,255,0.25);
-      border-radius: 4px;
-      padding: 0.25rem 0.65rem;
-      margin-bottom: 0.85rem;
-      color: #d6eaf8;
+      color: #5a7a99;
+      margin-bottom: 1.1rem;
+      padding-left: 0.25rem;
+      border-left: 3px solid #2e6da4;
+      padding-left: 0.65rem;
     }
 
-    header h1 {
-      font-size: clamp(1.4rem, 3vw, 2rem);
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      line-height: 1.25;
-      margin-bottom: 0.75rem;
-    }
-
-    header h1 span.module-num {
-      color: #7ecfee;
-    }
-
-    header p.intro {
-      font-size: 0.975rem;
-      max-width: 680px;
-      color: #cde8f6;
-      line-height: 1.7;
-    }
-
-    /* ── Main Content ── */
-    main {
-      max-width: 960px;
-      margin: 2.5rem auto 4rem;
-      padding: 0 1.5rem;
-    }
-
-    .section-title {
-      font-size: 0.7rem;
-      font-weight: 700;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: #5a7a96;
-      margin-bottom: 1rem;
-      padding-bottom: 0.4rem;
-      border-bottom: 2px solid #d8e4ee;
-    }
-
-    /* ── Artifact Grid ── */
-    .artifact-grid {
+    /* ── Card Grid ── */
+    .card-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(min(100%, 420px), 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
       gap: 1.25rem;
     }
 
-    /* ── Artifact Card ── */
+    /* ── Individual Card ── */
     .card {
       background: #ffffff;
-      border: 1px solid #dce6ef;
-      border-radius: 10px;
+      border: 1px solid #dce3ec;
+      border-radius: 9px;
       padding: 1.4rem 1.5rem;
-      box-shadow: 0 2px 8px rgba(30, 60, 100, 0.06);
-      transition: box-shadow 0.2s ease, transform 0.2s ease;
       display: flex;
       flex-direction: column;
-      gap: 0.6rem;
+      gap: 0.65rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.055);
+      transition: box-shadow 0.2s ease, transform 0.2s ease;
     }
 
     .card:hover {
-      box-shadow: 0 6px 20px rgba(30, 60, 100, 0.12);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
       transform: translateY(-2px);
     }
 
-    /* Card Top Row */
-    .card-top {
+    /* ── Card Top Row (badges) ── */
+    .card-meta {
       display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 0.75rem;
       flex-wrap: wrap;
+      align-items: center;
+      gap: 0.45rem;
     }
 
-    .card-name {
-      font-size: 1.05rem;
+    .badge {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 0.2em 0.6em;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+
+    .badge-type {
+      background-color: #e8f0fb;
+      color: #2456a4;
+      border: 1px solid #c2d5f5;
+    }
+
+    .badge-filetype {
+      background-color: #f0f4f0;
+      color: #3a6b3a;
+      border: 1px solid #c0d8c0;
+      font-family: "Courier New", monospace;
+    }
+
+    /* ── Card Title Row ── */
+    .card-title-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 0.55rem;
+    }
+
+    .card-title {
+      font-size: 1.03rem;
       font-weight: 700;
       color: #1a3a5c;
       line-height: 1.3;
     }
 
-    .card-name a {
-      color: #1a6fa8;
+    .card-title a {
+      color: #1a5fa8;
       text-decoration: none;
       border-bottom: 2px solid transparent;
-      transition: border-color 0.15s, color 0.15s;
+      transition: border-color 0.18s ease, color 0.18s ease;
     }
 
-    .card-name a:hover,
-    .card-name a:focus {
-      color: #0d4f7d;
-      border-bottom-color: #0d4f7d;
+    .card-title a:hover,
+    .card-title a:focus {
+      color: #0d3f7a;
+      border-bottom-color: #0d3f7a;
       outline: none;
     }
 
     .source-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.3rem;
-      font-size: 0.72rem;
+      font-size: 0.74rem;
       font-weight: 600;
-      color: #4a7fa0;
+      color: #5a7a99;
       text-decoration: none;
-      background: #eaf3fa;
-      border: 1px solid #b8d8ed;
+      border: 1px solid #b0c4d8;
       border-radius: 4px;
-      padding: 0.18rem 0.55rem;
+      padding: 0.15em 0.5em;
       white-space: nowrap;
-      transition: background 0.15s, color 0.15s;
-      margin-left: 0.5rem;
-      vertical-align: middle;
+      transition: background-color 0.18s ease, color 0.18s ease;
+      flex-shrink: 0;
     }
 
     .source-link:hover,
     .source-link:focus {
-      background: #d0e9f7;
+      background-color: #dce8f4;
       color: #1a3a5c;
       outline: none;
     }
 
-    .source-link::before {
-      content: "⬇";
-      font-size: 0.65rem;
-    }
-
-    /* Meta badges row */
-    .card-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.45rem;
-      align-items: center;
-    }
-
-    .badge {
-      font-size: 0.7rem;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      border-radius: 4px;
-      padding: 0.18rem 0.55rem;
-      white-space: nowrap;
-    }
-
-    .badge-type {
-      background: #e8f0fe;
-      color: #2d5faa;
-      border: 1px solid #b8ccf0;
-    }
-
-    .badge-filetype {
-      background: #f0f4f0;
-      color: #2d6a3f;
-      border: 1px solid #b0d4bb;
-      font-family: 'Courier New', Courier, monospace;
-    }
-
-    /* Description */
-    .card-desc {
-      font-size: 0.875rem;
-      color: #3d526a;
-      line-height: 1.65;
-      margin-top: 0.2rem;
+    /* ── Card Description ── */
+    .card-description {
+      font-size: 0.9rem;
+      color: #455a6e;
+      line-height: 1.6;
+      flex-grow: 1;
     }
 
     /* ── Footer ── */
-    footer {
+    .page-footer {
+      margin-top: 3rem;
       text-align: center;
       font-size: 0.78rem;
-      color: #7a96ae;
-      padding: 1.5rem 1rem 2rem;
-      border-top: 1px solid #dce6ef;
+      color: #8fa3b5;
     }
 
-    /* ── Accessibility Focus Ring ── */
+    /* ── Accessibility: Focus ring ── */
     a:focus-visible {
-      outline: 3px solid #1a6fa8;
+      outline: 3px solid #2e6da4;
       outline-offset: 2px;
-      border-radius: 2px;
+      border-radius: 3px;
     }
 
-    /* ── Responsive Tweaks ── */
-    @media (max-width: 540px) {
-      header { padding: 2rem 1.1rem 1.6rem; }
-      main { margin-top: 1.75rem; }
-      .card { padding: 1.1rem 1.1rem; }
+    /* ── Responsive tweaks ── */
+    @media (max-width: 500px) {
+      .page-header {
+        padding: 1.6rem 1.3rem;
+      }
+
+      .card {
+        padding: 1.1rem 1.2rem;
+      }
     }
   </style>
 </head>
 <body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ COP3530 - Data Structures</a></div>
 <div style="border:1px solid #c9d4e3;background:#f5f8fc;border-radius:8px;padding:10px 16px;margin:0 0 18px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;font-family:'Segoe UI',Arial,sans-serif"><strong style="color:#1a3c6e">Module outline:</strong><a href="topics-outcomes.html#topics" style="color:#1a3c6e;font-weight:600;text-decoration:none">📋 Module Topics</a><a href="topics-outcomes.html#outcomes" style="color:#137333;font-weight:600;text-decoration:none">🎯 Student Learning Outcomes</a></div>
+  <div class="page-wrapper">
 
-  <header>
-    <div class="header-inner">
-      <div class="course-label">COP3530 — Data Structures</div>
-      <h1><span class="module-num">1.</span> Getting Started: JavaScript and JSFiddle Environment</h1>
-      <p class="intro">
-        This module introduces you to JavaScript as a programming language and establishes the
-        JSFiddle environment you will use throughout the course. By the end, you will be able to
-        write, execute, and debug your first JavaScript program — laying the groundwork for all
-        data-structures work ahead.
+    <!-- ── Page Header ── -->
+    <header class="page-header">
+      <p class="course-label">COP3530 &mdash; Data Structures &nbsp;|&nbsp; Module 1</p>
+      <h1>Getting Started: JavaScript and JSFiddle Environment</h1>
+      <p>
+        This module introduces JavaScript as the course language and walks you through the
+        JSFiddle browser-based development environment. By the end you will have written,
+        run, and debugged your first JavaScript program — no local installation required.
+        Use the artifacts below as your guided path through the material.
       </p>
-    </div>
-  </header>
+    </header>
 
-  <main>
-    <p class="section-title">Module Artifacts</p>
+    <!-- ── Artifact Grid ── -->
+    <main>
+      <p class="section-label">Module Artifacts &mdash; 6 items</p>
 
-    <div class="artifact-grid">
+      <div class="card-grid">
 
-        <div class="card">
-          <div class="card-top">
-            <div class="card-name">
-                <a href="content/module_topics.html">Module Topics</a>
-                  <a
-                    class="source-link"
-                    href="source/hierarchy.json"
-                    title="Download or view the raw source file"
-                  >source file</a>
-            </div>
-          </div>
-
+        <!-- Card 1: Module Topics -->
+        <article class="card">
           <div class="card-meta">
             <span class="badge badge-type">Module Topics</span>
             <span class="badge badge-filetype">.json</span>
           </div>
-
-          <p class="card-desc">
-            Covers the fundamentals of JavaScript (its definition, role in software development, and relevance to the course), how to navigate and configure the JSFiddle environment, and how to write, run, and debug a first JavaScript program; learners use this as a roadmap of what the module will teach, while instructors use it to confirm curricular alignment.
+          <div class="card-title-row">
+            <span class="card-title">
+              <a href="content/module_topics.html">Module Topics</a>
+            </span>
+            <a class="source-link" href="source/hierarchy.json">source file</a>
+          </div>
+          <p class="card-description">
+            Covers the fundamentals of JavaScript (its definition, role in software development,
+            and relevance to the course), how to navigate and configure the JSFiddle environment,
+            and how to write, run, and debug a first JavaScript program; learners use this as a
+            roadmap of what the module will teach, while instructors use it to confirm curricular
+            alignment.
           </p>
-        </div>
+        </article>
 
-    </div>
-  </main>
+        <!-- Card 2: Foundational Programming Strategies (interactive) -->
+        <article class="card">
+          <div class="card-meta">
+            <span class="badge badge-type">Text Content</span>
+            <span class="badge badge-filetype">.html</span>
+          </div>
+          <div class="card-title-row">
+            <span class="card-title">
+              <a href="content/_interactive.html">Foundational Programming Strategies</a>
+            </span>
+          </div>
+          <p class="card-description">
+            Covers core programming building blocks &mdash; variables, conditionals, loops, and
+            functions &mdash; that recur throughout data structures implementations, serving as a
+            conceptual reference learners read before tackling more complex topics.
+          </p>
+        </article>
 
-  <footer>
-    COP3530 Data Structures &mdash; Module 1 &mdash; Course Material Index
-  </footer>
+        <!-- Card 3: Introduction to JavaScript -->
+        <article class="card">
+          <div class="card-meta">
+            <span class="badge badge-type">Text Content</span>
+            <span class="badge badge-filetype">.html</span>
+          </div>
+          <div class="card-title-row">
+            <span class="card-title">
+              <a href="content/Getting_Started_JavaScript_interactive_topics_t1.html">Introduction to JavaScript</a>
+            </span>
+          </div>
+          <p class="card-description">
+            Introduces JavaScript as the primary language for the course, explaining its real-world
+            prevalence and role in the curriculum so learners understand why it was chosen and what
+            to expect going forward.
+          </p>
+        </article>
 
+        <!-- Card 4: The JSFiddle Development Environment -->
+        <article class="card">
+          <div class="card-meta">
+            <span class="badge badge-type">Text Content</span>
+            <span class="badge badge-filetype">.html</span>
+          </div>
+          <div class="card-title-row">
+            <span class="card-title">
+              <a href="content/Getting_Started_JavaScript_interactive_topics_t2.html">The JSFiddle Development Environment</a>
+            </span>
+          </div>
+          <p class="card-description">
+            Explains the JSFiddle browser-based coding environment &mdash; its layout, panels, and
+            how to run code &mdash; so learners can begin writing and testing JavaScript immediately
+            without installing any local tools.
+          </p>
+        </article>
+
+        <!-- Card 5: Writing and Running Your First Program -->
+        <article class="card">
+          <div class="card-meta">
+            <span class="badge badge-type">Text Content</span>
+            <span class="badge badge-filetype">.html</span>
+          </div>
+          <div class="card-title-row">
+            <span class="card-title">
+              <a href="content/Getting_Started_JavaScript_interactive_topics_t3.html">Writing and Running Your First Program</a>
+            </span>
+          </div>
+          <p class="card-description">
+            Guides learners through writing and executing their first JavaScript program in JSFiddle,
+            emphasizing the habit of running code early and often to establish a working feedback loop
+            between the learner and their tools.
+          </p>
+        </article>
+
+        <!-- Card 6: Foundational Programming Strategies (t4) -->
+        <article class="card">
+          <div class="card-meta">
+            <span class="badge badge-type">Text Content</span>
+            <span class="badge badge-filetype">.html</span>
+          </div>
+          <div class="card-title-row">
+            <span class="card-title">
+              <a href="content/Getting_Started_JavaScript_interactive_topics_t4.html">Foundational Programming Strategies</a>
+            </span>
+          </div>
+          <p class="card-description">
+            Covers core programming building blocks &mdash; variables, conditionals, loops, and
+            functions &mdash; that recur throughout data structures implementations, serving as a
+            conceptual reference learners read before tackling more complex topics.
+          </p>
+        </article>
+
+      </div><!-- /.card-grid -->
+    </main>
+
+    <!-- ── Footer ── -->
+    <footer class="page-footer">
+      <p>COP3530 &mdash; Data Structures &nbsp;&bull;&nbsp; Module 1 &nbsp;&bull;&nbsp; Course Materials Index</p>
+    </footer>
+
+  </div><!-- /.page-wrapper -->
 
 <footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
 <section class="presemaker-extras" style="max-width:1000px;margin:2rem auto;padding:0 1rem;"><h2>Topics &amp; Learning Outcomes</h2><p><a href="topics-outcomes.html">View Topics &amp; Learning Outcomes</a></p></section></body>

@@ -1,0 +1,172 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Writing and Running Your First Program</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+</head><body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ 1. Getting Started: JavaScript and JSFiddle Environment</a></div>
+  <header>
+    <h1>Writing and Running Your First Program</h1>
+  </header><main>
+    <div class="slide-card">
+      <div class="slide-header"><span class="slide-num">1</span><h2>Writing and Running Your First Program</h2><span class="chevron">▶</span></div>
+      <div class="slide-body">
+        <p>Writing and running your very first program is one of the most important milestones in learning any programming language. It establishes a working relationship between you, your tools, and the code you write. Before worrying about variables, logic, or complex algorithms, the single most valuable skill you can build right now is the habit of writing a small piece of code, running it immediately, and carefully observing what happens. This topic walks you through every step of that process using <strong>JSFiddle</strong>, a free, browser-based coding environment that requires no installation and no configuration — just open it and start writing.</p>
+
+<p><strong>Opening JSFiddle and Locating the JavaScript Panel</strong></p>
+
+<p>To get started, open any modern web browser — Chrome, Firefox, Edge, or Safari will all work — and navigate to <strong>jsfiddle.net</strong>. You will land on the main editor interface immediately. JSFiddle divides the screen into several distinct panels, each serving a specific purpose:</p>
+
+<ul>
+  <li><strong>HTML panel</strong> — typically in the upper-left area, used for writing HTML markup.</li>
+  <li><strong>CSS panel</strong> — typically in the upper-right area, used for styling.</li>
+  <li><strong>JavaScript panel</strong> — typically in the lower-left area, and this is where all of your JavaScript code will be written.</li>
+  <li><strong>Result panel</strong> — typically in the lower-right area, where the visual output of your code appears after you run it.</li>
+</ul>
+
+<p>For this exercise, your focus is entirely on the <strong>JavaScript panel</strong>. Click anywhere inside it to place your cursor there and confirm it is active. You should also confirm that the <strong>Result panel</strong> is visible on screen, because this is where any output rendered to the page will appear. However, it is equally important to know about the <strong>browser's built-in developer console</strong>, because <code>console.log()</code> — the command you are about to use — sends its output there, not to the Result panel itself. To open the developer console, press <strong>F12</strong> (or <strong>Cmd + Option + J</strong> on a Mac) and click the "Console" tab. Keep this open alongside JSFiddle so you can see your output clearly.</p>
+
+<p><strong>Writing Your First Line of JavaScript</strong></p>
+
+<p>With your cursor in the JavaScript panel, type the following exactly as shown:</p>
+
+<pre><code>console.log('Hello, World!');</code></pre>
+
+<p>This single line is a complete JavaScript <em>statement</em> — a full instruction that the JavaScript engine can read, understand, and execute. Let's break down every part of it so nothing feels mysterious:</p>
+
+<ul>
+  <li><strong><code>console</code></strong> — This refers to a built-in JavaScript object that provides access to the browser's debugging console. Think of it as a direct communication channel to the browser's internal logging system.</li>
+  <li><strong><code>.log()</code></strong> — This is a <em>method</em> that belongs to the <code>console</code> object. A method is simply a named action that an object can perform. The <code>log</code> method's job is to print whatever you give it to the console output.</li>
+  <li><strong><code>'Hello, World!'</code></strong> — This is a <em>string</em>, which is the programming term for a sequence of text characters. Strings must always be wrapped in either single quotation marks (<code>'...'</code>) or double quotation marks (<code>"..."</code>). Both are valid in JavaScript; what matters is that the opening and closing marks match each other. The text inside the quotes is what will actually be printed.</li>
+  <li><strong><code>;</code></strong> — The semicolon at the end signals to the JavaScript engine that this statement is complete. While JavaScript has a feature called Automatic Semicolon Insertion (ASI) that can sometimes add semicolons for you behind the scenes, it is considered a strong best practice to include them yourself. Omitting semicolons in certain situations can cause subtle, hard-to-debug errors, so developing the habit of ending every statement with a semicolon from the very beginning will serve you well.</li>
+</ul>
+
+<p>A string can contain letters, numbers, spaces, punctuation — almost any character you can type. The following are all valid strings:</p>
+
+<pre><code>console.log('Hello, World!');
+console.log("JavaScript is fun.");
+console.log('My name is Alex and I am learning to code!');</code></pre>
+
+<p>Notice that in the second example, double quotes are used instead of single quotes — both produce identical results. The key rule is simply: start and end with the same type of quote mark.</p>
+
+<p><strong>Running the Program and Observing Output</strong></p>
+
+<p>Once you have typed your statement into the JavaScript panel, it is time to execute it. At the top of the JSFiddle interface, you will find a <strong>Run</strong> button — click it. JSFiddle will process all the code in each panel and refresh the Result area.</p>
+
+<p>Now look at your browser's developer console (the one you opened with F12). You should see the text <strong>Hello, World!</strong> printed there. That output confirms that your program ran successfully and that JavaScript executed your instruction exactly as written.</p>
+
+<p>If you do not see any output, there are a few things to check:</p>
+
+<ul>
+  <li>Make sure you are looking in the <strong>Console tab</strong> of the developer tools, not just the Result panel in JSFiddle.</li>
+  <li>Double-check the spelling of <code>console.log</code> — it is case-sensitive. Writing <code>Console.log</code> or <code>console.Log</code> will cause an error.</li>
+  <li>Confirm that both the opening and closing parentheses are present: <code>(</code> and <code>)</code>.</li>
+  <li>Confirm that the string has matching quotation marks on both sides.</li>
+  <li>Confirm that the semicolon is present at the end of the line.</li>
+</ul>
+
+<p>If there is a typo or syntax mistake, the console will typically display a <strong>red error message</strong> describing what went wrong and on which line. These error messages are not failures — they are informative feedback. Learning to read error messages is one of the core skills of programming.</p>
+
+<p><strong>Understanding the Code-Run-Observe Workflow</strong></p>
+
+<p>One of the most important habits you can establish as a beginner — and frankly, one that experienced developers maintain throughout their careers — is the <strong>code-run-observe</strong> workflow. The idea is straightforward but powerfully effective:</p>
+
+<ul>
+  <li><strong>Write a small, specific piece of code</strong> — Do not try to write an entire program all at once. Write one statement, or a handful of closely related statements, before moving forward.</li>
+  <li><strong>Run the code immediately</strong> — Execute it right away, before adding anything else. This way, if something is wrong, you know exactly which line caused the problem because it was the last thing you added.</li>
+  <li><strong>Observe the output carefully</strong> — Does the result match what you expected? If yes, you have confirmed your understanding and can move forward confidently. If no, that unexpected result is a valuable signal — it tells you that your mental model of how something works needs to be revised.</li>
+</ul>
+
+<p>Consider the contrast between two approaches. In one approach, a student writes twenty lines of code, then runs it and finds an error. They now have to search through all twenty lines to find the problem. In the other approach, a student writes one or two lines, runs them, confirms they work, then adds one or two more. When an error appears, they know immediately that it lives in the most recent addition. The second approach is almost always faster and less frustrating, even though it feels slower moment to moment. Trust the workflow.</p>
+
+<p><strong>Making Small Modifications to Reinforce Learning</strong></p>
+
+<p>Now that your first program is working, the best way to solidify your understanding is to <em>change things</em> and observe what happens. This is not busy work — it is how the brain builds genuine understanding rather than surface-level familiarity.</p>
+
+<p>Start by modifying the string inside <code>console.log()</code> to display your own name:</p>
+
+<pre><code>console.log('Hello, my name is Jordan!');</code></pre>
+
+<p>Run the code. Confirm your name appears in the console. Notice that the only thing that changed was the text inside the quotation marks — the structure of the statement is identical. This reinforces the idea that the <em>string value</em> is the part you control, while <code>console.log()</code> is the consistent mechanism for displaying it.</p>
+
+<p>Next, add a <strong>second statement</strong> on a new line below the first:</p>
+
+<pre><code>console.log('Hello, my name is Jordan!');
+console.log('I am learning JavaScript.');</code></pre>
+
+<p>Run the code again. You should now see two lines of output in the console, one after the other. This demonstrates a fundamental principle of how programs execute: <strong>JavaScript reads and runs your code from top to bottom, one line at a time, in the order you wrote it.</strong> The first <code>console.log</code> runs first, then the second. This top-to-bottom, sequential execution is the default behavior of JavaScript (and most programming languages), and it will underpin everything you learn going forward.</p>
+
+<p>Try one more experiment — swap the order of the two lines and run the code again:</p>
+
+<pre><code>console.log('I am learning JavaScript.');
+console.log('Hello, my name is Jordan!');</code></pre>
+
+<p>Observe that the output order changes to match the new order of your statements. The program does exactly what you wrote, in the sequence you wrote it. This predictability is one of the things that makes programming powerful — the computer does precisely what you instruct, every time.</p>
+
+<p><strong>Saving Your Work in JSFiddle</strong></p>
+
+<p>Before you close your browser or move on, it is important to save your work. JSFiddle makes this straightforward. Click the <strong>Save</strong> button in the toolbar at the top of the interface. After saving, look at the address bar in your browser — it will have updated to include a unique URL that looks something like <code>https://jsfiddle.net/abc12xyz/</code>. This URL is a permanent link directly to your saved fiddle.</p>
+
+<ul>
+  <li><strong>Bookmark the URL</strong> in your browser so you can return to this exact program at any point during the course.</li>
+  <li><strong>Copy the URL</strong> and paste it somewhere safe — a notes document, a course notebook, or an email to yourself — as a backup reference.</li>
+  <li>Each time you make further edits and click Save, JSFiddle will generate a new versioned URL (or update the existing one depending on the workflow), so your history is preserved.</li>
+</ul>
+
+<p>This first saved fiddle will serve as a personal reference point throughout the course. When new concepts feel abstract or confusing, you can return to this simple, working program and trace the logic back to its roots. Every complex JavaScript application you will ever encounter is, at its heart, built from statements just like <code>console.log('Hello, World!');</code> — individual instructions that do one clear thing, assembled together into something larger.</p>
+        <div class="notes"><strong>Notes</strong>Hands-on practice writing and executing basic JavaScript programs within JSFiddle, establishing familiarity with the code-run-observe workflow.</div>
+      </div></div>
+  </main>
+  <script>
+    document.querySelectorAll('.slide-header').forEach(function(h){
+      h.addEventListener('click',function(){
+        var b=this.nextElementSibling,c=this.querySelector('.chevron'),o=b.classList.contains('open');
+        b.classList.toggle('open',!o);c.style.transform=o?'':'rotate(90deg)';
+      });});
+    var f=document.querySelector('.slide-body');
+    if(f){f.classList.add('open');var c=f.previousElementSibling.querySelector('.chevron');if(c)c.style.transform='rotate(90deg)';}
+  </script>
+
+<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
+</body></html>

@@ -1,0 +1,98 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Introduction to Computational Complexity</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+</head><body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Lists and Arrays: Structure and Introduction to Big O Notation</a></div>
+  <header>
+    <h1>Introduction to Computational Complexity</h1>
+  </header><main>
+    <div class="slide-card">
+      <div class="slide-header"><span class="slide-num">1</span><h2>Introduction to Computational Complexity</h2><span class="chevron">▶</span></div>
+      <div class="slide-body">
+        <p>Computational complexity is one of the most foundational ideas in computer science, and yet it is frequently misunderstood by those new to the field. Many beginners assume that algorithm performance is about raw speed — milliseconds on a stopwatch, or megabytes on a memory gauge. In reality, computational complexity is a far more abstract and powerful concept. It is the study of how the <strong>resource requirements of an algorithm grow</strong> as the size of its input grows. Rather than asking "how long does this take on my laptop right now?", complexity analysis asks "as the problem gets bigger, how does the cost change?" This shift in perspective is what makes complexity theory so durable and universally applicable.</p>
+
+<p>The two primary dimensions studied in computational complexity are <strong>time complexity</strong> and <strong>space complexity</strong>. Time complexity describes how the number of computational steps an algorithm performs scales with input size. Space complexity describes how the amount of memory an algorithm requires scales with input size. Both matter in practice, and sometimes they trade off against each other — an algorithm might be made faster by storing precomputed results in memory, at the cost of using more space. Understanding both dimensions gives engineers a complete picture of an algorithm's demands on a system. Critically, because complexity analysis abstracts away from specific hardware and clock speeds, insights gained are transferable: an algorithm deemed inefficient in terms of time complexity will be slow on a supercomputer for the same fundamental reason it is slow on a laptop — just less visibly so.</p>
+
+<p>One of the most practical benefits of studying complexity is the ability to <strong>anticipate performance problems before they occur</strong>. A system that handles a thousand records today might need to handle ten million records in two years. If the algorithm at its core has poor scaling behavior, no amount of hardware investment will save it at that scale. Engineers who understand complexity can look at a proposed design and reason: "this works fine now, but the growth rate of its cost will become unacceptable." This kind of forward-looking analysis is invaluable in professional software development, where premature performance crises are expensive and sometimes catastrophic.</p>
+
+<p>To understand why efficiency matters as input grows, consider a concrete scenario. Imagine you are building a search feature for a social network. At launch, you have ten thousand users. Even a naive algorithm that checks every single user record one by one to find a match might complete this in a fraction of a second — fast enough that no one notices. Now imagine the network grows to one billion users. That same one-by-one search now examines a billion records. If each record check takes one nanosecond, the search takes a full second — noticeably slow. If the check takes ten nanoseconds, you are waiting ten seconds. No reasonable user will accept that. A better algorithm — say, one that uses a sorted structure and can find any user in a number of steps proportional to the logarithm of the total users — would handle a billion users in roughly thirty steps rather than a billion. <strong>This difference is not a hardware problem; it is an algorithmic one.</strong> No upgrade to the server will make the linear search competitive with a logarithmic one at massive scale.</p>
+
+<p>Real-world applications routinely operate on data at scales that make algorithmic efficiency non-negotiable. Databases serving large enterprises may contain hundreds of millions of rows. Search engines index billions of documents. Social graphs link billions of nodes with trillions of edges. File systems on modern servers store millions of files. In all of these domains, the difference between an efficient and an inefficient algorithm is not a small percentage improvement — it is the difference between a system that works and one that fundamentally cannot function. Understanding efficiency helps engineers choose the right tool for the right job <em>before</em> performance becomes a crisis, rather than after customers are complaining and the system is already in production.</p>
+
+<p>The central variable in all complexity analysis is <strong>n</strong>, which represents the size of the input. Every complexity measure is expressed as a function of n, describing how an algorithm's cost grows as n increases. The definition of n, however, is not always obvious and must be chosen carefully for each problem. For a sorting algorithm applied to a list of numbers, n is the count of numbers in the list. For a search across a database table, n is the number of rows. For an algorithm that processes a string, n might be the number of characters. For a graph algorithm, n might represent the number of nodes, or it might be the number of edges — or both, if the algorithm's cost depends on both. Identifying the correct definition of n is the first step in any meaningful complexity analysis, because an incorrect definition will lead to a misleading characterization of the algorithm's behavior.</p>
+
+<p>Consider an example that illustrates how n changes meaning across contexts. Suppose you have a function that checks whether a string is a palindrome. If n is defined as the number of characters in the string, then the function must examine at most n/2 pairs of characters — so its cost grows linearly with the length of the string. Now suppose you have a function that checks whether a matrix is symmetric. Here, n might most naturally refer to the number of rows (or columns) in the matrix, but the actual number of elements — and therefore the work required — grows as n squared. If you defined n as the total number of elements, the growth would look linear, but that obscures the true structure of the problem. <strong>Getting n right is not merely a technicality; it is the foundation of an honest analysis.</strong></p>
+
+<p>Not all operations within an algorithm carry the same cost, and recognizing this is essential to accurate complexity analysis. <strong>Accessing the first element of an array</strong>, for example, takes constant time — regardless of how large the array is, the location of the first element is known and retrievable immediately. <strong>Searching for a specific value</strong> in an unsorted array, by contrast, may require examining every single element in the worst case, so its cost grows linearly with the size of the array. <strong>Inserting an element at the beginning of a linked list</strong> is a constant-time operation because it only involves updating a pointer, while inserting at the beginning of an array requires shifting every existing element one position to the right, a cost proportional to the array's length.</p>
+
+<p>The cost of an operation often depends critically on <em>where</em> in a data structure it occurs. Appending to the end of a dynamic array is typically fast (amortized constant time), but inserting in the middle requires shifting elements. Deleting from the front of a queue backed by a linked list is fast, but deleting a specific element from an arbitrary position requires traversal. These differences are not trivial — in a program that performs millions of insertions or deletions, choosing the wrong data structure can multiply the total running time by a factor proportional to n. Mapping out operation costs is therefore foundational to comparing data structures and selecting the most appropriate one for a given task.</p>
+
+<p>Complexity analysis recognizes that the same algorithm can perform very differently depending on the specific input it receives. This is captured through the concepts of <strong>best-case</strong>, <strong>worst-case</strong>, and <strong>average-case</strong> analysis. Best-case analysis describes the minimum resources an algorithm needs, occurring when the input happens to be in the most favorable possible configuration. For a linear search through a list, the best case occurs when the target value is the very first element checked — the algorithm finishes in one step regardless of the list's size. While best-case analysis can be interesting mathematically, it is rarely a reliable planning metric, because you cannot count on always receiving the most favorable input in production.</p>
+
+<p><strong>Worst-case analysis</strong> is the most commonly used measure in practice, and for good reason. It provides a guaranteed upper bound on resource usage — a promise that no matter what input the algorithm receives, its cost will not exceed this amount. For the linear search, the worst case is that the target is the last element, or is not present at all, requiring the algorithm to examine every element. Knowing the worst case allows engineers to make firm commitments about system behavior, which is essential in contexts like real-time systems, financial platforms, and safety-critical applications. If a system guarantees a response within a certain time, that guarantee must be based on worst-case performance, not on optimistic averages.</p>
+
+<p><strong>Average-case analysis</strong> provides a more realistic picture of everyday performance, but it requires making assumptions about the distribution of inputs. For the linear search, if the target is equally likely to be at any position in the list, the expected number of comparisons is n/2. This is a more accurate reflection of typical performance than either the best or worst case. However, average-case analysis can be misleading if the assumed distribution does not match reality. For example, if a system's inputs are not uniformly random but instead follow a pattern — perhaps they are often partially sorted, or often come in adversarial order — then an average-case analysis based on uniform randomness will underestimate the true cost. Understanding all three cases together gives the most complete and nuanced view of an algorithm's behavior.</p>
+
+<p>A critical and sometimes counterintuitive aspect of computational complexity is the <strong>role of abstraction</strong>. In complexity analysis, we deliberately ignore constant factors and low-order terms. An algorithm that performs exactly 3n + 7 operations and an algorithm that performs 100n + 1000 operations are considered equivalent in terms of complexity — both are described as growing linearly. This might seem imprecise or even misleading at first glance. Why would we ignore a factor of one hundred? The answer is that at sufficiently large scale, the growth rate dominates everything else. A linear algorithm with a large constant factor will always eventually outperform a quadratic algorithm with a tiny constant factor, once n is large enough. Since we are reasoning about behavior at scale, the growth rate is the only thing that ultimately matters.</p>
+
+<p>This abstraction also enables <strong>meaningful comparisons between algorithms regardless of the hardware or programming language</strong> used to implement them. An algorithm analyzed as quadratic will be quadratic whether it runs on a machine from 1990 or a state-of-the-art server cluster. The constant factors will differ enormously — modern hardware might execute each step a million times faster — but the growth pattern remains the same. This hardware-agnostic perspective is what makes complexity theory enduringly useful. An insight about an algorithm's growth rate, derived mathematically, remains valid across decades of hardware evolution, across different operating systems, and across different programming languages. It is a form of reasoning that transcends the details of any particular implementation and speaks directly to the fundamental structure of the problem being solved.</p>
+
+<p>To bring all of these ideas together with a concrete illustration, consider the problem of finding duplicate values in a list of n integers. A naive approach checks every pair of elements: for each element, compare it to every other element. This involves roughly n squared / 2 comparisons. A smarter approach first sorts the list — which can be done in n log n steps — and then scans through once to find adjacent equal values, taking n additional steps. The total for the smarter approach is dominated by the sorting step, so it grows as n log n. For n equal to one million, the naive approach requires roughly five hundred billion comparisons, while the smarter approach requires only about twenty million steps. No hardware advantage could bridge that gap. This example encapsulates the entire motivation for studying computational complexity: <strong>the right algorithm, chosen with an understanding of how cost grows with input size, makes problems tractable that would otherwise be impossible.</strong></p>
+        <div class="notes"><strong>Notes</strong>This topic sets the conceptual foundation for all subsequent complexity topics. Emphasis should be placed on the abstraction principle and the role of n as the independent variable. The palindrome and duplicate-finding examples can be referenced again in later topics when introducing Big O notation formally.</div>
+      </div></div>
+  </main>
+  <script>
+    document.querySelectorAll('.slide-header').forEach(function(h){
+      h.addEventListener('click',function(){
+        var b=this.nextElementSibling,c=this.querySelector('.chevron'),o=b.classList.contains('open');
+        b.classList.toggle('open',!o);c.style.transform=o?'':'rotate(90deg)';
+      });});
+    var f=document.querySelector('.slide-body');
+    if(f){f.classList.add('open');var c=f.previousElementSibling.querySelector('.chevron');if(c)c.style.transform='rotate(90deg)';}
+  </script>
+
+<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
+</body></html>

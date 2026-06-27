@@ -1,0 +1,225 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Introduction to JavaScript</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+</head><body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ 1. Getting Started: JavaScript and JSFiddle Environment</a></div>
+  <header>
+    <h1>Introduction to JavaScript</h1>
+  </header><main>
+    <div class="slide-card">
+      <div class="slide-header"><span class="slide-num">1</span><h2>Introduction to JavaScript</h2><span class="chevron">▶</span></div>
+      <div class="slide-body">
+        <p>JavaScript is the backbone of modern software development and one of the most consequential programming languages ever created. Whether you are opening a social media feed, submitting an online form, or streaming music, there is an excellent chance that JavaScript is orchestrating the experience behind the scenes. In this course, JavaScript will serve as our primary tool for learning, building, and analyzing data structures. Understanding not just <em>what</em> JavaScript is, but <em>why</em> it is so well suited to this purpose, gives you a meaningful foundation before writing a single line of code.</p>
+
+<p><strong>What is JavaScript?</strong></p>
+
+<p>JavaScript is a high-level, interpreted programming language originally created in 1995 by Brendan Eich while he was working at Netscape Communications. It was designed to add interactivity to web pages, and within the first decade of the web's existence it became the standard scripting language supported by every major browser. Today it has grown far beyond its original scope, running on servers, powering desktop applications, driving mobile apps, and even controlling embedded devices.</p>
+
+<p>One of the defining characteristics of JavaScript is that it is <em>interpreted at runtime</em>. Unlike languages such as C or Java, which require a separate compilation step that translates source code into machine instructions before any execution can occur, JavaScript is read and executed line by line (or more precisely, just-in-time compiled) by a runtime engine such as Google's V8 or Mozilla's SpiderMonkey. The practical consequence for a learner is enormous: you can open a browser console or a Node.js terminal, type a few lines of code, press enter, and immediately see the result. This tight feedback loop accelerates understanding.</p>
+
+<p>JavaScript also supports <strong>multiple programming paradigms</strong>, meaning it does not force you into a single style of thinking. You can write JavaScript in a <em>procedural</em> style — executing a sequence of instructions from top to bottom. You can use <em>object-oriented programming (OOP)</em> — organizing code around objects that combine state and behavior. Or you can embrace a <em>functional programming</em> style — treating functions as first-class values, avoiding shared state, and composing small, pure functions into larger solutions. In practice, most real-world JavaScript blends all three, and each paradigm will surface naturally as we implement different data structures throughout this course.</p>
+
+<p><strong>JavaScript's Role in Software Development</strong></p>
+
+<p>On the web, JavaScript is responsible for everything that happens <em>after</em> a page loads. HTML provides structure and CSS provides style, but JavaScript provides behavior. It listens for user actions — clicks, keystrokes, mouse movements — and responds dynamically. Consider a live search box that filters results as you type: that behavior is JavaScript reading each keystroke, querying a dataset, and re-rendering the list without ever reloading the page. Form validation, animated menus, drag-and-drop interfaces, real-time chat, map interactions — all of these are JavaScript's domain in the browser.</p>
+
+<p>Beyond the browser, <strong>Node.js</strong> — released in 2009 — brought JavaScript to the server side. Node.js uses the same V8 engine that powers Google Chrome but runs it outside the browser, allowing developers to build web servers, REST APIs, database-driven applications, and command-line tools using JavaScript. This was a landmark shift: for the first time, a development team could use a single language across the entire stack, from the database layer through the server and all the way to the user interface.</p>
+
+<p>JavaScript's reach extends even further. Frameworks like <strong>React Native</strong> and <strong>Ionic</strong> use JavaScript to build native mobile applications for iOS and Android. <strong>Electron</strong> uses JavaScript to build cross-platform desktop applications — Visual Studio Code itself is built with Electron. This breadth of applicability makes JavaScript one of the most practical languages to invest time in learning, because the skills transfer across domains rather than being confined to one niche.</p>
+
+<p>For someone learning programming for the first time, JavaScript has an additional advantage: you do not need to install anything to get started. Every modern computer already has a web browser with a built-in JavaScript console. Open Chrome or Firefox, press <code>F12</code> (or <code>Cmd+Option+I</code> on a Mac), click the Console tab, and you have a fully functional JavaScript environment ready for experimentation.</p>
+
+<p><strong>Why JavaScript is Used in This Course</strong></p>
+
+<p>Courses that teach data structures sometimes use multiple languages — pseudocode for conceptual explanation, Java for class-based implementation, Python for scripting examples. This approach can be confusing because learners must simultaneously absorb new algorithmic concepts <em>and</em> decode unfamiliar syntax. This course avoids that problem by committing to JavaScript throughout.</p>
+
+<p>JavaScript's syntax strikes a balance that is rare among widely-used languages: it is <em>approachable for beginners</em> while remaining <em>powerful enough</em> for sophisticated implementations. Compare defining a simple function in JavaScript versus a statically typed language like Java:</p>
+
+<pre><code>// JavaScript
+function add(a, b) {
+  return a + b;
+}
+
+// Java equivalent
+public static int add(int a, int b) {
+    return a + b;
+}
+</code></pre>
+
+<p>The JavaScript version requires no type declarations, no class wrapper, and no access modifiers. A learner can focus entirely on the logic — what the function does — rather than on boilerplate syntax. As concepts become more complex, this reduction in ceremony pays dividends.</p>
+
+<p>JavaScript's <strong>dynamic typing</strong> is also particularly convenient for prototyping and demonstrating data structures. In a statically typed language, you must specify the type of every variable and every parameter before the program will even compile. In JavaScript, a variable can hold a number, then a string, then an object, without any type annotation. While static typing has genuine benefits in large production systems, dynamic typing is a feature in an educational environment because it lets us build and modify structures rapidly without fighting the type system:</p>
+
+<pre><code>// A node can be created quickly without type declarations
+let node = { value: 42, next: null };
+node.value = "hello"; // perfectly valid in JavaScript
+</code></pre>
+
+<p>Finally, using a <em>single consistent language</em> across the entire course means you build cumulative fluency. By the time you are implementing a red-black tree or a graph traversal algorithm, you have already spent weeks thinking in JavaScript. The language has become transparent — your cognitive energy is spent on the data structure, not on translating between syntaxes.</p>
+
+<p><strong>JavaScript as a Foundation for Data Structure Implementation</strong></p>
+
+<p>Data structures are organized ways of storing and managing data so that operations on that data can be performed efficiently. To implement a data structure in any programming language, you need mechanisms to define structure, store state, and execute operations. JavaScript provides all of these.</p>
+
+<p><strong>Objects and classes</strong> are the primary means of defining custom data structures. An object in JavaScript is a collection of key-value pairs that can store both data (properties) and behavior (methods). A class is a reusable blueprint for creating objects with a shared structure. For example, a stack — a data structure that allows insertion and removal only from one end — can be defined as a class:</p>
+
+<pre><code>class Stack {
+  constructor() {
+    this.items = [];
+  }
+
+  push(element) {
+    this.items.push(element);
+  }
+
+  pop() {
+    return this.items.pop();
+  }
+
+  peek() {
+    return this.items[this.items.length - 1];
+  }
+
+  isEmpty() {
+    return this.items.length === 0;
+  }
+}
+
+const myStack = new Stack();
+myStack.push(10);
+myStack.push(20);
+console.log(myStack.pop()); // 20
+</code></pre>
+
+<p>The class encapsulates both the data (the <code>items</code> array) and the operations (<code>push</code>, <code>pop</code>, <code>peek</code>) in one coherent unit. This encapsulation is fundamental to clean data structure design.</p>
+
+<p><strong>Functions</strong> in JavaScript are first-class citizens, meaning they can be stored in variables, passed as arguments, and returned from other functions. This enables elegant implementation of operations like traversal — visiting every element in a structure — where you can pass a custom function to be applied at each step:</p>
+
+<pre><code>// Traversing a linked list and applying a callback to each node's value
+function traverse(head, callback) {
+  let current = head;
+  while (current !== null) {
+    callback(current.value);
+    current = current.next;
+  }
+}
+
+traverse(listHead, value => console.log(value));
+</code></pre>
+
+<p>Perhaps the most critical concept for implementing linked structures — linked lists, trees, and graphs — is JavaScript's <strong>reference-based behavior</strong>. In JavaScript, objects are not stored directly in variables; instead, variables hold a <em>reference</em> (a memory address pointing) to where the object lives in memory. When you assign one object variable to another, both variables point to the <em>same</em> object in memory, not two separate copies. This is the mechanism that makes it possible to link nodes together:</p>
+
+<pre><code>let nodeA = { value: 1, next: null };
+let nodeB = { value: 2, next: null };
+
+nodeA.next = nodeB; // nodeA.next now holds a reference to nodeB's location in memory
+
+console.log(nodeA.next.value); // 2 — we followed the reference from A to B
+</code></pre>
+
+<p>If you misunderstand references and accidentally copy an object instead of linking to it, your linked list will break in subtle and frustrating ways. Building this intuition early is one of the most valuable things this course will give you.</p>
+
+<p><strong>Foundational Programming Strategies Reviewed</strong></p>
+
+<p>Regardless of which data structure you are working with, certain programming strategies appear again and again. Reviewing them now, before diving into specific structures, ensures you have the tools you need when you encounter them in context.</p>
+
+<p><strong>Control flow constructs</strong> — loops and conditionals — are the workhorses of data structure operations. Traversing a linked list requires a <code>while</code> loop. Searching a sorted array might use a <code>for</code> loop combined with an <code>if</code> statement. Binary search uses a loop with a conditional to decide whether to search the left or right half of a dataset. You will rarely implement a data structure operation without reaching for one of these tools:</p>
+
+<pre><code>// Iterating through an array to find a target value
+function linearSearch(arr, target) {
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i] === target) {
+      return i; // return the index where target was found
+    }
+  }
+  return -1; // target not found
+}
+</code></pre>
+
+<p><strong>Variable scope</strong> — the rules that determine where a variable is accessible — is critical to avoid subtle bugs. JavaScript has three ways to declare variables: <code>var</code> (function-scoped, hoisted), <code>let</code> (block-scoped), and <code>const</code> (block-scoped, cannot be reassigned). In modern JavaScript, <code>let</code> and <code>const</code> are strongly preferred because their behavior is more predictable:</p>
+
+<pre><code>function demonstrateScope() {
+  if (true) {
+    let blockScoped = "I only exist inside this if-block";
+    var functionScoped = "I exist throughout the entire function";
+  }
+  // console.log(blockScoped); // ReferenceError — blockScoped is out of scope
+  console.log(functionScoped); // Works fine — var is function-scoped
+}
+</code></pre>
+
+<p>In data structure implementations, using <code>let</code> for loop counters and pointer variables helps ensure those variables do not bleed into outer scopes unexpectedly, which could corrupt the state of a structure during traversal or modification.</p>
+
+<p><strong>Recursion</strong> deserves special attention because it is not just a convenience — for certain data structures, it is the most natural and elegant solution available. Recursion is when a function calls itself as part of its own definition. Every recursive solution has two components: a <em>base case</em> that stops the recursion, and a <em>recursive case</em> that breaks the problem into a smaller version of itself.</p>
+
+<p>Consider calculating the factorial of a number. Factorially, 5! = 5 × 4 × 3 × 2 × 1. Notice that 5! = 5 × 4!, and 4! = 4 × 3!, and so on. The problem naturally breaks into smaller identical subproblems — a hallmark of recursion:</p>
+
+<pre><code>function factorial(n) {
+  if (n === 0) return 1;       // base case: 0! is defined as 1
+  return n * factorial(n - 1); // recursive case: n! = n × (n-1)!
+}
+
+console.log(factorial(5)); // 120
+</code></pre>
+
+<p>Recursion becomes indispensable when working with <strong>trees</strong> and <strong>graphs</strong>. A binary tree, for instance, is defined recursively: each node has a left subtree and a right subtree, each of which is itself a binary tree (or empty). Operations like searching a tree, calculating its height, or traversing it in a specific order are expressed most cleanly and correctly using recursive functions. A developer who is not comfortable with recursion will struggle with these structures; a developer who understands it will find tree operations almost write themselves.</p>
+
+<p>Together, these foundational strategies — control flow, scoping, and recursion — are the grammar of data structure programming. You will return to them constantly throughout this course, and each time you do, your understanding of both the strategy and the structure it operates on will deepen.</p>
+        <div class="notes"><strong>Notes</strong>An overview of the JavaScript programming language, its role in software development, and why it is used in this course for data structure implementation.</div>
+      </div></div>
+  </main>
+  <script>
+    document.querySelectorAll('.slide-header').forEach(function(h){
+      h.addEventListener('click',function(){
+        var b=this.nextElementSibling,c=this.querySelector('.chevron'),o=b.classList.contains('open');
+        b.classList.toggle('open',!o);c.style.transform=o?'':'rotate(90deg)';
+      });});
+    var f=document.querySelector('.slide-body');
+    if(f){f.classList.add('open');var c=f.previousElementSibling.querySelector('.chevron');if(c)c.style.transform='rotate(90deg)';}
+  </script>
+
+<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
+</body></html>
