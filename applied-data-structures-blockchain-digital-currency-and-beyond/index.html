@@ -1,8 +1,8 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Applied Data Structures: Blockchain, Digital Currency, and Beyond — COP3530</title>
   <style>
     /* ── Reset & Base ── */
@@ -18,291 +18,256 @@
     }
 
     body {
-      font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background-color: #f4f6f9;
-      color: #1e2a38;
-      line-height: 1.65;
+      color: #2c3e50;
+      line-height: 1.7;
       min-height: 100vh;
     }
 
-    /* ── Layout ── */
-    .page-wrapper {
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 2.5rem 1.5rem 4rem;
+    /* ── Header / Hero ── */
+    header {
+      background: linear-gradient(135deg, #1a3a5c 0%, #2d6a9f 60%, #3a8dbf 100%);
+      color: #ffffff;
+      padding: 3rem 2rem 2.5rem;
+      border-bottom: 4px solid #f0a500;
     }
 
-    /* ── Header ── */
-    .page-header {
-      background: linear-gradient(135deg, #0d2b4e 0%, #1a4f7a 60%, #1e6fa3 100%);
-      color: #ffffff;
-      border-radius: 10px;
-      padding: 2.75rem 2.5rem 2.25rem;
-      margin-bottom: 2.5rem;
-      box-shadow: 0 4px 18px rgba(13, 43, 78, 0.22);
+    .header-inner {
+      max-width: 960px;
+      margin: 0 auto;
     }
 
     .course-label {
       display: inline-block;
-      background-color: rgba(255, 255, 255, 0.15);
-      color: #c9dff0;
-      font-size: 0.78rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-      padding: 0.3rem 0.75rem;
-      border-radius: 20px;
+      background-color: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 4px;
+      padding: 0.25rem 0.65rem;
       margin-bottom: 1rem;
-      border: 1px solid rgba(255, 255, 255, 0.2);
     }
 
-    .page-header h1 {
-      font-size: clamp(1.45rem, 3.5vw, 2.05rem);
+    header h1 {
+      font-size: clamp(1.55rem, 4vw, 2.3rem);
       font-weight: 700;
       line-height: 1.25;
       margin-bottom: 1rem;
       letter-spacing: -0.01em;
     }
 
-    .page-header p {
-      font-size: 0.97rem;
-      color: #cde3f5;
-      max-width: 700px;
-      line-height: 1.7;
+    header p {
+      font-size: 1rem;
+      max-width: 720px;
+      color: rgba(255, 255, 255, 0.88);
+      line-height: 1.75;
     }
 
-    /* ── Section Title ── */
-    .section-title {
-      font-size: 0.72rem;
+    /* ── Main Content ── */
+    main {
+      max-width: 960px;
+      margin: 2.5rem auto 4rem;
+      padding: 0 1.5rem;
+    }
+
+    .section-heading {
+      font-size: 1.05rem;
       font-weight: 700;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
-      color: #5a7490;
-      margin-bottom: 1rem;
-      padding-bottom: 0.4rem;
-      border-bottom: 2px solid #dde4ed;
+      color: #5a6a7a;
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid #dce3ec;
     }
 
-    /* ── Artifact Grid ── */
-    .artifact-grid {
+    /* ── Artifact Card Grid ── */
+    .card-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 1.25rem;
+      gap: 1.5rem;
     }
 
-    /* ── Artifact Card ── */
-    .artifact-card {
+    .card {
       background: #ffffff;
-      border: 1px solid #dde4ed;
-      border-radius: 8px;
-      padding: 1.4rem 1.5rem 1.35rem;
-      box-shadow: 0 2px 8px rgba(13, 43, 78, 0.07);
-      transition: box-shadow 0.2s ease, transform 0.2s ease;
+      border: 1px solid #dce3ec;
+      border-radius: 10px;
+      padding: 1.5rem 1.5rem 1.25rem;
       display: flex;
       flex-direction: column;
-      gap: 0.6rem;
+      gap: 0.65rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+      transition: box-shadow 0.2s ease, transform 0.2s ease;
     }
 
-    .artifact-card:hover {
-      box-shadow: 0 6px 20px rgba(13, 43, 78, 0.13);
+    .card:hover {
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
       transform: translateY(-2px);
     }
 
     /* ── Card Header Row ── */
     .card-header {
       display: flex;
-      align-items: flex-start;
-      gap: 0.55rem;
       flex-wrap: wrap;
+      align-items: baseline;
+      gap: 0.5rem;
     }
 
-    .artifact-name {
-      font-size: 1.04rem;
-      font-weight: 600;
-      color: #0d2b4e;
+    .card-name {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #1a3a5c;
       line-height: 1.3;
-      flex: 1 1 auto;
     }
 
-    .artifact-name a {
-      color: #1060a0;
+    .card-name a {
+      color: #1a6ab5;
       text-decoration: none;
-      border-bottom: 1.5px solid transparent;
-      transition: border-color 0.18s ease, color 0.18s ease;
+      border-bottom: 2px solid transparent;
+      transition: border-color 0.2s ease, color 0.2s ease;
     }
 
-    .artifact-name a:hover,
-    .artifact-name a:focus {
-      color: #0d4880;
-      border-bottom-color: #0d4880;
+    .card-name a:hover,
+    .card-name a:focus {
+      color: #0d4f8a;
+      border-bottom-color: #0d4f8a;
       outline: none;
     }
 
-    .artifact-name a:focus-visible {
-      outline: 2px solid #1060a0;
-      outline-offset: 2px;
-      border-radius: 2px;
-    }
-
-    /* ── Source Link ── */
     .source-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.28rem;
-      font-size: 0.72rem;
+      font-size: 0.73rem;
       font-weight: 600;
-      color: #4a7eaa;
+      color: #5a8abf;
       text-decoration: none;
-      background-color: #eaf3fb;
-      border: 1px solid #b8d6ef;
+      background: #eaf2fb;
+      border: 1px solid #b8d4ef;
       border-radius: 4px;
-      padding: 0.18rem 0.5rem;
+      padding: 0.15rem 0.45rem;
       white-space: nowrap;
-      transition: background-color 0.18s ease, color 0.18s ease;
-      flex-shrink: 0;
-      align-self: flex-start;
-      margin-top: 0.1rem;
-    }
-
-    .source-link::before {
-      content: "⬡";
-      font-size: 0.65rem;
+      transition: background 0.2s ease, color 0.2s ease;
     }
 
     .source-link:hover,
     .source-link:focus {
-      background-color: #cce4f6;
-      color: #0d4880;
+      background: #d0e6f7;
+      color: #0d4f8a;
       outline: none;
     }
 
-    .source-link:focus-visible {
-      outline: 2px solid #1060a0;
-      outline-offset: 2px;
-    }
-
-    /* ── Metadata Badges ── */
-    .card-meta {
+    /* ── Badges Row ── */
+    .card-badges {
       display: flex;
       flex-wrap: wrap;
       gap: 0.45rem;
-      align-items: center;
     }
 
     .badge {
-      display: inline-block;
-      font-size: 0.7rem;
+      font-size: 0.72rem;
       font-weight: 600;
       letter-spacing: 0.04em;
-      padding: 0.2rem 0.6rem;
-      border-radius: 20px;
+      text-transform: uppercase;
+      border-radius: 4px;
+      padding: 0.2rem 0.55rem;
     }
 
     .badge-type {
-      background-color: #e9f0f8;
-      color: #2a5080;
-      border: 1px solid #c5d8ee;
+      background-color: #eef2f7;
+      color: #3d5a73;
+      border: 1px solid #cdd8e6;
     }
 
     .badge-filetype {
-      background-color: #f0f7ec;
-      color: #2d6a3f;
-      border: 1px solid #b9ddb0;
-      font-family: 'Courier New', Courier, monospace;
-      letter-spacing: 0.06em;
+      background-color: #fef7e6;
+      color: #7a5500;
+      border: 1px solid #f0d49a;
     }
 
-    /* ── Description ── */
-    .artifact-description {
-      font-size: 0.875rem;
-      color: #4a5e72;
+    /* ── Card Description ── */
+    .card-description {
+      font-size: 0.9rem;
+      color: #4a5a6a;
       line-height: 1.65;
-      margin-top: 0.2rem;
+      flex-grow: 1;
     }
 
     /* ── Footer ── */
-    .page-footer {
-      margin-top: 3.5rem;
-      padding-top: 1.25rem;
-      border-top: 1px solid #dde4ed;
+    footer {
       text-align: center;
-      font-size: 0.78rem;
-      color: #8a9daf;
+      padding: 1.5rem 1rem;
+      font-size: 0.8rem;
+      color: #8a9aaa;
+      border-top: 1px solid #dce3ec;
+      background-color: #f4f6f9;
     }
 
-    /* ── Responsive ── */
+    /* ── Responsive Tweaks ── */
     @media (max-width: 520px) {
-      .page-header {
-        padding: 2rem 1.25rem 1.75rem;
+      header {
+        padding: 2rem 1.25rem 2rem;
       }
 
-      .artifact-card {
-        padding: 1.2rem 1.25rem;
+      main {
+        margin-top: 1.75rem;
+        padding: 0 1rem;
       }
 
-      .artifact-grid {
-        grid-template-columns: 1fr;
+      .card {
+        padding: 1.25rem 1.1rem 1.1rem;
       }
     }
   </style>
 </head>
 <body>
 <div style="border:1px solid #c9d4e3;background:#f5f8fc;border-radius:8px;padding:10px 16px;margin:0 0 18px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;font-family:'Segoe UI',Arial,sans-serif"><strong style="color:#1a3c6e">Module outline:</strong><a href="topics-outcomes.html#topics" style="color:#1a3c6e;font-weight:600;text-decoration:none">📋 Module Topics</a><a href="topics-outcomes.html#outcomes" style="color:#137333;font-weight:600;text-decoration:none">🎯 Student Learning Outcomes</a></div>
-  <div class="page-wrapper">
 
-    <!-- ── Page Header ── -->
-    <header class="page-header" role="banner">
-      <div class="course-label">COP3530 — Data Structures</div>
+  <header>
+    <div class="header-inner">
+      <span class="course-label">COP3530 &mdash; Data Structures</span>
       <h1>Applied Data Structures: Blockchain, Digital Currency, and Beyond</h1>
       <p>
-        This module bridges classical data structures theory with real-world applications in
-        blockchain technology and digital currency systems. Learners will explore how foundational
-        constructs — hash tables, trees, graphs, and linked lists — underpin modern decentralized
-        architectures, from Merkle trees and cryptographic hashing to UTXO-based transaction models.
+        This module bridges foundational data structures with real-world applications in blockchain
+        technology and digital currency systems. Learners will explore how concepts such as hash tables,
+        trees, graphs, linked lists, and cryptographic hashing underpin the architecture of modern
+        decentralized systems, including Merkle trees, wallets, and the UTXO model.
       </p>
-    </header>
+    </div>
+  </header>
 
-    <!-- ── Artifacts Section ── -->
-    <main>
-      <h2 class="section-title">Module Artifacts</h2>
+  <main>
+    <h2 class="section-heading">Module Artifacts</h2>
 
-      <div class="artifact-grid" role="list">
+    <div class="card-grid">
 
-        <!-- Artifact: Module Topics -->
-        <article class="artifact-card" role="listitem" aria-label="Module Topics">
+        <div class="card">
           <div class="card-header">
-            <div class="artifact-name">
-              <a href="content/module_topics.html">Module Topics</a>
-            </div>
-            <a
-              class="source-link"
-              href="source/hierarchy.json"
-              aria-label="Source file for Module Topics"
-            >source file</a>
+            <span class="card-name">
+                <a href="content/module_topics.html">Module Topics</a>
+                  <a
+                    class="source-link"
+                    href="source/hierarchy.json"
+                    aria-label="Source file for Module Topics"
+                  >source file</a>
+            </span>
           </div>
-
-          <div class="card-meta">
+          <div class="card-badges">
             <span class="badge badge-type">Module Topics</span>
             <span class="badge badge-filetype">.json</span>
           </div>
-
-          <p class="artifact-description">
-            Outlines the module's subject matter across three areas — foundational data structures
-            (hash tables, trees, graphs), blockchain architecture (linked lists, cryptographic
-            hashing, Merkle trees), and digital currency systems (wallets, UTXO model) — giving
-            learners and instructors a structured overview of the topics to be studied.
+          <p class="card-description">
+            Outlines the module&#x27;s subject matter across three areas—foundational data structures (hash tables, trees, graphs), blockchain architecture (linked lists, cryptographic hashing, Merkle trees), and digital currency systems (wallets, UTXO model)—giving learners and instructors a structured overview of the topics to be studied.
           </p>
-        </article>
+        </div>
 
-      </div>
-    </main>
+    </div>
+  </main>
 
-    <!-- ── Footer ── -->
-    <footer class="page-footer" role="contentinfo">
-      <p>COP3530 · Data Structures &nbsp;|&nbsp; Applied Data Structures: Blockchain, Digital Currency, and Beyond</p>
-    </footer>
+  <footer>
+    &copy; COP3530 &mdash; Data Structures &nbsp;|&nbsp; Applied Data Structures: Blockchain, Digital Currency, and Beyond
+  </footer>
 
-  </div>
 
 <footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
 <section class="presemaker-extras" style="max-width:1000px;margin:2rem auto;padding:0 1rem;"><h2>Topics &amp; Learning Outcomes</h2><p><a href="topics-outcomes.html">View Topics &amp; Learning Outcomes</a></p></section></body>

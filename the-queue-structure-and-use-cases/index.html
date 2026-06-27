@@ -1,8 +1,8 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>The Queue: Structure and Use Cases — COP3530</title>
   <style>
     *, *::before, *::after {
@@ -14,36 +14,34 @@
     :root {
       --color-bg: #f4f6f9;
       --color-surface: #ffffff;
-      --color-primary: #1a4f8a;
-      --color-primary-dark: #133b69;
+      --color-primary: #1a3a5c;
+      --color-primary-light: #2558a0;
       --color-accent: #2e7d32;
-      --color-accent-hover: #1b5e20;
-      --color-border: #d1d9e0;
-      --color-text: #1c2a38;
-      --color-text-muted: #5a6a7a;
-      --color-tag-bg: #e8f0fb;
-      --color-tag-text: #1a4f8a;
-      --color-filetype-bg: #f0f4f0;
+      --color-accent-light: #43a047;
+      --color-text: #1e2a38;
+      --color-text-muted: #5a6a7e;
+      --color-border: #d0d9e4;
+      --color-tag-bg: #e8eff8;
+      --color-tag-text: #1a3a5c;
+      --color-filetype-bg: #eaf4ea;
       --color-filetype-text: #2e7d32;
-      --radius: 8px;
-      --shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-      --shadow-hover: 0 4px 16px rgba(0, 0, 0, 0.13);
-      --font-sans: "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
-      --font-mono: "Consolas", "Courier New", monospace;
+      --radius: 10px;
+      --shadow: 0 2px 12px rgba(26, 58, 92, 0.09);
+      --font-main: 'Segoe UI', system-ui, -apple-system, sans-serif;
     }
 
     body {
-      font-family: var(--font-sans);
+      font-family: var(--font-main);
       background-color: var(--color-bg);
       color: var(--color-text);
-      line-height: 1.6;
       min-height: 100vh;
+      padding: 0;
     }
 
     /* ── Header ── */
     header {
-      background: linear-gradient(135deg, var(--color-primary) 0%, #1e6091 100%);
-      color: #fff;
+      background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+      color: #ffffff;
       padding: 48px 24px 40px;
       text-align: center;
     }
@@ -55,182 +53,187 @@
       letter-spacing: 0.12em;
       text-transform: uppercase;
       background: rgba(255, 255, 255, 0.18);
-      border: 1px solid rgba(255, 255, 255, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.28);
       border-radius: 20px;
       padding: 4px 14px;
-      margin-bottom: 18px;
+      margin-bottom: 16px;
+      color: #d9eaff;
     }
 
     header h1 {
-      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-size: clamp(1.6rem, 4vw, 2.6rem);
       font-weight: 700;
-      letter-spacing: -0.02em;
-      line-height: 1.25;
-      margin-bottom: 16px;
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+      margin-bottom: 14px;
     }
 
     header p.intro {
-      max-width: 680px;
-      margin: 0 auto;
-      font-size: 1rem;
-      color: rgba(255, 255, 255, 0.88);
+      font-size: clamp(0.95rem, 2vw, 1.08rem);
       line-height: 1.7;
+      color: #c8dcf5;
+      max-width: 640px;
+      margin: 0 auto;
     }
 
-    /* ── Main container ── */
+    /* ── Main content ── */
     main {
       max-width: 960px;
-      margin: 40px auto 60px;
-      padding: 0 20px;
+      margin: 0 auto;
+      padding: 40px 20px 60px;
     }
 
-    .section-heading {
+    .section-title {
       font-size: 0.72rem;
       font-weight: 700;
       letter-spacing: 0.14em;
       text-transform: uppercase;
       color: var(--color-text-muted);
       margin-bottom: 18px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid var(--color-border);
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--color-border);
     }
 
-    /* ── Card grid ── */
-    .card-grid {
+    /* ── Artifact grid ── */
+    .artifact-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 420px), 1fr));
       gap: 20px;
     }
 
-    .card {
+    .artifact-card {
       background: var(--color-surface);
       border: 1px solid var(--color-border);
       border-radius: var(--radius);
-      padding: 24px 22px 20px;
       box-shadow: var(--shadow);
+      padding: 24px 26px;
       display: flex;
       flex-direction: column;
       gap: 12px;
       transition: box-shadow 0.2s ease, transform 0.2s ease;
     }
 
-    .card:hover {
-      box-shadow: var(--shadow-hover);
+    .artifact-card:hover {
+      box-shadow: 0 6px 24px rgba(26, 58, 92, 0.14);
       transform: translateY(-2px);
     }
 
-    /* ── Card top row: tags ── */
-    .card-tags {
+    /* Card top row: name + badges */
+    .card-header {
       display: flex;
       flex-wrap: wrap;
-      gap: 6px;
-      align-items: center;
+      align-items: flex-start;
+      gap: 10px;
     }
 
-    .tag {
-      font-size: 0.7rem;
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      border-radius: 4px;
-      padding: 2px 8px;
+    .card-title-block {
+      flex: 1 1 auto;
+      min-width: 0;
     }
 
-    .tag-type {
-      background: var(--color-tag-bg);
-      color: var(--color-tag-text);
-    }
-
-    .tag-filetype {
-      background: var(--color-filetype-bg);
-      color: var(--color-filetype-text);
-      font-family: var(--font-mono);
-    }
-
-    /* ── Card title area ── */
-    .card-title-row {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: baseline;
-      gap: 8px;
-    }
-
-    .card-name {
+    .artifact-name {
       font-size: 1.05rem;
       font-weight: 700;
       color: var(--color-text);
       line-height: 1.3;
+      display: block;
     }
 
-    .card-name a {
-      color: var(--color-primary);
+    .artifact-name a.primary-link {
+      color: var(--color-primary-light);
       text-decoration: none;
-      border-bottom: 2px solid transparent;
-      transition: border-color 0.15s ease, color 0.15s ease;
+      transition: color 0.15s;
     }
 
-    .card-name a:hover,
-    .card-name a:focus {
-      color: var(--color-primary-dark);
-      border-bottom-color: var(--color-primary-dark);
-      outline: none;
-    }
-
-    .card-name a:focus-visible {
-      outline: 2px solid var(--color-primary);
-      outline-offset: 2px;
-      border-radius: 2px;
+    .artifact-name a.primary-link:hover {
+      color: var(--color-primary);
+      text-decoration: underline;
     }
 
     .source-link {
-      font-size: 0.73rem;
-      font-weight: 500;
-      color: var(--color-accent);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 5px;
+      font-size: 0.76rem;
+      font-weight: 600;
+      color: var(--color-accent-light);
       text-decoration: none;
+      border: 1px solid #b5ddb7;
+      background: #f3faf3;
+      border-radius: 5px;
+      padding: 2px 8px;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .source-link:hover {
+      background: #dff2df;
+      color: var(--color-accent);
+    }
+
+    .source-link::before {
+      content: "⬇";
+      font-size: 0.7rem;
+    }
+
+    /* Badges */
+    .badge-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .badge {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      border-radius: 5px;
+      padding: 3px 9px;
       white-space: nowrap;
-      padding: 1px 7px;
-      border: 1px solid var(--color-accent);
-      border-radius: 4px;
-      transition: background 0.15s ease, color 0.15s ease;
     }
 
-    .source-link:hover,
-    .source-link:focus {
-      background: var(--color-accent);
-      color: #fff;
-      outline: none;
+    .badge-type {
+      background: var(--color-tag-bg);
+      color: var(--color-tag-text);
+      border: 1px solid #bfd0e8;
     }
 
-    .source-link:focus-visible {
-      outline: 2px solid var(--color-accent);
-      outline-offset: 2px;
+    .badge-filetype {
+      background: var(--color-filetype-bg);
+      color: var(--color-filetype-text);
+      border: 1px solid #b5ddb7;
+      font-family: 'Courier New', monospace;
     }
 
-    /* ── Card description ── */
-    .card-description {
-      font-size: 0.88rem;
-      color: var(--color-text-muted);
+    /* Description */
+    .artifact-description {
+      font-size: 0.9rem;
       line-height: 1.65;
-      flex: 1;
+      color: var(--color-text-muted);
     }
 
     /* ── Footer ── */
     footer {
       text-align: center;
-      padding: 24px 16px;
-      font-size: 0.78rem;
+      padding: 20px 16px 32px;
+      font-size: 0.8rem;
       color: var(--color-text-muted);
       border-top: 1px solid var(--color-border);
     }
 
     /* ── Responsive tweaks ── */
-    @media (max-width: 480px) {
+    @media (max-width: 520px) {
       header {
-        padding: 36px 18px 30px;
+        padding: 36px 16px 30px;
       }
 
-      .card {
-        padding: 20px 18px 18px;
+      .artifact-card {
+        padding: 18px 18px;
+      }
+
+      .card-header {
+        flex-direction: column;
       }
     }
   </style>
@@ -242,39 +245,45 @@
     <div class="course-label">COP3530 — Data Structures</div>
     <h1>The Queue: Structure and Use Cases</h1>
     <p class="intro">
-      Explore the fundamental concepts of the queue abstract data type, from its
-      core FIFO principle and essential operations to practical implementation
-      strategies using arrays and linked lists. Use the artifacts below to
-      navigate the module's topics and learning materials.
+      This module explores the queue abstract data type, a foundational structure governed by the
+      First-In, First-Out (FIFO) principle. Learners will examine core operations, key terminology,
+      and both array-based and linked list-based implementation strategies through a curated set
+      of instructional artifacts.
     </p>
   </header>
 
   <main>
-    <p class="section-heading">Module Artifacts</p>
+    <p class="section-title">Module Artifacts</p>
 
-    <div class="card-grid">
+    <div class="artifact-grid">
 
-        <article class="card">
-          <div class="card-tags">
-            <span class="tag tag-type">Module Topics</span>
-            <span class="tag tag-filetype">.json</span>
-          </div>
-          <div class="card-title-row">
-            <span class="card-name">
-                <a href="content/module_topics.html">Module Topics</a>
+      <!-- Artifact: Module Topics -->
+      <div class="artifact-card">
+        <div class="card-header">
+          <div class="card-title-block">
+            <span class="artifact-name">
+              <a class="primary-link" href="content/module_topics.html">Module Topics</a>
             </span>
-              <a class="source-link" href="source/hierarchy.json">source file</a>
+            <a class="source-link" href="source/hierarchy.json">source file</a>
           </div>
-          <p class="card-description">
-            Outlines the module&#x27;s learning topics covering queue fundamentals (FIFO principle, core terminology), standard operations (enqueue, dequeue, peek), and implementation approaches (array-based and linked list-based), serving as a navigational guide for learners and instructors to understand the scope and sequence of the module.
-          </p>
-        </article>
+          <div class="badge-group">
+            <span class="badge badge-type">Module Topics</span>
+            <span class="badge badge-filetype">.json</span>
+          </div>
+        </div>
+        <p class="artifact-description">
+          Outlines the module's learning topics covering queue fundamentals (FIFO principle, core
+          terminology), standard operations (enqueue, dequeue, peek), and implementation approaches
+          (array-based and linked list-based), serving as a navigational guide for learners and
+          instructors to understand the scope and sequence of the module.
+        </p>
+      </div>
 
     </div>
   </main>
 
   <footer>
-    COP3530 — Data Structures &nbsp;|&nbsp; The Queue: Structure and Use Cases
+    COP3530 — Data Structures &nbsp;|&nbsp; Module: The Queue: Structure and Use Cases
   </footer>
 
 

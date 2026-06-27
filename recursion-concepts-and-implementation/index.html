@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Recursion: Concepts and Implementation — COP3530</title>
+  <title>Recursion: Concepts and Implementation | COP3530 - Data Structures</title>
   <style>
     /* ── Reset & Base ── */
     *, *::before, *::after {
@@ -18,289 +18,250 @@
     }
 
     body {
-      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
       background-color: #f4f6f9;
-      color: #1e2a3a;
+      color: #2c3e50;
       line-height: 1.65;
       min-height: 100vh;
     }
 
-    /* ── Page Shell ── */
-    .page-wrapper {
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 2.5rem 1.25rem 4rem;
+    /* ── Header / Hero ── */
+    header {
+      background: linear-gradient(135deg, #1a3a5c 0%, #2563a8 100%);
+      color: #ffffff;
+      padding: 3rem 2rem 2.5rem;
+      border-bottom: 4px solid #f0a500;
     }
 
-    /* ── Course Label ── */
+    .header-inner {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
     .course-label {
       display: inline-block;
-      font-size: 0.75rem;
-      font-weight: 700;
+      font-size: 0.8rem;
+      font-weight: 600;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: #ffffff;
-      background-color: #2d6a9f;
-      padding: 0.3rem 0.75rem;
-      border-radius: 4px;
+      background-color: rgba(255, 255, 255, 0.15);
+      color: #d6e8ff;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
       margin-bottom: 1rem;
     }
 
-    /* ── Header ── */
-    .module-header {
-      border-bottom: 3px solid #2d6a9f;
-      padding-bottom: 1.5rem;
-      margin-bottom: 2.25rem;
-    }
-
-    .module-header h1 {
-      font-size: clamp(1.6rem, 3.5vw, 2.25rem);
+    header h1 {
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
       font-weight: 700;
-      color: #0f1e30;
-      margin-bottom: 0.75rem;
       line-height: 1.25;
-    }
-
-    .module-header p {
-      font-size: 1rem;
-      color: #3d5068;
-      max-width: 72ch;
-    }
-
-    /* ── Section Title ── */
-    .section-title {
-      font-size: 0.8rem;
-      font-weight: 700;
-      letter-spacing: 0.09em;
-      text-transform: uppercase;
-      color: #5a7291;
       margin-bottom: 1rem;
+      letter-spacing: -0.01em;
     }
 
-    /* ── Artifact Grid ── */
+    header p {
+      font-size: 1rem;
+      color: #cce0f5;
+      max-width: 680px;
+      line-height: 1.7;
+    }
+
+    /* ── Main Content ── */
+    main {
+      max-width: 900px;
+      margin: 2.5rem auto;
+      padding: 0 1.5rem;
+    }
+
+    .section-heading {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #6b7e96;
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid #dce3ec;
+    }
+
+    /* ── Artifact Cards ── */
     .artifact-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(min(100%, 420px), 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
       gap: 1.25rem;
+      list-style: none;
     }
 
-    /* ── Artifact Card ── */
     .artifact-card {
       background: #ffffff;
-      border: 1px solid #dce3ed;
-      border-radius: 8px;
-      padding: 1.4rem 1.5rem;
+      border: 1px solid #dce3ec;
+      border-radius: 10px;
+      padding: 1.5rem;
       display: flex;
       flex-direction: column;
-      gap: 0.65rem;
-      transition: box-shadow 0.18s ease, border-color 0.18s ease;
+      gap: 0.75rem;
+      transition: box-shadow 0.2s ease, transform 0.2s ease;
+      position: relative;
     }
 
     .artifact-card:hover {
-      box-shadow: 0 4px 18px rgba(45, 106, 159, 0.12);
-      border-color: #adc5de;
+      box-shadow: 0 6px 20px rgba(37, 99, 168, 0.12);
+      transform: translateY(-2px);
     }
 
-    /* ── Card Top Row ── */
-    .card-top {
+    /* Type + FileType badges row */
+    .badge-row {
       display: flex;
-      align-items: flex-start;
-      gap: 0.6rem;
       flex-wrap: wrap;
+      gap: 0.5rem;
+      align-items: center;
     }
 
-    /* ── Badges ── */
     .badge {
       display: inline-block;
-      font-size: 0.68rem;
+      font-size: 0.7rem;
       font-weight: 600;
-      letter-spacing: 0.04em;
-      padding: 0.2rem 0.55rem;
-      border-radius: 3px;
-      white-space: nowrap;
-      line-height: 1.4;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.6rem;
+      border-radius: 20px;
     }
 
     .badge-type {
-      background-color: #eaf0f8;
-      color: #2d6a9f;
-      border: 1px solid #c5d8ed;
+      background-color: #e8f0fb;
+      color: #2563a8;
     }
 
     .badge-filetype {
-      background-color: #f0f4f0;
-      color: #2e6b3e;
-      border: 1px solid #b9d5c1;
-      font-family: 'Courier New', monospace;
+      background-color: #fff4e0;
+      color: #a05c00;
     }
 
-    /* ── Card Name ── */
-    .card-name {
+    /* Artifact name */
+    .artifact-name {
       font-size: 1.05rem;
       font-weight: 700;
-      color: #0f1e30;
+      color: #1a3a5c;
       line-height: 1.3;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.6rem;
     }
 
-    .card-name a {
-      color: #1a5c9a;
+    .artifact-name a.primary-link {
+      color: #2563a8;
       text-decoration: none;
       border-bottom: 2px solid transparent;
       transition: border-color 0.15s ease, color 0.15s ease;
     }
 
-    .card-name a:hover,
-    .card-name a:focus {
-      color: #0d3f6e;
-      border-bottom-color: #1a5c9a;
+    .artifact-name a.primary-link:hover,
+    .artifact-name a.primary-link:focus {
+      color: #1a3a5c;
+      border-bottom-color: #f0a500;
       outline: none;
     }
 
-    .card-name a:focus-visible {
-      outline: 2px solid #2d6a9f;
-      outline-offset: 2px;
-      border-radius: 2px;
-    }
-
-    /* ── Source Link ── */
     .source-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.3rem;
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       font-weight: 600;
-      color: #5a7291;
       text-decoration: none;
-      border: 1px solid #c8d6e5;
+      color: #6b7e96;
+      background: #f0f3f7;
+      border: 1px solid #cdd5e0;
       border-radius: 4px;
-      padding: 0.18rem 0.5rem;
-      background: #f7f9fc;
-      transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+      padding: 0.15rem 0.5rem;
       white-space: nowrap;
-      margin-left: 0.4rem;
-      vertical-align: middle;
+      transition: background 0.15s ease, color 0.15s ease;
     }
 
     .source-link:hover,
     .source-link:focus {
-      background: #eaf0f8;
-      color: #1a5c9a;
-      border-color: #9ab8d6;
+      background: #dce3ec;
+      color: #1a3a5c;
       outline: none;
     }
 
-    .source-link:focus-visible {
-      outline: 2px solid #2d6a9f;
-      outline-offset: 2px;
-    }
-
-    .source-link svg {
-      flex-shrink: 0;
-    }
-
-    /* ── Card Description ── */
-    .card-description {
-      font-size: 0.9rem;
-      color: #3d5068;
-      line-height: 1.6;
-    }
-
-    /* ── Divider ── */
-    .card-divider {
-      height: 1px;
-      background: #edf1f6;
-      border: none;
-      margin: 0.1rem 0;
+    /* Description */
+    .artifact-description {
+      font-size: 0.88rem;
+      color: #4a5e72;
+      line-height: 1.65;
+      flex-grow: 1;
     }
 
     /* ── Footer ── */
-    .page-footer {
-      margin-top: 3.5rem;
-      padding-top: 1.25rem;
-      border-top: 1px solid #dce3ed;
+    footer {
       text-align: center;
+      padding: 2rem 1rem;
       font-size: 0.8rem;
-      color: #7a92a9;
+      color: #8fa3b8;
+      border-top: 1px solid #dce3ec;
+      margin-top: 3rem;
     }
 
-    /* ── Responsive tweaks ── */
-    @media (max-width: 520px) {
-      .page-wrapper {
-        padding: 1.75rem 1rem 3rem;
+    /* ── Accessibility: Focus Ring ── */
+    a:focus-visible {
+      outline: 3px solid #f0a500;
+      outline-offset: 2px;
+      border-radius: 3px;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 500px) {
+      header {
+        padding: 2rem 1.25rem 1.75rem;
       }
 
-      .artifact-card {
-        padding: 1.1rem 1.15rem;
+      .artifact-grid {
+        grid-template-columns: 1fr;
       }
     }
   </style>
 </head>
 <body>
 <div style="border:1px solid #c9d4e3;background:#f5f8fc;border-radius:8px;padding:10px 16px;margin:0 0 18px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;font-family:'Segoe UI',Arial,sans-serif"><strong style="color:#1a3c6e">Module outline:</strong><a href="topics-outcomes.html#topics" style="color:#1a3c6e;font-weight:600;text-decoration:none">📋 Module Topics</a><a href="topics-outcomes.html#outcomes" style="color:#137333;font-weight:600;text-decoration:none">🎯 Student Learning Outcomes</a></div>
-  <div class="page-wrapper">
 
-    <!-- ── Header ── -->
-    <header class="module-header" role="banner">
+  <header>
+    <div class="header-inner">
       <span class="course-label">COP3530 &mdash; Data Structures</span>
       <h1>Recursion: Concepts and Implementation</h1>
       <p>
-        This module introduces recursion as a fundamental problem-solving paradigm in computer science.
-        Learners will explore how recursive functions are structured, how the call stack manages execution,
-        and how classic algorithms such as factorial and Fibonacci are implemented recursively — building
-        an intuition for when and how to apply recursion effectively in data structures and beyond.
+        Explore the principles of recursion from the ground up — understanding how functions call themselves,
+        how the call stack manages execution, and how to construct correct base and recursive cases.
+        This module covers foundational recursive patterns and classic implementations to build confident,
+        practical problem-solving skills.
       </p>
-    </header>
+    </div>
+  </header>
 
-    <!-- ── Artifact Listing ── -->
-    <main>
-      <p class="section-title" aria-label="Module artifacts">Module Artifacts</p>
+  <main>
+    <h2 class="section-heading">Module Artifacts</h2>
 
-      <div class="artifact-grid" role="list">
+    <ul class="artifact-grid" role="list">
 
-        <!-- ── Artifact: Module Topics ── -->
-        <article class="artifact-card" role="listitem" aria-label="Module Topics">
-          <div class="card-top">
+        <li class="artifact-card">
+          <div class="badge-row">
             <span class="badge badge-type">Module Topics</span>
             <span class="badge badge-filetype">.json</span>
           </div>
-
-          <hr class="card-divider">
-
-          <div class="card-name">
-            <a href="content/module_topics.html">Module Topics</a>
-            <a
-              class="source-link"
-              href="source/hierarchy.json"
-              aria-label="Source file for Module Topics"
-            >
-              <!-- small file icon -->
-              <svg xmlns="http://www.w3.org/2000/svg" width="11" height="13" viewBox="0 0 24 24"
-                   fill="none" stroke="currentColor" stroke-width="2.2"
-                   stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                <polyline points="14 2 14 8 20 8"/>
-              </svg>
-              source file
-            </a>
+          <div class="artifact-name">
+              <a class="primary-link" href="content/module_topics.html">Module Topics</a>
+              <a class="source-link" href="source/hierarchy.json" aria-label="Source file for Module Topics">source file</a>
           </div>
-
-          <p class="card-description">
-            A structured outline of the module's core topics — including the definition of recursion,
-            base and recursive cases, call stack mechanics, and classic implementations like factorial
-            and Fibonacci — that serves as a navigational guide for learners and instructors to
-            understand the scope and sequence of the module's content.
+          <p class="artifact-description">
+            A structured outline of the module&#x27;s core topics — including the definition of recursion, base and recursive cases, call stack mechanics, and classic implementations like factorial and Fibonacci — that serves as a navigational guide for learners and instructors to understand the scope and sequence of the module&#x27;s content.
           </p>
-        </article>
+        </li>
 
-      </div>
-    </main>
+    </ul>
+  </main>
 
-    <!-- ── Footer ── -->
-    <footer class="page-footer" role="contentinfo">
-      COP3530 &mdash; Data Structures &nbsp;&bull;&nbsp; Recursion: Concepts and Implementation
-    </footer>
+  <footer>
+    <p>COP3530 &mdash; Data Structures &bull; Recursion: Concepts and Implementation</p>
+  </footer>
 
-  </div>
 
 <footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
 <section class="presemaker-extras" style="max-width:1000px;margin:2rem auto;padding:0 1rem;"><h2>Topics &amp; Learning Outcomes</h2><p><a href="topics-outcomes.html">View Topics &amp; Learning Outcomes</a></p></section></body>

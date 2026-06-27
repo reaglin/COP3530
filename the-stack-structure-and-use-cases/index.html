@@ -1,291 +1,250 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The Stack: Structure and Use Cases — COP3530</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Stack: Structure and Use Cases | COP3530</title>
   <style>
     /* ── Reset & Base ── */
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html {
-      font-size: 16px;
-      scroll-behavior: smooth;
-    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: 'Segoe UI', system-ui, -apple-system, Arial, sans-serif;
-      background-color: #f4f6f9;
-      color: #1e2530;
-      line-height: 1.65;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: #f4f6f9;
+      color: #1e2532;
       min-height: 100vh;
+      line-height: 1.6;
     }
 
-    /* ── Page Shell ── */
-    .page-wrapper {
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 2.5rem 1.5rem 4rem;
+    /* ── Header / Hero ── */
+    header {
+      background: linear-gradient(135deg, #1a3a5c 0%, #25567a 60%, #1d7aa0 100%);
+      color: #fff;
+      padding: 3rem 1.5rem 2.5rem;
+      text-align: center;
     }
 
-    /* ── Course Label ── */
-    .course-label {
+    header .course-label {
       display: inline-block;
-      font-size: 0.75rem;
-      font-weight: 700;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 2rem;
+      font-size: 0.78rem;
+      font-weight: 600;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      color: #ffffff;
-      background-color: #2d5fa6;
-      padding: 0.25rem 0.65rem;
-      border-radius: 3px;
-      margin-bottom: 0.85rem;
+      padding: 0.3rem 1rem;
+      margin-bottom: 1rem;
+      color: #c9e8f8;
     }
 
-    /* ── Header ── */
-    .module-header {
-      border-left: 5px solid #2d5fa6;
-      padding-left: 1.1rem;
-      margin-bottom: 2rem;
-    }
-
-    .module-header h1 {
-      font-size: clamp(1.55rem, 3.5vw, 2.15rem);
+    header h1 {
+      font-size: clamp(1.6rem, 4vw, 2.6rem);
       font-weight: 700;
-      color: #0f1b2d;
+      letter-spacing: -0.01em;
+      margin-bottom: 1rem;
       line-height: 1.25;
-      margin-bottom: 0.6rem;
     }
 
-    .module-header p {
-      font-size: 0.97rem;
-      color: #3d4f66;
-      max-width: 70ch;
+    header p.intro {
+      max-width: 680px;
+      margin: 0 auto;
+      font-size: 1rem;
+      color: rgba(255,255,255,0.85);
+      line-height: 1.7;
     }
 
-    /* ── Section Title ── */
-    .section-title {
-      font-size: 0.78rem;
+    /* ── Main Content ── */
+    main {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 2.5rem 1.25rem 4rem;
+    }
+
+    .section-heading {
+      font-size: 0.72rem;
       font-weight: 700;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: #5a6a82;
-      margin-bottom: 1rem;
-      padding-bottom: 0.4rem;
-      border-bottom: 1px solid #dde2eb;
+      color: #5b6a82;
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid #dce3ed;
     }
 
-    /* ── Artifact Grid ── */
-    .artifact-grid {
+    /* ── Card Grid ── */
+    .card-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(min(100%, 420px), 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
       gap: 1.25rem;
     }
 
-    /* ── Artifact Card ── */
-    .artifact-card {
-      background: #ffffff;
-      border: 1px solid #dde2eb;
-      border-radius: 8px;
-      padding: 1.35rem 1.4rem;
+    .card {
+      background: #fff;
+      border: 1px solid #dce3ed;
+      border-radius: 10px;
+      padding: 1.5rem 1.5rem 1.4rem;
       display: flex;
       flex-direction: column;
-      gap: 0.55rem;
-      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.055);
-      transition: box-shadow 0.18s ease, border-color 0.18s ease;
+      gap: 0.75rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      transition: box-shadow 0.2s ease, transform 0.2s ease;
     }
 
-    .artifact-card:hover {
-      box-shadow: 0 4px 14px rgba(45, 95, 166, 0.12);
-      border-color: #b3c5e0;
+    .card:hover {
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+      transform: translateY(-2px);
     }
 
-    /* ── Card Top Row ── */
-    .card-top {
+    /* ── Card Header ── */
+    .card-header {
       display: flex;
-      align-items: baseline;
-      flex-wrap: wrap;
-      gap: 0.55rem;
+      flex-direction: column;
+      gap: 0.35rem;
     }
 
-    .artifact-name {
+    .card-name {
       font-size: 1.05rem;
       font-weight: 700;
-      color: #0f1b2d;
-      line-height: 1.3;
+      color: #1e2532;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
     }
 
-    .artifact-name a {
-      color: #1a4fa0;
+    .card-name a.primary-link {
+      color: #1a5fa8;
       text-decoration: none;
       border-bottom: 2px solid transparent;
       transition: border-color 0.15s ease, color 0.15s ease;
     }
 
-    .artifact-name a:hover,
-    .artifact-name a:focus {
-      color: #0d3478;
-      border-bottom-color: #0d3478;
-      outline: none;
+    .card-name a.primary-link:hover {
+      color: #0d3f74;
+      border-bottom-color: #0d3f74;
     }
 
-    .artifact-name a:focus-visible {
-      outline: 2px solid #2d5fa6;
-      outline-offset: 2px;
-      border-radius: 2px;
-    }
-
-    /* ── Source Link ── */
     .source-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
       font-size: 0.72rem;
       font-weight: 600;
-      white-space: nowrap;
-      color: #ffffff;
-      background-color: #5a7fb5;
-      padding: 0.18rem 0.5rem;
+      color: #5b6a82;
+      background: #eef2f8;
+      border: 1px solid #c9d4e5;
       border-radius: 3px;
+      padding: 0.15rem 0.45rem;
       text-decoration: none;
-      letter-spacing: 0.02em;
-      transition: background-color 0.15s ease;
-      align-self: center;
+      white-space: nowrap;
+      transition: background 0.15s ease, color 0.15s ease;
     }
 
-    .source-link:hover,
-    .source-link:focus {
-      background-color: #2d5fa6;
-      outline: none;
+    .source-link:hover {
+      background: #d9e4f5;
+      color: #1a3a5c;
     }
 
-    .source-link:focus-visible {
-      outline: 2px solid #0d3478;
-      outline-offset: 2px;
+    .source-link::before {
+      content: '⬇';
+      font-size: 0.65rem;
     }
 
-    /* ── Meta Badges ── */
-    .card-meta {
+    /* ── Badges ── */
+    .badge-row {
       display: flex;
-      flex-wrap: wrap;
       gap: 0.4rem;
-      align-items: center;
+      flex-wrap: wrap;
     }
 
     .badge {
+      display: inline-block;
       font-size: 0.68rem;
       font-weight: 700;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.04em;
       text-transform: uppercase;
-      padding: 0.18rem 0.55rem;
+      padding: 0.2rem 0.55rem;
       border-radius: 3px;
-      line-height: 1.4;
     }
 
     .badge-type {
-      background-color: #eaf0fb;
-      color: #2d5fa6;
-      border: 1px solid #c2d3f0;
+      background: #e4edf8;
+      color: #1a4f8c;
+      border: 1px solid #bfd2ee;
     }
 
     .badge-filetype {
-      background-color: #f0f4f0;
-      color: #3a6b3a;
-      border: 1px solid #b8d6b8;
-      font-family: 'Courier New', monospace;
-      font-size: 0.67rem;
+      background: #e8f6ee;
+      color: #1a6b40;
+      border: 1px solid #a8d9bc;
     }
 
     /* ── Description ── */
-    .artifact-description {
+    .card-description {
       font-size: 0.88rem;
-      color: #3d4f66;
-      line-height: 1.6;
-      flex: 1;
+      color: #3d4a5c;
+      line-height: 1.65;
+      flex-grow: 1;
     }
 
     /* ── Footer ── */
-    .page-footer {
-      margin-top: 3.5rem;
-      padding-top: 1.2rem;
-      border-top: 1px solid #dde2eb;
-      font-size: 0.78rem;
-      color: #8494aa;
+    footer {
       text-align: center;
+      padding: 1.5rem 1rem;
+      font-size: 0.78rem;
+      color: #8a96a8;
+      border-top: 1px solid #dce3ed;
+      background: #fff;
     }
 
-    /* ── Responsive Tweaks ── */
-    @media (max-width: 520px) {
-      .page-wrapper {
-        padding: 1.75rem 1rem 3rem;
-      }
-
-      .artifact-card {
-        padding: 1.1rem 1.1rem;
-      }
+    /* ── Responsive ── */
+    @media (max-width: 480px) {
+      header { padding: 2rem 1rem 2rem; }
+      .card { padding: 1.25rem; }
     }
   </style>
 </head>
 <body>
 <div style="border:1px solid #c9d4e3;background:#f5f8fc;border-radius:8px;padding:10px 16px;margin:0 0 18px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;font-family:'Segoe UI',Arial,sans-serif"><strong style="color:#1a3c6e">Module outline:</strong><a href="topics-outcomes.html#topics" style="color:#1a3c6e;font-weight:600;text-decoration:none">📋 Module Topics</a><a href="topics-outcomes.html#outcomes" style="color:#137333;font-weight:600;text-decoration:none">🎯 Student Learning Outcomes</a></div>
-  <div class="page-wrapper">
 
-    <!-- ── Header ── -->
-    <header>
-      <span class="course-label">COP3530 — Data Structures</span>
-      <div class="module-header">
-        <h1>The Stack: Structure and Use Cases</h1>
-        <p>
-          This module explores the stack abstract data type — a fundamental Last-In,
-          First-Out (LIFO) structure used throughout computer science. Learners will
-          examine core operations, internal implementation strategies, and practical
-          use cases, culminating in hands-on construction of a Stack class in JavaScript.
-        </p>
-      </div>
-    </header>
+  <header>
+    <div class="course-label">COP3530 &mdash; Data Structures</div>
+    <h1>The Stack: Structure and Use Cases</h1>
+    <p class="intro">
+      Explore one of the most fundamental data structures in computer science. This module walks you through the LIFO principle, core stack operations, internal implementation strategies, and hands-on construction of a Stack class in JavaScript — building the conceptual and practical foundation you need to apply stacks effectively.
+    </p>
+  </header>
 
-    <!-- ── Artifacts ── -->
-    <main>
-      <p class="section-title">Module Artifacts</p>
+  <main>
+    <h2 class="section-heading">Module Artifacts</h2>
 
-      <div class="artifact-grid">
+    <div class="card-grid">
 
-        <!-- Card: Module Topics -->
-        <article class="artifact-card">
-          <div class="card-top">
-            <span class="artifact-name">
-              <a href="content/module_topics.html">Module Topics</a>
-            </span>
-            <a
-              class="source-link"
-              href="source/hierarchy.json"
-              title="View raw source file"
-            >source file</a>
+      <!-- Artifact: Module Topics -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-name">
+            <a class="primary-link" href="content/module_topics.html">Module Topics</a>
+            <a class="source-link" href="source/hierarchy.json">source file</a>
           </div>
-
-          <div class="card-meta">
+          <div class="badge-row">
             <span class="badge badge-type">Module Topics</span>
             <span class="badge badge-filetype">.json</span>
           </div>
-
-          <p class="artifact-description">
-            Covers stack data structure concepts including the LIFO principle, core
-            operations (push, pop), internal implementation details, and hands-on
-            JavaScript class construction, serving as the navigational outline that
-            guides learners through the module's progression of topics.
-          </p>
-        </article>
-
+        </div>
+        <p class="card-description">
+          Covers stack data structure concepts including the LIFO principle, core operations (push, pop), internal implementation details, and hands-on JavaScript class construction, serving as the navigational outline that guides learners through the module's progression of topics.
+        </p>
       </div>
-    </main>
 
-    <!-- ── Footer ── -->
-    <footer class="page-footer">
-      <p>COP3530 — Data Structures &nbsp;·&nbsp; The Stack: Structure and Use Cases</p>
-    </footer>
+    </div>
+  </main>
 
-  </div>
+  <footer>
+    COP3530 &mdash; Data Structures &nbsp;&bull;&nbsp; The Stack: Structure and Use Cases
+  </footer>
+
 
 <footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
 <section class="presemaker-extras" style="max-width:1000px;margin:2rem auto;padding:0 1rem;"><h2>Topics &amp; Learning Outcomes</h2><p><a href="topics-outcomes.html">View Topics &amp; Learning Outcomes</a></p></section></body>

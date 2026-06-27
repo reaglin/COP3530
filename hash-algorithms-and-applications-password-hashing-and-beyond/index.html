@@ -5,264 +5,287 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Hash Algorithms and Applications: Password Hashing and Beyond — COP3530</title>
   <style>
-    /* ── Reset & Base ── */
     *, *::before, *::after {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
 
+    :root {
+      --color-bg: #f4f6f9;
+      --color-surface: #ffffff;
+      --color-primary: #1a3a5c;
+      --color-primary-light: #2a5298;
+      --color-accent: #2e7d9f;
+      --color-accent-hover: #1d5f7a;
+      --color-text: #1e2d3d;
+      --color-text-muted: #5a6a7a;
+      --color-border: #dce3ea;
+      --color-tag-bg: #eaf2f8;
+      --color-tag-text: #1a5276;
+      --color-source-bg: #f0f9f4;
+      --color-source-text: #1a6b3c;
+      --color-source-border: #a9d9bc;
+      --radius: 8px;
+      --shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      --shadow-hover: 0 6px 18px rgba(0, 0, 0, 0.13);
+      --font-sans: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+      --font-mono: 'Consolas', 'Courier New', monospace;
+    }
+
     body {
-      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-      font-size: 16px;
+      font-family: var(--font-sans);
+      background-color: var(--color-bg);
+      color: var(--color-text);
       line-height: 1.6;
-      color: #1e2a38;
-      background-color: #f4f6f9;
       min-height: 100vh;
     }
 
-    /* ── Page Shell ── */
-    .page-wrapper {
-      max-width: 1080px;
+    /* ── Header ── */
+    header {
+      background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+      color: #ffffff;
+      padding: 3rem 1.5rem 2.5rem;
+      text-align: center;
+    }
+
+    header .course-label {
+      display: inline-block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #a8c8e8;
+      margin-bottom: 0.75rem;
+    }
+
+    header h1 {
+      font-size: clamp(1.5rem, 4vw, 2.4rem);
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 1rem;
+      letter-spacing: -0.01em;
+    }
+
+    header p.intro {
+      max-width: 680px;
+      margin: 0 auto;
+      font-size: 1rem;
+      color: #cce0f5;
+      line-height: 1.7;
+    }
+
+    /* ── Main layout ── */
+    main {
+      max-width: 1100px;
       margin: 0 auto;
       padding: 2.5rem 1.5rem 4rem;
     }
 
-    /* ── Course Label ── */
-    .course-label {
-      display: inline-block;
-      font-size: 0.78rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: #ffffff;
-      background-color: #2e6da4;
-      padding: 0.25rem 0.75rem;
-      border-radius: 3px;
-      margin-bottom: 0.85rem;
-    }
-
-    /* ── Header ── */
-    .module-header {
-      border-bottom: 3px solid #2e6da4;
-      padding-bottom: 1.5rem;
-      margin-bottom: 2.25rem;
-    }
-
-    .module-header h1 {
-      font-size: clamp(1.45rem, 3vw, 2rem);
-      font-weight: 700;
-      color: #14243a;
-      line-height: 1.25;
-      margin-bottom: 0.75rem;
-    }
-
-    .module-header p {
-      font-size: 0.97rem;
-      color: #3e5060;
-      max-width: 72ch;
-    }
-
-    /* ── Section Heading ── */
     .section-heading {
-      font-size: 0.85rem;
+      font-size: 1.05rem;
       font-weight: 700;
-      letter-spacing: 0.07em;
       text-transform: uppercase;
-      color: #5a6e82;
-      margin-bottom: 1rem;
+      letter-spacing: 0.07em;
+      color: var(--color-text-muted);
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--color-border);
     }
 
-    /* ── Card Grid ── */
+    /* ── Artifact grid ── */
     .artifact-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
       gap: 1.25rem;
     }
 
-    /* ── Artifact Card ── */
+    /* ── Artifact card ── */
     .artifact-card {
-      background: #ffffff;
-      border: 1px solid #d5dde6;
-      border-radius: 8px;
-      padding: 1.35rem 1.4rem 1.25rem;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 1.4rem 1.5rem;
       display: flex;
       flex-direction: column;
-      gap: 0.55rem;
-      transition: box-shadow 0.18s ease, border-color 0.18s ease;
+      gap: 0.75rem;
+      transition: box-shadow 0.2s ease, transform 0.2s ease;
     }
 
     .artifact-card:hover {
-      box-shadow: 0 4px 18px rgba(46, 109, 164, 0.13);
-      border-color: #a8c3df;
+      box-shadow: var(--shadow-hover);
+      transform: translateY(-2px);
     }
 
-    /* ── Card Top Row: badges ── */
-    .card-meta-row {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-    }
-
-    .badge {
-      font-size: 0.7rem;
-      font-weight: 600;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      padding: 0.2rem 0.55rem;
-      border-radius: 3px;
-      white-space: nowrap;
-    }
-
-    .badge-type {
-      background-color: #e8f0f9;
-      color: #2e6da4;
-      border: 1px solid #c3d7ee;
-    }
-
-    .badge-filetype {
-      background-color: #eef6f1;
-      color: #287a4c;
-      border: 1px solid #b8dfc8;
-      font-family: 'Courier New', Courier, monospace;
-    }
-
-    /* ── Card Name / Link ── */
-    .card-name {
-      font-size: 1.05rem;
-      font-weight: 700;
-      color: #14243a;
+    /* Card top row: name + source link */
+    .card-title-row {
       display: flex;
       align-items: baseline;
       flex-wrap: wrap;
       gap: 0.6rem;
     }
 
-    .card-name a.primary-link {
-      color: #1a5fa8;
+    .artifact-name {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--color-text);
+      line-height: 1.3;
+    }
+
+    .artifact-name a {
+      color: var(--color-accent);
       text-decoration: none;
-      border-bottom: 2px solid transparent;
-      transition: border-color 0.15s ease, color 0.15s ease;
+      transition: color 0.15s ease;
     }
 
-    .card-name a.primary-link:hover,
-    .card-name a.primary-link:focus {
-      color: #0d3e72;
-      border-bottom-color: #0d3e72;
-      outline: none;
+    .artifact-name a:hover,
+    .artifact-name a:focus {
+      color: var(--color-accent-hover);
+      text-decoration: underline;
     }
 
-    .card-name a.primary-link:focus-visible {
-      outline: 3px solid #5aaef0;
-      outline-offset: 2px;
-      border-radius: 2px;
-    }
-
-    /* ── Source File Link ── */
     .source-link {
-      font-size: 0.74rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.73rem;
       font-weight: 600;
-      color: #5a7a9a;
+      color: var(--color-source-text);
+      background: var(--color-source-bg);
+      border: 1px solid var(--color-source-border);
+      border-radius: 4px;
+      padding: 0.18em 0.55em;
       text-decoration: none;
-      background-color: #f0f4f8;
-      border: 1px solid #c8d8e8;
-      border-radius: 3px;
-      padding: 0.18rem 0.48rem;
       white-space: nowrap;
-      transition: background-color 0.15s, color 0.15s;
+      transition: background 0.15s ease, color 0.15s ease;
     }
 
     .source-link:hover,
     .source-link:focus {
-      background-color: #dce8f4;
-      color: #1a4f7a;
-      outline: none;
+      background: #d4f0e0;
+      color: #145a30;
+      text-decoration: none;
     }
 
-    .source-link:focus-visible {
-      outline: 3px solid #5aaef0;
-      outline-offset: 2px;
+    .source-link::before {
+      content: "⬡";
+      font-size: 0.7em;
     }
 
-    /* ── Card Description ── */
+    /* Meta tags row */
+    .card-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .tag {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      background: var(--color-tag-bg);
+      color: var(--color-tag-text);
+      border-radius: 4px;
+      padding: 0.2em 0.6em;
+    }
+
+    .tag.filetype {
+      background: #fef9ec;
+      color: #7d5a00;
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      text-transform: lowercase;
+    }
+
+    /* Description */
     .card-description {
       font-size: 0.9rem;
-      color: #4a5f72;
-      line-height: 1.55;
-      flex: 1;
+      color: var(--color-text-muted);
+      line-height: 1.65;
+      flex-grow: 1;
     }
 
     /* ── Footer ── */
-    .page-footer {
-      margin-top: 3.5rem;
-      padding-top: 1.25rem;
-      border-top: 1px solid #d0dae4;
-      font-size: 0.8rem;
-      color: #7a8fa0;
+    footer {
       text-align: center;
+      padding: 1.5rem 1rem;
+      font-size: 0.8rem;
+      color: var(--color-text-muted);
+      border-top: 1px solid var(--color-border);
+      background: var(--color-surface);
+    }
+
+    /* ── Accessibility focus styles ── */
+    a:focus-visible {
+      outline: 2px solid var(--color-accent);
+      outline-offset: 3px;
+      border-radius: 3px;
     }
 
     /* ── Responsive tweaks ── */
-    @media (max-width: 480px) {
-      .page-wrapper {
+    @media (max-width: 500px) {
+      header {
+        padding: 2rem 1rem 2rem;
+      }
+
+      main {
         padding: 1.75rem 1rem 3rem;
       }
 
-      .artifact-grid {
-        grid-template-columns: 1fr;
+      .artifact-card {
+        padding: 1.1rem 1.1rem;
       }
     }
   </style>
 </head>
 <body>
 <div style="border:1px solid #c9d4e3;background:#f5f8fc;border-radius:8px;padding:10px 16px;margin:0 0 18px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;font-family:'Segoe UI',Arial,sans-serif"><strong style="color:#1a3c6e">Module outline:</strong><a href="topics-outcomes.html#topics" style="color:#1a3c6e;font-weight:600;text-decoration:none">📋 Module Topics</a><a href="topics-outcomes.html#outcomes" style="color:#137333;font-weight:600;text-decoration:none">🎯 Student Learning Outcomes</a></div>
-  <div class="page-wrapper">
 
-    <!-- ── Header ── -->
-    <header class="module-header">
-      <span class="course-label">COP3530 &mdash; Data Structures</span>
-      <h1>Hash Algorithms and Applications: Password Hashing and Beyond</h1>
-      <p>
-        This module explores the design, properties, and practical applications of hash algorithms,
-        with a focus on cryptographic fundamentals such as preimage resistance and collision resistance,
-        password hashing strategies, and real-world use cases that extend beyond basic data retrieval.
-        Use the resources below to navigate the module content.
-      </p>
-    </header>
+  <header>
+    <span class="course-label">COP3530 — Data Structures</span>
+    <h1>Hash Algorithms and Applications:<br>Password Hashing and Beyond</h1>
+    <p class="intro">
+      This module explores the theory and practical applications of hash algorithms in computing.
+      Topics span foundational hash function concepts, cryptographic properties such as preimage
+      and collision resistance, and real-world use cases including secure password hashing.
+      Browse the artifacts below to navigate the module's learning materials.
+    </p>
+  </header>
 
-    <!-- ── Artifact Grid ── -->
-    <p class="section-heading">Module Artifacts</p>
-    <main>
-      <div class="artifact-grid">
+  <main>
+    <h2 class="section-heading">Module Artifacts</h2>
 
-        <!-- Artifact: Module Topics -->
-        <article class="artifact-card">
-          <div class="card-meta-row">
-            <span class="badge badge-type">Module Topics</span>
-            <span class="badge badge-filetype">.json</span>
+    <div class="artifact-grid">
+
+        <div class="artifact-card">
+          <div class="card-title-row">
+            <span class="artifact-name">
+                <a href="content/module_topics.html">Module Topics</a>
+                <a
+                  class="source-link"
+                  href="source/hierarchy.json"
+                  title="View raw source file"
+                >source file</a>
+            </span>
           </div>
-          <div class="card-name">
-            <a class="primary-link" href="content/module_topics.html">Module Topics</a>
-            <a class="source-link" href="source/hierarchy.json" aria-label="Source file for Module Topics">source file</a>
+          <div class="card-meta">
+            <span class="tag">Module Topics</span>
+            <span class="tag filetype">.json</span>
           </div>
           <p class="card-description">
-            Outlines the module's learning topics—from basic hash function concepts and cryptographic
-            properties (preimage and collision resistance) through password hashing fundamentals and
-            beyond—serving as a navigational overview for learners and instructors to understand the
-            scope and sequence of the module.
+            Outlines the module's learning topics—from basic hash function concepts and cryptographic properties (preimage and collision resistance) through password hashing fundamentals and beyond—serving as a navigational overview for learners and instructors to understand the scope and sequence of the module.
           </p>
-        </article>
+        </div>
 
-      </div>
-    </main>
+    </div>
+  </main>
 
-    <!-- ── Footer ── -->
-    <footer class="page-footer">
-      <p>COP3530 &mdash; Data Structures &nbsp;&bull;&nbsp; Hash Algorithms and Applications</p>
-    </footer>
+  <footer>
+    COP3530 — Data Structures &nbsp;|&nbsp; Hash Algorithms and Applications: Password Hashing and Beyond
+  </footer>
 
-  </div>
 
 <footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
 <section class="presemaker-extras" style="max-width:1000px;margin:2rem auto;padding:0 1rem;"><h2>Topics &amp; Learning Outcomes</h2><p><a href="topics-outcomes.html">View Topics &amp; Learning Outcomes</a></p></section></body>

@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Graphs: Structure, Representation, and Traversal — Module Topics</title>
+<style>
+body{font-family:'Segoe UI',Arial,sans-serif;max-width:880px;margin:0 auto;padding:32px 24px;color:#222;line-height:1.55}
+h1{font-size:1.6rem;border-bottom:2px solid #dcdcdc;padding-bottom:8px}
+h2{font-size:1.2rem;margin-top:28px;color:#1a3c6e}
+.summary{color:#555;font-style:italic;margin:4px 0 10px}
+ul{margin:6px 0 6px 4px}
+li{margin:5px 0}
+.el-body{color:#555}
+.empty{color:#888}
+</style>
+</head>
+<body>
+<h1>Graphs: Structure, Representation, and Traversal — Module Topics</h1>
+<h2>Introduction to Graph Data Structures</h2>
+<div class="summary">Defines what a graph is and explains its core components, including vertices and edges. Establishes the foundational vocabulary needed to understand graph theory and its applications.</div>
+<ul>
+<li><strong>What Is a Graph?</strong> <span class="el-body">— A graph is a non-linear data structure used to model relationships between a collection of objects. Unlike arrays or linked lists, graphs do not follow a sequential or hierarchical structure.</span></li>
+<li><strong>Vertices (Nodes)</strong> <span class="el-body">— A vertex, also called a node, is a fundamental unit of a graph that represents an entity or object. Vertices are the &#39;things&#39; that a graph connects together.</span></li>
+<li><strong>Edges (Connections)</strong> <span class="el-body">— An edge is a connection between two vertices in a graph, representing a relationship or link between those entities. Edges are what give graphs their expressive power.</span></li>
+<li><strong>Directed vs. Undirected Graphs</strong> <span class="el-body">— One of the most fundamental distinctions in graph theory is whether the edges of a graph have a direction. This determines how relationships between vertices are interpreted.</span></li>
+<li><strong>Key Graph Vocabulary</strong> <span class="el-body">— Graph theory comes with a specific set of terms used to describe the properties and characteristics of graphs and their components. Understanding this vocabulary is essential for studying graph algorithms.</span></li>
+<li><strong>Real-World Applications of Graphs</strong> <span class="el-body">— Graphs are not merely theoretical constructs — they are used extensively across technology, science, and everyday applications. Understanding graphs provides the foundation for solving many practical problems.</span></li>
+</ul>
+<h2>Directed and Undirected Graphs</h2>
+<div class="summary">Explores the distinction between directed graphs, where edges have a defined direction, and undirected graphs, where edges are bidirectional. Covers real-world use cases and examples for each type.</div>
+<ul>
+<li><strong>What Is a Graph?</strong> <span class="el-body">— A graph is a data structure consisting of a set of nodes (vertices) connected by edges. Graphs model relationships between entities and serve as the foundation for both directed and undirected graph types.</span></li>
+<li><strong>Undirected Graphs</strong> <span class="el-body">— In an undirected graph, edges have no defined direction, meaning the connection between two vertices is bidirectional. If vertex A is connected to vertex B, then B is equally connected to A.</span></li>
+<li><strong>Directed Graphs (Digraphs)</strong> <span class="el-body">— In a directed graph, each edge has a specific direction, going from a source vertex to a destination vertex. The connection is one-way unless an explicit reverse edge is also defined.</span></li>
+<li><strong>Real-World Use Cases for Undirected Graphs</strong> <span class="el-body">— Undirected graphs appear in many practical scenarios where relationships are inherently mutual. Recognizing these scenarios helps in selecting the right graph type for a problem.</span></li>
+<li><strong>Real-World Use Cases for Directed Graphs</strong> <span class="el-body">— Directed graphs are essential when the relationship between entities has a clear and meaningful direction. Many computing and real-world systems exhibit this one-way dependency.</span></li>
+<li><strong>Key Differences Between Directed and Undirected Graphs</strong> <span class="el-body">— Understanding the structural differences between directed and undirected graphs is critical for choosing the correct model and traversal strategy for a given problem.</span></li>
+</ul>
+<h2>Adjacency Matrix Representation</h2>
+<div class="summary">Explains how a graph can be represented using a two-dimensional matrix to capture edge relationships between vertices. Discusses the advantages and trade-offs of this representation in terms of space and time complexity.</div>
+<ul>
+<li><strong>What Is an Adjacency Matrix?</strong> <span class="el-body">— An adjacency matrix is a two-dimensional array used to represent a graph by recording which vertices are connected by edges.</span></li>
+<li><strong>Representing Directed vs. Undirected Graphs</strong> <span class="el-body">— The structure of the adjacency matrix differs depending on whether the graph is directed or undirected.</span></li>
+<li><strong>Space Complexity</strong> <span class="el-body">— An adjacency matrix always allocates space for every possible pair of vertices, regardless of how many edges actually exist.</span></li>
+<li><strong>Time Complexity for Common Operations</strong> <span class="el-body">— The adjacency matrix offers constant-time edge lookups but linear-time neighbor enumeration.</span></li>
+<li><strong>Advantages of the Adjacency Matrix</strong> <span class="el-body">— The adjacency matrix excels in scenarios where fast edge-existence queries are the primary operation.</span></li>
+<li><strong>Trade-offs and Limitations</strong> <span class="el-body">— Despite its simplicity and fast lookups, the adjacency matrix has notable drawbacks that make it unsuitable for many real-world graphs.</span></li>
+</ul>
+<h2>Adjacency List Representation</h2>
+<div class="summary">Describes how a graph can be stored as a collection of lists, each mapping a vertex to its neighbors. Contrasts this approach with the adjacency matrix and highlights scenarios where it is more efficient.</div>
+<ul>
+<li><strong>What Is an Adjacency List?</strong> <span class="el-body">— An adjacency list represents a graph as a collection of lists, one per vertex, where each list contains the neighbors of that vertex.</span></li>
+<li><strong>Building an Adjacency List in JavaScript</strong> <span class="el-body">— Constructing an adjacency list involves initializing an entry for each vertex and then pushing neighbor references as edges are added.</span></li>
+<li><strong>Space Complexity of the Adjacency List</strong> <span class="el-body">— Adjacency lists use space proportional to the number of vertices plus the number of edges, making them memory-efficient for sparse graphs.</span></li>
+<li><strong>Adjacency List vs. Adjacency Matrix</strong> <span class="el-body">— The two primary graph representations trade off between fast edge lookup and efficient memory use, making each better suited to different scenarios.</span></li>
+<li><strong>Directed vs. Undirected Graphs in Adjacency Lists</strong> <span class="el-body">— The adjacency list structure adapts naturally to both directed and undirected graphs by controlling how edges are recorded.</span></li>
+<li><strong>When to Choose an Adjacency List</strong> <span class="el-body">— Adjacency lists are the default choice for most real-world graph problems because graphs encountered in practice tend to be sparse.</span></li>
+</ul>
+<h2>Breadth-First Search (BFS)</h2>
+<div class="summary">Introduces the BFS traversal algorithm, which explores a graph level by level using a queue data structure. Covers the algorithm&#39;s logic, traversal order, and practical applications.</div>
+<ul>
+<li><strong>What is Breadth-First Search?</strong> <span class="el-body">— Breadth-First Search (BFS) is a graph traversal algorithm that explores all neighbors of a node before moving to the next level of nodes.</span></li>
+<li><strong>The Queue Data Structure in BFS</strong> <span class="el-body">— BFS relies on a queue — a First-In, First-Out (FIFO) data structure — to track which nodes to visit next.</span></li>
+<li><strong>BFS Algorithm Logic Step by Step</strong> <span class="el-body">— The BFS algorithm follows a clear, repeatable sequence of steps to traverse all reachable nodes in a graph.</span></li>
+<li><strong>BFS Traversal Order</strong> <span class="el-body">— The order in which BFS visits nodes is determined by their distance from the source, measured in the number of edges.</span></li>
+<li><strong>Handling Disconnected Graphs in BFS</strong> <span class="el-body">— A single BFS call from one source node will only visit nodes reachable from that source; disconnected components require additional handling.</span></li>
+<li><strong>Practical Applications of BFS</strong> <span class="el-body">— BFS has a wide range of real-world applications due to its ability to find shortest paths and explore nodes level by level.</span></li>
+</ul>
+<h2>Depth-First Search (DFS)</h2>
+<div class="summary">Introduces the DFS traversal algorithm, which explores a graph by going as deep as possible along each branch before backtracking. Covers both recursive and iterative implementations and common use cases.</div>
+<ul>
+<li><strong>DFS Core Concept and Strategy</strong> <span class="el-body">— Depth-First Search is a graph traversal algorithm that explores as far as possible along each branch before backtracking to try alternative paths.</span></li>
+<li><strong>Recursive DFS Implementation</strong> <span class="el-body">— The recursive implementation of DFS leverages the program&#39;s call stack to track the current path and naturally handles backtracking when a function returns.</span></li>
+<li><strong>Iterative DFS Implementation</strong> <span class="el-body">— An iterative DFS replaces the implicit call stack with an explicit stack data structure, making it safe for large graphs that might otherwise exceed recursion depth limits.</span></li>
+<li><strong>DFS Traversal Order and Visited Tracking</strong> <span class="el-body">— Understanding how DFS orders its node visits is essential for correctly implementing and reasoning about the algorithm&#39;s behavior.</span></li>
+<li><strong>Handling Disconnected Graphs</strong> <span class="el-body">— A single DFS call from one starting node will only visit nodes reachable from that node, so disconnected graphs require additional handling to ensure full traversal.</span></li>
+<li><strong>Common Use Cases of DFS</strong> <span class="el-body">— DFS is a versatile algorithm used as the basis for solving many important graph problems beyond simple traversal.</span></li>
+</ul>
+<h2>Implementing Graph Traversal in JavaScript</h2>
+<div class="summary">Guides students through building a graph data structure and implementing BFS and DFS traversal algorithms in JavaScript. Reinforces conceptual understanding through hands-on coding practice.</div>
+<ul>
+<li><strong>Setting Up the Graph Class in JavaScript</strong> <span class="el-body">— The foundation of graph implementation is creating a Graph class that manages vertices and edges using an adjacency list.</span></li>
+<li><strong>Adding Edges to the Graph</strong> <span class="el-body">— Edges connect vertices and are stored by pushing neighbor references into each vertex&#39;s adjacency list array.</span></li>
+<li><strong>Implementing Breadth-First Search (BFS)</strong> <span class="el-body">— BFS explores a graph level by level using a queue, visiting all neighbors of a node before moving deeper.</span></li>
+<li><strong>Implementing Depth-First Search — Recursive Approach</strong> <span class="el-body">— The recursive DFS implementation uses the call stack to explore as deep as possible along each branch before backtracking.</span></li>
+<li><strong>Implementing Depth-First Search — Iterative Approach</strong> <span class="el-body">— DFS can also be implemented iteratively using an explicit stack, which mirrors the recursive call stack manually.</span></li>
+<li><strong>Comparing BFS and DFS Outputs in Practice</strong> <span class="el-body">— Running both BFS and DFS on the same graph highlights how traversal strategy affects the order in which vertices are visited.</span></li>
+</ul>
+
+<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
+</body>
+</html>

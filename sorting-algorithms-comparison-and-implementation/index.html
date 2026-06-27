@@ -14,24 +14,21 @@
     :root {
       --color-bg: #f4f6f9;
       --color-surface: #ffffff;
-      --color-primary: #1a3a5c;
-      --color-primary-light: #2558a0;
+      --color-primary: #1a4f8a;
+      --color-primary-dark: #133b6a;
       --color-accent: #2e7d32;
       --color-accent-hover: #1b5e20;
-      --color-secondary-link: #5c6bc0;
-      --color-secondary-link-hover: #3949ab;
-      --color-border: #dde3ec;
-      --color-text: #1c2a3a;
+      --color-text: #1e2a3a;
       --color-text-muted: #5a6a7e;
-      --color-badge-bg: #e8edf5;
-      --color-badge-text: #2558a0;
-      --color-tag-bg: #eaf4ea;
-      --color-tag-text: #2e7d32;
-      --font-sans: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-      --font-mono: 'Courier New', Courier, monospace;
-      --radius: 8px;
-      --shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      --color-border: #dce3ed;
+      --color-badge-bg: #e8eff9;
+      --color-badge-text: #1a4f8a;
+      --color-filetype-bg: #f0f4ff;
+      --color-filetype-text: #3a5a9a;
+      --radius: 10px;
+      --shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
       --shadow-hover: 0 6px 20px rgba(0, 0, 0, 0.13);
+      --font-sans: 'Segoe UI', system-ui, -apple-system, sans-serif;
     }
 
     body {
@@ -44,181 +41,182 @@
 
     /* ── Header ── */
     header {
-      background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+      background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
       color: #ffffff;
-      padding: 48px 24px 40px;
-      text-align: center;
+      padding: 3rem 1.5rem 2.5rem;
     }
 
-    header .course-label {
+    .header-inner {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .course-label {
       display: inline-block;
       font-size: 0.78rem;
       font-weight: 600;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
       background: rgba(255, 255, 255, 0.18);
       border: 1px solid rgba(255, 255, 255, 0.3);
-      border-radius: 20px;
-      padding: 4px 14px;
-      margin-bottom: 16px;
+      border-radius: 4px;
+      padding: 0.25rem 0.65rem;
+      margin-bottom: 1rem;
+      color: #d6e4f7;
     }
 
     header h1 {
-      font-size: clamp(1.5rem, 4vw, 2.4rem);
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
       font-weight: 700;
-      letter-spacing: -0.02em;
-      margin-bottom: 16px;
       line-height: 1.25;
+      margin-bottom: 1rem;
+      color: #ffffff;
     }
 
-    header p.intro {
-      max-width: 660px;
-      margin: 0 auto;
-      font-size: 1rem;
-      color: rgba(255, 255, 255, 0.88);
+    header p {
+      font-size: 1.05rem;
+      color: rgba(255, 255, 255, 0.85);
+      max-width: 680px;
       line-height: 1.7;
     }
 
-    /* ── Main content ── */
+    /* ── Main ── */
     main {
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 40px 24px 64px;
+      max-width: 900px;
+      margin: 2.5rem auto;
+      padding: 0 1.5rem 3rem;
     }
 
-    .section-heading {
-      font-size: 0.75rem;
+    .section-title {
+      font-size: 0.8rem;
       font-weight: 700;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
       color: var(--color-text-muted);
-      margin-bottom: 20px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid var(--color-border);
+      margin-bottom: 1.1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--color-border);
     }
 
-    /* ── Card grid ── */
-    .artifact-grid {
+    /* ── Card Grid ── */
+    .card-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 20px;
-      list-style: none;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.25rem;
     }
 
-    .artifact-card {
+    .card {
       background: var(--color-surface);
       border: 1px solid var(--color-border);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
-      padding: 24px;
+      padding: 1.4rem 1.5rem;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 0.75rem;
       transition: box-shadow 0.2s ease, transform 0.2s ease;
     }
 
-    .artifact-card:hover {
+    .card:hover {
       box-shadow: var(--shadow-hover);
       transform: translateY(-2px);
     }
 
-    /* Card top row: badges */
-    .card-meta {
+    /* ── Card Header Row ── */
+    .card-header {
       display: flex;
-      flex-wrap: wrap;
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+
+    .card-name-row {
+      display: flex;
       align-items: center;
-      gap: 8px;
-    }
-
-    .badge {
-      font-size: 0.72rem;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      padding: 3px 10px;
-      border-radius: 20px;
-    }
-
-    .badge-type {
-      background: var(--color-badge-bg);
-      color: var(--color-badge-text);
-    }
-
-    .badge-filetype {
-      background: var(--color-tag-bg);
-      color: var(--color-tag-text);
-      font-family: var(--font-mono);
-    }
-
-    /* Card title row */
-    .card-title-row {
-      display: flex;
       flex-wrap: wrap;
-      align-items: baseline;
-      gap: 10px;
+      gap: 0.55rem;
     }
 
     .card-name {
       font-size: 1.05rem;
       font-weight: 700;
       color: var(--color-text);
+      line-height: 1.3;
     }
 
     .card-name a {
-      color: var(--color-primary-light);
+      color: var(--color-primary);
       text-decoration: none;
       border-bottom: 2px solid transparent;
-      transition: border-color 0.18s ease, color 0.18s ease;
+      transition: color 0.15s ease, border-color 0.15s ease;
     }
 
     .card-name a:hover,
     .card-name a:focus {
-      color: var(--color-primary);
-      border-bottom-color: var(--color-primary);
+      color: var(--color-primary-dark);
+      border-bottom-color: var(--color-primary-dark);
       outline: none;
     }
 
-    .card-name a:focus-visible {
-      outline: 3px solid var(--color-primary-light);
-      outline-offset: 3px;
-      border-radius: 2px;
-    }
-
-    /* Source file link */
     .source-link {
-      font-size: 0.78rem;
-      font-weight: 500;
-      color: var(--color-secondary-link);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--color-accent);
       text-decoration: none;
+      background: #e8f5e9;
+      border: 1px solid #c8e6c9;
+      border-radius: 4px;
+      padding: 0.18rem 0.5rem;
       white-space: nowrap;
-      border-bottom: 1px dashed var(--color-secondary-link);
-      transition: color 0.18s ease, border-color 0.18s ease;
+      transition: background 0.15s ease, color 0.15s ease;
     }
 
     .source-link:hover,
     .source-link:focus {
-      color: var(--color-secondary-link-hover);
-      border-bottom-color: var(--color-secondary-link-hover);
+      background: #c8e6c9;
+      color: var(--color-accent-hover);
       outline: none;
     }
 
-    .source-link:focus-visible {
-      outline: 3px solid var(--color-secondary-link);
-      outline-offset: 3px;
-      border-radius: 2px;
-    }
-
     .source-link::before {
-      content: '⟨ ';
-      font-size: 0.72rem;
+      content: '⬇';
+      font-size: 0.7rem;
     }
 
-    .source-link::after {
-      content: ' ⟩';
-      font-size: 0.72rem;
+    /* ── Badge Row ── */
+    .card-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      align-items: center;
     }
 
-    /* Description */
+    .badge {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      border-radius: 4px;
+      padding: 0.2rem 0.55rem;
+      line-height: 1.4;
+    }
+
+    .badge-type {
+      background: var(--color-badge-bg);
+      color: var(--color-badge-text);
+      border: 1px solid #c5d7f0;
+    }
+
+    .badge-filetype {
+      background: var(--color-filetype-bg);
+      color: var(--color-filetype-text);
+      border: 1px solid #b8c8ef;
+      font-family: 'Consolas', 'Courier New', monospace;
+    }
+
+    /* ── Description ── */
     .card-description {
       font-size: 0.9rem;
       color: var(--color-text-muted);
@@ -229,23 +227,24 @@
     /* ── Footer ── */
     footer {
       text-align: center;
-      padding: 24px;
       font-size: 0.8rem;
       color: var(--color-text-muted);
+      padding: 1.5rem 1rem 2rem;
       border-top: 1px solid var(--color-border);
     }
 
-    /* ── Responsive tweaks ── */
+    /* ── Responsive ── */
     @media (max-width: 480px) {
       header {
-        padding: 36px 16px 32px;
+        padding: 2rem 1rem 2rem;
       }
 
       main {
-        padding: 28px 16px 48px;
+        margin: 1.5rem auto;
+        padding: 0 1rem 2.5rem;
       }
 
-      .artifact-grid {
+      .card-grid {
         grid-template-columns: 1fr;
       }
     }
@@ -255,48 +254,49 @@
 <div style="border:1px solid #c9d4e3;background:#f5f8fc;border-radius:8px;padding:10px 16px;margin:0 0 18px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;font-family:'Segoe UI',Arial,sans-serif"><strong style="color:#1a3c6e">Module outline:</strong><a href="topics-outcomes.html#topics" style="color:#1a3c6e;font-weight:600;text-decoration:none">📋 Module Topics</a><a href="topics-outcomes.html#outcomes" style="color:#137333;font-weight:600;text-decoration:none">🎯 Student Learning Outcomes</a></div>
 
   <header>
-    <div class="course-label">COP3530 — Data Structures</div>
-    <h1>Sorting Algorithms: Comparison and Implementation</h1>
-    <p class="intro">
-      Explore the fundamentals of sorting algorithms—from core definitions and terminology
-      to step-by-step logic and hands-on JavaScript implementations of Bubble Sort,
-      Insertion Sort, and Merge Sort. Use the artifacts below to navigate and engage
-      with the module's content.
-    </p>
+    <div class="header-inner">
+      <span class="course-label">COP3530 — Data Structures</span>
+      <h1>Sorting Algorithms: Comparison and Implementation</h1>
+      <p>
+        Explore the fundamentals of sorting algorithms, including their definitions, terminology,
+        and step-by-step logic. This module covers Bubble Sort, Insertion Sort, and Merge Sort,
+        with concrete JavaScript implementations to reinforce conceptual understanding.
+      </p>
+    </div>
   </header>
 
   <main>
-    <h2 class="section-heading">Module Artifacts</h2>
+    <h2 class="section-title">Module Artifacts</h2>
 
-    <ul class="artifact-grid" role="list">
+    <div class="card-grid">
 
-        <li class="artifact-card">
-          <div class="card-meta">
+      <!-- Artifact: Module Topics -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-name-row">
+            <span class="card-name">
+              <a href="content/module_topics.html">Module Topics</a>
+            </span>
+            <a class="source-link" href="source/hierarchy.json">source file</a>
+          </div>
+          <div class="card-badges">
             <span class="badge badge-type">Module Topics</span>
             <span class="badge badge-filetype">.json</span>
           </div>
+        </div>
+        <p class="card-description">
+          A structured outline of the module's topics covering sorting algorithm fundamentals
+          (definitions, terminology), and the concepts, step-by-step logic, and JavaScript
+          implementations of Bubble Sort, Insertion Sort, and Merge Sort, used by learners and
+          instructors to navigate the module's content and sequence.
+        </p>
+      </div>
 
-          <div class="card-title-row">
-            <span class="card-name">
-                <a href="content/module_topics.html">Module Topics</a>
-            </span>
-              <a
-                class="source-link"
-                href="source/hierarchy.json"
-                aria-label="Source file for Module Topics"
-              >source file</a>
-          </div>
-
-          <p class="card-description">
-            A structured outline of the module's topics covering sorting algorithm fundamentals (definitions, terminology), and the concepts, step-by-step logic, and JavaScript implementations of Bubble Sort, Insertion Sort, and Merge Sort, used by learners and instructors to navigate the module's content and sequence.
-          </p>
-        </li>
-
-    </ul>
+    </div>
   </main>
 
   <footer>
-    <p>COP3530 &mdash; Data Structures &nbsp;|&nbsp; Sorting Algorithms: Comparison and Implementation</p>
+    COP3530 — Data Structures &nbsp;|&nbsp; Sorting Algorithms: Comparison and Implementation
   </footer>
 
 
