@@ -1,0 +1,140 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Advanced Tree Structures: AVL Trees, Heaps, and Tries — Topics &amp; Learning Outcomes</title>
+<style>
+body{font-family:'Segoe UI',Arial,sans-serif;max-width:880px;margin:0 auto;padding:32px 24px;color:#222;line-height:1.55}
+h1{font-size:1.6rem;border-bottom:2px solid #dcdcdc;padding-bottom:8px}
+h2{font-size:1.25rem;margin-top:30px;color:#1a3c6e;border-bottom:1px solid #ececec;padding-bottom:4px}
+h3{font-size:1.05rem;margin-top:22px;color:#1a3c6e}
+.toc{border:1px solid #c9d4e3;background:#f5f8fc;border-radius:8px;padding:10px 16px;margin:14px 0 6px;display:flex;gap:18px;flex-wrap:wrap}
+.toc a{color:#1a3c6e;font-weight:600;text-decoration:none}
+.toc a:hover{text-decoration:underline}
+.summary{color:#555;font-style:italic;margin:4px 0 10px}
+ul{margin:6px 0 6px 4px}
+li{margin:5px 0}
+.el-body{color:#555}
+.prefix{color:#555;font-style:italic;margin:6px 0 14px}
+.mo{border:1px solid #e2e2e2;border-radius:6px;padding:12px 16px;margin:12px 0}
+.mo .code{font-size:.8rem;color:#888;text-transform:uppercase;letter-spacing:.04em}
+.mo .statement{font-weight:600;margin:4px 0 8px}
+.meta span{display:inline-block;background:#eef2f8;color:#1a3c6e;border-radius:3px;padding:1px 8px;margin:0 6px 0 0;font-size:.85rem}
+.meta .map{background:#eaf6ec;color:#137333}
+.co{margin:7px 0}
+.co .code{font-weight:600;color:#1a3c6e;margin-right:6px}
+.empty{color:#888}
+</style>
+</head>
+<body>
+<h1>Advanced Tree Structures: AVL Trees, Heaps, and Tries — Topics &amp; Learning Outcomes</h1>
+<div class="toc"><a href="#topics">📋 Module Topics</a><a href="#outcomes">🎯 Student Learning Outcomes</a></div>
+
+<h2 id="topics">Module Topics</h2>
+<h3>Review of Binary Search Trees and Their Limitations</h3>
+<div class="summary">Revisits the foundational concepts of binary search trees and highlights the performance problems that arise when trees become unbalanced. Establishes the motivation for exploring more advanced tree structures.</div>
+<ul>
+<li><strong>Binary Search Tree Fundamentals</strong> <span class="el-body">— A binary search tree (BST) is a node-based data structure where each node holds a value, and all values in the left subtree are smaller while all values in the right subtree are larger.</span></li>
+<li><strong>Time Complexity of BST Operations</strong> <span class="el-body">— In an ideal BST, the height of the tree determines the cost of operations, yielding O(log n) time for search, insertion, and deletion.</span></li>
+<li><strong>The Problem of Tree Imbalance</strong> <span class="el-body">— A BST becomes unbalanced when nodes are inserted in a sorted or nearly sorted order, causing the tree to degenerate into a structure resembling a linked list.</span></li>
+<li><strong>Worst-Case Performance in Degenerate Trees</strong> <span class="el-body">— When a BST degenerates, search, insertion, and deletion all degrade to O(n) time complexity, negating the purpose of using a tree structure.</span></li>
+<li><strong>Motivation for Self-Balancing and Specialized Trees</strong> <span class="el-body">— The limitations of standard BSTs motivate the development of tree structures that either maintain balance automatically or are optimized for specific use cases.</span></li>
+</ul>
+<h3>AVL Trees and Self-Balancing Mechanisms</h3>
+<div class="summary">Introduces AVL trees as a self-balancing extension of binary search trees, explaining how balance factors and rotations maintain optimal tree height. Covers the rules and operations that keep AVL trees balanced after insertions and deletions.</div>
+<ul>
+<li><strong>Motivation for Self-Balancing Trees</strong> <span class="el-body">— Standard binary search trees (BSTs) can degrade to linear performance when insertions occur in sorted or near-sorted order, causing the tree to become skewed.</span></li>
+<li><strong>AVL Tree Definition and Properties</strong> <span class="el-body">— An AVL tree is a binary search tree that enforces a strict structural invariant: for every node, the heights of its left and right subtrees differ by at most one.</span></li>
+<li><strong>Balance Factor</strong> <span class="el-body">— Each node in an AVL tree stores a balance factor, which is the height of its right subtree minus the height of its left subtree (or vice versa, depending on convention).</span></li>
+<li><strong>Single Rotations: Left and Right</strong> <span class="el-body">— When an imbalance is caused by a straight-line insertion (left-left or right-right case), a single rotation restores the AVL property by pivoting the unbalanced node around its child.</span></li>
+<li><strong>Double Rotations: Left-Right and Right-Left</strong> <span class="el-body">— When an imbalance is caused by a zigzag insertion (left-right or right-left case), two sequential rotations are required to restore balance.</span></li>
+<li><strong>Insertion in AVL Trees</strong> <span class="el-body">— Inserting a node into an AVL tree follows the standard BST insertion process, but is followed by a bottom-up rebalancing pass to restore any violated balance factors.</span></li>
+<li><strong>Deletion in AVL Trees</strong> <span class="el-body">— Deletion in an AVL tree removes a node using standard BST deletion logic and then rebalances any nodes whose balance factors became invalid as a result.</span></li>
+</ul>
+<h3>AVL Tree Performance and Use Cases</h3>
+<div class="summary">Analyzes the time and space complexity of AVL tree operations compared to standard binary search trees. Examines real-world scenarios where AVL trees provide a performance advantage.</div>
+<ul>
+<li><strong>Time Complexity of AVL Tree Operations</strong> <span class="el-body">— AVL trees guarantee O(log n) time complexity for search, insertion, and deletion operations due to their strict height-balancing property.</span></li>
+<li><strong>Comparison with Standard Binary Search Trees</strong> <span class="el-body">— Standard BSTs offer O(log n) average-case performance but degrade to O(n) in the worst case when input is sorted or nearly sorted, a problem AVL trees eliminate.</span></li>
+<li><strong>Space Complexity of AVL Trees</strong> <span class="el-body">— AVL trees require O(n) space to store n elements, the same asymptotic space as a standard BST, with a small constant-factor overhead per node.</span></li>
+<li><strong>Use Case: Lookup-Intensive Applications</strong> <span class="el-body">— AVL trees are particularly advantageous in applications where search operations vastly outnumber insertions and deletions, and consistent O(log n) lookup time is critical.</span></li>
+<li><strong>Use Case: Real-Time and Latency-Sensitive Systems</strong> <span class="el-body">— Systems that cannot tolerate unpredictable spikes in operation time benefit from AVL trees because they eliminate worst-case O(n) scenarios present in unbalanced trees.</span></li>
+<li><strong>Trade-offs and When to Prefer Alternatives</strong> <span class="el-body">— Despite their strong guarantees, AVL trees involve higher constant-factor overhead from rotations and balance tracking, which can make other structures preferable in write-heavy scenarios.</span></li>
+</ul>
+<h3>Heap Trees and Priority Queues</h3>
+<div class="summary">Explains the structure and properties of min-heaps and max-heaps, including how elements are inserted and removed while maintaining the heap property. Connects heap trees to their primary application in implementing efficient priority queues.</div>
+<ul>
+<li><strong>Heap Tree Structure and the Complete Binary Tree Property</strong> <span class="el-body">— A heap is a specialized binary tree that must satisfy two structural rules: it must be a complete binary tree, and every node must obey the heap ordering property.</span></li>
+<li><strong>Min-Heap vs. Max-Heap Ordering Properties</strong> <span class="el-body">— The heap property defines the ordering relationship between parent and child nodes, and this relationship distinguishes a min-heap from a max-heap.</span></li>
+<li><strong>Insertion and the Bubble-Up (Sift-Up) Process</strong> <span class="el-body">— Inserting a new element into a heap places it at the next available position to maintain the complete binary tree shape, then restores the heap property through a process called bubble-up or sift-up.</span></li>
+<li><strong>Removal of the Root and the Bubble-Down (Sift-Down) Process</strong> <span class="el-body">— The most common deletion operation in a heap removes the root element, which holds the minimum (or maximum), and then restores the heap property through a bubble-down or sift-down process.</span></li>
+<li><strong>Priority Queues and the Heap Implementation</strong> <span class="el-body">— A priority queue is an abstract data type that retrieves elements in order of their priority rather than insertion order, and a heap tree is its most efficient standard implementation.</span></li>
+<li><strong>Heapify: Building a Heap from an Unordered Array</strong> <span class="el-body">— Rather than inserting elements one by one, an entire unordered array can be transformed into a valid heap in-place using a linear-time process called heapify.</span></li>
+</ul>
+<h3>Heap Operations and Performance Trade-offs</h3>
+<div class="summary">Details the algorithmic steps behind key heap operations such as heapify, insert, and extract-min or extract-max. Evaluates the computational trade-offs of heaps relative to other data structures for priority-based tasks.</div>
+<ul>
+<li><strong>The Heapify Operation</strong> <span class="el-body">— Heapify is the fundamental procedure that restores the heap property after a structural change, and it comes in two forms: heapify-up (sift-up) and heapify-down (sift-down).</span></li>
+<li><strong>Insert Operation</strong> <span class="el-body">— Inserting a new element into a heap involves placing the element at the next available leaf position and then restoring the heap property via heapify-up.</span></li>
+<li><strong>Extract-Min and Extract-Max Operations</strong> <span class="el-body">— Extracting the minimum (in a min-heap) or maximum (in a max-heap) removes the root element and requires restructuring the heap to restore its properties.</span></li>
+<li><strong>Array-Based Heap Representation</strong> <span class="el-body">— Heaps are most commonly implemented as arrays rather than linked nodes, leveraging the complete binary tree property to compute parent and child indices arithmetically.</span></li>
+<li><strong>Time Complexity Summary of Heap Operations</strong> <span class="el-body">— Understanding the time complexity of each heap operation is essential for evaluating heaps as a priority queue mechanism and comparing them to alternatives.</span></li>
+<li><strong>Performance Trade-offs Versus Other Data Structures</strong> <span class="el-body">— Heaps offer strong guarantees for priority-based access but involve trade-offs compared to sorted arrays, balanced BSTs, and unsorted lists for various priority queue operations.</span></li>
+</ul>
+<h3>Trie Structures for String Storage and Retrieval</h3>
+<div class="summary">Introduces tries as tree structures optimized for storing and searching strings character by character. Covers trie construction, insertion, and lookup operations along with their advantages for prefix-based searching.</div>
+<ul>
+<li><strong>What Is a Trie?</strong> <span class="el-body">— A trie (also called a prefix tree) is a tree-based data structure designed specifically for storing and retrieving strings by breaking them down character by character.</span></li>
+<li><strong>Trie Node Structure</strong> <span class="el-body">— Each node in a trie holds a collection of child pointers — typically one per possible character in the alphabet — and a boolean flag indicating whether that node completes a valid string.</span></li>
+<li><strong>Trie Construction and Insertion</strong> <span class="el-body">— Building a trie involves inserting strings one at a time, traversing existing nodes for shared prefix characters and creating new nodes where the string diverges.</span></li>
+<li><strong>Trie Lookup and Search Operations</strong> <span class="el-body">— Searching for a string in a trie follows the same character-by-character traversal as insertion, verifying that each character in the query exists as a valid child node.</span></li>
+<li><strong>Prefix-Based Searching</strong> <span class="el-body">— One of the most powerful advantages of tries is their native support for prefix searches, enabling efficient retrieval of all strings that begin with a given prefix.</span></li>
+<li><strong>Performance Trade-offs of Tries</strong> <span class="el-body">— Tries offer excellent time complexity for string operations but can consume significant memory depending on the alphabet size and the density of stored strings.</span></li>
+</ul>
+<h3>Comparing Advanced Tree Structures: Use Cases and Trade-offs</h3>
+<div class="summary">Provides a comparative analysis of AVL trees, heaps, and tries, summarizing when each structure is most appropriate based on performance characteristics and problem requirements. Reinforces decision-making skills for selecting the right tree structure in practice.</div>
+<ul>
+<li><strong>AVL Trees: When Balance Is the Priority</strong> <span class="el-body">— AVL trees are self-balancing binary search trees best suited for scenarios requiring frequent searches with a mix of insertions and deletions.</span></li>
+<li><strong>Heaps: Optimized for Priority Access</strong> <span class="el-body">— Heaps are tree-based structures that excel at repeatedly retrieving the maximum or minimum element, making them the backbone of priority queues.</span></li>
+<li><strong>Tries: Tailored for String and Prefix Operations</strong> <span class="el-body">— Tries store strings character by character along branching paths, making them exceptionally efficient for prefix-based searches and autocomplete systems.</span></li>
+<li><strong>Performance Characteristics at a Glance</strong> <span class="el-body">— A side-by-side comparison of time and space complexities helps clarify which structure is most efficient for a given operation.</span></li>
+<li><strong>Decision Framework: Matching Structure to Problem</strong> <span class="el-body">— Selecting the right tree structure requires evaluating the dominant operations, data types, and acceptable trade-offs for a given problem.</span></li>
+<li><strong>Common Pitfalls When Choosing Tree Structures</strong> <span class="el-body">— Misapplying a tree structure often stems from focusing on a single metric, such as asymptotic complexity, while ignoring practical factors like memory layout or implementation complexity.</span></li>
+</ul>
+<h2 id="outcomes">Student Learning Outcomes</h2>
+<p class="prefix">By the end of this module, students will be able to:</p>
+<div class="mo">
+<div class="code">MO1</div>
+<div class="statement">Explain why standard binary search trees degrade to O(n) performance in worst-case scenarios and identify the structural properties that AVL trees, heaps, and tries use to overcome these limitations</div>
+<div class="meta"><span>Level: Understand</span><span>Type: Cognitive</span><span class="map">Course mapping: CO1</span></div>
+</div>
+<div class="mo">
+<div class="code">MO2</div>
+<div class="statement">Trace AVL tree insertion and deletion operations, applying single and double rotations to restore the balance factor invariant after structural changes</div>
+<div class="meta"><span>Level: Apply</span><span>Type: Cognitive</span><span class="map">Course mapping: CO3</span></div>
+</div>
+<div class="mo">
+<div class="code">MO3</div>
+<div class="statement">Trace heap insert, extract-min/extract-max, and heapify operations using an array-based representation, correctly computing parent and child index relationships at each step</div>
+<div class="meta"><span>Level: Apply</span><span>Type: Cognitive</span><span class="map">Course mapping: CO3</span></div>
+</div>
+<div class="mo">
+<div class="code">MO4</div>
+<div class="statement">Construct a trie from a set of strings and execute prefix-based search operations by tracing character-by-character traversal through trie nodes</div>
+<div class="meta"><span>Level: Apply</span><span>Type: Cognitive</span><span class="map">Course mapping: CO3</span></div>
+</div>
+<div class="mo">
+<div class="code">MO5</div>
+<div class="statement">Evaluate the time complexity, space complexity, and practical trade-offs of AVL trees, heaps, and tries to justify the selection of the most appropriate structure for a given problem scenario</div>
+<div class="meta"><span>Level: Evaluate</span><span>Type: Cognitive</span><span class="map">Course mapping: CO2</span></div>
+</div>
+<h3>Course Outcomes (reference)</h3>
+<div class="co"><span class="code">CO1</span>Describe both complex and simple data structures.</div>
+<div class="co"><span class="code">CO2</span>Select the correct data structure and algorithm to solve specific problems</div>
+<div class="co"><span class="code">CO3</span>Implement data structures and algorithms in computer code.</div>
+<div class="co"><span class="code">CO4</span>Analyze the performance of algorithms and data structures</div>
+
+<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
+</body>
+</html>

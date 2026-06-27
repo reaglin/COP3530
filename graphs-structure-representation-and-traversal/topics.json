@@ -1,0 +1,1259 @@
+{
+  "ModuleFolderName": "Graphs_Structure_Representat",
+  "CourseName": "COP3530 - Data Structures",
+  "GeneratedDate": "2026-06-26T14:24:24.2291404-04:00",
+  "ModifiedDate": "2026-06-26T14:26:53.643193-04:00",
+  "Outcomes": [],
+  "Topics": [
+    {
+      "Id": "38ad33bd-9422-4ff4-a9fe-c41e6d6a6b9e",
+      "Title": "Introduction to Graph Data Structures",
+      "Summary": "Defines what a graph is and explains its core components, including vertices and edges. Establishes the foundational vocabulary needed to understand graph theory and its applications.",
+      "SortOrder": 0,
+      "CreatedDate": "2026-06-26T14:24:24.2291404-04:00",
+      "ModifiedDate": "2026-06-26T14:24:24.2291404-04:00",
+      "Elements": [
+        {
+          "Id": "e4c56ea3-eaa0-4acb-a7e7-6f61ddf85c47",
+          "TopicId": "38ad33bd-9422-4ff4-a9fe-c41e6d6a6b9e",
+          "Title": "What Is a Graph?",
+          "BodyText": "A graph is a non-linear data structure used to model relationships between a collection of objects. Unlike arrays or linked lists, graphs do not follow a sequential or hierarchical structure.",
+          "Notes": "Graphs are widely used to represent real-world systems such as social networks, road maps, the internet, and dependency trees.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T14:24:45.9789474-04:00",
+          "ModifiedDate": "2026-06-26T14:24:45.9789474-04:00",
+          "Items": [
+            {
+              "Id": "61e9141f-67a8-448b-af98-4b4180068815",
+              "Text": "A graph consists of a set of nodes (called vertices) connected by links (called edges).",
+              "SortOrder": 0
+            },
+            {
+              "Id": "be72552c-37dc-4689-91fa-4f9bf29cc1ed",
+              "Text": "Graphs can represent both simple pairwise relationships and complex interconnected networks.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "8ca3a2ae-4e2b-4731-b6cb-11b1a024138a",
+              "Text": "The flexibility of the graph structure makes it one of the most powerful and general-purpose data structures in computer science.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "d27b94cb-184d-4062-a06c-10ed96b6c3a9",
+          "TopicId": "38ad33bd-9422-4ff4-a9fe-c41e6d6a6b9e",
+          "Title": "Vertices (Nodes)",
+          "BodyText": "A vertex, also called a node, is a fundamental unit of a graph that represents an entity or object. Vertices are the \u0027things\u0027 that a graph connects together.",
+          "Notes": "In a social network graph, each person would be represented as a vertex. In a map graph, each city or intersection would be a vertex.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T14:24:45.9789474-04:00",
+          "ModifiedDate": "2026-06-26T14:24:45.9789474-04:00",
+          "Items": [
+            {
+              "Id": "83b2ee1a-c688-4a80-8690-cbbb051e7181",
+              "Text": "A graph can contain any number of vertices, from zero (an empty graph) to millions in large-scale systems.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "c5c2a66c-0f4f-41d6-9e50-382924c149e6",
+              "Text": "Each vertex can store data relevant to the entity it represents, such as a name, ID, or weight.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "1d7353df-36a6-45d7-b254-98d4ba25aae2",
+              "Text": "The set of all vertices in a graph is commonly denoted as V.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "bdbef900-2b9f-4913-a8f5-207974d78ab2",
+          "TopicId": "38ad33bd-9422-4ff4-a9fe-c41e6d6a6b9e",
+          "Title": "Edges (Connections)",
+          "BodyText": "An edge is a connection between two vertices in a graph, representing a relationship or link between those entities. Edges are what give graphs their expressive power.",
+          "Notes": "In a road network, an edge might represent a road connecting two cities. In a social network, an edge might represent a friendship between two people.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T14:24:45.9789474-04:00",
+          "ModifiedDate": "2026-06-26T14:24:45.9789474-04:00",
+          "Items": [
+            {
+              "Id": "fa0bd718-e4a4-4da3-8925-ec4d25f15630",
+              "Text": "An edge connects exactly two vertices, referred to as its endpoints.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "46864a68-9505-4874-b1fd-fb4000d98e05",
+              "Text": "The set of all edges in a graph is commonly denoted as E, and a graph is formally defined as G = (V, E).",
+              "SortOrder": 1
+            },
+            {
+              "Id": "15f867f2-1e23-4a18-a655-d7696c1768a8",
+              "Text": "Edges can optionally carry additional information such as weights or labels to represent the cost, distance, or strength of a relationship.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "aa0e1b97-74e0-46df-bf1a-bc5120931c4b",
+              "Text": "A graph with no edges is called an edgeless or null graph.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "e61466c0-ecd3-43a2-ad1b-e41aba0ce9ad",
+          "TopicId": "38ad33bd-9422-4ff4-a9fe-c41e6d6a6b9e",
+          "Title": "Directed vs. Undirected Graphs",
+          "BodyText": "One of the most fundamental distinctions in graph theory is whether the edges of a graph have a direction. This determines how relationships between vertices are interpreted.",
+          "Notes": "An undirected graph models mutual relationships (e.g., friendships), while a directed graph models one-way relationships (e.g., following someone on social media, or a one-way street).",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T14:24:45.9789474-04:00",
+          "ModifiedDate": "2026-06-26T14:24:45.9789474-04:00",
+          "Items": [
+            {
+              "Id": "97a41ff6-fc53-41f6-9064-814f4a400b0c",
+              "Text": "In an undirected graph, edges have no direction \u2014 a connection between vertex A and vertex B implies a connection from B to A as well.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "c03254af-1c00-4488-b808-8634769c1c34",
+              "Text": "In a directed graph (also called a digraph), each edge has a specific direction, going from one vertex (the source) to another (the destination).",
+              "SortOrder": 1
+            },
+            {
+              "Id": "68d7971e-806a-4b72-9ecc-4c3f013a9e7e",
+              "Text": "Directed edges are typically represented with arrows to indicate the direction of the relationship.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "77cf7ab9-225c-442a-a192-4a08bdabf4fc",
+          "TopicId": "38ad33bd-9422-4ff4-a9fe-c41e6d6a6b9e",
+          "Title": "Key Graph Vocabulary",
+          "BodyText": "Graph theory comes with a specific set of terms used to describe the properties and characteristics of graphs and their components. Understanding this vocabulary is essential for studying graph algorithms.",
+          "Notes": "Familiarity with these terms helps in reading algorithm descriptions, analyzing graph problems, and communicating solutions clearly.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T14:24:45.9789474-04:00",
+          "ModifiedDate": "2026-06-26T14:24:45.9789474-04:00",
+          "Items": [
+            {
+              "Id": "a04e0f7a-c22f-4e7d-9142-3f6ad461d071",
+              "Text": "The degree of a vertex is the number of edges connected to it; in directed graphs, this is split into in-degree (incoming edges) and out-degree (outgoing edges).",
+              "SortOrder": 0
+            },
+            {
+              "Id": "f1552ff7-6469-4d02-a049-101a656670f4",
+              "Text": "A path is a sequence of vertices connected by edges, with no vertex repeated.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "beb2da55-d19d-432e-a658-eac443dbeddf",
+              "Text": "A cycle is a path that begins and ends at the same vertex.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "b938644d-f3c6-4c52-b5c2-e65c4d13f0e3",
+              "Text": "Two vertices are called adjacent or neighbors if they are directly connected by an edge.",
+              "SortOrder": 3
+            },
+            {
+              "Id": "37a02c08-5506-4569-a7cb-4789a062d0f5",
+              "Text": "A graph is connected if there is a path between every pair of vertices; otherwise, it is disconnected.",
+              "SortOrder": 4
+            }
+          ]
+        },
+        {
+          "Id": "ead9c6cf-7e91-44ce-8643-8e130c5ce669",
+          "TopicId": "38ad33bd-9422-4ff4-a9fe-c41e6d6a6b9e",
+          "Title": "Real-World Applications of Graphs",
+          "BodyText": "Graphs are not merely theoretical constructs \u2014 they are used extensively across technology, science, and everyday applications. Understanding graphs provides the foundation for solving many practical problems.",
+          "Notes": "GPS navigation systems use weighted directed graphs to find the shortest path between locations. Recommendation engines use graphs to model user-item relationships.",
+          "SortOrder": 5,
+          "CreatedDate": "2026-06-26T14:24:45.9789474-04:00",
+          "ModifiedDate": "2026-06-26T14:24:45.9789474-04:00",
+          "Items": [
+            {
+              "Id": "4e9935ba-3fb8-4e45-a8f6-6b56ab1309f4",
+              "Text": "Social networks model users as vertices and friendships or follows as edges.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "fbb9eaab-2123-46d0-b822-a574c0d16662",
+              "Text": "The internet can be modeled as a graph where web pages are vertices and hyperlinks are directed edges.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "c1786aaa-17d2-4162-be22-1e0ee4052f31",
+              "Text": "Graphs are used in scheduling, dependency resolution, network routing, and biology for modeling molecular structures.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "27494884-d52d-4d40-8d3c-42a737be24d7",
+              "Text": "Understanding graph structure is a prerequisite for learning traversal algorithms like BFS and DFS.",
+              "SortOrder": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "44422dc3-5774-45c1-803c-7ca4f929ceed",
+      "Title": "Directed and Undirected Graphs",
+      "Summary": "Explores the distinction between directed graphs, where edges have a defined direction, and undirected graphs, where edges are bidirectional. Covers real-world use cases and examples for each type.",
+      "SortOrder": 1,
+      "CreatedDate": "2026-06-26T14:24:24.2291404-04:00",
+      "ModifiedDate": "2026-06-26T14:24:24.2291404-04:00",
+      "Elements": [
+        {
+          "Id": "9fd282fa-a884-4d33-8e4b-658d5b557cc9",
+          "TopicId": "44422dc3-5774-45c1-803c-7ca4f929ceed",
+          "Title": "What Is a Graph?",
+          "BodyText": "A graph is a data structure consisting of a set of nodes (vertices) connected by edges. Graphs model relationships between entities and serve as the foundation for both directed and undirected graph types.",
+          "Notes": "Examples of real-world graphs include social networks, road maps, and dependency trees.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T14:25:05.7239476-04:00",
+          "ModifiedDate": "2026-06-26T14:25:05.7239476-04:00",
+          "Items": [
+            {
+              "Id": "0eaa0e1e-3720-4546-8c20-a94682f941ab",
+              "Text": "A graph G is formally defined as G = (V, E), where V is the set of vertices and E is the set of edges.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "f908df4d-3057-4ef1-a987-278892c6b8a3",
+              "Text": "Edges represent the relationship or connection between two vertices.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "5fe0e124-b602-41a9-bace-5536f423603c",
+              "Text": "Graphs can model a wide variety of problems, from navigation systems to social connections.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "10d13c95-3be2-4f0e-979a-5bfac31c6728",
+          "TopicId": "44422dc3-5774-45c1-803c-7ca4f929ceed",
+          "Title": "Undirected Graphs",
+          "BodyText": "In an undirected graph, edges have no defined direction, meaning the connection between two vertices is bidirectional. If vertex A is connected to vertex B, then B is equally connected to A.",
+          "Notes": "A friendship network is a classic example: if Alice is friends with Bob, then Bob is also friends with Alice.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T14:25:05.7239476-04:00",
+          "ModifiedDate": "2026-06-26T14:25:05.7239476-04:00",
+          "Items": [
+            {
+              "Id": "e66b1085-6116-4f7d-8559-8574562eac75",
+              "Text": "Each edge (A, B) in an undirected graph implies both A \u2192 B and B \u2192 A connections.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "bfdbe1fb-f471-42c7-a562-5baa69260155",
+              "Text": "The degree of a vertex is the number of edges connected to it.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "a8b3e0da-95fb-4cd1-8f9d-8d9f930d9c21",
+              "Text": "Undirected graphs are commonly used to model symmetric relationships such as friendships, roads between cities, or collaboration networks.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "bebb61a4-1884-4b46-a8b6-ec4cfef3191d",
+          "TopicId": "44422dc3-5774-45c1-803c-7ca4f929ceed",
+          "Title": "Directed Graphs (Digraphs)",
+          "BodyText": "In a directed graph, each edge has a specific direction, going from a source vertex to a destination vertex. The connection is one-way unless an explicit reverse edge is also defined.",
+          "Notes": "Twitter\u0027s follow system is a good example: User A can follow User B without B following A back.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T14:25:05.7239476-04:00",
+          "ModifiedDate": "2026-06-26T14:25:05.7239476-04:00",
+          "Items": [
+            {
+              "Id": "9cc78e09-d8e4-4363-9501-904601e48b64",
+              "Text": "An edge in a directed graph is represented as an ordered pair (A, B), meaning there is a path from A to B but not necessarily from B to A.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "3d04b845-b0bd-49ca-b4da-8d8bcfd71aef",
+              "Text": "Each vertex has an in-degree (edges coming in) and an out-degree (edges going out).",
+              "SortOrder": 1
+            },
+            {
+              "Id": "e390d629-12e5-4e4c-b2ae-7ccf08cf2f97",
+              "Text": "Directed graphs are used to model asymmetric relationships such as web page links, task dependencies, and follower relationships.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "3680628d-ce93-4754-b80b-5cd7713b6ddf",
+          "TopicId": "44422dc3-5774-45c1-803c-7ca4f929ceed",
+          "Title": "Real-World Use Cases for Undirected Graphs",
+          "BodyText": "Undirected graphs appear in many practical scenarios where relationships are inherently mutual. Recognizing these scenarios helps in selecting the right graph type for a problem.",
+          "Notes": "",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T14:25:05.7239476-04:00",
+          "ModifiedDate": "2026-06-26T14:25:05.7239476-04:00",
+          "Items": [
+            {
+              "Id": "44f6a513-8915-434b-acd4-ed3742d330d2",
+              "Text": "Social networks like Facebook model mutual friendships as undirected edges between user nodes.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "269e9003-3712-4e9d-b009-4df12431867a",
+              "Text": "Road maps where travel is permitted in both directions between intersections are represented as undirected graphs.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "dfc86c28-4aaa-417c-b6d3-04a64672846e",
+              "Text": "Network topology diagrams showing bidirectional communication links between computers use undirected graph models.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "57dc193f-ae35-4eab-b479-7f047d781e10",
+          "TopicId": "44422dc3-5774-45c1-803c-7ca4f929ceed",
+          "Title": "Real-World Use Cases for Directed Graphs",
+          "BodyText": "Directed graphs are essential when the relationship between entities has a clear and meaningful direction. Many computing and real-world systems exhibit this one-way dependency.",
+          "Notes": "Version control systems like Git use directed graphs (DAGs) to represent commit history.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T14:25:05.7239476-04:00",
+          "ModifiedDate": "2026-06-26T14:25:05.7239476-04:00",
+          "Items": [
+            {
+              "Id": "d7289a34-b5a8-4476-a2d6-bb040c56f88a",
+              "Text": "The World Wide Web is modeled as a directed graph where hyperlinks point from one page to another in a single direction.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "76cae5ef-dd28-47bb-9268-6543d355b9fb",
+              "Text": "Task scheduling and build systems use directed graphs to represent dependencies, where one task must complete before another begins.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "a9565fbd-af2f-491d-bd7a-0875152816e3",
+              "Text": "Social platforms like Twitter and Instagram use directed graphs to model follower relationships that do not require mutual consent.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "60c4e234-9944-4219-ab8b-5296580bdd39",
+          "TopicId": "44422dc3-5774-45c1-803c-7ca4f929ceed",
+          "Title": "Key Differences Between Directed and Undirected Graphs",
+          "BodyText": "Understanding the structural differences between directed and undirected graphs is critical for choosing the correct model and traversal strategy for a given problem.",
+          "Notes": "The choice between directed and undirected affects not just representation but also algorithm behavior, such as how cycles and paths are detected.",
+          "SortOrder": 5,
+          "CreatedDate": "2026-06-26T14:25:05.7239476-04:00",
+          "ModifiedDate": "2026-06-26T14:25:05.7239476-04:00",
+          "Items": [
+            {
+              "Id": "de8bad8f-14a2-4173-b7ae-787e18e04735",
+              "Text": "In undirected graphs, edges are symmetric; in directed graphs, edges have an explicit source and target.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "ee589aa5-5311-4851-8779-db6ec068749d",
+              "Text": "Directed graphs can contain one-way paths and asymmetric connectivity, while undirected graphs always have symmetric connectivity.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "c82f1cfa-4b7b-43b6-b6bf-f1dddb94d7c8",
+              "Text": "The number of edges in an undirected graph is counted once per pair, whereas in a directed graph each direction counts as a separate edge.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "0e96a9e6-0cb0-4c1f-a9fe-737e69415eb0",
+              "Text": "Algorithms such as cycle detection and topological sorting behave differently depending on whether the graph is directed or undirected.",
+              "SortOrder": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "5d86db08-3a7a-4eee-866c-5f2768a397ca",
+      "Title": "Adjacency Matrix Representation",
+      "Summary": "Explains how a graph can be represented using a two-dimensional matrix to capture edge relationships between vertices. Discusses the advantages and trade-offs of this representation in terms of space and time complexity.",
+      "SortOrder": 2,
+      "CreatedDate": "2026-06-26T14:24:24.2291404-04:00",
+      "ModifiedDate": "2026-06-26T14:24:24.2291404-04:00",
+      "Elements": [
+        {
+          "Id": "92da0adb-a986-42cc-b8ad-8f0511932301",
+          "TopicId": "5d86db08-3a7a-4eee-866c-5f2768a397ca",
+          "Title": "What Is an Adjacency Matrix?",
+          "BodyText": "An adjacency matrix is a two-dimensional array used to represent a graph by recording which vertices are connected by edges.",
+          "Notes": "For a graph with n vertices, the matrix has dimensions n \u00D7 n. The cell at row i and column j holds a value \u2014 typically 1 or true \u2014 if an edge exists from vertex i to vertex j, and 0 or false otherwise.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T14:25:28.064799-04:00",
+          "ModifiedDate": "2026-06-26T14:25:28.064799-04:00",
+          "Items": [
+            {
+              "Id": "9ef3ab73-69c9-4497-994d-595f4bfacb45",
+              "Text": "The matrix indices correspond directly to vertex identifiers, making lookups straightforward.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "cb3527ea-6716-4f4d-a979-5acbf370b570",
+              "Text": "For weighted graphs, the cell value can store the edge weight instead of a simple boolean.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "3d9d0c3d-ffd8-49ac-9c46-e8056918eb4c",
+              "Text": "The matrix provides a complete snapshot of all possible vertex-pair relationships in a single structure.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "fc1e1659-89e3-4541-a135-6b7f78ef796e",
+          "TopicId": "5d86db08-3a7a-4eee-866c-5f2768a397ca",
+          "Title": "Representing Directed vs. Undirected Graphs",
+          "BodyText": "The structure of the adjacency matrix differs depending on whether the graph is directed or undirected.",
+          "Notes": "Example: In an undirected graph with an edge between vertices 2 and 5, both matrix[2][5] and matrix[5][2] are set to 1. In a directed graph, only matrix[2][5] would be set if the edge points from 2 to 5.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T14:25:28.064799-04:00",
+          "ModifiedDate": "2026-06-26T14:25:28.064799-04:00",
+          "Items": [
+            {
+              "Id": "7d57457a-96f2-4093-b51c-d0763ed354b6",
+              "Text": "In an undirected graph, the matrix is always symmetric across the main diagonal, since every edge is bidirectional.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "e6e0c53b-c005-425b-8eba-0bb54628368d",
+              "Text": "In a directed graph, matrix[i][j] and matrix[j][i] can hold different values, reflecting one-way connections.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "0769b92b-9553-4a43-bdef-88ff61232df1",
+              "Text": "This symmetry property of undirected graphs can be exploited to save memory by storing only the upper or lower triangle of the matrix.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "1d136824-61c9-4d24-8683-0ff75d849d0d",
+          "TopicId": "5d86db08-3a7a-4eee-866c-5f2768a397ca",
+          "Title": "Space Complexity",
+          "BodyText": "An adjacency matrix always allocates space for every possible pair of vertices, regardless of how many edges actually exist.",
+          "Notes": "A graph with 1,000 vertices requires a 1,000 \u00D7 1,000 matrix \u2014 one million cells \u2014 even if only a handful of edges are present. This makes the adjacency matrix a poor choice for sparse graphs.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T14:25:28.064799-04:00",
+          "ModifiedDate": "2026-06-26T14:25:28.064799-04:00",
+          "Items": [
+            {
+              "Id": "ec0cbc22-5984-489c-ae01-f1a380a20ba2",
+              "Text": "Space complexity is O(V\u00B2), where V is the number of vertices.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "4283b82a-97b6-48d0-a840-a12632557f7b",
+              "Text": "For dense graphs \u2014 where the number of edges approaches V\u00B2 \u2014 this space usage is justified because most cells are filled.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "feaf536e-3638-4882-9d2e-b4723e26d5ed",
+              "Text": "For sparse graphs, much of the allocated space holds zeroes, wasting memory compared to alternative representations.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "3dd35719-678d-45df-a5cd-c72b88a6f257",
+          "TopicId": "5d86db08-3a7a-4eee-866c-5f2768a397ca",
+          "Title": "Time Complexity for Common Operations",
+          "BodyText": "The adjacency matrix offers constant-time edge lookups but linear-time neighbor enumeration.",
+          "Notes": "Checking whether an edge exists between two specific vertices is O(1) \u2014 simply read the cell. However, finding all neighbors of a vertex requires scanning an entire row, which is O(V).",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T14:25:28.064799-04:00",
+          "ModifiedDate": "2026-06-26T14:25:28.064799-04:00",
+          "Items": [
+            {
+              "Id": "4956de2b-2b7a-4639-9938-0910a8460e83",
+              "Text": "Edge existence check: O(1) \u2014 direct index access to matrix[i][j].",
+              "SortOrder": 0
+            },
+            {
+              "Id": "62cfc2dc-b1a1-4a24-a66e-949d0a251788",
+              "Text": "Finding all neighbors of a vertex: O(V) \u2014 the entire row must be scanned to find non-zero entries.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "002c33d9-20a1-4278-9ca0-9f74d4f39a07",
+              "Text": "Adding or removing an edge: O(1) \u2014 update one cell (or two cells for undirected graphs).",
+              "SortOrder": 2
+            },
+            {
+              "Id": "bd8f071d-2255-4a9e-b56d-40a53bf341a6",
+              "Text": "Adding a new vertex requires resizing the matrix, which is an O(V\u00B2) operation.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "359fff22-6a4f-4662-9c69-60a592d381ad",
+          "TopicId": "5d86db08-3a7a-4eee-866c-5f2768a397ca",
+          "Title": "Advantages of the Adjacency Matrix",
+          "BodyText": "The adjacency matrix excels in scenarios where fast edge-existence queries are the primary operation.",
+          "Notes": "Algorithms such as Floyd-Warshall for all-pairs shortest paths work naturally with matrix representations, taking advantage of direct index access.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T14:25:28.064799-04:00",
+          "ModifiedDate": "2026-06-26T14:25:28.064799-04:00",
+          "Items": [
+            {
+              "Id": "7b9aa42f-5755-4db4-9349-e3690c7376e4",
+              "Text": "O(1) edge lookup makes it ideal when frequent membership queries are needed.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "8aa0a077-966e-4dcc-9463-714cc8f9f84c",
+              "Text": "The structure is simple to implement using built-in two-dimensional arrays in most programming languages.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "0600f142-b26b-4b51-b570-0c4079aec229",
+              "Text": "Dense graphs benefit the most, since the space cost per edge is minimized when most cells are occupied.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "696419b5-a9b9-4ea4-83e3-bd16732beeec",
+          "TopicId": "5d86db08-3a7a-4eee-866c-5f2768a397ca",
+          "Title": "Trade-offs and Limitations",
+          "BodyText": "Despite its simplicity and fast lookups, the adjacency matrix has notable drawbacks that make it unsuitable for many real-world graphs.",
+          "Notes": "Most real-world graphs \u2014 such as social networks or web link graphs \u2014 are sparse, meaning the adjacency matrix wastes significant memory and slows down traversal algorithms that must iterate over all neighbors.",
+          "SortOrder": 5,
+          "CreatedDate": "2026-06-26T14:25:28.064799-04:00",
+          "ModifiedDate": "2026-06-26T14:25:28.064799-04:00",
+          "Items": [
+            {
+              "Id": "6bae8211-89d1-4d89-964a-503917c69049",
+              "Text": "Memory usage grows quadratically with the number of vertices, making it impractical for large sparse graphs.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "1408a4df-13bc-456a-b175-f28c6c85a51e",
+              "Text": "Traversal algorithms like BFS and DFS run in O(V\u00B2) time with an adjacency matrix, compared to O(V \u002B E) with an adjacency list.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "8982a35b-7e4c-4fe9-a9b7-a1341c92098c",
+              "Text": "Dynamic graphs that frequently add or remove vertices are inefficient to manage due to costly matrix resizing.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "6a4a44fe-300f-467d-a7df-67649b0812ef",
+              "Text": "When E (edges) is much smaller than V\u00B2, the adjacency list representation is typically preferred.",
+              "SortOrder": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "5a1620d5-0317-4ffa-ab61-709ff5bcc59d",
+      "Title": "Adjacency List Representation",
+      "Summary": "Describes how a graph can be stored as a collection of lists, each mapping a vertex to its neighbors. Contrasts this approach with the adjacency matrix and highlights scenarios where it is more efficient.",
+      "SortOrder": 3,
+      "CreatedDate": "2026-06-26T14:24:24.2291404-04:00",
+      "ModifiedDate": "2026-06-26T14:24:24.2291404-04:00",
+      "Elements": [
+        {
+          "Id": "d7f6e2d9-03c0-4a79-968c-efdf533929a4",
+          "TopicId": "5a1620d5-0317-4ffa-ab61-709ff5bcc59d",
+          "Title": "What Is an Adjacency List?",
+          "BodyText": "An adjacency list represents a graph as a collection of lists, one per vertex, where each list contains the neighbors of that vertex.",
+          "Notes": "For example, if vertex A connects to B and C, the adjacency list for A would be [B, C]. This can be implemented using an array of arrays, a map, or an object in JavaScript.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T14:25:50.8314897-04:00",
+          "ModifiedDate": "2026-06-26T14:25:50.8314897-04:00",
+          "Items": [
+            {
+              "Id": "894c813c-6477-4c9f-a69d-f116123b02e6",
+              "Text": "Each vertex in the graph has a corresponding list (or array) that stores only the vertices it is directly connected to.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "5270df13-2f7c-49a7-9c58-fcb4e9e7ada2",
+              "Text": "In JavaScript, this is commonly implemented as an object or Map where keys are vertex identifiers and values are arrays of neighboring vertices.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "0bab2712-59cd-49a4-9a48-cc48dbe04b6b",
+              "Text": "For an undirected graph, each edge (u, v) appears in both u\u0027s list and v\u0027s list.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "fa9ba2c6-81b6-4c8e-9f83-2259c089dd3c",
+          "TopicId": "5a1620d5-0317-4ffa-ab61-709ff5bcc59d",
+          "Title": "Building an Adjacency List in JavaScript",
+          "BodyText": "Constructing an adjacency list involves initializing an entry for each vertex and then pushing neighbor references as edges are added.",
+          "Notes": "Example: const graph = {}; graph[\u0027A\u0027] = [\u0027B\u0027, \u0027C\u0027]; graph[\u0027B\u0027] = [\u0027A\u0027, \u0027D\u0027]; This pattern is straightforward to extend dynamically as new vertices and edges are introduced.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T14:25:50.8314897-04:00",
+          "ModifiedDate": "2026-06-26T14:25:50.8314897-04:00",
+          "Items": [
+            {
+              "Id": "6414c891-3e35-483c-9e61-e45d406b6283",
+              "Text": "Start by creating an empty object or Map, then add each vertex as a key with an empty array as its value.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "470ccaff-cf23-4abf-a2ee-13ece9f606d0",
+              "Text": "For each edge, push the destination vertex into the source vertex\u0027s array; for undirected graphs, also push the source into the destination\u0027s array.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "2876146d-74b7-4a6f-bda8-a54e253b5ae0",
+              "Text": "Helper methods such as addVertex and addEdge keep the construction logic clean and reusable.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "e4b78d03-f74c-465c-8c79-ba19cf910695",
+          "TopicId": "5a1620d5-0317-4ffa-ab61-709ff5bcc59d",
+          "Title": "Space Complexity of the Adjacency List",
+          "BodyText": "Adjacency lists use space proportional to the number of vertices plus the number of edges, making them memory-efficient for sparse graphs.",
+          "Notes": "Formally, space complexity is O(V \u002B E), where V is the number of vertices and E is the number of edges. Compare this to the adjacency matrix, which always requires O(V\u00B2) space regardless of how many edges exist.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T14:25:50.8314897-04:00",
+          "ModifiedDate": "2026-06-26T14:25:50.8314897-04:00",
+          "Items": [
+            {
+              "Id": "cc24a670-35d8-4495-8de9-eb037d756b67",
+              "Text": "Only existing edges consume memory; vertices with few connections do not waste space on empty slots.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "0c791641-ca35-423c-a72b-f724ccddfa7c",
+              "Text": "This efficiency advantage grows significantly as the graph becomes larger and sparser.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "99ba4dd6-3b73-49b9-b449-51742fb4c823",
+              "Text": "For dense graphs where E approaches V\u00B2, the space savings over an adjacency matrix diminish.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "9bcf8ee8-c28c-433d-aa38-ba8cb8d12372",
+          "TopicId": "5a1620d5-0317-4ffa-ab61-709ff5bcc59d",
+          "Title": "Adjacency List vs. Adjacency Matrix",
+          "BodyText": "The two primary graph representations trade off between fast edge lookup and efficient memory use, making each better suited to different scenarios.",
+          "Notes": "Choosing the right representation depends on the graph\u0027s density and the operations most frequently performed on it.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T14:25:50.8314897-04:00",
+          "ModifiedDate": "2026-06-26T14:25:50.8314897-04:00",
+          "Items": [
+            {
+              "Id": "32ce85aa-9583-4ee8-a32c-7a9ab314e974",
+              "Text": "An adjacency matrix allows O(1) lookup to check whether an edge exists between any two vertices, while an adjacency list requires scanning the neighbor list, taking O(degree) time.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "6832a43d-799b-45e8-8960-17d32bc648a6",
+              "Text": "An adjacency list is faster for iterating over a vertex\u0027s neighbors because only actual neighbors are stored, whereas a matrix row must be fully scanned.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "37b6fffa-3bab-4e18-aa0a-8e9cf1dd8cdd",
+              "Text": "Adjacency lists are preferred when the graph is sparse (few edges relative to V\u00B2); adjacency matrices are preferred when the graph is dense or constant-time edge queries are critical.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "c9d0fceb-da8b-428b-9511-6a108eba834a",
+          "TopicId": "5a1620d5-0317-4ffa-ab61-709ff5bcc59d",
+          "Title": "Directed vs. Undirected Graphs in Adjacency Lists",
+          "BodyText": "The adjacency list structure adapts naturally to both directed and undirected graphs by controlling how edges are recorded.",
+          "Notes": "In a social network (undirected), both users appear in each other\u0027s lists. In a web link graph (directed), only the outgoing link is recorded in the source page\u0027s list.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T14:25:50.8314897-04:00",
+          "ModifiedDate": "2026-06-26T14:25:50.8314897-04:00",
+          "Items": [
+            {
+              "Id": "82afbbfd-eecf-41dc-aac0-00d076b2077a",
+              "Text": "For a directed graph, an edge from u to v is added only to u\u0027s neighbor list, reflecting the one-way relationship.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "675cfb76-7fd6-43dc-9111-34bd82da2ef3",
+              "Text": "For an undirected graph, the same edge is recorded in both u\u0027s and v\u0027s lists, so each edge is represented twice in total.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "9a86300a-80f8-4fe9-9dba-f49198c02815",
+              "Text": "This distinction directly affects traversal algorithms and the total number of entries stored in the list.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "93da87cb-404f-499c-8175-b63d5cb2f13a",
+          "TopicId": "5a1620d5-0317-4ffa-ab61-709ff5bcc59d",
+          "Title": "When to Choose an Adjacency List",
+          "BodyText": "Adjacency lists are the default choice for most real-world graph problems because graphs encountered in practice tend to be sparse.",
+          "Notes": "Social networks, road maps, dependency graphs, and web graphs all have far fewer edges than V\u00B2, making adjacency lists the practical standard for these domains.",
+          "SortOrder": 5,
+          "CreatedDate": "2026-06-26T14:25:50.8314897-04:00",
+          "ModifiedDate": "2026-06-26T14:25:50.8314897-04:00",
+          "Items": [
+            {
+              "Id": "2c2309a9-24dd-4469-99f6-b2df98cecba2",
+              "Text": "Use an adjacency list when memory is a constraint and the graph has many vertices but relatively few edges.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "b7c5219d-cf62-4b8d-8ea7-14efaf23a603",
+              "Text": "Traversal algorithms like BFS and DFS run in O(V \u002B E) time when operating on an adjacency list, which is optimal for sparse graphs.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "1f8f4e6f-890c-47a7-81cf-903da9010ebc",
+              "Text": "If your primary operation is repeatedly checking whether a specific edge exists (rather than traversing neighbors), consider whether an adjacency matrix or hybrid structure might be more appropriate.",
+              "SortOrder": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "a83e5339-9dd2-4e5f-a0a5-e7ef613f6b11",
+      "Title": "Breadth-First Search (BFS)",
+      "Summary": "Introduces the BFS traversal algorithm, which explores a graph level by level using a queue data structure. Covers the algorithm\u0027s logic, traversal order, and practical applications.",
+      "SortOrder": 4,
+      "CreatedDate": "2026-06-26T14:24:24.2291404-04:00",
+      "ModifiedDate": "2026-06-26T14:24:24.2291404-04:00",
+      "Elements": [
+        {
+          "Id": "f820af90-b09d-4d56-adf6-0c823a580472",
+          "TopicId": "a83e5339-9dd2-4e5f-a0a5-e7ef613f6b11",
+          "Title": "What is Breadth-First Search?",
+          "BodyText": "Breadth-First Search (BFS) is a graph traversal algorithm that explores all neighbors of a node before moving to the next level of nodes.",
+          "Notes": "Think of BFS like ripples spreading outward from a stone dropped in water \u2014 it visits every node at distance 1 before any node at distance 2, and so on.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T14:26:10.3884056-04:00",
+          "ModifiedDate": "2026-06-26T14:26:10.3884056-04:00",
+          "Items": [
+            {
+              "Id": "73e25293-c6c3-4ba3-a4ab-e3e3ffaf6639",
+              "Text": "BFS starts at a designated source node and visits nodes layer by layer, moving outward from the starting point.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "09d411bb-defd-4817-bbdb-da0b275af41c",
+              "Text": "This level-by-level exploration guarantees that nodes closer to the source are always visited before nodes farther away.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "e5e0fc6c-863e-45c9-9265-e6870c861679",
+              "Text": "BFS works on both directed and undirected graphs.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "f69177bc-316e-460b-a1a4-d60714467730",
+          "TopicId": "a83e5339-9dd2-4e5f-a0a5-e7ef613f6b11",
+          "Title": "The Queue Data Structure in BFS",
+          "BodyText": "BFS relies on a queue \u2014 a First-In, First-Out (FIFO) data structure \u2014 to track which nodes to visit next.",
+          "Notes": "Using a queue is what distinguishes BFS from DFS, which uses a stack. The queue enforces the level-by-level order of traversal.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T14:26:10.3884056-04:00",
+          "ModifiedDate": "2026-06-26T14:26:10.3884056-04:00",
+          "Items": [
+            {
+              "Id": "cc778fa1-9d5f-46f9-834d-42465867b85c",
+              "Text": "When a node is first discovered, it is added (enqueued) to the back of the queue.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "d1c1f006-4cb7-4234-8b08-404e987d0799",
+              "Text": "The algorithm always processes the node at the front of the queue next, ensuring earlier-discovered nodes are visited first.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "641555f3-0675-4ea8-8a81-3639a31ad9ef",
+              "Text": "A visited set or array is maintained alongside the queue to prevent nodes from being enqueued more than once.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "b2d9f80d-65f4-4e3c-a1a7-33a39026eab2",
+          "TopicId": "a83e5339-9dd2-4e5f-a0a5-e7ef613f6b11",
+          "Title": "BFS Algorithm Logic Step by Step",
+          "BodyText": "The BFS algorithm follows a clear, repeatable sequence of steps to traverse all reachable nodes in a graph.",
+          "Notes": "In JavaScript, a queue can be simulated using an array with push() to enqueue and shift() to dequeue, though a dedicated queue class is more efficient for large graphs.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T14:26:10.3884056-04:00",
+          "ModifiedDate": "2026-06-26T14:26:10.3884056-04:00",
+          "Items": [
+            {
+              "Id": "906dba9a-a3e3-4b6c-aa15-2e5ed87b540a",
+              "Text": "Step 1: Initialize by marking the source node as visited and enqueuing it.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "4645231d-a839-485f-ad50-c2b7281ffa66",
+              "Text": "Step 2: Dequeue the front node, then examine each of its neighbors.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "124bdf67-180a-4172-9f69-caeaf8914c11",
+              "Text": "Step 3: For each unvisited neighbor, mark it as visited and enqueue it.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "58030a89-1a64-4050-83ab-5cf227c245e4",
+              "Text": "Step 4: Repeat steps 2\u20133 until the queue is empty, at which point all reachable nodes have been visited.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "4cc3d8a5-dad6-4ca7-9412-ed0c6a68a4ee",
+          "TopicId": "a83e5339-9dd2-4e5f-a0a5-e7ef613f6b11",
+          "Title": "BFS Traversal Order",
+          "BodyText": "The order in which BFS visits nodes is determined by their distance from the source, measured in the number of edges.",
+          "Notes": "For example, in an undirected graph where node A connects to B and C, and B connects to D, BFS from A would visit in order: A, B, C, D \u2014 visiting B and C (distance 1) before D (distance 2).",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T14:26:10.3884056-04:00",
+          "ModifiedDate": "2026-06-26T14:26:10.3884056-04:00",
+          "Items": [
+            {
+              "Id": "b7c63628-e6d3-4e53-8500-7a9fc1294b1f",
+              "Text": "All nodes at distance 1 (direct neighbors of the source) are visited before any node at distance 2.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "3eed780d-e2ad-4373-a4c0-7f427c1215f0",
+              "Text": "The traversal order produced by BFS represents the shortest path in terms of edge count from the source to each visited node.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "3cd4bfe3-0bf2-4d26-a39e-d65a50ac0906",
+              "Text": "The specific order among nodes at the same level depends on adjacency list ordering and enqueue sequence.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "b2415605-4f04-463c-a1b8-6a106a5ab12b",
+          "TopicId": "a83e5339-9dd2-4e5f-a0a5-e7ef613f6b11",
+          "Title": "Handling Disconnected Graphs in BFS",
+          "BodyText": "A single BFS call from one source node will only visit nodes reachable from that source; disconnected components require additional handling.",
+          "Notes": "To fully traverse a disconnected graph, iterate over all nodes and initiate a new BFS from any node that has not yet been visited.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T14:26:10.3884056-04:00",
+          "ModifiedDate": "2026-06-26T14:26:10.3884056-04:00",
+          "Items": [
+            {
+              "Id": "e8bdd108-0c35-4aea-aac0-61d844172d30",
+              "Text": "If the graph is disconnected, some nodes will remain unvisited after a BFS from a single starting node.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "4e3f9fc0-e7a0-437d-a332-7db3a7e40fb8",
+              "Text": "Running BFS from every unvisited node in sequence ensures complete traversal of all components in the graph.",
+              "SortOrder": 1
+            }
+          ]
+        },
+        {
+          "Id": "427bce1c-9dd9-4c4d-8843-b79ff38e60c1",
+          "TopicId": "a83e5339-9dd2-4e5f-a0a5-e7ef613f6b11",
+          "Title": "Practical Applications of BFS",
+          "BodyText": "BFS has a wide range of real-world applications due to its ability to find shortest paths and explore nodes level by level.",
+          "Notes": "BFS is the foundation of many network and pathfinding algorithms used in navigation systems, social networks, and game AI.",
+          "SortOrder": 5,
+          "CreatedDate": "2026-06-26T14:26:10.3884056-04:00",
+          "ModifiedDate": "2026-06-26T14:26:10.3884056-04:00",
+          "Items": [
+            {
+              "Id": "f5a59e16-05f2-4a38-b778-136a9f49eef3",
+              "Text": "BFS finds the shortest path (fewest edges) between two nodes in an unweighted graph.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "8e94b4c9-63e2-4b8f-a750-2240ff794c74",
+              "Text": "It is used in social networks to find the degrees of separation between users.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "6c93e97a-0084-452c-aada-584bfb8cf961",
+              "Text": "BFS powers web crawlers, which explore links level by level starting from a seed URL.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "ccf3de64-75f2-42c6-ba6c-434aa0758794",
+              "Text": "It is also used in peer-to-peer networks, GPS navigation, and solving puzzles such as the shortest solution to a sliding-tile problem.",
+              "SortOrder": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "c1e5043a-df48-466e-97c0-63445b753527",
+      "Title": "Depth-First Search (DFS)",
+      "Summary": "Introduces the DFS traversal algorithm, which explores a graph by going as deep as possible along each branch before backtracking. Covers both recursive and iterative implementations and common use cases.",
+      "SortOrder": 5,
+      "CreatedDate": "2026-06-26T14:24:24.2291404-04:00",
+      "ModifiedDate": "2026-06-26T14:24:24.2291404-04:00",
+      "Elements": [
+        {
+          "Id": "bcca2ef8-a5fd-4f10-9a07-7fe390580233",
+          "TopicId": "c1e5043a-df48-466e-97c0-63445b753527",
+          "Title": "DFS Core Concept and Strategy",
+          "BodyText": "Depth-First Search is a graph traversal algorithm that explores as far as possible along each branch before backtracking to try alternative paths.",
+          "Notes": "Think of DFS like navigating a maze: you keep going forward down one corridor until you hit a dead end, then backtrack to the last junction and try another path.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T14:26:32.8398581-04:00",
+          "ModifiedDate": "2026-06-26T14:26:32.8398581-04:00",
+          "Items": [
+            {
+              "Id": "5b6aa5ff-e4fd-4788-b745-7245bee732ac",
+              "Text": "DFS uses a stack-based approach, either via the call stack (recursion) or an explicit stack data structure.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "9c4eb3db-a5ea-494b-b45d-3599f56a11b2",
+              "Text": "A visited set or array is maintained to prevent revisiting nodes and avoid infinite loops in cyclic graphs.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "ccaefd32-259a-49d8-9741-1c138cdd53ae",
+              "Text": "The order in which nodes are explored depends on the order neighbors are stored in the adjacency list or matrix.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "ad7c7517-962b-40ab-b737-90a314f0a045",
+          "TopicId": "c1e5043a-df48-466e-97c0-63445b753527",
+          "Title": "Recursive DFS Implementation",
+          "BodyText": "The recursive implementation of DFS leverages the program\u0027s call stack to track the current path and naturally handles backtracking when a function returns.",
+          "Notes": "Example in JavaScript: function dfs(graph, node, visited = new Set()) { if (visited.has(node)) return; visited.add(node); for (const neighbor of graph[node]) { dfs(graph, neighbor, visited); } }",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T14:26:32.8398581-04:00",
+          "ModifiedDate": "2026-06-26T14:26:32.8398581-04:00",
+          "Items": [
+            {
+              "Id": "6a7d96f9-89fb-4678-9006-26ad45472ff3",
+              "Text": "The base case checks whether the current node has already been visited, returning immediately if so.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "63c23593-9bfc-424b-a1f1-a432744c1315",
+              "Text": "Each recursive call processes one neighbor, diving deeper into the graph before sibling neighbors are explored.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "d6e1f29d-db58-4495-9462-d957e80a1006",
+              "Text": "Recursive DFS is concise and readable but may cause a stack overflow on very deep or large graphs due to call stack limits.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "34eb3c1e-8c84-4580-b8c7-085ee2b91b4c",
+          "TopicId": "c1e5043a-df48-466e-97c0-63445b753527",
+          "Title": "Iterative DFS Implementation",
+          "BodyText": "An iterative DFS replaces the implicit call stack with an explicit stack data structure, making it safe for large graphs that might otherwise exceed recursion depth limits.",
+          "Notes": "Example in JavaScript: function dfs(graph, start) { const stack = [start]; const visited = new Set(); while (stack.length) { const node = stack.pop(); if (visited.has(node)) continue; visited.add(node); for (const neighbor of graph[node]) { stack.push(neighbor); } } }",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T14:26:32.8398581-04:00",
+          "ModifiedDate": "2026-06-26T14:26:32.8398581-04:00",
+          "Items": [
+            {
+              "Id": "d4ba9ad2-0597-4ff5-b766-1e27ff7bb711",
+              "Text": "A node is pushed onto the stack at the start, then repeatedly popped and processed until the stack is empty.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "db0cc7a7-3d62-4411-bcef-0adac46de3f4",
+              "Text": "Neighbors of the current node are pushed onto the stack so the last-pushed neighbor is explored first (LIFO order).",
+              "SortOrder": 1
+            },
+            {
+              "Id": "7c31f7b9-edd9-4eb0-a64a-3cfbb412d9e9",
+              "Text": "Note that the traversal order in iterative DFS may differ slightly from recursive DFS depending on the order neighbors are pushed.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "3bad689d-5e84-4fe6-98fd-cc564f198ee8",
+          "TopicId": "c1e5043a-df48-466e-97c0-63445b753527",
+          "Title": "DFS Traversal Order and Visited Tracking",
+          "BodyText": "Understanding how DFS orders its node visits is essential for correctly implementing and reasoning about the algorithm\u0027s behavior.",
+          "Notes": "For a graph where node 0 connects to 1 and 2, and node 1 connects to 3, DFS starting at 0 might visit: 0 \u2192 1 \u2192 3 \u2192 2, fully exhausting one branch before the other.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T14:26:32.8398581-04:00",
+          "ModifiedDate": "2026-06-26T14:26:32.8398581-04:00",
+          "Items": [
+            {
+              "Id": "29bbec82-116f-4054-a003-b3ed55f8b2e5",
+              "Text": "Nodes are marked visited as soon as they are first encountered to ensure each node is processed exactly once.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "e33ae13c-0db8-42f2-bacd-83cb7507fc6e",
+              "Text": "DFS produces a depth-first tree (or forest for disconnected graphs) that records the exploration path.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "fdce573f-2685-4176-996f-825104fa2275",
+              "Text": "Pre-order, post-order, and other orderings can be captured by recording nodes at different points during the traversal.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "ac8890d7-ea11-49f7-b1a9-a37837a5fc00",
+          "TopicId": "c1e5043a-df48-466e-97c0-63445b753527",
+          "Title": "Handling Disconnected Graphs",
+          "BodyText": "A single DFS call from one starting node will only visit nodes reachable from that node, so disconnected graphs require additional handling to ensure full traversal.",
+          "Notes": "This pattern is important in problems like counting connected components, where you need to know how many separate subgraphs exist.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T14:26:32.8398581-04:00",
+          "ModifiedDate": "2026-06-26T14:26:32.8398581-04:00",
+          "Items": [
+            {
+              "Id": "13500c87-f50a-4d4a-b1de-0bcacb2fa795",
+              "Text": "To traverse a disconnected graph completely, iterate over all nodes and initiate a DFS from any node not yet visited.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "47ca0a79-eb6e-4022-890a-673a3f99951b",
+              "Text": "Each separate DFS call from an unvisited node explores one connected component of the graph.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "345d36fa-2206-4554-a9ce-63a4d6be0b14",
+              "Text": "The number of times a new DFS must be started equals the number of connected components in the graph.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "58bd6850-f44e-4abf-a286-d65192d260ca",
+          "TopicId": "c1e5043a-df48-466e-97c0-63445b753527",
+          "Title": "Common Use Cases of DFS",
+          "BodyText": "DFS is a versatile algorithm used as the basis for solving many important graph problems beyond simple traversal.",
+          "Notes": "Many interview and competitive programming problems reduce to a DFS variant, making it one of the most important graph algorithms to master.",
+          "SortOrder": 5,
+          "CreatedDate": "2026-06-26T14:26:32.8398581-04:00",
+          "ModifiedDate": "2026-06-26T14:26:32.8398581-04:00",
+          "Items": [
+            {
+              "Id": "d951c4fa-5147-413a-a9c8-63955e4cc0de",
+              "Text": "DFS is used to detect cycles in both directed and undirected graphs by checking for back edges during traversal.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "ac7f371e-2c36-4755-801c-0a01ba54e3fc",
+              "Text": "Topological sorting of a directed acyclic graph (DAG) can be produced by recording nodes in post-order during DFS.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "19cf9d66-2fb4-49f0-b6ec-62599c80d178",
+              "Text": "DFS is also used for pathfinding, solving maze problems, finding strongly connected components, and checking graph connectivity.",
+              "SortOrder": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "daad9647-c6ed-45c2-97b6-71fb7fd76e2d",
+      "Title": "Implementing Graph Traversal in JavaScript",
+      "Summary": "Guides students through building a graph data structure and implementing BFS and DFS traversal algorithms in JavaScript. Reinforces conceptual understanding through hands-on coding practice.",
+      "SortOrder": 6,
+      "CreatedDate": "2026-06-26T14:24:24.2291404-04:00",
+      "ModifiedDate": "2026-06-26T14:24:24.2291404-04:00",
+      "Elements": [
+        {
+          "Id": "40236566-690a-42d3-8a0e-4beeaa5c3610",
+          "TopicId": "daad9647-c6ed-45c2-97b6-71fb7fd76e2d",
+          "Title": "Setting Up the Graph Class in JavaScript",
+          "BodyText": "The foundation of graph implementation is creating a Graph class that manages vertices and edges using an adjacency list.",
+          "Notes": "Using a JavaScript object or Map to store the adjacency list is common. Example: this.adjacencyList = {} in the constructor.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T14:26:53.64305-04:00",
+          "ModifiedDate": "2026-06-26T14:26:53.64305-04:00",
+          "Items": [
+            {
+              "Id": "570386b3-cf3e-4552-9a74-5a1b3d679875",
+              "Text": "Define a Graph class with a constructor that initializes an empty adjacency list as a plain object or Map.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "fdedcbc0-3a6a-4002-8351-f9c8295c42ee",
+              "Text": "Add an addVertex method that creates a new key in the adjacency list with an empty array as its value.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "0c094874-4935-41bf-882c-41e60eb2cb9c",
+              "Text": "Guard against duplicate vertices by checking if the vertex already exists before adding it.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "2aa97056-d83c-4474-8df5-ca0a76bdfcb9",
+          "TopicId": "daad9647-c6ed-45c2-97b6-71fb7fd76e2d",
+          "Title": "Adding Edges to the Graph",
+          "BodyText": "Edges connect vertices and are stored by pushing neighbor references into each vertex\u0027s adjacency list array.",
+          "Notes": "For an undirected graph, addEdge must update both vertices. For a directed graph, only the source vertex\u0027s list is updated.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T14:26:53.64305-04:00",
+          "ModifiedDate": "2026-06-26T14:26:53.64305-04:00",
+          "Items": [
+            {
+              "Id": "6877fada-3de3-4e18-89bf-c003facc7db1",
+              "Text": "Implement an addEdge(v1, v2) method that pushes v2 into v1\u0027s adjacency list and, for undirected graphs, also pushes v1 into v2\u0027s adjacency list.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "a83cb7dc-ecbb-4459-8a4c-01143f2309dc",
+              "Text": "Add a removeEdge method that filters out the target vertex from each neighbor\u0027s array to maintain list integrity.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "c38d581e-329b-4dd7-a918-7f77a314dcde",
+              "Text": "Always validate that both vertices exist in the adjacency list before attempting to add or remove an edge.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "50161be8-e58a-4aec-84ce-55e3964cd750",
+          "TopicId": "daad9647-c6ed-45c2-97b6-71fb7fd76e2d",
+          "Title": "Implementing Breadth-First Search (BFS)",
+          "BodyText": "BFS explores a graph level by level using a queue, visiting all neighbors of a node before moving deeper.",
+          "Notes": "A visited object or Set prevents revisiting nodes and infinite loops in cyclic graphs.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T14:26:53.64305-04:00",
+          "ModifiedDate": "2026-06-26T14:26:53.64305-04:00",
+          "Items": [
+            {
+              "Id": "50cf68db-eca7-426d-9bb1-b4e2c84aff87",
+              "Text": "Initialize a queue with the starting vertex, a visited set marking that vertex as seen, and an empty results array.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "b301ec0c-978c-4d27-a45f-80c8a9b6ef6f",
+              "Text": "Dequeue the front vertex, push it to results, then enqueue each of its unvisited neighbors and mark them visited.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "55c3afaa-6ede-4957-b677-ad99c49962a3",
+              "Text": "Continue dequeuing and processing until the queue is empty, then return the results array representing BFS order.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "f57b6e03-1fbc-43c4-89c4-c1afb1f2114d",
+              "Text": "BFS is ideal for finding the shortest path in an unweighted graph due to its level-by-level traversal pattern.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "72ecef6a-3720-4071-8194-70c796389771",
+          "TopicId": "daad9647-c6ed-45c2-97b6-71fb7fd76e2d",
+          "Title": "Implementing Depth-First Search \u2014 Recursive Approach",
+          "BodyText": "The recursive DFS implementation uses the call stack to explore as deep as possible along each branch before backtracking.",
+          "Notes": "A visited object is declared in the outer function and shared across all recursive calls via closure, avoiding redundant parameter passing.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T14:26:53.64305-04:00",
+          "ModifiedDate": "2026-06-26T14:26:53.64305-04:00",
+          "Items": [
+            {
+              "Id": "2f555cbd-acdf-4eee-a181-270063968c16",
+              "Text": "Define a helper function that accepts a vertex, marks it visited, pushes it to results, then recursively calls itself on each unvisited neighbor.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "306f5430-8a18-4aec-b8ec-2deea3c24360",
+              "Text": "The base case is implicit: recursion stops for a vertex when all of its neighbors have already been visited.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "ab8a3e3c-81b0-4383-8971-c51b1cac80f0",
+              "Text": "Return the results array after the initial call to the helper completes all recursive exploration.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "94f789ad-021b-4438-ae42-6b4a7d2068db",
+          "TopicId": "daad9647-c6ed-45c2-97b6-71fb7fd76e2d",
+          "Title": "Implementing Depth-First Search \u2014 Iterative Approach",
+          "BodyText": "DFS can also be implemented iteratively using an explicit stack, which mirrors the recursive call stack manually.",
+          "Notes": "A key difference from iterative BFS is using a stack (push/pop) instead of a queue (push/shift), which reverses the traversal order relative to the recursive version.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T14:26:53.64305-04:00",
+          "ModifiedDate": "2026-06-26T14:26:53.64305-04:00",
+          "Items": [
+            {
+              "Id": "33cef12d-f2ba-41bb-9409-1d49c70bfd4d",
+              "Text": "Initialize a stack with the starting vertex and a visited set, then loop while the stack is not empty.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "829f54b3-89a0-4bb1-b303-3b54a63ca909",
+              "Text": "Pop the top vertex from the stack; if it has not been visited, mark it visited, add it to results, and push its neighbors onto the stack.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "ca522152-9c76-456a-96b6-f6d67895b9b5",
+              "Text": "The iterative approach avoids potential call stack overflow issues that can arise with very deep recursive DFS on large graphs.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "2fa99013-fffc-490a-a8fe-c79e7ab913c7",
+          "TopicId": "daad9647-c6ed-45c2-97b6-71fb7fd76e2d",
+          "Title": "Comparing BFS and DFS Outputs in Practice",
+          "BodyText": "Running both BFS and DFS on the same graph highlights how traversal strategy affects the order in which vertices are visited.",
+          "Notes": "Example: on a graph with vertices A\u2013F, BFS from A might return [A, B, C, D, E, F] while DFS returns [A, B, D, E, C, F], depending on adjacency list ordering.",
+          "SortOrder": 5,
+          "CreatedDate": "2026-06-26T14:26:53.64305-04:00",
+          "ModifiedDate": "2026-06-26T14:26:53.64305-04:00",
+          "Items": [
+            {
+              "Id": "d7dd56d0-01ef-4044-89e9-d3c009d0bcd4",
+              "Text": "BFS output reflects proximity to the start node, grouping vertices by the number of edges separating them from the source.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "eb57f4db-da55-43d5-9719-20cb970a0956",
+              "Text": "DFS output reflects depth of exploration, often producing a path that dives into one branch before exploring siblings.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "d3ec1dcf-207d-4286-a6c5-8faa48a5c828",
+              "Text": "Testing traversals on the same graph instance reinforces understanding of when to choose BFS versus DFS for a given problem.",
+              "SortOrder": 2
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "TotalElementCount": 42
+}

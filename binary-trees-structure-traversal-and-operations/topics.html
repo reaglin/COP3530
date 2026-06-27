@@ -1,0 +1,95 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Binary Trees: Structure, Traversal, and Operations — Module Topics</title>
+<style>
+body{font-family:'Segoe UI',Arial,sans-serif;max-width:880px;margin:0 auto;padding:32px 24px;color:#222;line-height:1.55}
+h1{font-size:1.6rem;border-bottom:2px solid #dcdcdc;padding-bottom:8px}
+h2{font-size:1.2rem;margin-top:28px;color:#1a3c6e}
+.summary{color:#555;font-style:italic;margin:4px 0 10px}
+ul{margin:6px 0 6px 4px}
+li{margin:5px 0}
+.el-body{color:#555}
+.empty{color:#888}
+</style>
+</head>
+<body>
+<h1>Binary Trees: Structure, Traversal, and Operations — Module Topics</h1>
+<h2>Introduction to Binary Trees</h2>
+<div class="summary">Defines binary trees as a foundational data structure and explains core terminology including nodes, edges, roots, leaves, and parent-child relationships. Establishes the structural rules that distinguish binary trees from other tree types.</div>
+<ul>
+<li><strong>What Is a Binary Tree?</strong> <span class="el-body">— A binary tree is a hierarchical data structure composed of nodes connected by edges, where each node holds a value and links to at most two child nodes.</span></li>
+<li><strong>Nodes and Edges</strong> <span class="el-body">— Nodes are the fundamental units of a binary tree, each storing a data value and references to its children, while edges are the directional links connecting a parent node to a child node.</span></li>
+<li><strong>The Root Node</strong> <span class="el-body">— The root is the single topmost node of a binary tree and serves as the unique entry point through which all other nodes are reachable.</span></li>
+<li><strong>Leaf Nodes</strong> <span class="el-body">— A leaf node is any node that has no children — both its left and right child references are null — representing the endpoints of the tree.</span></li>
+<li><strong>Parent-Child Relationships</strong> <span class="el-body">— In a binary tree, every node except the root has exactly one parent, and each node can be the parent of zero, one, or two children, forming a strict hierarchical relationship.</span></li>
+<li><strong>The Binary Constraint: Structural Rules</strong> <span class="el-body">— The defining rule of a binary tree is that every node may have at most two children, conventionally referred to as the left child and the right child.</span></li>
+</ul>
+<h2>Node Structure and Tree Anatomy</h2>
+<div class="summary">Examines how individual nodes are constructed, including data storage and left and right child pointers. Covers key tree properties such as height, depth, and balance.</div>
+<ul>
+<li><strong>Anatomy of a Binary Tree Node</strong> <span class="el-body">— A binary tree node is the fundamental building block of the tree structure, containing three core components: a data field and two child references.</span></li>
+<li><strong>Root, Parent, and Child Relationships</strong> <span class="el-body">— Binary trees are organized through hierarchical relationships between nodes, starting from a single entry point called the root.</span></li>
+<li><strong>Node Depth</strong> <span class="el-body">— Depth measures how far a specific node is from the root of the tree, providing a way to locate nodes within the hierarchy.</span></li>
+<li><strong>Tree Height</strong> <span class="el-body">— Height is a property that describes the overall size of a tree or subtree, measured as the longest path from a node down to a leaf.</span></li>
+<li><strong>Subtrees and Tree Levels</strong> <span class="el-body">— A binary tree can be understood recursively as a root node connected to a left subtree and a right subtree, each of which is itself a binary tree.</span></li>
+<li><strong>Tree Balance</strong> <span class="el-body">— Balance refers to how evenly the nodes of a tree are distributed between left and right subtrees, directly impacting the performance of tree operations.</span></li>
+</ul>
+<h2>Binary Search Trees (BST) Concepts</h2>
+<div class="summary">Introduces the binary search tree as a specialized binary tree where left child values are less than the parent and right child values are greater. Explains how this ordering property enables efficient search operations.</div>
+<ul>
+<li><strong>The BST Ordering Property</strong> <span class="el-body">— A Binary Search Tree is a specialized binary tree that enforces a strict ordering rule on every node in the structure.</span></li>
+<li><strong>BST Node Structure</strong> <span class="el-body">— Each node in a Binary Search Tree holds a value and references to its left and right children, forming the backbone of the tree.</span></li>
+<li><strong>How BST Ordering Enables Efficient Search</strong> <span class="el-body">— The ordering property of a BST allows search operations to eliminate half of the remaining nodes at each step, similar to a binary search on a sorted array.</span></li>
+<li><strong>BST vs. General Binary Tree</strong> <span class="el-body">— While all BSTs are binary trees, not all binary trees are BSTs — the key distinction lies in the presence of the ordering constraint.</span></li>
+<li><strong>BST Height and Performance</strong> <span class="el-body">— The efficiency of BST operations is directly tied to the height of the tree, which depends on the order in which values are inserted.</span></li>
+</ul>
+<h2>Insertion and Search Operations</h2>
+<div class="summary">Describes the logic for inserting new nodes into a BST while maintaining the ordering property, and outlines how search leverages that structure to locate values efficiently. Includes analysis of best and worst case performance.</div>
+<ul>
+<li><strong>BST Ordering Property</strong> <span class="el-body">— Every insertion and search operation in a BST relies on the fundamental ordering property that governs node placement.</span></li>
+<li><strong>Insertion Logic</strong> <span class="el-body">— Inserting a new node into a BST follows a recursive or iterative comparison process that preserves the ordering property.</span></li>
+<li><strong>JavaScript Implementation of Insertion</strong> <span class="el-body">— In JavaScript, BST insertion can be implemented as a recursive method on the tree class that navigates to the correct position.</span></li>
+<li><strong>Search Logic</strong> <span class="el-body">— Searching a BST exploits the ordering property to eliminate half of the remaining nodes at each comparison step.</span></li>
+<li><strong>Best Case Performance</strong> <span class="el-body">— In the best case, both insertion and search operate in O(log n) time when the BST is balanced.</span></li>
+<li><strong>Worst Case Performance</strong> <span class="el-body">— In the worst case, a BST degrades to O(n) time for insertion and search when the tree becomes skewed or unbalanced.</span></li>
+<li><strong>Comparing Best and Worst Case Scenarios</strong> <span class="el-body">— Understanding the gap between best and worst case performance helps developers make informed decisions about when and how to use BSTs.</span></li>
+</ul>
+<h2>Deletion Operations</h2>
+<div class="summary">Covers the three cases of node deletion in a BST: removing a leaf, a node with one child, and a node with two children. Explains how the in-order successor or predecessor is used to preserve BST integrity.</div>
+<ul>
+<li><strong>Overview of BST Deletion Cases</strong> <span class="el-body">— Deleting a node from a Binary Search Tree requires handling three distinct cases depending on the structure of the node being removed.</span></li>
+<li><strong>Case 1: Deleting a Leaf Node</strong> <span class="el-body">— A leaf node has no children, making it the simplest case to handle during deletion.</span></li>
+<li><strong>Case 2: Deleting a Node with One Child</strong> <span class="el-body">— When the node to be deleted has exactly one child, that child takes the place of the deleted node in the tree.</span></li>
+<li><strong>Case 3: Deleting a Node with Two Children</strong> <span class="el-body">— Deleting a node with two children is the most complex case, requiring a replacement value to maintain BST integrity.</span></li>
+<li><strong>The In-Order Successor</strong> <span class="el-body">— The in-order successor of a node is the smallest node in its right subtree, and it is the most commonly used replacement when deleting a node with two children.</span></li>
+<li><strong>The In-Order Predecessor</strong> <span class="el-body">— The in-order predecessor is the largest node in the left subtree and serves as an alternative replacement node during deletion.</span></li>
+<li><strong>Preserving BST Integrity After Deletion</strong> <span class="el-body">— Regardless of which case applies, the fundamental goal of deletion is to ensure the BST property holds for every node in the tree after the operation.</span></li>
+</ul>
+<h2>Tree Traversal Strategies</h2>
+<div class="summary">Explores in-order, pre-order, and post-order traversal algorithms, detailing the sequence in which nodes are visited for each approach. Highlights practical use cases such as sorted output and tree serialization.</div>
+<ul>
+<li><strong>In-Order Traversal (Left → Root → Right)</strong> <span class="el-body">— In-order traversal visits the left subtree first, then the root node, and finally the right subtree, producing nodes in ascending sorted order for a binary search tree.</span></li>
+<li><strong>Pre-Order Traversal (Root → Left → Right)</strong> <span class="el-body">— Pre-order traversal visits the root node first, then recursively traverses the left subtree, followed by the right subtree.</span></li>
+<li><strong>Post-Order Traversal (Left → Right → Root)</strong> <span class="el-body">— Post-order traversal recursively visits the left subtree and right subtree before processing the root node, ensuring children are always handled before their parent.</span></li>
+<li><strong>Recursive vs. Iterative Traversal Implementations</strong> <span class="el-body">— All three traversal strategies can be implemented either recursively using the call stack or iteratively using an explicit stack data structure.</span></li>
+<li><strong>Practical Use Cases for Each Traversal</strong> <span class="el-body">— Each traversal strategy is suited to specific real-world tasks, and selecting the correct one is critical to solving tree-based problems efficiently.</span></li>
+<li><strong>Traversal and Tree Serialization</strong> <span class="el-body">— Tree serialization is the process of converting a tree structure into a linear sequence of values that can be stored or transmitted and later reconstructed.</span></li>
+</ul>
+<h2>Implementing a BST in JavaScript</h2>
+<div class="summary">Guides students through a hands-on JavaScript implementation of a binary search tree, including class and method definitions for insertion, deletion, and traversal. Reinforces conceptual understanding through working code examples.</div>
+<ul>
+<li><strong>Defining the Node Class</strong> <span class="el-body">— Every BST is built from individual nodes, each storing a value and references to its left and right children. In JavaScript, a Node class provides the blueprint for these building blocks.</span></li>
+<li><strong>Setting Up the BinarySearchTree Class</strong> <span class="el-body">— The BST itself is represented as a class that tracks the root node and exposes methods for insertion, deletion, and traversal.</span></li>
+<li><strong>Implementing the Insert Method</strong> <span class="el-body">— The insert method adds a new value to the correct position in the BST by comparing the new value against existing nodes and traversing left or right accordingly.</span></li>
+<li><strong>Implementing Search / Lookup</strong> <span class="el-body">— A search method traverses the BST to determine whether a given value exists, exploiting the ordered property to eliminate half the remaining tree at each step.</span></li>
+<li><strong>Implementing BST Traversal Methods</strong> <span class="el-body">— Traversal methods — in-order, pre-order, and post-order — are implemented as recursive functions that visit nodes in a specific sequence and collect or process their values.</span></li>
+<li><strong>Implementing the Delete Method</strong> <span class="el-body">— Deletion is the most complex BST operation because removing a node must preserve the BST ordering property, with different logic required depending on whether the node has zero, one, or two children.</span></li>
+<li><strong>Putting It All Together: Testing the BST</strong> <span class="el-body">— After implementing the Node and BinarySearchTree classes with insert, delete, search, and traversal methods, testing with concrete examples validates the implementation and reinforces understanding.</span></li>
+</ul>
+
+<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
+</body>
+</html>

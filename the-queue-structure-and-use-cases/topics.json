@@ -1,0 +1,1041 @@
+{
+  "ModuleFolderName": "The_Queue_Structure",
+  "CourseName": "COP3530 - Data Structures",
+  "GeneratedDate": "2026-06-26T13:57:44.0549589-04:00",
+  "ModifiedDate": "2026-06-26T13:59:48.6937279-04:00",
+  "Outcomes": [],
+  "Topics": [
+    {
+      "Id": "8ddede1d-1360-42e2-adc5-9baa89342620",
+      "Title": "Introduction to the Queue Data Structure",
+      "Summary": "This topic establishes what a queue is and where it fits within the broader landscape of data structures. Students are introduced to the queue as an ordered collection with specific rules governing how data enters and exits.",
+      "SortOrder": 0,
+      "CreatedDate": "2026-06-26T13:57:44.0549589-04:00",
+      "ModifiedDate": "2026-06-26T13:57:44.0549589-04:00",
+      "Elements": [
+        {
+          "Id": "e69fac2c-9b43-4e69-af41-a0e13f4483de",
+          "TopicId": "8ddede1d-1360-42e2-adc5-9baa89342620",
+          "Title": "What Is a Queue?",
+          "BodyText": "A queue is an ordered collection of elements designed so that items are added at one end and removed from the other.",
+          "Notes": "Think of a queue like a line of people waiting at a ticket counter \u2014 the first person to join the line is the first person served.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T13:58:02.0419841-04:00",
+          "ModifiedDate": "2026-06-26T13:58:02.0419841-04:00",
+          "Items": [
+            {
+              "Id": "19099f3c-4b77-486f-9546-99799e8b79cd",
+              "Text": "A queue maintains a strict ordering of its elements based on the sequence in which they were inserted.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "9dd17aeb-fa7c-4832-9137-bf1595f9b3d1",
+              "Text": "Elements cannot be accessed or removed from arbitrary positions; interaction is restricted to the two ends of the collection.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "b11c74a9-bedc-4fd7-8d81-5789374f4ee1",
+              "Text": "This controlled access pattern makes queues predictable and consistent in behavior.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "21880f51-d42d-43ac-8dcb-173713309753",
+          "TopicId": "8ddede1d-1360-42e2-adc5-9baa89342620",
+          "Title": "The FIFO Principle",
+          "BodyText": "The defining rule of a queue is First-In, First-Out (FIFO), meaning the element that has been waiting the longest is always the next one to be processed.",
+          "Notes": "FIFO contrasts directly with LIFO (Last-In, First-Out), which governs stacks. Understanding this distinction is essential for choosing the right data structure for a given problem.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T13:58:02.0419841-04:00",
+          "ModifiedDate": "2026-06-26T13:58:02.0419841-04:00",
+          "Items": [
+            {
+              "Id": "2484bb56-8d5e-4be8-90be-8413a96b7692",
+              "Text": "The element inserted earliest into the queue is guaranteed to be the first element removed.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "d03b65d6-7a60-447f-937d-0b4db5ec6937",
+              "Text": "No element can \u0027skip ahead\u0027 in a standard queue \u2014 every element must wait its turn in arrival order.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "696de90b-cf46-4c4f-98a3-0212222b7de9",
+              "Text": "FIFO naturally models fairness in situations where order of arrival determines order of service.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "5fdf105a-c184-4840-a043-7bc5a26704c8",
+          "TopicId": "8ddede1d-1360-42e2-adc5-9baa89342620",
+          "Title": "Core Terminology: Enqueue and Dequeue",
+          "BodyText": "Queues use specific vocabulary to describe how elements enter and exit the collection.",
+          "Notes": "Some texts use \u0027push/pop\u0027 for queues informally, but \u0027enqueue/dequeue\u0027 are the precise, industry-standard terms that clearly distinguish queue operations from stack operations.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T13:58:02.0419841-04:00",
+          "ModifiedDate": "2026-06-26T13:58:02.0419841-04:00",
+          "Items": [
+            {
+              "Id": "8f370503-1a02-4e28-acb5-231319ad301e",
+              "Text": "Enqueue refers to the operation of adding a new element to the rear (back) of the queue.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "507e8e84-89b2-4001-a927-d80e4faf1656",
+              "Text": "Dequeue refers to the operation of removing the element at the front of the queue.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "e33267c6-943b-45e7-ac1b-37850bca1b87",
+              "Text": "The front is the end from which elements exit, while the rear is the end at which elements enter.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "57c5a83a-3fe3-4920-b061-cf909d50cfa0",
+          "TopicId": "8ddede1d-1360-42e2-adc5-9baa89342620",
+          "Title": "Queues as Abstract Data Types",
+          "BodyText": "A queue is classified as an abstract data type (ADT), meaning it is defined by its behavior and rules rather than by any single specific implementation.",
+          "Notes": "Because the queue is an ADT, its FIFO contract remains consistent whether it is built using an array, a linked list, or another underlying structure.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T13:58:02.0419841-04:00",
+          "ModifiedDate": "2026-06-26T13:58:02.0419841-04:00",
+          "Items": [
+            {
+              "Id": "1430d282-550d-44a3-820b-919fb84312cf",
+              "Text": "As an ADT, the queue specifies what operations are valid without prescribing how those operations must be carried out internally.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "ee47e4f3-7751-443d-86b7-46f7bcbc468d",
+              "Text": "The key behavioral contract is that access is restricted to the front and rear, preserving FIFO order at all times.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "a5c06447-22cf-4bdf-8849-0d9d8a5a1514",
+              "Text": "Separating the concept of a queue from its implementation allows developers to swap underlying structures without changing how the queue is used.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "d3f99596-35ec-416f-ab2c-e75386dea3df",
+          "TopicId": "8ddede1d-1360-42e2-adc5-9baa89342620",
+          "Title": "Queues Among Other Data Structures",
+          "BodyText": "Understanding where the queue fits in the broader landscape of data structures helps clarify when it is the appropriate tool to use.",
+          "Notes": "Queues and stacks are both linear, restricted-access structures, but their opposite access patterns make them suited to very different categories of problems.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T13:58:02.0419841-04:00",
+          "ModifiedDate": "2026-06-26T13:58:02.0419841-04:00",
+          "Items": [
+            {
+              "Id": "a5d53e8b-45fe-4b1a-a603-a4b44b79dd83",
+              "Text": "Like stacks and linked lists, queues are linear data structures in which elements are arranged sequentially.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "cc4b8f81-8c13-463f-a940-e48d3faa2007",
+              "Text": "Unlike arrays or linked lists, queues deliberately limit access points to enforce an ordering policy rather than allowing arbitrary element retrieval.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "a0c2cd99-5172-4a78-bdea-3070a8040812",
+              "Text": "Compared to a stack\u0027s LIFO behavior, the queue\u0027s FIFO behavior makes it more suitable for scenarios where arrival order must be honored.",
+              "SortOrder": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "8d075c05-b92e-437f-8a74-91ed7b764b0f",
+      "Title": "The FIFO Principle",
+      "Summary": "This topic explains the First-In, First-Out principle that defines queue behavior. Students learn how FIFO governs the order of insertion and removal, distinguishing queues from other data structures.",
+      "SortOrder": 1,
+      "CreatedDate": "2026-06-26T13:57:44.0549589-04:00",
+      "ModifiedDate": "2026-06-26T13:57:44.0549589-04:00",
+      "Elements": [
+        {
+          "Id": "994450f5-ef89-449d-bd77-9f6dcf5e5a5c",
+          "TopicId": "8d075c05-b92e-437f-8a74-91ed7b764b0f",
+          "Title": "What FIFO Means",
+          "BodyText": "FIFO stands for First-In, First-Out, the core principle that defines how a queue operates.",
+          "Notes": "Think of a queue like a line at a grocery store: the first person to join the line is the first person to be served.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T13:58:21.0615731-04:00",
+          "ModifiedDate": "2026-06-26T13:58:21.0615731-04:00",
+          "Items": [
+            {
+              "Id": "88f30edd-39f1-44ec-a2b4-1570409d612c",
+              "Text": "The element that is inserted first into the queue is always the first element to be removed.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "b576926a-9fd3-4adb-abef-11c091a1454b",
+              "Text": "No element can be removed before all elements that arrived ahead of it have been removed.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "c52aace2-6d53-4e53-825a-bf8dc722f792",
+              "Text": "FIFO ensures a strict, predictable ordering that is enforced by the structure itself.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "fc2ce282-8a4c-464f-8ed8-41fe2a0bb84d",
+          "TopicId": "8d075c05-b92e-437f-8a74-91ed7b764b0f",
+          "Title": "Insertion and Removal Under FIFO",
+          "BodyText": "FIFO governs both where new elements enter the queue and where elements exit, keeping these two ends distinct.",
+          "Notes": "The insertion end is commonly called the \u0027rear\u0027 or \u0027tail,\u0027 while the removal end is called the \u0027front\u0027 or \u0027head.\u0027",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T13:58:21.0615731-04:00",
+          "ModifiedDate": "2026-06-26T13:58:21.0615731-04:00",
+          "Items": [
+            {
+              "Id": "84087b9e-44c7-4dcb-82e7-295b42e8ae2e",
+              "Text": "New elements are always added at the rear of the queue, never in the middle or at the front.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "b9e39d5a-a652-48b0-ad69-62c313512c66",
+              "Text": "Elements are always removed from the front of the queue, never from the rear or middle.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "82cdaf3f-bc12-4a0a-b2f3-64849d8ca31c",
+              "Text": "This separation of insertion and removal points is what physically enforces the FIFO order.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "74cbbccd-e2c5-41e3-9d92-c87334e64fa3",
+          "TopicId": "8d075c05-b92e-437f-8a74-91ed7b764b0f",
+          "Title": "FIFO Compared to LIFO",
+          "BodyText": "Understanding FIFO becomes clearer when contrasted with LIFO (Last-In, First-Out), the principle that governs stacks.",
+          "Notes": "A stack is analogous to a pile of plates: you add and remove from the same top end, so the most recently added item is retrieved first.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T13:58:21.0615731-04:00",
+          "ModifiedDate": "2026-06-26T13:58:21.0615731-04:00",
+          "Items": [
+            {
+              "Id": "2c453f7f-4e2a-46c4-874a-7c329637614b",
+              "Text": "In a LIFO structure, the most recently inserted element is the first to be removed, which is the opposite of FIFO behavior.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "c72fe7a5-a75b-4a14-a038-f0032df6f92c",
+              "Text": "Queues and stacks both restrict access to elements, but they do so at different ends and in opposite orderings.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "36c3ecb3-9285-44c0-8a91-524000207a04",
+              "Text": "Choosing between FIFO and LIFO depends on whether the use case requires processing in arrival order or reverse arrival order.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "61389533-c7a7-4bfa-86c3-4e0b554490bb",
+          "TopicId": "8d075c05-b92e-437f-8a74-91ed7b764b0f",
+          "Title": "Why FIFO Matters for Fairness and Order",
+          "BodyText": "The FIFO principle naturally encodes fairness by ensuring every element is processed in the exact order it arrived.",
+          "Notes": "This property makes queues especially valuable in scheduling and buffering scenarios, where preserving arrival order is critical to correct system behavior.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T13:58:21.0615731-04:00",
+          "ModifiedDate": "2026-06-26T13:58:21.0615731-04:00",
+          "Items": [
+            {
+              "Id": "f3758cbe-c578-486d-aa9a-5bec06d014a8",
+              "Text": "No element is skipped or prioritized over one that arrived earlier, which prevents starvation in processing pipelines.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "df4e0eef-b5e7-42cb-ad19-cfd482ab2945",
+              "Text": "FIFO guarantees that the relative order of elements is preserved from input to output.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "7984585f-447f-497b-bc0a-70afcd07ef99",
+              "Text": "Systems that must handle requests, tasks, or data in arrival order rely on the FIFO guarantee to produce correct and predictable results.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "fe55d96b-9a58-40d0-8c4f-b4137c8fdeaa",
+          "TopicId": "8d075c05-b92e-437f-8a74-91ed7b764b0f",
+          "Title": "FIFO as a Defining Constraint of the Queue",
+          "BodyText": "FIFO is not just a behavioral tendency of queues \u2014 it is the defining rule that distinguishes a queue from other data structures.",
+          "Notes": "Any data structure that does not enforce FIFO ordering, even if it stores elements sequentially, is not technically a queue.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T13:58:21.0615731-04:00",
+          "ModifiedDate": "2026-06-26T13:58:21.0615731-04:00",
+          "Items": [
+            {
+              "Id": "f45d0d8e-786f-4627-8258-5cb709885f5c",
+              "Text": "A data structure is classified as a queue specifically because it enforces FIFO access and no other access pattern.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "04c79a7f-c54b-4db8-baab-7e58663927de",
+              "Text": "Violating FIFO \u2014 for example, by allowing removal from the rear \u2014 would change the structure into a different abstract data type.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "13171a2d-e9b3-4734-82af-2198bac42f34",
+              "Text": "Understanding FIFO as a strict constraint helps distinguish pure queues from related structures like deques or priority queues, which relax or modify this rule.",
+              "SortOrder": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "24c2a9eb-9743-4267-9869-76018c29d0e3",
+      "Title": "Queue Operations",
+      "Summary": "This topic covers the core operations performed on a queue, including enqueue, dequeue, peek, and isEmpty. Students examine the mechanics and expected behavior of each operation.",
+      "SortOrder": 2,
+      "CreatedDate": "2026-06-26T13:57:44.0549589-04:00",
+      "ModifiedDate": "2026-06-26T13:57:44.0549589-04:00",
+      "Elements": [
+        {
+          "Id": "db880865-0f61-4f45-b180-bc4967809cde",
+          "TopicId": "24c2a9eb-9743-4267-9869-76018c29d0e3",
+          "Title": "The Enqueue Operation",
+          "BodyText": "Enqueue is the operation that adds a new element to the back (rear) of the queue.",
+          "Notes": "Think of enqueue like joining the back of a line at a store \u2014 every new arrival goes to the end, preserving order for all existing members.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T13:58:38.6574795-04:00",
+          "ModifiedDate": "2026-06-26T13:58:38.6574795-04:00",
+          "Items": [
+            {
+              "Id": "95bd9e30-025a-426c-a963-373f4b8647e2",
+              "Text": "The new element is always inserted at the rear or tail position of the queue.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "3a201452-47c3-4474-8dc1-2720051ff4aa",
+              "Text": "The size of the queue increases by one after each successful enqueue.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "43e8991f-8f25-4f85-bb27-cf4567464b2b",
+              "Text": "If the queue has a fixed capacity, an overflow condition must be checked before enqueueing.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "24e69b29-1ea7-4e2b-88fb-2dcc20827a0a",
+              "Text": "In a linked-list implementation, a new node is created and the tail pointer is updated to reference it.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "8bc2e8b8-68ac-4f06-9642-867f21290e75",
+          "TopicId": "24c2a9eb-9743-4267-9869-76018c29d0e3",
+          "Title": "The Dequeue Operation",
+          "BodyText": "Dequeue removes and returns the element at the front of the queue, following the FIFO principle.",
+          "Notes": "Dequeue is the counterpart to enqueue \u2014 while enqueue feeds elements in, dequeue releases the element that has waited the longest, mirroring real-world queue behavior like printer job processing.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T13:58:38.6574795-04:00",
+          "ModifiedDate": "2026-06-26T13:58:38.6574795-04:00",
+          "Items": [
+            {
+              "Id": "b3007294-3050-41bc-aa5d-ed62a99d2cb6",
+              "Text": "The element at the front (head) of the queue is removed, not an arbitrary element.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "04c71864-42ba-4110-b01f-3b2fe8c16da5",
+              "Text": "The front pointer advances to the next element after removal.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "e69b8a88-ca7a-44e7-8a74-336788f8c188",
+              "Text": "An underflow condition must be checked \u2014 dequeuing from an empty queue is an error.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "2b49e3a9-252e-4de2-8439-779be9f5a7a9",
+              "Text": "The queue size decreases by one after each successful dequeue.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "da461894-d1c0-4445-8b12-219ce70eec2e",
+          "TopicId": "24c2a9eb-9743-4267-9869-76018c29d0e3",
+          "Title": "The Peek (Front) Operation",
+          "BodyText": "Peek allows inspection of the front element of the queue without removing it.",
+          "Notes": "Peek is useful when a system needs to evaluate the next item to be processed before committing to its removal, such as checking a task\u0027s priority before dispatching.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T13:58:38.6574795-04:00",
+          "ModifiedDate": "2026-06-26T13:58:38.6574795-04:00",
+          "Items": [
+            {
+              "Id": "b0bc5c9a-d480-4250-9d40-12a54b3d89af",
+              "Text": "Peek returns the value at the front of the queue but leaves the queue structure unchanged.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "10404062-5ac9-4400-9a29-e2e124adcf3a",
+              "Text": "Like dequeue, peek should first verify the queue is not empty to avoid errors.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "f961fdc2-c08c-4e66-9dfa-f9010d3f4c44",
+              "Text": "Peek does not modify the front pointer, rear pointer, or queue size.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "22c251ac-ed7a-4b59-8ac0-aeccb05af833",
+          "TopicId": "24c2a9eb-9743-4267-9869-76018c29d0e3",
+          "Title": "The isEmpty Operation",
+          "BodyText": "isEmpty checks whether the queue currently contains any elements, returning a boolean result.",
+          "Notes": "isEmpty is a foundational guard operation \u2014 it is typically called before dequeue or peek to prevent underflow errors and is essential in loop-driven queue processing.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T13:58:38.6574795-04:00",
+          "ModifiedDate": "2026-06-26T13:58:38.6574795-04:00",
+          "Items": [
+            {
+              "Id": "3bbfd2a3-b9d3-4ae4-b4d0-d674773b5ca0",
+              "Text": "isEmpty returns true when the queue holds no elements, and false otherwise.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "7d544cd9-1e31-434d-ac4f-a3acdb9335c6",
+              "Text": "In array-based implementations, isEmpty is often determined by checking if the size counter equals zero.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "705fa0bd-188d-4046-bf50-a83a5c589bdf",
+              "Text": "In linked-list implementations, isEmpty can be determined by checking if the head pointer is null.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "3000aec3-5411-4809-8a89-ac5dd73ac0f2",
+              "Text": "Many other queue operations depend on isEmpty as a prerequisite check.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "3d50cb66-9a50-471e-b1d9-d4ccd09518ff",
+          "TopicId": "24c2a9eb-9743-4267-9869-76018c29d0e3",
+          "Title": "Operation Behavior and Expected Outcomes",
+          "BodyText": "Each queue operation has a well-defined expected behavior that ensures the integrity of the FIFO ordering.",
+          "Notes": "Understanding expected outcomes \u2014 including normal results and error conditions \u2014 is critical for correctly implementing and debugging queue-based systems.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T13:58:38.6574795-04:00",
+          "ModifiedDate": "2026-06-26T13:58:38.6574795-04:00",
+          "Items": [
+            {
+              "Id": "0adecb1d-a608-42c9-815c-d427831f627f",
+              "Text": "Enqueue and dequeue together maintain strict ordering: the first element in is always the first element out.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "49b0f0aa-fbef-4e5e-9e41-7a0a048af589",
+              "Text": "Peek and isEmpty are non-destructive operations that do not alter the queue\u0027s state.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "14ba835a-2f22-4558-a6ce-4244853c7ab2",
+              "Text": "Attempting dequeue or peek on an empty queue should raise an exception or return a sentinel value, depending on the implementation contract.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "97585b1e-0c13-492b-99af-ca8fffb3880f",
+              "Text": "All four operations ideally execute in O(1) constant time, making queues efficient for high-frequency use cases.",
+              "SortOrder": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "6cb903f7-cdb3-4155-8188-f6066863f194",
+      "Title": "Implementing a Queue",
+      "Summary": "This topic explores the primary approaches to implementing a queue, such as using arrays or linked lists. Students implement queue operations in code and evaluate the trade-offs of each approach.",
+      "SortOrder": 3,
+      "CreatedDate": "2026-06-26T13:57:44.0549589-04:00",
+      "ModifiedDate": "2026-06-26T13:57:44.0549589-04:00",
+      "Elements": [
+        {
+          "Id": "2a04c6b6-528e-4930-b041-bcd91f64bae1",
+          "TopicId": "6cb903f7-cdb3-4155-8188-f6066863f194",
+          "Title": "Array-Based Queue Implementation",
+          "BodyText": "A queue can be implemented using a fixed-size or dynamic array, where one end serves as the front and the other as the rear.",
+          "Notes": "A common technique is the circular array (ring buffer), which reuses freed slots at the front to avoid wasting space as elements are dequeued.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T13:59:02.3590537-04:00",
+          "ModifiedDate": "2026-06-26T13:59:02.3590537-04:00",
+          "Items": [
+            {
+              "Id": "718b264e-9e37-47a6-b136-042965f11b1f",
+              "Text": "The enqueue operation appends an element to the rear index, and dequeue removes the element at the front index.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "e93ec164-ac91-44b6-983c-8e47abb95247",
+              "Text": "Using a circular array requires tracking both front and rear pointers with modulo arithmetic to wrap around the array bounds.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "d1dccd70-4641-4b7a-90ff-36cafc1e9ff6",
+              "Text": "Fixed-size arrays have a maximum capacity and must handle overflow; dynamic arrays resize automatically but incur occasional reallocation costs.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "e46f4d06-3aff-4c77-bcf7-65b656dd86db",
+              "Text": "Array-based queues offer O(1) average-case enqueue and dequeue with good cache locality due to contiguous memory storage.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "1c58906f-4bc3-42ee-8430-ee2ba8049f0b",
+          "TopicId": "6cb903f7-cdb3-4155-8188-f6066863f194",
+          "Title": "Linked List-Based Queue Implementation",
+          "BodyText": "A queue can also be implemented using a singly linked list, where the head node represents the front and the tail node represents the rear.",
+          "Notes": "Maintaining explicit head and tail pointers eliminates the need to traverse the list, keeping both core operations at constant time.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T13:59:02.3590537-04:00",
+          "ModifiedDate": "2026-06-26T13:59:02.3590537-04:00",
+          "Items": [
+            {
+              "Id": "152b269a-abf5-43f8-8992-6bb57e041f7c",
+              "Text": "Enqueue adds a new node at the tail, and dequeue removes the node at the head, updating the respective pointer.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "77c8a71f-67a0-4234-a19f-03ae9ea644d2",
+              "Text": "Linked list queues grow dynamically without a predefined capacity limit, making them suitable when the queue size is unpredictable.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "0546a15d-537b-4dcc-883d-c70e3b4471da",
+              "Text": "Each node carries extra memory overhead for storing a pointer to the next node, which can matter in memory-constrained environments.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "17815102-3533-43d8-8346-246e51a3b5fe",
+              "Text": "Unlike arrays, linked list nodes are not stored contiguously in memory, which can result in more cache misses during traversal.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "b3308b4c-16d2-4b32-a5c9-f69899114ff8",
+          "TopicId": "6cb903f7-cdb3-4155-8188-f6066863f194",
+          "Title": "Core Queue Operations in Code",
+          "BodyText": "Regardless of the underlying structure, a queue exposes a consistent set of operations that students must implement correctly.",
+          "Notes": "Implementing these operations from scratch reinforces understanding of how the FIFO constraint is enforced at the code level.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T13:59:02.3590537-04:00",
+          "ModifiedDate": "2026-06-26T13:59:02.3590537-04:00",
+          "Items": [
+            {
+              "Id": "e9223d7a-9841-4b26-a7ea-e2df17254ac9",
+              "Text": "Enqueue (also called push or offer) inserts a new element at the rear of the queue.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "caf5365c-64e9-4908-a8de-6996411e1b97",
+              "Text": "Dequeue (also called poll or remove) retrieves and removes the element at the front, raising an error or returning a sentinel if the queue is empty.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "6a78f71c-b2e9-4435-bfa0-ee5996cd4a8c",
+              "Text": "Peek (or front) returns the front element without removing it, useful for inspecting the next item to be processed.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "b1d8fbe8-88a6-4318-8cd4-e4b82d6d2f22",
+              "Text": "isEmpty and size are auxiliary operations that report the current state of the queue and help prevent underflow or overflow errors.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "c6c8f210-65f3-4501-b8ed-1cfa27c41764",
+          "TopicId": "6cb903f7-cdb3-4155-8188-f6066863f194",
+          "Title": "Trade-Offs: Arrays vs. Linked Lists",
+          "BodyText": "Choosing between an array and a linked list implementation involves evaluating several performance and design trade-offs.",
+          "Notes": "Neither approach is universally superior; the best choice depends on the specific use case, expected queue size, and memory constraints.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T13:59:02.3590537-04:00",
+          "ModifiedDate": "2026-06-26T13:59:02.3590537-04:00",
+          "Items": [
+            {
+              "Id": "6ebb011b-1b86-4586-a534-2e48148de863",
+              "Text": "Array-based queues provide faster access and better cache performance but require careful management of capacity limits.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "1c714d22-ea21-4c3f-99ee-55b74cd6b234",
+              "Text": "Linked list queues offer unlimited dynamic growth and simpler overflow handling but consume more memory per element due to pointer storage.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "3e56f7de-4e0d-4d83-bb61-069fd5e9271a",
+              "Text": "Arrays are generally preferable when the maximum queue size is known in advance and memory efficiency is important.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "c0898277-aadf-4937-8ed1-01fcc711534f",
+              "Text": "Linked lists are preferable when the queue size varies greatly at runtime and avoiding reallocation pauses is a priority.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "544b0b89-1134-444f-9280-af767de03c5c",
+          "TopicId": "6cb903f7-cdb3-4155-8188-f6066863f194",
+          "Title": "Handling Edge Cases in Implementation",
+          "BodyText": "Robust queue implementations must correctly handle boundary conditions that arise during normal operation.",
+          "Notes": "Failing to handle these cases is a common source of bugs, such as returning garbage values or causing index-out-of-bounds errors.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T13:59:02.3590537-04:00",
+          "ModifiedDate": "2026-06-26T13:59:02.3590537-04:00",
+          "Items": [
+            {
+              "Id": "850cd0a1-012d-4019-94f4-ffb7ab66a4ac",
+              "Text": "Dequeuing from an empty queue must be detected and handled gracefully, either by throwing an exception or returning a null/sentinel value.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "9de5ccf9-57b0-4a79-bf2d-8ce6aee3cdff",
+              "Text": "Enqueuing into a full array-based queue requires either rejecting the operation, resizing the array, or overwriting old data depending on the design.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "14b5890c-d4a4-4a2f-b808-62c8ad1c7a51",
+              "Text": "In a circular array, correctly distinguishing between a full queue and an empty queue typically requires tracking size separately or leaving one slot unused.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "e3ab09ce-4c4b-420e-bc98-938de9e28835",
+              "Text": "When the last element is dequeued from a linked list, both the head and tail pointers must be reset to null to avoid dangling references.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "4610df33-bba1-490e-9002-7ea8e8a20062",
+          "TopicId": "6cb903f7-cdb3-4155-8188-f6066863f194",
+          "Title": "Time and Space Complexity Analysis",
+          "BodyText": "Evaluating the complexity of queue operations helps students understand the efficiency guarantees each implementation provides.",
+          "Notes": "Understanding these complexities is essential when selecting a queue implementation for performance-sensitive applications.",
+          "SortOrder": 5,
+          "CreatedDate": "2026-06-26T13:59:02.3590537-04:00",
+          "ModifiedDate": "2026-06-26T13:59:02.3590537-04:00",
+          "Items": [
+            {
+              "Id": "a7806c76-c812-4e6a-b38f-cfdd16ea6ecc",
+              "Text": "Both array-based and linked list-based queues achieve O(1) time complexity for enqueue and dequeue operations under normal conditions.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "c15c24b1-07c2-449f-a7b6-c44e1e85e3d9",
+              "Text": "Dynamic array resizing introduces an occasional O(n) cost for enqueue, though amortized analysis still yields O(1) per operation over many insertions.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "459c4ece-4cec-425a-9566-23925bd9f910",
+              "Text": "Space complexity is O(n) for both approaches, but the constant factor is higher for linked lists due to per-node pointer overhead.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "064a97fd-9c4b-4b3f-adce-4a2cf4344100",
+              "Text": "Circular arrays minimize wasted space compared to naive array implementations, making them more space-efficient in practice.",
+              "SortOrder": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "31f26af4-1c06-48af-b792-e9bcad249b02",
+      "Title": "Real-World Applications of Queues",
+      "Summary": "This topic connects queue concepts to practical use cases such as task scheduling, print spooling, and data buffering. Students analyze how the FIFO principle makes queues suitable for these scenarios.",
+      "SortOrder": 4,
+      "CreatedDate": "2026-06-26T13:57:44.0549589-04:00",
+      "ModifiedDate": "2026-06-26T13:57:44.0549589-04:00",
+      "Elements": [
+        {
+          "Id": "9451c5ac-f49a-4ff1-b85c-0ae713e052c4",
+          "TopicId": "31f26af4-1c06-48af-b792-e9bcad249b02",
+          "Title": "Task Scheduling and the FIFO Guarantee",
+          "BodyText": "Operating systems and applications use queues to schedule tasks, ensuring that processes are handled in the order they arrive.",
+          "Notes": "Examples include CPU process scheduling and job queues in print servers, where fairness is critical.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T13:59:24.1485076-04:00",
+          "ModifiedDate": "2026-06-26T13:59:24.1485076-04:00",
+          "Items": [
+            {
+              "Id": "57abdefc-9be7-4652-9b16-15d97a69513a",
+              "Text": "The FIFO principle ensures no task is skipped over \u2014 the first task submitted is the first task executed.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "3a7e7c59-7640-414d-80b7-2c624ff75b5f",
+              "Text": "This prevents starvation of earlier tasks by later, potentially higher-volume submissions.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "b4d3250d-df50-4788-86a8-20c25ac3d094",
+              "Text": "Round-robin scheduling in operating systems often uses a queue to cycle through processes in arrival order.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "1260aa77-6b5d-4ca6-be7b-8adafd5e1abb",
+          "TopicId": "31f26af4-1c06-48af-b792-e9bcad249b02",
+          "Title": "Print Spooling",
+          "BodyText": "Print spooling is one of the most classic real-world illustrations of a queue, where multiple print jobs are lined up and processed one at a time.",
+          "Notes": "When several users send documents to a shared printer, the spooler enqueues each job and the printer dequeues and processes them in order.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T13:59:24.1485076-04:00",
+          "ModifiedDate": "2026-06-26T13:59:24.1485076-04:00",
+          "Items": [
+            {
+              "Id": "e2423ae2-9527-42c6-9677-7ac7014cd1a7",
+              "Text": "Each print job is enqueued as it arrives, preserving submission order regardless of document size.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "146b7348-bf70-4a3f-bcca-83c74823b763",
+              "Text": "The printer always dequeues the front job, completing it before moving to the next.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "fed7282e-3060-4a36-8466-126eb371bb3d",
+              "Text": "Without a queue structure, concurrent print requests could collide or be handled arbitrarily, causing errors or lost data.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "41a39def-4b77-4147-91e2-72d85ec3c9ff",
+          "TopicId": "31f26af4-1c06-48af-b792-e9bcad249b02",
+          "Title": "Data Buffering in Streams",
+          "BodyText": "Queues serve as buffers between a data producer and a data consumer that operate at different speeds, smoothing out mismatches in throughput.",
+          "Notes": "Keyboard input buffers and network packet buffers are common examples; data is enqueued as it arrives and dequeued as it is processed.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T13:59:24.1485076-04:00",
+          "ModifiedDate": "2026-06-26T13:59:24.1485076-04:00",
+          "Items": [
+            {
+              "Id": "588a278e-1121-447b-8589-aa4ab1c01712",
+              "Text": "When a producer generates data faster than the consumer can process it, the queue temporarily holds the excess data in arrival order.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "63f49b31-cf7a-4a27-9c2f-6894a15976f9",
+              "Text": "FIFO ordering ensures that buffered data is consumed in the same sequence it was produced, preserving correctness.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "8882b62b-38bc-4084-b19e-1a24e39564e3",
+              "Text": "Audio and video streaming players use buffering queues to prevent playback interruptions caused by variable network speeds.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "dd453d42-d236-4503-8562-d4db214265e8",
+          "TopicId": "31f26af4-1c06-48af-b792-e9bcad249b02",
+          "Title": "Message Queues in Distributed Systems",
+          "BodyText": "In distributed and microservice architectures, message queues decouple services by allowing one component to send messages that another processes independently.",
+          "Notes": "Tools like RabbitMQ and Apache Kafka implement queue-like structures so that services do not need to be simultaneously available.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T13:59:24.1485076-04:00",
+          "ModifiedDate": "2026-06-26T13:59:24.1485076-04:00",
+          "Items": [
+            {
+              "Id": "e7a4537d-afe6-4e70-b51b-8c47dbbe1bc4",
+              "Text": "A producer service enqueues messages without waiting for the consumer service to be ready, improving system resilience.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "7fb78dcb-dc8c-4d70-95fb-48aa50ae245a",
+              "Text": "The FIFO property guarantees that messages are processed in the order they were sent, which is essential for workflows that depend on sequence.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "93b2bafc-3eb9-4fa0-9444-6c21ca804aeb",
+              "Text": "This pattern allows individual services to scale independently, with the queue absorbing traffic bursts.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "187a8ec6-9dc6-4964-be67-fe82c2615186",
+          "TopicId": "31f26af4-1c06-48af-b792-e9bcad249b02",
+          "Title": "Breadth-First Search (BFS) in Algorithms",
+          "BodyText": "Queues are the underlying data structure that drives breadth-first search, enabling level-by-level exploration of graphs and trees.",
+          "Notes": "BFS is used in shortest-path algorithms, web crawlers, and social-network friend-suggestion features.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T13:59:24.1485076-04:00",
+          "ModifiedDate": "2026-06-26T13:59:24.1485076-04:00",
+          "Items": [
+            {
+              "Id": "9bf0e2d7-04a6-4f74-bfb8-5e34baeec412",
+              "Text": "The starting node is enqueued first; each time a node is dequeued, its unvisited neighbors are enqueued, maintaining level order.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "fdafe796-61e6-4101-a5b9-e42aa87cfbe4",
+              "Text": "Because nodes are processed in the order they are discovered, BFS guarantees the shortest path in an unweighted graph.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "9b25ed04-f5fe-43c6-a976-51ef61599b22",
+              "Text": "The FIFO discipline is what distinguishes BFS from depth-first search, which uses a stack instead.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "8c0230c9-22fc-4672-9301-0217e55c0dc5",
+          "TopicId": "31f26af4-1c06-48af-b792-e9bcad249b02",
+          "Title": "Customer Service and Ticketing Systems",
+          "BodyText": "Help desks, call centers, and online ticketing systems model customer requests as queue entries to provide fair, orderly service.",
+          "Notes": "Live chat support tools and technical support portals commonly display a queue position to users waiting for assistance.",
+          "SortOrder": 5,
+          "CreatedDate": "2026-06-26T13:59:24.1485076-04:00",
+          "ModifiedDate": "2026-06-26T13:59:24.1485076-04:00",
+          "Items": [
+            {
+              "Id": "4794c765-1aea-43a6-94b3-fd2d983f8052",
+              "Text": "Each incoming request is enqueued upon arrival, and agents dequeue the next request when they become available.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "a8e9e42b-e277-492c-848a-1fb98fa343f9",
+              "Text": "FIFO ordering upholds fairness \u2014 customers are served in the sequence they contacted support, not based on arbitrary priority.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "bf3b0763-58b5-43ad-9d5e-26b7547a0705",
+              "Text": "Metrics such as average wait time and queue length are derived directly from queue properties, helping managers allocate resources.",
+              "SortOrder": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "039e2455-80eb-4576-b6fd-e5d0dd7692aa",
+      "Title": "Queues vs. Stacks: A Comparison",
+      "Summary": "This topic directly compares the queue and stack data structures, highlighting differences in ordering principles, operations, and appropriate use cases. Students develop the ability to select the right structure for a given problem.",
+      "SortOrder": 5,
+      "CreatedDate": "2026-06-26T13:57:44.0549589-04:00",
+      "ModifiedDate": "2026-06-26T13:57:44.0549589-04:00",
+      "Elements": [
+        {
+          "Id": "4cb5ee3b-257c-4646-b28d-061037831ad1",
+          "TopicId": "039e2455-80eb-4576-b6fd-e5d0dd7692aa",
+          "Title": "Ordering Principles: FIFO vs. LIFO",
+          "BodyText": "The most fundamental difference between queues and stacks is the order in which elements are accessed and removed.",
+          "Notes": "Think of a queue as a line at a coffee shop \u2014 the first person in line is served first. A stack is more like a pile of plates \u2014 the last plate placed on top is the first one taken off.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T13:59:48.6935429-04:00",
+          "ModifiedDate": "2026-06-26T13:59:48.6935429-04:00",
+          "Items": [
+            {
+              "Id": "09a8b142-e505-4ec8-b289-af2db6f1fd1f",
+              "Text": "Queues follow First-In, First-Out (FIFO): the element added earliest is the first to be removed.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "e40ec29b-1aa8-4094-89e1-5d04321e4f55",
+              "Text": "Stacks follow Last-In, First-Out (LIFO): the element added most recently is the first to be removed.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "30951186-1329-4d99-b5de-530c1eaa5e36",
+              "Text": "This single difference in ordering principle drives all other distinctions between the two structures.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "1220eb2a-093f-4f88-bec8-6bc1f03ed12c",
+              "Text": "Choosing the wrong ordering principle for a problem can lead to incorrect program behavior or inefficient solutions.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "9f19aeb4-69c2-4a9c-bd29-f00f541eaad5",
+          "TopicId": "039e2455-80eb-4576-b6fd-e5d0dd7692aa",
+          "Title": "Core Operations Compared",
+          "BodyText": "Both queues and stacks share a similar set of fundamental operations, but the naming conventions and points of access differ.",
+          "Notes": "Many languages and libraries provide both structures with distinct method names to reinforce their behavioral differences, e.g., Python\u0027s list used as a stack with append/pop versus collections.deque used as a queue with append/popleft.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T13:59:48.6935429-04:00",
+          "ModifiedDate": "2026-06-26T13:59:48.6935429-04:00",
+          "Items": [
+            {
+              "Id": "fa3cbfce-d697-46a7-ada9-fa8b2a605035",
+              "Text": "Queues use enqueue (add to the rear) and dequeue (remove from the front) as their primary mutating operations.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "57a91da3-87c2-46c6-abd2-037c5fc1678b",
+              "Text": "Stacks use push (add to the top) and pop (remove from the top), meaning both operations act on the same end.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "f081832c-7b34-4c26-aa0b-64d3babf3dea",
+              "Text": "Both structures support a peek or front/top operation that inspects the next element to be removed without removing it.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "62f89620-7529-4f8d-8c4a-b5d4c45927e1",
+              "Text": "Both structures also support isEmpty and size operations, making their interfaces similarly minimal despite their behavioral differences.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "34d3bcd9-1d5c-42c2-b752-4391ed2c8589",
+          "TopicId": "039e2455-80eb-4576-b6fd-e5d0dd7692aa",
+          "Title": "Points of Access",
+          "BodyText": "A key structural distinction is that queues operate on two ends while stacks operate on only one end.",
+          "Notes": "",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T13:59:48.6935429-04:00",
+          "ModifiedDate": "2026-06-26T13:59:48.6935429-04:00",
+          "Items": [
+            {
+              "Id": "e07799d0-0715-4d61-b61b-274d9ec5ff58",
+              "Text": "In a stack, both insertion and removal happen at the same end, called the top.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "6f03154a-e086-4d32-a8bf-e2fc0d7e2496",
+              "Text": "In a queue, insertion happens at one end (the rear or tail) and removal happens at the opposite end (the front or head).",
+              "SortOrder": 1
+            },
+            {
+              "Id": "4bac5f64-3cde-449b-9851-5a8a45257016",
+              "Text": "This two-ended nature of queues requires implementation strategies, such as circular arrays or linked lists, that efficiently support operations at both ends.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "89aaaece-13ab-4aa9-aa34-fb9de1d3d4cb",
+              "Text": "Stacks are generally simpler to implement because maintaining a single pointer or index to the top is sufficient.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "4f47ba6f-d6df-4de3-b093-1602065e85aa",
+          "TopicId": "039e2455-80eb-4576-b6fd-e5d0dd7692aa",
+          "Title": "Use Cases Best Suited to Queues",
+          "BodyText": "Queues are the correct choice when the order of processing must strictly reflect the order of arrival.",
+          "Notes": "Real-world analogs help clarify queue use cases: a print spooler processes documents in the order they were submitted; a CPU scheduler may use a queue to manage process execution order.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T13:59:48.6935429-04:00",
+          "ModifiedDate": "2026-06-26T13:59:48.6935429-04:00",
+          "Items": [
+            {
+              "Id": "1d7bbc2d-51c1-4e67-b930-fca3275ffed3",
+              "Text": "Task scheduling and job queues rely on FIFO to ensure fairness \u2014 the first task submitted is the first to be executed.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "f343d895-1156-461b-91e0-0b01aa2f37b3",
+              "Text": "Buffering in data streams (e.g., keyboard input, network packet handling) uses queues to preserve the original sequence of incoming data.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "89d801f3-ccdf-4956-96e9-8b021b265c10",
+              "Text": "Breadth-first search (BFS) in graphs uses a queue to explore nodes level by level, processing neighbors in the order they were discovered.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "3ff8f6ef-a246-4a8a-b965-7e8d4caf496b",
+              "Text": "Simulations of real-world waiting lines, such as customer service systems, naturally map to queue semantics.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "5c4f0fc5-5c4d-4b83-913e-20c1a57a87c8",
+          "TopicId": "039e2455-80eb-4576-b6fd-e5d0dd7692aa",
+          "Title": "Use Cases Best Suited to Stacks",
+          "BodyText": "Stacks are the right choice when the most recently encountered element must be processed before earlier ones.",
+          "Notes": "The call stack managed by a program\u0027s runtime is a classic example: the most recently called function must return before the function that called it can continue.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T13:59:48.6935429-04:00",
+          "ModifiedDate": "2026-06-26T13:59:48.6935429-04:00",
+          "Items": [
+            {
+              "Id": "b3bf1ee8-d05d-442c-b65f-f4f6806fdcac",
+              "Text": "Function call management in program execution uses a stack so that the most recent call is resolved before control returns to earlier calls.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "19851b6c-f14d-4490-9361-4908b2f602dc",
+              "Text": "Undo/redo functionality in applications uses a stack to reverse actions in reverse chronological order.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "2dc14166-1259-4524-9559-b070f7cc541f",
+              "Text": "Expression parsing and evaluation, such as matching parentheses or converting infix to postfix notation, naturally uses stack semantics.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "67425980-71f9-45dd-bf30-c0dae2fceb8b",
+              "Text": "Depth-first search (DFS) can be implemented iteratively using a stack, processing the most recently discovered path first.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "c7dd5c7f-9dec-48da-b629-d7126f0255e5",
+          "TopicId": "039e2455-80eb-4576-b6fd-e5d0dd7692aa",
+          "Title": "Selecting the Right Structure for a Problem",
+          "BodyText": "Choosing between a queue and a stack requires identifying whether the problem demands FIFO or LIFO ordering.",
+          "Notes": "A useful diagnostic question: \u0027Should the item I added first be processed first (queue), or should the item I added most recently be processed first (stack)?\u0027",
+          "SortOrder": 5,
+          "CreatedDate": "2026-06-26T13:59:48.6935429-04:00",
+          "ModifiedDate": "2026-06-26T13:59:48.6935429-04:00",
+          "Items": [
+            {
+              "Id": "3200faaa-9afa-4327-830b-d10b214e610c",
+              "Text": "If processing order must mirror arrival order and fairness is required, a queue is the appropriate choice.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "64042d11-1429-4f84-b527-f01a70c81d91",
+              "Text": "If the problem involves backtracking, reversal, or managing nested structures where the most recent context matters most, a stack is appropriate.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "edc5e95a-c7ad-4112-9d35-112d447ae19b",
+              "Text": "Some problems, such as implementing a deque (double-ended queue), may require characteristics of both structures.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "396cccfe-ed57-456f-bb1e-96552c584e81",
+              "Text": "Misapplying a stack where a queue is needed, or vice versa, is a common source of logical bugs \u2014 explicitly identifying the required ordering before implementation prevents this error.",
+              "SortOrder": 3
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "TotalElementCount": 33
+}

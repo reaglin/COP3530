@@ -1,0 +1,258 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lists and Arrays: Structure and Introduction to Big O Notation — COP3530</title>
+  <style>
+    /* ── Reset & base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: #f4f6f9;
+      color: #1e2533;
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    /* ── Header / hero ── */
+    header {
+      background: linear-gradient(135deg, #1a3a5c 0%, #25537a 60%, #2e6fa3 100%);
+      color: #fff;
+      padding: 3rem 2rem 2.5rem;
+      border-bottom: 4px solid #f0a500;
+    }
+
+    .header-inner {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .course-label {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 4px;
+      padding: 0.25rem 0.65rem;
+      margin-bottom: 1rem;
+    }
+
+    header h1 {
+      font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 1rem;
+      letter-spacing: -0.01em;
+    }
+
+    header p {
+      font-size: 1rem;
+      color: rgba(255,255,255,0.88);
+      max-width: 680px;
+      line-height: 1.7;
+    }
+
+    /* ── Main content ── */
+    main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2.5rem 2rem 4rem;
+    }
+
+    .section-heading {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #5a6478;
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid #dde2ea;
+    }
+
+    /* ── Card grid ── */
+    .artifact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .artifact-card {
+      background: #ffffff;
+      border: 1px solid #dde2ea;
+      border-radius: 10px;
+      padding: 1.4rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+      transition: box-shadow 0.2s ease, transform 0.2s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .artifact-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(180deg, #2e6fa3, #f0a500);
+      border-radius: 10px 0 0 10px;
+    }
+
+    .artifact-card:hover {
+      box-shadow: 0 6px 20px rgba(30,37,51,0.1);
+      transform: translateY(-2px);
+    }
+
+    /* ── Card header row ── */
+    .card-title-row {
+      display: flex;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .artifact-name {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #1a3a5c;
+      line-height: 1.3;
+    }
+
+    .artifact-name a {
+      color: #1a3a5c;
+      text-decoration: none;
+      border-bottom: 2px solid #2e6fa3;
+      transition: color 0.15s, border-color 0.15s;
+    }
+
+    .artifact-name a:hover {
+      color: #2e6fa3;
+      border-color: #f0a500;
+    }
+
+    .source-link {
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: #5a7fa8;
+      text-decoration: none;
+      border: 1px solid #b6cfe0;
+      border-radius: 20px;
+      padding: 0.15rem 0.55rem;
+      white-space: nowrap;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+      flex-shrink: 0;
+    }
+
+    .source-link:hover {
+      background: #2e6fa3;
+      color: #fff;
+      border-color: #2e6fa3;
+    }
+
+    /* ── Badges row ── */
+    .card-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      border-radius: 4px;
+      padding: 0.2rem 0.55rem;
+      line-height: 1.4;
+    }
+
+    .badge-type {
+      background: #e8f0fb;
+      color: #1d4e8f;
+    }
+
+    .badge-filetype {
+      background: #fef4e0;
+      color: #7a4f00;
+    }
+
+    /* ── Description ── */
+    .artifact-description {
+      font-size: 0.875rem;
+      color: #434c5e;
+      line-height: 1.65;
+      flex: 1;
+    }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      font-size: 0.78rem;
+      color: #8a93a8;
+      padding: 1.5rem 2rem 2.5rem;
+      border-top: 1px solid #dde2ea;
+    }
+
+    /* ── Responsive tweaks ── */
+    @media (max-width: 480px) {
+      header { padding: 2rem 1.25rem 2rem; }
+      main   { padding: 1.75rem 1.25rem 3rem; }
+      .artifact-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div style="border:1px solid #c9d4e3;background:#f5f8fc;border-radius:8px;padding:10px 16px;margin:0 0 18px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;font-family:'Segoe UI',Arial,sans-serif"><strong style="color:#1a3c6e">Module outline:</strong><a href="topics-outcomes.html#topics" style="color:#1a3c6e;font-weight:600;text-decoration:none">📋 Module Topics</a><a href="topics-outcomes.html#outcomes" style="color:#137333;font-weight:600;text-decoration:none">🎯 Student Learning Outcomes</a></div>
+
+  <header>
+    <div class="header-inner">
+      <span class="course-label">COP3530 &mdash; Data Structures</span>
+      <h1>Lists and Arrays: Structure and Introduction to Big O Notation</h1>
+      <p>
+        This module introduces the foundational building blocks of data structures: arrays and lists.
+        You will explore memory layout, indexing, dynamic sizing, and essential operations, while
+        developing an early intuition for algorithmic efficiency through Big O notation.
+      </p>
+    </div>
+  </header>
+
+  <main>
+    <h2 class="section-heading">Module Artifacts</h2>
+
+    <div class="artifact-grid">
+
+        <div class="artifact-card">
+          <div class="card-title-row">
+            <span class="artifact-name">
+                <a href="content/module_topics.html">Module Topics</a>
+            </span>
+              <a class="source-link" href="source/hierarchy.json">source file</a>
+          </div>
+          <div class="card-badges">
+            <span class="badge badge-type">Module Topics</span>
+            <span class="badge badge-filetype">.json</span>
+          </div>
+          <p class="artifact-description">
+            Covers foundational concepts of arrays and lists—including definitions, memory layout, zero-based indexing, dynamic sizing, and core operations such as accessing, searching, inserting, and deleting elements—serving as the structural outline that guides learners and instructors through the sequence of topics in this module.
+          </p>
+        </div>
+
+    </div>
+  </main>
+
+  <footer>
+    COP3530 &mdash; Data Structures &nbsp;&bull;&nbsp; Lists and Arrays: Structure and Introduction to Big O Notation
+  </footer>
+
+
+<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
+<section class="presemaker-extras" style="max-width:1000px;margin:2rem auto;padding:0 1rem;"><h2>Topics &amp; Learning Outcomes</h2><p><a href="topics-outcomes.html">View Topics &amp; Learning Outcomes</a></p></section></body>
+</html>

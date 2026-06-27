@@ -1,0 +1,1120 @@
+{
+  "ModuleFolderName": "Sorting_Algorithms_Compariso",
+  "CourseName": "COP3530 - Data Structures",
+  "GeneratedDate": "2026-06-26T14:06:24.8080919-04:00",
+  "ModifiedDate": "2026-06-26T14:08:46.1480433-04:00",
+  "Outcomes": [],
+  "Topics": [
+    {
+      "Id": "118c8706-f689-4055-8dfb-aca519f044d2",
+      "Title": "Introduction to Sorting Algorithms",
+      "Summary": "Overview of what sorting algorithms are and why they matter in computer science. Establishes foundational vocabulary and criteria used to evaluate and compare sorting approaches.",
+      "SortOrder": 0,
+      "CreatedDate": "2026-06-26T14:06:24.8080919-04:00",
+      "ModifiedDate": "2026-06-26T14:06:24.8080919-04:00",
+      "Elements": [
+        {
+          "Id": "2266359c-63f9-469a-be43-6108c628367d",
+          "TopicId": "118c8706-f689-4055-8dfb-aca519f044d2",
+          "Title": "What Is a Sorting Algorithm?",
+          "BodyText": "A sorting algorithm is a set of instructions that arranges elements in a collection into a defined order, typically ascending or descending.",
+          "Notes": "Examples of real-world sorting needs include organizing a list of names alphabetically, ranking search results by relevance, or ordering transactions by date.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T14:06:44.2477116-04:00",
+          "ModifiedDate": "2026-06-26T14:06:44.2477116-04:00",
+          "Items": [
+            {
+              "Id": "5ad25df2-0dee-4373-bb8e-9364da9a6ef0",
+              "Text": "Sorting algorithms operate on data structures such as arrays or lists, rearranging their elements according to a comparison rule.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "862f7125-d7bf-4c23-acb8-8388b69b082c",
+              "Text": "The \u0027order\u0027 produced can be numerical, lexicographical, or based on any custom comparison function.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "dc98c13b-7781-48be-8d64-56894f5cfa6e",
+              "Text": "Sorting is one of the most studied problems in computer science due to its universal applicability.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "1f2b9a8a-ee3f-44ac-8045-1b927e255013",
+          "TopicId": "118c8706-f689-4055-8dfb-aca519f044d2",
+          "Title": "Why Sorting Algorithms Matter",
+          "BodyText": "Sorting is a foundational operation that underlies many other algorithms and software systems, making its efficiency critically important.",
+          "Notes": "Binary search, for instance, requires sorted data to function correctly. Many database query optimizations also depend on sorted indexes.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T14:06:44.2477116-04:00",
+          "ModifiedDate": "2026-06-26T14:06:44.2477116-04:00",
+          "Items": [
+            {
+              "Id": "bdbe8566-f015-408d-9590-a74adda1ab28",
+              "Text": "Efficient sorting reduces the time complexity of dependent operations, such as searching, merging, and deduplication.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "695f3c40-5480-4836-bbb4-4c062d2015e6",
+              "Text": "Choosing the wrong sorting algorithm for a given dataset or context can result in significant performance bottlenecks.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "d0716d71-bec2-4221-abbd-869c1835a5e8",
+              "Text": "Understanding sorting algorithms builds intuition for algorithm design principles like divide-and-conquer and incremental construction.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "5558f2bd-74fe-402f-a4be-c0dae1cdfe55",
+          "TopicId": "118c8706-f689-4055-8dfb-aca519f044d2",
+          "Title": "Core Vocabulary: Key Terms",
+          "BodyText": "A shared vocabulary is essential for discussing, comparing, and implementing sorting algorithms precisely.",
+          "Notes": "Familiarity with these terms allows developers to read algorithm documentation, research papers, and technical interviews with confidence.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T14:06:44.2477116-04:00",
+          "ModifiedDate": "2026-06-26T14:06:44.2477116-04:00",
+          "Items": [
+            {
+              "Id": "e67cf4cd-bd81-44b9-91e9-a2026c4c9618",
+              "Text": "A \u0027comparison-based\u0027 sort determines order by comparing pairs of elements using a comparator function.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "b4cd1af2-d09a-4395-8679-499f1457a303",
+              "Text": "An \u0027in-place\u0027 sort rearranges elements within the original data structure without requiring significant additional memory.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "80b0da42-20e0-4be0-a687-1515a8e28102",
+              "Text": "A \u0027stable\u0027 sort preserves the relative order of elements that are considered equal by the comparator.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "9f9ee026-cce3-4220-a439-810683dedd34",
+          "TopicId": "118c8706-f689-4055-8dfb-aca519f044d2",
+          "Title": "Time Complexity as an Evaluation Criterion",
+          "BodyText": "Time complexity describes how the runtime of a sorting algorithm scales as the size of the input grows, expressed using Big O notation.",
+          "Notes": "Common time complexities seen in sorting include O(n\u00B2) for simpler algorithms like bubble sort and O(n log n) for more efficient ones like merge sort.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T14:06:44.2477116-04:00",
+          "ModifiedDate": "2026-06-26T14:06:44.2477116-04:00",
+          "Items": [
+            {
+              "Id": "93550405-97c4-4284-9852-2320cd46ab26",
+              "Text": "Best-case, worst-case, and average-case time complexities each reveal different performance characteristics of an algorithm.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "4422769f-0bb8-49bb-8a46-663136834b96",
+              "Text": "An algorithm with O(n\u00B2) complexity becomes impractical on large datasets, while O(n log n) algorithms remain viable at scale.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "ff11ca37-502a-4b32-9d38-13cecdfb554b",
+              "Text": "Time complexity is a theoretical measure; actual runtime also depends on hardware and implementation details.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "72421555-9817-4f85-868a-4a10164c692b",
+          "TopicId": "118c8706-f689-4055-8dfb-aca519f044d2",
+          "Title": "Space Complexity as an Evaluation Criterion",
+          "BodyText": "Space complexity measures the amount of additional memory an algorithm requires beyond the input data itself.",
+          "Notes": "An in-place algorithm like insertion sort uses O(1) auxiliary space, while merge sort typically requires O(n) additional space for temporary arrays.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T14:06:44.2477116-04:00",
+          "ModifiedDate": "2026-06-26T14:06:44.2477116-04:00",
+          "Items": [
+            {
+              "Id": "4c0688b4-e060-4067-b1db-e74a449e0eb4",
+              "Text": "Lower space complexity is preferable in memory-constrained environments such as embedded systems.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "46af6e6b-f7d7-478b-b703-1b3bb58d2aa8",
+              "Text": "There is often a trade-off between time and space complexity \u2014 faster algorithms may require more memory.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "4d0217fe-614b-46d8-97cb-8c8d6b4588ec",
+              "Text": "Auxiliary space refers only to the extra memory used, not the space occupied by the input itself.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "7f97a129-8e6d-4ae4-955a-4ed17a0b92c7",
+          "TopicId": "118c8706-f689-4055-8dfb-aca519f044d2",
+          "Title": "Practical Performance Characteristics",
+          "BodyText": "Beyond theoretical complexity, real-world performance of sorting algorithms depends on factors such as input size, data distribution, and implementation language.",
+          "Notes": "For example, insertion sort can outperform quicksort on very small or nearly sorted arrays despite having a worse theoretical complexity.",
+          "SortOrder": 5,
+          "CreatedDate": "2026-06-26T14:06:44.2477116-04:00",
+          "ModifiedDate": "2026-06-26T14:06:44.2477116-04:00",
+          "Items": [
+            {
+              "Id": "aa481b26-1624-4683-bc64-e6bb2044c1bd",
+              "Text": "Cache efficiency, branch prediction, and constant factors in Big O notation all affect observed runtime.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "b2cedd7e-1800-4e0b-afdb-324fc4b40367",
+              "Text": "The nature of the input \u2014 random, nearly sorted, reversed, or containing duplicates \u2014 can dramatically shift which algorithm performs best.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "e09815c5-dc64-4a7c-8159-4cf12ce8bc56",
+              "Text": "Many production systems use hybrid algorithms, such as Timsort, that switch strategies based on input characteristics.",
+              "SortOrder": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "064c0462-e198-40ec-a7fb-982147ba468a",
+      "Title": "Bubble Sort",
+      "Summary": "Examination of the bubble sort algorithm, including its step-by-step logic and JavaScript implementation. Covers its time complexity and scenarios where it may or may not be practical.",
+      "SortOrder": 1,
+      "CreatedDate": "2026-06-26T14:06:24.8080919-04:00",
+      "ModifiedDate": "2026-06-26T14:06:24.8080919-04:00",
+      "Elements": [
+        {
+          "Id": "a5d99e8b-9314-43ca-b5fb-422be9f0429c",
+          "TopicId": "064c0462-e198-40ec-a7fb-982147ba468a",
+          "Title": "What Is Bubble Sort?",
+          "BodyText": "Bubble sort is one of the simplest sorting algorithms, which works by repeatedly stepping through a list and swapping adjacent elements that are in the wrong order.",
+          "Notes": "The algorithm gets its name because smaller elements \u0027bubble\u0027 to the top of the list with each pass, while larger elements sink to the bottom.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T14:07:02.6300887-04:00",
+          "ModifiedDate": "2026-06-26T14:07:02.6300887-04:00",
+          "Items": [
+            {
+              "Id": "ee273eca-66ec-4741-bb35-13c3b28711a3",
+              "Text": "Each full pass through the array guarantees that the largest unsorted element is moved to its correct position at the end.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "f38a823a-ca53-423c-904e-c6eaf1aa0945",
+              "Text": "The process repeats for the remaining unsorted portion of the array until no swaps are needed.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "1388c7a4-c2f6-4a5c-984b-58fefbbedee0",
+              "Text": "Bubble sort is an in-place algorithm, meaning it does not require additional memory for a separate data structure.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "174416de-d25b-492b-bdf6-0fa294b8a1e8",
+          "TopicId": "064c0462-e198-40ec-a7fb-982147ba468a",
+          "Title": "Step-by-Step Logic of Bubble Sort",
+          "BodyText": "Understanding the mechanics of bubble sort requires tracing through its comparison and swap operations on a concrete example.",
+          "Notes": "For example, sorting [5, 3, 8, 1]: Pass 1 produces [3, 5, 1, 8], Pass 2 produces [3, 1, 5, 8], Pass 3 produces [1, 3, 5, 8].",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T14:07:02.6300887-04:00",
+          "ModifiedDate": "2026-06-26T14:07:02.6300887-04:00",
+          "Items": [
+            {
+              "Id": "a8948d0e-37ca-4e25-890b-f758ac8fd7fc",
+              "Text": "Start at the first element and compare it with its immediate neighbor; if the left element is greater, swap them.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "52d20e54-f905-44c4-a155-6dfb9679b3c9",
+              "Text": "Move one position to the right and repeat the comparison, continuing until the end of the unsorted portion.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "b9a8acc5-4b8f-4b8e-bf06-3e50ee7eacfb",
+              "Text": "After each complete pass, reduce the range of comparison by one, since the last element is now correctly placed.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "e5331565-d767-468b-b15d-2de59cebd008",
+              "Text": "Continue iterating until a full pass completes with zero swaps, indicating the array is fully sorted.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "90bd4e2a-39de-4c6b-8354-708db2a4d6b0",
+          "TopicId": "064c0462-e198-40ec-a7fb-982147ba468a",
+          "Title": "JavaScript Implementation",
+          "BodyText": "Bubble sort can be implemented concisely in JavaScript using nested loops to handle the repeated passes and comparisons.",
+          "Notes": "An optimized version adds a boolean flag \u0027swapped\u0027 to break out of the outer loop early if no swaps occurred during a pass, improving best-case performance.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T14:07:02.6300887-04:00",
+          "ModifiedDate": "2026-06-26T14:07:02.6300887-04:00",
+          "Items": [
+            {
+              "Id": "36a2aed3-bea3-4397-ab04-88ca971563a2",
+              "Text": "The outer loop controls the number of passes, running up to n-1 times where n is the array length.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "afcf6551-ecbe-4007-8e4f-fbcb285d551b",
+              "Text": "The inner loop performs the comparisons and swaps for each pass, with its upper bound shrinking by one after every outer iteration.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "921ecdaf-f5fb-4518-bdc0-75e851c15da4",
+              "Text": "A temporary variable is used to facilitate each swap between two adjacent elements.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "204f9d5d-7d51-41b6-91df-30a88daaff2d",
+              "Text": "Adding an early-exit flag that detects a pass with no swaps allows the algorithm to terminate as soon as the array becomes sorted.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "42be25aa-5983-4429-9c63-bb95898d7242",
+          "TopicId": "064c0462-e198-40ec-a7fb-982147ba468a",
+          "Title": "Time Complexity of Bubble Sort",
+          "BodyText": "Bubble sort\u0027s time complexity varies depending on the initial state of the input array, and it is generally considered inefficient for large datasets.",
+          "Notes": "Space complexity is O(1) since the sort is performed in place, which is one of its few practical advantages.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T14:07:02.6300887-04:00",
+          "ModifiedDate": "2026-06-26T14:07:02.6300887-04:00",
+          "Items": [
+            {
+              "Id": "f47cff07-8a61-4fe0-be97-7054b07fab9c",
+              "Text": "The worst-case and average-case time complexity is O(n\u00B2), occurring when the array is in reverse order or randomly arranged.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "f7ada78d-14f8-4236-ac40-b3e01eb78b1c",
+              "Text": "The best-case time complexity is O(n) when the array is already sorted and the early-exit optimization is applied.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "ff12d1a3-a294-4cff-bc01-c2fe159be871",
+              "Text": "The quadratic growth of comparisons means performance degrades rapidly as input size increases.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "3b9aece3-14c3-4ce2-9811-d12da6fdf0f1",
+          "TopicId": "064c0462-e198-40ec-a7fb-982147ba468a",
+          "Title": "Practical Use Cases and Limitations",
+          "BodyText": "While bubble sort is rarely used in production environments, understanding when it may or may not be appropriate helps contextualize its role among sorting algorithms.",
+          "Notes": "Bubble sort is widely used as a teaching tool because its logic is easy to visualize and trace by hand, making it ideal for introductory algorithm courses.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T14:07:02.6300887-04:00",
+          "ModifiedDate": "2026-06-26T14:07:02.6300887-04:00",
+          "Items": [
+            {
+              "Id": "dee092ad-272d-45db-9e1c-5442c5828a8d",
+              "Text": "Bubble sort can be practical for very small arrays where the overhead of more complex algorithms outweighs the benefit.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "d8b656bf-c4ae-4d76-9037-db28ed35c8cc",
+              "Text": "It is suitable for nearly-sorted datasets when combined with the early-exit optimization, as it can terminate in close to O(n) time.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "f6aa5e0c-a9d2-4c36-9be7-eb662c6b8092",
+              "Text": "For large or randomly ordered datasets, algorithms such as merge sort or quicksort are far more efficient choices.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "edb030f9-e670-4c5b-8e04-3735ca76c1eb",
+              "Text": "Its simplicity makes it useful for embedded systems or constrained environments where code size and memory usage are critical constraints.",
+              "SortOrder": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "8d33f787-4379-4d75-bd5d-d92edc84c543",
+      "Title": "Insertion Sort",
+      "Summary": "Exploration of the insertion sort algorithm and how it builds a sorted array one element at a time. Includes JavaScript implementation and analysis of its performance characteristics.",
+      "SortOrder": 2,
+      "CreatedDate": "2026-06-26T14:06:24.8080919-04:00",
+      "ModifiedDate": "2026-06-26T14:06:24.8080919-04:00",
+      "Elements": [
+        {
+          "Id": "d510576a-0cbf-4e5d-a0df-23b0a79cf725",
+          "TopicId": "8d33f787-4379-4d75-bd5d-d92edc84c543",
+          "Title": "How Insertion Sort Works",
+          "BodyText": "Insertion sort builds a sorted array incrementally by taking one element at a time from the unsorted portion and inserting it into its correct position within the sorted portion.",
+          "Notes": "Think of it like sorting a hand of playing cards: you pick up one card at a time and slide it into the right spot among the cards you\u0027re already holding.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T14:07:33.5607617-04:00",
+          "ModifiedDate": "2026-06-26T14:07:33.5607617-04:00",
+          "Items": [
+            {
+              "Id": "bd27459e-03b3-42bf-99b1-ed9ec4419aad",
+              "Text": "The algorithm divides the array into a sorted region (initially just the first element) and an unsorted region containing the remaining elements.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "26513ce9-38a0-43f3-92fb-bf00cbce0dc7",
+              "Text": "For each pass, the current element is compared against elements in the sorted region from right to left until its correct position is found.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "3b498c20-9d6f-4d12-96a3-cef430260608",
+              "Text": "Elements greater than the current element are shifted one position to the right to make room for the insertion.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "247fa035-3881-41f7-8a0d-0cc5aa204569",
+              "Text": "This process repeats until all elements have been moved from the unsorted region into the sorted region.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "b9c3abd6-42f2-4bc6-8014-731dfc894f23",
+          "TopicId": "8d33f787-4379-4d75-bd5d-d92edc84c543",
+          "Title": "Step-by-Step Example",
+          "BodyText": "Tracing insertion sort through a small array illustrates how the sorted region grows with each pass.",
+          "Notes": "For the array [4, 3, 1, 2]: Pass 1 \u2192 [3, 4, 1, 2]; Pass 2 \u2192 [1, 3, 4, 2]; Pass 3 \u2192 [1, 2, 3, 4].",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T14:07:33.5607617-04:00",
+          "ModifiedDate": "2026-06-26T14:07:33.5607617-04:00",
+          "Items": [
+            {
+              "Id": "03e47d13-cac5-49f6-8d34-dc0f7669ac1f",
+              "Text": "On each pass, the algorithm picks the first element of the unsorted region as the \u0027key\u0027 value to be inserted.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "3be6a79d-8a61-49a4-8359-0d1e9bb76ca8",
+              "Text": "The key is compared against sorted-region elements moving leftward; each element larger than the key shifts right by one index.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "dc2e36b0-8bef-4cb0-9faa-dbee25b5aa6e",
+              "Text": "Shifting stops when a smaller-or-equal element is found or the beginning of the array is reached, and the key is placed at that position.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "780d1e06-b746-4ade-acda-6daa48057474",
+              "Text": "After n-1 passes for an n-element array, the entire array is sorted in place.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "4f2c8497-3db2-4734-8a0d-8eec097bc5f3",
+          "TopicId": "8d33f787-4379-4d75-bd5d-d92edc84c543",
+          "Title": "JavaScript Implementation",
+          "BodyText": "Insertion sort can be implemented concisely in JavaScript using a nested loop structure where the outer loop advances through the array and the inner loop performs comparisons and shifts.",
+          "Notes": "function insertionSort(arr) {\n  for (let i = 1; i \u003C arr.length; i\u002B\u002B) {\n    let key = arr[i];\n    let j = i - 1;\n    while (j \u003E= 0 \u0026\u0026 arr[j] \u003E key) {\n      arr[j \u002B 1] = arr[j];\n      j--;\n    }\n    arr[j \u002B 1] = key;\n  }\n  return arr;\n}",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T14:07:33.5607617-04:00",
+          "ModifiedDate": "2026-06-26T14:07:33.5607617-04:00",
+          "Items": [
+            {
+              "Id": "fab725e1-2743-4968-948f-55fc50d303c4",
+              "Text": "The outer for loop starts at index 1, treating the element at index 0 as the initial sorted region.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "4d0687b4-5bca-4ba6-a382-fabeb7bd03e6",
+              "Text": "The current element is stored in a \u0027key\u0027 variable before the inner loop begins shifting elements.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "5d55e6f4-146b-47da-aaf4-ddc2a8cfb381",
+              "Text": "The while loop shifts elements rightward as long as they are greater than the key and the left boundary has not been exceeded.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "495a75dc-91c6-4172-b14c-2e1a22f88eb5",
+              "Text": "After the while loop exits, the key is placed at index j\u002B1, which is its correct sorted position.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "40249b6c-fafe-4d5d-b45f-999ffda7f54f",
+          "TopicId": "8d33f787-4379-4d75-bd5d-d92edc84c543",
+          "Title": "Time Complexity Analysis",
+          "BodyText": "Insertion sort\u0027s performance varies significantly depending on the initial order of the input, making it important to understand its best, average, and worst-case scenarios.",
+          "Notes": "Its quadratic average and worst-case complexity makes insertion sort impractical for large datasets, but its linear best case makes it a smart choice for nearly sorted inputs.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T14:07:33.5607617-04:00",
+          "ModifiedDate": "2026-06-26T14:07:33.5607617-04:00",
+          "Items": [
+            {
+              "Id": "2ae27cf8-e2f9-4d7e-b79d-4d91ce3a91aa",
+              "Text": "Best case is O(n) and occurs when the array is already sorted, because the inner while loop never executes and only one comparison is made per pass.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "3ca6d6b4-c416-4fa1-b5a6-155988fd1b9a",
+              "Text": "Worst case is O(n\u00B2) and occurs when the array is sorted in reverse order, requiring the maximum number of comparisons and shifts on every pass.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "a4e1f40c-c4a8-498c-a2ba-c414e16ff6d7",
+              "Text": "Average case is also O(n\u00B2), reflecting that on randomly ordered data roughly half the sorted elements must be shifted per insertion.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "2bb9e41e-d6b7-4417-9f71-ae7fd982c207",
+              "Text": "Space complexity is O(1) because insertion sort is an in-place algorithm that requires no additional data structures beyond a single temporary variable.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "4741704b-848b-4017-b59c-868728c54a30",
+          "TopicId": "8d33f787-4379-4d75-bd5d-d92edc84c543",
+          "Title": "Stability and In-Place Properties",
+          "BodyText": "Insertion sort is both a stable sorting algorithm and an in-place algorithm, two properties that influence when it is the right tool to use.",
+          "Notes": "Stability matters when sorting objects by one field that have already been sorted by another field \u2014 insertion sort preserves the prior ordering among equal-key elements.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T14:07:33.5607617-04:00",
+          "ModifiedDate": "2026-06-26T14:07:33.5607617-04:00",
+          "Items": [
+            {
+              "Id": "6045ef67-fc8d-4583-a304-9b348ea5306c",
+              "Text": "A sorting algorithm is stable if elements with equal keys maintain their original relative order after sorting; insertion sort guarantees this because equal elements are never swapped past each other.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "0e74ec45-3c30-4b16-86da-4d22bbee35e2",
+              "Text": "Being in-place means the sort operates directly on the input array without allocating a separate array, keeping auxiliary space usage at O(1).",
+              "SortOrder": 1
+            },
+            {
+              "Id": "ca1c4447-2d0e-475f-8763-20fa97b1a902",
+              "Text": "These properties make insertion sort preferable over unstable or out-of-place alternatives in memory-constrained environments or when sort stability is required.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "ceb616ac-4c60-4f40-8846-c44f42cf295c",
+          "TopicId": "8d33f787-4379-4d75-bd5d-d92edc84c543",
+          "Title": "Practical Use Cases and Comparisons",
+          "BodyText": "Despite its quadratic average complexity, insertion sort outperforms more complex algorithms in specific real-world scenarios and is widely used as a component within hybrid sorting strategies.",
+          "Notes": "Many production sort implementations, such as Timsort used in Python and JavaScript\u0027s V8 engine, switch to insertion sort for small subarrays (typically fewer than 16 elements) due to its low overhead.",
+          "SortOrder": 5,
+          "CreatedDate": "2026-06-26T14:07:33.5607617-04:00",
+          "ModifiedDate": "2026-06-26T14:07:33.5607617-04:00",
+          "Items": [
+            {
+              "Id": "29f38e92-0948-4374-b19a-87c0bed546eb",
+              "Text": "Insertion sort is highly efficient for small arrays because its low constant factor and minimal overhead outweigh the asymptotic advantages of O(n log n) algorithms at small n.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "ec79ba40-5f21-41fa-ad7f-a40d709e7f81",
+              "Text": "It excels on nearly sorted data, approaching O(n) performance when only a few elements are out of place.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "d52f1c00-72e4-4787-9cb1-5d86134cb514",
+              "Text": "Online sorting \u2014 processing elements as they arrive one at a time \u2014 is a natural fit for insertion sort since each new element can be inserted into the already-sorted preceding elements.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "6c7bfa45-944d-4277-bbc6-8ffeedb497ba",
+              "Text": "Compared to bubble sort, insertion sort performs fewer swaps and generally runs faster in practice, while both share the same asymptotic complexity.",
+              "SortOrder": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "77ca3556-eef8-4fb5-8a5e-2a5f14bf0939",
+      "Title": "Merge Sort",
+      "Summary": "Deep dive into the divide-and-conquer merge sort algorithm and its recursive structure. Students implement merge sort in JavaScript and examine its consistent O(n log n) time complexity.",
+      "SortOrder": 3,
+      "CreatedDate": "2026-06-26T14:06:24.8080919-04:00",
+      "ModifiedDate": "2026-06-26T14:06:24.8080919-04:00",
+      "Elements": [
+        {
+          "Id": "4334c253-9d05-44c6-ad06-cdde45bdb75e",
+          "TopicId": "77ca3556-eef8-4fb5-8a5e-2a5f14bf0939",
+          "Title": "Divide-and-Conquer Strategy",
+          "BodyText": "Merge sort is built on the divide-and-conquer paradigm, which breaks a large problem into smaller, more manageable subproblems before combining their solutions.",
+          "Notes": "This strategy is what distinguishes merge sort from simpler algorithms like bubble sort or insertion sort, which sort in place without recursive decomposition.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T14:07:56.1214652-04:00",
+          "ModifiedDate": "2026-06-26T14:07:56.1214652-04:00",
+          "Items": [
+            {
+              "Id": "dd6ca1b7-0bf1-4084-bbef-db4356f248f9",
+              "Text": "The algorithm repeatedly splits the input array in half until each subarray contains only a single element.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "1af09602-a660-48e7-acca-ce745f57cd13",
+              "Text": "A single-element array is trivially sorted, forming the base case for the recursion.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "0362c164-2820-48db-9c3b-60586d1a3c7b",
+              "Text": "After dividing, the algorithm works back up by merging sorted subarrays into progressively larger sorted arrays.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "d908fd16-9f66-45eb-9cf5-228865681566",
+          "TopicId": "77ca3556-eef8-4fb5-8a5e-2a5f14bf0939",
+          "Title": "Recursive Structure of Merge Sort",
+          "BodyText": "Merge sort relies on recursion to divide the array and to coordinate the merging process, making the call stack a key part of how the algorithm operates.",
+          "Notes": "Understanding the recursive call tree helps visualize why the algorithm has a logarithmic depth \u2014 each level of recursion halves the problem size.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T14:07:56.1214652-04:00",
+          "ModifiedDate": "2026-06-26T14:07:56.1214652-04:00",
+          "Items": [
+            {
+              "Id": "f5d841d7-8aa5-44a2-968d-75d64867a929",
+              "Text": "The recursive function accepts an array, splits it at the midpoint, and calls itself on both the left and right halves.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "7aec4a22-38ff-4720-8ff4-88a9a5bb89f7",
+              "Text": "Recursion bottoms out when a subarray has a length of 0 or 1, at which point it is returned as-is.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "f5d4f9c7-36fa-4b62-a01f-cf37b30992b3",
+              "Text": "The results of the two recursive calls are then passed to a separate merge helper function that combines them in sorted order.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "25d58b43-f40b-4940-81fe-2c14e666588c",
+          "TopicId": "77ca3556-eef8-4fb5-8a5e-2a5f14bf0939",
+          "Title": "The Merge Helper Function",
+          "BodyText": "The merge step is the core operation of merge sort, responsible for taking two already-sorted arrays and combining them into a single sorted array.",
+          "Notes": "In JavaScript, the merge function typically creates a new result array and uses two index pointers to walk through the left and right subarrays simultaneously.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T14:07:56.1214652-04:00",
+          "ModifiedDate": "2026-06-26T14:07:56.1214652-04:00",
+          "Items": [
+            {
+              "Id": "5706d1e2-cc3a-4ba0-902e-6e96090d91d8",
+              "Text": "Two pointers start at the beginning of each sorted subarray and advance as elements are compared and pushed to the result.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "5522e682-352b-4b0f-b4d6-ed87d2d44430",
+              "Text": "At each step, the smaller of the two current elements is appended to the result array and its pointer is incremented.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "bba1b775-21c4-4d08-b727-752501a22441",
+              "Text": "Once one subarray is exhausted, all remaining elements from the other subarray are appended directly, since they are already sorted.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "12b5797e-9e89-443f-9704-fa926592bf74",
+              "Text": "The merge function runs in O(n) time, where n is the combined length of the two subarrays.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "19db9bf5-886f-4f16-b614-169a224ff491",
+          "TopicId": "77ca3556-eef8-4fb5-8a5e-2a5f14bf0939",
+          "Title": "JavaScript Implementation",
+          "BodyText": "Implementing merge sort in JavaScript involves writing two functions: the main recursive mergeSort function and the supporting merge helper.",
+          "Notes": "Using array slice() to split subarrays and spread or concat to build the result array are idiomatic JavaScript approaches, though index-based implementations are more memory efficient.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T14:07:56.1214652-04:00",
+          "ModifiedDate": "2026-06-26T14:07:56.1214652-04:00",
+          "Items": [
+            {
+              "Id": "1fcd8a01-bc08-49df-b8eb-336db56d0a24",
+              "Text": "The mergeSort function checks if the array length is less than or equal to 1 and returns it immediately if so.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "2e8bbca7-b6b1-4a51-a8c2-fc5c75013529",
+              "Text": "It calculates the midpoint using Math.floor(arr.length / 2) and slices the array into left and right halves.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "198a798c-8fe9-4829-9027-4e03675f17a0",
+              "Text": "Both halves are recursively sorted by calling mergeSort on each, and the results are passed into the merge function.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "8fa2a1c4-0674-4752-8543-521febdfa918",
+              "Text": "The merge function iterates through both sorted arrays with a while loop, pushing the smaller element to a results array at each step.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "e82cf626-0e6a-46e6-b24d-2e0f1fb3b196",
+          "TopicId": "77ca3556-eef8-4fb5-8a5e-2a5f14bf0939",
+          "Title": "Time Complexity: O(n log n)",
+          "BodyText": "One of merge sort\u0027s defining characteristics is its consistent O(n log n) time complexity across all cases \u2014 best, average, and worst.",
+          "Notes": "This predictability makes merge sort preferable over quicksort in scenarios where worst-case performance guarantees are critical.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T14:07:56.1214652-04:00",
+          "ModifiedDate": "2026-06-26T14:07:56.1214652-04:00",
+          "Items": [
+            {
+              "Id": "49bb24d9-a55d-4468-97d6-77fe14adab3d",
+              "Text": "The log n factor comes from the recursive splitting: an array of n elements is divided log\u2082(n) times before reaching single-element subarrays.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "5754cf0f-94e5-4fcf-a56f-278cd515b4c2",
+              "Text": "The n factor comes from the merge step, which processes every element at each level of the recursion tree.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "b9cf8f5d-d7e0-4578-a457-5e9b9db77142",
+              "Text": "Unlike quicksort, merge sort does not degrade to O(n\u00B2) in any input scenario, making it reliably efficient.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "ea9cc941-f36a-486c-ab84-19ecf7a69be6",
+              "Text": "The total work across all levels of the recursion tree is O(n log n) regardless of the initial order of the input.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "767a5fd8-93c2-47f8-8d03-12fbf02df2b8",
+          "TopicId": "77ca3556-eef8-4fb5-8a5e-2a5f14bf0939",
+          "Title": "Space Complexity and Trade-offs",
+          "BodyText": "While merge sort achieves excellent time complexity, it comes at the cost of additional memory, making space complexity an important consideration.",
+          "Notes": "In environments with tight memory constraints, an in-place variant of merge sort exists but is significantly more complex to implement correctly.",
+          "SortOrder": 5,
+          "CreatedDate": "2026-06-26T14:07:56.1214652-04:00",
+          "ModifiedDate": "2026-06-26T14:07:56.1214652-04:00",
+          "Items": [
+            {
+              "Id": "267affc5-3665-4ada-be8b-d33d829eeb93",
+              "Text": "Merge sort requires O(n) auxiliary space because the merge step creates new arrays rather than sorting in place.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "8a036167-a7a4-479d-93fb-f98c9ca8ed9b",
+              "Text": "The recursive call stack also contributes O(log n) space for storing frame information at each level of recursion.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "27f1151d-28bb-4e4c-a8ed-4851b7007433",
+              "Text": "This space overhead contrasts with in-place algorithms like insertion sort or heapsort, which use O(1) extra memory.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "616e18d6-4365-45e1-8a2f-4c7bce63f48c",
+              "Text": "Despite the memory cost, merge sort is the preferred algorithm for sorting linked lists and for external sorting of large datasets that do not fit in memory.",
+              "SortOrder": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "c7ec41ea-d02d-4f7c-a493-d4d8241bb1a1",
+      "Title": "Quicksort",
+      "Summary": "Introduction to quicksort\u0027s partitioning strategy and its average-case efficiency. Covers JavaScript implementation, pivot selection considerations, and best versus worst-case performance.",
+      "SortOrder": 4,
+      "CreatedDate": "2026-06-26T14:06:24.8080919-04:00",
+      "ModifiedDate": "2026-06-26T14:06:24.8080919-04:00",
+      "Elements": [
+        {
+          "Id": "ed8b9bbe-c8d9-4fed-a62d-bb92a9775607",
+          "TopicId": "c7ec41ea-d02d-4f7c-a493-d4d8241bb1a1",
+          "Title": "Partitioning Strategy",
+          "BodyText": "Quicksort works by selecting a pivot element and rearranging the array so that all elements less than the pivot come before it and all elements greater come after it.",
+          "Notes": "This rearrangement is called partitioning. After one partition pass, the pivot element is in its final sorted position, and the algorithm recurses on the two sub-arrays on either side.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T14:08:16.0132769-04:00",
+          "ModifiedDate": "2026-06-26T14:08:16.0132769-04:00",
+          "Items": [
+            {
+              "Id": "f6d3e0e5-48aa-4095-9149-bb358e08a308",
+              "Text": "A partition operation scans the array and swaps elements to place smaller values left of the pivot and larger values right of it.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "02a30007-9ceb-49ab-955b-00809f4ab2bd",
+              "Text": "Each recursive call to quicksort processes a smaller sub-array, progressively sorting the entire structure.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "1f34264c-56b2-49e7-bb5f-26b7a2b4c692",
+              "Text": "The pivot itself requires no further movement once a partition is complete.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "3eee92ed-6d15-4ed4-90b9-0ff793115ff0",
+              "Text": "Partitioning is done in-place, meaning no additional array is allocated during this step.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "d18d0b31-21b1-4c90-92aa-7346a4cb8db0",
+          "TopicId": "c7ec41ea-d02d-4f7c-a493-d4d8241bb1a1",
+          "Title": "Pivot Selection Considerations",
+          "BodyText": "The choice of pivot significantly influences quicksort\u0027s performance, as a poorly chosen pivot can lead to unbalanced partitions and degraded efficiency.",
+          "Notes": "Common pivot strategies include choosing the first element, the last element, the middle element, or a random element. The \u0027median-of-three\u0027 strategy picks the median of the first, middle, and last elements to reduce the likelihood of worst-case behavior.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T14:08:16.0132769-04:00",
+          "ModifiedDate": "2026-06-26T14:08:16.0132769-04:00",
+          "Items": [
+            {
+              "Id": "a1d8ac68-6d99-4977-808a-d7892ae205ce",
+              "Text": "Choosing the first or last element as pivot is simple but performs poorly on already-sorted or reverse-sorted arrays.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "62f58cc5-e69a-4c82-a0c2-37abbe8959d0",
+              "Text": "A randomly selected pivot reduces the probability of consistently unbalanced partitions.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "dadbbe2f-0c5b-4736-83b4-869dac268386",
+              "Text": "The median-of-three method is a practical compromise that improves average performance without significant overhead.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "b3fc2b7e-e12e-4ee3-868f-f3e8de71b68e",
+              "Text": "No pivot strategy can guarantee optimal partitioning for every possible input.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "88521290-79a6-4253-9aff-d5e8cf142475",
+          "TopicId": "c7ec41ea-d02d-4f7c-a493-d4d8241bb1a1",
+          "Title": "Average-Case Efficiency",
+          "BodyText": "On average, quicksort achieves O(n log n) time complexity, making it one of the fastest general-purpose sorting algorithms in practice.",
+          "Notes": "The O(n log n) average case arises because balanced partitions halve the problem size at each level of recursion, similar to merge sort, while operating in-place without extra memory allocation.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T14:08:16.0132769-04:00",
+          "ModifiedDate": "2026-06-26T14:08:16.0132769-04:00",
+          "Items": [
+            {
+              "Id": "28fbd738-8827-417c-b01c-c576cf43362e",
+              "Text": "When partitions are roughly equal, the recursion tree has O(log n) levels, each requiring O(n) total work.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "20468289-1e16-4dd9-99ea-17cf21126e8c",
+              "Text": "Despite having the same average complexity as merge sort, quicksort often outperforms it due to better cache locality and lower constant factors.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "c6c1b1d4-7b95-422b-bb23-9f1c9a458f8d",
+              "Text": "Average-case analysis assumes random or well-distributed input data.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "8c435dc6-08f2-4024-b7ca-ea74cc3c5220",
+          "TopicId": "c7ec41ea-d02d-4f7c-a493-d4d8241bb1a1",
+          "Title": "Best and Worst-Case Performance",
+          "BodyText": "Quicksort\u0027s performance ranges from O(n log n) in the best case to O(n\u00B2) in the worst case, depending on partition balance.",
+          "Notes": "The worst case occurs when every partition is maximally unbalanced, such as always picking the smallest or largest element as the pivot on a sorted array. This results in n recursive calls each doing O(n) work.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T14:08:16.0132769-04:00",
+          "ModifiedDate": "2026-06-26T14:08:16.0132769-04:00",
+          "Items": [
+            {
+              "Id": "bd3c1d0d-c507-46f2-a36b-f16d0f8a5e35",
+              "Text": "Best case occurs when every pivot perfectly splits the array into two equal halves, yielding O(n log n) performance.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "05d02cd6-06c9-4c40-853d-824e2b3523ba",
+              "Text": "Worst case O(n\u00B2) arises with already-sorted, reverse-sorted, or all-identical element arrays when using a naive pivot strategy.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "c2049738-5011-4dc4-acf4-9b439be8f1c0",
+              "Text": "Randomized pivot selection converts the worst case from a deterministic pitfall into a statistically unlikely event.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "e347fcfb-bebc-41f3-abbf-0823795de85b",
+              "Text": "Space complexity is O(log n) on average for the recursive call stack, but degrades to O(n) in the worst case.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "bed1988a-ed2b-4023-87e4-5a8d5b2e2713",
+          "TopicId": "c7ec41ea-d02d-4f7c-a493-d4d8241bb1a1",
+          "Title": "JavaScript Implementation",
+          "BodyText": "Implementing quicksort in JavaScript involves a recursive function that partitions the array around a pivot and sorts each resulting sub-array.",
+          "Notes": "A common JavaScript approach uses a helper partition function that returns the final index of the pivot. The main quicksort function then recursively calls itself on the left and right sub-arrays defined by that index.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T14:08:16.0132769-04:00",
+          "ModifiedDate": "2026-06-26T14:08:16.0132769-04:00",
+          "Items": [
+            {
+              "Id": "54d676ae-8eb5-4372-a9e5-75835fbff189",
+              "Text": "The base case for the recursion is when the sub-array has zero or one element, which is inherently sorted.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "38e15b4d-866d-4443-a716-c6eb4a2bf28e",
+              "Text": "JavaScript\u0027s in-place swap can be performed using destructuring assignment: [arr[i], arr[j]] = [arr[j], arr[i]].",
+              "SortOrder": 1
+            },
+            {
+              "Id": "dc0bcbe1-2ae2-46ba-aef2-8069ccbd3bb2",
+              "Text": "The partition function typically uses two pointers moving toward each other or a single pointer tracking the boundary of smaller elements.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "7b7e2d2f-3c22-414a-b0f5-ca6945991190",
+              "Text": "Choosing the last element as pivot is a straightforward starting implementation, though pivot strategy can be refined afterward.",
+              "SortOrder": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "d5047259-bca8-4e81-8925-5c435df3a1be",
+      "Title": "Comparing Sorting Algorithms",
+      "Summary": "Side-by-side comparison of bubble sort, insertion sort, merge sort, and quicksort across time and space complexity metrics. Guides students in selecting the appropriate algorithm based on data size and structure.",
+      "SortOrder": 5,
+      "CreatedDate": "2026-06-26T14:06:24.8080919-04:00",
+      "ModifiedDate": "2026-06-26T14:06:24.8080919-04:00",
+      "Elements": [
+        {
+          "Id": "dbbb857d-6ec1-4b70-bde3-741e7d70cb86",
+          "TopicId": "d5047259-bca8-4e81-8925-5c435df3a1be",
+          "Title": "Time Complexity Overview",
+          "BodyText": "Each sorting algorithm has distinct best-case, average-case, and worst-case time complexities that determine how performance scales with input size.",
+          "Notes": "Understanding Big O notation is essential for interpreting these comparisons. For example, an O(n\u00B2) algorithm may be acceptable for small datasets but becomes impractical for large ones.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T14:08:46.1479868-04:00",
+          "ModifiedDate": "2026-06-26T14:08:46.1479868-04:00",
+          "Items": [
+            {
+              "Id": "d0a444a9-8233-4e7b-99eb-435a447dda92",
+              "Text": "Bubble sort and insertion sort both have O(n\u00B2) average and worst-case time complexity, making them slower on large datasets.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "c02bbc4e-85c1-46f6-82d4-a5abb9e501b9",
+              "Text": "Merge sort guarantees O(n log n) performance in all cases, making it highly predictable regardless of input order.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "07c61f11-7192-4f6e-8744-67d3eceed04e",
+              "Text": "Quicksort averages O(n log n) but degrades to O(n\u00B2) in the worst case, typically when the pivot selection is poor.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "e92d8515-c478-4523-a9da-a68edb067778",
+              "Text": "Insertion sort achieves O(n) best-case performance when the input is already nearly sorted, giving it a practical edge in specific scenarios.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "135dc773-7d89-4991-a58b-3ab2e8764029",
+          "TopicId": "d5047259-bca8-4e81-8925-5c435df3a1be",
+          "Title": "Space Complexity Considerations",
+          "BodyText": "Beyond time, the memory footprint of a sorting algorithm is a critical factor, especially in resource-constrained environments.",
+          "Notes": "In-place algorithms are preferred when memory is limited, while out-of-place algorithms like merge sort trade memory for stability and predictability.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T14:08:46.1479868-04:00",
+          "ModifiedDate": "2026-06-26T14:08:46.1479868-04:00",
+          "Items": [
+            {
+              "Id": "ac3ced02-2619-448c-8180-7f74745c5a7c",
+              "Text": "Bubble sort, insertion sort, and quicksort are in-place algorithms requiring only O(1) auxiliary space (excluding quicksort\u0027s O(log n) call stack).",
+              "SortOrder": 0
+            },
+            {
+              "Id": "a42fc26a-df79-4d97-b744-22c0d3aa5237",
+              "Text": "Merge sort requires O(n) auxiliary space to hold temporary subarrays during the merge step.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "1e5619c1-dfa3-471d-ba52-c6162a153f6e",
+              "Text": "Quicksort\u0027s recursive call stack adds O(log n) space on average, but can reach O(n) in the worst case with poor pivot choices.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "2e9b835f-5f26-4677-90c4-1e52e300db21",
+          "TopicId": "d5047259-bca8-4e81-8925-5c435df3a1be",
+          "Title": "Stability of Sorting Algorithms",
+          "BodyText": "A stable sort preserves the relative order of elements with equal keys, which matters when sorting complex objects by multiple criteria.",
+          "Notes": "For example, if you first sort a list of employees by department and then by last name, a stable sort ensures employees with the same last name remain grouped by department.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T14:08:46.1479868-04:00",
+          "ModifiedDate": "2026-06-26T14:08:46.1479868-04:00",
+          "Items": [
+            {
+              "Id": "5e2a28a5-70fb-498c-9d1e-c414e4b73ec2",
+              "Text": "Bubble sort, insertion sort, and merge sort are stable algorithms that maintain the original order of equal elements.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "5892ccbc-c727-430b-b493-f1acdba81d54",
+              "Text": "Standard implementations of quicksort are not stable, meaning equal elements may be reordered during partitioning.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "86c0e5ec-f4d8-4c38-b8cd-905c9969eb3c",
+              "Text": "Stability should be a primary selection criterion when sorting records where secondary ordering must be preserved.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "59f5d316-a45c-4232-aca4-f391ca6c7647",
+          "TopicId": "d5047259-bca8-4e81-8925-5c435df3a1be",
+          "Title": "Performance on Small vs. Large Datasets",
+          "BodyText": "Algorithm choice should be informed by the expected size of the dataset, as practical performance can differ significantly from theoretical complexity.",
+          "Notes": "Many real-world sort implementations, such as Python\u0027s Timsort, use insertion sort for small subarrays and merge sort for larger ones, exploiting the strengths of both.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T14:08:46.1479868-04:00",
+          "ModifiedDate": "2026-06-26T14:08:46.1479868-04:00",
+          "Items": [
+            {
+              "Id": "1708d5e9-0426-4cf2-9f26-ae7cbf149973",
+              "Text": "Bubble sort and insertion sort have low overhead and simple logic, making them competitive or even faster than advanced algorithms on very small arrays (typically fewer than 20 elements).",
+              "SortOrder": 0
+            },
+            {
+              "Id": "286749ee-1ae7-4092-a983-48bc7e4d7f7d",
+              "Text": "Merge sort and quicksort outperform O(n\u00B2) algorithms significantly as dataset size grows into the hundreds or thousands.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "32784c5f-9d89-413d-be0a-f694290570c1",
+              "Text": "Quicksort\u0027s cache efficiency often gives it a practical speed advantage over merge sort on large datasets despite identical Big O averages.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "e5508ee9-2e12-45e8-9e04-569bfa433e9a",
+          "TopicId": "d5047259-bca8-4e81-8925-5c435df3a1be",
+          "Title": "Impact of Input Order on Algorithm Choice",
+          "BodyText": "The initial ordering of data \u2014 sorted, reverse-sorted, or random \u2014 can dramatically shift which algorithm performs best.",
+          "Notes": "Always consider whether the incoming data has known structure, such as data arriving in nearly sorted order from a streaming source.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T14:08:46.1479868-04:00",
+          "ModifiedDate": "2026-06-26T14:08:46.1479868-04:00",
+          "Items": [
+            {
+              "Id": "df2238b3-891c-44a6-9cd2-4dcb8ed2995e",
+              "Text": "Insertion sort is highly efficient on nearly sorted data, running close to O(n), making it ideal for maintaining a sorted list with frequent small insertions.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "5db29d0f-206e-4600-b5b9-0179f2e81789",
+              "Text": "Bubble sort\u0027s performance on reverse-sorted data is its worst case, requiring the maximum number of swaps.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "5d5f4b3f-8765-48eb-b9bb-12a111908e4c",
+              "Text": "Quicksort performs poorly on already-sorted or reverse-sorted arrays with naive pivot selection, but randomized pivot strategies mitigate this risk.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "b3dcc61c-cf38-4a51-8634-189c546f9358",
+              "Text": "Merge sort\u0027s performance is unaffected by input order, consistently delivering O(n log n) regardless of data arrangement.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "943e3d2f-9d77-48a4-80c0-f924c98e0fcf",
+          "TopicId": "d5047259-bca8-4e81-8925-5c435df3a1be",
+          "Title": "Side-by-Side Algorithm Comparison Table",
+          "BodyText": "A structured comparison across key metrics helps students quickly identify the trade-offs between bubble sort, insertion sort, merge sort, and quicksort.",
+          "Notes": "Use this table as a reference when solving algorithm selection problems on assessments or in practical projects.",
+          "SortOrder": 5,
+          "CreatedDate": "2026-06-26T14:08:46.1479868-04:00",
+          "ModifiedDate": "2026-06-26T14:08:46.1479868-04:00",
+          "Items": [
+            {
+              "Id": "f593e679-a017-4a3a-8c09-7985b2813ce2",
+              "Text": "Bubble sort: Best O(n), Average O(n\u00B2), Worst O(n\u00B2), Space O(1), Stable \u2014 best suited only for educational purposes or trivially small datasets.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "87154a6c-25c0-48c0-9fe6-38ea8ed7478d",
+              "Text": "Insertion sort: Best O(n), Average O(n\u00B2), Worst O(n\u00B2), Space O(1), Stable \u2014 preferred for small or nearly sorted datasets.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "16423309-2f09-4547-892d-1bbb8a2c8855",
+              "Text": "Merge sort: Best O(n log n), Average O(n log n), Worst O(n log n), Space O(n), Stable \u2014 best when stability and predictable performance are required.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "0a5b6a27-cf83-45eb-acb2-31f3889343a1",
+              "Text": "Quicksort: Best O(n log n), Average O(n log n), Worst O(n\u00B2), Space O(log n), Not stable \u2014 best for large datasets where average-case speed and in-place sorting are priorities.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "46cf6bcd-e5db-422a-863a-5d63100ba984",
+          "TopicId": "d5047259-bca8-4e81-8925-5c435df3a1be",
+          "Title": "Guidelines for Selecting the Right Algorithm",
+          "BodyText": "Choosing the appropriate sorting algorithm requires weighing data size, structure, memory constraints, and whether stability is needed.",
+          "Notes": "In professional settings, most standard library sort functions use hybrid algorithms, but understanding the fundamentals enables informed decisions when custom sorting logic is required.",
+          "SortOrder": 6,
+          "CreatedDate": "2026-06-26T14:08:46.1479868-04:00",
+          "ModifiedDate": "2026-06-26T14:08:46.1479868-04:00",
+          "Items": [
+            {
+              "Id": "7e183ec3-73d1-4f45-89e0-af5045a34b54",
+              "Text": "Use insertion sort for small datasets (under ~20 elements) or streams of nearly sorted data where low overhead is critical.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "7e58b0cd-4867-4b51-8764-757a30df60cb",
+              "Text": "Choose merge sort when you need guaranteed O(n log n) performance, stable sorting, or are working with linked lists where random access is costly.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "74e7aced-33c1-4f75-8a16-56034f30a62d",
+              "Text": "Prefer quicksort for large, randomly ordered datasets in memory-sensitive environments where average-case speed is the priority.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "7792f776-c17b-4139-87fb-b7b365814414",
+              "Text": "Avoid bubble sort in production code; its primary value is as a teaching tool for understanding swap-based sorting logic.",
+              "SortOrder": 3
+            },
+            {
+              "Id": "5680d0fe-3457-4a2a-8dc9-02e132520e74",
+              "Text": "When memory is severely limited, favor in-place algorithms like insertion sort or quicksort over merge sort\u0027s O(n) auxiliary space requirement.",
+              "SortOrder": 4
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "TotalElementCount": 35
+}

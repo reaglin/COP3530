@@ -1,0 +1,132 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lists and Arrays: Algorithms and Operations — Topics &amp; Learning Outcomes</title>
+<style>
+body{font-family:'Segoe UI',Arial,sans-serif;max-width:880px;margin:0 auto;padding:32px 24px;color:#222;line-height:1.55}
+h1{font-size:1.6rem;border-bottom:2px solid #dcdcdc;padding-bottom:8px}
+h2{font-size:1.25rem;margin-top:30px;color:#1a3c6e;border-bottom:1px solid #ececec;padding-bottom:4px}
+h3{font-size:1.05rem;margin-top:22px;color:#1a3c6e}
+.toc{border:1px solid #c9d4e3;background:#f5f8fc;border-radius:8px;padding:10px 16px;margin:14px 0 6px;display:flex;gap:18px;flex-wrap:wrap}
+.toc a{color:#1a3c6e;font-weight:600;text-decoration:none}
+.toc a:hover{text-decoration:underline}
+.summary{color:#555;font-style:italic;margin:4px 0 10px}
+ul{margin:6px 0 6px 4px}
+li{margin:5px 0}
+.el-body{color:#555}
+.prefix{color:#555;font-style:italic;margin:6px 0 14px}
+.mo{border:1px solid #e2e2e2;border-radius:6px;padding:12px 16px;margin:12px 0}
+.mo .code{font-size:.8rem;color:#888;text-transform:uppercase;letter-spacing:.04em}
+.mo .statement{font-weight:600;margin:4px 0 8px}
+.meta span{display:inline-block;background:#eef2f8;color:#1a3c6e;border-radius:3px;padding:1px 8px;margin:0 6px 0 0;font-size:.85rem}
+.meta .map{background:#eaf6ec;color:#137333}
+.co{margin:7px 0}
+.co .code{font-weight:600;color:#1a3c6e;margin-right:6px}
+.empty{color:#888}
+</style>
+</head>
+<body>
+<h1>Lists and Arrays: Algorithms and Operations — Topics &amp; Learning Outcomes</h1>
+<div class="toc"><a href="#topics">📋 Module Topics</a><a href="#outcomes">🎯 Student Learning Outcomes</a></div>
+
+<h2 id="topics">Module Topics</h2>
+<h3>Introduction to Lists and Arrays</h3>
+<div class="summary">An overview of lists and arrays as fundamental data structures, including their definitions, characteristics, and how they are represented in JavaScript.</div>
+<ul>
+<li><strong>What Are Lists and Arrays?</strong> <span class="el-body">— Lists and arrays are fundamental data structures used to store collections of elements in an ordered sequence.</span></li>
+<li><strong>Key Characteristics of Arrays</strong> <span class="el-body">— Arrays have defining characteristics that shape how data is stored, accessed, and managed within them.</span></li>
+<li><strong>Arrays in JavaScript</strong> <span class="el-body">— JavaScript provides a built-in Array object that represents lists of elements and offers a rich set of built-in methods for manipulation.</span></li>
+<li><strong>Ordered Sequence and Indexing</strong> <span class="el-body">— The ordered nature of arrays means each element occupies a specific position, and that position is used to retrieve or modify the element.</span></li>
+<li><strong>Why Lists and Arrays Matter in Algorithms</strong> <span class="el-body">— Lists and arrays serve as the foundation for implementing and understanding a wide range of algorithms, including insertion, deletion, searching, and traversal.</span></li>
+</ul>
+<h3>Insertion Operations</h3>
+<div class="summary">Covers the algorithms and techniques for inserting elements into lists and arrays, including insertion at the beginning, end, and arbitrary positions in JavaScript.</div>
+<ul>
+<li><strong>Understanding Array Insertion</strong> <span class="el-body">— Insertion is the operation of placing a new element into an array or list at a specified position, requiring careful management of existing elements.</span></li>
+<li><strong>Insertion at the End</strong> <span class="el-body">— Adding an element to the end of an array is the simplest and most efficient insertion operation, achieved in JavaScript using the push() method.</span></li>
+<li><strong>Insertion at the Beginning</strong> <span class="el-body">— Inserting an element at the start of an array places the new value at index 0, which in JavaScript is accomplished using the unshift() method.</span></li>
+<li><strong>Insertion at an Arbitrary Position</strong> <span class="el-body">— Inserting an element at a specific index somewhere in the middle of an array requires shifting elements and is handled in JavaScript using the splice() method.</span></li>
+<li><strong>Manual Insertion Algorithm</strong> <span class="el-body">— Beyond built-in methods, understanding how to implement insertion manually reinforces the underlying mechanics of shifting elements within an array.</span></li>
+<li><strong>Time and Space Complexity of Insertion</strong> <span class="el-body">— Analyzing the complexity of insertion operations helps developers choose the most efficient approach based on where in the array the element must be placed.</span></li>
+</ul>
+<h3>Deletion Operations</h3>
+<div class="summary">Explores methods for removing elements from lists and arrays, examining different deletion scenarios and their JavaScript implementations.</div>
+<ul>
+<li><strong>Understanding Deletion in Arrays</strong> <span class="el-body">— Deletion is the process of removing an element from an array or list, which may require shifting remaining elements to fill the gap left behind.</span></li>
+<li><strong>Deleting from the End of an Array</strong> <span class="el-body">— Removing the last element of an array is the simplest and most efficient deletion operation in JavaScript.</span></li>
+<li><strong>Deleting from the Beginning of an Array</strong> <span class="el-body">— Removing the first element requires all remaining elements to shift one position to the left, making it a more costly operation.</span></li>
+<li><strong>Deleting from the Middle of an Array</strong> <span class="el-body">— Deleting an element at an arbitrary index requires locating the target element and shifting all subsequent elements to close the gap.</span></li>
+<li><strong>Deleting by Value</strong> <span class="el-body">— When the index of a target element is unknown, deletion by value requires first searching for the element and then removing it.</span></li>
+<li><strong>Filtering as a Non-Mutating Deletion</strong> <span class="el-body">— JavaScript&#39;s `filter()` method provides a way to create a new array with certain elements excluded, without modifying the original array.</span></li>
+<li><strong>Time Complexity of Deletion Operations</strong> <span class="el-body">— The efficiency of a deletion operation varies based on the position of the element and the method used, and this has practical implications for algorithm design.</span></li>
+</ul>
+<h3>Searching Algorithms</h3>
+<div class="summary">Introduces common searching techniques such as linear search and binary search, with hands-on JavaScript implementations applied to lists and arrays.</div>
+<ul>
+<li><strong>What Is a Searching Algorithm?</strong> <span class="el-body">— A searching algorithm is a step-by-step procedure used to locate a specific element within a list or array.</span></li>
+<li><strong>Linear Search</strong> <span class="el-body">— Linear search checks each element in a list one by one from the beginning until the target value is found or the list is exhausted.</span></li>
+<li><strong>Implementing Linear Search in JavaScript</strong> <span class="el-body">— A linear search function in JavaScript iterates through an array using a loop and returns the index of the target element if found.</span></li>
+<li><strong>Binary Search</strong> <span class="el-body">— Binary search is an efficient algorithm that repeatedly divides a sorted array in half to narrow down the location of a target value.</span></li>
+<li><strong>Implementing Binary Search in JavaScript</strong> <span class="el-body">— A binary search function in JavaScript maintains low and high pointer variables to track the current search boundaries within the sorted array.</span></li>
+<li><strong>Comparing Linear Search and Binary Search</strong> <span class="el-body">— Understanding when to use linear versus binary search depends on factors such as whether the data is sorted and the size of the dataset.</span></li>
+</ul>
+<h3>Traversal Techniques</h3>
+<div class="summary">Examines how to systematically visit and process each element in a list or array, including various traversal patterns implemented in JavaScript.</div>
+<ul>
+<li><strong>What Is Traversal?</strong> <span class="el-body">— Traversal is the process of systematically visiting every element in a list or array exactly once in order to read or process its value.</span></li>
+<li><strong>Forward Traversal with a for Loop</strong> <span class="el-body">— The classic forward traversal iterates from index 0 to the last index using a standard for loop in JavaScript.</span></li>
+<li><strong>Reverse Traversal</strong> <span class="el-body">— Reverse traversal visits elements from the last index down to index 0, which is useful for certain algorithms such as in-place reversal or deletion while iterating.</span></li>
+<li><strong>Traversal with for...of</strong> <span class="el-body">— JavaScript&#39;s for...of loop provides a cleaner syntax for traversing arrays when the index is not needed.</span></li>
+<li><strong>Traversal with Higher-Order Methods</strong> <span class="el-body">— JavaScript arrays provide built-in higher-order methods such as forEach, map, filter, and reduce that encapsulate traversal logic internally.</span></li>
+<li><strong>Step and Skip Traversal Patterns</strong> <span class="el-body">— Not all traversals visit every consecutive element; some advance by more than one index per step or visit only elements meeting a condition.</span></li>
+<li><strong>Nested Traversal for Multi-Dimensional Arrays</strong> <span class="el-body">— When working with arrays of arrays (2D or multi-dimensional arrays), nested loops are used to traverse both the outer and inner arrays.</span></li>
+</ul>
+<h3>Time and Space Complexity Analysis</h3>
+<div class="summary">Analyzes the efficiency of list and array operations using Big O notation, comparing the time and space complexity of insertion, deletion, searching, and traversal algorithms.</div>
+<ul>
+<li><strong>Introduction to Big O Notation</strong> <span class="el-body">— Big O notation is the standard language used to describe how the runtime or memory usage of an algorithm scales as the input size grows.</span></li>
+<li><strong>Time Complexity of Traversal</strong> <span class="el-body">— Traversal means visiting every element in a list or array, and its time complexity is directly tied to the number of elements present.</span></li>
+<li><strong>Time Complexity of Searching</strong> <span class="el-body">— Searching algorithms vary significantly in efficiency depending on whether the data is sorted and which strategy is used.</span></li>
+<li><strong>Time Complexity of Insertion</strong> <span class="el-body">— Inserting an element into a list or array has different costs depending on where the insertion occurs and what kind of data structure is used.</span></li>
+<li><strong>Time Complexity of Deletion</strong> <span class="el-body">— Like insertion, the cost of deleting an element depends heavily on its position within the array or list.</span></li>
+<li><strong>Space Complexity Considerations</strong> <span class="el-body">— Space complexity measures the total memory an algorithm requires relative to its input size, including both auxiliary memory and the input itself.</span></li>
+<li><strong>Comparing Operations Across Data Structures</strong> <span class="el-body">— Arrays and linked lists expose the same logical operations — insert, delete, search, traverse — but their underlying implementations produce very different complexity profiles.</span></li>
+</ul>
+<h2 id="outcomes">Student Learning Outcomes</h2>
+<p class="prefix">By the end of this module, students will be able to:</p>
+<div class="mo">
+<div class="code">MO1</div>
+<div class="statement">Implement insertion, deletion, searching, and traversal operations on arrays using JavaScript built-in methods and manual algorithms</div>
+<div class="meta"><span>Level: Apply</span><span>Type: Cognitive</span><span class="map">Course mapping: CO3</span></div>
+</div>
+<div class="mo">
+<div class="code">MO2</div>
+<div class="statement">Differentiate between linear search and binary search by comparing their requirements, step-by-step procedures, and appropriate use cases</div>
+<div class="meta"><span>Level: Analyze</span><span>Type: Cognitive</span><span class="map">Course mapping: CO2</span></div>
+</div>
+<div class="mo">
+<div class="code">MO3</div>
+<div class="statement">Analyze the time and space complexity of insertion, deletion, searching, and traversal operations on lists and arrays using Big O notation</div>
+<div class="meta"><span>Level: Analyze</span><span>Type: Cognitive</span><span class="map">Course mapping: CO4</span></div>
+</div>
+<div class="mo">
+<div class="code">MO4</div>
+<div class="statement">Select the most efficient array operation or traversal technique for a given scenario based on position, data order, and complexity trade-offs</div>
+<div class="meta"><span>Level: Evaluate</span><span>Type: Cognitive</span><span class="map">Course mapping: CO2</span></div>
+</div>
+<div class="mo">
+<div class="code">MO5</div>
+<div class="statement">Construct traversal solutions for multi-dimensional arrays using nested loops and higher-order JavaScript methods such as forEach, map, filter, and reduce</div>
+<div class="meta"><span>Level: Create</span><span>Type: Behavioral</span><span class="map">Course mapping: CO3</span></div>
+</div>
+<h3>Course Outcomes (reference)</h3>
+<div class="co"><span class="code">CO1</span>Describe both complex and simple data structures.</div>
+<div class="co"><span class="code">CO2</span>Select the correct data structure and algorithm to solve specific problems</div>
+<div class="co"><span class="code">CO3</span>Implement data structures and algorithms in computer code.</div>
+<div class="co"><span class="code">CO4</span>Analyze the performance of algorithms and data structures</div>
+
+<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
+</body>
+</html>

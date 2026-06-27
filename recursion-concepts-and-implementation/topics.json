@@ -1,0 +1,1195 @@
+{
+  "ModuleFolderName": "Recursion_Concepts_and",
+  "CourseName": "COP3530 - Data Structures",
+  "GeneratedDate": "2026-06-26T14:00:04.303422-04:00",
+  "ModifiedDate": "2026-06-26T14:02:38.9380298-04:00",
+  "Outcomes": [],
+  "Topics": [
+    {
+      "Id": "5b4f4cbd-256c-4f48-9013-10fe5f669185",
+      "Title": "What is Recursion?",
+      "Summary": "Introduces recursion as a programming strategy where a function calls itself to solve a problem. Establishes the conceptual foundation before diving into technical details.",
+      "SortOrder": 0,
+      "CreatedDate": "2026-06-26T14:00:04.303422-04:00",
+      "ModifiedDate": "2026-06-26T14:00:04.303422-04:00",
+      "Elements": [
+        {
+          "Id": "1ed037da-95c5-4b64-948f-50c5c6786d0b",
+          "TopicId": "5b4f4cbd-256c-4f48-9013-10fe5f669185",
+          "Title": "Defining Recursion",
+          "BodyText": "Recursion is a programming strategy in which a function solves a problem by calling itself as part of its own definition.",
+          "Notes": "Think of recursion as a problem-solving pattern rather than just a syntax trick \u2014 the function delegates a smaller version of the same task back to itself.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T14:00:22.1197255-04:00",
+          "ModifiedDate": "2026-06-26T14:00:22.1197255-04:00",
+          "Items": [
+            {
+              "Id": "a6174fd7-efc9-4a1c-8d88-e1ffeb24d576",
+              "Text": "A recursive function is one that invokes itself directly or indirectly during its execution.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "f66505ff-55ce-41a1-a8f0-442845b6cc62",
+              "Text": "Each self-call is intended to work on a simpler or smaller version of the original problem.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "7035f87a-9246-42a7-beb5-f94e2078c72f",
+              "Text": "Recursion is a legitimate and widely used alternative to iterative approaches like loops.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "0d8d4ad6-d0d0-461a-812b-11851e5d0c3e",
+          "TopicId": "5b4f4cbd-256c-4f48-9013-10fe5f669185",
+          "Title": "The Self-Referential Nature of Recursive Thinking",
+          "BodyText": "Recursion requires thinking about a problem in terms of itself \u2014 breaking it into a case that can be handled now and a remainder that looks just like the original problem.",
+          "Notes": "A classic analogy: to count the people in a line, you could count yourself (1) and then ask the person behind you to count the rest of the line using the same method.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T14:00:22.1197255-04:00",
+          "ModifiedDate": "2026-06-26T14:00:22.1197255-04:00",
+          "Items": [
+            {
+              "Id": "bc517c6c-970a-4656-9ebe-0d80c2327dfa",
+              "Text": "Recursive thinking means identifying how a problem contains a smaller instance of the same problem.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "ced63fd7-33e0-4d64-9ddb-75710a7d781e",
+              "Text": "This self-similar structure is what makes recursion a natural fit for certain types of problems.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "cb72ed21-f30e-40f2-a629-8b77d8c9e925",
+              "Text": "Recognizing this pattern is the first step before writing any recursive code.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "788c54da-9fe7-49e4-8491-63b60b96995d",
+          "TopicId": "5b4f4cbd-256c-4f48-9013-10fe5f669185",
+          "Title": "Recursion vs. Iteration",
+          "BodyText": "Recursion and iteration (loops) are two complementary strategies for repeating operations, and many problems can be solved with either approach.",
+          "Notes": "Factorial can be computed with a for-loop or with a recursive function \u2014 both produce the same result, but the recursive version often mirrors the mathematical definition more directly.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T14:00:22.1197255-04:00",
+          "ModifiedDate": "2026-06-26T14:00:22.1197255-04:00",
+          "Items": [
+            {
+              "Id": "1daf9781-b4b1-482b-8db3-6f735fa6f4b0",
+              "Text": "Iteration uses explicit loop constructs such as for or while to repeat a block of code.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "9fea674a-46ac-482c-a4ae-03e128d87c89",
+              "Text": "Recursion achieves repetition by having the function call itself, with each call moving closer to a stopping point.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "89c1cd43-32a6-47bd-9c6e-91e3b25180a3",
+              "Text": "Recursion is often preferred when the problem structure is naturally hierarchical or self-similar.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "ce921e17-2251-4678-9b91-d65834df50e5",
+          "TopicId": "5b4f4cbd-256c-4f48-9013-10fe5f669185",
+          "Title": "Why Recursion Matters as a Strategy",
+          "BodyText": "Recursion is more than a syntax feature \u2014 it is a high-level problem-solving strategy that appears across classic algorithms and data structures.",
+          "Notes": "Problems like traversing trees, computing Fibonacci numbers, and processing nested lists have elegant recursive solutions that would be significantly more complex to write iteratively.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T14:00:22.1197255-04:00",
+          "ModifiedDate": "2026-06-26T14:00:22.1197255-04:00",
+          "Items": [
+            {
+              "Id": "0c85a64a-564c-4818-be4f-4402a0bfdcc4",
+              "Text": "Classic algorithms such as factorial and Fibonacci are naturally expressed using recursion.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "ef22f0b3-040a-46c8-9605-4b126665feb1",
+              "Text": "Data structures like trees and graphs are often traversed most cleanly with recursive functions.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "e882847f-47c6-42a9-b580-f09661ddf112",
+              "Text": "Understanding recursion as a strategy builds a foundation for tackling a wide range of computational problems.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "25e38549-8298-4ad9-80ed-56d15cd214df",
+          "TopicId": "5b4f4cbd-256c-4f48-9013-10fe5f669185",
+          "Title": "The Conceptual Building Blocks of a Recursive Function",
+          "BodyText": "Every recursive function relies on two essential conceptual components: a point where it stops, and a step where it calls itself.",
+          "Notes": "These two components \u2014 the base case and the recursive call \u2014 will be explored in depth in later topics, but recognizing that both must exist is fundamental to understanding what makes recursion work.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T14:00:22.1197255-04:00",
+          "ModifiedDate": "2026-06-26T14:00:22.1197255-04:00",
+          "Items": [
+            {
+              "Id": "532bbfee-84f4-4f95-a492-50902c5cd0db",
+              "Text": "Without a stopping condition, a recursive function would call itself indefinitely, causing an error.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "43880adc-fad6-4c7d-b014-b8123472cf13",
+              "Text": "Without a self-call that progresses toward that stopping condition, the problem would never be broken down.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "407b7e18-d2de-4d04-ab67-e2c81f30e7a3",
+              "Text": "Keeping these two roles distinct in your thinking helps prevent common recursive mistakes.",
+              "SortOrder": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "afa58d8a-778b-402d-a218-b2ee40a7dc85",
+      "Title": "Base Cases and Recursive Cases",
+      "Summary": "Explains the two essential components of any recursive function: the base case that stops recursion and the recursive case that progresses toward it. Covers why both are necessary to avoid infinite loops.",
+      "SortOrder": 1,
+      "CreatedDate": "2026-06-26T14:00:04.303422-04:00",
+      "ModifiedDate": "2026-06-26T14:00:04.303422-04:00",
+      "Elements": [
+        {
+          "Id": "f3ec752f-c53d-4966-8414-0129d417d473",
+          "TopicId": "afa58d8a-778b-402d-a218-b2ee40a7dc85",
+          "Title": "What Is a Base Case?",
+          "BodyText": "The base case is the condition in a recursive function that stops further recursive calls and returns a direct result.",
+          "Notes": "For example, in a factorial function, the base case is when n equals 0 or 1, returning 1 immediately without making another recursive call.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T14:00:46.4774774-04:00",
+          "ModifiedDate": "2026-06-26T14:00:46.4774774-04:00",
+          "Items": [
+            {
+              "Id": "75b137c9-a5b6-4740-902d-8cae7cc5180c",
+              "Text": "Every recursive function must have at least one base case to terminate execution.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "304066f8-cfdd-4a82-a0e6-8c8eaa82d082",
+              "Text": "The base case is evaluated first; if met, the function returns a value without calling itself again.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "2ab5b9a0-e062-4bae-9282-60ad14e9a4c4",
+              "Text": "Without a base case, the function would call itself indefinitely, causing a stack overflow error.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "6770d2f7-b663-4e59-b400-cdd4c2549790",
+          "TopicId": "afa58d8a-778b-402d-a218-b2ee40a7dc85",
+          "Title": "What Is a Recursive Case?",
+          "BodyText": "The recursive case is the part of the function where it calls itself with a modified argument, moving step by step toward the base case.",
+          "Notes": "In a factorial function, the recursive case is return n * factorial(n - 1), where n decreases by 1 with each call, progressing toward the base case of n === 1.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T14:00:46.4774774-04:00",
+          "ModifiedDate": "2026-06-26T14:00:46.4774774-04:00",
+          "Items": [
+            {
+              "Id": "e0d9f690-f3d0-4890-a2e4-5dfc6ea64821",
+              "Text": "The recursive case must change the input in a way that brings it closer to the base case on every call.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "f60467fd-ed33-498f-aaaa-3c2e2c374f76",
+              "Text": "Each recursive call solves a smaller version of the same problem until the simplest version is reached.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "66f1df73-f552-4256-8766-37d812b244a5",
+              "Text": "If the recursive case does not progress toward the base case, the function will recurse infinitely.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "1e19227d-aa72-4d10-9e4e-4b90f3e1ccbe",
+          "TopicId": "afa58d8a-778b-402d-a218-b2ee40a7dc85",
+          "Title": "Why Both Components Are Necessary",
+          "BodyText": "A correct recursive function requires both a base case and a recursive case working together to produce a result without infinite looping.",
+          "Notes": "A function with only a recursive case never terminates. A function with only a base case never breaks the problem down and cannot handle the general input.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T14:00:46.4774774-04:00",
+          "ModifiedDate": "2026-06-26T14:00:46.4774774-04:00",
+          "Items": [
+            {
+              "Id": "f6257b7f-0aa5-4789-b941-5a06334b502b",
+              "Text": "The base case provides the exit condition that gives recursion a stopping point.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "e4f33baf-b333-4259-97a1-07601ac45fe6",
+              "Text": "The recursive case provides the mechanism for solving progressively simpler sub-problems.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "94857324-61b4-4b4b-9dd9-017598e1a0d4",
+              "Text": "Together they guarantee that the function will eventually reach a direct answer and return it up the call chain.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "377c9393-0817-4db9-8745-5e45660bae84",
+          "TopicId": "afa58d8a-778b-402d-a218-b2ee40a7dc85",
+          "Title": "Identifying the Base Case in Classic Algorithms",
+          "BodyText": "Recognizing what counts as the simplest, directly solvable version of a problem is the key skill for writing correct base cases.",
+          "Notes": "For Fibonacci, there are two base cases: fib(0) returns 0 and fib(1) returns 1. For recursive list traversal, the base case is typically an empty list or array.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T14:00:46.4774774-04:00",
+          "ModifiedDate": "2026-06-26T14:00:46.4774774-04:00",
+          "Items": [
+            {
+              "Id": "4ffe2380-9334-4b34-aef2-4097375ee08f",
+              "Text": "Ask yourself: what is the smallest input for which the answer is already known without further computation?",
+              "SortOrder": 0
+            },
+            {
+              "Id": "5b5240b6-25fb-4b8c-9a64-6b12defd45a3",
+              "Text": "Some problems require multiple base cases, as seen in the Fibonacci sequence.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "ce6256eb-3d1b-4a53-bccd-482e529c0707",
+              "Text": "Defining the base case precisely prevents both missing the stopping point and stopping too early.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "db4fbfe0-981b-4b1c-aa16-1db7a5f673aa",
+          "TopicId": "afa58d8a-778b-402d-a218-b2ee40a7dc85",
+          "Title": "Ensuring the Recursive Case Converges",
+          "BodyText": "The recursive case must consistently reduce the problem size so that the base case is eventually reached on every valid input.",
+          "Notes": "For example, when traversing a list recursively in JavaScript, each recursive call should pass a shorter slice of the array, guaranteeing the list shrinks until it is empty.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T14:00:46.4774774-04:00",
+          "ModifiedDate": "2026-06-26T14:00:46.4774774-04:00",
+          "Items": [
+            {
+              "Id": "1c1ba5e5-6e13-4339-988a-10a86859f347",
+              "Text": "Common convergence strategies include decrementing a counter, reducing a list\u0027s length, or halving a value.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "e6faeadc-eb2e-4b43-9890-e06279fefd91",
+              "Text": "If the argument passed to the recursive call is not closer to the base case, the recursion will not terminate.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "867977cc-65ca-4ffa-9297-ff9d0788bd91",
+              "Text": "Testing with small inputs first helps verify that each call genuinely moves toward the base case.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "a3722d03-be04-4cd7-96c8-1dd60432b311",
+          "TopicId": "afa58d8a-778b-402d-a218-b2ee40a7dc85",
+          "Title": "Infinite Recursion and Stack Overflow",
+          "BodyText": "When a base case is missing or unreachable, the function calls itself without end, eventually exhausting the call stack and causing a runtime error.",
+          "Notes": "JavaScript engines enforce a maximum call stack size. Exceeding it throws a \u0027Maximum call stack size exceeded\u0027 error, which is the runtime signal that recursion did not terminate.",
+          "SortOrder": 5,
+          "CreatedDate": "2026-06-26T14:00:46.4774774-04:00",
+          "ModifiedDate": "2026-06-26T14:00:46.4774774-04:00",
+          "Items": [
+            {
+              "Id": "6997a7bb-c6ad-42f7-859f-56886e25a937",
+              "Text": "Infinite recursion occurs when the base case condition is never true for the inputs being passed.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "ca2e2cf0-4182-4e75-87c4-6a16a165d072",
+              "Text": "Each unresolved function call occupies memory on the call stack, so unbounded recursion quickly consumes all available stack space.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "be08b91c-c7fa-44f9-bfa3-d1725ae209e3",
+              "Text": "Debugging infinite recursion involves checking whether the recursive case actually changes the argument and whether the base case condition is reachable.",
+              "SortOrder": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "c8577908-1ba1-40bf-b9f3-0459f4b2021d",
+      "Title": "The Call Stack and Recursion",
+      "Summary": "Describes how the call stack manages recursive function calls, tracking execution context at each level. Explores stack frames, stack depth, and the risk of stack overflow.",
+      "SortOrder": 2,
+      "CreatedDate": "2026-06-26T14:00:04.303422-04:00",
+      "ModifiedDate": "2026-06-26T14:00:04.303422-04:00",
+      "Elements": [
+        {
+          "Id": "fed3f28a-5ac4-4d50-abe1-cd6a167de593",
+          "TopicId": "c8577908-1ba1-40bf-b9f3-0459f4b2021d",
+          "Title": "What Is the Call Stack?",
+          "BodyText": "The call stack is a data structure the JavaScript runtime uses to track the execution of function calls in a program.",
+          "Notes": "Think of the call stack like a stack of plates: each new function call is placed on top, and when it finishes, it is removed from the top before returning control to the function below it.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T14:01:11.5121708-04:00",
+          "ModifiedDate": "2026-06-26T14:01:11.5121708-04:00",
+          "Items": [
+            {
+              "Id": "f8bb8074-0d7d-4946-939f-24a15e77ffbd",
+              "Text": "The call stack operates on a Last-In, First-Out (LIFO) principle, meaning the most recently called function is the first to finish and be removed.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "4113b1c9-15b1-4c4d-a213-47499d3d36fd",
+              "Text": "Every time a function is invoked, the runtime pushes a new entry onto the top of the stack to track that call.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "cb53d562-553b-470d-8637-fa5beebecaa6",
+              "Text": "When a function returns, its entry is popped off the stack, and execution resumes in the function that made the call.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "8c7b7a3d-f8a1-4f18-89a8-d04805f079fc",
+          "TopicId": "c8577908-1ba1-40bf-b9f3-0459f4b2021d",
+          "Title": "Stack Frames and Execution Context",
+          "BodyText": "Each entry placed onto the call stack is called a stack frame, and it stores all the information needed to execute that particular function call.",
+          "Notes": "For a recursive factorial function computing factorial(4), each recursive call creates its own frame storing its local value of n \u2014 so factorial(4), factorial(3), factorial(2), and factorial(1) each have separate, independent frames on the stack.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T14:01:11.5121708-04:00",
+          "ModifiedDate": "2026-06-26T14:01:11.5121708-04:00",
+          "Items": [
+            {
+              "Id": "9f7212c4-3600-4604-bd69-ac8a02bffc9d",
+              "Text": "A stack frame contains the function\u0027s local variables, its parameters, and the return address indicating where execution should resume after the function completes.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "24d83168-d44f-4085-9902-f26d851a6acc",
+              "Text": "Each recursive call generates its own distinct stack frame, so variables at different recursion levels do not interfere with one another.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "ea1bd5fe-9729-45eb-8b0e-8a4cb954ab17",
+              "Text": "The frames accumulate on the stack until base cases are reached, at which point frames begin resolving and being removed in reverse order.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "01ce67d4-594e-4325-ab94-809ba040da55",
+          "TopicId": "c8577908-1ba1-40bf-b9f3-0459f4b2021d",
+          "Title": "How Recursive Calls Build the Stack",
+          "BodyText": "Every recursive function call adds a new stack frame on top of the previous one, causing the stack to grow deeper with each level of recursion.",
+          "Notes": "Tracing a call like fibonacci(5) visually shows the stack growing as recursive calls fan out, and then shrinking as return values propagate back up through the frames.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T14:01:11.5121708-04:00",
+          "ModifiedDate": "2026-06-26T14:01:11.5121708-04:00",
+          "Items": [
+            {
+              "Id": "b605056a-33a1-4be1-a15a-3278e3c302ef",
+              "Text": "When a recursive function calls itself, execution of the current frame is paused and a new frame for the inner call is pushed onto the stack.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "6c5877d7-5703-44b5-abd0-a0c8f7b5e01b",
+              "Text": "The stack continues to grow until the base case is reached, at which point no further recursive calls are made and the stack begins to unwind.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "130c7e19-5d05-4f75-92c4-7dcf680df550",
+              "Text": "As each frame resolves its return value, that value is passed back to the frame below it, allowing results to be composed as the stack shrinks.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "13c37837-ed0b-40d3-827e-16cf8aa4f7ca",
+          "TopicId": "c8577908-1ba1-40bf-b9f3-0459f4b2021d",
+          "Title": "Stack Depth and Recursion Depth",
+          "BodyText": "Stack depth refers to the number of active stack frames at any given moment, which in a recursive function corresponds directly to how many levels deep the recursion has gone.",
+          "Notes": "For a simple linear recursion like factorial(n), the maximum stack depth is n, since each call to factorial adds exactly one frame before reaching the base case.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T14:01:11.5121708-04:00",
+          "ModifiedDate": "2026-06-26T14:01:11.5121708-04:00",
+          "Items": [
+            {
+              "Id": "2a0cac81-e912-4a2d-b63a-b0e1d4277850",
+              "Text": "The recursion depth is determined by how many times the function calls itself before hitting a base case.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "ae8e5264-240d-40b7-beb8-547d6447574f",
+              "Text": "Deeper recursion requires more memory because each stack frame must be held in memory until the base case is resolved and the stack unwinds.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "b2d600bf-6854-403c-afd3-5671c7249558",
+              "Text": "Algorithms with high branching factors, like naive Fibonacci, can cause the stack to grow very quickly even for moderately sized inputs.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "a84a12a2-b345-4e0c-88c7-81f3460bf791",
+          "TopicId": "c8577908-1ba1-40bf-b9f3-0459f4b2021d",
+          "Title": "Stack Overflow: When Recursion Goes Too Deep",
+          "BodyText": "A stack overflow error occurs when the call stack exceeds its maximum allowed size, typically because recursion has gone too deep without reaching a base case.",
+          "Notes": "In JavaScript, a stack overflow typically surfaces as a \u0027RangeError: Maximum call stack size exceeded\u0027 error. This can be triggered by passing a very large input or by accidentally writing a recursive function with no reachable base case.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T14:01:11.5121708-04:00",
+          "ModifiedDate": "2026-06-26T14:01:11.5121708-04:00",
+          "Items": [
+            {
+              "Id": "5e0ef931-10bf-4572-8d14-7f2b0d8c22fa",
+              "Text": "Every runtime environment imposes a limit on call stack size; once that limit is exceeded, the program crashes with a stack overflow error.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "94a3ebf4-165d-4d0b-ac61-c302ea52b9ec",
+              "Text": "Infinite recursion \u2014 caused by a missing or unreachable base case \u2014 is the most common cause of stack overflow in recursive programs.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "d9ff4874-0fe7-4a22-a4b6-bfb38bfba774",
+              "Text": "Even correct recursive algorithms can overflow the stack if called with input values that require more recursion levels than the stack can accommodate.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "f3acbea0-17f5-4edd-9122-e46ebe4db0d9",
+          "TopicId": "c8577908-1ba1-40bf-b9f3-0459f4b2021d",
+          "Title": "Preventing and Mitigating Stack Overflow",
+          "BodyText": "Developers can reduce the risk of stack overflow by carefully designing base cases, limiting input size, or restructuring recursion to use less stack space.",
+          "Notes": "Tail-call optimization, supported in some JavaScript environments under strict mode, can allow certain recursive functions to reuse the current stack frame instead of creating a new one, effectively eliminating stack growth.",
+          "SortOrder": 5,
+          "CreatedDate": "2026-06-26T14:01:11.5121708-04:00",
+          "ModifiedDate": "2026-06-26T14:01:11.5121708-04:00",
+          "Items": [
+            {
+              "Id": "fd9db028-2caa-4880-ad15-e4d7d3ad50d3",
+              "Text": "Always ensure that every recursive function has a clearly defined and reachable base case that will be triggered for all valid inputs.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "b4a5a73d-c2c5-4ecc-a982-2a1a4753c285",
+              "Text": "For problems requiring very deep recursion, consider converting the recursive solution to an iterative one that uses an explicit stack data structure instead of the call stack.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "d0c4e6cd-dccb-4303-b035-9b956a46321d",
+              "Text": "Validating and constraining input values before invoking a recursive function helps prevent unintentionally deep recursion at runtime.",
+              "SortOrder": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "9f9f91d3-7b61-49fb-8dc6-f592cf9ac9df",
+      "Title": "Implementing Factorial with Recursion",
+      "Summary": "Walks through building a classic recursive factorial function in JavaScript as a concrete first implementation. Connects the mathematical definition of factorial to recursive code structure.",
+      "SortOrder": 3,
+      "CreatedDate": "2026-06-26T14:00:04.303422-04:00",
+      "ModifiedDate": "2026-06-26T14:00:04.303422-04:00",
+      "Elements": [
+        {
+          "Id": "c53d75c6-54cd-447a-85c0-7578811bad3d",
+          "TopicId": "9f9f91d3-7b61-49fb-8dc6-f592cf9ac9df",
+          "Title": "The Mathematical Definition of Factorial",
+          "BodyText": "Factorial is a mathematical operation defined recursively: n! equals n multiplied by (n-1)!, with 0! defined as 1.",
+          "Notes": "For example, 5! = 5 \u00D7 4 \u00D7 3 \u00D7 2 \u00D7 1 = 120. This natural self-referential definition maps directly onto recursive code structure.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T14:01:30.1744606-04:00",
+          "ModifiedDate": "2026-06-26T14:01:30.1744606-04:00",
+          "Items": [
+            {
+              "Id": "1fcab932-01b2-475b-913e-780fe0f45cf0",
+              "Text": "Factorial of a positive integer n is the product of all integers from 1 up to n.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "79b69e2c-b3c5-4ce4-a5fc-5d980fc70953",
+              "Text": "The definition contains two parts: a base case (0! = 1) and a recursive rule (n! = n \u00D7 (n-1)!).",
+              "SortOrder": 1
+            },
+            {
+              "Id": "e914ca2f-2b22-4d30-ace2-286a347bdecf",
+              "Text": "Recognizing this mathematical pattern is the first step to writing a recursive function.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "fca0a60e-aaba-4d4f-ae78-c7f85f40a917",
+          "TopicId": "9f9f91d3-7b61-49fb-8dc6-f592cf9ac9df",
+          "Title": "Identifying the Base Case",
+          "BodyText": "Every recursive factorial function must include a base case that stops the recursion \u2014 in this instance, when n equals 0.",
+          "Notes": "Without a base case, the function would call itself indefinitely, eventually causing a stack overflow error.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T14:01:30.1744606-04:00",
+          "ModifiedDate": "2026-06-26T14:01:30.1744606-04:00",
+          "Items": [
+            {
+              "Id": "2bba8725-ddc7-46c5-9aa7-f2dc88ec3aea",
+              "Text": "The base case for factorial is: if n === 0, return 1.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "044d1581-480b-43af-95d4-65a26dca1b9f",
+              "Text": "This is the smallest subproblem that can be solved directly without another recursive call.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "85f74a7c-5715-40c6-b7fa-f2706a967134",
+              "Text": "Placing the base case check at the top of the function ensures it is evaluated before any recursive call is made.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "bb682c53-c199-4b6d-9590-8b2b08781390",
+          "TopicId": "9f9f91d3-7b61-49fb-8dc6-f592cf9ac9df",
+          "Title": "Writing the Recursive Call",
+          "BodyText": "The recursive case expresses the problem in terms of a smaller version of itself, mirroring the mathematical rule n! = n \u00D7 (n-1)!.",
+          "Notes": "In JavaScript this line reads: return n * factorial(n - 1); \u2014 each call reduces n by 1, moving closer to the base case.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T14:01:30.1744606-04:00",
+          "ModifiedDate": "2026-06-26T14:01:30.1744606-04:00",
+          "Items": [
+            {
+              "Id": "10f09933-048a-4873-b39d-32ec7370995f",
+              "Text": "The recursive call passes n - 1 as the argument, reducing the problem size with each invocation.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "a1959e55-19d1-46bb-8a33-586da700b953",
+              "Text": "The return value of the recursive call is multiplied by n before being returned to the caller.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "5ea573b6-fad6-4e45-bb35-77b0a9e6837e",
+              "Text": "This chaining of return values is what accumulates the final product across all stack frames.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "5501af24-a153-44ae-a733-ea268747f33d",
+          "TopicId": "9f9f91d3-7b61-49fb-8dc6-f592cf9ac9df",
+          "Title": "Complete Factorial Function in JavaScript",
+          "BodyText": "Combining the base case and the recursive call produces a complete, working factorial function in JavaScript.",
+          "Notes": "function factorial(n) { if (n === 0) { return 1; } return n * factorial(n - 1); } \u2014 calling factorial(5) returns 120.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T14:01:30.1744606-04:00",
+          "ModifiedDate": "2026-06-26T14:01:30.1744606-04:00",
+          "Items": [
+            {
+              "Id": "97060eac-4e84-4495-a2ec-b1d6256a1269",
+              "Text": "The function signature takes a single integer parameter n.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "c808ff38-9c34-48b8-b088-5a76133c00fd",
+              "Text": "The if-statement handles the base case, and the final return statement handles the recursive case.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "0870dcd3-c8c4-41af-aa11-e58feb2fb77f",
+              "Text": "The function is self-contained; no loops or external variables are needed to compute the result.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "ab719390-c008-47bf-a3a2-b80a22ffdec4",
+          "TopicId": "9f9f91d3-7b61-49fb-8dc6-f592cf9ac9df",
+          "Title": "Tracing Execution Through the Call Stack",
+          "BodyText": "Tracing how factorial(3) executes step by step reveals how JavaScript manages recursive calls using the call stack.",
+          "Notes": "factorial(3) calls factorial(2), which calls factorial(1), which calls factorial(0). Once factorial(0) returns 1, values unwind: 1\u21921\u21922\u21926.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T14:01:30.1744606-04:00",
+          "ModifiedDate": "2026-06-26T14:01:30.1744606-04:00",
+          "Items": [
+            {
+              "Id": "6409c871-e11f-4dea-89b0-adbea9983cc1",
+              "Text": "Each recursive call is pushed onto the call stack as a new stack frame with its own value of n.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "6de14fa3-22ea-4120-aca7-bd5173f4969b",
+              "Text": "The stack frames accumulate until the base case is reached and no further calls are made.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "0d703021-4d6f-4219-9106-c1ec9ff1e692",
+              "Text": "Return values then propagate back up through each frame in reverse order, combining into the final result.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "545f94ff-16e1-440b-854f-39213b77d72c",
+          "TopicId": "9f9f91d3-7b61-49fb-8dc6-f592cf9ac9df",
+          "Title": "Connecting Mathematical Structure to Code Structure",
+          "BodyText": "The factorial implementation demonstrates a direct one-to-one correspondence between a mathematical recursive definition and recursive JavaScript code.",
+          "Notes": "This mapping is a key insight: if a problem can be defined recursively in mathematics, it can often be implemented recursively in code with minimal translation.",
+          "SortOrder": 5,
+          "CreatedDate": "2026-06-26T14:01:30.1744606-04:00",
+          "ModifiedDate": "2026-06-26T14:01:30.1744606-04:00",
+          "Items": [
+            {
+              "Id": "61c86398-cb6d-4a8b-b46c-38eac7932366",
+              "Text": "The mathematical base case (0! = 1) becomes the if-statement in code.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "0eec8168-3a0c-4641-8f9e-93d9420c97b1",
+              "Text": "The mathematical recursive rule (n! = n \u00D7 (n-1)!) becomes the return statement with the recursive call.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "b03f96a1-acb6-4a30-8e15-46a7351dca80",
+              "Text": "Understanding this correspondence makes it easier to design recursive solutions for other problems.",
+              "SortOrder": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "bc84d030-502d-44d7-9a1a-1c25de2b1715",
+      "Title": "Fibonacci Sequence Using Recursion",
+      "Summary": "Guides students through implementing the Fibonacci sequence recursively in JavaScript, illustrating functions with multiple recursive calls. Discusses the trade-offs of naive recursive Fibonacci in terms of performance.",
+      "SortOrder": 4,
+      "CreatedDate": "2026-06-26T14:00:04.303422-04:00",
+      "ModifiedDate": "2026-06-26T14:00:04.303422-04:00",
+      "Elements": [
+        {
+          "Id": "76724fff-ee4e-44d4-8b28-934df68b3fcb",
+          "TopicId": "bc84d030-502d-44d7-9a1a-1c25de2b1715",
+          "Title": "What Is the Fibonacci Sequence?",
+          "BodyText": "The Fibonacci sequence is a series of numbers where each number is the sum of the two preceding ones, starting from 0 and 1.",
+          "Notes": "The sequence begins: 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, ... It appears frequently in mathematics, nature, and computer science problems.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T14:01:52.0545326-04:00",
+          "ModifiedDate": "2026-06-26T14:01:52.0545326-04:00",
+          "Items": [
+            {
+              "Id": "2e448232-9c51-466b-9698-a80f7942b8cb",
+              "Text": "Fibonacci(0) = 0 and Fibonacci(1) = 1 are the two starting values of the sequence.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "659a0abf-56fa-4f9e-8fd7-8e5f26f34ece",
+              "Text": "Every subsequent number is defined by the rule: Fibonacci(n) = Fibonacci(n - 1) \u002B Fibonacci(n - 2).",
+              "SortOrder": 1
+            },
+            {
+              "Id": "5d89eaa0-f6fb-42de-9637-78782961af2b",
+              "Text": "This self-referential definition makes the Fibonacci sequence a natural candidate for a recursive solution.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "dbc5fb5e-72db-4f5f-8d29-aba8662e2a4e",
+          "TopicId": "bc84d030-502d-44d7-9a1a-1c25de2b1715",
+          "Title": "Defining the Base Cases",
+          "BodyText": "As with all recursive functions, the Fibonacci implementation requires base cases to stop the recursion from running indefinitely.",
+          "Notes": "Without base cases for n === 0 and n === 1, the function would recurse infinitely and cause a stack overflow error.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T14:01:52.0545326-04:00",
+          "ModifiedDate": "2026-06-26T14:01:52.0545326-04:00",
+          "Items": [
+            {
+              "Id": "8a2aa7ef-cd5f-41b5-be4e-70bff6d6c677",
+              "Text": "The base case for n === 0 returns 0, representing the first element of the sequence.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "258c7d52-7725-4f50-9d96-35d51765c4a0",
+              "Text": "The base case for n === 1 returns 1, representing the second element of the sequence.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "5bab046f-01e7-4421-8311-fadb12ce197a",
+              "Text": "These two base cases together anchor the recursion and ensure every call chain eventually terminates.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "9bc63dc7-7c3d-4233-afaa-cd74f1309cad",
+          "TopicId": "bc84d030-502d-44d7-9a1a-1c25de2b1715",
+          "Title": "Implementing Fibonacci Recursively in JavaScript",
+          "BodyText": "The recursive Fibonacci function in JavaScript directly mirrors the mathematical definition, using two recursive calls in its return statement.",
+          "Notes": "Example implementation: function fibonacci(n) { if (n === 0) return 0; if (n === 1) return 1; return fibonacci(n - 1) \u002B fibonacci(n - 2); }",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T14:01:52.0545326-04:00",
+          "ModifiedDate": "2026-06-26T14:01:52.0545326-04:00",
+          "Items": [
+            {
+              "Id": "04e9dfa9-d022-4e15-b318-4ceb29555a9e",
+              "Text": "The function accepts a single integer n representing the position in the sequence.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "4297adc3-a83e-4a3b-aaf9-c6d81e458896",
+              "Text": "After checking the base cases, the function returns the sum of two recursive calls: fibonacci(n - 1) and fibonacci(n - 2).",
+              "SortOrder": 1
+            },
+            {
+              "Id": "898ae7a1-3a70-41f0-a248-babf6ddeb404",
+              "Text": "Having two recursive calls per invocation distinguishes Fibonacci from simpler recursive functions like factorial, which only make one recursive call.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "e2e02f0a-7fc6-45b3-9d65-ac7ec6bbd1bd",
+          "TopicId": "bc84d030-502d-44d7-9a1a-1c25de2b1715",
+          "Title": "How the Call Stack Grows with Two Recursive Calls",
+          "BodyText": "Because each call to fibonacci() spawns two additional calls, the call stack branches into a tree structure rather than a linear chain.",
+          "Notes": "For fibonacci(4), the call tree includes: fib(4) \u2192 fib(3) \u002B fib(2) \u2192 fib(2) \u002B fib(1) \u002B fib(1) \u002B fib(0) \u2192 fib(1) \u002B fib(0) \u002B ..., resulting in 9 total function calls.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T14:01:52.0545326-04:00",
+          "ModifiedDate": "2026-06-26T14:01:52.0545326-04:00",
+          "Items": [
+            {
+              "Id": "2fde6739-1674-468c-a4de-019ed64ddcc6",
+              "Text": "Each non-base-case call pushes two new frames onto the call stack, creating an exponentially growing tree of calls.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "f972d30e-900c-40bb-a5b3-6efaa1ea76f4",
+              "Text": "The depth of the call stack at any point equals n, since each branch decrements n by at least 1 before reaching a base case.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "964b7eb3-7c67-48f8-ad33-6bb29969eb23",
+              "Text": "Understanding this branching behavior is essential for recognizing why naive recursive Fibonacci becomes slow for large values of n.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "813ceec3-08d3-46f0-9166-74acfdd28110",
+          "TopicId": "bc84d030-502d-44d7-9a1a-1c25de2b1715",
+          "Title": "Performance Trade-offs of Naive Recursive Fibonacci",
+          "BodyText": "The naive recursive implementation of Fibonacci has significant performance drawbacks due to the repeated recalculation of the same subproblems.",
+          "Notes": "For example, computing fibonacci(50) naively requires over a trillion function calls, making it impractical without optimization.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T14:01:52.0545326-04:00",
+          "ModifiedDate": "2026-06-26T14:01:52.0545326-04:00",
+          "Items": [
+            {
+              "Id": "90f425ad-aa6d-437a-9481-9a10dbe3d1e6",
+              "Text": "The time complexity of naive recursive Fibonacci is O(2^n), meaning execution time doubles with each increment of n.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "37cfa395-42c3-48f1-ac77-17efc2929d15",
+              "Text": "Many subproblems, such as fibonacci(2) or fibonacci(3), are recalculated many times across different branches of the call tree.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "6cf5dd4b-2ad5-4be0-8907-80b24e8e4236",
+              "Text": "This redundant computation is the primary reason the naive approach is considered inefficient for large inputs.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "8b78e68f-06da-4122-aa09-6fc1b0c4932d",
+              "Text": "Recognizing these trade-offs motivates the study of optimization strategies such as memoization or iterative approaches.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "7741f7bb-f214-4a5c-b82e-7b159f9117b0",
+          "TopicId": "bc84d030-502d-44d7-9a1a-1c25de2b1715",
+          "Title": "Tracing a Small Fibonacci Example by Hand",
+          "BodyText": "Manually tracing through a small Fibonacci call, such as fibonacci(4), helps solidify understanding of how recursive calls expand and resolve.",
+          "Notes": "Tracing by hand also reveals which subproblems are duplicated, visually demonstrating the inefficiency of the naive approach.",
+          "SortOrder": 5,
+          "CreatedDate": "2026-06-26T14:01:52.0545326-04:00",
+          "ModifiedDate": "2026-06-26T14:01:52.0545326-04:00",
+          "Items": [
+            {
+              "Id": "d9f248dd-8d84-4bc2-8574-76ac790f5e1f",
+              "Text": "Start with fibonacci(4), which calls fibonacci(3) and fibonacci(2) before it can return a value.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "0a7fbb35-04d1-49ab-88cf-159e21b7a750",
+              "Text": "Each of those calls further expands until all branches reach a base case of fibonacci(0) or fibonacci(1).",
+              "SortOrder": 1
+            },
+            {
+              "Id": "2a8f2a76-7de5-497c-9704-d6b8691f5cd7",
+              "Text": "Results bubble back up the call stack, with each frame summing the two returned values from its child calls.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "19041820-305c-4f3a-b204-a4530846ac1b",
+              "Text": "The final resolved value of fibonacci(4) is 3, obtained after all recursive frames complete and unwind.",
+              "SortOrder": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "ba64970c-c842-4127-8af8-cd53e475ced1",
+      "Title": "Recursive List Traversal",
+      "Summary": "Demonstrates how recursion can be applied to traverse and process lists or array structures in JavaScript. Highlights how recursive thinking simplifies problems that involve repeated nested or sequential processing.",
+      "SortOrder": 5,
+      "CreatedDate": "2026-06-26T14:00:04.303422-04:00",
+      "ModifiedDate": "2026-06-26T14:00:04.303422-04:00",
+      "Elements": [
+        {
+          "Id": "f82c75a0-dc99-4742-bb7c-68b79632691e",
+          "TopicId": "ba64970c-c842-4127-8af8-cd53e475ced1",
+          "Title": "What Is Recursive List Traversal?",
+          "BodyText": "Recursive list traversal is the technique of processing each element in a list or array by having a function call itself on a progressively smaller portion of the structure.",
+          "Notes": "Instead of using a loop, recursion reduces the list one element at a time until the base case (an empty list) is reached. This mirrors how recursion works in other classic problems like factorial.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T14:02:15.1091879-04:00",
+          "ModifiedDate": "2026-06-26T14:02:15.1091879-04:00",
+          "Items": [
+            {
+              "Id": "d6ade54f-4db9-4ba9-9ef5-ea1edf99f1a7",
+              "Text": "Each recursive call handles the first (or last) element and passes the remainder of the list to the next call.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "918cf35c-79e2-4eee-9020-d6a0be2b0144",
+              "Text": "The function naturally terminates when the list is empty, which serves as the base case.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "19a65df2-d4d1-48a5-bec4-33f39e3823ef",
+              "Text": "This approach treats the list as a head (first element) and tail (rest of the list) structure.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "71d96a00-2500-4c17-8d7b-a7343e02fe4c",
+          "TopicId": "ba64970c-c842-4127-8af8-cd53e475ced1",
+          "Title": "Defining the Base Case for List Traversal",
+          "BodyText": "As with all recursive functions, a base case must be defined to stop recursion and prevent infinite loops when traversing a list.",
+          "Notes": "A common base case is checking whether the array\u0027s length is zero (empty array). Without this, the function would continue calling itself indefinitely, causing a stack overflow.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T14:02:15.1091879-04:00",
+          "ModifiedDate": "2026-06-26T14:02:15.1091879-04:00",
+          "Items": [
+            {
+              "Id": "d0317f07-7c49-4e22-84b4-088058017e17",
+              "Text": "The base case for list traversal is typically: if the array is empty, return a default value (such as 0, null, or an empty array).",
+              "SortOrder": 0
+            },
+            {
+              "Id": "b866356f-1c00-48a5-8933-282b63ba141f",
+              "Text": "Every recursive call must move closer to the base case by passing a shorter version of the list.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "6bf365a4-602e-4b0d-be73-fa22b2dfec62",
+              "Text": "Forgetting the base case is one of the most common mistakes when implementing recursive list traversal.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "6db98e25-2092-4f9f-8f1e-60fc21b94c40",
+          "TopicId": "ba64970c-c842-4127-8af8-cd53e475ced1",
+          "Title": "JavaScript Implementation: Traversing an Array",
+          "BodyText": "In JavaScript, recursive list traversal can be implemented by slicing the array to separate the first element from the rest on each call.",
+          "Notes": "Example: function traverseList(arr) { if (arr.length === 0) return; console.log(arr[0]); traverseList(arr.slice(1)); } \u2014 This prints each element by recursively processing the tail of the array.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T14:02:15.1091879-04:00",
+          "ModifiedDate": "2026-06-26T14:02:15.1091879-04:00",
+          "Items": [
+            {
+              "Id": "f8410816-4497-4d68-9c19-8d21f302fc7f",
+              "Text": "arr[0] accesses the head (first element), while arr.slice(1) produces the tail (remaining elements).",
+              "SortOrder": 0
+            },
+            {
+              "Id": "e8a42769-c0c1-4f5d-95fc-405fa685b5d4",
+              "Text": "Each recursive call receives a new, shorter array until the array is empty and the base case is triggered.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "b270ab05-5076-4d74-b3d6-d8c0280d0af6",
+              "Text": "Array methods like slice() are helpful in JavaScript for creating the reduced list without mutating the original.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "345ef096-07ff-4272-a19f-816cd8484c3d",
+          "TopicId": "ba64970c-c842-4127-8af8-cd53e475ced1",
+          "Title": "Processing Elements During Traversal",
+          "BodyText": "Recursive traversal is not limited to simply visiting each element \u2014 it can also accumulate results, transform values, or search for specific items.",
+          "Notes": "Example of summing an array recursively: function sumList(arr) { if (arr.length === 0) return 0; return arr[0] \u002B sumList(arr.slice(1)); } \u2014 The function adds each element to the result of the recursive call on the remaining list.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T14:02:15.1091879-04:00",
+          "ModifiedDate": "2026-06-26T14:02:15.1091879-04:00",
+          "Items": [
+            {
+              "Id": "69b40871-990a-40c7-9fdc-9a9364fe08ad",
+              "Text": "Accumulation tasks (e.g., summing values) are handled by combining the current element with the return value of the recursive call.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "b67d6b43-e489-4ea7-be0a-f7bc143f5d29",
+              "Text": "Transformation tasks (e.g., doubling each value) can return a new array built from the processed head and the recursive result of the tail.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "85375441-47ec-42dd-b079-9489b0c31f56",
+              "Text": "Search tasks can return true or false based on whether the current element matches the target, short-circuiting further traversal when found.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "79555a1d-6e21-4a2f-b357-1c2862e8499b",
+          "TopicId": "ba64970c-c842-4127-8af8-cd53e475ced1",
+          "Title": "Recursive Thinking vs. Iterative Thinking for Lists",
+          "BodyText": "Recursive list traversal encourages a different mental model compared to iterative loops \u2014 focusing on \u0027what to do with one element\u0027 rather than \u0027how to loop through all elements\u0027.",
+          "Notes": "Both approaches produce the same result, but recursion can lead to cleaner, more readable solutions for problems that are naturally hierarchical or involve nested structures.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T14:02:15.1091879-04:00",
+          "ModifiedDate": "2026-06-26T14:02:15.1091879-04:00",
+          "Items": [
+            {
+              "Id": "e4448f6c-d511-4861-beb6-e2beccfbc518",
+              "Text": "Iterative loops track state with index variables, while recursion encodes state through function arguments and the call stack.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "918ca4bb-7e2a-46f1-b88e-16417b97acd7",
+              "Text": "Recursive solutions can be more concise and expressive for problems like processing nested arrays or tree-like list structures.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "6897d11e-3c3a-4d97-a309-63e9f091cf57",
+              "Text": "For flat arrays, iterative solutions are often more performant in JavaScript due to call stack overhead with large lists.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "0816633c-6930-459e-8529-0addc86944bc",
+          "TopicId": "ba64970c-c842-4127-8af8-cd53e475ced1",
+          "Title": "The Call Stack During List Traversal",
+          "BodyText": "Each recursive call to traverse a list adds a new frame to the JavaScript call stack, which holds the current element and the remaining list for that call.",
+          "Notes": "For a list of 5 elements, 6 stack frames are created (5 recursive calls plus the base case return). Understanding this helps explain both the elegance and the memory cost of recursive traversal.",
+          "SortOrder": 5,
+          "CreatedDate": "2026-06-26T14:02:15.1091879-04:00",
+          "ModifiedDate": "2026-06-26T14:02:15.1091879-04:00",
+          "Items": [
+            {
+              "Id": "7f49db5f-42e7-476c-9c52-1d42db510451",
+              "Text": "As recursion descends deeper into the list, stack frames accumulate until the base case is reached.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "26f2a2b3-fe0e-4100-8ef8-8c1e41295db2",
+              "Text": "Once the base case returns, each frame resolves in reverse order, allowing accumulated results to propagate back up.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "8a21ee6c-550c-44a0-8461-e01892167f01",
+              "Text": "Very large lists can cause a stack overflow error in JavaScript, making iterative approaches safer for extremely long arrays.",
+              "SortOrder": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "6436463c-feeb-4bb6-819a-2b08e9a450f5",
+      "Title": "When to Use Recursion",
+      "Summary": "Compares recursion to iterative approaches, helping students recognize problem types best suited to recursive solutions. Covers readability, performance considerations, and practical guidelines for choosing recursion.",
+      "SortOrder": 6,
+      "CreatedDate": "2026-06-26T14:00:04.303422-04:00",
+      "ModifiedDate": "2026-06-26T14:00:04.303422-04:00",
+      "Elements": [
+        {
+          "Id": "b7e8ec70-7efc-494f-9993-192648e50305",
+          "TopicId": "6436463c-feeb-4bb6-819a-2b08e9a450f5",
+          "Title": "Recursion vs. Iteration: Core Trade-offs",
+          "BodyText": "Recursion and iteration are two fundamental approaches to solving repetitive problems, and choosing between them involves weighing clarity against performance.",
+          "Notes": "For example, a recursive factorial function closely mirrors the mathematical definition, while an iterative version uses a simple loop. Both produce the same result, but the choice affects code style and efficiency.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T14:02:38.9378517-04:00",
+          "ModifiedDate": "2026-06-26T14:02:38.9378517-04:00",
+          "Items": [
+            {
+              "Id": "86b9c02b-84eb-4ae9-ae6d-935af443a3b4",
+              "Text": "Iteration uses explicit loops (for, while) and maintains state through loop variables, typically consuming constant stack space.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "c42ec1b0-8993-477a-88a4-29a425108dde",
+              "Text": "Recursion expresses repetition through self-referential function calls, adding a new frame to the call stack with each invocation.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "846231c6-a342-4f64-90f6-0cffcb16a7c3",
+              "Text": "Iterative solutions generally have lower memory overhead and are less prone to stack overflow errors on large inputs.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "93ac8761-382d-4fdf-a02b-b451f40d658e",
+              "Text": "Recursive solutions can be more concise and expressive for problems that have a naturally self-similar structure.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "0875fde0-60b2-46be-b13e-b5bba5f99c9e",
+          "TopicId": "6436463c-feeb-4bb6-819a-2b08e9a450f5",
+          "Title": "Problem Types Best Suited to Recursion",
+          "BodyText": "Certain problem structures map so naturally onto recursion that a recursive solution is significantly easier to design and understand than an iterative one.",
+          "Notes": "Tree traversal is a classic example: visiting every node in a binary tree requires tracking parent-child relationships that recursion handles automatically through the call stack, whereas iteration would require an explicit stack data structure.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T14:02:38.9378517-04:00",
+          "ModifiedDate": "2026-06-26T14:02:38.9378517-04:00",
+          "Items": [
+            {
+              "Id": "95f0e1aa-b922-498e-9fc8-bbe3125b3ec9",
+              "Text": "Problems with self-similar or hierarchical structure \u2014 such as tree and graph traversal, nested data parsing, and divide-and-conquer algorithms \u2014 are natural fits for recursion.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "b90e2e6b-02fa-4ea8-98d0-40a62bb27733",
+              "Text": "Problems that can be cleanly decomposed into a base case and a smaller version of the same problem benefit most from recursive design.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "f99d8cfe-fd5d-4f3a-b37f-e5a6d0d5db80",
+              "Text": "Algorithms like merge sort, quicksort, and binary search are conventionally expressed recursively because their logic divides the problem into subproblems of the same type.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "c498454e-a60e-40f6-aa1b-7f10a70ddb93",
+              "Text": "When the iterative equivalent would require manually managing a stack or complex state, recursion often produces cleaner, more maintainable code.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "ab696e25-525d-4087-ad91-a57205516d89",
+          "TopicId": "6436463c-feeb-4bb6-819a-2b08e9a450f5",
+          "Title": "Readability and Code Clarity",
+          "BodyText": "One of the strongest arguments for recursion is that it can make code read almost like a direct translation of the problem\u0027s definition or mathematical specification.",
+          "Notes": "The Fibonacci sequence is defined as F(n) = F(n-1) \u002B F(n-2), and a recursive implementation mirrors this definition exactly, making it immediately understandable to someone familiar with the concept.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T14:02:38.9378517-04:00",
+          "ModifiedDate": "2026-06-26T14:02:38.9378517-04:00",
+          "Items": [
+            {
+              "Id": "2c41d59d-9609-48ae-84b8-654d5816edc1",
+              "Text": "Recursive implementations often reduce the amount of boilerplate code needed compared to iterative solutions for complex problems.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "19ade557-39ab-440c-917d-a317c5935353",
+              "Text": "Code that mirrors the problem\u0027s logical structure is easier to verify for correctness and easier for other developers to review.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "03093bc8-778e-4156-8dbb-8631bc5f89a0",
+              "Text": "However, readability gains diminish if the recursion is deep, indirect, or requires multiple mutually recursive functions that are harder to trace mentally.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "d09fed9a-6209-4d59-8322-91f0cd243c02",
+          "TopicId": "6436463c-feeb-4bb6-819a-2b08e9a450f5",
+          "Title": "Performance Considerations and Pitfalls",
+          "BodyText": "Recursion introduces performance costs that must be understood before choosing it, particularly regarding memory usage and redundant computation.",
+          "Notes": "A naive recursive Fibonacci implementation recalculates the same subproblems exponentially many times. Adding memoization \u2014 caching results of already-solved subproblems \u2014 can reduce this to linear time, restoring recursion\u0027s viability.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T14:02:38.9378517-04:00",
+          "ModifiedDate": "2026-06-26T14:02:38.9378517-04:00",
+          "Items": [
+            {
+              "Id": "84b09d39-d4e1-4805-a01e-23e0d807d5da",
+              "Text": "Each recursive call adds a stack frame in memory; deeply recursive functions on large inputs risk causing a stack overflow error.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "3ef9c9dd-6b92-4a0c-8ded-3588c5351490",
+              "Text": "Naive recursion can lead to exponential time complexity when the same subproblems are solved repeatedly, as seen in a basic Fibonacci implementation.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "ecdad4ac-f799-4c55-963c-10f653c54596",
+              "Text": "Memoization or dynamic programming techniques can mitigate redundant computation while preserving the recursive structure of the solution.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "9b0f2f18-ddba-4afd-bbde-ecbe8450ed09",
+              "Text": "JavaScript engines do not universally support tail-call optimization, so tail-recursive patterns do not automatically eliminate stack growth in all environments.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "36ea11b5-bb71-4b1f-8e74-e1ce9fed83d0",
+          "TopicId": "6436463c-feeb-4bb6-819a-2b08e9a450f5",
+          "Title": "Practical Guidelines for Choosing Recursion",
+          "BodyText": "Selecting recursion over iteration should be a deliberate decision based on the problem\u0027s structure, expected input size, and the priorities of the codebase.",
+          "Notes": "A useful heuristic: if you find yourself mentally \u0027unrolling\u0027 recursive calls to understand an iterative solution for a tree or graph problem, recursion is likely the better choice for that context.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T14:02:38.9378517-04:00",
+          "ModifiedDate": "2026-06-26T14:02:38.9378517-04:00",
+          "Items": [
+            {
+              "Id": "32c70505-aa49-49a4-9f1e-110652e7f605",
+              "Text": "Prefer recursion when the problem has a clear recursive definition, the input depth is bounded and manageable, and code clarity is a priority.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "17caa60e-52af-4bb1-8015-e11a1d6a9dca",
+              "Text": "Prefer iteration when processing large flat data sets, when performance profiling shows stack overhead is significant, or when the runtime environment has strict stack size limits.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "8751971f-7aee-47f1-9ec6-2077e80c4cf2",
+              "Text": "Always ensure a well-defined base case exists; without it, any recursive solution will produce infinite recursion and a stack overflow.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "b812295a-e827-4d00-965e-d0387ff65b9f",
+              "Text": "Consider starting with a recursive solution for clarity during development, then refactoring to an iterative approach only if performance testing reveals a concrete problem.",
+              "SortOrder": 3
+            },
+            {
+              "Id": "1100467d-8f14-4efa-b79e-a2c058066d29",
+              "Text": "When recursion is chosen, document the base case and the recursive step explicitly in comments to aid future maintainers.",
+              "SortOrder": 4
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "TotalElementCount": 40
+}

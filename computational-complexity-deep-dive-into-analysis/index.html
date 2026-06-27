@@ -1,0 +1,284 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Computational Complexity: Deep Dive into Analysis — COP3530</title>
+  <style>
+    /* ── Reset & Base ── */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      font-size: 16px;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f6f9;
+      color: #2c3e50;
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+
+    /* ── Layout Shell ── */
+    .page-wrapper {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
+    }
+
+    /* ── Site Header ── */
+    .site-header {
+      background: linear-gradient(135deg, #1a3a5c 0%, #2b6cb0 100%);
+      color: #ffffff;
+      padding: 2.75rem 2rem 2.25rem;
+      border-radius: 10px;
+      margin-bottom: 2.25rem;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.15);
+    }
+
+    .course-label {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background-color: rgba(255, 255, 255, 0.18);
+      color: #d6eaff;
+      border-radius: 4px;
+      padding: 0.2rem 0.65rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .site-header h1 {
+      font-size: clamp(1.5rem, 3vw, 2.1rem);
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin-bottom: 0.85rem;
+      line-height: 1.3;
+    }
+
+    .site-header p {
+      font-size: 0.975rem;
+      color: #cce0f5;
+      max-width: 720px;
+      line-height: 1.65;
+    }
+
+    /* ── Section Heading ── */
+    .section-heading {
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #5a7a99;
+      margin-bottom: 1.1rem;
+      padding-bottom: 0.45rem;
+      border-bottom: 2px solid #dce5ef;
+    }
+
+    /* ── Card Grid ── */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.35rem;
+    }
+
+    /* ── Artifact Card ── */
+    .artifact-card {
+      background: #ffffff;
+      border: 1px solid #dce5ef;
+      border-radius: 9px;
+      padding: 1.45rem 1.5rem 1.35rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.055);
+      transition: box-shadow 0.2s ease, transform 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .artifact-card:hover {
+      box-shadow: 0 6px 22px rgba(0, 0, 0, 0.1);
+      transform: translateY(-2px);
+    }
+
+    /* ── Card — top meta row ── */
+    .card-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      border-radius: 4px;
+      padding: 0.18rem 0.55rem;
+      line-height: 1.4;
+    }
+
+    .badge-type {
+      background-color: #e8f0fb;
+      color: #2b6cb0;
+    }
+
+    .badge-filetype {
+      background-color: #eef5ee;
+      color: #276749;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 0.68rem;
+    }
+
+    /* ── Card — name / title row ── */
+    .card-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #1a3a5c;
+      display: flex;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+      line-height: 1.35;
+    }
+
+    .card-title a.primary-link {
+      color: #2b6cb0;
+      text-decoration: none;
+      border-bottom: 2px solid transparent;
+      transition: border-color 0.15s ease, color 0.15s ease;
+    }
+
+    .card-title a.primary-link:hover,
+    .card-title a.primary-link:focus {
+      color: #1a3a5c;
+      border-bottom-color: #2b6cb0;
+      outline: none;
+    }
+
+    .card-title a.primary-link:focus-visible {
+      outline: 3px solid #63a8e8;
+      outline-offset: 2px;
+      border-radius: 2px;
+    }
+
+    .source-link {
+      font-size: 0.73rem;
+      font-weight: 500;
+      color: #5a7a99;
+      text-decoration: none;
+      background-color: #f0f5fc;
+      border: 1px solid #cdd9ea;
+      border-radius: 4px;
+      padding: 0.15rem 0.5rem;
+      white-space: nowrap;
+      transition: background-color 0.15s ease, color 0.15s ease;
+    }
+
+    .source-link:hover,
+    .source-link:focus {
+      background-color: #dce8f8;
+      color: #1a3a5c;
+      outline: none;
+    }
+
+    .source-link:focus-visible {
+      outline: 3px solid #63a8e8;
+      outline-offset: 2px;
+    }
+
+    /* ── Card — description ── */
+    .card-description {
+      font-size: 0.895rem;
+      color: #4a5e72;
+      line-height: 1.65;
+      flex-grow: 1;
+    }
+
+    /* ── Footer ── */
+    .site-footer {
+      margin-top: 3.5rem;
+      text-align: center;
+      font-size: 0.8rem;
+      color: #8fa8be;
+    }
+
+    /* ── Responsive tweaks ── */
+    @media (max-width: 520px) {
+      .site-header {
+        padding: 2rem 1.25rem 1.75rem;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+<div style="border:1px solid #c9d4e3;background:#f5f8fc;border-radius:8px;padding:10px 16px;margin:0 0 18px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;font-family:'Segoe UI',Arial,sans-serif"><strong style="color:#1a3c6e">Module outline:</strong><a href="topics-outcomes.html#topics" style="color:#1a3c6e;font-weight:600;text-decoration:none">📋 Module Topics</a><a href="topics-outcomes.html#outcomes" style="color:#137333;font-weight:600;text-decoration:none">🎯 Student Learning Outcomes</a></div>
+  <div class="page-wrapper">
+
+    <!-- ══ Page Header ══ -->
+    <header class="site-header" role="banner">
+      <span class="course-label">COP3530 — Data Structures</span>
+      <h1>Computational Complexity: Deep Dive into Analysis</h1>
+      <p>
+        This module explores the theoretical and practical foundations of computational complexity,
+        equipping you with the tools to evaluate algorithm efficiency through Big O notation,
+        Omega notation, and best, worst, and average case analysis. Work through the artifacts
+        below to build a rigorous understanding of how and why algorithm performance matters.
+      </p>
+    </header>
+
+    <!-- ══ Artifact Grid ══ -->
+    <main>
+      <h2 class="section-heading">Module Artifacts</h2>
+
+      <div class="card-grid" role="list">
+
+        <!-- ── Artifact: Module Topics ── -->
+        <article class="artifact-card" role="listitem">
+          <div class="card-meta">
+            <span class="badge badge-type">Module Topics</span>
+            <span class="badge badge-filetype">.json</span>
+          </div>
+
+          <div class="card-title">
+            <a class="primary-link" href="content/module_topics.html">
+              Module Topics
+            </a>
+            <a class="source-link" href="source/hierarchy.json" aria-label="Source file for Module Topics">
+              source file
+            </a>
+          </div>
+
+          <p class="card-description">
+            Covers computational complexity fundamentals including Big O notation,
+            best/worst/average case analysis, and Omega notation, serving as a navigational
+            outline that guides learners and instructors through the module's core topics
+            in algorithm efficiency analysis.
+          </p>
+        </article>
+
+      </div>
+    </main>
+
+    <!-- ══ Footer ══ -->
+    <footer class="site-footer" role="contentinfo">
+      <p>COP3530 · Data Structures &nbsp;|&nbsp; Computational Complexity Module</p>
+    </footer>
+
+  </div>
+
+<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
+<section class="presemaker-extras" style="max-width:1000px;margin:2rem auto;padding:0 1rem;"><h2>Topics &amp; Learning Outcomes</h2><p><a href="topics-outcomes.html">View Topics &amp; Learning Outcomes</a></p></section></body>
+</html>

@@ -1,0 +1,307 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recursion: Concepts and Implementation — COP3530</title>
+  <style>
+    /* ── Reset & Base ── */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      font-size: 16px;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background-color: #f4f6f9;
+      color: #1e2a3a;
+      line-height: 1.65;
+      min-height: 100vh;
+    }
+
+    /* ── Page Shell ── */
+    .page-wrapper {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 2.5rem 1.25rem 4rem;
+    }
+
+    /* ── Course Label ── */
+    .course-label {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #ffffff;
+      background-color: #2d6a9f;
+      padding: 0.3rem 0.75rem;
+      border-radius: 4px;
+      margin-bottom: 1rem;
+    }
+
+    /* ── Header ── */
+    .module-header {
+      border-bottom: 3px solid #2d6a9f;
+      padding-bottom: 1.5rem;
+      margin-bottom: 2.25rem;
+    }
+
+    .module-header h1 {
+      font-size: clamp(1.6rem, 3.5vw, 2.25rem);
+      font-weight: 700;
+      color: #0f1e30;
+      margin-bottom: 0.75rem;
+      line-height: 1.25;
+    }
+
+    .module-header p {
+      font-size: 1rem;
+      color: #3d5068;
+      max-width: 72ch;
+    }
+
+    /* ── Section Title ── */
+    .section-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: #5a7291;
+      margin-bottom: 1rem;
+    }
+
+    /* ── Artifact Grid ── */
+    .artifact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 420px), 1fr));
+      gap: 1.25rem;
+    }
+
+    /* ── Artifact Card ── */
+    .artifact-card {
+      background: #ffffff;
+      border: 1px solid #dce3ed;
+      border-radius: 8px;
+      padding: 1.4rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+      transition: box-shadow 0.18s ease, border-color 0.18s ease;
+    }
+
+    .artifact-card:hover {
+      box-shadow: 0 4px 18px rgba(45, 106, 159, 0.12);
+      border-color: #adc5de;
+    }
+
+    /* ── Card Top Row ── */
+    .card-top {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+    }
+
+    /* ── Badges ── */
+    .badge {
+      display: inline-block;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      padding: 0.2rem 0.55rem;
+      border-radius: 3px;
+      white-space: nowrap;
+      line-height: 1.4;
+    }
+
+    .badge-type {
+      background-color: #eaf0f8;
+      color: #2d6a9f;
+      border: 1px solid #c5d8ed;
+    }
+
+    .badge-filetype {
+      background-color: #f0f4f0;
+      color: #2e6b3e;
+      border: 1px solid #b9d5c1;
+      font-family: 'Courier New', monospace;
+    }
+
+    /* ── Card Name ── */
+    .card-name {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #0f1e30;
+      line-height: 1.3;
+    }
+
+    .card-name a {
+      color: #1a5c9a;
+      text-decoration: none;
+      border-bottom: 2px solid transparent;
+      transition: border-color 0.15s ease, color 0.15s ease;
+    }
+
+    .card-name a:hover,
+    .card-name a:focus {
+      color: #0d3f6e;
+      border-bottom-color: #1a5c9a;
+      outline: none;
+    }
+
+    .card-name a:focus-visible {
+      outline: 2px solid #2d6a9f;
+      outline-offset: 2px;
+      border-radius: 2px;
+    }
+
+    /* ── Source Link ── */
+    .source-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #5a7291;
+      text-decoration: none;
+      border: 1px solid #c8d6e5;
+      border-radius: 4px;
+      padding: 0.18rem 0.5rem;
+      background: #f7f9fc;
+      transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+      white-space: nowrap;
+      margin-left: 0.4rem;
+      vertical-align: middle;
+    }
+
+    .source-link:hover,
+    .source-link:focus {
+      background: #eaf0f8;
+      color: #1a5c9a;
+      border-color: #9ab8d6;
+      outline: none;
+    }
+
+    .source-link:focus-visible {
+      outline: 2px solid #2d6a9f;
+      outline-offset: 2px;
+    }
+
+    .source-link svg {
+      flex-shrink: 0;
+    }
+
+    /* ── Card Description ── */
+    .card-description {
+      font-size: 0.9rem;
+      color: #3d5068;
+      line-height: 1.6;
+    }
+
+    /* ── Divider ── */
+    .card-divider {
+      height: 1px;
+      background: #edf1f6;
+      border: none;
+      margin: 0.1rem 0;
+    }
+
+    /* ── Footer ── */
+    .page-footer {
+      margin-top: 3.5rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid #dce3ed;
+      text-align: center;
+      font-size: 0.8rem;
+      color: #7a92a9;
+    }
+
+    /* ── Responsive tweaks ── */
+    @media (max-width: 520px) {
+      .page-wrapper {
+        padding: 1.75rem 1rem 3rem;
+      }
+
+      .artifact-card {
+        padding: 1.1rem 1.15rem;
+      }
+    }
+  </style>
+</head>
+<body>
+<div style="border:1px solid #c9d4e3;background:#f5f8fc;border-radius:8px;padding:10px 16px;margin:0 0 18px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;font-family:'Segoe UI',Arial,sans-serif"><strong style="color:#1a3c6e">Module outline:</strong><a href="topics-outcomes.html#topics" style="color:#1a3c6e;font-weight:600;text-decoration:none">📋 Module Topics</a><a href="topics-outcomes.html#outcomes" style="color:#137333;font-weight:600;text-decoration:none">🎯 Student Learning Outcomes</a></div>
+  <div class="page-wrapper">
+
+    <!-- ── Header ── -->
+    <header class="module-header" role="banner">
+      <span class="course-label">COP3530 &mdash; Data Structures</span>
+      <h1>Recursion: Concepts and Implementation</h1>
+      <p>
+        This module introduces recursion as a fundamental problem-solving paradigm in computer science.
+        Learners will explore how recursive functions are structured, how the call stack manages execution,
+        and how classic algorithms such as factorial and Fibonacci are implemented recursively — building
+        an intuition for when and how to apply recursion effectively in data structures and beyond.
+      </p>
+    </header>
+
+    <!-- ── Artifact Listing ── -->
+    <main>
+      <p class="section-title" aria-label="Module artifacts">Module Artifacts</p>
+
+      <div class="artifact-grid" role="list">
+
+        <!-- ── Artifact: Module Topics ── -->
+        <article class="artifact-card" role="listitem" aria-label="Module Topics">
+          <div class="card-top">
+            <span class="badge badge-type">Module Topics</span>
+            <span class="badge badge-filetype">.json</span>
+          </div>
+
+          <hr class="card-divider">
+
+          <div class="card-name">
+            <a href="content/module_topics.html">Module Topics</a>
+            <a
+              class="source-link"
+              href="source/hierarchy.json"
+              aria-label="Source file for Module Topics"
+            >
+              <!-- small file icon -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="11" height="13" viewBox="0 0 24 24"
+                   fill="none" stroke="currentColor" stroke-width="2.2"
+                   stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+              </svg>
+              source file
+            </a>
+          </div>
+
+          <p class="card-description">
+            A structured outline of the module's core topics — including the definition of recursion,
+            base and recursive cases, call stack mechanics, and classic implementations like factorial
+            and Fibonacci — that serves as a navigational guide for learners and instructors to
+            understand the scope and sequence of the module's content.
+          </p>
+        </article>
+
+      </div>
+    </main>
+
+    <!-- ── Footer ── -->
+    <footer class="page-footer" role="contentinfo">
+      COP3530 &mdash; Data Structures &nbsp;&bull;&nbsp; Recursion: Concepts and Implementation
+    </footer>
+
+  </div>
+
+<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
+<section class="presemaker-extras" style="max-width:1000px;margin:2rem auto;padding:0 1rem;"><h2>Topics &amp; Learning Outcomes</h2><p><a href="topics-outcomes.html">View Topics &amp; Learning Outcomes</a></p></section></body>
+</html>

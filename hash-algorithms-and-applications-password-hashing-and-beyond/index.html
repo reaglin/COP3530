@@ -1,0 +1,269 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hash Algorithms and Applications: Password Hashing and Beyond — COP3530</title>
+  <style>
+    /* ── Reset & Base ── */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      color: #1e2a38;
+      background-color: #f4f6f9;
+      min-height: 100vh;
+    }
+
+    /* ── Page Shell ── */
+    .page-wrapper {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 4rem;
+    }
+
+    /* ── Course Label ── */
+    .course-label {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #ffffff;
+      background-color: #2e6da4;
+      padding: 0.25rem 0.75rem;
+      border-radius: 3px;
+      margin-bottom: 0.85rem;
+    }
+
+    /* ── Header ── */
+    .module-header {
+      border-bottom: 3px solid #2e6da4;
+      padding-bottom: 1.5rem;
+      margin-bottom: 2.25rem;
+    }
+
+    .module-header h1 {
+      font-size: clamp(1.45rem, 3vw, 2rem);
+      font-weight: 700;
+      color: #14243a;
+      line-height: 1.25;
+      margin-bottom: 0.75rem;
+    }
+
+    .module-header p {
+      font-size: 0.97rem;
+      color: #3e5060;
+      max-width: 72ch;
+    }
+
+    /* ── Section Heading ── */
+    .section-heading {
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: #5a6e82;
+      margin-bottom: 1rem;
+    }
+
+    /* ── Card Grid ── */
+    .artifact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.25rem;
+    }
+
+    /* ── Artifact Card ── */
+    .artifact-card {
+      background: #ffffff;
+      border: 1px solid #d5dde6;
+      border-radius: 8px;
+      padding: 1.35rem 1.4rem 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+      transition: box-shadow 0.18s ease, border-color 0.18s ease;
+    }
+
+    .artifact-card:hover {
+      box-shadow: 0 4px 18px rgba(46, 109, 164, 0.13);
+      border-color: #a8c3df;
+    }
+
+    /* ── Card Top Row: badges ── */
+    .card-meta-row {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.55rem;
+      border-radius: 3px;
+      white-space: nowrap;
+    }
+
+    .badge-type {
+      background-color: #e8f0f9;
+      color: #2e6da4;
+      border: 1px solid #c3d7ee;
+    }
+
+    .badge-filetype {
+      background-color: #eef6f1;
+      color: #287a4c;
+      border: 1px solid #b8dfc8;
+      font-family: 'Courier New', Courier, monospace;
+    }
+
+    /* ── Card Name / Link ── */
+    .card-name {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #14243a;
+      display: flex;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+    }
+
+    .card-name a.primary-link {
+      color: #1a5fa8;
+      text-decoration: none;
+      border-bottom: 2px solid transparent;
+      transition: border-color 0.15s ease, color 0.15s ease;
+    }
+
+    .card-name a.primary-link:hover,
+    .card-name a.primary-link:focus {
+      color: #0d3e72;
+      border-bottom-color: #0d3e72;
+      outline: none;
+    }
+
+    .card-name a.primary-link:focus-visible {
+      outline: 3px solid #5aaef0;
+      outline-offset: 2px;
+      border-radius: 2px;
+    }
+
+    /* ── Source File Link ── */
+    .source-link {
+      font-size: 0.74rem;
+      font-weight: 600;
+      color: #5a7a9a;
+      text-decoration: none;
+      background-color: #f0f4f8;
+      border: 1px solid #c8d8e8;
+      border-radius: 3px;
+      padding: 0.18rem 0.48rem;
+      white-space: nowrap;
+      transition: background-color 0.15s, color 0.15s;
+    }
+
+    .source-link:hover,
+    .source-link:focus {
+      background-color: #dce8f4;
+      color: #1a4f7a;
+      outline: none;
+    }
+
+    .source-link:focus-visible {
+      outline: 3px solid #5aaef0;
+      outline-offset: 2px;
+    }
+
+    /* ── Card Description ── */
+    .card-description {
+      font-size: 0.9rem;
+      color: #4a5f72;
+      line-height: 1.55;
+      flex: 1;
+    }
+
+    /* ── Footer ── */
+    .page-footer {
+      margin-top: 3.5rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid #d0dae4;
+      font-size: 0.8rem;
+      color: #7a8fa0;
+      text-align: center;
+    }
+
+    /* ── Responsive tweaks ── */
+    @media (max-width: 480px) {
+      .page-wrapper {
+        padding: 1.75rem 1rem 3rem;
+      }
+
+      .artifact-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+<div style="border:1px solid #c9d4e3;background:#f5f8fc;border-radius:8px;padding:10px 16px;margin:0 0 18px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;font-family:'Segoe UI',Arial,sans-serif"><strong style="color:#1a3c6e">Module outline:</strong><a href="topics-outcomes.html#topics" style="color:#1a3c6e;font-weight:600;text-decoration:none">📋 Module Topics</a><a href="topics-outcomes.html#outcomes" style="color:#137333;font-weight:600;text-decoration:none">🎯 Student Learning Outcomes</a></div>
+  <div class="page-wrapper">
+
+    <!-- ── Header ── -->
+    <header class="module-header">
+      <span class="course-label">COP3530 &mdash; Data Structures</span>
+      <h1>Hash Algorithms and Applications: Password Hashing and Beyond</h1>
+      <p>
+        This module explores the design, properties, and practical applications of hash algorithms,
+        with a focus on cryptographic fundamentals such as preimage resistance and collision resistance,
+        password hashing strategies, and real-world use cases that extend beyond basic data retrieval.
+        Use the resources below to navigate the module content.
+      </p>
+    </header>
+
+    <!-- ── Artifact Grid ── -->
+    <p class="section-heading">Module Artifacts</p>
+    <main>
+      <div class="artifact-grid">
+
+        <!-- Artifact: Module Topics -->
+        <article class="artifact-card">
+          <div class="card-meta-row">
+            <span class="badge badge-type">Module Topics</span>
+            <span class="badge badge-filetype">.json</span>
+          </div>
+          <div class="card-name">
+            <a class="primary-link" href="content/module_topics.html">Module Topics</a>
+            <a class="source-link" href="source/hierarchy.json" aria-label="Source file for Module Topics">source file</a>
+          </div>
+          <p class="card-description">
+            Outlines the module's learning topics—from basic hash function concepts and cryptographic
+            properties (preimage and collision resistance) through password hashing fundamentals and
+            beyond—serving as a navigational overview for learners and instructors to understand the
+            scope and sequence of the module.
+          </p>
+        </article>
+
+      </div>
+    </main>
+
+    <!-- ── Footer ── -->
+    <footer class="page-footer">
+      <p>COP3530 &mdash; Data Structures &nbsp;&bull;&nbsp; Hash Algorithms and Applications</p>
+    </footer>
+
+  </div>
+
+<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
+<section class="presemaker-extras" style="max-width:1000px;margin:2rem auto;padding:0 1rem;"><h2>Topics &amp; Learning Outcomes</h2><p><a href="topics-outcomes.html">View Topics &amp; Learning Outcomes</a></p></section></body>
+</html>

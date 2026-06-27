@@ -1,0 +1,1383 @@
+{
+  "ModuleFolderName": "Binary_Trees_Structure",
+  "CourseName": "COP3530 - Data Structures",
+  "GeneratedDate": "2026-06-26T14:17:56.1505792-04:00",
+  "ModifiedDate": "2026-06-26T14:20:34.8767169-04:00",
+  "Outcomes": [],
+  "Topics": [
+    {
+      "Id": "7af6aad5-f064-4895-838c-af6cb5b0b790",
+      "Title": "Introduction to Binary Trees",
+      "Summary": "Defines binary trees as a foundational data structure and explains core terminology including nodes, edges, roots, leaves, and parent-child relationships. Establishes the structural rules that distinguish binary trees from other tree types.",
+      "SortOrder": 0,
+      "CreatedDate": "2026-06-26T14:17:56.1505792-04:00",
+      "ModifiedDate": "2026-06-26T14:17:56.1505792-04:00",
+      "Elements": [
+        {
+          "Id": "1bf999ef-eda0-4fb6-b029-0bca2d5feb2f",
+          "TopicId": "7af6aad5-f064-4895-838c-af6cb5b0b790",
+          "Title": "What Is a Binary Tree?",
+          "BodyText": "A binary tree is a hierarchical data structure composed of nodes connected by edges, where each node holds a value and links to at most two child nodes.",
+          "Notes": "Binary trees are foundational in computer science and underpin many advanced structures such as heaps, binary search trees, and expression trees.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T14:18:18.4454566-04:00",
+          "ModifiedDate": "2026-06-26T14:18:18.4454566-04:00",
+          "Items": [
+            {
+              "Id": "d350a631-223d-4221-8a86-31a77128d3d7",
+              "Text": "Unlike linear structures such as arrays or linked lists, binary trees organize data in a branching, parent-child hierarchy.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "4002c4de-4bbb-4912-bade-fc463039fd03",
+              "Text": "The \u0027binary\u0027 constraint means no node can have more than two children, distinguishing it from general trees where any number of children is allowed.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "494bebd8-ae9a-4d50-b4f2-4b17341233ee",
+              "Text": "This bounded branching factor gives binary trees predictable structural properties useful for efficient searching and sorting.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "3de5b6cc-56c3-4968-a6af-aca1c5da672d",
+          "TopicId": "7af6aad5-f064-4895-838c-af6cb5b0b790",
+          "Title": "Nodes and Edges",
+          "BodyText": "Nodes are the fundamental units of a binary tree, each storing a data value and references to its children, while edges are the directional links connecting a parent node to a child node.",
+          "Notes": "In a JavaScript implementation, a node is typically represented as an object with properties for the value, a left pointer, and a right pointer.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T14:18:18.4454566-04:00",
+          "ModifiedDate": "2026-06-26T14:18:18.4454566-04:00",
+          "Items": [
+            {
+              "Id": "53687cfd-d91a-4046-900a-996610c64870",
+              "Text": "Every node contains a payload (the stored data) and up to two pointers: one to a left child and one to a right child.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "1493e48b-2959-406c-85f1-f4c57af29994",
+              "Text": "An edge represents a single parent-to-child relationship; in a tree with N nodes there are always exactly N\u22121 edges.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "48ca93e4-ef01-484f-b9a7-fe3cb7a10665",
+              "Text": "Edges are directional, flowing from parent down to child, which enforces the hierarchical structure of the tree.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "453a1d18-a0e4-46bd-a730-e9878636fe3e",
+          "TopicId": "7af6aad5-f064-4895-838c-af6cb5b0b790",
+          "Title": "The Root Node",
+          "BodyText": "The root is the single topmost node of a binary tree and serves as the unique entry point through which all other nodes are reachable.",
+          "Notes": "A valid binary tree has exactly one root. If a tree is empty, it has no root and is considered a null or empty tree.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T14:18:18.4454566-04:00",
+          "ModifiedDate": "2026-06-26T14:18:18.4454566-04:00",
+          "Items": [
+            {
+              "Id": "1d6afe1c-7d7d-45f4-b3a6-dcac75e7b6be",
+              "Text": "The root has no parent; it is the only node in the tree with an in-degree of zero.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "35e88f46-0025-4abf-a6aa-16a6a6cbfaa2",
+              "Text": "Every other node in the tree can be reached by following edges downward from the root.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "a2a93e30-4fc5-4cc4-8627-b2d930729944",
+              "Text": "The root sits at depth 0 (or level 1, depending on convention), and all measurements of tree height begin from it.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "39f6a539-9528-49a3-a5a5-1ebcbd820add",
+          "TopicId": "7af6aad5-f064-4895-838c-af6cb5b0b790",
+          "Title": "Leaf Nodes",
+          "BodyText": "A leaf node is any node that has no children \u2014 both its left and right child references are null \u2014 representing the endpoints of the tree.",
+          "Notes": "Leaf nodes are significant in traversal algorithms because they form the base cases for recursive operations on the tree.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T14:18:18.4454566-04:00",
+          "ModifiedDate": "2026-06-26T14:18:18.4454566-04:00",
+          "Items": [
+            {
+              "Id": "4caaf39a-88ad-4d49-b615-4c7db7df0a86",
+              "Text": "Leaves reside at the bottom of the tree and have an out-degree of zero, meaning they point to no further nodes.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "7f292b78-9e2f-4d31-8e33-2195d45d2deb",
+              "Text": "A tree containing only a root node with no children means the root itself is also a leaf.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "c7c0e031-dd59-4b01-9578-d3a5b4afb4a0",
+              "Text": "The number and distribution of leaf nodes affect tree balance and the efficiency of tree operations.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "28df588b-3f8c-4d1e-9a3e-f64ea8927c52",
+          "TopicId": "7af6aad5-f064-4895-838c-af6cb5b0b790",
+          "Title": "Parent-Child Relationships",
+          "BodyText": "In a binary tree, every node except the root has exactly one parent, and each node can be the parent of zero, one, or two children, forming a strict hierarchical relationship.",
+          "Notes": "These relationships define the ancestry path from any node back to the root, which is important for operations like deletion that require locating a node\u0027s parent.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T14:18:18.4454566-04:00",
+          "ModifiedDate": "2026-06-26T14:18:18.4454566-04:00",
+          "Items": [
+            {
+              "Id": "62fa1e1e-6942-4e1f-9c6d-7bcbcc054243",
+              "Text": "A parent node directly connects to its children via left and right edges; a child node stores no explicit reference back to its parent unless the implementation adds one.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "10a70636-931a-4c73-b35b-f8f5cbd122f2",
+              "Text": "Sibling nodes share the same parent; in a binary tree, a node can have at most one sibling.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "f410953b-d826-4430-b0b7-5844afdac2ab",
+              "Text": "The parent-child relationship is the building block of all structural concepts in a tree, including subtrees, depth, and height.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "b2e2e57d-884d-47c7-a996-204fdacf1739",
+          "TopicId": "7af6aad5-f064-4895-838c-af6cb5b0b790",
+          "Title": "The Binary Constraint: Structural Rules",
+          "BodyText": "The defining rule of a binary tree is that every node may have at most two children, conventionally referred to as the left child and the right child.",
+          "Notes": "This rule is what separates binary trees from general trees (unlimited children) and from other specialized structures like ternary trees (up to three children).",
+          "SortOrder": 5,
+          "CreatedDate": "2026-06-26T14:18:18.4454566-04:00",
+          "ModifiedDate": "2026-06-26T14:18:18.4454566-04:00",
+          "Items": [
+            {
+              "Id": "04259371-6c7f-4c31-96cb-84902647bc87",
+              "Text": "The left and right designation is not merely a label \u2014 it carries positional meaning that algorithms rely on, especially in binary search trees.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "a7860b5b-126d-4a1c-9d7c-71c59e7cd9f8",
+              "Text": "A node with one child is valid; the single child must be explicitly identified as either the left or the right child, not just \u0027a child\u0027.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "0dc9ba1e-8ac0-4a35-8765-3326d009c29e",
+              "Text": "Enforcing a maximum of two children per node bounds the tree\u0027s branching factor and enables the efficient O(log n) performance characteristics associated with balanced binary trees.",
+              "SortOrder": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "cf0023f7-04cc-4d62-89fe-40665bc4ac9b",
+      "Title": "Node Structure and Tree Anatomy",
+      "Summary": "Examines how individual nodes are constructed, including data storage and left and right child pointers. Covers key tree properties such as height, depth, and balance.",
+      "SortOrder": 1,
+      "CreatedDate": "2026-06-26T14:17:56.1505792-04:00",
+      "ModifiedDate": "2026-06-26T14:17:56.1505792-04:00",
+      "Elements": [
+        {
+          "Id": "5bf617a0-f979-454f-93e6-2a35fe5885ad",
+          "TopicId": "cf0023f7-04cc-4d62-89fe-40665bc4ac9b",
+          "Title": "Anatomy of a Binary Tree Node",
+          "BodyText": "A binary tree node is the fundamental building block of the tree structure, containing three core components: a data field and two child references.",
+          "Notes": "In JavaScript, a node is typically implemented as a class or object: { value: data, left: null, right: null }.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T14:18:37.9075646-04:00",
+          "ModifiedDate": "2026-06-26T14:18:37.9075646-04:00",
+          "Items": [
+            {
+              "Id": "8c71864b-30e6-4f09-b6af-8344083ccd72",
+              "Text": "Each node stores a data value, which can be a number, string, or any other data type.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "dd9e641b-c725-422b-9152-78d2791fc537",
+              "Text": "The left pointer references the node\u0027s left child subtree, or null if no left child exists.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "a3cfa232-bc37-43e6-b5af-269323ce7073",
+              "Text": "The right pointer references the node\u0027s right child subtree, or null if no right child exists.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "dbfa6712-5638-4513-9487-c23cd994d98a",
+              "Text": "A node with no children (both pointers null) is called a leaf node.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "f3732250-b399-42ac-a192-4d13c8a5a2a4",
+          "TopicId": "cf0023f7-04cc-4d62-89fe-40665bc4ac9b",
+          "Title": "Root, Parent, and Child Relationships",
+          "BodyText": "Binary trees are organized through hierarchical relationships between nodes, starting from a single entry point called the root.",
+          "Notes": "Visualizing the tree as a family tree analogy helps: the root is the ancestor of all nodes, and every non-root node has exactly one parent.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T14:18:37.9075646-04:00",
+          "ModifiedDate": "2026-06-26T14:18:37.9075646-04:00",
+          "Items": [
+            {
+              "Id": "eb9362aa-1bec-40ea-be64-54f8fdf628b5",
+              "Text": "The root is the topmost node in the tree and has no parent; it is the single entry point to the entire structure.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "3f209cba-e9b2-488c-af7a-f68cc0b4a3ec",
+              "Text": "A parent node is any node that has one or two child nodes connected below it.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "086c0be0-b75d-4c4b-b0d6-92d3c5dea5ff",
+              "Text": "Each node can have at most two children, distinguishing binary trees from general trees.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "62ad3765-d3e1-4cdb-9cbe-6af3015f64c6",
+              "Text": "Nodes sharing the same parent are called sibling nodes.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "3296512a-7042-4393-a999-a4a18c63b9e5",
+          "TopicId": "cf0023f7-04cc-4d62-89fe-40665bc4ac9b",
+          "Title": "Node Depth",
+          "BodyText": "Depth measures how far a specific node is from the root of the tree, providing a way to locate nodes within the hierarchy.",
+          "Notes": "For example, the root has a depth of 0, its direct children have a depth of 1, and grandchildren have a depth of 2.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T14:18:37.9075646-04:00",
+          "ModifiedDate": "2026-06-26T14:18:37.9075646-04:00",
+          "Items": [
+            {
+              "Id": "7f833089-dce2-41e7-bb17-5b205fff4c5e",
+              "Text": "Depth is defined as the number of edges on the path from the root down to a given node.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "53647d60-d0d1-4c78-9394-af2cbc509e24",
+              "Text": "The root node always has a depth of 0.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "866c8b91-caa4-4c92-bbb5-91fedd10d52a",
+              "Text": "Depth increases by one for each level you move away from the root toward the leaves.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "cc7079ed-3bab-4911-863b-99003ef1b7cb",
+          "TopicId": "cf0023f7-04cc-4d62-89fe-40665bc4ac9b",
+          "Title": "Tree Height",
+          "BodyText": "Height is a property that describes the overall size of a tree or subtree, measured as the longest path from a node down to a leaf.",
+          "Notes": "A tree with only a root node has a height of 0. An empty tree is often defined as having a height of -1.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T14:18:37.9075646-04:00",
+          "ModifiedDate": "2026-06-26T14:18:37.9075646-04:00",
+          "Items": [
+            {
+              "Id": "1009f3f5-dd35-4481-864a-c2177ab637cd",
+              "Text": "The height of a node is the number of edges on the longest downward path from that node to a leaf.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "3fbf2c3f-f92b-429e-8f25-1577a7a3fdf6",
+              "Text": "The height of the entire tree is the height of its root node.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "10d39b68-6b9a-4ff8-b153-86ca15ac0133",
+              "Text": "Height is critical for analyzing the efficiency of tree operations, as many algorithms run in O(h) time where h is the height.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "393560d2-5fbb-461a-a262-46b6f5571658",
+          "TopicId": "cf0023f7-04cc-4d62-89fe-40665bc4ac9b",
+          "Title": "Subtrees and Tree Levels",
+          "BodyText": "A binary tree can be understood recursively as a root node connected to a left subtree and a right subtree, each of which is itself a binary tree.",
+          "Notes": "This recursive definition is foundational to implementing traversal algorithms and recursive operations on trees.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T14:18:37.9075646-04:00",
+          "ModifiedDate": "2026-06-26T14:18:37.9075646-04:00",
+          "Items": [
+            {
+              "Id": "bbb471db-2666-4985-acda-fb7aaa832d1d",
+              "Text": "A subtree consists of a node and all of its descendants, forming a valid binary tree on its own.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "8ea04eef-62c7-4eef-b86b-61de464b0e37",
+              "Text": "Every node in a tree is the root of its own subtree.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "c3081ff8-1070-4124-8667-c9e567d233dd",
+              "Text": "A tree level groups all nodes at the same depth, with the root alone occupying level 0.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "cd04ffba-38b5-473a-8f90-9e3dd79ecbdf",
+              "Text": "The number of nodes at each level can at most double compared to the level above it.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "3487e4ee-8863-4328-9e98-ec8a5bd2e9bc",
+          "TopicId": "cf0023f7-04cc-4d62-89fe-40665bc4ac9b",
+          "Title": "Tree Balance",
+          "BodyText": "Balance refers to how evenly the nodes of a tree are distributed between left and right subtrees, directly impacting the performance of tree operations.",
+          "Notes": "An extremely unbalanced tree (where all nodes chain to one side) degrades to the performance of a linked list, with O(n) search time instead of O(log n).",
+          "SortOrder": 5,
+          "CreatedDate": "2026-06-26T14:18:37.9075646-04:00",
+          "ModifiedDate": "2026-06-26T14:18:37.9075646-04:00",
+          "Items": [
+            {
+              "Id": "0d33469a-bb5d-4c9c-b7c9-ab4e3b526d42",
+              "Text": "A balanced binary tree is one where the heights of the left and right subtrees of every node differ by at most one.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "f855c95d-0585-4be3-97bb-7eed494ce9b7",
+              "Text": "Balance ensures that the tree height remains close to log\u2082(n), where n is the number of nodes.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "33c6e4cc-e094-4ddf-a9c1-2aa17c27b80e",
+              "Text": "An unbalanced tree can have significantly greater height, degrading the efficiency of insertion, deletion, and search operations.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "a14d58bc-1ea2-4075-8f3e-4f6b32fe6584",
+              "Text": "Maintaining balance is the goal of self-balancing tree structures such as AVL trees and Red-Black trees.",
+              "SortOrder": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "bfcc51e3-9bb0-40ba-816b-20ca8c3b07de",
+      "Title": "Binary Search Trees (BST) Concepts",
+      "Summary": "Introduces the binary search tree as a specialized binary tree where left child values are less than the parent and right child values are greater. Explains how this ordering property enables efficient search operations.",
+      "SortOrder": 2,
+      "CreatedDate": "2026-06-26T14:17:56.1505792-04:00",
+      "ModifiedDate": "2026-06-26T14:17:56.1505792-04:00",
+      "Elements": [
+        {
+          "Id": "9141a8e5-00e7-49ae-a3ac-06547459b5c9",
+          "TopicId": "bfcc51e3-9bb0-40ba-816b-20ca8c3b07de",
+          "Title": "The BST Ordering Property",
+          "BodyText": "A Binary Search Tree is a specialized binary tree that enforces a strict ordering rule on every node in the structure.",
+          "Notes": "This property must hold recursively for every node in the tree, not just immediate parent-child pairs.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T14:18:55.473345-04:00",
+          "ModifiedDate": "2026-06-26T14:18:55.473345-04:00",
+          "Items": [
+            {
+              "Id": "0ac00542-9108-4c95-8699-5a8d236efdfc",
+              "Text": "For any given node, all values in its left subtree must be less than the node\u0027s value.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "0828a56d-f507-48f9-bc72-3173e422d689",
+              "Text": "For any given node, all values in its right subtree must be greater than the node\u0027s value.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "74eb340d-8fd6-4672-aeb4-3c30da4c6b6f",
+              "Text": "This ordering property is what distinguishes a BST from a general binary tree.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "6a6755d0-940c-4b15-b5fc-018c7067792d",
+              "Text": "Duplicate values are typically disallowed or handled by a consistent rule, such as placing them in the right subtree.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "cbfa8c0b-63d4-4a40-84d1-b5b8910a6e68",
+          "TopicId": "bfcc51e3-9bb0-40ba-816b-20ca8c3b07de",
+          "Title": "BST Node Structure",
+          "BodyText": "Each node in a Binary Search Tree holds a value and references to its left and right children, forming the backbone of the tree.",
+          "Notes": "In JavaScript, a BST node can be represented as an object with a \u0027value\u0027 property and \u0027left\u0027 and \u0027right\u0027 pointer properties initialized to null.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T14:18:55.473345-04:00",
+          "ModifiedDate": "2026-06-26T14:18:55.473345-04:00",
+          "Items": [
+            {
+              "Id": "9f0eec25-7fe8-413f-9ecf-275dbb8adce8",
+              "Text": "A node stores a data value (also called a key) used for comparisons during search and insertion.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "feac6a90-b777-492f-96bd-58965b7e6c12",
+              "Text": "The left pointer references the root of the left subtree, containing smaller values.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "dfaad684-59c7-4ff3-8680-de23917c4760",
+              "Text": "The right pointer references the root of the right subtree, containing greater values.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "dfc4b6b1-9df8-4964-b7d7-f2b3b94caf0e",
+              "Text": "Leaf nodes have both left and right pointers set to null, indicating no children.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "e59bc709-ac8f-4c7b-b4d3-955bb92b806b",
+          "TopicId": "bfcc51e3-9bb0-40ba-816b-20ca8c3b07de",
+          "Title": "How BST Ordering Enables Efficient Search",
+          "BodyText": "The ordering property of a BST allows search operations to eliminate half of the remaining nodes at each step, similar to a binary search on a sorted array.",
+          "Notes": "This divide-and-conquer behavior is what gives BSTs their efficiency advantage over unsorted data structures like linked lists.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T14:18:55.473345-04:00",
+          "ModifiedDate": "2026-06-26T14:18:55.473345-04:00",
+          "Items": [
+            {
+              "Id": "5896ef7f-8b12-483e-bb50-7611798d3cc8",
+              "Text": "When searching for a value, compare it to the current node\u0027s value to decide whether to go left or right.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "e7f30ff7-4a5f-4284-b39a-53989cb9b4f4",
+              "Text": "If the target is less than the current node, the entire right subtree can be ignored, and the search continues left.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "394b38cf-4c30-49fa-8c65-30a093a332a6",
+              "Text": "If the target is greater than the current node, the entire left subtree is discarded and the search continues right.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "417c04e3-feee-464e-9e20-f3787bd10cb4",
+              "Text": "In a balanced BST, this process results in O(log n) average time complexity for search operations.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "944e5cc6-c580-43e4-b03b-a5285daffa7d",
+          "TopicId": "bfcc51e3-9bb0-40ba-816b-20ca8c3b07de",
+          "Title": "BST vs. General Binary Tree",
+          "BodyText": "While all BSTs are binary trees, not all binary trees are BSTs \u2014 the key distinction lies in the presence of the ordering constraint.",
+          "Notes": "A binary tree with nodes arranged randomly may require visiting every node to find a value, whereas a BST can guide the search directionally.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T14:18:55.473345-04:00",
+          "ModifiedDate": "2026-06-26T14:18:55.473345-04:00",
+          "Items": [
+            {
+              "Id": "d0e97f1c-2182-46e8-936c-cb9a64825c0e",
+              "Text": "A general binary tree places no restrictions on how values are arranged relative to parent or sibling nodes.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "8627f27a-54f6-401c-9bec-9deb4fa4a466",
+              "Text": "A BST guarantees predictable value placement, making searches, insertions, and deletions more efficient.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "0b2597fc-ff7c-4374-8f3f-2d5f80dfe1c3",
+              "Text": "Verifying whether a binary tree is a valid BST requires checking the ordering property across the entire tree, not just adjacent nodes.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "6bd6731c-b61e-4eea-ab0d-53c119902c9f",
+          "TopicId": "bfcc51e3-9bb0-40ba-816b-20ca8c3b07de",
+          "Title": "BST Height and Performance",
+          "BodyText": "The efficiency of BST operations is directly tied to the height of the tree, which depends on the order in which values are inserted.",
+          "Notes": "Inserting values in sorted order produces a degenerate (skewed) tree that behaves like a linked list with O(n) search time, highlighting the importance of balanced trees.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T14:18:55.473345-04:00",
+          "ModifiedDate": "2026-06-26T14:18:55.473345-04:00",
+          "Items": [
+            {
+              "Id": "fd296783-4a89-409e-8484-8f7d01667b47",
+              "Text": "A balanced BST has roughly equal numbers of nodes on the left and right of each node, yielding O(log n) operation time.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "cc65348a-cb2c-4fc4-bef7-a155ef2a828e",
+              "Text": "An unbalanced or skewed BST can degrade to O(n) time for search, insertion, and deletion in the worst case.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "fd227687-d8ca-4e8f-8600-2a7ed2905107",
+              "Text": "The shape of the BST is determined by the sequence of inserted values, making insertion order a critical factor in performance.",
+              "SortOrder": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "cd3ff6c0-ae14-477c-83fc-a23fe429f4c1",
+      "Title": "Insertion and Search Operations",
+      "Summary": "Describes the logic for inserting new nodes into a BST while maintaining the ordering property, and outlines how search leverages that structure to locate values efficiently. Includes analysis of best and worst case performance.",
+      "SortOrder": 3,
+      "CreatedDate": "2026-06-26T14:17:56.1505792-04:00",
+      "ModifiedDate": "2026-06-26T14:17:56.1505792-04:00",
+      "Elements": [
+        {
+          "Id": "3ea79460-7dad-4ca4-8ad7-fad61ba9d76d",
+          "TopicId": "cd3ff6c0-ae14-477c-83fc-a23fe429f4c1",
+          "Title": "BST Ordering Property",
+          "BodyText": "Every insertion and search operation in a BST relies on the fundamental ordering property that governs node placement.",
+          "Notes": "This property is what distinguishes a BST from a general binary tree and is the foundation of its efficiency.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T14:19:19.1650452-04:00",
+          "ModifiedDate": "2026-06-26T14:19:19.1650452-04:00",
+          "Items": [
+            {
+              "Id": "96ca4ce2-d3ee-497f-bfb4-b5a0867f6e33",
+              "Text": "For any given node, all values in its left subtree must be less than the node\u0027s value.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "995c9450-bc8b-4f63-bafe-6342c0857daf",
+              "Text": "All values in the right subtree must be greater than the node\u0027s value.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "d4af78bd-14f4-42a5-8125-95cb13c30224",
+              "Text": "This property must hold recursively for every node in the tree, not just the root.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "08b31d45-9c5e-4493-ae4e-eda6a227def1",
+              "Text": "Duplicate values are typically handled by convention \u2014 either disallowed or consistently placed to the left or right.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "26cd6130-7aef-4f52-b2a4-5f3df422d5ec",
+          "TopicId": "cd3ff6c0-ae14-477c-83fc-a23fe429f4c1",
+          "Title": "Insertion Logic",
+          "BodyText": "Inserting a new node into a BST follows a recursive or iterative comparison process that preserves the ordering property.",
+          "Notes": "Example: Inserting 7 into a tree rooted at 10 \u2014 compare 7 \u003C 10, move left; if the left child is null, place 7 there.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T14:19:19.1650452-04:00",
+          "ModifiedDate": "2026-06-26T14:19:19.1650452-04:00",
+          "Items": [
+            {
+              "Id": "d6664c09-529c-45e1-ae18-6ed52ce9805a",
+              "Text": "Begin at the root and compare the new value to the current node\u0027s value.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "780fa31c-f1a6-4c42-aa8d-98a881756233",
+              "Text": "If the new value is less, move to the left child; if greater, move to the right child.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "4ce68e3e-4534-42c8-9ef4-014ec08a0529",
+              "Text": "Repeat the comparison at each subsequent node until a null position is reached.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "537574b1-54ff-46da-ae5f-bc2884ecfb9b",
+              "Text": "Insert the new node at that null position, maintaining the BST ordering property.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "98ac3360-7c0b-4624-8971-22fb95efdd59",
+          "TopicId": "cd3ff6c0-ae14-477c-83fc-a23fe429f4c1",
+          "Title": "JavaScript Implementation of Insertion",
+          "BodyText": "In JavaScript, BST insertion can be implemented as a recursive method on the tree class that navigates to the correct position.",
+          "Notes": "A typical implementation defines a Node class with value, left, and right properties, and an insert method on the BST class that calls a recursive helper.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T14:19:19.1650452-04:00",
+          "ModifiedDate": "2026-06-26T14:19:19.1650452-04:00",
+          "Items": [
+            {
+              "Id": "eb873613-5746-4338-b435-77935b544dae",
+              "Text": "A Node object is created with the new value and null left and right pointers.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "9c6b9111-6267-4dbe-a829-9e1ad01c6080",
+              "Text": "If the tree is empty, the new node becomes the root.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "9095d578-5dff-4f33-a998-789021815e18",
+              "Text": "A recursive helper function compares the value at each node and traverses left or right until a null child slot is found.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "f52cc36a-cc67-44a3-aee6-9f04c1ac5cfe",
+              "Text": "The new node is assigned to that null child slot, completing the insertion.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "c04378be-b003-4240-8f60-aac8417b719e",
+          "TopicId": "cd3ff6c0-ae14-477c-83fc-a23fe429f4c1",
+          "Title": "Search Logic",
+          "BodyText": "Searching a BST exploits the ordering property to eliminate half of the remaining nodes at each comparison step.",
+          "Notes": "This divide-and-conquer behavior is analogous to binary search on a sorted array, making BST search highly efficient in balanced trees.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T14:19:19.1650452-04:00",
+          "ModifiedDate": "2026-06-26T14:19:19.1650452-04:00",
+          "Items": [
+            {
+              "Id": "152e8a1a-846e-4bfd-bdea-b30b18cc0783",
+              "Text": "Start at the root and compare the target value to the current node\u0027s value.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "713f8205-fc37-480b-a298-f17a9797a6f2",
+              "Text": "If the target equals the current node\u0027s value, the search is successful and returns that node.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "7a859a63-80a1-4032-824a-55da2239c529",
+              "Text": "If the target is less, recurse or iterate into the left subtree; if greater, move into the right subtree.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "d9d8425f-bc40-443b-a73c-c0d970d34fcf",
+              "Text": "If a null node is reached without finding the target, the value does not exist in the tree.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "4f1204a6-7db6-4583-80a3-2dfb3d50eb17",
+          "TopicId": "cd3ff6c0-ae14-477c-83fc-a23fe429f4c1",
+          "Title": "Best Case Performance",
+          "BodyText": "In the best case, both insertion and search operate in O(log n) time when the BST is balanced.",
+          "Notes": "A perfectly balanced BST with n nodes has a height of log\u2082(n), meaning at most log\u2082(n) comparisons are needed to reach any node.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T14:19:19.1650452-04:00",
+          "ModifiedDate": "2026-06-26T14:19:19.1650452-04:00",
+          "Items": [
+            {
+              "Id": "dec9ffa2-48fa-4f48-8727-62383bb8c8f8",
+              "Text": "A balanced tree distributes nodes evenly across left and right subtrees at every level.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "fc96369c-0ae9-4991-89cb-5c4c063508df",
+              "Text": "Each comparison step halves the number of remaining nodes to consider, yielding logarithmic time complexity.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "2a5385b5-4749-481f-aebf-3b1df18a8646",
+              "Text": "O(log n) performance makes BSTs competitive with other efficient data structures for search-heavy workloads.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "642cf4d3-ab21-4c07-aa8f-b8efb719fd2f",
+          "TopicId": "cd3ff6c0-ae14-477c-83fc-a23fe429f4c1",
+          "Title": "Worst Case Performance",
+          "BodyText": "In the worst case, a BST degrades to O(n) time for insertion and search when the tree becomes skewed or unbalanced.",
+          "Notes": "Inserting values in sorted order (e.g., 1, 2, 3, 4, 5) produces a tree that resembles a linked list, with all nodes on one side.",
+          "SortOrder": 5,
+          "CreatedDate": "2026-06-26T14:19:19.1650452-04:00",
+          "ModifiedDate": "2026-06-26T14:19:19.1650452-04:00",
+          "Items": [
+            {
+              "Id": "f1fe9ed5-ce30-4cf7-ad4b-7b0f97c1daaa",
+              "Text": "A skewed tree forms when nodes are inserted in ascending or descending sorted order.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "4549baf2-7176-42f5-8d82-14d247e1c4e5",
+              "Text": "Each new node is placed as the rightmost or leftmost child, creating a linear chain with height n.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "2a2783e3-67fe-4f72-9bec-e89f40c145a7",
+              "Text": "Search and insertion must traverse all n nodes in the worst case, resulting in O(n) time complexity.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "1cb74333-5048-45f0-8808-fb7e221c33ae",
+              "Text": "Self-balancing trees such as AVL trees or Red-Black trees are used to prevent this worst-case degradation.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "f3a0710e-4873-451a-a126-3876d2a563eb",
+          "TopicId": "cd3ff6c0-ae14-477c-83fc-a23fe429f4c1",
+          "Title": "Comparing Best and Worst Case Scenarios",
+          "BodyText": "Understanding the gap between best and worst case performance helps developers make informed decisions about when and how to use BSTs.",
+          "Notes": "The average case for a randomly constructed BST is O(log n), but this cannot be guaranteed without balancing mechanisms.",
+          "SortOrder": 6,
+          "CreatedDate": "2026-06-26T14:19:19.1650452-04:00",
+          "ModifiedDate": "2026-06-26T14:19:19.1650452-04:00",
+          "Items": [
+            {
+              "Id": "057cd3f2-5ab3-4abd-87e7-d3363f7b7c50",
+              "Text": "Best case O(log n) occurs with a balanced tree; worst case O(n) occurs with a fully skewed tree.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "c8279ea2-95ec-4d55-868c-acc4151c4393",
+              "Text": "The shape of the tree \u2014 determined by insertion order \u2014 is the primary factor influencing performance.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "8761ec3c-1d70-4127-b8f0-577b614cdd8d",
+              "Text": "Randomly ordered input data tends to produce reasonably balanced trees in practice, approximating O(log n) on average.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "62748afb-77b1-4455-b504-3203fee82ace",
+              "Text": "For production systems requiring guaranteed performance, self-balancing BST variants should be preferred over plain BSTs.",
+              "SortOrder": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "49e445cd-088d-40c8-99e0-08bde79469f7",
+      "Title": "Deletion Operations",
+      "Summary": "Covers the three cases of node deletion in a BST: removing a leaf, a node with one child, and a node with two children. Explains how the in-order successor or predecessor is used to preserve BST integrity.",
+      "SortOrder": 4,
+      "CreatedDate": "2026-06-26T14:17:56.1505792-04:00",
+      "ModifiedDate": "2026-06-26T14:17:56.1505792-04:00",
+      "Elements": [
+        {
+          "Id": "69f3f33d-7017-4c26-af4f-d9657d3cb7c2",
+          "TopicId": "49e445cd-088d-40c8-99e0-08bde79469f7",
+          "Title": "Overview of BST Deletion Cases",
+          "BodyText": "Deleting a node from a Binary Search Tree requires handling three distinct cases depending on the structure of the node being removed.",
+          "Notes": "Failing to handle all three cases correctly can corrupt the BST property, where all left descendants are less than the node and all right descendants are greater.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T14:19:42.1444461-04:00",
+          "ModifiedDate": "2026-06-26T14:19:42.1444461-04:00",
+          "Items": [
+            {
+              "Id": "372a7fe8-d3b0-42f8-acbc-e471cf549917",
+              "Text": "The three cases are: the target node is a leaf, the target node has one child, or the target node has two children.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "de825b64-4159-4c05-9f69-b4b630ce1403",
+              "Text": "Each case requires a different strategy to maintain the BST ordering property after removal.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "5053467a-11c1-4f9b-b9ea-75d73a7dcbd6",
+              "Text": "Identifying which case applies is the first step before performing any pointer updates.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "c77bc780-9cf7-440a-b8a4-b731ed54830a",
+          "TopicId": "49e445cd-088d-40c8-99e0-08bde79469f7",
+          "Title": "Case 1: Deleting a Leaf Node",
+          "BodyText": "A leaf node has no children, making it the simplest case to handle during deletion.",
+          "Notes": "For example, deleting node 7 in a tree where 7 is a leaf simply requires setting its parent\u0027s left or right pointer to null.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T14:19:42.1444461-04:00",
+          "ModifiedDate": "2026-06-26T14:19:42.1444461-04:00",
+          "Items": [
+            {
+              "Id": "4768cdc1-dbf7-4dec-a61b-ec8bd317bfb5",
+              "Text": "Since the leaf has no children, it can be removed directly without affecting any other nodes.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "d9c5e47a-d9b2-4bcf-bf56-6658ec11c14b",
+              "Text": "The parent node\u0027s reference (left or right pointer) that pointed to the deleted leaf is set to null.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "383220ce-3a08-41d6-b71f-ce0481e0f1f9",
+              "Text": "No restructuring of the tree is required after the removal.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "507378d2-4c24-4714-96e6-aa42357178b0",
+          "TopicId": "49e445cd-088d-40c8-99e0-08bde79469f7",
+          "Title": "Case 2: Deleting a Node with One Child",
+          "BodyText": "When the node to be deleted has exactly one child, that child takes the place of the deleted node in the tree.",
+          "Notes": "For example, if node 15 has only a right child node 20, deleting 15 means the parent of 15 now points directly to 20.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T14:19:42.1444461-04:00",
+          "ModifiedDate": "2026-06-26T14:19:42.1444461-04:00",
+          "Items": [
+            {
+              "Id": "247324fc-46c6-402f-8b82-31ecd80a5b61",
+              "Text": "The deleted node is bypassed by linking its parent directly to its single child.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "629e425d-2958-4f44-91ac-578787315664",
+              "Text": "The BST property is preserved because the subtree rooted at the child was already correctly ordered relative to the parent.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "28e94ca1-f7de-412c-8644-86bceaef1f57",
+              "Text": "It does not matter whether the single child is a left or right child; the bypass approach applies in both situations.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "344e80f8-3f93-4af8-b79f-8d10257a93da",
+          "TopicId": "49e445cd-088d-40c8-99e0-08bde79469f7",
+          "Title": "Case 3: Deleting a Node with Two Children",
+          "BodyText": "Deleting a node with two children is the most complex case, requiring a replacement value to maintain BST integrity.",
+          "Notes": "This is the most commonly tested case in technical interviews and requires careful pointer manipulation to avoid losing subtrees.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T14:19:42.1444461-04:00",
+          "ModifiedDate": "2026-06-26T14:19:42.1444461-04:00",
+          "Items": [
+            {
+              "Id": "0a189f67-2ada-4aef-a83e-109a91f044e6",
+              "Text": "The deleted node\u0027s value is replaced by either its in-order successor or its in-order predecessor.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "4d452278-f987-4fb4-94c7-602d8619053c",
+              "Text": "After copying the replacement value into the target node, the replacement node itself is then deleted from its original position.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "ada5ee0e-1822-45ce-a6e9-87e0bdecdd2c",
+              "Text": "Because the replacement node (in-order successor or predecessor) has at most one child, its own deletion falls into Case 1 or Case 2.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "1882f09a-04fa-49ac-af49-855e572c0e91",
+          "TopicId": "49e445cd-088d-40c8-99e0-08bde79469f7",
+          "Title": "The In-Order Successor",
+          "BodyText": "The in-order successor of a node is the smallest node in its right subtree, and it is the most commonly used replacement when deleting a node with two children.",
+          "Notes": "In JavaScript, finding the in-order successor involves traversing right once, then following left pointers until reaching a node with no left child.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T14:19:42.1444461-04:00",
+          "ModifiedDate": "2026-06-26T14:19:42.1444461-04:00",
+          "Items": [
+            {
+              "Id": "0b88167e-6cf1-4b85-9543-8c1dac8b1741",
+              "Text": "The in-order successor is guaranteed to be greater than all nodes in the left subtree of the deleted node, preserving BST order.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "03733ba7-1bb2-4bfe-8b6f-e8698aaf16ca",
+              "Text": "It is also less than all remaining nodes in the right subtree, satisfying the BST property on the right side as well.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "979ef399-b978-4edf-8242-900502868856",
+              "Text": "The in-order successor will have at most one child (a right child), simplifying its own removal.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "d10abca6-b66b-47f2-8a8a-24f60ee0fef7",
+          "TopicId": "49e445cd-088d-40c8-99e0-08bde79469f7",
+          "Title": "The In-Order Predecessor",
+          "BodyText": "The in-order predecessor is the largest node in the left subtree and serves as an alternative replacement node during deletion.",
+          "Notes": "Either the in-order successor or predecessor produces a valid BST after deletion; the choice is typically a matter of implementation preference or balancing strategy.",
+          "SortOrder": 5,
+          "CreatedDate": "2026-06-26T14:19:42.1444461-04:00",
+          "ModifiedDate": "2026-06-26T14:19:42.1444461-04:00",
+          "Items": [
+            {
+              "Id": "d440d438-087f-4b54-83c1-266c8dc4a2a5",
+              "Text": "The in-order predecessor is found by traversing left once from the target node, then following right pointers to the rightmost node.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "d1a02e83-cd8a-490a-ae0a-210b3cf55b96",
+              "Text": "It is smaller than all nodes in the right subtree and larger than all remaining nodes in the left subtree.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "ff2501ca-e00a-4aeb-89fc-e933712f74ec",
+              "Text": "Like the in-order successor, the predecessor has at most one child, making its subsequent deletion straightforward.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "e07a846f-4fce-4e02-a9f1-d7d96a5a5098",
+          "TopicId": "49e445cd-088d-40c8-99e0-08bde79469f7",
+          "Title": "Preserving BST Integrity After Deletion",
+          "BodyText": "Regardless of which case applies, the fundamental goal of deletion is to ensure the BST property holds for every node in the tree after the operation.",
+          "Notes": "In JavaScript implementations, deletion is often written as a recursive function that returns the updated subtree root after each recursive call, naturally handling pointer updates.",
+          "SortOrder": 6,
+          "CreatedDate": "2026-06-26T14:19:42.1444461-04:00",
+          "ModifiedDate": "2026-06-26T14:19:42.1444461-04:00",
+          "Items": [
+            {
+              "Id": "90728e52-1f65-4a09-84ba-7aa2f99172eb",
+              "Text": "After any deletion, every node\u0027s left subtree must contain only values less than that node, and the right subtree must contain only greater values.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "4bcddc18-e2e7-421e-9b24-c6db720fb5a3",
+              "Text": "Using the in-order successor or predecessor as a replacement guarantees this property is maintained without requiring a full tree reorganization.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "b36e8e76-2094-4ee2-b841-9f306adb8545",
+              "Text": "Testing deletion with nodes at various positions (root, internal nodes, leaves) is essential to verify the BST remains valid.",
+              "SortOrder": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "0664129a-7b0d-4a80-bcf1-dfe0fc4f33fa",
+      "Title": "Tree Traversal Strategies",
+      "Summary": "Explores in-order, pre-order, and post-order traversal algorithms, detailing the sequence in which nodes are visited for each approach. Highlights practical use cases such as sorted output and tree serialization.",
+      "SortOrder": 5,
+      "CreatedDate": "2026-06-26T14:17:56.1505792-04:00",
+      "ModifiedDate": "2026-06-26T14:17:56.1505792-04:00",
+      "Elements": [
+        {
+          "Id": "a0044961-be13-46d0-9113-fa23cafd14b3",
+          "TopicId": "0664129a-7b0d-4a80-bcf1-dfe0fc4f33fa",
+          "Title": "In-Order Traversal (Left \u2192 Root \u2192 Right)",
+          "BodyText": "In-order traversal visits the left subtree first, then the root node, and finally the right subtree, producing nodes in ascending sorted order for a binary search tree.",
+          "Notes": "Example: For a BST with root 5, left child 3, and right child 7, in-order traversal yields 3 \u2192 5 \u2192 7. This property makes it ideal for extracting sorted data from a BST.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T14:20:07.3573255-04:00",
+          "ModifiedDate": "2026-06-26T14:20:07.3573255-04:00",
+          "Items": [
+            {
+              "Id": "998a880b-204f-40fc-9a18-a00d19a5d533",
+              "Text": "The algorithm recursively traverses the left subtree before processing the current node.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "dca193cb-a414-468a-9083-7cec5cd4ef78",
+              "Text": "After visiting the root, the right subtree is traversed recursively in the same manner.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "ddc3a6b5-7811-4544-a2b4-68a19386a025",
+              "Text": "In a valid BST, in-order traversal always produces values in non-decreasing order.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "8b8b7103-5266-4036-bc11-3638bbeb5f03",
+              "Text": "Common use cases include sorting data stored in a BST and validating that a tree satisfies BST properties.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "ed741628-b175-44bb-a57a-29caf4c2dbd7",
+          "TopicId": "0664129a-7b0d-4a80-bcf1-dfe0fc4f33fa",
+          "Title": "Pre-Order Traversal (Root \u2192 Left \u2192 Right)",
+          "BodyText": "Pre-order traversal visits the root node first, then recursively traverses the left subtree, followed by the right subtree.",
+          "Notes": "Pre-order traversal is especially useful for serializing or copying a tree, because the root is always encountered before its children, preserving the structural hierarchy.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T14:20:07.3573255-04:00",
+          "ModifiedDate": "2026-06-26T14:20:07.3573255-04:00",
+          "Items": [
+            {
+              "Id": "95fa947b-f469-431d-9e97-4ccf142aaf5a",
+              "Text": "Processing the root before its children means the traversal captures the tree\u0027s top-down structure.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "c182e5f6-1565-4ad8-b141-26ef92c17e93",
+              "Text": "Pre-order output can be used to reconstruct the exact same tree if reinserted in the same sequence.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "7c83cc64-6823-4be8-8fc6-d4ef6b5433aa",
+              "Text": "This traversal is commonly applied in tree serialization, expression tree evaluation, and directory structure printing.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "d9b10415-9a36-49f4-9073-7c4ff0532f08",
+              "Text": "Pre-order traversal forms the basis for depth-first search strategies in tree-based algorithms.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "6dff19c0-34a3-4a36-a49f-815142304bd0",
+          "TopicId": "0664129a-7b0d-4a80-bcf1-dfe0fc4f33fa",
+          "Title": "Post-Order Traversal (Left \u2192 Right \u2192 Root)",
+          "BodyText": "Post-order traversal recursively visits the left subtree and right subtree before processing the root node, ensuring children are always handled before their parent.",
+          "Notes": "A classic example is evaluating arithmetic expression trees, where operands (children) must be resolved before applying the operator (parent node).",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T14:20:07.3573255-04:00",
+          "ModifiedDate": "2026-06-26T14:20:07.3573255-04:00",
+          "Items": [
+            {
+              "Id": "8a9fcbac-94e2-4792-aa8f-470f527c9de6",
+              "Text": "Both subtrees are fully visited before the current node is processed, making it suitable for bottom-up operations.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "c46aeba0-4379-461c-9686-d630d2df651a",
+              "Text": "Post-order traversal is used when deleting a tree, since child nodes must be removed before their parent to avoid memory leaks.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "deb4e34a-b6e0-4d50-89e2-5e5397c6970a",
+              "Text": "It is also applied in computing the size or height of a tree, as child results are needed before calculating the parent\u0027s value.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "9c1015c1-cb22-4a58-999a-9ed47faff0fb",
+              "Text": "Expression trees representing mathematical formulas use post-order traversal to produce postfix (Reverse Polish) notation.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "8db520cf-1c52-4fd9-93dd-442743c4ae66",
+          "TopicId": "0664129a-7b0d-4a80-bcf1-dfe0fc4f33fa",
+          "Title": "Recursive vs. Iterative Traversal Implementations",
+          "BodyText": "All three traversal strategies can be implemented either recursively using the call stack or iteratively using an explicit stack data structure.",
+          "Notes": "In JavaScript, recursive implementations are concise and readable but may cause stack overflow on very deep trees. Iterative implementations avoid this risk at the cost of slightly more complex code.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T14:20:07.3573255-04:00",
+          "ModifiedDate": "2026-06-26T14:20:07.3573255-04:00",
+          "Items": [
+            {
+              "Id": "5f3ee08e-2d3c-4181-9079-958baeaf9596",
+              "Text": "Recursive implementations naturally mirror the definition of each traversal, calling the function on left and right children as needed.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "6cefacfe-46b0-45b4-af55-2ca2dcc8787d",
+              "Text": "Iterative implementations use a stack to simulate the call stack, manually tracking which nodes still need to be visited.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "919c0f53-2a1b-4ebc-b45d-15d9620762ec",
+              "Text": "For in-order iterative traversal, nodes are pushed onto the stack as the algorithm moves left, then popped and processed before moving right.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "3a878a5b-253e-4333-91f1-4d64b0bf0dcf",
+              "Text": "Choosing between recursive and iterative approaches depends on tree depth, language stack limits, and code readability requirements.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "86670966-c4da-4190-be2f-ac9058331c06",
+          "TopicId": "0664129a-7b0d-4a80-bcf1-dfe0fc4f33fa",
+          "Title": "Practical Use Cases for Each Traversal",
+          "BodyText": "Each traversal strategy is suited to specific real-world tasks, and selecting the correct one is critical to solving tree-based problems efficiently.",
+          "Notes": "Understanding when to apply each traversal strategy reduces time complexity and leads to more elegant, maintainable solutions in software development.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T14:20:07.3573255-04:00",
+          "ModifiedDate": "2026-06-26T14:20:07.3573255-04:00",
+          "Items": [
+            {
+              "Id": "be60d816-a62a-41cf-b75c-d6416fcae29f",
+              "Text": "In-order traversal is used whenever sorted output from a BST is required, such as implementing sorted lists or range queries.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "359a3e24-6507-42a5-92c2-377f5471fe1d",
+              "Text": "Pre-order traversal is preferred for tree serialization, cloning, and scenarios where parent context must be established before processing children.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "8dbc6e9b-e594-4913-979d-ce3db95b7afc",
+              "Text": "Post-order traversal is applied in scenarios requiring aggregation from leaves upward, such as computing subtree sizes, heights, or deleting nodes safely.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "81ddc0e7-cd6a-4d75-bff6-2d6594166af1",
+              "Text": "Recognizing the traversal pattern needed is a key problem-solving skill in technical interviews and algorithm design.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "7760694d-cf36-4cb0-9389-1eeaeb9ff7bd",
+          "TopicId": "0664129a-7b0d-4a80-bcf1-dfe0fc4f33fa",
+          "Title": "Traversal and Tree Serialization",
+          "BodyText": "Tree serialization is the process of converting a tree structure into a linear sequence of values that can be stored or transmitted and later reconstructed.",
+          "Notes": "Pre-order traversal combined with null markers (e.g., representing absent children as \u0027null\u0027) is a common serialization format, enabling full tree reconstruction from the sequence alone.",
+          "SortOrder": 5,
+          "CreatedDate": "2026-06-26T14:20:07.3573255-04:00",
+          "ModifiedDate": "2026-06-26T14:20:07.3573255-04:00",
+          "Items": [
+            {
+              "Id": "dd01505e-33b6-4ca6-8c6f-eadfef200386",
+              "Text": "Serialization requires capturing enough structural information so the original tree can be rebuilt exactly from the output sequence.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "6acb89bb-328a-499d-a254-27339601a174",
+              "Text": "Pre-order traversal naturally encodes parent-before-child relationships, making deserialization straightforward using a queue or index pointer.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "4e45f89e-33b3-4c05-959c-f4725643a7e2",
+              "Text": "In-order traversal alone is insufficient for serialization of general binary trees, as multiple tree shapes can produce the same in-order sequence.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "b407151d-6eb5-4831-bbe0-dcd6cf2e1c53",
+              "Text": "Combining pre-order with in-order sequences uniquely identifies a binary tree and is a classic technique for full tree reconstruction.",
+              "SortOrder": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "cba6c9f1-8501-46f5-8648-b9c45345f282",
+      "Title": "Implementing a BST in JavaScript",
+      "Summary": "Guides students through a hands-on JavaScript implementation of a binary search tree, including class and method definitions for insertion, deletion, and traversal. Reinforces conceptual understanding through working code examples.",
+      "SortOrder": 6,
+      "CreatedDate": "2026-06-26T14:17:56.1505792-04:00",
+      "ModifiedDate": "2026-06-26T14:17:56.1505792-04:00",
+      "Elements": [
+        {
+          "Id": "a7fe8201-3d1f-4e45-b5f8-4479e2bc7347",
+          "TopicId": "cba6c9f1-8501-46f5-8648-b9c45345f282",
+          "Title": "Defining the Node Class",
+          "BodyText": "Every BST is built from individual nodes, each storing a value and references to its left and right children. In JavaScript, a Node class provides the blueprint for these building blocks.",
+          "Notes": "Example: class Node { constructor(value) { this.value = value; this.left = null; this.right = null; } }",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T14:20:34.876644-04:00",
+          "ModifiedDate": "2026-06-26T14:20:34.876644-04:00",
+          "Items": [
+            {
+              "Id": "2f7d9178-0f5b-4265-84a4-560ff4ccd05f",
+              "Text": "Each node holds a single data value and two child pointers, initialized to null when the node is first created.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "e44fd4c1-3b94-450a-ad48-203c1052ec0f",
+              "Text": "Using a class makes it easy to instantiate new nodes consistently throughout insertion and other operations.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "49bd2b7a-d0ec-4acb-a634-db76ed550e04",
+              "Text": "Setting left and right to null by default correctly represents a leaf node with no children.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "1f84c793-37cc-454c-bc50-53803691c2da",
+          "TopicId": "cba6c9f1-8501-46f5-8648-b9c45345f282",
+          "Title": "Setting Up the BinarySearchTree Class",
+          "BodyText": "The BST itself is represented as a class that tracks the root node and exposes methods for insertion, deletion, and traversal.",
+          "Notes": "Example: class BinarySearchTree { constructor() { this.root = null; } }",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T14:20:34.876644-04:00",
+          "ModifiedDate": "2026-06-26T14:20:34.876644-04:00",
+          "Items": [
+            {
+              "Id": "4c9a394e-b19d-4e99-9b45-4712cd15d8ad",
+              "Text": "The constructor initializes the root to null, representing an empty tree before any values are inserted.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "71a91b49-e549-4b15-9f81-8e7ba6ec7358",
+              "Text": "All BST operations \u2014 insert, delete, search, and traversal \u2014 are defined as methods on this class, keeping logic organized and reusable.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "f55a27ee-b89a-460f-8fdd-647c39a756b6",
+              "Text": "Encapsulating the root reference inside the class prevents external code from accidentally corrupting the tree structure.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "d8e7a170-dd51-4e30-9776-ff65d12822c3",
+          "TopicId": "cba6c9f1-8501-46f5-8648-b9c45345f282",
+          "Title": "Implementing the Insert Method",
+          "BodyText": "The insert method adds a new value to the correct position in the BST by comparing the new value against existing nodes and traversing left or right accordingly.",
+          "Notes": "A recursive helper function is a clean approach: if the current node is null, place the new node there; otherwise, compare values and recurse into the left or right subtree.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T14:20:34.876644-04:00",
+          "ModifiedDate": "2026-06-26T14:20:34.876644-04:00",
+          "Items": [
+            {
+              "Id": "052f3944-f5c2-4e28-a0b5-9c7549c07840",
+              "Text": "If the tree is empty, the new node becomes the root directly.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "55cddb08-480f-4e45-aa9a-9d8eeee44490",
+              "Text": "At each node, if the new value is less than the current node\u0027s value, insertion continues into the left subtree; if greater, into the right subtree.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "48a98fbc-ae90-4551-b742-947d098d86f2",
+              "Text": "Duplicate values are typically ignored or handled by a defined convention, such as placing them to the right.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "4451190a-ef05-4cba-a698-666fa499c7d0",
+              "Text": "Recursion naturally mirrors the tree\u0027s branching structure and simplifies the insertion logic.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "09d8127b-784d-42a7-afa1-a747298ff50e",
+          "TopicId": "cba6c9f1-8501-46f5-8648-b9c45345f282",
+          "Title": "Implementing Search / Lookup",
+          "BodyText": "A search method traverses the BST to determine whether a given value exists, exploiting the ordered property to eliminate half the remaining tree at each step.",
+          "Notes": "The method returns true or the found node if the value exists, and false or null otherwise, depending on the intended use.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T14:20:34.876644-04:00",
+          "ModifiedDate": "2026-06-26T14:20:34.876644-04:00",
+          "Items": [
+            {
+              "Id": "8cbc21b0-42a4-477f-8849-f5c1266ce2a2",
+              "Text": "Starting at the root, compare the target value to the current node\u0027s value to decide whether to go left, right, or return a match.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "79b7cb27-3966-4414-a3ee-e43f28be14dc",
+              "Text": "If a null node is reached without finding the value, the value is not present in the tree.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "c6764549-2efc-477e-a935-7f09d74fa0b4",
+              "Text": "Search runs in O(log n) time for a balanced BST, degrading to O(n) in the worst case of a skewed tree.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "ea725f5f-fb4b-4071-829b-b1194a49333c",
+          "TopicId": "cba6c9f1-8501-46f5-8648-b9c45345f282",
+          "Title": "Implementing BST Traversal Methods",
+          "BodyText": "Traversal methods \u2014 in-order, pre-order, and post-order \u2014 are implemented as recursive functions that visit nodes in a specific sequence and collect or process their values.",
+          "Notes": "In-order traversal (left \u2192 root \u2192 right) produces a sorted array of values from a BST, which is a useful built-in property to highlight with a working code example.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T14:20:34.876644-04:00",
+          "ModifiedDate": "2026-06-26T14:20:34.876644-04:00",
+          "Items": [
+            {
+              "Id": "7cb14993-b7ad-4cf0-aa42-68ed668089bc",
+              "Text": "In-order traversal visits the left subtree, then the current node, then the right subtree, yielding values in ascending sorted order.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "5c574045-ad5a-4e96-80b5-9f2dc0a02783",
+              "Text": "Pre-order traversal visits the current node first, making it useful for serializing or copying the tree structure.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "611333b0-0e69-49e5-ac28-d8d4a632175a",
+              "Text": "Post-order traversal visits both subtrees before the current node, which is well-suited for deletion or memory cleanup operations.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "47cd0c3f-1338-47c6-b4f5-4659023a6c38",
+              "Text": "Each traversal can be implemented by passing a callback or pushing values into an array that is returned at the end of the recursion.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "31797634-3d97-4e50-9fbe-baa456a6e460",
+          "TopicId": "cba6c9f1-8501-46f5-8648-b9c45345f282",
+          "Title": "Implementing the Delete Method",
+          "BodyText": "Deletion is the most complex BST operation because removing a node must preserve the BST ordering property, with different logic required depending on whether the node has zero, one, or two children.",
+          "Notes": "For a node with two children, find the in-order successor (smallest value in the right subtree), copy its value to the current node, then delete the successor from the right subtree.",
+          "SortOrder": 5,
+          "CreatedDate": "2026-06-26T14:20:34.876644-04:00",
+          "ModifiedDate": "2026-06-26T14:20:34.876644-04:00",
+          "Items": [
+            {
+              "Id": "634ad45f-89f9-4087-bb11-067853b22a4c",
+              "Text": "Deleting a leaf node (no children) is straightforward: set the parent\u0027s corresponding pointer to null.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "121959e3-f6c3-4911-8127-31cfa0fb86fe",
+              "Text": "Deleting a node with one child replaces the node with its only child, maintaining the tree\u0027s connectivity.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "8f22f149-fe9d-44ee-8ca9-ed2cc0bbb6dd",
+              "Text": "Deleting a node with two children requires finding the in-order successor or predecessor to substitute the deleted node\u0027s value before removing the successor.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "7589c74a-68e2-4440-90a3-4e184b6f841b",
+              "Text": "The delete method is typically implemented recursively, returning the updated subtree root at each level so parent pointers are automatically updated.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "abc0a914-cae9-479b-b096-808dd7042eba",
+          "TopicId": "cba6c9f1-8501-46f5-8648-b9c45345f282",
+          "Title": "Putting It All Together: Testing the BST",
+          "BodyText": "After implementing the Node and BinarySearchTree classes with insert, delete, search, and traversal methods, testing with concrete examples validates the implementation and reinforces understanding.",
+          "Notes": "A simple test sequence: instantiate the BST, insert several values, call in-order traversal to confirm sorted output, search for existing and missing values, delete a node, and traverse again to verify correctness.",
+          "SortOrder": 6,
+          "CreatedDate": "2026-06-26T14:20:34.876644-04:00",
+          "ModifiedDate": "2026-06-26T14:20:34.876644-04:00",
+          "Items": [
+            {
+              "Id": "f69f93e1-fa3b-4036-bff6-a966cf938f74",
+              "Text": "Inserting a known set of values and running in-order traversal should always produce those values in ascending sorted order.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "74cadddf-bb13-46b9-8ae6-c1b925654117",
+              "Text": "Testing deletion for all three cases \u2014 leaf, one child, two children \u2014 ensures the method handles every scenario correctly.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "78e10a37-cd72-46bf-8354-b8bf130adf98",
+              "Text": "Console logging or returning arrays from traversal methods makes it easy to visually verify the tree\u0027s state at each step.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "cbb849b4-870d-478d-8557-14e2afc1d4f7",
+              "Text": "Edge cases such as deleting the root node, searching an empty tree, or inserting duplicates should be explicitly tested.",
+              "SortOrder": 3
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "TotalElementCount": 44
+}

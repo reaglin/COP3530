@@ -1,0 +1,127 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Queue: Structure and Use Cases — Topics &amp; Learning Outcomes</title>
+<style>
+body{font-family:'Segoe UI',Arial,sans-serif;max-width:880px;margin:0 auto;padding:32px 24px;color:#222;line-height:1.55}
+h1{font-size:1.6rem;border-bottom:2px solid #dcdcdc;padding-bottom:8px}
+h2{font-size:1.25rem;margin-top:30px;color:#1a3c6e;border-bottom:1px solid #ececec;padding-bottom:4px}
+h3{font-size:1.05rem;margin-top:22px;color:#1a3c6e}
+.toc{border:1px solid #c9d4e3;background:#f5f8fc;border-radius:8px;padding:10px 16px;margin:14px 0 6px;display:flex;gap:18px;flex-wrap:wrap}
+.toc a{color:#1a3c6e;font-weight:600;text-decoration:none}
+.toc a:hover{text-decoration:underline}
+.summary{color:#555;font-style:italic;margin:4px 0 10px}
+ul{margin:6px 0 6px 4px}
+li{margin:5px 0}
+.el-body{color:#555}
+.prefix{color:#555;font-style:italic;margin:6px 0 14px}
+.mo{border:1px solid #e2e2e2;border-radius:6px;padding:12px 16px;margin:12px 0}
+.mo .code{font-size:.8rem;color:#888;text-transform:uppercase;letter-spacing:.04em}
+.mo .statement{font-weight:600;margin:4px 0 8px}
+.meta span{display:inline-block;background:#eef2f8;color:#1a3c6e;border-radius:3px;padding:1px 8px;margin:0 6px 0 0;font-size:.85rem}
+.meta .map{background:#eaf6ec;color:#137333}
+.co{margin:7px 0}
+.co .code{font-weight:600;color:#1a3c6e;margin-right:6px}
+.empty{color:#888}
+</style>
+</head>
+<body>
+<h1>The Queue: Structure and Use Cases — Topics &amp; Learning Outcomes</h1>
+<div class="toc"><a href="#topics">📋 Module Topics</a><a href="#outcomes">🎯 Student Learning Outcomes</a></div>
+
+<h2 id="topics">Module Topics</h2>
+<h3>Introduction to the Queue Data Structure</h3>
+<div class="summary">This topic establishes what a queue is and where it fits within the broader landscape of data structures. Students are introduced to the queue as an ordered collection with specific rules governing how data enters and exits.</div>
+<ul>
+<li><strong>What Is a Queue?</strong> <span class="el-body">— A queue is an ordered collection of elements designed so that items are added at one end and removed from the other.</span></li>
+<li><strong>The FIFO Principle</strong> <span class="el-body">— The defining rule of a queue is First-In, First-Out (FIFO), meaning the element that has been waiting the longest is always the next one to be processed.</span></li>
+<li><strong>Core Terminology: Enqueue and Dequeue</strong> <span class="el-body">— Queues use specific vocabulary to describe how elements enter and exit the collection.</span></li>
+<li><strong>Queues as Abstract Data Types</strong> <span class="el-body">— A queue is classified as an abstract data type (ADT), meaning it is defined by its behavior and rules rather than by any single specific implementation.</span></li>
+<li><strong>Queues Among Other Data Structures</strong> <span class="el-body">— Understanding where the queue fits in the broader landscape of data structures helps clarify when it is the appropriate tool to use.</span></li>
+</ul>
+<h3>The FIFO Principle</h3>
+<div class="summary">This topic explains the First-In, First-Out principle that defines queue behavior. Students learn how FIFO governs the order of insertion and removal, distinguishing queues from other data structures.</div>
+<ul>
+<li><strong>What FIFO Means</strong> <span class="el-body">— FIFO stands for First-In, First-Out, the core principle that defines how a queue operates.</span></li>
+<li><strong>Insertion and Removal Under FIFO</strong> <span class="el-body">— FIFO governs both where new elements enter the queue and where elements exit, keeping these two ends distinct.</span></li>
+<li><strong>FIFO Compared to LIFO</strong> <span class="el-body">— Understanding FIFO becomes clearer when contrasted with LIFO (Last-In, First-Out), the principle that governs stacks.</span></li>
+<li><strong>Why FIFO Matters for Fairness and Order</strong> <span class="el-body">— The FIFO principle naturally encodes fairness by ensuring every element is processed in the exact order it arrived.</span></li>
+<li><strong>FIFO as a Defining Constraint of the Queue</strong> <span class="el-body">— FIFO is not just a behavioral tendency of queues — it is the defining rule that distinguishes a queue from other data structures.</span></li>
+</ul>
+<h3>Queue Operations</h3>
+<div class="summary">This topic covers the core operations performed on a queue, including enqueue, dequeue, peek, and isEmpty. Students examine the mechanics and expected behavior of each operation.</div>
+<ul>
+<li><strong>The Enqueue Operation</strong> <span class="el-body">— Enqueue is the operation that adds a new element to the back (rear) of the queue.</span></li>
+<li><strong>The Dequeue Operation</strong> <span class="el-body">— Dequeue removes and returns the element at the front of the queue, following the FIFO principle.</span></li>
+<li><strong>The Peek (Front) Operation</strong> <span class="el-body">— Peek allows inspection of the front element of the queue without removing it.</span></li>
+<li><strong>The isEmpty Operation</strong> <span class="el-body">— isEmpty checks whether the queue currently contains any elements, returning a boolean result.</span></li>
+<li><strong>Operation Behavior and Expected Outcomes</strong> <span class="el-body">— Each queue operation has a well-defined expected behavior that ensures the integrity of the FIFO ordering.</span></li>
+</ul>
+<h3>Implementing a Queue</h3>
+<div class="summary">This topic explores the primary approaches to implementing a queue, such as using arrays or linked lists. Students implement queue operations in code and evaluate the trade-offs of each approach.</div>
+<ul>
+<li><strong>Array-Based Queue Implementation</strong> <span class="el-body">— A queue can be implemented using a fixed-size or dynamic array, where one end serves as the front and the other as the rear.</span></li>
+<li><strong>Linked List-Based Queue Implementation</strong> <span class="el-body">— A queue can also be implemented using a singly linked list, where the head node represents the front and the tail node represents the rear.</span></li>
+<li><strong>Core Queue Operations in Code</strong> <span class="el-body">— Regardless of the underlying structure, a queue exposes a consistent set of operations that students must implement correctly.</span></li>
+<li><strong>Trade-Offs: Arrays vs. Linked Lists</strong> <span class="el-body">— Choosing between an array and a linked list implementation involves evaluating several performance and design trade-offs.</span></li>
+<li><strong>Handling Edge Cases in Implementation</strong> <span class="el-body">— Robust queue implementations must correctly handle boundary conditions that arise during normal operation.</span></li>
+<li><strong>Time and Space Complexity Analysis</strong> <span class="el-body">— Evaluating the complexity of queue operations helps students understand the efficiency guarantees each implementation provides.</span></li>
+</ul>
+<h3>Real-World Applications of Queues</h3>
+<div class="summary">This topic connects queue concepts to practical use cases such as task scheduling, print spooling, and data buffering. Students analyze how the FIFO principle makes queues suitable for these scenarios.</div>
+<ul>
+<li><strong>Task Scheduling and the FIFO Guarantee</strong> <span class="el-body">— Operating systems and applications use queues to schedule tasks, ensuring that processes are handled in the order they arrive.</span></li>
+<li><strong>Print Spooling</strong> <span class="el-body">— Print spooling is one of the most classic real-world illustrations of a queue, where multiple print jobs are lined up and processed one at a time.</span></li>
+<li><strong>Data Buffering in Streams</strong> <span class="el-body">— Queues serve as buffers between a data producer and a data consumer that operate at different speeds, smoothing out mismatches in throughput.</span></li>
+<li><strong>Message Queues in Distributed Systems</strong> <span class="el-body">— In distributed and microservice architectures, message queues decouple services by allowing one component to send messages that another processes independently.</span></li>
+<li><strong>Breadth-First Search (BFS) in Algorithms</strong> <span class="el-body">— Queues are the underlying data structure that drives breadth-first search, enabling level-by-level exploration of graphs and trees.</span></li>
+<li><strong>Customer Service and Ticketing Systems</strong> <span class="el-body">— Help desks, call centers, and online ticketing systems model customer requests as queue entries to provide fair, orderly service.</span></li>
+</ul>
+<h3>Queues vs. Stacks: A Comparison</h3>
+<div class="summary">This topic directly compares the queue and stack data structures, highlighting differences in ordering principles, operations, and appropriate use cases. Students develop the ability to select the right structure for a given problem.</div>
+<ul>
+<li><strong>Ordering Principles: FIFO vs. LIFO</strong> <span class="el-body">— The most fundamental difference between queues and stacks is the order in which elements are accessed and removed.</span></li>
+<li><strong>Core Operations Compared</strong> <span class="el-body">— Both queues and stacks share a similar set of fundamental operations, but the naming conventions and points of access differ.</span></li>
+<li><strong>Points of Access</strong> <span class="el-body">— A key structural distinction is that queues operate on two ends while stacks operate on only one end.</span></li>
+<li><strong>Use Cases Best Suited to Queues</strong> <span class="el-body">— Queues are the correct choice when the order of processing must strictly reflect the order of arrival.</span></li>
+<li><strong>Use Cases Best Suited to Stacks</strong> <span class="el-body">— Stacks are the right choice when the most recently encountered element must be processed before earlier ones.</span></li>
+<li><strong>Selecting the Right Structure for a Problem</strong> <span class="el-body">— Choosing between a queue and a stack requires identifying whether the problem demands FIFO or LIFO ordering.</span></li>
+</ul>
+<h2 id="outcomes">Student Learning Outcomes</h2>
+<p class="prefix">By the end of this module, students will be able to:</p>
+<div class="mo">
+<div class="code">MO1</div>
+<div class="statement">Define the FIFO principle and explain how it governs the enqueue and dequeue operations of a queue abstract data type</div>
+<div class="meta"><span>Level: Remember</span><span>Type: Cognitive</span><span class="map">Course mapping: CO1</span></div>
+</div>
+<div class="mo">
+<div class="code">MO2</div>
+<div class="statement">Implement a queue using both an array-based and a linked list-based approach, correctly handling edge cases and core operations in code</div>
+<div class="meta"><span>Level: Apply</span><span>Type: Behavioral</span><span class="map">Course mapping: CO3</span></div>
+</div>
+<div class="mo">
+<div class="code">MO3</div>
+<div class="statement">Compare the time and space complexity trade-offs between array-based and linked list-based queue implementations</div>
+<div class="meta"><span>Level: Analyze</span><span>Type: Cognitive</span><span class="map">Course mapping: CO4</span></div>
+</div>
+<div class="mo">
+<div class="code">MO4</div>
+<div class="statement">Differentiate between queue and stack data structures by contrasting their FIFO and LIFO ordering principles, points of access, and appropriate use cases</div>
+<div class="meta"><span>Level: Analyze</span><span>Type: Cognitive</span><span class="map">Course mapping: CO1</span></div>
+</div>
+<div class="mo">
+<div class="code">MO5</div>
+<div class="statement">Select the appropriate data structure — queue or stack — for a given problem scenario by justifying the choice based on required ordering behavior and access patterns</div>
+<div class="meta"><span>Level: Evaluate</span><span>Type: Cognitive</span><span class="map">Course mapping: CO2</span></div>
+</div>
+<h3>Course Outcomes (reference)</h3>
+<div class="co"><span class="code">CO1</span>Describe both complex and simple data structures.</div>
+<div class="co"><span class="code">CO2</span>Select the correct data structure and algorithm to solve specific problems</div>
+<div class="co"><span class="code">CO3</span>Implement data structures and algorithms in computer code.</div>
+<div class="co"><span class="code">CO4</span>Analyze the performance of algorithms and data structures</div>
+
+<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
+</body>
+</html>
