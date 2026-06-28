@@ -1,0 +1,35 @@
+﻿{
+  "ModuleName": "Applied Data Structures: Blockchain, Digital Currency, and Beyond",
+  "CourseName": "COP3530 - Data Structures",
+  "ModuleFolderName": "Applied_Data_Structures",
+  "GeneratedUtc": "2026-06-27T17:20:20.7539062Z",
+  "HtmlIndexSignature": "5D7F672AE03795146E71EAACEF3BB447A3161FD4A0331E9505FC72D32F02AE43",
+  "Artifacts": [
+    {
+      "Name": "Module Topics",
+      "Type": "Module Topics",
+      "FileType": ".json",
+      "Description": "Outlines the module\u0027s subject matter across three areas\u2014foundational data structures (hash tables, trees, graphs), blockchain architecture (linked lists, cryptographic hashing, Merkle trees), and digital currency systems (wallets, UTXO model)\u2014giving learners and instructors a structured overview of the topics to be studied.",
+      "CustomName": null,
+      "FilePath": "C:\\Users\\ronal\\OneDrive - Daytona State College\\Documents\\PreseMaker\\Courses\\COP3530_-_Data_Structures\\Modules\\Applied_Data_Structures\\hierarchy.json",
+      "ViewerKind": 2,
+      "WebHref": "content/module_topics.html",
+      "LocalHref": "module_topics.html",
+      "RawHref": "../hierarchy.json",
+      "SourceModifiedTicks": 639180953768937610
+    },
+    {
+      "Name": "Module Topics (HTML)",
+      "Type": "Module Topics (HTML)",
+      "FileType": ".html",
+      "Description": "A topic outline covering how core data structures\u2014hash tables, trees, and graphs\u2014underpin real-world systems like blockchain and digital currency, giving learners and instructors a conceptual roadmap of the module\u0027s progression from foundational concepts to applied use cases.",
+      "CustomName": null,
+      "FilePath": "C:\\Users\\ronal\\OneDrive - Daytona State College\\Documents\\PreseMaker\\Courses\\COP3530_-_Data_Structures\\Modules\\Applied_Data_Structures\\output\\module_topics.html",
+      "ViewerKind": 1,
+      "WebHref": "",
+      "LocalHref": "module_topics.html",
+      "RawHref": "",
+      "SourceModifiedTicks": 639181686185514209
+    }
+  ]
+}

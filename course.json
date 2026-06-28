@@ -1,0 +1,85 @@
+{
+  "Id": "c78cdc65-1aac-4547-98f1-5b5076e77822",
+  "Name": "COP3530 - Data Structures",
+  "Description": "This course introduces fundamentals of data structures. Topics include: programming strategies, data structures, searching, complexity, queues, sorting, and algorithms. Extensive programming is required.",
+  "CreatedBy": "",
+  "CreatedDate": "2026-06-26T11:23:12.6190802-04:00",
+  "LastModifiedDate": "2026-06-26T17:13:12.8522408-04:00",
+  "Modules": [
+    {
+      "ModuleName": "1. Getting Started: JavaScript and JSFiddle Environment",
+      "FolderName": "Getting_Started_JavaScript",
+      "Order": 1
+    },
+    {
+      "ModuleName": "Lists and Arrays: Structure and Introduction to Big O Notation",
+      "FolderName": "Lists_and_Arrays",
+      "Order": 2
+    },
+    {
+      "ModuleName": "Lists and Arrays: Algorithms and Operations",
+      "FolderName": "Lists_and_Arrays_2",
+      "Order": 3
+    },
+    {
+      "ModuleName": "The Stack: Structure and Use Cases",
+      "FolderName": "The_Stack_Structure",
+      "Order": 4
+    },
+    {
+      "ModuleName": "The Queue: Structure and Use Cases",
+      "FolderName": "The_Queue_Structure",
+      "Order": 5
+    },
+    {
+      "ModuleName": "Recursion: Concepts and Implementation",
+      "FolderName": "Recursion_Concepts_and",
+      "Order": 6
+    },
+    {
+      "ModuleName": "Computational Complexity: Deep Dive into Analysis",
+      "FolderName": "Computational_Complexity_Dee",
+      "Order": 7
+    },
+    {
+      "ModuleName": "Sorting Algorithms: Comparison and Implementation",
+      "FolderName": "Sorting_Algorithms_Compariso",
+      "Order": 8
+    },
+    {
+      "ModuleName": "Hash Compression: Concepts and Techniques",
+      "FolderName": "Hash_Compression_Concepts",
+      "Order": 9
+    },
+    {
+      "ModuleName": "Hash Tables: Structure and Collision Resolution",
+      "FolderName": "Hash_Tables_Structure",
+      "Order": 10
+    },
+    {
+      "ModuleName": "Hash Algorithms and Applications: Password Hashing and Beyond",
+      "FolderName": "Hash_Algorithms_and",
+      "Order": 11
+    },
+    {
+      "ModuleName": "Binary Trees: Structure, Traversal, and Operations",
+      "FolderName": "Binary_Trees_Structure",
+      "Order": 12
+    },
+    {
+      "ModuleName": "Advanced Tree Structures: AVL Trees, Heaps, and Tries",
+      "FolderName": "Advanced_Tree_Structures",
+      "Order": 13
+    },
+    {
+      "ModuleName": "Graphs: Structure, Representation, and Traversal",
+      "FolderName": "Graphs_Structure_Representat",
+      "Order": 14
+    },
+    {
+      "ModuleName": "Applied Data Structures: Blockchain, Digital Currency, and Beyond",
+      "FolderName": "Applied_Data_Structures",
+      "Order": 15
+    }
+  ]
+}

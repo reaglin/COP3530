@@ -1,0 +1,9 @@
+{
+  "Id": "10de8cbc-6787-494a-bb29-c068f509450f",
+  "Name": "Hash Compression: Concepts and Techniques",
+  "Description": "This lesson introduces hash compression, explaining how large key spaces are mapped to smaller index ranges using hash functions. Students will explore modular arithmetic, folding, and other compression strategies and analyze their distribution properties.",
+  "CreatedBy": "Ron Eaglin",
+  "CreatedDate": "2026-06-26T11:23:12.7048532-04:00",
+  "LastModifiedDate": "2026-06-26T11:23:12.706054-04:00",
+  "Actions": []
+}

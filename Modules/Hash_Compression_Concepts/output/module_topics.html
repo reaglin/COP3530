@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hash Compression: Concepts and Techniques — Module Topics</title>
+<style>
+body{font-family:'Segoe UI',Arial,sans-serif;max-width:880px;margin:0 auto;padding:32px 24px;color:#222;line-height:1.55}
+h1{font-size:1.6rem;border-bottom:2px solid #dcdcdc;padding-bottom:8px}
+h2{font-size:1.2rem;margin-top:28px;color:#1a3c6e}
+.summary{color:#555;font-style:italic;margin:4px 0 10px}
+ul{margin:6px 0 6px 4px}
+li{margin:5px 0}
+.el-body{color:#555}
+.empty{color:#888}
+</style>
+</head>
+<body>
+<h1>Hash Compression: Concepts and Techniques — Module Topics</h1>
+<h2>Introduction to Hash Compression</h2>
+<div class="summary">Defines hash compression and explains the fundamental problem of mapping large key spaces to smaller, bounded index ranges. Establishes the motivation and core vocabulary for understanding hash functions.</div>
+<ul>
+<li><strong>What Is Hash Compression?</strong> <span class="el-body">— Hash compression is the process of transforming a value from a large key space into a smaller, bounded index range suitable for use in a data structure such as a hash table.</span></li>
+<li><strong>The Core Problem: Large Key Spaces</strong> <span class="el-body">— The fundamental challenge in hashing is that the universe of possible keys is vastly larger than the number of available storage positions.</span></li>
+<li><strong>Mapping Keys to Index Ranges</strong> <span class="el-body">— Hash compression defines a mapping from an input key to an integer index that falls within the valid bounds of a target structure.</span></li>
+<li><strong>Motivation for Hash Compression</strong> <span class="el-body">— Hash compression enables fast, constant-time average lookup, insertion, and deletion by translating arbitrary keys into direct array positions.</span></li>
+<li><strong>Core Vocabulary</strong> <span class="el-body">— Understanding hash compression requires familiarity with a set of foundational terms that appear throughout the study of hash functions and hash tables.</span></li>
+<li><strong>Properties of an Effective Hash Function</strong> <span class="el-body">— Not all mappings from keys to indices are equally useful; a good hash function must satisfy several important properties to support efficient data access.</span></li>
+</ul>
+<h2>Modular Arithmetic as a Compression Strategy</h2>
+<div class="summary">Explores the use of the modulo operation to compress hash values into a target index range. Examines how table size selection affects the quality and uniformity of the resulting distribution.</div>
+<ul>
+<li><strong>The Role of Modular Arithmetic in Hash Compression</strong> <span class="el-body">— Modular arithmetic provides a straightforward mechanism for compressing an arbitrary hash value into a bounded index range suitable for a hash table.</span></li>
+<li><strong>How the Modulo Operation Reduces Key Space</strong> <span class="el-body">— The modulo operation effectively wraps a large numeric domain around a fixed-size table, collapsing an enormous key space into a manageable index range.</span></li>
+<li><strong>Selecting Table Size: Prime Numbers and Distribution Quality</strong> <span class="el-body">— The choice of table size m critically influences how uniformly keys are distributed across the table when using modular compression.</span></li>
+<li><strong>Uniformity of Distribution and Its Importance</strong> <span class="el-body">— A high-quality compression function spreads keys as evenly as possible across all table indices, minimizing collisions and preserving lookup efficiency.</span></li>
+<li><strong>Limitations and Failure Cases of Simple Modular Compression</strong> <span class="el-body">— While easy to implement, the basic modulo method can perform poorly when input keys exhibit certain structured or repetitive patterns.</span></li>
+<li><strong>Relationship Between Load Factor and Table Size Choice</strong> <span class="el-body">— The table size m directly determines the load factor, which measures how full the table is and influences both collision frequency and performance.</span></li>
+</ul>
+<h2>Folding and Other Compression Techniques</h2>
+<div class="summary">Introduces folding methods that divide keys into segments and combine them to produce a compressed index. Surveys additional compression strategies and compares their approaches to reducing key space.</div>
+<ul>
+<li><strong>Introduction to Folding</strong> <span class="el-body">— Folding is a compression technique that divides a key into multiple segments of equal or near-equal size and combines those segments to produce a smaller index value.</span></li>
+<li><strong>Shift Folding</strong> <span class="el-body">— Shift folding divides the key into segments and adds them together directly, shifting each segment into alignment before summing.</span></li>
+<li><strong>Boundary Folding</strong> <span class="el-body">— Boundary folding is a variation in which alternate segments are reversed before being added, simulating the physical folding of a strip of digits at segment boundaries.</span></li>
+<li><strong>Digit Extraction</strong> <span class="el-body">— Digit extraction selects specific digits or characters from predetermined positions within a key and concatenates or combines them to form the compressed index.</span></li>
+<li><strong>Mid-Square Method</strong> <span class="el-body">— The mid-square method squares the key value and then extracts the middle digits of the result as the compressed index.</span></li>
+<li><strong>Comparing Compression Strategies</strong> <span class="el-body">— Different compression techniques vary in computational cost, implementation complexity, and the quality of distribution they produce across the hash table.</span></li>
+</ul>
+<h2>Distribution Properties of Hash Functions</h2>
+<div class="summary">Analyzes how well different compression techniques spread keys uniformly across the index range. Discusses concepts such as clustering, load factor, and what makes a distribution desirable for hash table performance.</div>
+<ul>
+<li><strong>Uniform Distribution as the Ideal Goal</strong> <span class="el-body">— A well-designed hash function should spread keys as evenly as possible across all available index slots in the hash table.</span></li>
+<li><strong>Clustering and Its Impact on Performance</strong> <span class="el-body">— Clustering occurs when a disproportionate number of keys hash to the same or nearby index slots, creating hotspots in the table.</span></li>
+<li><strong>Load Factor and Table Occupancy</strong> <span class="el-body">— The load factor is the ratio of the number of stored keys to the total number of slots in the hash table, and it directly influences collision frequency and performance.</span></li>
+<li><strong>How Compression Technique Choice Affects Distribution</strong> <span class="el-body">— Different compression strategies—such as modular arithmetic or folding—produce different distribution qualities depending on the structure of the key set.</span></li>
+<li><strong>Measuring Distribution Quality</strong> <span class="el-body">— Evaluating how well a hash function distributes keys requires quantitative measures that go beyond simply counting collisions.</span></li>
+<li><strong>Desirable Properties for Hash Table Performance</strong> <span class="el-body">— Beyond uniformity, a distribution is considered desirable when it remains stable and predictable across a wide variety of input key sets.</span></li>
+</ul>
+<h2>Comparing and Selecting Compression Methods</h2>
+<div class="summary">Provides a framework for evaluating trade-offs among compression strategies based on efficiency, uniformity, and implementation complexity. Guides students in choosing an appropriate method for a given use case.</div>
+<ul>
+<li><strong>Understanding Compression Efficiency</strong> <span class="el-body">— Efficiency in a compression method refers to how well it utilizes the available index range while minimizing wasted slots and collisions.</span></li>
+<li><strong>Evaluating Distribution Uniformity</strong> <span class="el-body">— Uniformity measures how evenly a compression function spreads hash values across the index range, which is critical for balanced hash table performance.</span></li>
+<li><strong>Assessing Implementation Complexity</strong> <span class="el-body">— Implementation complexity describes how difficult it is to code, debug, and maintain a given compression method within a larger system.</span></li>
+<li><strong>Trade-Off Framework for Method Selection</strong> <span class="el-body">— Selecting a compression method requires balancing efficiency, uniformity, and complexity against the specific requirements and constraints of the use case.</span></li>
+<li><strong>Matching Methods to Use Cases</strong> <span class="el-body">— Different application contexts favor different compression strategies, and no single method is universally optimal across all scenarios.</span></li>
+<li><strong>Iterative Evaluation and Testing</strong> <span class="el-body">— Choosing a compression method should not be a one-time decision; empirical testing with real or representative data is essential to validate theoretical expectations.</span></li>
+</ul>
+</body>
+</html>

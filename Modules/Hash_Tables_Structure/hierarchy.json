@@ -1,0 +1,1256 @@
+{
+  "ModuleFolderName": "Hash_Tables_Structure",
+  "CourseName": "COP3530 - Data Structures",
+  "GeneratedDate": "2026-06-26T14:11:07.9251285-04:00",
+  "ModifiedDate": "2026-06-26T14:13:54.4859147-04:00",
+  "Outcomes": [],
+  "Topics": [
+    {
+      "Id": "ac4fecc0-4fef-43eb-8f8e-356ef02c20fa",
+      "Title": "Introduction to Hash Tables",
+      "Summary": "Overview of the hash table data structure and its core purpose as a key-value store. Introduces the concept of hashing and why hash tables are widely used in software development.",
+      "SortOrder": 0,
+      "CreatedDate": "2026-06-26T14:11:07.9251285-04:00",
+      "ModifiedDate": "2026-06-26T14:11:07.9251285-04:00",
+      "Elements": [
+        {
+          "Id": "8a71e187-522c-4388-b525-ba9aa4a01c41",
+          "TopicId": "ac4fecc0-4fef-43eb-8f8e-356ef02c20fa",
+          "Title": "What Is a Hash Table?",
+          "BodyText": "A hash table is a data structure that stores data as key-value pairs, enabling efficient insertion, deletion, and lookup operations.",
+          "Notes": "Hash tables are sometimes called hash maps or dictionaries in various programming languages. JavaScript\u0027s plain objects and Map type are common real-world examples.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T14:11:25.3600332-04:00",
+          "ModifiedDate": "2026-06-26T14:11:25.3600332-04:00",
+          "Items": [
+            {
+              "Id": "6a630c75-f65f-40b8-98db-a5cd8b1b3a06",
+              "Text": "Each entry in a hash table consists of a key and an associated value, similar to a word and its definition in a dictionary.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "6c419535-80e2-47d8-b6f3-011fc5491409",
+              "Text": "Keys are unique identifiers used to store and retrieve their corresponding values.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "fad4d1df-f82d-4ba1-b9ab-e963a7187457",
+              "Text": "The internal storage of a hash table is built on top of an array, giving it fast index-based access.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "fd923841-c0e9-4a3d-9570-29ce3343f061",
+          "TopicId": "ac4fecc0-4fef-43eb-8f8e-356ef02c20fa",
+          "Title": "The Concept of Hashing",
+          "BodyText": "Hashing is the process of converting a key into a numeric index using a function called a hash function, which determines where the key-value pair is stored in the underlying array.",
+          "Notes": "For example, the string key \u0027name\u0027 might be hashed to the index 4, meaning its value is stored at position 4 in the array.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T14:11:25.3600332-04:00",
+          "ModifiedDate": "2026-06-26T14:11:25.3600332-04:00",
+          "Items": [
+            {
+              "Id": "a49bfc88-ec33-468a-944c-cc3ecf6f25e1",
+              "Text": "A hash function takes a key as input and returns an integer that maps to an array index.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "ec339451-01a4-4b19-bd3c-9035b2a88107",
+              "Text": "A good hash function distributes keys evenly across the array to minimize clustering and improve performance.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "1470e7c8-3c88-42a5-9ae6-f045810bb3a8",
+              "Text": "The same key must always produce the same hash value, making hash functions deterministic.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "259d7d7c-e388-46ff-8246-fec594e03fc8",
+          "TopicId": "ac4fecc0-4fef-43eb-8f8e-356ef02c20fa",
+          "Title": "Key-Value Store as the Core Purpose",
+          "BodyText": "The primary purpose of a hash table is to serve as a key-value store, allowing programs to associate arbitrary keys with values and retrieve them quickly.",
+          "Notes": "This design pattern appears in caches, database indexing, symbol tables in compilers, and configuration stores.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T14:11:25.3600332-04:00",
+          "ModifiedDate": "2026-06-26T14:11:25.3600332-04:00",
+          "Items": [
+            {
+              "Id": "2dac45b8-bf5a-4f6d-b703-46c78cf422d7",
+              "Text": "Storing a value requires providing a key; retrieving a value requires supplying that same key.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "a10031bd-dbea-4a68-aba1-42114684daee",
+              "Text": "Because the hash function computes the storage location directly, lookups avoid scanning the entire data set.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "b3adcb5a-20c3-4602-ad4c-0287252eebd2",
+              "Text": "Key-value semantics make hash tables a natural fit for problems that require fast association and retrieval.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "0377302e-8cc0-45e3-b3e0-9039c0d5e38a",
+          "TopicId": "ac4fecc0-4fef-43eb-8f8e-356ef02c20fa",
+          "Title": "Why Hash Tables Are Widely Used",
+          "BodyText": "Hash tables are one of the most commonly used data structures in software development because they offer average-case constant time performance for core operations.",
+          "Notes": "Their O(1) average-case performance for get, set, and delete makes them dramatically faster than linear structures like arrays or linked lists for lookup-heavy workloads.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T14:11:25.3600332-04:00",
+          "ModifiedDate": "2026-06-26T14:11:25.3600332-04:00",
+          "Items": [
+            {
+              "Id": "af87bb8c-c598-4957-859b-c52f9671ef01",
+              "Text": "Average-case insertion, deletion, and lookup are all O(1), meaning they do not slow down as the data set grows.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "cb45e5de-acef-4c8b-823f-5f6bc16e3e95",
+              "Text": "Hash tables are used across nearly every domain of software, from language runtimes to network routing tables.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "98609a87-9a2f-4b83-ab3a-0d1de3144a85",
+              "Text": "Their efficiency makes them a default choice whenever fast key-based access is needed.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "37d5c698-4045-46e0-ad40-fad70f4bf944",
+          "TopicId": "ac4fecc0-4fef-43eb-8f8e-356ef02c20fa",
+          "Title": "The Role of the Underlying Array",
+          "BodyText": "Internally, a hash table relies on a fixed-size array to store its data, with the hash function translating keys into valid array indices.",
+          "Notes": "The size of the internal array influences both performance and the likelihood of collisions, which are addressed in later parts of this module.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T14:11:25.3600332-04:00",
+          "ModifiedDate": "2026-06-26T14:11:25.3600332-04:00",
+          "Items": [
+            {
+              "Id": "c9da5787-27a1-48c3-bd28-c269da0c7d46",
+              "Text": "The hash function\u0027s output is typically converted to a valid index using the modulo operator: index = hash(key) % arraySize.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "99b31126-b1de-43c6-8314-60a1543680b5",
+              "Text": "Array-based storage enables O(1) access by position, which is what gives hash tables their speed advantage.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "dc3c4a71-08e0-49e0-ad75-5707ec31cb8d",
+              "Text": "The initial size of the array is chosen carefully; too small increases collisions, while too large wastes memory.",
+              "SortOrder": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "48dc024d-6e50-409c-9cb9-508e96bf59f9",
+      "Title": "Internal Array-Based Design",
+      "Summary": "Explains how hash tables are built on top of arrays and how hash functions map keys to array indices. Covers the role of hash functions in determining storage location and retrieval efficiency.",
+      "SortOrder": 1,
+      "CreatedDate": "2026-06-26T14:11:07.9251285-04:00",
+      "ModifiedDate": "2026-06-26T14:11:07.9251285-04:00",
+      "Elements": [
+        {
+          "Id": "ceb5c132-71cb-4d54-8c6f-e5537d47564e",
+          "TopicId": "48dc024d-6e50-409c-9cb9-508e96bf59f9",
+          "Title": "Arrays as the Foundation of Hash Tables",
+          "BodyText": "A hash table is built on top of a fixed-size array that serves as its underlying storage structure.",
+          "Notes": "Think of the internal array as a row of numbered buckets or slots, each identified by a numeric index starting at 0.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T14:11:43.7407076-04:00",
+          "ModifiedDate": "2026-06-26T14:11:43.7407076-04:00",
+          "Items": [
+            {
+              "Id": "4656841d-8946-405f-ab8d-1edc831d9db8",
+              "Text": "Every value stored in a hash table ultimately resides at a specific index within this internal array.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "7d5bb1a5-2c55-475a-a10f-49a3f1ec32b4",
+              "Text": "The array provides O(1) access time by index, which is the key performance advantage hash tables inherit.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "bc30f28c-8e4b-4e96-925c-40d5f1eff359",
+              "Text": "The size of the internal array is typically chosen upfront or resized dynamically as the table grows.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "5e13cc2c-75a4-4fb0-b230-2c3c4c663045",
+          "TopicId": "48dc024d-6e50-409c-9cb9-508e96bf59f9",
+          "Title": "The Role of Hash Functions",
+          "BodyText": "A hash function is the mechanism that converts a key into a numeric index, determining exactly where data is stored in the internal array.",
+          "Notes": "For example, given the key \u0027name\u0027 and an array of size 10, a hash function might compute an index of 3, meaning the value is stored at array[3].",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T14:11:43.7407076-04:00",
+          "ModifiedDate": "2026-06-26T14:11:43.7407076-04:00",
+          "Items": [
+            {
+              "Id": "3aef9664-00ae-42a5-b45b-36371aa0fef1",
+              "Text": "The hash function accepts a key as input and returns an integer that maps to a valid array index.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "d17b7977-fb4a-42ac-8862-d7fbd50c4628",
+              "Text": "A good hash function distributes keys as evenly as possible across all available array slots to minimize clustering.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "5f4c36d2-defa-4753-9f0d-b47449ad01ff",
+              "Text": "The same key must always produce the same index, ensuring consistent storage and retrieval.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "f3a4e54e-f53e-4c3d-9d86-567a18496022",
+          "TopicId": "48dc024d-6e50-409c-9cb9-508e96bf59f9",
+          "Title": "Mapping Keys to Indices",
+          "BodyText": "The process of converting a key to an array index typically involves computing a numeric value from the key and then applying the modulo operator to fit it within the array bounds.",
+          "Notes": "A common approach for string keys is to sum the character codes of each character, then apply modulo with the array length: index = sum(charCodes) % arrayLength.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T14:11:43.7407076-04:00",
+          "ModifiedDate": "2026-06-26T14:11:43.7407076-04:00",
+          "Items": [
+            {
+              "Id": "cbf4cf7c-9191-4bcf-ac5b-c5208de05f0a",
+              "Text": "Applying modulo (%) with the array size ensures the resulting index always falls within the valid range of the array.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "b509354d-f706-4238-b0f7-33586ef9868f",
+              "Text": "Different key types (strings, integers, objects) require different strategies for generating a numeric hash value.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "a119eeb0-759c-457e-8797-41dc03b639f8",
+              "Text": "The quality of this mapping directly determines how evenly data is distributed across the array.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "5976e7d1-f473-4f62-984b-d2c21251007f",
+          "TopicId": "48dc024d-6e50-409c-9cb9-508e96bf59f9",
+          "Title": "Storage and Retrieval Efficiency",
+          "BodyText": "Because the hash function computes the storage location directly, both inserting and looking up a value can ideally be done in constant time, O(1).",
+          "Notes": "This stands in contrast to structures like linked lists or unsorted arrays, where retrieval may require scanning every element.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T14:11:43.7407076-04:00",
+          "ModifiedDate": "2026-06-26T14:11:43.7407076-04:00",
+          "Items": [
+            {
+              "Id": "5df65320-dda5-44a6-ab36-9c0c0f466e54",
+              "Text": "On insertion, the hash function is called to determine the index, and the value is placed at that position in the array.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "42cee3b2-2d66-4d69-99a4-4df88ad6f02b",
+              "Text": "On retrieval, the same hash function is applied to the key, and the value is read directly from the computed index.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "7db64398-eaa5-4ee1-8e84-e525063d8602",
+              "Text": "This direct-address approach eliminates the need for sequential searching, making hash tables extremely efficient for lookup-heavy workloads.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "536f6fb6-08ed-44e1-a97f-d2373d3df0db",
+          "TopicId": "48dc024d-6e50-409c-9cb9-508e96bf59f9",
+          "Title": "Determinism and Consistency Requirements",
+          "BodyText": "A hash function must be deterministic, meaning it always produces the same output index for the same input key, every time it is called.",
+          "Notes": "Non-deterministic behavior would make it impossible to retrieve a value after it has been stored, breaking the fundamental contract of the data structure.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T14:11:43.7407076-04:00",
+          "ModifiedDate": "2026-06-26T14:11:43.7407076-04:00",
+          "Items": [
+            {
+              "Id": "15e34d22-8f25-4da4-802d-0f8c1ea00e3a",
+              "Text": "Determinism guarantees that a key used to store a value can be used again later to locate that same value.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "ec308e58-7815-43c0-a46b-c20f57a691bb",
+              "Text": "Hash functions must not rely on random values, timestamps, or any other variable state that could change between calls.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "de418092-d2d1-48a5-abb2-d666c39cb39e",
+              "Text": "Consistency across insertions and lookups is what makes the array-index-based design reliable.",
+              "SortOrder": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "9ee6c3b8-18f8-4cc1-81ec-a286ec294e00",
+      "Title": "Hash Function Design and Properties",
+      "Summary": "Examines what makes a good hash function, including uniformity, determinism, and speed. Discusses common hashing techniques and how poor hash functions lead to performance problems.",
+      "SortOrder": 2,
+      "CreatedDate": "2026-06-26T14:11:07.9251285-04:00",
+      "ModifiedDate": "2026-06-26T14:11:07.9251285-04:00",
+      "Elements": [
+        {
+          "Id": "54b65efa-9ab2-46dc-91c4-a7f59b84d844",
+          "TopicId": "9ee6c3b8-18f8-4cc1-81ec-a286ec294e00",
+          "Title": "Determinism: The Foundational Property",
+          "BodyText": "A hash function must be deterministic, meaning it always produces the same output for the same input.",
+          "Notes": "If a hash function returned different indices for the same key on successive calls, stored values could never be reliably retrieved, making the entire table unusable.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T14:12:08.9549246-04:00",
+          "ModifiedDate": "2026-06-26T14:12:08.9549246-04:00",
+          "Items": [
+            {
+              "Id": "85277a16-3599-4374-becb-608115553707",
+              "Text": "Given the same key, the function must return the identical hash value every single time it is called.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "8d22a37a-7d0f-4639-a6aa-e63b04c9a332",
+              "Text": "Determinism ensures that lookups, insertions, and deletions all target the same bucket for a given key.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "73401a54-0553-4fff-942f-ddea9f9d7199",
+              "Text": "Non-deterministic behavior \u2014 such as using random seeds that change at runtime \u2014 would break key-to-index mapping entirely.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "86418313-5d4d-4249-8c3a-ea3faba60d91",
+          "TopicId": "9ee6c3b8-18f8-4cc1-81ec-a286ec294e00",
+          "Title": "Uniform Distribution of Hash Values",
+          "BodyText": "A good hash function spreads keys as evenly as possible across all available buckets in the underlying array.",
+          "Notes": "For example, a poor function that always maps string keys to only the first 10% of buckets would cause those buckets to overflow with collisions while most of the table sits empty.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T14:12:08.9549246-04:00",
+          "ModifiedDate": "2026-06-26T14:12:08.9549246-04:00",
+          "Items": [
+            {
+              "Id": "e6ed360c-84c5-4e0d-80a4-3789f0ce60a9",
+              "Text": "Uniform distribution minimizes clustering, which is the tendency for multiple keys to map to the same or adjacent buckets.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "f5a9da99-479d-4705-92a3-bbbb66062b2e",
+              "Text": "Ideally, each bucket has an equal probability of receiving any given key, approximating a random distribution.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "c38adb6f-c1f1-4c7d-b714-1b64baf766a0",
+              "Text": "Poor uniformity directly increases collision rates and degrades average-case lookup time from O(1) toward O(n).",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "13d0de24-d4bc-4090-a7a3-37ac990faab5",
+          "TopicId": "9ee6c3b8-18f8-4cc1-81ec-a286ec294e00",
+          "Title": "Computational Speed",
+          "BodyText": "Hash functions must execute quickly because they are invoked on every insertion, lookup, and deletion operation.",
+          "Notes": "A cryptographic hash like SHA-256 provides excellent distribution but is far too slow for use as a general-purpose hash table function; simpler arithmetic operations are preferred.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T14:12:08.9549246-04:00",
+          "ModifiedDate": "2026-06-26T14:12:08.9549246-04:00",
+          "Items": [
+            {
+              "Id": "26ee29bb-2e4f-4eb8-9ee1-280da112f815",
+              "Text": "The time spent computing the hash adds directly to the cost of every table operation, so O(1) computation is the target.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "a43a6bb7-e6b6-4315-b458-d8f480306f74",
+              "Text": "Fast functions typically rely on arithmetic operations such as multiplication, modulo, and bitwise shifts rather than complex algorithms.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "d11a7abe-87c0-4f14-862b-ed72e2223206",
+              "Text": "Speed must be balanced against quality; an extremely fast but poorly distributing function will hurt overall performance through excessive collisions.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "c48ec132-b41a-4b67-9a93-7c92aa308bfc",
+          "TopicId": "9ee6c3b8-18f8-4cc1-81ec-a286ec294e00",
+          "Title": "Common Hashing Techniques for Strings and Integers",
+          "BodyText": "Different data types require different hashing strategies to produce well-distributed integer indices.",
+          "Notes": "A classic string hashing approach in JavaScript iterates over each character, accumulates a weighted sum using the character\u0027s code point, and applies modulo to fit the array size.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T14:12:08.9549246-04:00",
+          "ModifiedDate": "2026-06-26T14:12:08.9549246-04:00",
+          "Items": [
+            {
+              "Id": "1f3a5350-8dd4-4313-a980-d86721b8c0fa",
+              "Text": "For integers, simple modulo division (key % tableSize) is a baseline technique, though it can produce clustering when keys share common factors with the table size.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "4a36c4db-8f3e-4382-8b4f-4cb17a95d0a6",
+              "Text": "For strings, polynomial rolling hashes multiply each character\u0027s code value by a prime base raised to its positional power, then take modulo.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "0b786bb3-bf46-458b-aac9-2242fe0249c5",
+              "Text": "Using a prime number as the table size or as a multiplier reduces the likelihood of systematic collisions caused by mathematical patterns in the keys.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "7ef09a05-6d28-43d1-82cc-c114122ce191",
+              "Text": "Combining multiple properties of a key \u2014 such as length and individual characters \u2014 generally yields better distribution than using a single attribute.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "2e309d3e-efc4-4c6b-891b-dd7752aef410",
+          "TopicId": "9ee6c3b8-18f8-4cc1-81ec-a286ec294e00",
+          "Title": "The Role of the Modulo Operation",
+          "BodyText": "After computing a raw hash value, the modulo operation maps that value into a valid array index within the table\u0027s bounds.",
+          "Notes": "If the table has 16 slots and the raw hash is 250, then 250 % 16 = 10, placing the key in bucket 10.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T14:12:08.9549246-04:00",
+          "ModifiedDate": "2026-06-26T14:12:08.9549246-04:00",
+          "Items": [
+            {
+              "Id": "be84254c-2cdb-4a66-910d-0757810e9574",
+              "Text": "Modulo ensures the resulting index always falls between 0 and tableSize - 1, preventing out-of-bounds array access.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "a89be926-6a53-4245-919f-47c255d45b1b",
+              "Text": "Choosing a prime number for the table size when using modulo reduces patterns that cause multiple keys to collide at the same index.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "ecc179c2-7c38-4c0e-aaea-32f5097e2498",
+              "Text": "When the table is resized, all existing keys must be rehashed because the modulo divisor changes, altering every key\u0027s target bucket.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "bd00fe2b-a4c6-4c31-9e9b-c55c90d0fde2",
+          "TopicId": "9ee6c3b8-18f8-4cc1-81ec-a286ec294e00",
+          "Title": "Consequences of Poor Hash Function Design",
+          "BodyText": "A badly designed hash function can negate all the performance advantages that hash tables are meant to provide.",
+          "Notes": "A function that maps every key to index 0, for instance, turns the hash table into a linked list with O(n) lookup time \u2014 the worst possible outcome.",
+          "SortOrder": 5,
+          "CreatedDate": "2026-06-26T14:12:08.9549246-04:00",
+          "ModifiedDate": "2026-06-26T14:12:08.9549246-04:00",
+          "Items": [
+            {
+              "Id": "369b37d9-e280-4766-bbb0-d5e2a63cd7be",
+              "Text": "High collision rates force collision resolution mechanisms to handle long chains or long probe sequences, increasing lookup time.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "036edfe3-93f3-4e4b-95ba-f71242538e93",
+              "Text": "Clustered distributions cause some buckets to become overloaded hotspots while others remain empty, wasting allocated memory.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "2a1e896d-e02c-4d89-8324-59969680d39d",
+              "Text": "Poor hash functions can also be exploited in adversarial scenarios where an attacker deliberately crafts inputs that all collide, causing a denial-of-service condition.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "6c153229-0b82-4ded-8f4e-1f8164cd0252",
+              "Text": "Diagnosing a poor hash function typically requires measuring the load distribution across buckets and identifying high variance in chain lengths.",
+              "SortOrder": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "ab821505-e606-4955-8b5a-309b286dba7a",
+      "Title": "Collision Resolution: Chaining",
+      "Summary": "Covers the chaining strategy for handling collisions, where multiple key-value pairs at the same index are stored in a linked list or similar structure. Analyzes the trade-offs and performance implications of chaining.",
+      "SortOrder": 3,
+      "CreatedDate": "2026-06-26T14:11:07.9251285-04:00",
+      "ModifiedDate": "2026-06-26T14:11:07.9251285-04:00",
+      "Elements": [
+        {
+          "Id": "676926a8-387c-4b7c-8869-6529125fdbac",
+          "TopicId": "ab821505-e606-4955-8b5a-309b286dba7a",
+          "Title": "What Is Chaining?",
+          "BodyText": "Chaining is a collision resolution strategy where each slot in the hash table\u0027s underlying array holds a collection \u2014 typically a linked list \u2014 of all key-value pairs that hash to the same index.",
+          "Notes": "For example, if keys \u0027apple\u0027 and \u0027grape\u0027 both hash to index 3, a linked list at index 3 will contain both entries rather than one overwriting the other.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T14:12:33.0388806-04:00",
+          "ModifiedDate": "2026-06-26T14:12:33.0388806-04:00",
+          "Items": [
+            {
+              "Id": "28dbbfb1-bf1d-4b78-95d1-cb5811c2b11d",
+              "Text": "Each array bucket acts as the head of its own independent list, so multiple entries can coexist at the same index.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "0dd37c79-5a24-479e-9623-a417246fef68",
+              "Text": "Linked lists are the classic choice, but arrays, trees, or other dynamic structures can also serve as the bucket container.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "73887c57-b6b7-4345-a7a5-38dde9d40320",
+              "Text": "Chaining completely avoids the need to find an alternative slot, keeping each bucket self-contained.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "e6dc6b2a-e903-4fe4-a20b-c22bcb775e2f",
+          "TopicId": "ab821505-e606-4955-8b5a-309b286dba7a",
+          "Title": "Inserting with Chaining",
+          "BodyText": "To insert a key-value pair, the hash function maps the key to an index, and the pair is appended to (or prepended to) the linked list stored at that bucket.",
+          "Notes": "Prepending to the head of the linked list is O(1) and is the most common implementation choice, since no traversal is needed.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T14:12:33.0388806-04:00",
+          "ModifiedDate": "2026-06-26T14:12:33.0388806-04:00",
+          "Items": [
+            {
+              "Id": "6d1191d6-b046-40b6-8513-79baad847fcc",
+              "Text": "If the bucket is empty, a new list node is created and placed there; otherwise the new node is added to the existing list.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "aa3884c7-6811-4b86-b7a1-8d9d9416bce6",
+              "Text": "Before inserting, it is good practice to check whether the key already exists in the list and update its value instead of adding a duplicate.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "c5490f94-3ac2-4c27-9e51-911b2197f1ed",
+              "Text": "Insertion is O(1) on average when the list at the target bucket is short.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "bc02e66b-aa89-423c-bdfa-c7c5a9853555",
+          "TopicId": "ab821505-e606-4955-8b5a-309b286dba7a",
+          "Title": "Searching and Retrieving Values",
+          "BodyText": "To retrieve a value, the hash function identifies the correct bucket, and then the linked list at that bucket is traversed linearly until the matching key is found.",
+          "Notes": "In JavaScript this traversal is a simple while-loop or for-loop over the nodes of the list stored at hashTable[index].",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T14:12:33.0388806-04:00",
+          "ModifiedDate": "2026-06-26T14:12:33.0388806-04:00",
+          "Items": [
+            {
+              "Id": "940e9c34-7c7a-4549-8745-d0e65a1928eb",
+              "Text": "Average-case lookup is O(1) when the hash function distributes keys uniformly and chains remain short.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "6afb297a-34c2-4e45-b866-f6d2b5feb034",
+              "Text": "Worst-case lookup degrades to O(n) if all keys hash to the same bucket, turning the entire table into a single long list.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "a0544a7f-726f-448c-bd02-5c20ec79077b",
+              "Text": "If the key is not found after traversing the full list, the lookup returns null or undefined.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "94a00f9b-8bfd-42a3-b6cf-cc34f63f7458",
+          "TopicId": "ab821505-e606-4955-8b5a-309b286dba7a",
+          "Title": "Deleting Entries with Chaining",
+          "BodyText": "Deletion requires hashing the key to find the correct bucket, traversing the linked list to locate the target node, and then unlinking it from the chain.",
+          "Notes": "Keeping a reference to the previous node during traversal simplifies the pointer update needed to remove the target node from a singly linked list.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T14:12:33.0388806-04:00",
+          "ModifiedDate": "2026-06-26T14:12:33.0388806-04:00",
+          "Items": [
+            {
+              "Id": "9aafd0d0-2f8a-4c9e-a910-8e117a186cc3",
+              "Text": "If the key is at the head of the list, the bucket pointer is updated to the next node.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "bcd0c284-e81f-4e09-a393-4158fe7267d6",
+              "Text": "For nodes deeper in the list, the previous node\u0027s next pointer is redirected to skip the deleted node.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "41a09591-d32e-4c12-aa88-637d498501ae",
+              "Text": "Like lookup, deletion is O(1) average and O(n) worst case, mirroring the same performance profile.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "054d5806-c2ec-4b07-af7c-50eda32d6ce9",
+          "TopicId": "ab821505-e606-4955-8b5a-309b286dba7a",
+          "Title": "Load Factor and Its Effect on Chain Length",
+          "BodyText": "The load factor \u2014 the ratio of stored entries to the number of buckets \u2014 is the primary metric that governs how long chains grow and therefore how efficient chaining remains.",
+          "Notes": "A common threshold is a load factor of 0.75; once exceeded, the table is resized (rehashed) to keep average chain length near 1.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T14:12:33.0388806-04:00",
+          "ModifiedDate": "2026-06-26T14:12:33.0388806-04:00",
+          "Items": [
+            {
+              "Id": "755bc469-1269-4f17-89bc-36c4e0ef96c9",
+              "Text": "A low load factor means buckets are mostly empty, giving very short chains and near-constant-time operations.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "27f0dd94-fca7-4244-99c8-d484071479f4",
+              "Text": "A high load factor means many entries share buckets, lengthening chains and pushing performance toward O(n).",
+              "SortOrder": 1
+            },
+            {
+              "Id": "5099d93b-0682-435a-9dbc-0ebd9acf04b8",
+              "Text": "Resizing the array and rehashing all existing keys restores a healthy load factor and short average chain length.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "4596343c-9254-478a-8f53-e2aa6bca0538",
+          "TopicId": "ab821505-e606-4955-8b5a-309b286dba7a",
+          "Title": "Trade-offs of Chaining vs. Other Strategies",
+          "BodyText": "Chaining is straightforward to implement and handles high load factors more gracefully than open addressing, but it introduces memory overhead from storing list node pointers.",
+          "Notes": "In memory-constrained environments, the extra pointer storage per node can be significant compared to open addressing, which stores everything within the array itself.",
+          "SortOrder": 5,
+          "CreatedDate": "2026-06-26T14:12:33.0388806-04:00",
+          "ModifiedDate": "2026-06-26T14:12:33.0388806-04:00",
+          "Items": [
+            {
+              "Id": "80e1722d-0fbd-4c06-a718-acc66f0ff09f",
+              "Text": "Chaining allows the load factor to exceed 1.0 without breaking correctness, whereas open addressing requires the load factor to stay below 1.0.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "92d1463f-a758-42bb-a9ad-df3ae9cfe586",
+              "Text": "Because chaining stores elements outside the main array, the array itself stays compact and cache-friendly for bucket access, but pointer chasing within a list is less cache-efficient.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "f3ecf508-9262-4ffd-b170-f1b7f3412f5b",
+              "Text": "Chaining is generally preferred when the number of insertions is unpredictable or the table will be heavily loaded.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "6755803d-4f15-4715-b2c4-1031848412a3",
+              "Text": "Deletion is simpler with chaining than with open addressing, which requires tombstone markers or re-probing to maintain correctness.",
+              "SortOrder": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "3bd63d78-cb18-4ec8-9614-f83f82e1e608",
+      "Title": "Collision Resolution: Open Addressing",
+      "Summary": "Introduces open addressing techniques such as linear probing, quadratic probing, and double hashing as alternatives to chaining. Discusses how each technique locates an alternative slot when a collision occurs.",
+      "SortOrder": 4,
+      "CreatedDate": "2026-06-26T14:11:07.9251285-04:00",
+      "ModifiedDate": "2026-06-26T14:11:07.9251285-04:00",
+      "Elements": [
+        {
+          "Id": "ee293221-4b38-4fc9-8e9b-fd6fe150a794",
+          "TopicId": "3bd63d78-cb18-4ec8-9614-f83f82e1e608",
+          "Title": "What Is Open Addressing?",
+          "BodyText": "Open addressing is a collision resolution strategy where all entries are stored directly within the hash table array itself, rather than in separate linked structures.",
+          "Notes": "Unlike chaining, open addressing requires that the table has enough empty slots to accommodate new entries, making load factor management especially important.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T14:13:00.0050116-04:00",
+          "ModifiedDate": "2026-06-26T14:13:00.0050116-04:00",
+          "Items": [
+            {
+              "Id": "c227da7f-c710-4788-8022-dedc5d08dc85",
+              "Text": "When a collision occurs, the algorithm probes for the next available slot within the same array using a defined sequence.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "6ccbfb22-0ea0-4426-85b0-8b5c94765ede",
+              "Text": "The table must never be completely full, as open addressing relies on empty slots to terminate probe sequences.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "1d3926a7-d8c8-4260-ad8f-cd83c5a3cf15",
+              "Text": "All key-value pairs share a single flat array, which can improve cache performance compared to chaining with linked lists.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "c74c7a49-fb52-4396-b976-16656e913809",
+          "TopicId": "3bd63d78-cb18-4ec8-9614-f83f82e1e608",
+          "Title": "Linear Probing",
+          "BodyText": "Linear probing resolves collisions by checking consecutive slots in the array, one at a time, until an empty slot is found.",
+          "Notes": "For example, if a key hashes to index 4 and that slot is occupied, linear probing checks index 5, then 6, then 7, and so on (wrapping around if necessary).",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T14:13:00.0050116-04:00",
+          "ModifiedDate": "2026-06-26T14:13:00.0050116-04:00",
+          "Items": [
+            {
+              "Id": "8590db89-4d24-47b0-88f4-35df36358947",
+              "Text": "The probe sequence follows the formula: index = (hash(key) \u002B i) % tableSize, where i increments by 1 each step.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "4d499393-eef9-4926-85f8-0bc6834691d1",
+              "Text": "Linear probing is simple to implement but is susceptible to a problem called primary clustering, where long runs of occupied slots form and slow down future insertions and lookups.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "2fd4aec8-816f-413e-88d8-70b33859ffea",
+              "Text": "Deletions require special handling \u2014 a deleted slot must be marked with a sentinel value so that probe sequences are not incorrectly terminated.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "8f113ebf-5153-4f69-a250-b3529d487560",
+          "TopicId": "3bd63d78-cb18-4ec8-9614-f83f82e1e608",
+          "Title": "Quadratic Probing",
+          "BodyText": "Quadratic probing reduces clustering by increasing the step size quadratically rather than linearly when searching for an available slot.",
+          "Notes": "A common probe formula is: index = (hash(key) \u002B i\u00B2) % tableSize, where i starts at 1 and increments with each probe attempt.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T14:13:00.0050116-04:00",
+          "ModifiedDate": "2026-06-26T14:13:00.0050116-04:00",
+          "Items": [
+            {
+              "Id": "22936f78-c02f-4e7b-a2d5-aedf06647b6c",
+              "Text": "By spacing probes farther apart as collisions accumulate, quadratic probing avoids the long consecutive chains that cause primary clustering.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "4bd022ed-1818-4b64-bbce-04013befd7e8",
+              "Text": "However, quadratic probing can suffer from secondary clustering, where keys that hash to the same initial index follow the same probe sequence.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "ec2d5127-b1ff-462c-9f21-5cb3c3db4ec4",
+              "Text": "Quadratic probing does not guarantee that every slot will be visited unless the table size is a prime number and the load factor stays below 0.5.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "6fc0fa67-36e8-4c22-a279-226b78f7d573",
+          "TopicId": "3bd63d78-cb18-4ec8-9614-f83f82e1e608",
+          "Title": "Double Hashing",
+          "BodyText": "Double hashing uses a second, independent hash function to determine the step size, producing a unique probe sequence for each key.",
+          "Notes": "An example formula is: index = (hash1(key) \u002B i * hash2(key)) % tableSize, where hash2 must never return zero and ideally returns values coprime to the table size.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T14:13:00.0050116-04:00",
+          "ModifiedDate": "2026-06-26T14:13:00.0050116-04:00",
+          "Items": [
+            {
+              "Id": "9a3cfc5e-6048-4fbc-9589-ae06b64c36ab",
+              "Text": "Because the step size varies per key, double hashing effectively eliminates both primary and secondary clustering.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "c40e3e09-b5c2-4f39-ade9-21b93cf5126e",
+              "Text": "The second hash function must be chosen carefully \u2014 it should be independent of the first and should distribute step sizes broadly across the table.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "8c83ffc3-0a0f-43c2-9c1e-203475f4dc9c",
+              "Text": "Double hashing generally provides the best probe distribution among open addressing strategies, though it requires computing two hash functions per operation.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "42584bae-cc35-47e9-ae89-893669b80346",
+          "TopicId": "3bd63d78-cb18-4ec8-9614-f83f82e1e608",
+          "Title": "Probe Sequences and Slot Selection",
+          "BodyText": "Each open addressing technique defines a probe sequence \u2014 the ordered list of slots examined until an empty one is found or the key is located.",
+          "Notes": "",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T14:13:00.0050116-04:00",
+          "ModifiedDate": "2026-06-26T14:13:00.0050116-04:00",
+          "Items": [
+            {
+              "Id": "c75a8c23-2df4-4c9d-addb-b23c1410ff9a",
+              "Text": "A probe sequence begins at the key\u0027s home slot (the index returned by the primary hash function) and continues according to the technique\u0027s formula.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "dd8a2b33-87c2-4a0f-b03d-dae08fc71b19",
+              "Text": "During a lookup, the same probe sequence used at insertion must be followed; the search stops when the target key or an empty slot is found.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "b3cc173f-b01a-4608-8f9c-6aa6f1e89575",
+              "Text": "If the search reaches an empty slot without finding the key, the key is confirmed absent from the table.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "3f7a1a81-e8ad-4b77-b6db-35fe0ef65d7d",
+          "TopicId": "3bd63d78-cb18-4ec8-9614-f83f82e1e608",
+          "Title": "Handling Deletions in Open Addressing",
+          "BodyText": "Deleting an entry in an open addressing table requires care because simply clearing a slot can break the probe sequences of other keys.",
+          "Notes": "A common solution is to mark deleted slots with a special \u0027tombstone\u0027 or \u0027deleted\u0027 sentinel value rather than leaving them empty.",
+          "SortOrder": 5,
+          "CreatedDate": "2026-06-26T14:13:00.0050116-04:00",
+          "ModifiedDate": "2026-06-26T14:13:00.0050116-04:00",
+          "Items": [
+            {
+              "Id": "794b10f0-c924-4a94-9fd9-eb03f4a8c509",
+              "Text": "A tombstone signals to probe sequences that they should continue past this slot rather than stopping, preserving the integrity of lookups for other keys.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "2c266690-78c6-4f10-ba32-deba061c1f93",
+              "Text": "During insertion, tombstone slots can be reused, reclaiming space over time without needing to rehash the entire table.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "31adfbf3-859c-44f8-b895-65c2b5d15538",
+              "Text": "Accumulation of many tombstones can degrade performance, occasionally making a full rehash necessary to restore efficiency.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "638c5d52-a625-431a-af21-baf529bd3e26",
+          "TopicId": "3bd63d78-cb18-4ec8-9614-f83f82e1e608",
+          "Title": "Load Factor and Performance in Open Addressing",
+          "BodyText": "The load factor \u2014 the ratio of stored entries to total table slots \u2014 has a direct and significant impact on open addressing performance.",
+          "Notes": "As the load factor approaches 1, the average number of probes per operation grows sharply, making rehashing at a threshold (commonly 0.5\u20130.7) essential.",
+          "SortOrder": 6,
+          "CreatedDate": "2026-06-26T14:13:00.0050116-04:00",
+          "ModifiedDate": "2026-06-26T14:13:00.0050116-04:00",
+          "Items": [
+            {
+              "Id": "aac3071b-bdb9-48cb-b3a4-35cb947c7c0f",
+              "Text": "At low load factors, most operations complete in very few probes, keeping average-case time close to O(1).",
+              "SortOrder": 0
+            },
+            {
+              "Id": "f6af67e9-e2dc-46db-9b27-334935183cd3",
+              "Text": "As the table fills up, collisions become more frequent and probe sequences grow longer, degrading performance toward O(n) in the worst case.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "427756b2-893e-4f09-9a04-c86a59ba0f84",
+              "Text": "Resizing the table (rehashing all entries into a larger array) when the load factor exceeds a set threshold keeps operations efficient.",
+              "SortOrder": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "fdf0f9c8-facd-42aa-9d46-34fbc6e5c929",
+      "Title": "Performance Analysis of Hash Tables",
+      "Summary": "Analyzes the time and space complexity of hash table operations including insertion, deletion, and lookup. Explores how load factor and collision frequency impact average and worst-case performance.",
+      "SortOrder": 5,
+      "CreatedDate": "2026-06-26T14:11:07.9251285-04:00",
+      "ModifiedDate": "2026-06-26T14:11:07.9251285-04:00",
+      "Elements": [
+        {
+          "Id": "a69f5e27-7c48-426c-92b1-b86d22825a79",
+          "TopicId": "fdf0f9c8-facd-42aa-9d46-34fbc6e5c929",
+          "Title": "Time Complexity of Core Operations",
+          "BodyText": "Hash table insertion, deletion, and lookup all have an average-case time complexity of O(1), making them highly efficient for most practical use cases.",
+          "Notes": "This constant-time performance assumes a good hash function that distributes keys uniformly and a manageable load factor. In practice, the hash computation itself is O(k) where k is the key length, but this is often treated as constant.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T14:13:29.2423142-04:00",
+          "ModifiedDate": "2026-06-26T14:13:29.2423142-04:00",
+          "Items": [
+            {
+              "Id": "4d5b916c-500c-4489-b69e-f5fc311a314a",
+              "Text": "Average-case lookup, insertion, and deletion are O(1) due to direct index computation from the hash function.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "c163a27a-dc2b-47be-9f40-9480ac2173e6",
+              "Text": "Worst-case time complexity degrades to O(n) when many keys collide and all end up in the same bucket or probe sequence.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "2512d077-bdee-4561-8b8b-dbf4860ae4e6",
+              "Text": "The gap between average and worst-case performance is a defining characteristic that distinguishes hash tables from other data structures like balanced trees.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "2cf5be6c-956b-4df9-b59d-fa87ee3ef884",
+          "TopicId": "fdf0f9c8-facd-42aa-9d46-34fbc6e5c929",
+          "Title": "Understanding Load Factor",
+          "BodyText": "The load factor (\u03BB) is the ratio of the number of stored elements to the total number of available buckets, and it is the primary driver of hash table performance.",
+          "Notes": "For example, a hash table with 70 elements and 100 buckets has a load factor of 0.7. Most implementations trigger a resize when the load factor exceeds a threshold such as 0.75.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T14:13:29.2423142-04:00",
+          "ModifiedDate": "2026-06-26T14:13:29.2423142-04:00",
+          "Items": [
+            {
+              "Id": "e480c46d-40eb-49a6-9185-1f0d6bd4d03a",
+              "Text": "Load factor \u03BB = n / m, where n is the number of elements and m is the number of buckets in the underlying array.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "c67b5a88-19b9-4cb3-8336-7ee849e750db",
+              "Text": "As the load factor increases toward 1 and beyond, collision frequency rises sharply, degrading average operation time.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "49e4fd32-b2ac-44c9-a445-a1173be8a2bc",
+              "Text": "Keeping the load factor below a defined threshold (commonly 0.7\u20130.75) is essential to maintaining near-constant-time performance.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "1c97e95f-4656-45a3-bb6c-cf4d6f4822c2",
+          "TopicId": "fdf0f9c8-facd-42aa-9d46-34fbc6e5c929",
+          "Title": "Impact of Collisions on Performance",
+          "BodyText": "Collisions occur when two or more keys hash to the same index, and their frequency directly determines how far actual performance diverges from the O(1) ideal.",
+          "Notes": "With chaining, a high collision rate means longer linked lists per bucket. With open addressing, high collision rates cause longer probe sequences, both of which increase the number of comparisons needed per operation.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T14:13:29.2423142-04:00",
+          "ModifiedDate": "2026-06-26T14:13:29.2423142-04:00",
+          "Items": [
+            {
+              "Id": "3b8253f6-6e66-424a-839a-11ee0eec8b06",
+              "Text": "Low collision frequency keeps bucket chains short or probe sequences brief, preserving O(1) average performance.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "ce398e6c-181f-42d4-9690-5db896b4be60",
+              "Text": "High collision frequency forces the hash table to perform additional work\u2014traversing chains or scanning slots\u2014pushing performance closer to O(n).",
+              "SortOrder": 1
+            },
+            {
+              "Id": "38f58c96-fb6f-4228-aa7b-925c08f28b13",
+              "Text": "A well-designed hash function that uniformly distributes keys is the first line of defense against excessive collisions.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "67afdc7d-d8d1-4eab-b9e6-ef8453ab175e",
+          "TopicId": "fdf0f9c8-facd-42aa-9d46-34fbc6e5c929",
+          "Title": "Average-Case Performance with Chaining",
+          "BodyText": "When using separate chaining for collision resolution, average-case performance is directly tied to the average length of each bucket\u0027s linked list.",
+          "Notes": "Under the assumption of simple uniform hashing, the expected length of each chain equals the load factor \u03BB. This means a lookup requires O(1 \u002B \u03BB) time on average.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T14:13:29.2423142-04:00",
+          "ModifiedDate": "2026-06-26T14:13:29.2423142-04:00",
+          "Items": [
+            {
+              "Id": "2cedbec7-7bae-43af-8793-1071c2aed6fa",
+              "Text": "With uniform hashing, the expected number of elements per chain is \u03BB, so search time is O(1 \u002B \u03BB).",
+              "SortOrder": 0
+            },
+            {
+              "Id": "cc7c3447-ace0-40ec-a938-132050d352d3",
+              "Text": "When \u03BB is kept constant (e.g., by resizing), chaining delivers true O(1) average-case performance.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "95ea9a4f-2a4c-4414-b22c-526191dba762",
+              "Text": "Unsuccessful searches tend to be slightly more expensive than successful ones because they must traverse an entire chain before concluding the key is absent.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "8301ad4a-4422-4fa7-b69b-85eacaafbce7",
+          "TopicId": "fdf0f9c8-facd-42aa-9d46-34fbc6e5c929",
+          "Title": "Average-Case Performance with Open Addressing",
+          "BodyText": "Open addressing eliminates separate chains but trades off by requiring the load factor to stay strictly below 1, since all elements must fit within the primary array.",
+          "Notes": "The expected number of probes for a successful search under linear probing is approximately \u00BD(1 \u002B 1/(1 \u2212 \u03BB)), and for an unsuccessful search it is approximately \u00BD(1 \u002B 1/(1 \u2212 \u03BB)\u00B2). Performance degrades rapidly as \u03BB approaches 1.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T14:13:29.2423142-04:00",
+          "ModifiedDate": "2026-06-26T14:13:29.2423142-04:00",
+          "Items": [
+            {
+              "Id": "996061ea-8ac4-4024-8c3d-25cad186accc",
+              "Text": "Open addressing performance is highly sensitive to load factor; keeping \u03BB below 0.7 is generally necessary for acceptable probe counts.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "89519e11-57a7-4305-82e0-fee08e00fcbb",
+              "Text": "Primary clustering (linear probing) and secondary clustering (quadratic probing) can cause performance to degrade faster than theoretical averages suggest.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "29cdb054-d687-47c9-abc5-c4acbfbb95e4",
+              "Text": "Double hashing tends to produce the best empirical performance among open addressing schemes by minimizing clustering.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "11592830-4395-4359-8735-814ca4943e99",
+          "TopicId": "fdf0f9c8-facd-42aa-9d46-34fbc6e5c929",
+          "Title": "Worst-Case Performance and Pathological Inputs",
+          "BodyText": "Worst-case hash table performance is O(n) per operation and occurs when all keys hash to the same index, collapsing the structure into a linear search.",
+          "Notes": "This scenario, while unlikely with a good hash function and random data, can be deliberately triggered by adversarial inputs in security-sensitive applications, motivating the use of randomized or cryptographic hash functions.",
+          "SortOrder": 5,
+          "CreatedDate": "2026-06-26T14:13:29.2423142-04:00",
+          "ModifiedDate": "2026-06-26T14:13:29.2423142-04:00",
+          "Items": [
+            {
+              "Id": "58cf6793-4298-4c62-972b-9fecc83e10cb",
+              "Text": "Worst-case O(n) arises when every key maps to the same bucket, forcing sequential search through all n elements.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "2045ef72-1cc1-44ea-94cc-9fbb0297141d",
+              "Text": "Adversarial or poorly chosen input data can intentionally or accidentally cause this degenerate behavior with deterministic hash functions.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "f03ff00b-d4df-4d42-87a8-581bed1a08d8",
+              "Text": "Randomized hashing techniques, such as universal hashing, provide probabilistic guarantees that bound worst-case expected performance.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "4dedcae2-580b-409c-91ec-40fae7f47f3a",
+          "TopicId": "fdf0f9c8-facd-42aa-9d46-34fbc6e5c929",
+          "Title": "Space Complexity and Resizing Costs",
+          "BodyText": "Hash tables have O(n) space complexity, but the underlying array is often allocated with extra capacity to maintain a healthy load factor, introducing a space-versus-time trade-off.",
+          "Notes": "Dynamic resizing (rehashing) copies all elements into a new, larger array. Although a single resize is O(n), using a doubling strategy amortizes this cost to O(1) per insertion across a sequence of operations.",
+          "SortOrder": 6,
+          "CreatedDate": "2026-06-26T14:13:29.2423142-04:00",
+          "ModifiedDate": "2026-06-26T14:13:29.2423142-04:00",
+          "Items": [
+            {
+              "Id": "2c16848f-d520-49f3-ac2f-931a8b517aec",
+              "Text": "Space usage is O(n) for the stored elements, plus O(m) for the bucket array, where m is typically a constant multiple of n.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "8687f021-868d-4e45-b12d-24a05ed0487a",
+              "Text": "Allocating excess capacity reduces the load factor and improves time performance but increases memory consumption.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "aded96e1-72f3-46c0-be0c-8bf7de0cc574",
+              "Text": "Resizing via table doubling has an amortized O(1) insertion cost, meaning the expensive rehash operations are spread across many cheap insertions.",
+              "SortOrder": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "4a237a86-e47b-4fd3-a9ec-76c1af2af648",
+      "Title": "Implementing a Hash Table in JavaScript",
+      "Summary": "Guides students through a hands-on JavaScript implementation of a hash table incorporating a hash function and a chosen collision resolution strategy. Reinforces theoretical concepts through practical coding exercises.",
+      "SortOrder": 6,
+      "CreatedDate": "2026-06-26T14:11:07.9251285-04:00",
+      "ModifiedDate": "2026-06-26T14:11:07.9251285-04:00",
+      "Elements": [
+        {
+          "Id": "49281b1b-57ac-40a3-bf65-574dbfb745a3",
+          "TopicId": "4a237a86-e47b-4fd3-a9ec-76c1af2af648",
+          "Title": "Setting Up the HashTable Class",
+          "BodyText": "The foundation of a JavaScript hash table implementation is a class that encapsulates an internal array and its size.",
+          "Notes": "A common default size is a prime number (e.g., 53) to help distribute keys more evenly across the array.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T14:13:54.4858433-04:00",
+          "ModifiedDate": "2026-06-26T14:13:54.4858433-04:00",
+          "Items": [
+            {
+              "Id": "12043604-737d-448c-a0f3-e887d9d6ed47",
+              "Text": "Define a class called HashTable with a constructor that accepts an optional size parameter, defaulting to a prime number like 53.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "86c69eee-e167-43ae-862c-538c1cbc3be7",
+              "Text": "Inside the constructor, initialize a property this.table as a new Array(this.size) to serve as the underlying storage.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "222deec8-eb8f-4e00-a0f3-5dbdfd10507a",
+              "Text": "Keeping size as a class property makes it accessible to both the hash function and other methods throughout the class.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "31a18f02-2b2a-497c-ae47-1103f7eb4146",
+          "TopicId": "4a237a86-e47b-4fd3-a9ec-76c1af2af648",
+          "Title": "Writing the Hash Function",
+          "BodyText": "A hash function converts a string key into a valid numeric index within the bounds of the internal array.",
+          "Notes": "Using a prime multiplier such as 31 inside the hash calculation reduces clustering and improves distribution quality.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T14:13:54.4858433-04:00",
+          "ModifiedDate": "2026-06-26T14:13:54.4858433-04:00",
+          "Items": [
+            {
+              "Id": "3e8c484f-a445-4976-ac18-96a6f4bd6699",
+              "Text": "Iterate over each character of the key, retrieve its char code with charCodeAt(), multiply by a prime constant, and accumulate the result.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "81afd5f9-ff70-4429-98a1-7bb76bb238a2",
+              "Text": "Apply the modulo operator (%) against this.size at the end to ensure the index always falls within the array bounds.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "22df0f57-8a99-4ef6-b2d6-aa0a0855534d",
+              "Text": "The hash method should be deterministic \u2014 the same key must always produce the same index \u2014 and run in O(k) time where k is key length.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "2fb6aec5-bfac-4f48-bb89-06a18f198d19",
+          "TopicId": "4a237a86-e47b-4fd3-a9ec-76c1af2af648",
+          "Title": "Implementing the set Method with Chaining",
+          "BodyText": "The set method stores a key-value pair at the hashed index, using separate chaining to handle collisions.",
+          "Notes": "Chaining stores an array of [key, value] pairs at each bucket, so multiple entries can coexist at the same index.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T14:13:54.4858433-04:00",
+          "ModifiedDate": "2026-06-26T14:13:54.4858433-04:00",
+          "Items": [
+            {
+              "Id": "2270f1e7-b6db-45c0-aef4-72ec26de9736",
+              "Text": "Call this._hash(key) to compute the target index, then check whether this.table[index] already exists.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "c4b326ac-dcab-4e37-9f3b-3705b4c657ce",
+              "Text": "If the bucket is empty, initialize it as an empty array before pushing the new [key, value] pair.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "eec31518-4bb7-424a-a85b-0a04a85f349d",
+              "Text": "If the bucket already contains entries, iterate through them to check for an existing matching key and update its value rather than inserting a duplicate.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "b6e76dfd-01bb-43e0-99e3-2d681ee31f0b",
+          "TopicId": "4a237a86-e47b-4fd3-a9ec-76c1af2af648",
+          "Title": "Implementing the get Method",
+          "BodyText": "The get method retrieves a value from the hash table by hashing the key and searching the appropriate bucket.",
+          "Notes": "Because chaining stores multiple pairs per bucket, a linear scan within the bucket is necessary to find the exact key match.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T14:13:54.4858433-04:00",
+          "ModifiedDate": "2026-06-26T14:13:54.4858433-04:00",
+          "Items": [
+            {
+              "Id": "d0570c99-7841-43da-b767-0c8be36486de",
+              "Text": "Hash the provided key to find the bucket index, then check whether this.table[index] is defined; return undefined immediately if it is not.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "ed2865cd-8c3b-47de-bf93-886ec6ca76d1",
+              "Text": "Loop through the array at that index, comparing each stored key to the requested key using strict equality.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "410bb22f-2767-4a2e-841d-e2bea1e5e13d",
+              "Text": "Return the associated value when a match is found, or return undefined if no matching key exists in the bucket.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "3801970e-0c91-492d-981c-ed14f52a894f",
+          "TopicId": "4a237a86-e47b-4fd3-a9ec-76c1af2af648",
+          "Title": "Implementing the remove Method",
+          "BodyText": "The remove method deletes a key-value pair from the hash table while preserving other entries in the same bucket.",
+          "Notes": "Using Array filter() or splice() within the bucket cleanly removes only the target pair without disturbing neighboring entries.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T14:13:54.4858433-04:00",
+          "ModifiedDate": "2026-06-26T14:13:54.4858433-04:00",
+          "Items": [
+            {
+              "Id": "3c5b9770-dedf-4218-90da-e52f9ab078f3",
+              "Text": "Compute the bucket index by hashing the key, then verify the bucket exists before attempting removal.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "a8e7c5ab-86ea-49f0-809b-155038f8874e",
+              "Text": "Search through the bucket array for the entry whose first element matches the key, and remove it using splice() or reassign the bucket using filter().",
+              "SortOrder": 1
+            },
+            {
+              "Id": "b97ae13f-c564-40c6-96b5-65f2df6926e7",
+              "Text": "Return a truthy value (e.g., the removed pair) on success and a falsy value when the key is not found, giving callers useful feedback.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "807393b2-ae4a-4fe3-b17b-63a9d7ed2afb",
+          "TopicId": "4a237a86-e47b-4fd3-a9ec-76c1af2af648",
+          "Title": "Adding a keys Method to Iterate Entries",
+          "BodyText": "A keys method allows consumers to retrieve all stored keys, making the hash table iterable and more practical to use.",
+          "Notes": "Iterating over all buckets and flattening their contents into a single array is an O(n \u002B m) operation where n is table size and m is entry count.",
+          "SortOrder": 5,
+          "CreatedDate": "2026-06-26T14:13:54.4858433-04:00",
+          "ModifiedDate": "2026-06-26T14:13:54.4858433-04:00",
+          "Items": [
+            {
+              "Id": "9b601189-b3c2-4352-a170-41994c84cdcb",
+              "Text": "Initialize an empty results array, then loop through every index of this.table to find non-empty buckets.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "45e99f11-53da-4547-81ce-c8c9fd85f5cb",
+              "Text": "For each bucket that exists, iterate its inner pairs and push each key (or key-value pair for an entries method) into the results array.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "8bbcf760-82e8-431b-9f59-4b0edd611d87",
+              "Text": "Return the completed results array so callers can use the keys for further lookups, display, or debugging.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "6cfc33b4-2512-42e4-b7a1-da5043454cb5",
+          "TopicId": "4a237a86-e47b-4fd3-a9ec-76c1af2af648",
+          "Title": "Testing and Validating the Implementation",
+          "BodyText": "Systematic testing confirms that the hash table correctly stores, retrieves, updates, and removes key-value pairs under various conditions.",
+          "Notes": "Deliberately inserting keys that hash to the same index is essential for verifying that collision resolution works correctly end-to-end.",
+          "SortOrder": 6,
+          "CreatedDate": "2026-06-26T14:13:54.4858433-04:00",
+          "ModifiedDate": "2026-06-26T14:13:54.4858433-04:00",
+          "Items": [
+            {
+              "Id": "cc2e6151-547a-489b-bfe4-2435cd7c9d03",
+              "Text": "Test basic operations by calling set() with several key-value pairs and confirming get() returns the correct values for each key.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "0f066dd4-de7c-49c3-89f1-86690d7aca0e",
+              "Text": "Verify collision handling by inserting multiple keys that produce the same hash index and ensuring all values are independently retrievable.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "08fc6ee5-525d-4052-b1d7-7cb644e26b8c",
+              "Text": "Test edge cases such as updating an existing key, removing a key that does not exist, and calling get() on an empty table to ensure robust behavior.",
+              "SortOrder": 2
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "TotalElementCount": 43
+}

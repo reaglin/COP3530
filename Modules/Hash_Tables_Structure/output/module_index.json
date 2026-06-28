@@ -1,0 +1,35 @@
+﻿{
+  "ModuleName": "Hash Tables: Structure and Collision Resolution",
+  "CourseName": "COP3530 - Data Structures",
+  "ModuleFolderName": "Hash_Tables_Structure",
+  "GeneratedUtc": "2026-06-27T17:20:20.6611055Z",
+  "HtmlIndexSignature": "534D558765AB8C03450DD612451042D43E54A4EBF85D8982195F197B2C238CF1",
+  "Artifacts": [
+    {
+      "Name": "Module Topics",
+      "Type": "Module Topics",
+      "FileType": ".json",
+      "Description": "Outlines the module\u0027s learning topics spanning hash table fundamentals (structure, key-value purpose, array-based design), hash function properties (determinism, uniform distribution, speed), and collision resolution strategies (chaining and open addressing), serving as a navigational overview for learners and instructors to understand the scope and sequence of the module.",
+      "CustomName": null,
+      "FilePath": "C:\\Users\\ronal\\OneDrive - Daytona State College\\Documents\\PreseMaker\\Courses\\COP3530_-_Data_Structures\\Modules\\Hash_Tables_Structure\\hierarchy.json",
+      "ViewerKind": 2,
+      "WebHref": "content/module_topics.html",
+      "LocalHref": "module_topics.html",
+      "RawHref": "../hierarchy.json",
+      "SourceModifiedTicks": 639180944344861072
+    },
+    {
+      "Name": "Module Topics (HTML)",
+      "Type": "Module Topics (HTML)",
+      "FileType": ".html",
+      "Description": "A course outline listing the major topics covered in the Hash Tables module\u2014including what hash tables are, how hashing works, and collision resolution strategies\u2014which learners can use as a navigational guide to understand the scope of the module before diving into individual lessons.",
+      "CustomName": null,
+      "FilePath": "C:\\Users\\ronal\\OneDrive - Daytona State College\\Documents\\PreseMaker\\Courses\\COP3530_-_Data_Structures\\Modules\\Hash_Tables_Structure\\output\\module_topics.html",
+      "ViewerKind": 1,
+      "WebHref": "",
+      "LocalHref": "module_topics.html",
+      "RawHref": "",
+      "SourceModifiedTicks": 639181684383707174
+    }
+  ]
+}

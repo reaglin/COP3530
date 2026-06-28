@@ -1,0 +1,9 @@
+{
+  "Id": "6a40ec19-3924-4aed-942e-14fc5bf1ef30",
+  "Name": "Graphs: Structure, Representation, and Traversal",
+  "Description": "This lesson introduces the graph data structure, covering directed and undirected graphs, adjacency matrix and adjacency list representations, and traversal algorithms including breadth-first search and depth-first search. Students will implement graph traversal in JavaScript.",
+  "CreatedBy": "Ron Eaglin",
+  "CreatedDate": "2026-06-26T11:23:12.7445991-04:00",
+  "LastModifiedDate": "2026-06-26T11:23:12.7452691-04:00",
+  "Actions": []
+}

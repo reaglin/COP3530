@@ -1,0 +1,35 @@
+﻿{
+  "ModuleName": "Hash Compression: Concepts and Techniques",
+  "CourseName": "COP3530 - Data Structures",
+  "ModuleFolderName": "Hash_Compression_Concepts",
+  "GeneratedUtc": "2026-06-27T17:20:20.6423024Z",
+  "HtmlIndexSignature": "A6F582A2BF9EB5BC743EF45BDEFF641CAFD4183EDDDB267AB1156BE8A5341A3A",
+  "Artifacts": [
+    {
+      "Name": "Module Topics",
+      "Type": "Module Topics",
+      "FileType": ".json",
+      "Description": "Covers hash compression concepts including modular arithmetic, prime number table sizing, and folding techniques (shift and boundary), serving as the navigational outline that guides learners through the sequence of topics in the module.",
+      "CustomName": null,
+      "FilePath": "C:\\Users\\ronal\\OneDrive - Daytona State College\\Documents\\PreseMaker\\Courses\\COP3530_-_Data_Structures\\Modules\\Hash_Compression_Concepts\\hierarchy.json",
+      "ViewerKind": 2,
+      "WebHref": "content/module_topics.html",
+      "LocalHref": "module_topics.html",
+      "RawHref": "../hierarchy.json",
+      "SourceModifiedTicks": 639180942527448617
+    },
+    {
+      "Name": "Module Topics (HTML)",
+      "Type": "Module Topics (HTML)",
+      "FileType": ".html",
+      "Description": "A topic outline covering hash compression fundamentals\u2014including how large key spaces are mapped to bounded index ranges\u2014intended to guide learners through the module\u0027s key concepts and vocabulary before diving into specific techniques.",
+      "CustomName": null,
+      "FilePath": "C:\\Users\\ronal\\OneDrive - Daytona State College\\Documents\\PreseMaker\\Courses\\COP3530_-_Data_Structures\\Modules\\Hash_Compression_Concepts\\output\\module_topics.html",
+      "ViewerKind": 1,
+      "WebHref": "",
+      "LocalHref": "module_topics.html",
+      "RawHref": "",
+      "SourceModifiedTicks": 639181684035392919
+    }
+  ]
+}

@@ -1,0 +1,1104 @@
+{
+  "ModuleFolderName": "The_Stack_Structure",
+  "CourseName": "COP3530 - Data Structures",
+  "GeneratedDate": "2026-06-26T13:55:16.3839403-04:00",
+  "ModifiedDate": "2026-06-26T13:57:28.334324-04:00",
+  "Outcomes": [],
+  "Topics": [
+    {
+      "Id": "0fff45a4-1da9-4590-b104-f6e875ada02a",
+      "Title": "Introduction to the Stack Data Structure",
+      "Summary": "An overview of what a stack is and why it is a fundamental data structure in computer science. This topic establishes the conceptual foundation before diving into implementation details.",
+      "SortOrder": 0,
+      "CreatedDate": "2026-06-26T13:55:16.3839403-04:00",
+      "ModifiedDate": "2026-06-26T13:55:16.3839403-04:00",
+      "Elements": [
+        {
+          "Id": "d6a3f2e5-40e8-4a65-bb5b-1a58211adcd4",
+          "TopicId": "0fff45a4-1da9-4590-b104-f6e875ada02a",
+          "Title": "What Is a Stack?",
+          "BodyText": "A stack is a linear data structure that stores a collection of elements in a specific, ordered way.",
+          "Notes": "Think of a stack of plates: you can only add or remove a plate from the top. This physical analogy maps directly to how the data structure behaves in memory.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T13:55:34.3060451-04:00",
+          "ModifiedDate": "2026-06-26T13:55:34.3060451-04:00",
+          "Items": [
+            {
+              "Id": "a48a291e-3048-46b4-8f64-5e4fbf904b33",
+              "Text": "A stack holds elements arranged sequentially, where only one end \u2014 the top \u2014 is accessible.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "84452e0c-4f19-4372-ba50-444b530a50a8",
+              "Text": "Elements are added and removed from the same end, making the order of operations predictable and constrained.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "a1ffbdc1-ab48-429b-9800-ca830ad6b4ee",
+              "Text": "This constraint is not a limitation but a deliberate design choice that makes stacks powerful for specific problems.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "823d201b-0bd9-4040-9823-0e7da7d2cc60",
+          "TopicId": "0fff45a4-1da9-4590-b104-f6e875ada02a",
+          "Title": "The LIFO Principle",
+          "BodyText": "The defining characteristic of a stack is its Last-In, First-Out (LIFO) ordering principle.",
+          "Notes": "LIFO means the most recently added element is always the first one to be removed. Compare this to a queue, which follows First-In, First-Out (FIFO) \u2014 the contrast helps clarify why LIFO is unique.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T13:55:34.3060451-04:00",
+          "ModifiedDate": "2026-06-26T13:55:34.3060451-04:00",
+          "Items": [
+            {
+              "Id": "9cd6c18a-04e6-4bdd-80ad-5ea826b781a7",
+              "Text": "LIFO means the last element pushed onto the stack is the first element to be popped off.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "fb1c2e06-ca59-4cba-8ab7-695f282c47b1",
+              "Text": "This ordering guarantees that processing happens in reverse chronological order relative to insertion.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "b25707f8-170b-4c31-af8d-45cc2f01ec63",
+              "Text": "Understanding LIFO is essential before implementing or applying a stack, as it drives every design decision.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "83148662-3b3f-4023-8dc5-43fd18bcc8af",
+          "TopicId": "0fff45a4-1da9-4590-b104-f6e875ada02a",
+          "Title": "Core Stack Operations",
+          "BodyText": "A stack exposes a small, well-defined set of operations that enforce the LIFO contract.",
+          "Notes": "Keeping the interface minimal is intentional \u2014 it prevents misuse and ensures the LIFO guarantee is never violated.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T13:55:34.3060451-04:00",
+          "ModifiedDate": "2026-06-26T13:55:34.3060451-04:00",
+          "Items": [
+            {
+              "Id": "46321118-6ef8-44b4-8b0d-881947744066",
+              "Text": "Push adds a new element to the top of the stack.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "26bf77c6-8744-49ee-979e-de9c034cca03",
+              "Text": "Pop removes and returns the element currently at the top of the stack.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "a69ded6a-1e37-4e8f-acc2-c373c07dc23e",
+              "Text": "Peek (or top) allows you to inspect the top element without removing it.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "7ef0b051-606b-4190-968f-40ec6afd5c37",
+              "Text": "isEmpty checks whether the stack contains any elements, which is critical for avoiding errors during pop or peek operations.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "f6596748-c421-499e-a259-d6eebe83409c",
+          "TopicId": "0fff45a4-1da9-4590-b104-f6e875ada02a",
+          "Title": "Why Stacks Are Fundamental in Computer Science",
+          "BodyText": "Stacks are considered a foundational data structure because they appear at the core of many essential computing mechanisms.",
+          "Notes": "From the hardware level (the CPU call stack) to high-level software patterns (undo history, expression parsing), stacks solve a recurring class of problems where reversal or backtracking is needed.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T13:55:34.3060451-04:00",
+          "ModifiedDate": "2026-06-26T13:55:34.3060451-04:00",
+          "Items": [
+            {
+              "Id": "01cd7182-ce06-4772-85e5-a19d43ca19af",
+              "Text": "The call stack used by programming languages to manage function invocations is a direct application of this structure.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "aabe1a31-5761-491f-a9ee-ca8f9e218d8b",
+              "Text": "Stacks model any scenario where the most recent context or action must be resolved before earlier ones can continue.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "13b77906-8641-4059-b2b6-df83cd45214a",
+              "Text": "Their simplicity \u2014 a restricted interface with predictable behavior \u2014 makes them easy to reason about and trust in critical system components.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "54619fc0-8daa-4af4-a5b6-d42b50f83639",
+          "TopicId": "0fff45a4-1da9-4590-b104-f6e875ada02a",
+          "Title": "Stacks as an Abstract Data Type",
+          "BodyText": "A stack is best understood first as an abstract data type (ADT) \u2014 defined by its behavior rather than its implementation.",
+          "Notes": "Separating the concept from the implementation means the same stack ADT can be built using arrays, linked lists, or other underlying structures, all while behaving identically to the user.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T13:55:34.3060451-04:00",
+          "ModifiedDate": "2026-06-26T13:55:34.3060451-04:00",
+          "Items": [
+            {
+              "Id": "a575333f-edd6-4197-b8c4-8ebe22a69143",
+              "Text": "An ADT defines what operations are available and what they guarantee, not how they are carried out internally.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "f82fce0b-f2cb-4e60-8f40-af2430119205",
+              "Text": "This abstraction allows developers to swap implementations without changing the code that uses the stack.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "03f40641-3075-4f31-b09d-ad030701e7e6",
+              "Text": "Thinking of a stack as an ADT first establishes the conceptual foundation needed before exploring concrete implementations in JavaScript or any other language.",
+              "SortOrder": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "f796f2fd-0fbd-4d86-a046-0e46774da389",
+      "Title": "The LIFO Principle",
+      "Summary": "A focused exploration of the Last In, First Out principle that governs how stacks operate. Students will learn how this ordering rule distinguishes stacks from other data structures.",
+      "SortOrder": 1,
+      "CreatedDate": "2026-06-26T13:55:16.3839403-04:00",
+      "ModifiedDate": "2026-06-26T13:55:16.3839403-04:00",
+      "Elements": [
+        {
+          "Id": "6a14cd26-0e86-4b72-9c32-d8e064aaf49a",
+          "TopicId": "f796f2fd-0fbd-4d86-a046-0e46774da389",
+          "Title": "Defining LIFO",
+          "BodyText": "LIFO stands for Last In, First Out, and it is the fundamental ordering rule that governs every stack data structure.",
+          "Notes": "Think of it as a contract: the stack guarantees that whatever element was added most recently will always be the next one removed.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T13:55:54.6609369-04:00",
+          "ModifiedDate": "2026-06-26T13:55:54.6609369-04:00",
+          "Items": [
+            {
+              "Id": "73a069cb-c932-4aa5-9922-759bcee89eee",
+              "Text": "The last element pushed onto the stack is always the first element to be popped off.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "5a5f0174-0df7-4fe9-baef-93309253d445",
+              "Text": "No element beneath the top can be accessed or removed until all elements above it have been removed first.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "8c21cfcc-1dcd-43a1-acf6-522ddcd42f15",
+              "Text": "This rule applies universally, regardless of how the stack is implemented internally.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "70cb448f-ba97-4f49-bde9-08a4ed7c5ee1",
+          "TopicId": "f796f2fd-0fbd-4d86-a046-0e46774da389",
+          "Title": "A Real-World Analogy",
+          "BodyText": "Everyday physical objects can illustrate the LIFO principle in an intuitive, concrete way.",
+          "Notes": "Using tangible analogies helps anchor the abstract rule before applying it to code.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T13:55:54.6609369-04:00",
+          "ModifiedDate": "2026-06-26T13:55:54.6609369-04:00",
+          "Items": [
+            {
+              "Id": "150548f4-236c-46a7-8703-35aec17ce7c2",
+              "Text": "A stack of plates in a cafeteria is a classic example: the plate placed on top last is the first one a customer picks up.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "9e60a5d3-9ee9-4bcf-b95e-1936c312f604",
+              "Text": "A pile of books, a stack of trays, or a spring-loaded card dispenser all behave the same way \u2014 only the topmost item is directly accessible.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "7bfad250-46d5-485d-aab3-fcad2d20ccc4",
+              "Text": "In each case, you cannot reach an item in the middle without first removing every item above it.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "5af90f2f-9540-4ebd-935c-4282f56c2018",
+          "TopicId": "f796f2fd-0fbd-4d86-a046-0e46774da389",
+          "Title": "LIFO vs. Other Ordering Principles",
+          "BodyText": "Understanding LIFO becomes clearer when contrasted with the ordering rules of other common data structures.",
+          "Notes": "Recognizing what a stack does NOT do is just as important as knowing what it does.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T13:55:54.6609369-04:00",
+          "ModifiedDate": "2026-06-26T13:55:54.6609369-04:00",
+          "Items": [
+            {
+              "Id": "9fd6a81a-9e63-4f7b-9a7a-a4dd22933c83",
+              "Text": "A queue follows FIFO (First In, First Out), meaning the oldest element is removed first \u2014 the opposite behavior of a stack.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "d668b54f-b597-4d33-a1bd-77aea9c992cb",
+              "Text": "An array or linked list allows arbitrary access by index or position, something a strict stack deliberately forbids.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "895fd173-c024-40e2-9993-380f04e13090",
+              "Text": "The LIFO constraint is a intentional design choice that makes stacks ideal for specific problems rather than a limitation.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "fc5ef14c-77de-4575-80bb-18f6e02179e3",
+          "TopicId": "f796f2fd-0fbd-4d86-a046-0e46774da389",
+          "Title": "The Two Core Operations That Enforce LIFO",
+          "BodyText": "The LIFO principle is enforced entirely through just two primary operations: push and pop.",
+          "Notes": "All stack behavior, no matter how complex the use case, ultimately reduces to these two operations working together.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T13:55:54.6609369-04:00",
+          "ModifiedDate": "2026-06-26T13:55:54.6609369-04:00",
+          "Items": [
+            {
+              "Id": "00ecdbea-d550-4c4d-a2e9-f098513726bb",
+              "Text": "Push adds a new element to the top of the stack, making it the new \u0027last in\u0027 element.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "67258279-623e-4a39-bed8-8107e3b34703",
+              "Text": "Pop removes and returns the element currently at the top, fulfilling the \u0027first out\u0027 side of LIFO.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "4fa9bd92-983d-41e7-b0ad-7c210301b121",
+              "Text": "Because only the top is ever modified, the ordering of all other elements is automatically preserved.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "93fd1ca5-5284-4b24-841f-076ccf5cb434",
+          "TopicId": "f796f2fd-0fbd-4d86-a046-0e46774da389",
+          "Title": "The Concept of the \u0027Top\u0027",
+          "BodyText": "The \u0027top\u0027 is the single access point of a stack and is central to how the LIFO rule is maintained.",
+          "Notes": "Some implementations track the top with an explicit pointer or index; others derive it from the end of an underlying array.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T13:55:54.6609369-04:00",
+          "ModifiedDate": "2026-06-26T13:55:54.6609369-04:00",
+          "Items": [
+            {
+              "Id": "46531aca-610f-4706-91e7-92e39b9cfcec",
+              "Text": "At any moment, only the element at the top is visible and accessible to the outside world.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "a44e906e-5809-4fbb-9cb7-33a388ccb3a1",
+              "Text": "When a new element is pushed, it immediately becomes the new top, displacing the previous one.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "2bb988ed-9a7f-48e1-9d4e-80a3f20d3361",
+              "Text": "When an element is popped, the element that was directly beneath it becomes the new top.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "3188af4e-a0eb-4e0c-8b22-4d16a3d29db0",
+          "TopicId": "f796f2fd-0fbd-4d86-a046-0e46774da389",
+          "Title": "Why LIFO Makes Stacks Uniquely Useful",
+          "BodyText": "The LIFO ordering is not arbitrary \u2014 it naturally models a class of real computational problems that involve reversing or backtracking through a sequence of states.",
+          "Notes": "Expression evaluation, undo histories, and function call management all share the property that the most recent action must be addressed before earlier ones.",
+          "SortOrder": 5,
+          "CreatedDate": "2026-06-26T13:55:54.6609369-04:00",
+          "ModifiedDate": "2026-06-26T13:55:54.6609369-04:00",
+          "Items": [
+            {
+              "Id": "47b67b5a-3edf-416e-99b9-447dc2f33c2f",
+              "Text": "Any scenario where the most recent action must be undone or revisited first maps directly onto LIFO behavior.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "22e82a65-a376-4714-ba5d-9a134adf92ee",
+              "Text": "The call stack in program execution is a prime example: the most recently called function must return before the caller can continue.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "d2c3a78c-cdb5-4894-9f9d-2828459bd133",
+              "Text": "This predictable, constrained ordering makes stack-based algorithms easier to reason about and verify.",
+              "SortOrder": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "60031d2e-7a1f-4e0a-98f4-7eae65c1128e",
+      "Title": "Internal Implementation of a Stack",
+      "Summary": "An examination of how a stack is structured and managed internally, including the underlying mechanisms that support its core operations. This topic bridges theory and practical construction.",
+      "SortOrder": 2,
+      "CreatedDate": "2026-06-26T13:55:16.3839403-04:00",
+      "ModifiedDate": "2026-06-26T13:55:16.3839403-04:00",
+      "Elements": [
+        {
+          "Id": "ce2c3cd0-7343-4fe9-935e-7b87465f1420",
+          "TopicId": "60031d2e-7a1f-4e0a-98f4-7eae65c1128e",
+          "Title": "Underlying Data Containers",
+          "BodyText": "A stack is not a primitive structure; it is built on top of existing data containers such as arrays or linked lists.",
+          "Notes": "In JavaScript, arrays are the most common backing structure due to their built-in methods, but a linked list can offer O(1) push and pop without the overhead of array resizing.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T13:56:17.148576-04:00",
+          "ModifiedDate": "2026-06-26T13:56:17.148576-04:00",
+          "Items": [
+            {
+              "Id": "2d3d4319-e20d-471d-aa0e-4a2532b26929",
+              "Text": "An array-backed stack stores elements in contiguous memory and uses an index to track the top.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "c68f9f3b-e9ed-4ee9-b360-4586877e9621",
+              "Text": "A linked-list-backed stack stores each element as a node with a pointer to the previous node, making the head of the list the top of the stack.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "af5138b5-26b8-498a-bb8b-a3dc8880e065",
+              "Text": "The choice of backing structure affects memory usage, performance characteristics, and implementation complexity.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "765d8549-2223-4a5a-aad6-18ec414a2129",
+          "TopicId": "60031d2e-7a1f-4e0a-98f4-7eae65c1128e",
+          "Title": "The Top Pointer",
+          "BodyText": "Internally, a stack maintains a reference called the top pointer that always identifies the most recently added element.",
+          "Notes": "In an array implementation, the top pointer is simply the index of the last occupied slot. In a linked-list implementation, it is a reference to the head node.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T13:56:17.148576-04:00",
+          "ModifiedDate": "2026-06-26T13:56:17.148576-04:00",
+          "Items": [
+            {
+              "Id": "8c81510a-07ca-4720-b6f7-07def7dd23b5",
+              "Text": "Every push operation moves the top pointer forward to the new element.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "37040264-31a7-4244-81b5-e870347a2a2e",
+              "Text": "Every pop operation retrieves the element at the top pointer and then moves the pointer backward.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "79472414-1208-4a35-83ae-96299b772e43",
+              "Text": "Peek operations read the value at the top pointer without modifying it.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "5ee2fdda-5aa3-455a-b8a4-8766e58c1b13",
+          "TopicId": "60031d2e-7a1f-4e0a-98f4-7eae65c1128e",
+          "Title": "Push Operation Mechanics",
+          "BodyText": "The push operation adds a new element to the top of the stack and updates the internal state accordingly.",
+          "Notes": "In a JavaScript array-backed stack, push can be implemented with the native Array.push() method, which appends to the end of the array and the end acts as the top.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T13:56:17.148576-04:00",
+          "ModifiedDate": "2026-06-26T13:56:17.148576-04:00",
+          "Items": [
+            {
+              "Id": "b12a418b-ed12-48d3-8007-3c773f08d559",
+              "Text": "The new element is placed at the position indicated by the top pointer.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "dfe408c5-ccff-4a95-8552-c6717e8446bd",
+              "Text": "The top pointer is then incremented to reflect the new size of the stack.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "d5d3417e-6bf9-43f6-82f3-b5142e54960e",
+              "Text": "If a fixed-size array is used, a capacity check must occur before pushing to prevent a stack overflow condition.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "0a1d8e09-71fb-4391-aad8-7cd7bf7e4b1f",
+          "TopicId": "60031d2e-7a1f-4e0a-98f4-7eae65c1128e",
+          "Title": "Pop Operation Mechanics",
+          "BodyText": "The pop operation removes and returns the element at the top of the stack, then decrements the top pointer.",
+          "Notes": "In JavaScript, Array.pop() handles both removal and return in one call, making it a natural fit for the pop operation in an array-backed implementation.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T13:56:17.148576-04:00",
+          "ModifiedDate": "2026-06-26T13:56:17.148576-04:00",
+          "Items": [
+            {
+              "Id": "c22db108-3da7-4ab9-93a6-545a2f876f70",
+              "Text": "Before popping, an underflow check ensures the stack is not empty, preventing errors on an empty stack.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "ef15478a-bda9-4113-99c7-81760a907eb8",
+              "Text": "The element at the current top position is stored temporarily so it can be returned to the caller.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "619dfe3e-9629-42b8-9a00-5c5207ce3f4b",
+              "Text": "The top pointer is decremented, effectively marking that position as no longer part of the active stack.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "18cfcc36-dd71-4328-8d3b-5c601a154385",
+          "TopicId": "60031d2e-7a1f-4e0a-98f4-7eae65c1128e",
+          "Title": "Size Tracking and Boundary Conditions",
+          "BodyText": "A well-implemented stack must track its current size and handle boundary conditions such as emptiness and, when applicable, maximum capacity.",
+          "Notes": "Dynamic arrays in JavaScript grow automatically, so overflow is rarely a concern in practice; however, understanding fixed-size constraints is important for lower-level or memory-constrained contexts.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T13:56:17.148576-04:00",
+          "ModifiedDate": "2026-06-26T13:56:17.148576-04:00",
+          "Items": [
+            {
+              "Id": "2c7188b1-7755-4754-b98a-14e3584be436",
+              "Text": "A size counter or a calculation from the top pointer index tells callers how many elements are currently stored.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "23ee9492-c147-459f-8a41-84c4a69ad0e7",
+              "Text": "The isEmpty() check returns true when size equals zero, guarding against invalid pop or peek calls.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "625f5f66-0018-45d5-8475-fc473800b08e",
+              "Text": "An isFull() check is relevant for fixed-capacity stacks and prevents overflow by rejecting pushes beyond the maximum size.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "12f8718f-0e29-45f2-abd5-8e146924e3da",
+          "TopicId": "60031d2e-7a1f-4e0a-98f4-7eae65c1128e",
+          "Title": "Encapsulation in a JavaScript Class",
+          "BodyText": "In JavaScript, a stack is typically encapsulated inside a class that exposes only the intended interface and hides the internal backing array.",
+          "Notes": "Encapsulation ensures that consumers of the stack cannot accidentally manipulate the internal array directly, preserving the LIFO contract.",
+          "SortOrder": 5,
+          "CreatedDate": "2026-06-26T13:56:17.148576-04:00",
+          "ModifiedDate": "2026-06-26T13:56:17.148576-04:00",
+          "Items": [
+            {
+              "Id": "a8738877-c990-4969-bcf9-56e5d5d7ed91",
+              "Text": "The constructor initializes the internal array and any size or capacity variables.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "1bf728f4-3693-494e-8332-b74a6124c7c6",
+              "Text": "Public methods such as push(), pop(), peek(), and isEmpty() form the stack\u0027s interface.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "2c6ad46f-805b-47a8-918f-c9e5cb3265eb",
+              "Text": "Private or conventionally hidden properties (e.g., prefixed with an underscore) store the backing data, preventing direct external access.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "e731290c-401d-4e44-bdf5-7003555dd752",
+          "TopicId": "60031d2e-7a1f-4e0a-98f4-7eae65c1128e",
+          "Title": "Time and Space Complexity of Core Operations",
+          "BodyText": "Understanding the complexity of stack operations confirms why the stack is valued for its efficiency in both time and space.",
+          "Notes": "These complexity guarantees hold for both array-backed and linked-list-backed implementations, making the stack predictable regardless of construction choice.",
+          "SortOrder": 6,
+          "CreatedDate": "2026-06-26T13:56:17.148576-04:00",
+          "ModifiedDate": "2026-06-26T13:56:17.148576-04:00",
+          "Items": [
+            {
+              "Id": "06228142-cb6f-4384-afe5-a41bc2db3be3",
+              "Text": "Push and pop both run in O(1) time because they only interact with the top of the stack, not the entire collection.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "a1b984bc-a268-441d-a900-ad6a03aa9168",
+              "Text": "Peek also runs in O(1) time since it simply reads the top element without traversal.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "a79d2c5b-a0fb-432c-b6ce-8697d5c6e5ab",
+              "Text": "The overall space complexity is O(n), where n is the number of elements currently stored in the stack.",
+              "SortOrder": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "e75fff00-952e-404d-b04d-d60dbd519e68",
+      "Title": "Building a Stack in JavaScript",
+      "Summary": "A hands-on walkthrough of implementing a stack using JavaScript, covering the creation of push, pop, peek, and related methods. Students will write and test working stack code.",
+      "SortOrder": 3,
+      "CreatedDate": "2026-06-26T13:55:16.3839403-04:00",
+      "ModifiedDate": "2026-06-26T13:55:16.3839403-04:00",
+      "Elements": [
+        {
+          "Id": "08a2c79c-312b-4d12-922d-a27834239344",
+          "TopicId": "e75fff00-952e-404d-b04d-d60dbd519e68",
+          "Title": "Setting Up the Stack Class",
+          "BodyText": "A stack in JavaScript is most cleanly implemented as a class, encapsulating all data and behavior in one structure.",
+          "Notes": "Using a class gives students a reusable blueprint and mirrors how stacks are implemented in professional codebases.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T13:56:39.3007109-04:00",
+          "ModifiedDate": "2026-06-26T13:56:39.3007109-04:00",
+          "Items": [
+            {
+              "Id": "4a23927b-b3cb-48f0-9d6a-6d3b75a619fe",
+              "Text": "Define a class named Stack with a constructor that initializes an empty array, e.g., this.items = [].",
+              "SortOrder": 0
+            },
+            {
+              "Id": "04a4a1d1-c215-403c-9959-b615596be162",
+              "Text": "The internal array acts as the underlying storage for all stack elements.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "76b83229-1d47-4cc8-b4d5-ae8084b37ffa",
+              "Text": "Keeping the array private to the class ensures that elements can only be added or removed through the stack\u0027s defined methods.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "08111052-b27e-4e67-8838-6063878b921a",
+          "TopicId": "e75fff00-952e-404d-b04d-d60dbd519e68",
+          "Title": "Implementing the Push Method",
+          "BodyText": "The push method adds a new element to the top of the stack, following the LIFO principle.",
+          "Notes": "Example: push(element) { this.items.push(element); } \u2014 JavaScript\u0027s built-in Array.push() naturally appends to the end, which we treat as the top of the stack.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T13:56:39.3007109-04:00",
+          "ModifiedDate": "2026-06-26T13:56:39.3007109-04:00",
+          "Items": [
+            {
+              "Id": "a6dd6445-93a9-429c-8128-4a5361936202",
+              "Text": "Define a push(element) method inside the Stack class that appends the given element to the end of the internal array.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "8cd68a4f-02a6-4d7b-a387-d27203add40f",
+              "Text": "Each call to push increases the stack\u0027s size by one, placing the new element at the top.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "06d8353c-6fcb-46a8-bae4-73cd77397c32",
+              "Text": "This method should accept any valid JavaScript value, making the stack flexible for different use cases.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "82d46cd3-e42b-436c-bfb2-92f5490d45f6",
+          "TopicId": "e75fff00-952e-404d-b04d-d60dbd519e68",
+          "Title": "Implementing the Pop Method",
+          "BodyText": "The pop method removes and returns the element at the top of the stack, enabling LIFO retrieval.",
+          "Notes": "Example: pop() { if (this.isEmpty()) return \u0027Stack is empty\u0027; return this.items.pop(); } \u2014 Always guard against popping from an empty stack to avoid returning undefined unexpectedly.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T13:56:39.3007109-04:00",
+          "ModifiedDate": "2026-06-26T13:56:39.3007109-04:00",
+          "Items": [
+            {
+              "Id": "68c7eef8-e616-494d-8848-26198ad5b25c",
+              "Text": "Define a pop() method that removes the last element of the internal array using Array.pop() and returns it.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "6507f32f-3145-4ece-b28a-c10d453fb34f",
+              "Text": "Include an empty-stack check so the method returns a meaningful message or throws an error if called on an empty stack.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "7a0fc2b4-e188-48bc-8ebd-fd9efcc63e24",
+              "Text": "After a pop, the element that was second from the top becomes the new top of the stack.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "98b6b43f-13f3-4cc3-b3d1-20e3697e0119",
+          "TopicId": "e75fff00-952e-404d-b04d-d60dbd519e68",
+          "Title": "Implementing the Peek Method",
+          "BodyText": "The peek method returns the top element of the stack without removing it, allowing inspection of the current top value.",
+          "Notes": "Example: peek() { if (this.isEmpty()) return \u0027Stack is empty\u0027; return this.items[this.items.length - 1]; }",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T13:56:39.3007109-04:00",
+          "ModifiedDate": "2026-06-26T13:56:39.3007109-04:00",
+          "Items": [
+            {
+              "Id": "69554307-187f-4fd0-b5de-54d48c0d948b",
+              "Text": "Define a peek() method that accesses the last index of the internal array without modifying the array.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "62a1243d-0b19-4be5-8604-11d6c6618ab9",
+              "Text": "Unlike pop, peek leaves the stack unchanged, making it safe to call at any point without side effects.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "811af3fe-f77b-492d-8c31-9aaeeae67fd9",
+              "Text": "Peek is commonly used when logic depends on knowing the top value before deciding whether to pop.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "0a21a2fe-fead-40e7-b5e1-ecfc06f1646e",
+          "TopicId": "e75fff00-952e-404d-b04d-d60dbd519e68",
+          "Title": "Implementing isEmpty and size Helper Methods",
+          "BodyText": "Helper methods like isEmpty and size provide important metadata about the stack\u0027s current state.",
+          "Notes": "These utility methods are small but essential \u2014 many other methods, such as pop and peek, rely on isEmpty to guard against errors.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T13:56:39.3007109-04:00",
+          "ModifiedDate": "2026-06-26T13:56:39.3007109-04:00",
+          "Items": [
+            {
+              "Id": "8fb4c188-e4b3-4140-b058-d68edb132611",
+              "Text": "Define isEmpty() to return true if the internal array has a length of zero, and false otherwise.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "93a888e1-7920-43cb-96ab-687d012cd54e",
+              "Text": "Define size() to return the current length of the internal array, giving the caller the number of elements in the stack.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "d80743d5-e337-4373-b6f0-672212160883",
+              "Text": "These methods make the stack easier to use correctly and help prevent off-by-one errors in consuming code.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "20efacac-bf88-4cf8-afa7-604fa098338c",
+          "TopicId": "e75fff00-952e-404d-b04d-d60dbd519e68",
+          "Title": "Implementing a Print or toString Method",
+          "BodyText": "A print or toString method lets developers visualize the current contents of the stack, which is especially useful during testing and debugging.",
+          "Notes": "Example: print() { console.log(this.items.toString()); } \u2014 This outputs the internal array as a comma-separated string, with the rightmost value being the top of the stack.",
+          "SortOrder": 5,
+          "CreatedDate": "2026-06-26T13:56:39.3007109-04:00",
+          "ModifiedDate": "2026-06-26T13:56:39.3007109-04:00",
+          "Items": [
+            {
+              "Id": "9502ca15-581c-46af-8334-3b86556d1eec",
+              "Text": "Define a print() method that logs or returns a string representation of the internal array.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "a293932d-7d9f-4f1a-ba84-a58b8066c98a",
+              "Text": "Displaying the stack contents in order helps verify that push and pop operations are working correctly.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "c67e262c-4da8-4142-88bc-f3ce2b95397f",
+              "Text": "Remember that the last element in the printed output represents the top of the stack.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "02654ac5-6117-4b8e-ad61-c17ce666b0e1",
+          "TopicId": "e75fff00-952e-404d-b04d-d60dbd519e68",
+          "Title": "Testing the Stack Implementation",
+          "BodyText": "After writing all methods, students should create a Stack instance and call each method to verify correct behavior.",
+          "Notes": "A simple test sequence: instantiate the stack, push several values, call peek and size, then pop elements one by one while printing after each operation to confirm LIFO order.",
+          "SortOrder": 6,
+          "CreatedDate": "2026-06-26T13:56:39.3007109-04:00",
+          "ModifiedDate": "2026-06-26T13:56:39.3007109-04:00",
+          "Items": [
+            {
+              "Id": "4951170a-a193-43fd-8f87-3deb252a9e0e",
+              "Text": "Instantiate the Stack class and push multiple distinct values to populate the stack.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "46303077-38d2-41aa-94ba-b8e4d40e95d1",
+              "Text": "Call peek to confirm the top element, then pop elements one at a time and log each returned value to verify LIFO ordering.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "dbc202c6-80ac-4542-8172-d7c41ff78ea0",
+              "Text": "Test edge cases such as calling pop or peek on an empty stack to ensure error handling works as intended.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "939d377c-a96b-4eca-a45a-baa83d836f45",
+              "Text": "Compare expected output against actual output for each operation to build confidence in the implementation.",
+              "SortOrder": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "fcb047a9-b09c-4490-8088-9430d3612330",
+      "Title": "Expression Evaluation Using Stacks",
+      "Summary": "An exploration of how stacks are used to parse and evaluate mathematical or logical expressions, such as balancing parentheses or converting infix to postfix notation. Real examples illustrate the practical power of the stack.",
+      "SortOrder": 4,
+      "CreatedDate": "2026-06-26T13:55:16.3839403-04:00",
+      "ModifiedDate": "2026-06-26T13:55:16.3839403-04:00",
+      "Elements": [
+        {
+          "Id": "0a4e04f7-b056-4861-9409-5f38fedf9b47",
+          "TopicId": "fcb047a9-b09c-4490-8088-9430d3612330",
+          "Title": "Why Stacks Are Natural for Expression Parsing",
+          "BodyText": "The LIFO nature of stacks mirrors the nested structure of mathematical expressions, making them ideal for parsing and evaluating them.",
+          "Notes": "Just as the innermost parentheses in an expression must be resolved before the outer ones, a stack naturally processes the most recently opened context first.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T13:57:05.5416452-04:00",
+          "ModifiedDate": "2026-06-26T13:57:05.5416452-04:00",
+          "Items": [
+            {
+              "Id": "25b684dc-f45c-461e-b898-55ce99296f16",
+              "Text": "Expressions often contain nested structures (e.g., parentheses within parentheses) that require resolving the innermost part first.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "f6df0ab9-2c16-4a06-868a-4c41b748a9c6",
+              "Text": "A stack allows a parser to \u0027remember\u0027 previously seen symbols while processing deeper levels of nesting.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "fbeb43fa-4dfa-4856-aa6f-8285e8c7e41b",
+              "Text": "This property makes stacks the standard tool in compilers, calculators, and interpreters for handling expressions.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "b4a5095a-fadc-4fff-baa4-cded583ab1f5",
+          "TopicId": "fcb047a9-b09c-4490-8088-9430d3612330",
+          "Title": "Balancing Parentheses",
+          "BodyText": "One of the most classic stack applications is checking whether parentheses, brackets, and braces in an expression are properly matched and balanced.",
+          "Notes": "Example: For the input \u0027({[]})\u0027, each opening symbol is pushed onto the stack, and each closing symbol is checked against the top of the stack. If every pop yields the matching opener, the expression is balanced.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T13:57:05.5416452-04:00",
+          "ModifiedDate": "2026-06-26T13:57:05.5416452-04:00",
+          "Items": [
+            {
+              "Id": "26b7f40b-945c-4291-89cd-e432a7280d24",
+              "Text": "Push every opening symbol (\u0027(\u0027, \u0027{\u0027, \u0027[\u0027) onto the stack as it is encountered.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "27a66d9b-81a2-4c03-b6bf-fa6ae23e125e",
+              "Text": "When a closing symbol is encountered, pop the top of the stack and verify it is the corresponding opener.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "8cfe6538-918f-4777-8521-91643fb818ba",
+              "Text": "If the stack is empty at the end of the input and no mismatches occurred, the expression is balanced.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "3efbff6c-a887-44dc-a2b3-42c3d9dada99",
+              "Text": "A non-empty stack at the end or a mismatch at any point signals an unbalanced expression.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "668b390d-fed1-4203-ac1b-1de1d467b24a",
+          "TopicId": "fcb047a9-b09c-4490-8088-9430d3612330",
+          "Title": "Infix, Prefix, and Postfix Notation",
+          "BodyText": "Mathematical expressions can be written in three notations: infix (operators between operands), prefix (operators before operands), and postfix (operators after operands).",
+          "Notes": "Infix: 3 \u002B 4. Prefix: \u002B 3 4. Postfix: 3 4 \u002B. Computers find postfix (also called Reverse Polish Notation) easier to evaluate because it eliminates the need for parentheses and precedence rules.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T13:57:05.5416452-04:00",
+          "ModifiedDate": "2026-06-26T13:57:05.5416452-04:00",
+          "Items": [
+            {
+              "Id": "b5e2dfd0-bf3a-429c-84c8-9c566cd49efe",
+              "Text": "Infix notation is human-readable but requires precedence rules and parentheses to determine evaluation order.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "517770fa-31e4-45ce-932c-f3361c833fa6",
+              "Text": "Postfix notation encodes evaluation order explicitly, so no parentheses or precedence rules are needed during evaluation.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "0f0c8930-a794-44c4-a2b5-237c90b54fe1",
+              "Text": "Converting infix to postfix is a key preprocessing step in many calculators and language interpreters.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "5c6a1c10-93c0-4db0-a7f4-fc65e0e6f39e",
+          "TopicId": "fcb047a9-b09c-4490-8088-9430d3612330",
+          "Title": "Converting Infix to Postfix: The Shunting-Yard Algorithm",
+          "BodyText": "The Shunting-Yard Algorithm, developed by Edsger Dijkstra, uses a stack to convert infix expressions to postfix notation while respecting operator precedence and associativity.",
+          "Notes": "For \u00273 \u002B 4 * 2\u0027: the \u0027*\u0027 has higher precedence than \u0027\u002B\u0027, so the algorithm holds \u0027\u002B\u0027 on the stack while outputting \u00274\u0027 and \u00272\u0027, then pops \u0027*\u0027 before popping \u0027\u002B\u0027, yielding postfix \u00273 4 2 * \u002B\u0027.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T13:57:05.5416452-04:00",
+          "ModifiedDate": "2026-06-26T13:57:05.5416452-04:00",
+          "Items": [
+            {
+              "Id": "6aa53c3d-b482-471c-b548-cfc3ed80846e",
+              "Text": "Operands (numbers/variables) are sent directly to the output queue as they are read.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "37e11670-dcf5-4ca7-9b7f-b87812c345ce",
+              "Text": "Operators are pushed onto the stack, but only after popping and outputting any operators of greater or equal precedence already on the stack.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "a0d75dce-bbb0-47cc-a15b-e0c8306948d2",
+              "Text": "Left parentheses are pushed onto the stack; when a right parenthesis is encountered, operators are popped and output until the matching left parenthesis is found.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "b62a6ac8-136f-4274-a857-2fe9aa9b210f",
+              "Text": "At the end of input, any remaining operators on the stack are popped and appended to the output.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "15267821-498a-4e42-963e-dd320ce9ccde",
+          "TopicId": "fcb047a9-b09c-4490-8088-9430d3612330",
+          "Title": "Evaluating Postfix Expressions with a Stack",
+          "BodyText": "Once an expression is in postfix form, a stack makes evaluation straightforward: operands are pushed, and each operator pops its operands, computes a result, and pushes it back.",
+          "Notes": "For \u00273 4 2 * \u002B\u0027: push 3, push 4, push 2, encounter \u0027*\u0027 \u2192 pop 2 and 4, push 8, encounter \u0027\u002B\u0027 \u2192 pop 8 and 3, push 11. Final answer: 11.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T13:57:05.5416452-04:00",
+          "ModifiedDate": "2026-06-26T13:57:05.5416452-04:00",
+          "Items": [
+            {
+              "Id": "2ef47708-4494-4455-a4d0-757e7b52e5b7",
+              "Text": "Scan the postfix expression left to right; push each operand onto the stack.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "62fefa05-af9f-4c2c-902a-a77c1d501ed4",
+              "Text": "When an operator is encountered, pop the required number of operands (two for binary operators), apply the operation, and push the result.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "41a536ce-7673-4147-b60a-14f87c5241bf",
+              "Text": "After processing the entire expression, the single remaining value on the stack is the final result.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "1410b557-fa81-4b5a-a3e5-6c31d79f36c5",
+              "Text": "This algorithm runs in O(n) time, making it highly efficient for expression evaluation.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "c6f1d5be-223c-4b32-b2b7-2c5213aad468",
+          "TopicId": "fcb047a9-b09c-4490-8088-9430d3612330",
+          "Title": "Operator Precedence and Associativity in Stack-Based Parsing",
+          "BodyText": "Correct expression evaluation requires respecting operator precedence (e.g., multiplication before addition) and associativity (left-to-right vs. right-to-left), both of which are handled by the stack during conversion.",
+          "Notes": "Exponentiation is right-associative: \u00272 ^ 3 ^ 2\u0027 should be parsed as \u00272 ^ (3 ^ 2) = 512\u0027, not \u0027(2 ^ 3) ^ 2 = 64\u0027. The algorithm adjusts the comparison (strictly greater vs. greater-or-equal) when pushing operators to handle this correctly.",
+          "SortOrder": 5,
+          "CreatedDate": "2026-06-26T13:57:05.5416452-04:00",
+          "ModifiedDate": "2026-06-26T13:57:05.5416452-04:00",
+          "Items": [
+            {
+              "Id": "17fdb684-e3d7-44a0-ae29-1a03755b2d4e",
+              "Text": "Precedence levels (e.g., * and / outrank \u002B and -) determine when an operator on the stack must be popped before a new operator is pushed.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "29068900-ec7a-4e58-864f-54a8e47da54c",
+              "Text": "Left-associative operators (most arithmetic operators) cause the stack to pop operators of equal precedence before pushing the new one.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "c6807696-3b77-4f31-bd51-0a96200cebfb",
+              "Text": "Right-associative operators (like exponentiation) allow an operator of equal precedence to remain on the stack rather than being popped.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "c069ddf3-8bf8-47c8-94c2-f8d73e486926",
+              "Text": "Encoding these rules correctly in the stack logic ensures the output postfix expression evaluates to the mathematically intended result.",
+              "SortOrder": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "6043f7b1-bb09-4e8f-bc73-fe7a71985c6c",
+      "Title": "Undo Mechanisms and Other Real-World Use Cases",
+      "Summary": "A survey of practical applications where stacks power everyday software features, with undo functionality as a primary example. Students will connect abstract data structure concepts to familiar tools and systems.",
+      "SortOrder": 5,
+      "CreatedDate": "2026-06-26T13:55:16.3839403-04:00",
+      "ModifiedDate": "2026-06-26T13:55:16.3839403-04:00",
+      "Elements": [
+        {
+          "Id": "c999dd18-7799-423f-a5a6-e5a0387c19de",
+          "TopicId": "6043f7b1-bb09-4e8f-bc73-fe7a71985c6c",
+          "Title": "The Undo Operation: A Classic Stack Use Case",
+          "BodyText": "Undo functionality in text editors, graphic tools, and productivity software is one of the most recognizable real-world applications of a stack.",
+          "Notes": "Examples include Ctrl\u002BZ in Microsoft Word, Adobe Photoshop, or VS Code. Each action the user performs is pushed onto the stack; pressing undo pops the most recent action and reverses it.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T13:57:28.3342621-04:00",
+          "ModifiedDate": "2026-06-26T13:57:28.3342621-04:00",
+          "Items": [
+            {
+              "Id": "f3534253-64af-4a3c-bfae-f344069de9f7",
+              "Text": "Every user action (typing, deleting, formatting) is pushed as a record onto an \u0027action stack\u0027 in the order it occurs.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "e6b3adc2-c8ce-4321-9c72-a2705a9e9933",
+              "Text": "When the user triggers undo, the top item is popped and the application reverses that specific action.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "f9a43ae5-4332-4f1c-b2a6-7c3cf9745af8",
+              "Text": "The LIFO principle guarantees that actions are undone in the exact reverse order they were performed.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "67ae6c5c-ff97-42f6-ae4a-5fe466f1252c",
+              "Text": "A separate \u0027redo stack\u0027 can receive popped items so the user can reapply actions if needed.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "d7701ad7-638e-4a26-9835-33337f981167",
+          "TopicId": "6043f7b1-bb09-4e8f-bc73-fe7a71985c6c",
+          "Title": "Browser History and Navigation",
+          "BodyText": "Web browsers use a stack-like structure to manage the back-and-forward navigation history for each tab.",
+          "Notes": "When you click the Back button repeatedly, you are effectively popping pages off the history stack. Opening a new link pushes a new page on top, which can clear the forward stack.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T13:57:28.3342621-04:00",
+          "ModifiedDate": "2026-06-26T13:57:28.3342621-04:00",
+          "Items": [
+            {
+              "Id": "eed4d193-a213-4696-a3a7-535b7ce66e83",
+              "Text": "Each newly visited URL is pushed onto the history stack, recording the sequence of navigation.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "96aa6d1f-e9fa-4679-b6c2-bba15558d953",
+              "Text": "Clicking \u0027Back\u0027 pops the current page and returns to the previous one, mirroring stack pop behavior.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "2baab392-9d6f-49a0-9888-52c1e39eb122",
+              "Text": "Navigating to a brand-new page after going back discards the forward history, consistent with stack semantics.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "7619f512-28ae-4141-a865-23808cbc386e",
+          "TopicId": "6043f7b1-bb09-4e8f-bc73-fe7a71985c6c",
+          "Title": "Call Stack in Program Execution",
+          "BodyText": "Programming languages rely on a call stack to track the sequence of function invocations currently in progress.",
+          "Notes": "When a runtime error occurs, the printed \u0027stack trace\u0027 is a snapshot of the call stack at that moment, showing each function frame from most recent to least recent.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T13:57:28.3342621-04:00",
+          "ModifiedDate": "2026-06-26T13:57:28.3342621-04:00",
+          "Items": [
+            {
+              "Id": "c9466f20-5fda-4529-b8c9-8f48d6ce48c7",
+              "Text": "When a function is called, a new frame containing its local variables and return address is pushed onto the call stack.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "a500ecd2-1aa3-45b6-8bcc-0afcd19b55d1",
+              "Text": "When the function returns, its frame is popped and execution resumes in the calling function.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "6c92789b-6fcc-4f9a-9b86-6fcf3527daa5",
+              "Text": "Stack overflow errors occur when too many frames are pushed without being popped, exhausting available stack memory.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "78e6c434-c14b-410f-a541-0b1460e5446b",
+          "TopicId": "6043f7b1-bb09-4e8f-bc73-fe7a71985c6c",
+          "Title": "Expression Evaluation and Syntax Parsing",
+          "BodyText": "Compilers and calculators use stacks to evaluate mathematical expressions and validate nested syntax such as parentheses, brackets, and braces.",
+          "Notes": "A classic algorithm (Dijkstra\u0027s shunting-yard algorithm) converts infix expressions like \u00273 \u002B 4 * 2\u0027 to postfix notation using a stack, then evaluates the result with a second stack.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T13:57:28.3342621-04:00",
+          "ModifiedDate": "2026-06-26T13:57:28.3342621-04:00",
+          "Items": [
+            {
+              "Id": "3818e1f0-fd5f-4023-ab34-ffc5c65a69d2",
+              "Text": "Opening brackets are pushed onto the stack; when a closing bracket is encountered, the stack is checked for a matching opener.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "1951f64c-130c-4155-8413-8d6749173099",
+              "Text": "If the stack is empty when a closing bracket appears, or mismatched symbols are found, the syntax is flagged as invalid.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "d968dc6e-0e46-421c-899e-f3a285a4bbb7",
+              "Text": "Operators are held on the stack and applied in correct precedence order when operands are available.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "e0ffc291-c416-4101-8b90-ad4ef93a789f",
+          "TopicId": "6043f7b1-bb09-4e8f-bc73-fe7a71985c6c",
+          "Title": "Backtracking Algorithms",
+          "BodyText": "Search and pathfinding algorithms use stacks to remember decision points so they can backtrack when a chosen path leads to a dead end.",
+          "Notes": "Depth-first search (DFS) on a graph can be implemented explicitly with a stack instead of recursion, achieving the same traversal order.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T13:57:28.3342621-04:00",
+          "ModifiedDate": "2026-06-26T13:57:28.3342621-04:00",
+          "Items": [
+            {
+              "Id": "d93d4507-580c-4c81-aecf-011412c300d0",
+              "Text": "At each decision point, the current state or position is pushed onto the stack before exploring a new path.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "c3016ce8-f471-4911-b68d-7458f9d1b045",
+              "Text": "If exploration fails, the algorithm pops the last saved state and tries an alternative direction.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "cb6fd87c-c5b7-4655-956d-4bcfbd0587f0",
+              "Text": "Maze solvers, puzzle games, and constraint-satisfaction problems all leverage this pattern.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "005afd48-81a0-4d40-88bf-f2f1204a2ae7",
+          "TopicId": "6043f7b1-bb09-4e8f-bc73-fe7a71985c6c",
+          "Title": "Connecting Abstract Concepts to Familiar Tools",
+          "BodyText": "Recognizing stacks in everyday software helps reinforce why learning abstract data structures has direct practical value.",
+          "Notes": "Students who use undo shortcuts, browse the web, or debug code are already interacting with stacks constantly without realizing it.",
+          "SortOrder": 5,
+          "CreatedDate": "2026-06-26T13:57:28.3342621-04:00",
+          "ModifiedDate": "2026-06-26T13:57:28.3342621-04:00",
+          "Items": [
+            {
+              "Id": "2aa7aa61-b70e-4c1b-aae5-a27b4fbbcf5d",
+              "Text": "Abstract data structures are not theoretical exercises; they are the hidden mechanisms behind features users interact with daily.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "e1ed464b-8676-44e9-98e3-097297606cca",
+              "Text": "Identifying a stack in a real application makes it easier to reason about performance, limitations, and correct usage.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "452b560f-7706-435d-b53c-7fc9745c2c20",
+              "Text": "Understanding the underlying structure enables developers to implement, optimize, or debug features like undo history more effectively.",
+              "SortOrder": 2
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "TotalElementCount": 37
+}

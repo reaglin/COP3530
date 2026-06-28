@@ -1,0 +1,9 @@
+{
+  "Id": "6f756813-3f3c-4252-96f9-ad5c89a6fd7a",
+  "Name": "Binary Trees: Structure, Traversal, and Operations",
+  "Description": "This lesson introduces binary trees and binary search trees, covering node structure, insertion, deletion, and key traversal strategies including in-order, pre-order, and post-order. Students will implement a binary search tree in JavaScript and analyze its operations.",
+  "CreatedBy": "Ron Eaglin",
+  "CreatedDate": "2026-06-26T11:23:12.7292464-04:00",
+  "LastModifiedDate": "2026-06-26T11:23:12.7299591-04:00",
+  "Actions": []
+}

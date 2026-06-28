@@ -1,0 +1,9 @@
+{
+  "Id": "0ae7b0da-d785-4eda-99ea-fe4505379b2f",
+  "Name": "Computational Complexity: Deep Dive into Analysis",
+  "Description": "This lesson provides an in-depth treatment of computational complexity theory, expanding on Big O notation to include best, worst, and average cases, as well as Omega and Theta notations. Students will analyze the complexity of algorithms encountered so far in the course.",
+  "CreatedBy": "Ron Eaglin",
+  "CreatedDate": "2026-06-26T11:23:12.6886108-04:00",
+  "LastModifiedDate": "2026-06-26T11:23:12.6894174-04:00",
+  "Actions": []
+}

@@ -1,0 +1,9 @@
+{
+  "Id": "a5aafda6-cf92-4fbd-bb06-5620efe1fba0",
+  "Name": "Hash Tables: Structure and Collision Resolution",
+  "Description": "This lesson covers the hash table data structure, including its internal array-based design, collision resolution strategies such as chaining and open addressing, and performance analysis. Students will implement a hash table in JavaScript.",
+  "CreatedBy": "Ron Eaglin",
+  "CreatedDate": "2026-06-26T11:23:12.714055-04:00",
+  "LastModifiedDate": "2026-06-26T11:23:12.7147082-04:00",
+  "Actions": []
+}

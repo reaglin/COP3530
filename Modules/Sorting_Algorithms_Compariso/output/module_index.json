@@ -1,0 +1,35 @@
+﻿{
+  "ModuleName": "Sorting Algorithms: Comparison and Implementation",
+  "CourseName": "COP3530 - Data Structures",
+  "ModuleFolderName": "Sorting_Algorithms_Compariso",
+  "GeneratedUtc": "2026-06-27T17:20:20.626204Z",
+  "HtmlIndexSignature": "1FB19AE6FF897732B3E06706863C2BD4EA9312970B3C41F662EB191572137407",
+  "Artifacts": [
+    {
+      "Name": "Module Topics",
+      "Type": "Module Topics",
+      "FileType": ".json",
+      "Description": "A structured outline of the module\u0027s topics covering sorting algorithm fundamentals (definitions, terminology), and the concepts, step-by-step logic, and JavaScript implementations of Bubble Sort, Insertion Sort, and Merge Sort, used by learners and instructors to navigate the module\u0027s content and sequence.",
+      "CustomName": null,
+      "FilePath": "C:\\Users\\ronal\\OneDrive - Daytona State College\\Documents\\PreseMaker\\Courses\\COP3530_-_Data_Structures\\Modules\\Sorting_Algorithms_Compariso\\hierarchy.json",
+      "ViewerKind": 2,
+      "WebHref": "content/module_topics.html",
+      "LocalHref": "module_topics.html",
+      "RawHref": "../hierarchy.json",
+      "SourceModifiedTicks": 639180941261502288
+    },
+    {
+      "Name": "Module Topics (HTML)",
+      "Type": "Module Topics (HTML)",
+      "FileType": ".html",
+      "Description": "An outline of the module\u0027s topics\u2014covering what sorting algorithms are, why they matter, and the criteria used to evaluate them\u2014that gives learners and instructors a structured overview of the concepts to be studied before diving into individual algorithm implementations and comparisons.",
+      "CustomName": null,
+      "FilePath": "C:\\Users\\ronal\\OneDrive - Daytona State College\\Documents\\PreseMaker\\Courses\\COP3530_-_Data_Structures\\Modules\\Sorting_Algorithms_Compariso\\output\\module_topics.html",
+      "ViewerKind": 1,
+      "WebHref": "",
+      "LocalHref": "module_topics.html",
+      "RawHref": "",
+      "SourceModifiedTicks": 639181683688042228
+    }
+  ]
+}

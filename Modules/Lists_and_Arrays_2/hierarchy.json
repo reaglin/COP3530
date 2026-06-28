@@ -1,0 +1,1176 @@
+{
+  "ModuleFolderName": "Lists_and_Arrays_2",
+  "CourseName": "COP3530 - Data Structures",
+  "GeneratedDate": "2026-06-26T13:52:47.8263609-04:00",
+  "ModifiedDate": "2026-06-26T13:55:02.0387331-04:00",
+  "Outcomes": [],
+  "Topics": [
+    {
+      "Id": "8b91f1ae-c37f-44b7-b087-42ae961d90ef",
+      "Title": "Introduction to Lists and Arrays",
+      "Summary": "An overview of lists and arrays as fundamental data structures, including their definitions, characteristics, and how they are represented in JavaScript.",
+      "SortOrder": 0,
+      "CreatedDate": "2026-06-26T13:52:47.8263609-04:00",
+      "ModifiedDate": "2026-06-26T13:52:47.8263609-04:00",
+      "Elements": [
+        {
+          "Id": "39f0ff5e-089d-45a3-96fe-3996d68cfd3a",
+          "TopicId": "8b91f1ae-c37f-44b7-b087-42ae961d90ef",
+          "Title": "What Are Lists and Arrays?",
+          "BodyText": "Lists and arrays are fundamental data structures used to store collections of elements in an ordered sequence.",
+          "Notes": "While the terms are sometimes used interchangeably, arrays typically refer to fixed-size, indexed collections, whereas lists can be more flexible in size and structure depending on the language or context.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T13:53:08.0402119-04:00",
+          "ModifiedDate": "2026-06-26T13:53:08.0402119-04:00",
+          "Items": [
+            {
+              "Id": "8d246f10-433d-4683-bca2-acdc2ca8bde8",
+              "Text": "An array is an ordered collection of elements, each identified by a numeric index starting at zero.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "faf5c2aa-0c06-4817-b88e-5a53042902fe",
+              "Text": "A list is a more general term for an ordered sequence of elements, which may support dynamic resizing.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "bb3c77a6-a2a3-4760-b869-132ea5ecb659",
+              "Text": "Both structures allow multiple values to be stored and managed under a single variable name.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "acf6de07-1d28-4760-a024-fa30bc660715",
+              "Text": "They are among the most widely used data structures in programming due to their simplicity and versatility.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "e459edab-66f8-4974-9b71-268aa17cf767",
+          "TopicId": "8b91f1ae-c37f-44b7-b087-42ae961d90ef",
+          "Title": "Key Characteristics of Arrays",
+          "BodyText": "Arrays have defining characteristics that shape how data is stored, accessed, and managed within them.",
+          "Notes": "Understanding these characteristics helps developers choose the right data structure for a given problem and predict how operations will behave in terms of performance.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T13:53:08.0402119-04:00",
+          "ModifiedDate": "2026-06-26T13:53:08.0402119-04:00",
+          "Items": [
+            {
+              "Id": "a00e1b6a-228d-4225-8833-a8daa9161c6f",
+              "Text": "Elements in an array are stored in contiguous, indexed positions, allowing direct access by index.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "7b280748-eb9f-4f47-9dc5-66266b61e036",
+              "Text": "Arrays are zero-indexed, meaning the first element is accessed at index 0.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "7ee56503-bdc1-44cd-ab4e-284ea43276ff",
+              "Text": "Each element in a homogeneous array is of the same data type, though JavaScript arrays can hold mixed types.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "31a82b0a-cc26-46f5-ae7e-323bf52421de",
+              "Text": "The length of an array indicates how many elements it currently contains.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "c003c1a1-2583-4087-89bc-2d61bc6265d1",
+          "TopicId": "8b91f1ae-c37f-44b7-b087-42ae961d90ef",
+          "Title": "Arrays in JavaScript",
+          "BodyText": "JavaScript provides a built-in Array object that represents lists of elements and offers a rich set of built-in methods for manipulation.",
+          "Notes": "Unlike arrays in lower-level languages such as C or Java, JavaScript arrays are dynamic \u2014 they can grow or shrink in size and can store elements of different data types, including numbers, strings, objects, and even other arrays.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T13:53:08.0402119-04:00",
+          "ModifiedDate": "2026-06-26T13:53:08.0402119-04:00",
+          "Items": [
+            {
+              "Id": "69aeaf0e-d4fa-4089-b3e8-6f93fab5800b",
+              "Text": "A JavaScript array is declared using square bracket notation, for example: const arr = [1, 2, 3];",
+              "SortOrder": 0
+            },
+            {
+              "Id": "5c8734cc-bf9b-47fd-a1a3-5e3d0f599fe7",
+              "Text": "JavaScript arrays are dynamic, meaning elements can be added or removed without declaring a fixed size upfront.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "08e76919-54e7-4291-9183-4fd51c26d646",
+              "Text": "Array elements are accessed using their zero-based index, for example: arr[0] returns the first element.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "ac2371d4-3531-4ce3-9673-1de2f4401740",
+              "Text": "The Array object in JavaScript includes built-in properties such as .length and methods such as .push(), .pop(), and .splice().",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "20201715-6e6b-4e82-88f7-1b4424f85a3d",
+          "TopicId": "8b91f1ae-c37f-44b7-b087-42ae961d90ef",
+          "Title": "Ordered Sequence and Indexing",
+          "BodyText": "The ordered nature of arrays means each element occupies a specific position, and that position is used to retrieve or modify the element.",
+          "Notes": "Indexing is the foundation of many array algorithms, including searching and traversal. Misunderstanding zero-based indexing is a common source of off-by-one errors in programming.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T13:53:08.0402119-04:00",
+          "ModifiedDate": "2026-06-26T13:53:08.0402119-04:00",
+          "Items": [
+            {
+              "Id": "a38e4be0-b8f7-46ee-9b65-fa1529e683d5",
+              "Text": "Every element in an array has a unique index that represents its position in the sequence.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "c612ecb0-7acf-412a-8985-3c81118f88a3",
+              "Text": "Zero-based indexing means the first element is at index 0 and the last element is at index length - 1.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "89ecaa8b-b9c2-45f9-a618-b526f1feeef5",
+              "Text": "Direct index access allows retrieval of any element in constant time, O(1).",
+              "SortOrder": 2
+            },
+            {
+              "Id": "d3f0949c-f181-4107-b2c2-dc23724af227",
+              "Text": "Maintaining order is important when the sequence or position of elements carries meaning in the program logic.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "be0ad61d-4d11-4556-8daa-18d8795d4122",
+          "TopicId": "8b91f1ae-c37f-44b7-b087-42ae961d90ef",
+          "Title": "Why Lists and Arrays Matter in Algorithms",
+          "BodyText": "Lists and arrays serve as the foundation for implementing and understanding a wide range of algorithms, including insertion, deletion, searching, and traversal.",
+          "Notes": "Many higher-level data structures such as stacks, queues, and matrices are built on top of arrays. A solid understanding of how arrays work is essential before studying more complex data structures and algorithms.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T13:53:08.0402119-04:00",
+          "ModifiedDate": "2026-06-26T13:53:08.0402119-04:00",
+          "Items": [
+            {
+              "Id": "cad5b03b-ae82-409f-ae82-1044412c11a1",
+              "Text": "Arrays provide the underlying structure for performing operations like searching for an element or inserting a new one.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "7a192bdf-42c0-406c-9460-ba1d6eb3a6a8",
+              "Text": "The simplicity of array indexing makes them an ideal starting point for learning algorithmic thinking.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "f540ef05-01fa-4270-a871-0b116b5a1636",
+              "Text": "Analyzing the time and space complexity of array operations helps developers write more efficient code.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "1e3011be-3d6c-4e17-8c1b-1b4d6dae3513",
+              "Text": "Understanding arrays in JavaScript specifically prepares students to implement and evaluate real-world algorithms in a widely used language.",
+              "SortOrder": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "3083d6c9-d800-4852-bd93-b09b8ed74c22",
+      "Title": "Insertion Operations",
+      "Summary": "Covers the algorithms and techniques for inserting elements into lists and arrays, including insertion at the beginning, end, and arbitrary positions in JavaScript.",
+      "SortOrder": 1,
+      "CreatedDate": "2026-06-26T13:52:47.8263609-04:00",
+      "ModifiedDate": "2026-06-26T13:52:47.8263609-04:00",
+      "Elements": [
+        {
+          "Id": "69694d6d-93db-40cc-931d-d3f8c3af1821",
+          "TopicId": "3083d6c9-d800-4852-bd93-b09b8ed74c22",
+          "Title": "Understanding Array Insertion",
+          "BodyText": "Insertion is the operation of placing a new element into an array or list at a specified position, requiring careful management of existing elements.",
+          "Notes": "In JavaScript, arrays are dynamic, meaning they can grow in size automatically when elements are added, unlike fixed-size arrays in some other languages.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T13:53:29.3488089-04:00",
+          "ModifiedDate": "2026-06-26T13:53:29.3488089-04:00",
+          "Items": [
+            {
+              "Id": "f853783d-f197-44fe-a130-1e5977cd9db4",
+              "Text": "Insertion can occur at the beginning, end, or any arbitrary index within the array.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "e0bedad7-d7ae-4949-904d-373b3dea12df",
+              "Text": "The position of insertion determines how many existing elements must be shifted to accommodate the new value.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "ccb4e901-5b22-40ff-bb4e-007450953108",
+              "Text": "Understanding where insertion happens is critical to analyzing its performance cost.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "6186ff0a-cb1a-49e3-9aa4-678888700386",
+          "TopicId": "3083d6c9-d800-4852-bd93-b09b8ed74c22",
+          "Title": "Insertion at the End",
+          "BodyText": "Adding an element to the end of an array is the simplest and most efficient insertion operation, achieved in JavaScript using the push() method.",
+          "Notes": "Example: const arr = [1, 2, 3]; arr.push(4); // arr is now [1, 2, 3, 4]. This is the preferred insertion method when order of addition is acceptable.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T13:53:29.3488089-04:00",
+          "ModifiedDate": "2026-06-26T13:53:29.3488089-04:00",
+          "Items": [
+            {
+              "Id": "10a45cf1-4b0c-49a8-abb2-aa6d0cbd73c9",
+              "Text": "The push() method appends one or more elements to the end of an array and returns the new length.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "65c6e2ae-5b95-4f76-b208-93d01a645812",
+              "Text": "End insertion runs in O(1) constant time because no existing elements need to be repositioned.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "62d909c1-aa0f-4b54-b892-40d2776632d9",
+              "Text": "This is the most performant insertion operation and should be preferred when the position does not matter.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "c8ff49de-ce56-42eb-a480-6ed44cd38e38",
+          "TopicId": "3083d6c9-d800-4852-bd93-b09b8ed74c22",
+          "Title": "Insertion at the Beginning",
+          "BodyText": "Inserting an element at the start of an array places the new value at index 0, which in JavaScript is accomplished using the unshift() method.",
+          "Notes": "Example: const arr = [2, 3, 4]; arr.unshift(1); // arr is now [1, 2, 3, 4]. Every existing element\u0027s index is incremented by one during this operation.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T13:53:29.3488089-04:00",
+          "ModifiedDate": "2026-06-26T13:53:29.3488089-04:00",
+          "Items": [
+            {
+              "Id": "6cc80804-4746-4bf1-a7ad-ba82bc0d8ae0",
+              "Text": "The unshift() method inserts one or more elements at the beginning of an array and returns the new length.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "473f4c98-05bb-46b5-9ca2-8794266b1fe7",
+              "Text": "Because every existing element must be shifted one position to the right, this operation runs in O(n) linear time.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "fc802f50-456e-4439-9e08-f5a5f5f399b9",
+              "Text": "Beginning insertion is less efficient than end insertion and should be used thoughtfully in performance-sensitive code.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "4572217d-63ab-44da-923d-1de7c0b5e397",
+          "TopicId": "3083d6c9-d800-4852-bd93-b09b8ed74c22",
+          "Title": "Insertion at an Arbitrary Position",
+          "BodyText": "Inserting an element at a specific index somewhere in the middle of an array requires shifting elements and is handled in JavaScript using the splice() method.",
+          "Notes": "Example: const arr = [1, 2, 4, 5]; arr.splice(2, 0, 3); // arr is now [1, 2, 3, 4, 5]. The second argument 0 tells splice not to delete any elements.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T13:53:29.3488089-04:00",
+          "ModifiedDate": "2026-06-26T13:53:29.3488089-04:00",
+          "Items": [
+            {
+              "Id": "2cadc33b-0f68-41bf-8601-759b61ab9677",
+              "Text": "The splice(index, 0, newElement) call inserts newElement before the existing element at the given index without removing anything.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "ab958c81-1d90-43da-93b3-04c794726f3d",
+              "Text": "All elements at and beyond the target index are shifted one position to the right to make room for the new element.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "9de3fa7f-2fdc-47e5-a243-eb6e37e31370",
+              "Text": "Arbitrary insertion runs in O(n) time in the worst case, since up to all remaining elements may need to be shifted.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "6f1ce738-b7bd-4764-8aa0-5e1c79feb726",
+              "Text": "The closer the insertion point is to the end of the array, the fewer shifts are required, improving practical performance.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "50af9f19-5a5b-4aa6-9983-f528038d30e4",
+          "TopicId": "3083d6c9-d800-4852-bd93-b09b8ed74c22",
+          "Title": "Manual Insertion Algorithm",
+          "BodyText": "Beyond built-in methods, understanding how to implement insertion manually reinforces the underlying mechanics of shifting elements within an array.",
+          "Notes": "A manual approach involves iterating from the end of the array down to the target index, moving each element one slot forward before placing the new value.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T13:53:29.3488089-04:00",
+          "ModifiedDate": "2026-06-26T13:53:29.3488089-04:00",
+          "Items": [
+            {
+              "Id": "3576791b-f29e-408f-8c2d-608f146d3f3b",
+              "Text": "Start from the last element and shift each element one index to the right until reaching the target insertion index.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "9332d315-d230-4e7f-a25e-9b668a51d52c",
+              "Text": "Once the target index is cleared, assign the new value directly to arr[targetIndex].",
+              "SortOrder": 1
+            },
+            {
+              "Id": "7a8ac681-39f7-43f2-bcdb-e9c569b69702",
+              "Text": "Implementing insertion manually builds intuition for why arbitrary and beginning insertions carry an O(n) time complexity.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "59d4bb70-8aac-435c-a7b9-5d852ce59d2a",
+              "Text": "This understanding is foundational for working with lower-level data structures such as linked lists.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "04840961-299a-4063-9ff1-374f2c6e7424",
+          "TopicId": "3083d6c9-d800-4852-bd93-b09b8ed74c22",
+          "Title": "Time and Space Complexity of Insertion",
+          "BodyText": "Analyzing the complexity of insertion operations helps developers choose the most efficient approach based on where in the array the element must be placed.",
+          "Notes": "Space complexity for all standard array insertion operations is O(1) because insertion modifies the array in place without requiring a separate copy of the data.",
+          "SortOrder": 5,
+          "CreatedDate": "2026-06-26T13:53:29.3488089-04:00",
+          "ModifiedDate": "2026-06-26T13:53:29.3488089-04:00",
+          "Items": [
+            {
+              "Id": "045d454c-a4b0-45c6-8415-2b577c368ba1",
+              "Text": "End insertion (push) is O(1) time \u2014 the most efficient insertion scenario.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "1f2cc5c4-87f7-4fd2-8a00-e5d9464e437a",
+              "Text": "Beginning insertion (unshift) and arbitrary insertion (splice) are both O(n) time due to the element-shifting requirement.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "b07004f4-fe24-419f-b189-7bd77aace45c",
+              "Text": "When frequent insertions at arbitrary positions are needed, alternative data structures like linked lists may offer better performance.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "7fbcb421-96b0-470e-902c-a613ad461d46",
+              "Text": "Choosing the right insertion strategy directly impacts the overall efficiency of an algorithm.",
+              "SortOrder": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "f30cfef1-3ec0-4cec-b3f6-a2206ec744c1",
+      "Title": "Deletion Operations",
+      "Summary": "Explores methods for removing elements from lists and arrays, examining different deletion scenarios and their JavaScript implementations.",
+      "SortOrder": 2,
+      "CreatedDate": "2026-06-26T13:52:47.8263609-04:00",
+      "ModifiedDate": "2026-06-26T13:52:47.8263609-04:00",
+      "Elements": [
+        {
+          "Id": "b8f08928-d972-484f-857d-e3ac8c8f01ef",
+          "TopicId": "f30cfef1-3ec0-4cec-b3f6-a2206ec744c1",
+          "Title": "Understanding Deletion in Arrays",
+          "BodyText": "Deletion is the process of removing an element from an array or list, which may require shifting remaining elements to fill the gap left behind.",
+          "Notes": "Unlike simple variable reassignment, true deletion in arrays often involves restructuring the data structure to maintain contiguity and correct indexing.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T13:53:53.5313382-04:00",
+          "ModifiedDate": "2026-06-26T13:53:53.5313382-04:00",
+          "Items": [
+            {
+              "Id": "efba773d-ad02-4858-9469-c1f430cd1762",
+              "Text": "Arrays in JavaScript are zero-indexed, so removing an element can affect the indices of all subsequent elements.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "a4375b52-f621-4619-9f58-75c529a00226",
+              "Text": "The cost of deletion depends heavily on where in the array the element is located \u2014 beginning, middle, or end.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "89320b39-38b3-4ddb-bec0-69ff9a012711",
+              "Text": "Understanding the position of deletion is essential for selecting the most efficient approach.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "4d128db1-3e70-4b71-a908-e5251be3dcf8",
+          "TopicId": "f30cfef1-3ec0-4cec-b3f6-a2206ec744c1",
+          "Title": "Deleting from the End of an Array",
+          "BodyText": "Removing the last element of an array is the simplest and most efficient deletion operation in JavaScript.",
+          "Notes": "This is analogous to a stack \u0027pop\u0027 operation and is used frequently in algorithms that process elements in reverse order.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T13:53:53.5313382-04:00",
+          "ModifiedDate": "2026-06-26T13:53:53.5313382-04:00",
+          "Items": [
+            {
+              "Id": "e315ac9e-7e69-4745-81f7-9629f1134716",
+              "Text": "JavaScript\u0027s built-in \u0060pop()\u0060 method removes and returns the last element of an array in O(1) time.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "f3fdf5ce-155d-4fd1-ad76-98f35dda08b1",
+              "Text": "No re-indexing of other elements is needed, making this the least costly deletion scenario.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "d86ccb35-a98c-4801-847a-e74dec618db4",
+              "Text": "Example: \u0060const removed = arr.pop();\u0060 removes the last element and stores it in \u0060removed\u0060.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "25359629-b73d-4bb6-b027-483bba96062b",
+          "TopicId": "f30cfef1-3ec0-4cec-b3f6-a2206ec744c1",
+          "Title": "Deleting from the Beginning of an Array",
+          "BodyText": "Removing the first element requires all remaining elements to shift one position to the left, making it a more costly operation.",
+          "Notes": "This mirrors the \u0027dequeue\u0027 operation in a queue data structure and should be used with awareness of its performance implications on large arrays.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T13:53:53.5313382-04:00",
+          "ModifiedDate": "2026-06-26T13:53:53.5313382-04:00",
+          "Items": [
+            {
+              "Id": "21db404f-b14e-446a-82bc-a5d7030c0a80",
+              "Text": "JavaScript\u0027s \u0060shift()\u0060 method removes and returns the first element of an array.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "63a068b8-954c-436b-925a-1fdd7261035b",
+              "Text": "Because every subsequent element must be re-indexed, this operation runs in O(n) time.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "f0ae2003-ff07-432e-893e-673715f8f223",
+              "Text": "Example: \u0060const first = arr.shift();\u0060 removes the element at index 0 and shifts all others left by one.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "1199a88a-7127-4477-afba-ec570eda80e9",
+          "TopicId": "f30cfef1-3ec0-4cec-b3f6-a2206ec744c1",
+          "Title": "Deleting from the Middle of an Array",
+          "BodyText": "Deleting an element at an arbitrary index requires locating the target element and shifting all subsequent elements to close the gap.",
+          "Notes": "Middle deletions are common in scenarios such as removing a specific user from a list or eliminating a task from a to-do array.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T13:53:53.5313382-04:00",
+          "ModifiedDate": "2026-06-26T13:53:53.5313382-04:00",
+          "Items": [
+            {
+              "Id": "e7780c86-ab82-41f3-9633-bf26ecd25f88",
+              "Text": "JavaScript\u0027s \u0060splice(index, 1)\u0060 method removes one element at the specified index and re-indexes the remaining elements.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "6ce31373-ef46-4269-9641-a52279ccc17a",
+              "Text": "This operation is O(n) in the worst case because up to n-1 elements may need to be shifted.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "9ddd8886-c704-4cf9-aa61-077ee3f18153",
+              "Text": "Example: \u0060arr.splice(2, 1);\u0060 removes the element at index 2 and shifts all elements after it one position to the left.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "08807f6b-835b-4032-bf4f-fad4b092adbb",
+          "TopicId": "f30cfef1-3ec0-4cec-b3f6-a2206ec744c1",
+          "Title": "Deleting by Value",
+          "BodyText": "When the index of a target element is unknown, deletion by value requires first searching for the element and then removing it.",
+          "Notes": "This pattern combines a search operation with a deletion operation, so its efficiency depends on both how quickly the element is found and the cost of the removal itself.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T13:53:53.5313382-04:00",
+          "ModifiedDate": "2026-06-26T13:53:53.5313382-04:00",
+          "Items": [
+            {
+              "Id": "9a4557ac-25cf-4906-9916-190d9403cba6",
+              "Text": "Use \u0060indexOf()\u0060 or \u0060findIndex()\u0060 to locate the index of the element matching the target value.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "3128bc93-1690-43bf-9fb2-e31788544460",
+              "Text": "Once the index is found, \u0060splice()\u0060 can be used to remove that element from the array.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "2c82b2c7-7675-42cb-b096-c857fa6170bf",
+              "Text": "Example: \u0060const idx = arr.indexOf(target); if (idx !== -1) arr.splice(idx, 1);\u0060 safely removes the first occurrence of \u0060target\u0060.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "bbcf7d90-40d9-4a66-a228-eca150768a9f",
+              "Text": "If the value does not exist, a guard clause (checking for -1) prevents unintended deletions.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "d51de4fd-6148-412e-a1e1-607ccbfa15af",
+          "TopicId": "f30cfef1-3ec0-4cec-b3f6-a2206ec744c1",
+          "Title": "Filtering as a Non-Mutating Deletion",
+          "BodyText": "JavaScript\u0027s \u0060filter()\u0060 method provides a way to create a new array with certain elements excluded, without modifying the original array.",
+          "Notes": "This approach is preferred in functional programming patterns and React state management, where immutability is important.",
+          "SortOrder": 5,
+          "CreatedDate": "2026-06-26T13:53:53.5313382-04:00",
+          "ModifiedDate": "2026-06-26T13:53:53.5313382-04:00",
+          "Items": [
+            {
+              "Id": "384c0189-f996-45f7-b4d9-3239f6cb49cf",
+              "Text": "\u0060filter()\u0060 returns a new array containing only the elements that pass a given condition, effectively excluding the unwanted elements.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "dfd5a412-9fd8-4427-b664-852c100ac5dd",
+              "Text": "This operation runs in O(n) time and uses O(n) space for the new array.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "0b423235-f16d-4b98-b9db-c85018bab707",
+              "Text": "Example: \u0060const updated = arr.filter(item =\u003E item !== target);\u0060 returns a new array with all occurrences of \u0060target\u0060 removed.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "4742d0eb-c58f-469f-8bf0-9e3cd3ad96ec",
+              "Text": "Unlike \u0060splice()\u0060, \u0060filter()\u0060 removes all matching elements and preserves the original array unchanged.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "9abc57ee-4192-4c20-a938-1d186a4544db",
+          "TopicId": "f30cfef1-3ec0-4cec-b3f6-a2206ec744c1",
+          "Title": "Time Complexity of Deletion Operations",
+          "BodyText": "The efficiency of a deletion operation varies based on the position of the element and the method used, and this has practical implications for algorithm design.",
+          "Notes": "Choosing the right deletion strategy can significantly impact performance, especially when working with large datasets or within loops.",
+          "SortOrder": 6,
+          "CreatedDate": "2026-06-26T13:53:53.5313382-04:00",
+          "ModifiedDate": "2026-06-26T13:53:53.5313382-04:00",
+          "Items": [
+            {
+              "Id": "66cc9ba8-85fe-42a4-ad2a-1fed3c92fddd",
+              "Text": "Deleting from the end with \u0060pop()\u0060 is O(1) \u2014 constant time \u2014 making it the most efficient deletion.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "07132511-f817-4ba8-8cd4-a4717cfe85d8",
+              "Text": "Deleting from the beginning with \u0060shift()\u0060 or from the middle with \u0060splice()\u0060 is O(n) due to the need to re-index subsequent elements.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "1d0cc04d-563b-4341-b246-945037356660",
+              "Text": "Repeated deletions from the beginning or middle of large arrays can degrade overall algorithm performance significantly.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "c250dfef-050d-43f7-ba09-9bdf58a19cbd",
+              "Text": "When multiple deletions are needed, using \u0060filter()\u0060 once is often more efficient than calling \u0060splice()\u0060 in a loop.",
+              "SortOrder": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "35dd78cb-d2c4-4486-bf5f-498f5b9ba9f7",
+      "Title": "Searching Algorithms",
+      "Summary": "Introduces common searching techniques such as linear search and binary search, with hands-on JavaScript implementations applied to lists and arrays.",
+      "SortOrder": 3,
+      "CreatedDate": "2026-06-26T13:52:47.8263609-04:00",
+      "ModifiedDate": "2026-06-26T13:52:47.8263609-04:00",
+      "Elements": [
+        {
+          "Id": "28ae2c22-c7ec-4029-9313-0ae34754de76",
+          "TopicId": "35dd78cb-d2c4-4486-bf5f-498f5b9ba9f7",
+          "Title": "What Is a Searching Algorithm?",
+          "BodyText": "A searching algorithm is a step-by-step procedure used to locate a specific element within a list or array.",
+          "Notes": "Searching is one of the most fundamental operations in computer science, and choosing the right algorithm can have a significant impact on performance.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T13:54:12.2148279-04:00",
+          "ModifiedDate": "2026-06-26T13:54:12.2148279-04:00",
+          "Items": [
+            {
+              "Id": "8c4e25a8-e2c5-40ee-9e57-20de1aa425b1",
+              "Text": "Searching algorithms scan through data structures to find a target value or determine it does not exist.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "35cb5866-fad6-4278-a234-ad434825595b",
+              "Text": "The two most common searching algorithms for lists and arrays are linear search and binary search.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "443d5887-5b56-4f0d-adbf-201fdd5344e3",
+              "Text": "Each algorithm has different requirements, best-use cases, and time complexities.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "cf8cbf9e-8665-41e6-8e4a-7d54175f8b25",
+          "TopicId": "35dd78cb-d2c4-4486-bf5f-498f5b9ba9f7",
+          "Title": "Linear Search",
+          "BodyText": "Linear search checks each element in a list one by one from the beginning until the target value is found or the list is exhausted.",
+          "Notes": "Example: Given [4, 7, 2, 9, 1], searching for 9 checks index 0, 1, 2, then finds it at index 3.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T13:54:12.2148279-04:00",
+          "ModifiedDate": "2026-06-26T13:54:12.2148279-04:00",
+          "Items": [
+            {
+              "Id": "de9ab7ed-bba9-47cf-a17b-991836ef1241",
+              "Text": "Linear search works on both sorted and unsorted arrays, making it universally applicable.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "c13a4b19-2b8a-4dcf-909c-9d28bb037fcd",
+              "Text": "Its time complexity is O(n) in the worst case, where n is the number of elements in the array.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "befd2b10-c019-41be-914b-ab93a316f8c9",
+              "Text": "It is simple to implement but inefficient for large datasets.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "1096d0a6-7851-4f46-b506-b1110c77b9b9",
+          "TopicId": "35dd78cb-d2c4-4486-bf5f-498f5b9ba9f7",
+          "Title": "Implementing Linear Search in JavaScript",
+          "BodyText": "A linear search function in JavaScript iterates through an array using a loop and returns the index of the target element if found.",
+          "Notes": "function linearSearch(arr, target) { for (let i = 0; i \u003C arr.length; i\u002B\u002B) { if (arr[i] === target) return i; } return -1; } \u2014 returning -1 is a common convention indicating the element was not found.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T13:54:12.2148279-04:00",
+          "ModifiedDate": "2026-06-26T13:54:12.2148279-04:00",
+          "Items": [
+            {
+              "Id": "7866cb98-899f-41de-8831-ae727ee482a9",
+              "Text": "Use a for loop or forEach to traverse every element in the array sequentially.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "e1749faa-d03d-4695-bc4c-61fc56a4ab96",
+              "Text": "Compare each element to the target value using strict equality (===).",
+              "SortOrder": 1
+            },
+            {
+              "Id": "0265f6f1-827b-4cec-84a1-3f46ce74d4be",
+              "Text": "Return the index when a match is found, or return -1 if the loop completes without finding the target.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "ee808150-97dc-458b-a9a9-751c3f0c2571",
+          "TopicId": "35dd78cb-d2c4-4486-bf5f-498f5b9ba9f7",
+          "Title": "Binary Search",
+          "BodyText": "Binary search is an efficient algorithm that repeatedly divides a sorted array in half to narrow down the location of a target value.",
+          "Notes": "Binary search requires the array to be sorted beforehand. Example: Searching for 7 in [1, 3, 5, 7, 9, 11] \u2014 the midpoint is 5, 7 is greater, so the left half is discarded and the search continues on the right.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T13:54:12.2148279-04:00",
+          "ModifiedDate": "2026-06-26T13:54:12.2148279-04:00",
+          "Items": [
+            {
+              "Id": "880ef700-1b8c-4b6c-8cfb-365da8cc9c04",
+              "Text": "Binary search only works correctly on sorted arrays.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "227858f7-55bd-470b-a7a5-4da47dcf621f",
+              "Text": "At each step, the algorithm compares the target to the middle element and eliminates half the remaining elements.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "b0e8d53c-c303-4d48-864e-6214ac72e8a8",
+              "Text": "Its time complexity is O(log n), making it dramatically faster than linear search for large datasets.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "80184292-bddd-4fe3-8aa8-dfd887e6b503",
+          "TopicId": "35dd78cb-d2c4-4486-bf5f-498f5b9ba9f7",
+          "Title": "Implementing Binary Search in JavaScript",
+          "BodyText": "A binary search function in JavaScript maintains low and high pointer variables to track the current search boundaries within the sorted array.",
+          "Notes": "function binarySearch(arr, target) { let low = 0, high = arr.length - 1; while (low \u003C= high) { let mid = Math.floor((low \u002B high) / 2); if (arr[mid] === target) return mid; else if (arr[mid] \u003C target) low = mid \u002B 1; else high = mid - 1; } return -1; }",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T13:54:12.2148279-04:00",
+          "ModifiedDate": "2026-06-26T13:54:12.2148279-04:00",
+          "Items": [
+            {
+              "Id": "93820c33-6778-49ad-a930-161e03f44035",
+              "Text": "Initialize two pointers \u2014 low at index 0 and high at the last index \u2014 to define the search range.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "3b2aac5b-ff38-40be-ab28-01309a8fb0ef",
+              "Text": "Calculate the midpoint index using Math.floor((low \u002B high) / 2) to avoid fractional indices.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "9f2bf1dc-d590-4b9c-bcd3-caeffd973fcb",
+              "Text": "Adjust the low or high pointer based on whether the target is greater or less than the midpoint value, then repeat until found or boundaries cross.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "6a549bdb-2ba1-47aa-abad-3aa703c040d1",
+          "TopicId": "35dd78cb-d2c4-4486-bf5f-498f5b9ba9f7",
+          "Title": "Comparing Linear Search and Binary Search",
+          "BodyText": "Understanding when to use linear versus binary search depends on factors such as whether the data is sorted and the size of the dataset.",
+          "Notes": "For small or unsorted datasets, linear search is often the practical choice. For large sorted datasets, binary search provides a significant performance advantage.",
+          "SortOrder": 5,
+          "CreatedDate": "2026-06-26T13:54:12.2148279-04:00",
+          "ModifiedDate": "2026-06-26T13:54:12.2148279-04:00",
+          "Items": [
+            {
+              "Id": "35311417-a5e8-46ba-9e87-263dfc92315a",
+              "Text": "Linear search has O(n) time complexity; binary search has O(log n) time complexity.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "f0e4b787-a372-4b56-9835-fe257b98d7ba",
+              "Text": "Linear search requires no preconditions on the array; binary search requires the array to be sorted.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "46118030-1c21-44bc-8c28-215ca7f06d99",
+              "Text": "Binary search is preferred for performance-critical applications working with large sorted datasets, while linear search remains useful for small or unsorted collections.",
+              "SortOrder": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "c10d5c9a-a7d5-4e42-b3cf-35bec51e494c",
+      "Title": "Traversal Techniques",
+      "Summary": "Examines how to systematically visit and process each element in a list or array, including various traversal patterns implemented in JavaScript.",
+      "SortOrder": 4,
+      "CreatedDate": "2026-06-26T13:52:47.8263609-04:00",
+      "ModifiedDate": "2026-06-26T13:52:47.8263609-04:00",
+      "Elements": [
+        {
+          "Id": "8534081b-6305-4cea-b3b6-1e9ed65aafb1",
+          "TopicId": "c10d5c9a-a7d5-4e42-b3cf-35bec51e494c",
+          "Title": "What Is Traversal?",
+          "BodyText": "Traversal is the process of systematically visiting every element in a list or array exactly once in order to read or process its value.",
+          "Notes": "Traversal is the foundation of most array algorithms \u2014 searching, summing, filtering, and transforming all depend on it.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T13:54:36.4439398-04:00",
+          "ModifiedDate": "2026-06-26T13:54:36.4439398-04:00",
+          "Items": [
+            {
+              "Id": "9b6998d8-ff0c-47fe-84a0-444fbb5ec9a7",
+              "Text": "A traversal visits each element in a defined order, ensuring no element is skipped or visited twice.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "4b02e959-8a81-4fc9-b030-2de410038e44",
+              "Text": "The result of a traversal depends on what operation is performed at each visit, such as printing, accumulating, or comparing values.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "d0d0d2b8-9e72-4cf8-bc13-c0ce6bd0ae75",
+              "Text": "Traversal time complexity is generally O(n) because every element must be visited at least once.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "766f69f1-0150-4948-abee-c78916c2a93a",
+          "TopicId": "c10d5c9a-a7d5-4e42-b3cf-35bec51e494c",
+          "Title": "Forward Traversal with a for Loop",
+          "BodyText": "The classic forward traversal iterates from index 0 to the last index using a standard for loop in JavaScript.",
+          "Notes": "Example: for (let i = 0; i \u003C arr.length; i\u002B\u002B) { console.log(arr[i]); } \u2014 this visits each element from left to right.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T13:54:36.4439398-04:00",
+          "ModifiedDate": "2026-06-26T13:54:36.4439398-04:00",
+          "Items": [
+            {
+              "Id": "18a702c7-9cb7-46cd-a8a1-566192716134",
+              "Text": "The loop counter starts at 0, matching the zero-based index of JavaScript arrays.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "17b2c1d7-9ed4-4437-b5eb-2a98710c69bc",
+              "Text": "The condition i \u003C arr.length ensures the loop stops after the last valid index, preventing out-of-bounds access.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "dd09ed49-2c63-4355-b8e4-aa509fe9a12c",
+              "Text": "Each iteration increments the index by 1, processing elements in sequential order.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "26eb5cf0-897d-4f4e-97d2-ae835412e06f",
+          "TopicId": "c10d5c9a-a7d5-4e42-b3cf-35bec51e494c",
+          "Title": "Reverse Traversal",
+          "BodyText": "Reverse traversal visits elements from the last index down to index 0, which is useful for certain algorithms such as in-place reversal or deletion while iterating.",
+          "Notes": "Example: for (let i = arr.length - 1; i \u003E= 0; i--) { console.log(arr[i]); }",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T13:54:36.4439398-04:00",
+          "ModifiedDate": "2026-06-26T13:54:36.4439398-04:00",
+          "Items": [
+            {
+              "Id": "fb731fc2-4e4f-4687-abb2-d906235047fa",
+              "Text": "The loop counter is initialized to arr.length - 1, pointing to the last element.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "e5c649a2-a2c0-4a5d-977b-a811b6de1a2f",
+              "Text": "The loop continues while i \u003E= 0, stopping after the first element is processed.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "8304a78b-6629-45c5-9670-267aa8c3fb05",
+              "Text": "Reverse traversal is particularly important when removing elements during iteration, since it avoids index-shifting side effects.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "6ee784fc-99eb-47a6-b21e-af573cc0703c",
+          "TopicId": "c10d5c9a-a7d5-4e42-b3cf-35bec51e494c",
+          "Title": "Traversal with for...of",
+          "BodyText": "JavaScript\u0027s for...of loop provides a cleaner syntax for traversing arrays when the index is not needed.",
+          "Notes": "Example: for (const element of arr) { console.log(element); } \u2014 readable and concise for value-focused operations.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T13:54:36.4439398-04:00",
+          "ModifiedDate": "2026-06-26T13:54:36.4439398-04:00",
+          "Items": [
+            {
+              "Id": "effe2a72-1dfa-4676-b4ac-24e2dc8aa9bf",
+              "Text": "for...of directly yields each element\u0027s value rather than its index, simplifying code when index tracking is unnecessary.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "3b00ef6c-39ab-4f96-82cb-9f2111317c47",
+              "Text": "It works with any iterable object in JavaScript, not just arrays.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "63653e6e-3d75-467a-88b2-b2b4f5d7e260",
+              "Text": "When both the index and value are needed, for...of can be combined with arr.entries() to yield [index, value] pairs.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "fc63e15e-24a0-4a71-8683-76a96af61870",
+          "TopicId": "c10d5c9a-a7d5-4e42-b3cf-35bec51e494c",
+          "Title": "Traversal with Higher-Order Methods",
+          "BodyText": "JavaScript arrays provide built-in higher-order methods such as forEach, map, filter, and reduce that encapsulate traversal logic internally.",
+          "Notes": "Example: arr.forEach((element, index) =\u003E console.log(index, element)); \u2014 the callback is invoked once per element.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T13:54:36.4439398-04:00",
+          "ModifiedDate": "2026-06-26T13:54:36.4439398-04:00",
+          "Items": [
+            {
+              "Id": "508de21c-2eae-409d-a948-d126a5507ffd",
+              "Text": "forEach executes a callback for each element and is used when the goal is to perform a side effect, such as logging or updating an external variable.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "6a6c98b6-b755-4f0e-b8e1-a15f86f9b710",
+              "Text": "map traverses the array and returns a new array containing the result of applying the callback to each element.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "d2f151ab-e838-4bed-aa60-1c10c9b85042",
+              "Text": "filter traverses the array and returns a new array containing only the elements for which the callback returns true.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "c1dfb119-18a7-439d-901a-b7f5334dbf38",
+              "Text": "reduce traverses the array and accumulates all elements into a single output value using a callback and an initial accumulator.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "39f2221f-1478-45b9-aafe-7a0fc9f19b28",
+          "TopicId": "c10d5c9a-a7d5-4e42-b3cf-35bec51e494c",
+          "Title": "Step and Skip Traversal Patterns",
+          "BodyText": "Not all traversals visit every consecutive element; some advance by more than one index per step or visit only elements meeting a condition.",
+          "Notes": "Step traversal is commonly used in algorithms that process pairs, chunks, or alternating elements, such as even/odd index separation.",
+          "SortOrder": 5,
+          "CreatedDate": "2026-06-26T13:54:36.4439398-04:00",
+          "ModifiedDate": "2026-06-26T13:54:36.4439398-04:00",
+          "Items": [
+            {
+              "Id": "1d7ecf6f-e8f8-4147-aa3a-f3f3b7ae95ad",
+              "Text": "A step traversal increments the loop counter by a value greater than 1, for example i \u002B= 2 to visit only even-indexed elements.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "43acb5e7-6669-4090-b6c3-a99f6fd38c6e",
+              "Text": "Conditional skip traversal uses an if statement inside the loop to bypass elements that do not meet a specified criterion.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "040f83be-601a-4361-bd3d-eb768f853037",
+              "Text": "These patterns allow partial traversal of an array without constructing a filtered copy first, which can reduce memory usage.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "39052b60-b0b4-4304-ac4a-374b1780414b",
+          "TopicId": "c10d5c9a-a7d5-4e42-b3cf-35bec51e494c",
+          "Title": "Nested Traversal for Multi-Dimensional Arrays",
+          "BodyText": "When working with arrays of arrays (2D or multi-dimensional arrays), nested loops are used to traverse both the outer and inner arrays.",
+          "Notes": "Example: for (let i = 0; i \u003C matrix.length; i\u002B\u002B) { for (let j = 0; j \u003C matrix[i].length; j\u002B\u002B) { console.log(matrix[i][j]); } }",
+          "SortOrder": 6,
+          "CreatedDate": "2026-06-26T13:54:36.4439398-04:00",
+          "ModifiedDate": "2026-06-26T13:54:36.4439398-04:00",
+          "Items": [
+            {
+              "Id": "3c0edb06-ae39-4f74-b19f-e7c5f2bd0e58",
+              "Text": "The outer loop iterates over each row (sub-array), while the inner loop iterates over each element within that row.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "40b68d7f-8970-4f97-84ab-704409aa9e82",
+              "Text": "The time complexity of a full nested traversal over an m \u00D7 n matrix is O(m \u00D7 n), since every element is visited once.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "9118027e-20c7-4b4a-b1e4-d894c5fa9358",
+              "Text": "Nested traversal is the basis for common matrix algorithms such as transposition, rotation, and search operations.",
+              "SortOrder": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "0f6991ba-46ce-415b-968e-b1c2a09d3fb1",
+      "Title": "Time and Space Complexity Analysis",
+      "Summary": "Analyzes the efficiency of list and array operations using Big O notation, comparing the time and space complexity of insertion, deletion, searching, and traversal algorithms.",
+      "SortOrder": 5,
+      "CreatedDate": "2026-06-26T13:52:47.8263609-04:00",
+      "ModifiedDate": "2026-06-26T13:52:47.8263609-04:00",
+      "Elements": [
+        {
+          "Id": "e16413fc-bd46-4953-8f30-1f40ad4bfbe0",
+          "TopicId": "0f6991ba-46ce-415b-968e-b1c2a09d3fb1",
+          "Title": "Introduction to Big O Notation",
+          "BodyText": "Big O notation is the standard language used to describe how the runtime or memory usage of an algorithm scales as the input size grows.",
+          "Notes": "For example, O(1) means constant time \u2014 the operation takes the same amount of time regardless of array size, while O(n) means the time grows linearly with the number of elements.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T13:55:02.0386565-04:00",
+          "ModifiedDate": "2026-06-26T13:55:02.0386565-04:00",
+          "Items": [
+            {
+              "Id": "8ff63659-dc7f-41c7-9099-3c542173e8cf",
+              "Text": "Big O notation expresses the worst-case upper bound of an algorithm\u0027s time or space requirements.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "e4fc8899-1260-483e-b625-83da61076218",
+              "Text": "Common complexities from most to least efficient include O(1), O(log n), O(n), O(n log n), and O(n\u00B2).",
+              "SortOrder": 1
+            },
+            {
+              "Id": "a20b6a6c-283f-4a73-8998-5a374cf73ac5",
+              "Text": "Understanding Big O allows developers to compare algorithms and choose the most efficient solution for a given problem.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "c6371b3c-a016-47c4-9c94-bc72bedee9ff",
+          "TopicId": "0f6991ba-46ce-415b-968e-b1c2a09d3fb1",
+          "Title": "Time Complexity of Traversal",
+          "BodyText": "Traversal means visiting every element in a list or array, and its time complexity is directly tied to the number of elements present.",
+          "Notes": "A simple for-loop that prints every element in a JavaScript array of length n executes exactly n iterations, making it a textbook O(n) operation.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T13:55:02.0386565-04:00",
+          "ModifiedDate": "2026-06-26T13:55:02.0386565-04:00",
+          "Items": [
+            {
+              "Id": "60283f95-42fe-4879-89fc-8eb1ac1eeb1c",
+              "Text": "Traversal always runs in O(n) time because each of the n elements must be visited at least once.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "a92d3b97-eb8b-4f06-bacb-553c327caf26",
+              "Text": "Nested traversals, such as comparing every pair of elements, escalate complexity to O(n\u00B2).",
+              "SortOrder": 1
+            },
+            {
+              "Id": "f51c61b1-11cb-4033-a3b4-98c648575197",
+              "Text": "Space complexity for a basic traversal is O(1) if no additional data structures are created during the pass.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "a0982d26-4be3-4860-afe6-06b623a6ff0c",
+          "TopicId": "0f6991ba-46ce-415b-968e-b1c2a09d3fb1",
+          "Title": "Time Complexity of Searching",
+          "BodyText": "Searching algorithms vary significantly in efficiency depending on whether the data is sorted and which strategy is used.",
+          "Notes": "Linear search scans from index 0 to the end; binary search repeatedly halves the search space, requiring the array to be sorted first.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T13:55:02.0386565-04:00",
+          "ModifiedDate": "2026-06-26T13:55:02.0386565-04:00",
+          "Items": [
+            {
+              "Id": "d22dcdb4-583f-4eba-b2c3-b60bb5e9e11f",
+              "Text": "Linear search has a time complexity of O(n) because, in the worst case, every element must be examined.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "36dd21c5-e584-4939-8c91-b4dba50d0227",
+              "Text": "Binary search achieves O(log n) time by eliminating half of the remaining elements with each comparison.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "23d23240-3275-446b-af12-c7462f2879ee",
+              "Text": "The space complexity of both linear and binary search (iterative) is O(1), as no extra memory proportional to input is needed.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "4ccf937d-1735-46e2-a9cb-1fc066a81474",
+          "TopicId": "0f6991ba-46ce-415b-968e-b1c2a09d3fb1",
+          "Title": "Time Complexity of Insertion",
+          "BodyText": "Inserting an element into a list or array has different costs depending on where the insertion occurs and what kind of data structure is used.",
+          "Notes": "In JavaScript, pushing to the end of an array with Array.push() is O(1) amortized, while unshift() inserts at the front and is O(n) because all existing elements must shift.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T13:55:02.0386565-04:00",
+          "ModifiedDate": "2026-06-26T13:55:02.0386565-04:00",
+          "Items": [
+            {
+              "Id": "8b19566a-909e-4389-994a-a49e2f5659a7",
+              "Text": "Inserting at the end of an array is O(1) amortized, assuming no reallocation is needed.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "4f40255a-3c16-4dd3-ae65-54be407dcee9",
+              "Text": "Inserting at the beginning or middle of an array is O(n) because subsequent elements must be shifted to make room.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "958343fb-1cce-4aae-a675-83b81f185c0c",
+              "Text": "Insertion into a linked list at a known node is O(1), but finding that node first may cost O(n).",
+              "SortOrder": 2
+            },
+            {
+              "Id": "90b2ae89-bb45-4d55-b39e-0163176ec934",
+              "Text": "Space complexity for insertion is generally O(1) unless the operation triggers array resizing or memory reallocation.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "184e7e14-1eb8-4130-860d-c048df6d878b",
+          "TopicId": "0f6991ba-46ce-415b-968e-b1c2a09d3fb1",
+          "Title": "Time Complexity of Deletion",
+          "BodyText": "Like insertion, the cost of deleting an element depends heavily on its position within the array or list.",
+          "Notes": "Deleting the last element of a JavaScript array with Array.pop() is O(1), while Array.splice() used on an arbitrary index is O(n) due to element shifting.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T13:55:02.0386565-04:00",
+          "ModifiedDate": "2026-06-26T13:55:02.0386565-04:00",
+          "Items": [
+            {
+              "Id": "09bd9110-f999-4e4b-bb94-9d06a13c95f7",
+              "Text": "Deleting from the end of an array is O(1) because no shifting of other elements is required.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "5c107fb0-8f2d-43d0-ba3c-5d6485f6f2f6",
+              "Text": "Deleting from the beginning or middle is O(n) since all subsequent elements must shift one position forward.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "b444f62e-f9b3-45ab-bf43-e9e493f5733e",
+              "Text": "In a linked list, deletion at a known pointer is O(1), but locating the target node is O(n) in the worst case.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "afc5cbfe-60fa-4d4f-979d-7618e2638074",
+              "Text": "Space complexity for deletion operations is typically O(1), as no additional memory proportional to input size is allocated.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "8aeb37b1-22e1-472e-8a99-758bfa63ee69",
+          "TopicId": "0f6991ba-46ce-415b-968e-b1c2a09d3fb1",
+          "Title": "Space Complexity Considerations",
+          "BodyText": "Space complexity measures the total memory an algorithm requires relative to its input size, including both auxiliary memory and the input itself.",
+          "Notes": "An in-place sorting algorithm like insertion sort uses O(1) auxiliary space, while merge sort requires O(n) additional space for temporary arrays during merging.",
+          "SortOrder": 5,
+          "CreatedDate": "2026-06-26T13:55:02.0386565-04:00",
+          "ModifiedDate": "2026-06-26T13:55:02.0386565-04:00",
+          "Items": [
+            {
+              "Id": "09dd283c-b020-43a5-bd17-6e53903a3ef6",
+              "Text": "Auxiliary space refers only to the extra memory an algorithm uses beyond storing its input data.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "06c3d825-e176-4165-b966-453a91f2c179",
+              "Text": "Recursive algorithms often incur O(n) space overhead from call stack frames, even if no extra data structures are created.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "a14149ca-5211-4b0f-85d7-64dc3fe92480",
+              "Text": "Choosing an in-place algorithm trades additional memory savings for potentially higher time complexity.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "34102519-9f5d-4cfb-ae50-0bbc3ff9a63d",
+              "Text": "When evaluating algorithms for memory-constrained environments, space complexity can be as critical as time complexity.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "06b0c01d-4692-40c7-9627-19df495d95df",
+          "TopicId": "0f6991ba-46ce-415b-968e-b1c2a09d3fb1",
+          "Title": "Comparing Operations Across Data Structures",
+          "BodyText": "Arrays and linked lists expose the same logical operations \u2014 insert, delete, search, traverse \u2014 but their underlying implementations produce very different complexity profiles.",
+          "Notes": "Choosing between an array and a linked list often comes down to which operations are most frequent: arrays excel at random access while linked lists excel at frequent insertions and deletions at known positions.",
+          "SortOrder": 6,
+          "CreatedDate": "2026-06-26T13:55:02.0386565-04:00",
+          "ModifiedDate": "2026-06-26T13:55:02.0386565-04:00",
+          "Items": [
+            {
+              "Id": "2404b53e-c995-44fb-a92b-bea9a2447bf4",
+              "Text": "Arrays provide O(1) random access by index, whereas linked lists require O(n) traversal to reach an arbitrary position.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "2692aa9d-bb3a-45c8-bd8d-f3d058d9670d",
+              "Text": "Linked lists offer O(1) insertion and deletion at a known node, avoiding the element-shifting cost arrays incur.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "a7dee016-2b80-4433-8db3-59939b08b450",
+              "Text": "Search is O(n) for both unsorted arrays and singly linked lists, since neither supports direct indexed lookup without traversal.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "43f6e861-4a5f-4ad8-b3f5-fbad4278bbf2",
+              "Text": "Understanding these trade-offs allows developers to select the most appropriate data structure for the performance requirements of their application.",
+              "SortOrder": 3
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "TotalElementCount": 38
+}

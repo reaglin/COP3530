@@ -1,0 +1,35 @@
+﻿{
+  "ModuleName": "Advanced Tree Structures: AVL Trees, Heaps, and Tries",
+  "CourseName": "COP3530 - Data Structures",
+  "ModuleFolderName": "Advanced_Tree_Structures",
+  "GeneratedUtc": "2026-06-27T17:20:20.7160644Z",
+  "HtmlIndexSignature": "18A2F08CFAA17D7430480A430FA4CB46447D06264FE2D46277BCD96F5AE1DF05",
+  "Artifacts": [
+    {
+      "Name": "Module Topics",
+      "Type": "Module Topics",
+      "FileType": ".json",
+      "Description": "Outlines the module\u0027s topics progressing from BST fundamentals and imbalance problems through AVL tree properties, balance factors, and performance analysis, serving as a navigational overview for learners and instructors to understand the scope and sequence of the module.",
+      "CustomName": null,
+      "FilePath": "C:\\Users\\ronal\\OneDrive - Daytona State College\\Documents\\PreseMaker\\Courses\\COP3530_-_Data_Structures\\Modules\\Advanced_Tree_Structures\\hierarchy.json",
+      "ViewerKind": 2,
+      "WebHref": "content/module_topics.html",
+      "LocalHref": "module_topics.html",
+      "RawHref": "../hierarchy.json",
+      "SourceModifiedTicks": 639180950472242110
+    },
+    {
+      "Name": "Module Topics (HTML)",
+      "Type": "Module Topics (HTML)",
+      "FileType": ".html",
+      "Description": "This page outlines the topics covered in the module \u2014 including BST limitations, AVL tree rotations and balancing, heaps, and tries \u2014 giving learners and instructors an overview of what will be studied and in what order.",
+      "CustomName": null,
+      "FilePath": "C:\\Users\\ronal\\OneDrive - Daytona State College\\Documents\\PreseMaker\\Courses\\COP3530_-_Data_Structures\\Modules\\Advanced_Tree_Structures\\output\\module_topics.html",
+      "ViewerKind": 1,
+      "WebHref": "",
+      "LocalHref": "module_topics.html",
+      "RawHref": "",
+      "SourceModifiedTicks": 639181685503545805
+    }
+  ]
+}

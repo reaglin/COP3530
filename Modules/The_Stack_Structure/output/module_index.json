@@ -1,0 +1,35 @@
+﻿{
+  "ModuleName": "The Stack: Structure and Use Cases",
+  "CourseName": "COP3530 - Data Structures",
+  "ModuleFolderName": "The_Stack_Structure",
+  "GeneratedUtc": "2026-06-27T17:20:20.5570757Z",
+  "HtmlIndexSignature": "B1F9C71666870B6DCE59E7C767D9E118606893E31DFBA78290AA64665421A489",
+  "Artifacts": [
+    {
+      "Name": "Module Topics",
+      "Type": "Module Topics",
+      "FileType": ".json",
+      "Description": "Covers stack data structure concepts including the LIFO principle, core operations (push, pop), internal implementation details, and hands-on JavaScript class construction, serving as the navigational outline that guides learners through the module\u0027s progression of topics.",
+      "CustomName": null,
+      "FilePath": "C:\\Users\\ronal\\OneDrive - Daytona State College\\Documents\\PreseMaker\\Courses\\COP3530_-_Data_Structures\\Modules\\The_Stack_Structure\\hierarchy.json",
+      "ViewerKind": 2,
+      "WebHref": "content/module_topics.html",
+      "LocalHref": "module_topics.html",
+      "RawHref": "../hierarchy.json",
+      "SourceModifiedTicks": 639180934483347298
+    },
+    {
+      "Name": "Module Topics (HTML)",
+      "Type": "Module Topics (HTML)",
+      "FileType": ".html",
+      "Description": "Outlines the module\u0027s topics on the stack data structure, covering what a stack is, its LIFO organization, core operations, and use cases, giving learners and instructors a structured overview of what will be taught before engaging with detailed materials.",
+      "CustomName": null,
+      "FilePath": "C:\\Users\\ronal\\OneDrive - Daytona State College\\Documents\\PreseMaker\\Courses\\COP3530_-_Data_Structures\\Modules\\The_Stack_Structure\\output\\module_topics.html",
+      "ViewerKind": 1,
+      "WebHref": "",
+      "LocalHref": "module_topics.html",
+      "RawHref": "",
+      "SourceModifiedTicks": 639181682212113349
+    }
+  ]
+}

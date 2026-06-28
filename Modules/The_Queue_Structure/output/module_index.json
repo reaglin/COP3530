@@ -1,0 +1,35 @@
+﻿{
+  "ModuleName": "The Queue: Structure and Use Cases",
+  "CourseName": "COP3530 - Data Structures",
+  "ModuleFolderName": "The_Queue_Structure",
+  "GeneratedUtc": "2026-06-27T17:20:20.5737396Z",
+  "HtmlIndexSignature": "A22A2BEC1D39633E21EC1DD29567C91870BE90B6BB0E35D49154A6BB2720B730",
+  "Artifacts": [
+    {
+      "Name": "Module Topics",
+      "Type": "Module Topics",
+      "FileType": ".json",
+      "Description": "Outlines the module\u0027s learning topics covering queue fundamentals (FIFO principle, core terminology), standard operations (enqueue, dequeue, peek), and implementation approaches (array-based and linked list-based), serving as a navigational guide for learners and instructors to understand the scope and sequence of the module.",
+      "CustomName": null,
+      "FilePath": "C:\\Users\\ronal\\OneDrive - Daytona State College\\Documents\\PreseMaker\\Courses\\COP3530_-_Data_Structures\\Modules\\The_Queue_Structure\\hierarchy.json",
+      "ViewerKind": 2,
+      "WebHref": "content/module_topics.html",
+      "LocalHref": "module_topics.html",
+      "RawHref": "../hierarchy.json",
+      "SourceModifiedTicks": 639180935886954569
+    },
+    {
+      "Name": "Module Topics (HTML)",
+      "Type": "Module Topics (HTML)",
+      "FileType": ".html",
+      "Description": "Introduces the queue data structure by defining its ordered, FIFO organization and covering its core operations, structural properties, and real-world use cases; instructors use it as a topic outline and learners use it as a reading reference to understand how queues work and where they apply.",
+      "CustomName": null,
+      "FilePath": "C:\\Users\\ronal\\OneDrive - Daytona State College\\Documents\\PreseMaker\\Courses\\COP3530_-_Data_Structures\\Modules\\The_Queue_Structure\\output\\module_topics.html",
+      "ViewerKind": 1,
+      "WebHref": "",
+      "LocalHref": "module_topics.html",
+      "RawHref": "",
+      "SourceModifiedTicks": 639181682614730889
+    }
+  ]
+}

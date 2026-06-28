@@ -1,0 +1,174 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Big O Notation Fundamentals</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+</head><body>
+  <header>
+    <h1>Big O Notation Fundamentals</h1>
+  </header><main>
+    <div class="slide-card">
+      <div class="slide-header"><span class="slide-num">1</span><h2>Big O Notation Fundamentals</h2><span class="chevron">▶</span></div>
+      <div class="slide-body">
+        <p>When you write a program that processes data, one of the most important questions you can ask is: <em>how does the performance of this code change as the amount of data grows?</em> A function that works perfectly well on a list of ten items might grind to a halt on a list of ten million. Big O notation is the tool that software engineers and computer scientists use to answer this question precisely, consistently, and without getting distracted by irrelevant details like hardware speed or programming language quirks.</p>
+
+<p><strong>Big O notation</strong> is a mathematical way of describing the <em>growth rate</em> of an algorithm's resource usage — usually time, but sometimes memory — as the size of its input increases. It is written as <code>O(f(n))</code>, where <code>n</code> represents the size of the input and <code>f(n)</code> is a function that describes how the cost scales relative to that size. The key insight is that Big O focuses on what happens as <code>n</code> approaches infinity, which means it captures the long-term, large-scale behavior of an algorithm rather than its performance on any one specific input.</p>
+
+<p>Because Big O strips away hardware-specific constants and language-specific overhead, it gives you a <em>hardware-agnostic, language-agnostic</em> yardstick. An algorithm described as <code>O(n)</code> will scale linearly whether you run it in Python on a laptop or in C++ on a server. This universality is what makes Big O the standard vocabulary for discussing and comparing algorithmic efficiency across teams, textbooks, and decades of computer science literature.</p>
+
+<p>There are a few important principles that govern how Big O expressions are formed and simplified:</p>
+<ul>
+  <li><strong>Dominant term focus:</strong> Big O keeps only the term that grows the fastest as <code>n</code> increases. All slower-growing terms are discarded because they become insignificant at large scale.</li>
+  <li><strong>Constants are dropped:</strong> Multiplicative constants in front of terms are removed. The goal is to describe the <em>shape</em> of growth, not the precise step count.</li>
+  <li><strong>Worst-case thinking:</strong> Unless otherwise stated, Big O typically describes the worst-case scenario — the upper bound on how bad performance can get.</li>
+</ul>
+
+<p>With those principles in mind, let us explore the most fundamental complexity classes you will encounter when analyzing lists, arrays, and everyday algorithms.</p>
+
+<p><strong>O(1) — Constant Time Complexity</strong> is the gold standard of algorithmic efficiency. An operation is <code>O(1)</code> when its execution time does not depend on the size of the input at all. Whether <code>n</code> is 5 or 5,000,000, the operation takes roughly the same number of steps.</p>
+
+<p>The most classic example is accessing an element in an array by its index:</p>
+<pre><code>my_list = [10, 20, 30, 40, 50]
+element = my_list[2]   # Always one step, regardless of list length
+</code></pre>
+<p>Because arrays store elements in contiguous memory, the computer can calculate the exact memory address of any index in a single arithmetic operation. It does not need to scan through previous elements. This is true whether the list has 5 elements or 5 billion.</p>
+
+<p>It is important to understand that <code>O(1)</code> does not mean the operation takes exactly one step — it means the number of steps is <em>bounded by a constant</em> that does not grow with <code>n</code>. Consider a function that performs three fixed operations no matter what:</p>
+<pre><code>def get_first_and_last(arr):
+    first = arr[0]          # Step 1
+    last = arr[-1]          # Step 2
+    return (first, last)    # Step 3
+</code></pre>
+<p>This function always takes exactly 3 steps. You might be tempted to write <code>O(3)</code>, but because 3 is a constant, we drop it and simply say this is <code>O(1)</code>. The growth rate is flat — a horizontal line on a graph — which is why constant time is the most desirable complexity class.</p>
+
+<p><strong>O(n) — Linear Time Complexity</strong> describes algorithms whose number of operations grows in direct proportion to the size of the input. If the input doubles, the number of operations doubles. If the input grows by a factor of ten, so does the work. This produces a straight, upward-sloping line when plotted on a graph.</p>
+
+<p>The most common source of <code>O(n)</code> complexity is a single loop that visits every element in a collection exactly once:</p>
+<pre><code>def find_maximum(arr):
+    max_val = arr[0]
+    for element in arr:       # Loops n times
+        if element > max_val:
+            max_val = element
+    return max_val
+</code></pre>
+<p>To find the maximum value in an unsorted list, there is no shortcut — you must inspect every element at least once. If the list has 100 elements, the loop runs 100 times. If it has 1,000 elements, the loop runs 1,000 times. The relationship is perfectly linear, hence <code>O(n)</code>.</p>
+
+<p>Linear time algorithms are generally considered efficient and practical for large inputs when no faster alternative exists. Searching through an unsorted list, computing a sum, printing every element, or copying a list are all inherently <code>O(n)</code> tasks because you cannot avoid touching each element at least once. In many real-world situations, <code>O(n)</code> is the best you can achieve, and that is perfectly acceptable.</p>
+
+<p><strong>O(n²) — Quadratic Time Complexity</strong> arises most commonly from <em>nested loops</em> — a loop inside another loop — where both loops iterate over the full input. For every one of the <code>n</code> outer iterations, the inner loop also runs <code>n</code> times, producing <code>n × n = n²</code> total operations.</p>
+
+<p>A concrete example is the bubble sort algorithm:</p>
+<pre><code>def bubble_sort(arr):
+    n = len(arr)
+    for i in range(n):            # Outer loop: runs n times
+        for j in range(n - 1):    # Inner loop: runs ~n times
+            if arr[j] > arr[j + 1]:
+                arr[j], arr[j + 1] = arr[j + 1], arr[j]
+    return arr
+</code></pre>
+<p>If the list has 10 elements, this performs roughly 100 comparisons. If the list has 100 elements, it performs roughly 10,000 comparisons. If it has 1,000 elements, it performs roughly 1,000,000 comparisons. This explosive growth — where <strong>doubling the input quadruples the work</strong> — is the defining characteristic of <code>O(n²)</code>.</p>
+
+<p>Another common example of quadratic complexity is checking every pair of elements in a list:</p>
+<pre><code>def has_duplicate(arr):
+    for i in range(len(arr)):
+        for j in range(len(arr)):
+            if i != j and arr[i] == arr[j]:
+                return True
+    return False
+</code></pre>
+<p>Quadratic algorithms are sometimes perfectly acceptable for small inputs — sorting a list of 20 names with bubble sort is fast enough that the user will not notice. However, as data scales into the thousands or millions, <code>O(n²)</code> becomes prohibitively slow, and replacing it with a more efficient algorithm becomes critical.</p>
+
+<p><strong>Comparing Complexity Classes</strong> side by side makes the differences strikingly clear. Consider how many operations each class requires as <code>n</code> grows:</p>
+<ul>
+  <li><strong>n = 10:</strong> O(1) → 1 op, O(n) → 10 ops, O(n²) → 100 ops</li>
+  <li><strong>n = 100:</strong> O(1) → 1 op, O(n) → 100 ops, O(n²) → 10,000 ops</li>
+  <li><strong>n = 1,000:</strong> O(1) → 1 op, O(n) → 1,000 ops, O(n²) → 1,000,000 ops</li>
+  <li><strong>n = 1,000,000:</strong> O(1) → 1 op, O(n) → 1,000,000 ops, O(n²) → 1,000,000,000,000 ops</li>
+</ul>
+<p>The efficiency ordering from best to worst among these classes is: <code>O(1) &lt; O(n) &lt; O(n²)</code>. When plotted on a graph with input size on the horizontal axis and number of operations on the vertical axis, <code>O(1)</code> is a flat horizontal line, <code>O(n)</code> is a gentle diagonal line, and <code>O(n²)</code> is a steep upward-curving parabola. The visual contrast is dramatic and makes immediately clear why choosing a lower complexity class matters so much at scale.</p>
+
+<p>Choosing a lower complexity class — even at the cost of writing more complex code — is almost always the right trade-off when data is large. The extra time spent writing a smarter algorithm pays for itself many times over in runtime savings.</p>
+
+<p><strong>Dropping Constants and Non-Dominant Terms</strong> is what keeps Big O notation clean and focused on what actually matters. When you analyze an algorithm, you might find that it performs <code>3n + 7</code> operations. In Big O, you would express this as simply <code>O(n)</code>. Here is why both simplifications are valid:</p>
+
+<ul>
+  <li><strong>Dropping the constant multiplier (3):</strong> The factor of 3 just means each pass through the loop does three things instead of one. As <code>n</code> grows huge, whether you do 3,000,000 or 1,000,000 operations is far less important than the fact that the count grows linearly. The shape of growth — linear — is what Big O captures.</li>
+  <li><strong>Dropping the lower-order term (7):</strong> When <code>n</code> is a million, adding 7 is completely insignificant. At large <code>n</code>, the dominant term <code>3n</code> utterly dwarfs the constant <code>7</code>, so the <code>7</code> is dropped.</li>
+</ul>
+
+<p>Consider a slightly more complex example: suppose an algorithm runs in <code>5n² + 3n + 12</code> steps. Applying the simplification rules:</p>
+<pre><code>5n² + 3n + 12
+→ Drop constant multipliers: n² + n + 12   (shape is what matters)
+→ Drop non-dominant terms:   n²             (n² dominates n and 12 at large n)
+→ Result: O(n²)
+</code></pre>
+<p>This simplification is not just mathematical laziness — it reflects a genuine truth about algorithm behavior. At very large <code>n</code>, the dominant term overwhelmingly determines performance, and that is the term worth worrying about.</p>
+
+<p><strong>Why Big O Matters for Lists and Arrays</strong> becomes obvious when you consider how frequently these data structures appear in real programs and how different operations on them carry very different costs. Here is a quick summary of the Big O costs of common list operations:</p>
+<ul>
+  <li><strong>Access by index</strong> (e.g., <code>arr[i]</code>): <code>O(1)</code> — direct memory calculation, instant regardless of size.</li>
+  <li><strong>Search in unsorted list</strong> (e.g., <code>if x in arr</code>): <code>O(n)</code> — must scan every element in the worst case.</li>
+  <li><strong>Insert at end</strong> (e.g., <code>arr.append(x)</code>): <code>O(1)</code> amortized — adding to the end is typically instant.</li>
+  <li><strong>Insert at beginning or middle</strong>: <code>O(n)</code> — all subsequent elements must be shifted to make room.</li>
+  <li><strong>Delete from middle</strong>: <code>O(n)</code> — elements after the deleted item must be shifted to fill the gap.</li>
+</ul>
+
+<p>Understanding these costs lets you make better design decisions. For example, if your program frequently searches a large unsorted list for specific values, you know that each search costs <code>O(n)</code>. Doing 1,000 such searches on a list of 10,000 items means up to 10,000,000 operations. Switching to a data structure better suited for lookup — such as a hash set, which offers <code>O(1)</code> average lookup — would be a dramatic improvement.</p>
+
+<p>Big O also helps set realistic expectations. An <code>O(n²)</code> sorting algorithm applied to a list of one million elements would require on the order of a trillion operations — this could take minutes or hours on modern hardware. An <code>O(n log n)</code> sort like merge sort on the same data requires only about twenty million operations — finishing in milliseconds. Knowing these numbers before you write the code helps you avoid building systems that cannot scale.</p>
+
+<p>Developing the habit of thinking in Big O from the very beginning of a project is one of the hallmarks of a strong software engineer. It encourages you to ask, before writing a single line: <em>how will this perform when the data is ten times larger? A hundred times larger?</em> That simple question, grounded in the language of Big O, can save enormous amounts of time, money, and frustration down the road.</p>
+        <div class="notes"><strong>Notes</strong>Covers all listed subtopics: definition and principles of Big O, O(1) with array index example, O(n) with linear search/loop example, O(n&#178;) with nested loop/bubble sort example, comparison of complexity classes with numeric table, dropping constants and non-dominant terms with worked simplification, and practical relevance for list/array operations. No headings used; structure maintained through paragraph flow and strong tags.</div>
+      </div></div>
+  </main>
+  <script>
+    document.querySelectorAll('.slide-header').forEach(function(h){
+      h.addEventListener('click',function(){
+        var b=this.nextElementSibling,c=this.querySelector('.chevron'),o=b.classList.contains('open');
+        b.classList.toggle('open',!o);c.style.transform=o?'':'rotate(90deg)';
+      });});
+    var f=document.querySelector('.slide-body');
+    if(f){f.classList.add('open');var c=f.previousElementSibling.querySelector('.chevron');if(c)c.style.transform='rotate(90deg)';}
+  </script>
+</body></html>

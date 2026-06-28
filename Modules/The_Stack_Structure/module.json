@@ -1,0 +1,9 @@
+{
+  "Id": "e301e75e-1a74-433b-b1c7-70162351d196",
+  "Name": "The Stack: Structure and Use Cases",
+  "Description": "This lesson covers the stack data structure, including its LIFO principle, internal implementation, and practical applications such as expression evaluation and undo mechanisms. Students will build and test a stack in JavaScript.",
+  "CreatedBy": "Ron Eaglin",
+  "CreatedDate": "2026-06-26T11:23:12.6647549-04:00",
+  "LastModifiedDate": "2026-06-26T11:23:12.6653198-04:00",
+  "Actions": []
+}

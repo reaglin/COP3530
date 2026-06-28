@@ -1,0 +1,9 @@
+{
+  "Id": "1b0eec42-e105-458c-b629-10c69913c665",
+  "Name": "Recursion: Concepts and Implementation",
+  "Description": "This lesson explains recursion as a programming strategy, covering base cases, recursive calls, and the call stack. Students will implement classic recursive algorithms such as factorial, Fibonacci, and recursive list traversal in JavaScript.",
+  "CreatedBy": "Ron Eaglin",
+  "CreatedDate": "2026-06-26T11:23:12.6806091-04:00",
+  "LastModifiedDate": "2026-06-26T11:23:12.6817105-04:00",
+  "Actions": []
+}

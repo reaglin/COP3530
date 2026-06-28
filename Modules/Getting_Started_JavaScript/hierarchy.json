@@ -1,0 +1,642 @@
+{
+  "ModuleFolderName": "Getting_Started_JavaScript",
+  "CourseName": "COP3530 - Data Structures",
+  "GeneratedDate": "2026-06-26T13:48:30.1131663-04:00",
+  "ModifiedDate": "2026-06-26T13:49:48.6282581-04:00",
+  "Outcomes": [],
+  "Topics": [
+    {
+      "Id": "883a7728-d986-44a1-a83f-594b250fb9b8",
+      "Title": "Introduction to JavaScript",
+      "Summary": "An overview of the JavaScript programming language, its role in software development, and why it is used in this course for data structure implementation.",
+      "SortOrder": 0,
+      "CreatedDate": "2026-06-26T13:48:30.1131663-04:00",
+      "ModifiedDate": "2026-06-26T13:48:30.1131663-04:00",
+      "Elements": [
+        {
+          "Id": "707fd165-b046-4338-9c11-bb818d14cf32",
+          "TopicId": "883a7728-d986-44a1-a83f-594b250fb9b8",
+          "Title": "What is JavaScript?",
+          "BodyText": "JavaScript is a high-level, versatile programming language originally designed for web browsers but now widely used across many software development domains.",
+          "Notes": "JavaScript runs in virtually every modern web browser without requiring installation, making it highly accessible for learners and developers alike.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T13:48:47.4653816-04:00",
+          "ModifiedDate": "2026-06-26T13:48:47.4653816-04:00",
+          "Items": [
+            {
+              "Id": "0f787aea-c0ec-4b4e-b37a-49349f947956",
+              "Text": "JavaScript is one of the most widely used programming languages in the world, powering both front-end and back-end development.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "94030420-c207-41f7-9326-fff88baa485b",
+              "Text": "It supports multiple programming paradigms, including procedural, object-oriented, and functional programming styles.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "8bbaf404-ef86-40e1-bfc4-55652fa2a6f1",
+              "Text": "JavaScript code is interpreted at runtime, meaning programs can be written and tested quickly without a separate compilation step.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "14ac8ed8-46df-4b63-b31a-72c6b37c98bf",
+          "TopicId": "883a7728-d986-44a1-a83f-594b250fb9b8",
+          "Title": "JavaScript\u0027s Role in Software Development",
+          "BodyText": "JavaScript plays a central role in modern software development, enabling dynamic behavior in applications across web, mobile, and server environments.",
+          "Notes": "Beyond the browser, environments like Node.js allow JavaScript to run on servers, expanding its use into full-stack development.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T13:48:47.4653816-04:00",
+          "ModifiedDate": "2026-06-26T13:48:47.4653816-04:00",
+          "Items": [
+            {
+              "Id": "c8e020f3-c394-4d7a-b677-775f7f722f05",
+              "Text": "On the web, JavaScript controls interactive elements such as forms, animations, and real-time data updates.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "ee0275cf-2a89-4041-a71e-d0c78f0d0dd6",
+              "Text": "JavaScript is used in server-side development, desktop applications, and mobile app frameworks, demonstrating its broad applicability.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "3bf12ea4-0a1f-4829-96d7-fd93364f2b96",
+              "Text": "Its ubiquity makes JavaScript a practical first language for learning core programming and computer science concepts.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "3f293e89-f470-4977-8279-11c473b6e703",
+          "TopicId": "883a7728-d986-44a1-a83f-594b250fb9b8",
+          "Title": "Why JavaScript is Used in This Course",
+          "BodyText": "This course uses JavaScript as the implementation language because of its accessibility, minimal setup requirements, and suitability for expressing data structure concepts clearly.",
+          "Notes": "Students do not need to install any software to begin writing JavaScript, lowering the barrier to entry for learners new to programming environments.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T13:48:47.4653816-04:00",
+          "ModifiedDate": "2026-06-26T13:48:47.4653816-04:00",
+          "Items": [
+            {
+              "Id": "be606ecc-59a4-4fe7-9712-1ad6a92fa39a",
+              "Text": "JavaScript\u0027s syntax is approachable for beginners while still being powerful enough to implement complex data structures.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "2b803387-97df-4a89-a0b2-b0736804261a",
+              "Text": "Using a single, consistent language throughout the course allows students to focus on data structure logic rather than switching between languages.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "124e1a23-325f-4a7b-89b3-e86ca28a3db3",
+              "Text": "JavaScript\u0027s dynamic typing and built-in data types make it convenient for prototyping and demonstrating structural concepts quickly.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "e2a752c8-fc3f-492a-924e-b3ffd111ddcd",
+          "TopicId": "883a7728-d986-44a1-a83f-594b250fb9b8",
+          "Title": "JavaScript as a Foundation for Data Structure Implementation",
+          "BodyText": "Understanding JavaScript fundamentals is essential before implementing data structures, as the language\u0027s features directly support the construction of structures like arrays, linked lists, and trees.",
+          "Notes": "Core JavaScript concepts such as objects, functions, and references map naturally onto the building blocks of data structures studied in this course.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T13:48:47.4653816-04:00",
+          "ModifiedDate": "2026-06-26T13:48:47.4653816-04:00",
+          "Items": [
+            {
+              "Id": "a0b5b377-d9f0-4a7a-bb15-2490f29d2bf8",
+              "Text": "JavaScript objects and classes provide the mechanisms needed to define and instantiate custom data structures.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "a15e2c0f-3f8c-4a52-a9ff-261aa557e93b",
+              "Text": "Functions in JavaScript enable the encapsulation of operations such as insertion, deletion, and traversal within a data structure.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "e6ca8d88-f2bc-4d35-bead-b586814cf9ee",
+              "Text": "Familiarity with JavaScript\u0027s reference-based behavior is critical for correctly linking nodes and managing memory in structures like linked lists and trees.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "56d021b4-616d-4d25-9ea3-4315da194d92",
+          "TopicId": "883a7728-d986-44a1-a83f-594b250fb9b8",
+          "Title": "Foundational Programming Strategies Reviewed",
+          "BodyText": "Before diving into data structures, this course reviews key programming strategies in JavaScript that will be applied throughout all implementations.",
+          "Notes": "Reviewing these strategies ensures all students share a common baseline of programming knowledge, regardless of their prior experience.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T13:48:47.4653816-04:00",
+          "ModifiedDate": "2026-06-26T13:48:47.4653816-04:00",
+          "Items": [
+            {
+              "Id": "15c0a6dc-9a64-4f9e-9e2d-70bc8c152533",
+              "Text": "Control flow constructs such as loops and conditionals are fundamental tools used repeatedly when traversing or modifying data structures.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "e751a416-6178-4b25-a3c0-7a5146ebcb5e",
+              "Text": "Understanding variable scope and function behavior in JavaScript helps prevent common bugs during data structure implementation.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "f20fda74-d3e5-483d-ad62-76f25d966be8",
+              "Text": "Recursion, a technique where a function calls itself, is a programming strategy especially important for tree and graph data structure operations.",
+              "SortOrder": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "0b529956-680d-434e-97c5-123ca4007fe2",
+      "Title": "The JSFiddle Development Environment",
+      "Summary": "A guided introduction to the JSFiddle online coding environment, including how to navigate its interface and configure it for writing and testing JavaScript code.",
+      "SortOrder": 1,
+      "CreatedDate": "2026-06-26T13:48:30.1131663-04:00",
+      "ModifiedDate": "2026-06-26T13:48:30.1131663-04:00",
+      "Elements": [
+        {
+          "Id": "1d2f89aa-1f42-4c02-a4e0-02340137a171",
+          "TopicId": "0b529956-680d-434e-97c5-123ca4007fe2",
+          "Title": "What is JSFiddle?",
+          "BodyText": "JSFiddle is a free, browser-based online coding environment that allows developers to write and test HTML, CSS, and JavaScript code without installing any software.",
+          "Notes": "Because JSFiddle runs entirely in the browser, it is ideal for learning and quick experimentation, making it a practical choice for this course.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T13:49:06.7965678-04:00",
+          "ModifiedDate": "2026-06-26T13:49:06.7965678-04:00",
+          "Items": [
+            {
+              "Id": "7ff3d377-62cd-476a-8dbc-66a0264099d5",
+              "Text": "JSFiddle requires no installation \u2014 simply navigate to jsfiddle.net in any modern web browser to get started.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "ccc6e9ae-4e40-402d-8d0b-084336a0e39c",
+              "Text": "Code written in JSFiddle is executed directly in the browser, giving immediate visual and console feedback.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "d916c7f0-fc16-4911-bf8b-676588466834",
+              "Text": "JSFiddle supports saving and sharing code snippets via unique URLs, making it easy to revisit or submit your work.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "4e8cc83b-3063-4dcd-bfee-395ef6a9c32f",
+          "TopicId": "0b529956-680d-434e-97c5-123ca4007fe2",
+          "Title": "Navigating the JSFiddle Interface",
+          "BodyText": "The JSFiddle workspace is divided into four main panes: HTML, CSS, JavaScript, and Result, each serving a distinct role in the development process.",
+          "Notes": "Understanding which pane to use for each type of code prevents common beginner mistakes such as placing JavaScript in the HTML panel.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T13:49:06.7965678-04:00",
+          "ModifiedDate": "2026-06-26T13:49:06.7965678-04:00",
+          "Items": [
+            {
+              "Id": "c76a4819-0ee0-461b-9849-ecfdce5666fb",
+              "Text": "The HTML pane is used for page structure markup; the CSS pane handles styling; the JavaScript pane is where all JS logic is written.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "e77a67b0-ccb3-40ef-a800-c3f38bb997ba",
+              "Text": "The Result pane displays the rendered output of all three panels combined after the code is run.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "b05c0f06-f459-41bb-b473-57c507b3a710",
+              "Text": "A toolbar at the top of the page provides controls for running code, saving fiddles, and adjusting settings.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "f09f6257-aad1-4dc4-b96e-0beec6ef8bbf",
+          "TopicId": "0b529956-680d-434e-97c5-123ca4007fe2",
+          "Title": "Configuring JSFiddle for JavaScript",
+          "BodyText": "Before writing JavaScript, it is important to configure JSFiddle\u0027s settings to ensure the code runs correctly and at the right time.",
+          "Notes": "Incorrect load settings are a frequent source of errors for beginners \u2014 for example, trying to access DOM elements before they exist.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T13:49:06.7965678-04:00",
+          "ModifiedDate": "2026-06-26T13:49:06.7965678-04:00",
+          "Items": [
+            {
+              "Id": "66c8abe3-8b4c-4f8b-addf-a7cd657180a0",
+              "Text": "In the JavaScript panel options, set the \u0027Load Type\u0027 to \u0027No wrap \u2014 in \u003Chead\u003E\u0027 or \u0027onLoad\u0027 depending on when your script needs to execute.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "491de486-5dfd-4b15-aa32-515d90d4e1da",
+              "Text": "The JavaScript version or framework selector should be set to \u0027No Library (pure JS)\u0027 when writing vanilla JavaScript for this course.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "3c0a65f4-cc4d-4efd-b012-a94cee2d157c",
+              "Text": "These configuration choices are saved with each fiddle, so settings should be verified whenever starting a new exercise.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "e7137997-f990-4234-86e5-1d871327161d",
+          "TopicId": "0b529956-680d-434e-97c5-123ca4007fe2",
+          "Title": "Running and Testing Code in JSFiddle",
+          "BodyText": "JSFiddle provides a Run button that executes all code across the panels and renders the output in the Result pane instantly.",
+          "Notes": "Using the browser\u0027s built-in Developer Tools console alongside JSFiddle is a best practice for catching errors that do not produce visible output.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T13:49:06.7965678-04:00",
+          "ModifiedDate": "2026-06-26T13:49:06.7965678-04:00",
+          "Items": [
+            {
+              "Id": "90d450fb-78ca-4df7-8819-49072beaea6b",
+              "Text": "Click the \u0027Run\u0027 button (or use the keyboard shortcut Ctrl\u002BEnter / Cmd\u002BEnter) to execute your code and see results.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "a392f7af-cd84-4f56-b109-7e5c3e9b0c5b",
+              "Text": "JavaScript output such as console.log() messages appear in the browser\u0027s Developer Tools console, not directly in the Result pane.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "eca38453-e90b-41dd-8ca1-487bfa418941",
+              "Text": "Errors reported in the console include the line number and error type, helping you quickly locate and fix problems.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "4b5556ff-68aa-4d30-b6dc-009a20a07010",
+          "TopicId": "0b529956-680d-434e-97c5-123ca4007fe2",
+          "Title": "Saving and Sharing Fiddles",
+          "BodyText": "JSFiddle allows you to save your work online and share it through a unique URL, which is useful for submitting assignments or collaborating with others.",
+          "Notes": "Each time you update and save a fiddle, JSFiddle creates a new version number appended to the URL, preserving your revision history.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T13:49:06.7965678-04:00",
+          "ModifiedDate": "2026-06-26T13:49:06.7965678-04:00",
+          "Items": [
+            {
+              "Id": "10ab0a71-2821-44e1-be8c-1b113654e48a",
+              "Text": "Click \u0027Save\u0027 to store your fiddle online; no account is required, but creating a free account lets you manage all your saved fiddles.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "14051d8b-7488-4452-8256-86777082ec76",
+              "Text": "The unique URL generated for each fiddle can be copied and shared directly, allowing instructors or peers to view and run your exact code.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "e8977f8c-2cd1-499a-87dc-713156a2978f",
+              "Text": "Forking a fiddle creates a personal copy of someone else\u0027s fiddle, which is helpful when starting from a provided template or example.",
+              "SortOrder": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "325541ed-100d-48a0-a33d-99d9e9f6668e",
+      "Title": "Writing and Running Your First Program",
+      "Summary": "Hands-on practice writing and executing basic JavaScript programs within JSFiddle, establishing familiarity with the code-run-observe workflow.",
+      "SortOrder": 2,
+      "CreatedDate": "2026-06-26T13:48:30.1131663-04:00",
+      "ModifiedDate": "2026-06-26T13:48:30.1131663-04:00",
+      "Elements": [
+        {
+          "Id": "e9113207-c2e3-4133-b25c-6404d24f3acc",
+          "TopicId": "325541ed-100d-48a0-a33d-99d9e9f6668e",
+          "Title": "Opening JSFiddle and Locating the JavaScript Panel",
+          "BodyText": "Before writing any code, you need to navigate to JSFiddle and identify the correct panel for JavaScript input.",
+          "Notes": "JSFiddle presents four panels: HTML, CSS, JavaScript, and Result. For this course, most work happens in the JavaScript panel and the Result panel.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T13:49:28.6183166-04:00",
+          "ModifiedDate": "2026-06-26T13:49:28.6183166-04:00",
+          "Items": [
+            {
+              "Id": "a43ff10b-d5f1-4224-ad52-b92de882762a",
+              "Text": "Open a browser and go to jsfiddle.net to access the online coding environment.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "4b78d89d-76cc-4c1f-b360-02aba29e2269",
+              "Text": "Locate the JavaScript panel, typically in the lower-left quadrant of the interface.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "6c590d20-fd05-4a14-abc7-8f9305857537",
+              "Text": "Confirm the Result panel is visible, as this is where program output will appear after running your code.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "42c405de-d828-44b9-b3c9-de6d947fd90b",
+          "TopicId": "325541ed-100d-48a0-a33d-99d9e9f6668e",
+          "Title": "Writing Your First Line of JavaScript",
+          "BodyText": "The classic first step in learning any programming language is producing visible output, which in JavaScript can be done with a simple console or document command.",
+          "Notes": "Using console.log() is preferred in JSFiddle because it writes output to the browser console, keeping the Result panel clean. Alternatively, document.write() places text directly into the Result panel.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T13:49:28.6183166-04:00",
+          "ModifiedDate": "2026-06-26T13:49:28.6183166-04:00",
+          "Items": [
+            {
+              "Id": "347342ed-b95d-4e04-8d59-73be036316dc",
+              "Text": "Type console.log(\u0027Hello, World!\u0027); in the JavaScript panel to create your first output statement.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "95309eb1-0d4f-4440-87c4-f654bfe0b6bd",
+              "Text": "Every statement in JavaScript should end with a semicolon to signal the end of an instruction.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "fd3b2fb0-a3b0-401b-b553-dedaa623e8e7",
+              "Text": "String values \u2014 sequences of text \u2014 must be enclosed in single or double quotation marks.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "9d0b7922-efe7-4d24-820a-b5e6c7435337",
+          "TopicId": "325541ed-100d-48a0-a33d-99d9e9f6668e",
+          "Title": "Running the Program and Observing Output",
+          "BodyText": "Executing your code in JSFiddle is a single click, and observing the result is a critical part of the code-run-observe workflow.",
+          "Notes": "The Result panel updates immediately after clicking Run. If using console.log(), open the browser\u0027s developer tools (F12) and select the Console tab to see the output.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T13:49:28.6183166-04:00",
+          "ModifiedDate": "2026-06-26T13:49:28.6183166-04:00",
+          "Items": [
+            {
+              "Id": "14221e45-9151-4c72-8dca-536e8762d761",
+              "Text": "Click the \u0027Run\u0027 button at the top of the JSFiddle interface to execute the code in the JavaScript panel.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "3ea62bcc-d6f4-4241-83bf-9e48b457f833",
+              "Text": "Check the Result panel or the browser console to confirm your output appears as expected.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "6b03a4de-127d-49eb-be23-ad82d0d97506",
+              "Text": "If no output is visible, verify there are no typos in the command and that you are looking in the correct output location.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "86136015-fc9f-47d5-bc30-ee03f8edf7e9",
+          "TopicId": "325541ed-100d-48a0-a33d-99d9e9f6668e",
+          "Title": "Understanding the Code-Run-Observe Workflow",
+          "BodyText": "Effective programming relies on a repeating cycle: write code, run it, and observe what happens before making the next change.",
+          "Notes": "This iterative workflow helps isolate problems early and builds intuition about how JavaScript behaves, which is especially important when implementing data structures later in the course.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T13:49:28.6183166-04:00",
+          "ModifiedDate": "2026-06-26T13:49:28.6183166-04:00",
+          "Items": [
+            {
+              "Id": "e47d63ad-4191-4cf0-adf5-4275ea1465a1",
+              "Text": "Write a small, specific piece of code rather than a large block all at once.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "8e228a35-716b-4a2a-886f-69529d9383ac",
+              "Text": "Run the code immediately after each addition to confirm it behaves as intended.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "0742e168-56b9-4fdc-a2b1-ed6f01b76a9b",
+              "Text": "Observe the output carefully \u2014 unexpected results are valuable learning signals that guide your next edit.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "81aae690-20b4-4b38-a4c6-1d08c06a6752",
+          "TopicId": "325541ed-100d-48a0-a33d-99d9e9f6668e",
+          "Title": "Making Small Modifications to Reinforce Learning",
+          "BodyText": "Experimenting by changing your first program helps build confidence and deepen understanding of how JavaScript responds to different inputs.",
+          "Notes": "Try changing the text inside the quotation marks, adding a second console.log() statement, or printing a number instead of a string to see how the output changes.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T13:49:28.6183166-04:00",
+          "ModifiedDate": "2026-06-26T13:49:28.6183166-04:00",
+          "Items": [
+            {
+              "Id": "ae489476-6c99-402b-bbdb-35b7e897c700",
+              "Text": "Modify the string inside console.log() to display your own name or a custom message.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "6286bce0-cf57-494f-ae26-4610cfd38f06",
+              "Text": "Add a second statement below the first to print a different value, reinforcing that code executes line by line from top to bottom.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "a39f5fd1-3350-4d0b-b471-59b677af2d0a",
+              "Text": "Run the updated program each time you make a change and compare the new output to the previous result.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "370e7121-221b-4cc6-b5ca-5f3485b4b599",
+          "TopicId": "325541ed-100d-48a0-a33d-99d9e9f6668e",
+          "Title": "Saving Your Work in JSFiddle",
+          "BodyText": "JSFiddle provides a save feature that generates a unique URL, allowing you to return to or share your code at any time.",
+          "Notes": "Saving frequently is a good habit, particularly before making significant changes, so you can return to a working version if something breaks.",
+          "SortOrder": 5,
+          "CreatedDate": "2026-06-26T13:49:28.6183166-04:00",
+          "ModifiedDate": "2026-06-26T13:49:28.6183166-04:00",
+          "Items": [
+            {
+              "Id": "750422b2-b550-4af7-b90d-31a363cc0a33",
+              "Text": "Click the \u0027Save\u0027 button in the JSFiddle toolbar to store the current state of your code.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "80233e1f-deec-4aea-b473-c9afe75484fb",
+              "Text": "After saving, the browser address bar updates with a unique URL that links directly to your fiddle.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "8cb17a5c-7f2b-40f9-860c-4463c1cd52a6",
+              "Text": "Bookmark or copy this URL to revisit your first program later in the course as a reference point.",
+              "SortOrder": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "14f4f413-55b5-48ec-bd02-b16a10396525",
+      "Title": "Foundational Programming Strategies",
+      "Summary": "A review of core programming concepts and problem-solving strategies, such as variables, control flow, and functions, that underpin data structure implementation in JavaScript.",
+      "SortOrder": 3,
+      "CreatedDate": "2026-06-26T13:48:30.1131663-04:00",
+      "ModifiedDate": "2026-06-26T13:48:30.1131663-04:00",
+      "Elements": [
+        {
+          "Id": "7034a59f-d8d9-4747-a4cf-8862919bc538",
+          "TopicId": "14f4f413-55b5-48ec-bd02-b16a10396525",
+          "Title": "Variables and Data Storage",
+          "BodyText": "Variables are named containers that store data values, forming the foundation of any program\u0027s ability to track and manipulate information.",
+          "Notes": "In JavaScript, variables can be declared using var, let, or const, each with different scoping and reassignment rules. Choosing the right declaration type is especially important when implementing data structures.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T13:49:48.6129987-04:00",
+          "ModifiedDate": "2026-06-26T13:49:48.6129987-04:00",
+          "Items": [
+            {
+              "Id": "d6541dc0-df0a-4b7c-a391-acce781282da",
+              "Text": "Use \u0027let\u0027 for values that will change over time, such as a counter or a pointer moving through a list.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "1005eb29-1e66-49b2-b513-1897768c0ee9",
+              "Text": "Use \u0027const\u0027 for values that should remain constant, such as a fixed capacity for a data structure.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "0e51c793-1493-4e23-9259-8d37856ddd69",
+              "Text": "Meaningful variable names improve code readability and reduce errors when building complex structures.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "747df137-e84a-4357-8aae-9ac7d6f8114d",
+              "Text": "Understanding variable scope prevents bugs caused by unintended access or modification of data.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "4beb11eb-7b8a-4523-89fc-782a05a4b57e",
+          "TopicId": "14f4f413-55b5-48ec-bd02-b16a10396525",
+          "Title": "Control Flow with Conditionals",
+          "BodyText": "Conditional statements allow a program to make decisions and execute different code paths based on whether specific conditions are true or false.",
+          "Notes": "if/else statements and switch cases are the primary tools for branching logic. In data structures, conditionals are used to check boundary conditions like empty lists or full stacks.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T13:49:48.6129987-04:00",
+          "ModifiedDate": "2026-06-26T13:49:48.6129987-04:00",
+          "Items": [
+            {
+              "Id": "27aa97bb-49aa-44ee-9a86-5882aebe133b",
+              "Text": "An if/else statement evaluates a Boolean expression and runs one block of code if true and another if false.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "4ae13303-9722-4791-a48e-be0566a708ec",
+              "Text": "Nested conditionals can handle multiple layers of logic, such as checking both size and content of a structure.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "8f861662-2861-4a08-8ed4-20df910bd27e",
+              "Text": "Short-circuit evaluation in logical operators (\u0026\u0026, ||) can make conditional checks more efficient.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "ad23dc17-8c27-49a1-a2c1-4dce487b522d",
+              "Text": "Always account for edge cases, such as an empty data set, to prevent runtime errors.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "e287cfd1-ae90-4328-aa9e-94c30ff24fae",
+          "TopicId": "14f4f413-55b5-48ec-bd02-b16a10396525",
+          "Title": "Loops and Iteration",
+          "BodyText": "Loops enable a program to repeat a block of code multiple times, which is essential for traversing and processing collections of data.",
+          "Notes": "JavaScript supports for loops, while loops, and for...of loops. Choosing the right loop type depends on whether the number of iterations is known in advance and what structure is being iterated.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T13:49:48.6129987-04:00",
+          "ModifiedDate": "2026-06-26T13:49:48.6129987-04:00",
+          "Items": [
+            {
+              "Id": "fff639fe-1d33-4429-bdcc-16d2c98bb613",
+              "Text": "A \u0027for\u0027 loop is ideal when the number of iterations is known, such as stepping through an array by index.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "6153b4f6-d7fc-466f-bfc4-e8ae1e550b17",
+              "Text": "A \u0027while\u0027 loop continues executing as long as a condition remains true, useful for searching until a match is found.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "c632bf3b-3db1-4d4c-bb2b-2fb29d33f74b",
+              "Text": "Infinite loops caused by missing or incorrect exit conditions are a common bug to guard against.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "46bfbbc0-d300-4a92-9ccb-848bdd060026",
+              "Text": "Loop control statements like \u0027break\u0027 and \u0027continue\u0027 provide finer control over iteration behavior.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "b1a99acb-54d0-473a-a128-a2569c555356",
+          "TopicId": "14f4f413-55b5-48ec-bd02-b16a10396525",
+          "Title": "Functions and Code Reusability",
+          "BodyText": "Functions are reusable blocks of code that perform a specific task, accepting inputs as parameters and optionally returning an output value.",
+          "Notes": "Well-defined functions are the building blocks of data structure operations such as insert, delete, and search. Keeping functions focused on a single responsibility makes them easier to test and debug.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T13:49:48.6129987-04:00",
+          "ModifiedDate": "2026-06-26T13:49:48.6129987-04:00",
+          "Items": [
+            {
+              "Id": "ebab4000-2ca8-4242-b8bc-11f667dad764",
+              "Text": "A function declaration defines a named, reusable operation that can be called anywhere in the program.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "ce21c160-285f-446b-b573-40318499a2b0",
+              "Text": "Parameters allow functions to operate on different data each time they are called, increasing flexibility.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "febd2620-d507-499f-b735-fe544bd16342",
+              "Text": "A return statement sends a value back to the caller, which is critical for functions that compute results.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "e1eafcac-7885-41e4-b095-ed9fa988c398",
+              "Text": "Breaking a complex problem into small, focused functions makes programs easier to read and maintain.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "e90ed80d-a3e7-408b-9e18-afd1e0b5ad89",
+          "TopicId": "14f4f413-55b5-48ec-bd02-b16a10396525",
+          "Title": "Problem-Solving Strategy and Algorithmic Thinking",
+          "BodyText": "Algorithmic thinking is the practice of breaking a problem down into a clear, step-by-step sequence of instructions before writing any code.",
+          "Notes": "Sketching out logic with pseudocode or flowcharts before coding helps identify edge cases early and produces cleaner implementations of data structures.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T13:49:48.6129987-04:00",
+          "ModifiedDate": "2026-06-26T13:49:48.6129987-04:00",
+          "Items": [
+            {
+              "Id": "73419a9d-60f6-4037-81a8-03b45fac0c69",
+              "Text": "Define the problem clearly before coding, identifying inputs, expected outputs, and any constraints.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "f1f3174d-46f6-46f3-bde6-78bc892cbf3e",
+              "Text": "Decompose complex problems into smaller sub-problems, each of which can be solved with a focused function or block.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "a0aa4164-f344-4b28-b71f-0d9e0bd14acb",
+              "Text": "Trace through your logic manually with sample data to verify correctness before running the program.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "55a2cd6d-fd49-42db-834e-d3f383936fad",
+              "Text": "Iterative refinement \u2014 writing a basic solution first and improving it \u2014 is more effective than seeking perfection immediately.",
+              "SortOrder": 3
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "TotalElementCount": 21
+}

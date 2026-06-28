@@ -1,0 +1,80 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sorting Algorithms: Comparison and Implementation — Module Topics</title>
+<style>
+body{font-family:'Segoe UI',Arial,sans-serif;max-width:880px;margin:0 auto;padding:32px 24px;color:#222;line-height:1.55}
+h1{font-size:1.6rem;border-bottom:2px solid #dcdcdc;padding-bottom:8px}
+h2{font-size:1.2rem;margin-top:28px;color:#1a3c6e}
+.summary{color:#555;font-style:italic;margin:4px 0 10px}
+ul{margin:6px 0 6px 4px}
+li{margin:5px 0}
+.el-body{color:#555}
+.empty{color:#888}
+</style>
+</head>
+<body>
+<h1>Sorting Algorithms: Comparison and Implementation — Module Topics</h1>
+<h2>Introduction to Sorting Algorithms</h2>
+<div class="summary">Overview of what sorting algorithms are and why they matter in computer science. Establishes foundational vocabulary and criteria used to evaluate and compare sorting approaches.</div>
+<ul>
+<li><strong>What Is a Sorting Algorithm?</strong> <span class="el-body">— A sorting algorithm is a set of instructions that arranges elements in a collection into a defined order, typically ascending or descending.</span></li>
+<li><strong>Why Sorting Algorithms Matter</strong> <span class="el-body">— Sorting is a foundational operation that underlies many other algorithms and software systems, making its efficiency critically important.</span></li>
+<li><strong>Core Vocabulary: Key Terms</strong> <span class="el-body">— A shared vocabulary is essential for discussing, comparing, and implementing sorting algorithms precisely.</span></li>
+<li><strong>Time Complexity as an Evaluation Criterion</strong> <span class="el-body">— Time complexity describes how the runtime of a sorting algorithm scales as the size of the input grows, expressed using Big O notation.</span></li>
+<li><strong>Space Complexity as an Evaluation Criterion</strong> <span class="el-body">— Space complexity measures the amount of additional memory an algorithm requires beyond the input data itself.</span></li>
+<li><strong>Practical Performance Characteristics</strong> <span class="el-body">— Beyond theoretical complexity, real-world performance of sorting algorithms depends on factors such as input size, data distribution, and implementation language.</span></li>
+</ul>
+<h2>Bubble Sort</h2>
+<div class="summary">Examination of the bubble sort algorithm, including its step-by-step logic and JavaScript implementation. Covers its time complexity and scenarios where it may or may not be practical.</div>
+<ul>
+<li><strong>What Is Bubble Sort?</strong> <span class="el-body">— Bubble sort is one of the simplest sorting algorithms, which works by repeatedly stepping through a list and swapping adjacent elements that are in the wrong order.</span></li>
+<li><strong>Step-by-Step Logic of Bubble Sort</strong> <span class="el-body">— Understanding the mechanics of bubble sort requires tracing through its comparison and swap operations on a concrete example.</span></li>
+<li><strong>JavaScript Implementation</strong> <span class="el-body">— Bubble sort can be implemented concisely in JavaScript using nested loops to handle the repeated passes and comparisons.</span></li>
+<li><strong>Time Complexity of Bubble Sort</strong> <span class="el-body">— Bubble sort&#39;s time complexity varies depending on the initial state of the input array, and it is generally considered inefficient for large datasets.</span></li>
+<li><strong>Practical Use Cases and Limitations</strong> <span class="el-body">— While bubble sort is rarely used in production environments, understanding when it may or may not be appropriate helps contextualize its role among sorting algorithms.</span></li>
+</ul>
+<h2>Insertion Sort</h2>
+<div class="summary">Exploration of the insertion sort algorithm and how it builds a sorted array one element at a time. Includes JavaScript implementation and analysis of its performance characteristics.</div>
+<ul>
+<li><strong>How Insertion Sort Works</strong> <span class="el-body">— Insertion sort builds a sorted array incrementally by taking one element at a time from the unsorted portion and inserting it into its correct position within the sorted portion.</span></li>
+<li><strong>Step-by-Step Example</strong> <span class="el-body">— Tracing insertion sort through a small array illustrates how the sorted region grows with each pass.</span></li>
+<li><strong>JavaScript Implementation</strong> <span class="el-body">— Insertion sort can be implemented concisely in JavaScript using a nested loop structure where the outer loop advances through the array and the inner loop performs comparisons and shifts.</span></li>
+<li><strong>Time Complexity Analysis</strong> <span class="el-body">— Insertion sort&#39;s performance varies significantly depending on the initial order of the input, making it important to understand its best, average, and worst-case scenarios.</span></li>
+<li><strong>Stability and In-Place Properties</strong> <span class="el-body">— Insertion sort is both a stable sorting algorithm and an in-place algorithm, two properties that influence when it is the right tool to use.</span></li>
+<li><strong>Practical Use Cases and Comparisons</strong> <span class="el-body">— Despite its quadratic average complexity, insertion sort outperforms more complex algorithms in specific real-world scenarios and is widely used as a component within hybrid sorting strategies.</span></li>
+</ul>
+<h2>Merge Sort</h2>
+<div class="summary">Deep dive into the divide-and-conquer merge sort algorithm and its recursive structure. Students implement merge sort in JavaScript and examine its consistent O(n log n) time complexity.</div>
+<ul>
+<li><strong>Divide-and-Conquer Strategy</strong> <span class="el-body">— Merge sort is built on the divide-and-conquer paradigm, which breaks a large problem into smaller, more manageable subproblems before combining their solutions.</span></li>
+<li><strong>Recursive Structure of Merge Sort</strong> <span class="el-body">— Merge sort relies on recursion to divide the array and to coordinate the merging process, making the call stack a key part of how the algorithm operates.</span></li>
+<li><strong>The Merge Helper Function</strong> <span class="el-body">— The merge step is the core operation of merge sort, responsible for taking two already-sorted arrays and combining them into a single sorted array.</span></li>
+<li><strong>JavaScript Implementation</strong> <span class="el-body">— Implementing merge sort in JavaScript involves writing two functions: the main recursive mergeSort function and the supporting merge helper.</span></li>
+<li><strong>Time Complexity: O(n log n)</strong> <span class="el-body">— One of merge sort&#39;s defining characteristics is its consistent O(n log n) time complexity across all cases — best, average, and worst.</span></li>
+<li><strong>Space Complexity and Trade-offs</strong> <span class="el-body">— While merge sort achieves excellent time complexity, it comes at the cost of additional memory, making space complexity an important consideration.</span></li>
+</ul>
+<h2>Quicksort</h2>
+<div class="summary">Introduction to quicksort&#39;s partitioning strategy and its average-case efficiency. Covers JavaScript implementation, pivot selection considerations, and best versus worst-case performance.</div>
+<ul>
+<li><strong>Partitioning Strategy</strong> <span class="el-body">— Quicksort works by selecting a pivot element and rearranging the array so that all elements less than the pivot come before it and all elements greater come after it.</span></li>
+<li><strong>Pivot Selection Considerations</strong> <span class="el-body">— The choice of pivot significantly influences quicksort&#39;s performance, as a poorly chosen pivot can lead to unbalanced partitions and degraded efficiency.</span></li>
+<li><strong>Average-Case Efficiency</strong> <span class="el-body">— On average, quicksort achieves O(n log n) time complexity, making it one of the fastest general-purpose sorting algorithms in practice.</span></li>
+<li><strong>Best and Worst-Case Performance</strong> <span class="el-body">— Quicksort&#39;s performance ranges from O(n log n) in the best case to O(n&#178;) in the worst case, depending on partition balance.</span></li>
+<li><strong>JavaScript Implementation</strong> <span class="el-body">— Implementing quicksort in JavaScript involves a recursive function that partitions the array around a pivot and sorts each resulting sub-array.</span></li>
+</ul>
+<h2>Comparing Sorting Algorithms</h2>
+<div class="summary">Side-by-side comparison of bubble sort, insertion sort, merge sort, and quicksort across time and space complexity metrics. Guides students in selecting the appropriate algorithm based on data size and structure.</div>
+<ul>
+<li><strong>Time Complexity Overview</strong> <span class="el-body">— Each sorting algorithm has distinct best-case, average-case, and worst-case time complexities that determine how performance scales with input size.</span></li>
+<li><strong>Space Complexity Considerations</strong> <span class="el-body">— Beyond time, the memory footprint of a sorting algorithm is a critical factor, especially in resource-constrained environments.</span></li>
+<li><strong>Stability of Sorting Algorithms</strong> <span class="el-body">— A stable sort preserves the relative order of elements with equal keys, which matters when sorting complex objects by multiple criteria.</span></li>
+<li><strong>Performance on Small vs. Large Datasets</strong> <span class="el-body">— Algorithm choice should be informed by the expected size of the dataset, as practical performance can differ significantly from theoretical complexity.</span></li>
+<li><strong>Impact of Input Order on Algorithm Choice</strong> <span class="el-body">— The initial ordering of data — sorted, reverse-sorted, or random — can dramatically shift which algorithm performs best.</span></li>
+<li><strong>Side-by-Side Algorithm Comparison Table</strong> <span class="el-body">— A structured comparison across key metrics helps students quickly identify the trade-offs between bubble sort, insertion sort, merge sort, and quicksort.</span></li>
+<li><strong>Guidelines for Selecting the Right Algorithm</strong> <span class="el-body">— Choosing the appropriate sorting algorithm requires weighing data size, structure, memory constraints, and whether stability is needed.</span></li>
+</ul>
+</body>
+</html>

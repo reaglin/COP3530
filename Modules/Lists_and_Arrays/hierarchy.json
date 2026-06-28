@@ -1,0 +1,1214 @@
+{
+  "ModuleFolderName": "Lists_and_Arrays",
+  "CourseName": "COP3530 - Data Structures",
+  "GeneratedDate": "2026-06-26T13:50:03.291949-04:00",
+  "ModifiedDate": "2026-06-26T13:52:35.3530783-04:00",
+  "Outcomes": [],
+  "Topics": [
+    {
+      "Id": "32c53c6c-5fa3-48db-94d6-ba6696767014",
+      "Title": "Introduction to Lists and Arrays",
+      "Summary": "Introduces lists and arrays as fundamental data structures, covering their definitions, characteristics, and how they are used to store and organize data.",
+      "SortOrder": 0,
+      "CreatedDate": "2026-06-26T13:50:03.291949-04:00",
+      "ModifiedDate": "2026-06-26T13:50:03.291949-04:00",
+      "Elements": [
+        {
+          "Id": "111c82c5-cbe5-4337-bf44-9312aab93214",
+          "TopicId": "32c53c6c-5fa3-48db-94d6-ba6696767014",
+          "Title": "What Are Data Structures?",
+          "BodyText": "Data structures are organized ways of storing and managing data in a computer so that it can be accessed and modified efficiently.",
+          "Notes": "Think of a data structure like a filing cabinet: the way you organize folders determines how quickly you can find, add, or remove documents.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T13:50:24.2817718-04:00",
+          "ModifiedDate": "2026-06-26T13:50:24.2817718-04:00",
+          "Items": [
+            {
+              "Id": "3ef8fc69-f57c-4700-a02c-c6ee5da78877",
+              "Text": "Data structures define both how data is stored in memory and how operations on that data are performed.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "405f4e95-e6f0-4aab-9bf4-796127535c63",
+              "Text": "Choosing the right data structure for a problem can significantly impact the performance and readability of a program.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "38b33358-5222-42e6-a6d1-5a25b058ca52",
+              "Text": "Lists and arrays are among the most foundational and widely used data structures in programming.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "371fafb3-67b3-47d8-a215-bb5c375115ae",
+          "TopicId": "32c53c6c-5fa3-48db-94d6-ba6696767014",
+          "Title": "Defining Arrays",
+          "BodyText": "An array is a collection of elements stored in contiguous memory locations, all sharing the same data type.",
+          "Notes": "For example, an array of integers [10, 20, 30, 40] stores four values in adjacent memory slots, making positional access straightforward.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T13:50:24.2817718-04:00",
+          "ModifiedDate": "2026-06-26T13:50:24.2817718-04:00",
+          "Items": [
+            {
+              "Id": "669cf72b-5e07-484f-9f6f-dfc366eab81b",
+              "Text": "Arrays have a fixed size that is typically defined at the time of creation and cannot be changed dynamically.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "68441c13-20e4-4e78-9822-61c067e8f0c9",
+              "Text": "Each element in an array occupies the same amount of memory, which allows the computer to calculate any element\u0027s location instantly.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "1f530ef6-9b50-4287-8041-2183042fec7d",
+              "Text": "Arrays are zero-indexed in most programming languages, meaning the first element is accessed at index 0.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "ed4f74d0-dd16-4f6e-acb4-9e62c0276ea1",
+          "TopicId": "32c53c6c-5fa3-48db-94d6-ba6696767014",
+          "Title": "Defining Lists",
+          "BodyText": "A list is a flexible, ordered collection of elements that can typically grow or shrink in size and may allow elements of different types.",
+          "Notes": "In Python, a list such as [1, \u0027hello\u0027, 3.14] can hold mixed types. In contrast, strongly typed languages may restrict list elements to a single type.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T13:50:24.2817718-04:00",
+          "ModifiedDate": "2026-06-26T13:50:24.2817718-04:00",
+          "Items": [
+            {
+              "Id": "dbec03f5-31e7-43a2-8852-318d284dbbff",
+              "Text": "Unlike arrays, lists are often implemented as dynamic structures that automatically resize as elements are added or removed.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "a9aa017b-0811-4215-b3f9-c32c7a22596e",
+              "Text": "Lists maintain the order of elements, meaning the sequence in which items are inserted is preserved.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "4d55c2d1-4088-48e4-b82d-c820bce5acd2",
+              "Text": "Many programming languages provide built-in list types with methods for common operations like appending, inserting, and removing elements.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "fbf8fd57-781d-48f2-9052-ecf04cd9fbf9",
+          "TopicId": "32c53c6c-5fa3-48db-94d6-ba6696767014",
+          "Title": "Key Characteristics: Ordered and Indexed",
+          "BodyText": "Both lists and arrays are ordered, indexed collections, meaning each element has a specific position that can be referenced directly.",
+          "Notes": "Indexing allows programs to retrieve the third item in a collection, for example, without scanning through the first two \u2014 a concept critical to understanding efficiency.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T13:50:24.2817718-04:00",
+          "ModifiedDate": "2026-06-26T13:50:24.2817718-04:00",
+          "Items": [
+            {
+              "Id": "1a9a4bd6-cb02-4b57-a1c8-b7b6b99985bd",
+              "Text": "An index is a numerical value representing an element\u0027s position within the collection, starting from 0 in most languages.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "77eeb823-1c7d-4bc1-a7af-5d04ca15391d",
+              "Text": "Direct index-based access allows retrieval of any element in constant time, regardless of the collection\u0027s size.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "e2a98423-2362-445a-8906-335e8609c59b",
+              "Text": "The ordered nature of lists and arrays makes them suitable for sequences where position or order carries meaning.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "dc336457-7b8c-4f07-9b06-96545e9afac2",
+          "TopicId": "32c53c6c-5fa3-48db-94d6-ba6696767014",
+          "Title": "Storing and Organizing Data",
+          "BodyText": "Lists and arrays are used to group related data together under a single variable name, making programs cleaner and more manageable.",
+          "Notes": "Instead of declaring ten separate variables for ten student scores, a single array or list can hold all ten values and be processed with a loop.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T13:50:24.2817718-04:00",
+          "ModifiedDate": "2026-06-26T13:50:24.2817718-04:00",
+          "Items": [
+            {
+              "Id": "a129cfd7-8552-4da3-a62c-e757a3aaaca9",
+              "Text": "Grouping data in a list or array enables batch processing, such as iterating over all elements to compute a sum or find a maximum value.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "f0dd6ec8-e6ea-42a2-9d31-dc4aebab480c",
+              "Text": "They are commonly used to represent sequences like days of the week, exam scores, or user inputs.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "e712b077-1789-4a1a-b2cf-cea0b811cdcc",
+              "Text": "Organizing related data together improves code readability and simplifies operations that need to be applied to multiple values.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "61da68f7-dd30-4881-a0d4-980d897415f3",
+          "TopicId": "32c53c6c-5fa3-48db-94d6-ba6696767014",
+          "Title": "Arrays vs. Lists: Key Differences",
+          "BodyText": "While arrays and lists are conceptually similar, they differ in flexibility, memory management, and typical use cases.",
+          "Notes": "In languages like C or Java, arrays are low-level, fixed-size structures. Higher-level languages like Python abstract this with dynamic list types that handle resizing automatically.",
+          "SortOrder": 5,
+          "CreatedDate": "2026-06-26T13:50:24.2817718-04:00",
+          "ModifiedDate": "2026-06-26T13:50:24.2817718-04:00",
+          "Items": [
+            {
+              "Id": "12e9bcbe-b633-462f-a300-703c21c96c0e",
+              "Text": "Arrays offer predictable memory layout and faster low-level performance, while lists offer flexibility at the cost of additional overhead.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "220b9571-f589-45e1-88e3-5ac60f41537a",
+              "Text": "Lists can usually be resized dynamically, whereas arrays require a new array to be allocated if the original size is exceeded.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "1e7d4d42-f386-4e03-b000-ab3391e1ed71",
+              "Text": "The choice between using an array or a list often depends on whether the number of elements is known in advance and whether performance is a priority.",
+              "SortOrder": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "4a26a634-7ca6-4156-a095-c077c3fc3fdd",
+      "Title": "Array Structure and Memory Layout",
+      "Summary": "Explores how arrays are structured in memory, including indexing, fixed sizing, and how elements are stored contiguously to enable efficient access.",
+      "SortOrder": 1,
+      "CreatedDate": "2026-06-26T13:50:03.291949-04:00",
+      "ModifiedDate": "2026-06-26T13:50:03.291949-04:00",
+      "Elements": [
+        {
+          "Id": "95a630c7-8418-4e1b-bad9-3ec9cae222aa",
+          "TopicId": "4a26a634-7ca6-4156-a095-c077c3fc3fdd",
+          "Title": "What Is an Array?",
+          "BodyText": "An array is a fundamental data structure that stores a collection of elements of the same type under a single variable name.",
+          "Notes": "Arrays are one of the oldest and most widely used data structures, forming the basis for many higher-level abstractions such as lists, stacks, and queues.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T13:50:45.9262606-04:00",
+          "ModifiedDate": "2026-06-26T13:50:45.9262606-04:00",
+          "Items": [
+            {
+              "Id": "b0a666b9-349a-4b7b-8e13-2e917c050c90",
+              "Text": "An array groups multiple values together so they can be managed as a single unit.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "827c080c-2af1-4a4d-b802-28c29fc504b4",
+              "Text": "All elements within an array typically share the same data type, ensuring uniform memory allocation per element.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "277b4b1c-c5f0-43b9-a2e7-dc53c06b2f54",
+              "Text": "Arrays are declared with a fixed number of slots that hold individual values, each accessible by its position.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "fe2f17bc-a971-4f93-8946-e3a9cbe7776a",
+          "TopicId": "4a26a634-7ca6-4156-a095-c077c3fc3fdd",
+          "Title": "Contiguous Memory Storage",
+          "BodyText": "Arrays store their elements in contiguous, or back-to-back, blocks of memory, which is the defining characteristic of their internal layout.",
+          "Notes": "For example, if an integer array starts at memory address 1000 and each integer occupies 4 bytes, the elements sit at addresses 1000, 1004, 1008, and so on.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T13:50:45.9262606-04:00",
+          "ModifiedDate": "2026-06-26T13:50:45.9262606-04:00",
+          "Items": [
+            {
+              "Id": "0efd05c2-910d-461c-81db-109d7dfe4e98",
+              "Text": "Contiguous storage means all elements occupy consecutive memory addresses with no gaps between them.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "fd705996-a3de-48bb-9f72-b95554727711",
+              "Text": "This layout allows the computer to calculate the exact address of any element using simple arithmetic.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "d0f4d11e-6377-4210-aeea-f938711b24a7",
+              "Text": "Storing data contiguously maximizes cache efficiency, since nearby memory locations are loaded together into the CPU cache.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "3915a852-a562-4697-b891-e84e86172040",
+          "TopicId": "4a26a634-7ca6-4156-a095-c077c3fc3fdd",
+          "Title": "Zero-Based Indexing",
+          "BodyText": "Each element in an array is identified by an index, and most programming languages begin counting from zero rather than one.",
+          "Notes": "In a five-element array, valid indices are 0, 1, 2, 3, and 4. Attempting to access index 5 would be out of bounds and typically causes an error.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T13:50:45.9262606-04:00",
+          "ModifiedDate": "2026-06-26T13:50:45.9262606-04:00",
+          "Items": [
+            {
+              "Id": "7965b461-35db-4139-a427-c01431886815",
+              "Text": "The index is an integer offset that indicates how many positions away from the first element a target element sits.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "a7b6a74e-8518-499b-bcc3-157e6e577774",
+              "Text": "Zero-based indexing aligns directly with how memory addresses are calculated, making pointer arithmetic straightforward.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "9bbfa682-dbc7-406f-a6bd-7cdbcc8d6e0d",
+              "Text": "Using the wrong index is a common source of bugs, often called an off-by-one error.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "da54ec3e-415c-4655-b25b-d3fc9cc5047d",
+          "TopicId": "4a26a634-7ca6-4156-a095-c077c3fc3fdd",
+          "Title": "Direct Address Calculation",
+          "BodyText": "Because of contiguous storage and uniform element size, the memory address of any element can be computed instantly using a simple formula.",
+          "Notes": "The formula is: Address = Base Address \u002B (Index \u00D7 Size of One Element). This calculation takes constant time regardless of the array\u0027s length.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T13:50:45.9262606-04:00",
+          "ModifiedDate": "2026-06-26T13:50:45.9262606-04:00",
+          "Items": [
+            {
+              "Id": "a05203a3-77a4-41ac-88b8-22d75bf731f4",
+              "Text": "The base address is the memory location of the very first element (index 0).",
+              "SortOrder": 0
+            },
+            {
+              "Id": "edc2b02f-b8b1-4540-b6f2-c45ecb117503",
+              "Text": "Multiplying the index by the element size gives the byte offset from the base address to the desired element.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "252f82ba-9cea-46d5-b08c-96409b2a913f",
+              "Text": "This direct calculation is why reading or writing a specific array element is an extremely fast, constant-time operation.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "e6bc968a-2b34-46b5-a712-bbbd5c6247a7",
+          "TopicId": "4a26a634-7ca6-4156-a095-c077c3fc3fdd",
+          "Title": "Fixed Size and Static Allocation",
+          "BodyText": "A traditional array has a fixed size that must be declared at creation time and cannot change during program execution.",
+          "Notes": "Some languages like Java and C require explicit size declaration (e.g., int[] arr = new int[10];), while higher-level languages may hide this detail behind dynamic list abstractions.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T13:50:45.9262606-04:00",
+          "ModifiedDate": "2026-06-26T13:50:45.9262606-04:00",
+          "Items": [
+            {
+              "Id": "d73fb2bd-dabe-4038-a90a-d8ac6bf1de63",
+              "Text": "Fixed sizing means memory for all elements is reserved upfront, whether or not every slot is used.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "488dc620-9341-4553-b0b3-ad4dd7cae26b",
+              "Text": "This pre-allocation makes arrays memory-efficient in terms of overhead but inflexible when the number of elements is unknown.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "11a66fb1-d597-49ce-aa05-8e2065824f54",
+              "Text": "If more elements are needed than the array can hold, a new, larger array must be created and the old data copied over.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "454137cf-a6f7-408f-90bd-54778666fd02",
+          "TopicId": "4a26a634-7ca6-4156-a095-c077c3fc3fdd",
+          "Title": "Element Access vs. Search",
+          "BodyText": "Accessing an element by index is immediate, but finding an element by its value requires scanning through the array.",
+          "Notes": "Understanding this distinction is a first step toward reasoning about algorithmic efficiency, which is formalized through Big O notation.",
+          "SortOrder": 5,
+          "CreatedDate": "2026-06-26T13:50:45.9262606-04:00",
+          "ModifiedDate": "2026-06-26T13:50:45.9262606-04:00",
+          "Items": [
+            {
+              "Id": "a3980d33-e876-4866-8806-09542f9e48bf",
+              "Text": "Index-based access retrieves an element in constant time because the address is calculated directly.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "8bcadae9-7fe0-4b8d-85a7-e88b1e4a99cf",
+              "Text": "Searching for a value without knowing its index may require checking every element one by one, making it slower for large arrays.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "58f2e465-5103-410d-93e7-9c06b7bf23a2",
+              "Text": "This difference in behavior illustrates why the structure of a data type directly impacts the performance of operations performed on it.",
+              "SortOrder": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "cf7a9b5e-2b16-4217-8c43-ea1fe551a52b",
+      "Title": "List Structure and Dynamic Behavior",
+      "Summary": "Examines how lists differ from arrays in their dynamic nature, covering variable sizing, element management, and the flexibility they offer for data storage.",
+      "SortOrder": 2,
+      "CreatedDate": "2026-06-26T13:50:03.291949-04:00",
+      "ModifiedDate": "2026-06-26T13:50:03.291949-04:00",
+      "Elements": [
+        {
+          "Id": "1e17c05a-0035-408c-8c63-5fa581548729",
+          "TopicId": "cf7a9b5e-2b16-4217-8c43-ea1fe551a52b",
+          "Title": "What Makes a List Dynamic",
+          "BodyText": "Unlike arrays, lists are dynamic data structures that can grow or shrink in size as elements are added or removed during program execution.",
+          "Notes": "This dynamic behavior is one of the primary reasons lists are preferred over arrays in many real-world programming scenarios where data volume is unpredictable.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T13:51:03.7297722-04:00",
+          "ModifiedDate": "2026-06-26T13:51:03.7297722-04:00",
+          "Items": [
+            {
+              "Id": "dc0f1929-e322-4cdb-aeb6-7518ef2e497a",
+              "Text": "Lists do not require a fixed size to be declared at the time of creation.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "562e7249-957c-4b08-91c2-886fe597116f",
+              "Text": "Memory is allocated and deallocated automatically as the list changes in size.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "c5c4289d-2ac1-4ad4-9b41-d54b069f5a3b",
+              "Text": "This flexibility allows programs to handle varying amounts of data without manual resizing.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "6d8b6959-faca-4cb9-aeab-d3e2965f682b",
+          "TopicId": "cf7a9b5e-2b16-4217-8c43-ea1fe551a52b",
+          "Title": "Variable Sizing and Memory Allocation",
+          "BodyText": "Lists manage their own memory behind the scenes, abstracting away the complexity of tracking how much space is needed at any given time.",
+          "Notes": "Some list implementations use strategies like doubling capacity when the list is full, which balances memory usage with performance.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T13:51:03.7297722-04:00",
+          "ModifiedDate": "2026-06-26T13:51:03.7297722-04:00",
+          "Items": [
+            {
+              "Id": "299f6315-5526-4eac-9814-8c00cdf30a3c",
+              "Text": "When a list grows beyond its current capacity, it automatically requests additional memory.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "d36794f8-bce1-40ca-a37c-6c63722da503",
+              "Text": "When elements are removed, lists can release or reclaim unused memory.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "80eab29d-0c39-43f1-986f-c72d2699a95d",
+              "Text": "This contrasts with arrays, which occupy a fixed block of memory regardless of how many elements they contain.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "4fc65dd8-98ee-4964-9da7-eb3f7d1910d6",
+          "TopicId": "cf7a9b5e-2b16-4217-8c43-ea1fe551a52b",
+          "Title": "Element Management in Lists",
+          "BodyText": "Lists provide built-in operations for adding, removing, and accessing elements, making element management more straightforward than with fixed-size arrays.",
+          "Notes": "Common list operations include append (add to end), insert (add at a position), and remove (delete by value or index).",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T13:51:03.7297722-04:00",
+          "ModifiedDate": "2026-06-26T13:51:03.7297722-04:00",
+          "Items": [
+            {
+              "Id": "9caa2ac0-e970-4044-9964-66f95b6ff120",
+              "Text": "Elements can be inserted at any position within a list, not just at the end.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "950bbe39-af6e-4a0c-b992-e107c1729b91",
+              "Text": "Removing an element from the middle of a list requires shifting subsequent elements to fill the gap.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "43682f4e-a814-47c6-9012-3a2c2f01c765",
+              "Text": "These managed operations abstract low-level memory manipulation from the programmer.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "9f838880-3ecb-460f-886e-57b0dabded32",
+          "TopicId": "cf7a9b5e-2b16-4217-8c43-ea1fe551a52b",
+          "Title": "Ordered Nature and Element Access",
+          "BodyText": "Lists maintain an ordered sequence of elements, meaning each element has a defined position or index that can be used to retrieve it.",
+          "Notes": "Preserving order is critical in many applications such as task queues, playlists, or any scenario where sequence matters.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T13:51:03.7297722-04:00",
+          "ModifiedDate": "2026-06-26T13:51:03.7297722-04:00",
+          "Items": [
+            {
+              "Id": "957ec47e-49f5-43aa-9334-3018e5e9e1ea",
+              "Text": "Each element in a list is accessible by its zero-based index position.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "2667f645-b847-479a-be2d-93b9fbeec07d",
+              "Text": "The order of elements is preserved as items are added or removed.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "888a44d5-00c9-4a4d-a554-ffaeb09b50ab",
+              "Text": "Random access to a specific index is supported, allowing direct retrieval without traversing the whole list.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "4b3daf43-00ee-4172-a9cb-be8baefcf258",
+          "TopicId": "cf7a9b5e-2b16-4217-8c43-ea1fe551a52b",
+          "Title": "Flexibility for Diverse Data Storage",
+          "BodyText": "Lists are highly flexible containers that can store elements of varying types in many programming languages, making them adaptable for a wide range of use cases.",
+          "Notes": "In statically typed languages, lists may be constrained to a single type, but in dynamic languages like Python, a single list can hold integers, strings, and objects simultaneously.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T13:51:03.7297722-04:00",
+          "ModifiedDate": "2026-06-26T13:51:03.7297722-04:00",
+          "Items": [
+            {
+              "Id": "11de874c-7751-43f3-8d61-4a0509fc4e2d",
+              "Text": "Lists can hold heterogeneous data types depending on the language implementation.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "5c3e1746-20e3-4fdf-a7d7-0ed3fc056376",
+              "Text": "This flexibility makes lists suitable for storing collections where the structure of data may vary.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "dc16a756-d5c9-408b-8a53-7ab15b1c68a8",
+              "Text": "Lists can even contain other lists, enabling nested or multi-dimensional data representations.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "11982477-e77f-4032-aa8f-7540dbd43efe",
+          "TopicId": "cf7a9b5e-2b16-4217-8c43-ea1fe551a52b",
+          "Title": "Lists vs. Arrays: Key Structural Differences",
+          "BodyText": "While both lists and arrays store ordered collections of elements, they differ fundamentally in how they manage size, memory, and flexibility.",
+          "Notes": "Understanding these differences helps developers choose the right data structure based on whether performance, memory efficiency, or flexibility is the primary concern.",
+          "SortOrder": 5,
+          "CreatedDate": "2026-06-26T13:51:03.7297722-04:00",
+          "ModifiedDate": "2026-06-26T13:51:03.7297722-04:00",
+          "Items": [
+            {
+              "Id": "cac19efa-05ee-4c6b-8c0d-2ef2de90d43d",
+              "Text": "Arrays have a fixed size set at creation; lists can expand or contract dynamically.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "f3c81f97-1030-4bb8-9373-325490985d1d",
+              "Text": "Arrays typically offer faster access times due to contiguous memory allocation, while lists trade some performance for flexibility.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "d073feed-b2a1-454f-a516-340d29a48d02",
+              "Text": "Lists include built-in methods for element management that arrays do not natively provide.",
+              "SortOrder": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "1fa4ecd8-bb82-4a2c-8ed5-d52677dfdc3a",
+      "Title": "Core Data Operations on Lists and Arrays",
+      "Summary": "Covers the fundamental operations performed on lists and arrays such as insertion, deletion, access, and search, establishing a basis for evaluating their efficiency.",
+      "SortOrder": 3,
+      "CreatedDate": "2026-06-26T13:50:03.291949-04:00",
+      "ModifiedDate": "2026-06-26T13:50:03.291949-04:00",
+      "Elements": [
+        {
+          "Id": "a35a4ba3-ea08-40a1-8efd-c735140b63de",
+          "TopicId": "1fa4ecd8-bb82-4a2c-8ed5-d52677dfdc3a",
+          "Title": "Accessing Elements",
+          "BodyText": "Accessing an element in a list or array involves retrieving a value stored at a specific position using an index.",
+          "Notes": "Arrays typically support direct index-based access (e.g., arr[3]), making this one of the fastest operations available on these structures.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T13:51:27.7515164-04:00",
+          "ModifiedDate": "2026-06-26T13:51:27.7515164-04:00",
+          "Items": [
+            {
+              "Id": "60fec949-a09d-40f2-8e3f-257f1d7d0d12",
+              "Text": "Arrays use zero-based or one-based indexing to locate elements in memory directly.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "6d259dcf-46af-4c25-bc45-d1b42efa474e",
+              "Text": "Because the memory address of any element can be calculated from the base address and index, access does not require scanning the structure.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "4c3e5cc7-b9f0-4809-b9c5-06a9bda2a8ed",
+              "Text": "This direct addressing makes element access a constant-time operation in most array implementations.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "65088572-5c78-4d4c-bc62-9407a7812782",
+          "TopicId": "1fa4ecd8-bb82-4a2c-8ed5-d52677dfdc3a",
+          "Title": "Searching for Elements",
+          "BodyText": "Search operations locate a specific value within a list or array by examining its contents.",
+          "Notes": "In an unsorted list, a linear search scans each element one by one. Sorted structures may allow faster search strategies, but sorting itself has a cost.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T13:51:27.7515164-04:00",
+          "ModifiedDate": "2026-06-26T13:51:27.7515164-04:00",
+          "Items": [
+            {
+              "Id": "579d194f-7143-470a-87b2-81fa6dca50be",
+              "Text": "A linear (sequential) search checks each element from the beginning until the target value is found or the structure is exhausted.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "c8688853-d3f9-4a96-9f90-fe26b72a73cf",
+              "Text": "The time required to complete a linear search grows proportionally with the number of elements in the list.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "127218c6-3bbe-415e-953b-9b94b6f24282",
+              "Text": "Search efficiency is a key factor when choosing between list-based data structures for different use cases.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "14ad0186-26d4-424d-8e8e-549bbb2382d3",
+          "TopicId": "1fa4ecd8-bb82-4a2c-8ed5-d52677dfdc3a",
+          "Title": "Inserting Elements",
+          "BodyText": "Insertion adds a new element into a list or array at a specified position, such as the beginning, end, or middle.",
+          "Notes": "Inserting at the end of a dynamic list is typically straightforward, but inserting at the beginning or middle requires shifting existing elements to make room.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T13:51:27.7515164-04:00",
+          "ModifiedDate": "2026-06-26T13:51:27.7515164-04:00",
+          "Items": [
+            {
+              "Id": "9361c6c7-2fe2-4bf1-8596-dbebf643b753",
+              "Text": "When inserting at an arbitrary index, all elements after that index must be shifted one position to accommodate the new value.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "fdc58f22-26d0-4064-917b-c4335aa3f4b6",
+              "Text": "The cost of insertion varies significantly depending on where in the structure the new element is placed.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "19bd2658-07af-46d7-8aae-23ba1acb9cbd",
+              "Text": "Understanding insertion behavior is essential for predicting how a list will perform as it grows in size.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "60a871af-6c05-4397-9f64-92993eb97871",
+          "TopicId": "1fa4ecd8-bb82-4a2c-8ed5-d52677dfdc3a",
+          "Title": "Deleting Elements",
+          "BodyText": "Deletion removes an existing element from a list or array, requiring the structure to be updated to remain coherent.",
+          "Notes": "Similar to insertion, deleting from the end of a list is typically less costly than deleting from the beginning or middle, where elements must be shifted.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T13:51:27.7515164-04:00",
+          "ModifiedDate": "2026-06-26T13:51:27.7515164-04:00",
+          "Items": [
+            {
+              "Id": "dabfcaa8-d686-4ab7-998f-45dae039c5df",
+              "Text": "After removing an element, the remaining elements must often be shifted to fill the gap left behind.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "de024df5-3983-4fe2-b1b6-223b08cc7d4e",
+              "Text": "Deletion at the beginning of an array is particularly expensive because every subsequent element must move one position forward.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "46c4d4bd-6af2-4cd8-9a09-ad1d6539232b",
+              "Text": "The position of the deletion directly impacts how many elements are affected and thus how long the operation takes.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "607d73c2-1705-45f6-a230-722bd301c0aa",
+          "TopicId": "1fa4ecd8-bb82-4a2c-8ed5-d52677dfdc3a",
+          "Title": "Comparing Operation Costs Across Positions",
+          "BodyText": "The efficiency of each core operation depends heavily on where in the list or array it is performed.",
+          "Notes": "Recognizing that the same operation can have very different costs depending on position lays the groundwork for understanding Big O analysis.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T13:51:27.7515164-04:00",
+          "ModifiedDate": "2026-06-26T13:51:27.7515164-04:00",
+          "Items": [
+            {
+              "Id": "b68edeef-0661-437a-a4e2-503a2a57b462",
+              "Text": "Operations at the end of a list are generally less disruptive than those at the beginning or middle.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "a412e600-ede2-4c49-be4a-84c49860631b",
+              "Text": "Operations in the middle of a structure combine characteristics of both end-position and beginning-position scenarios.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "f2088e8d-4e9a-44ab-b571-19cb2e349697",
+              "Text": "Comparing the costs of the same operation across different positions helps establish intuition for measuring algorithmic efficiency.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "1a471805-57cd-47e2-989e-b6dac6a58a8a",
+          "TopicId": "1fa4ecd8-bb82-4a2c-8ed5-d52677dfdc3a",
+          "Title": "Why These Operations Form the Basis of Efficiency Analysis",
+          "BodyText": "Access, search, insertion, and deletion are the foundational operations used to evaluate and compare the practical performance of data structures.",
+          "Notes": "These four operations appear repeatedly in algorithm design; understanding their behavior on lists and arrays is the first step toward applying Big O notation meaningfully.",
+          "SortOrder": 5,
+          "CreatedDate": "2026-06-26T13:51:27.7515164-04:00",
+          "ModifiedDate": "2026-06-26T13:51:27.7515164-04:00",
+          "Items": [
+            {
+              "Id": "a3080218-2fe7-45f3-aed6-4c0460acc8c7",
+              "Text": "Every higher-level algorithm ultimately relies on some combination of these four core operations.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "905f53d0-b9ae-4b9b-89be-f85d507dcedb",
+              "Text": "Measuring how each operation scales with data size provides a consistent framework for comparing different data structures.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "808eb78f-9a3f-49aa-95b8-566df4a816ae",
+              "Text": "Establishing baseline operation costs on lists and arrays makes it possible to reason about when to use one structure over another.",
+              "SortOrder": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "744d00ee-e49e-4e10-9700-3c42e689ec5a",
+      "Title": "Introduction to Computational Complexity",
+      "Summary": "Introduces the concept of computational complexity, explaining why measuring the efficiency of algorithms and data operations matters as input sizes grow.",
+      "SortOrder": 4,
+      "CreatedDate": "2026-06-26T13:50:03.291949-04:00",
+      "ModifiedDate": "2026-06-26T13:50:03.291949-04:00",
+      "Elements": [
+        {
+          "Id": "b5a09d1c-f53c-4c8e-bd6f-7dc7ec5a5227",
+          "TopicId": "744d00ee-e49e-4e10-9700-3c42e689ec5a",
+          "Title": "What Is Computational Complexity?",
+          "BodyText": "Computational complexity is the study of how the resources required by an algorithm \u2014 primarily time and memory \u2014 scale as the size of the input grows.",
+          "Notes": "Think of it as asking: if I double the amount of data, does my program take twice as long, four times as long, or the same amount of time?",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T13:51:50.8347335-04:00",
+          "ModifiedDate": "2026-06-26T13:51:50.8347335-04:00",
+          "Items": [
+            {
+              "Id": "1122ff05-ddd0-48dc-a1da-49d55c0faa02",
+              "Text": "Complexity is not about measuring exact seconds or bytes, but about understanding the relationship between input size and resource usage.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "a28dca24-9aee-42a2-8072-90c1f7a3f84e",
+              "Text": "Two main dimensions are studied: time complexity (how long an algorithm takes) and space complexity (how much memory it uses).",
+              "SortOrder": 1
+            },
+            {
+              "Id": "0475f065-bb60-46c0-9813-3414ed42dfcb",
+              "Text": "Analyzing complexity allows developers to predict performance problems before they occur in production systems.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "a24d494c-cf98-437f-9965-47d55bb70e93",
+          "TopicId": "744d00ee-e49e-4e10-9700-3c42e689ec5a",
+          "Title": "Why Efficiency Matters as Input Grows",
+          "BodyText": "An algorithm that works acceptably on small datasets can become unusably slow or memory-intensive when applied to large ones, making scalability a critical concern.",
+          "Notes": "For example, searching through 100 items manually may feel instant, but the same approach applied to 10 million items could take minutes or crash a system.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T13:51:50.8347335-04:00",
+          "ModifiedDate": "2026-06-26T13:51:50.8347335-04:00",
+          "Items": [
+            {
+              "Id": "f37c2d94-0f5e-4a4b-adcd-69cecd6ffb4b",
+              "Text": "Real-world applications frequently handle data at scale \u2014 databases, social networks, and file systems can contain millions or billions of records.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "eba581de-c0c8-433a-af7f-453db8f174c4",
+              "Text": "A poorly chosen algorithm or data structure can cause exponential slowdowns that no hardware upgrade can reasonably fix.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "cbe2afb8-b3a8-4ff5-b816-1118799a4da8",
+              "Text": "Understanding efficiency helps engineers choose the right tool for the right job before performance becomes a crisis.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "b98c799a-33e2-4ad7-b9ab-3fc05480a051",
+          "TopicId": "744d00ee-e49e-4e10-9700-3c42e689ec5a",
+          "Title": "Input Size as the Key Variable",
+          "BodyText": "Computational complexity analysis centers on a variable \u2014 commonly written as n \u2014 that represents the number of elements or the size of the data being processed.",
+          "Notes": "In the context of lists and arrays, n typically refers to the number of items stored in the structure.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T13:51:50.8347335-04:00",
+          "ModifiedDate": "2026-06-26T13:51:50.8347335-04:00",
+          "Items": [
+            {
+              "Id": "8c1324ed-eacb-49c2-8a48-059b3125cbd7",
+              "Text": "Every complexity measure is expressed relative to n, describing how an algorithm\u0027s cost grows as n increases.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "518f7b9f-1a6e-4b01-854a-cc13a4a2976e",
+              "Text": "The same algorithm can behave very differently depending on what n represents \u2014 number of characters, rows in a table, or nodes in a graph.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "70ac9499-e84d-41fe-8638-966b1a0e1a25",
+              "Text": "Identifying the correct definition of n for a given problem is the first step in any meaningful complexity analysis.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "b6a1d36a-3645-4664-90bc-091ddf2d77f0",
+          "TopicId": "744d00ee-e49e-4e10-9700-3c42e689ec5a",
+          "Title": "Operations and Their Costs",
+          "BodyText": "Different operations performed on data structures \u2014 such as reading, inserting, deleting, or searching \u2014 each carry their own computational cost that can vary by structure type.",
+          "Notes": "For arrays and lists, common operations include accessing an element by index, finding an element by value, and adding or removing elements at various positions.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T13:51:50.8347335-04:00",
+          "ModifiedDate": "2026-06-26T13:51:50.8347335-04:00",
+          "Items": [
+            {
+              "Id": "882c7cc1-b70d-40ad-9fce-24c1071adcd3",
+              "Text": "Not all operations are equal; accessing the first element of a list may take constant time, while searching for a specific value may require examining every element.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "9aee50a7-2a47-46bb-b432-5c85de526123",
+              "Text": "The cost of an operation often depends on where in the structure it occurs \u2014 beginning, middle, or end \u2014 and on the structure\u0027s design.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "c6628565-9047-4432-bca7-d1e3f0f5c30e",
+              "Text": "Mapping out operation costs is foundational to comparing data structures and selecting the most efficient one for a given task.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "a44e084d-2e3a-4ae9-8c3b-506a52bea4dd",
+          "TopicId": "744d00ee-e49e-4e10-9700-3c42e689ec5a",
+          "Title": "Worst, Best, and Average Cases",
+          "BodyText": "When analyzing how long an operation takes, it is important to consider not just one scenario but the range of possible outcomes: the best case, worst case, and average case.",
+          "Notes": "Searching a list for a value illustrates this well: the best case finds it immediately at the first position, the worst case scans the entire list without finding it, and the average case falls somewhere in between.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T13:51:50.8347335-04:00",
+          "ModifiedDate": "2026-06-26T13:51:50.8347335-04:00",
+          "Items": [
+            {
+              "Id": "d7cb06ff-fb83-4acc-a3cf-5c43cf50ca8c",
+              "Text": "Best-case analysis describes the minimum resources needed, which often occurs under ideal or lucky conditions and is rarely a reliable planning metric.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "cef9d76c-0737-45d3-91bd-c96329bc1bbe",
+              "Text": "Worst-case analysis is the most commonly used measure because it provides a guaranteed upper bound on performance, ensuring no surprises.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "571c86fe-48aa-423d-8d5f-4de713c87739",
+              "Text": "Average-case analysis gives a more realistic picture of everyday performance but requires assumptions about the distribution of inputs.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "ac3f94c5-da5d-4646-8595-80c6331ffcfe",
+          "TopicId": "744d00ee-e49e-4e10-9700-3c42e689ec5a",
+          "Title": "The Purpose of Abstraction in Complexity",
+          "BodyText": "Computational complexity intentionally abstracts away hardware details, programming language specifics, and exact instruction counts to focus on fundamental growth patterns.",
+          "Notes": "This abstraction is what makes complexity analysis universally applicable \u2014 the same analysis applies whether code runs on a laptop or a server.",
+          "SortOrder": 5,
+          "CreatedDate": "2026-06-26T13:51:50.8347335-04:00",
+          "ModifiedDate": "2026-06-26T13:51:50.8347335-04:00",
+          "Items": [
+            {
+              "Id": "a1ff807c-025d-4a18-8574-6669a9640fda",
+              "Text": "By ignoring constant factors and low-order terms, complexity analysis highlights the dominant behavior that matters most at scale.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "4df5ec84-b37f-41f2-a3c0-c8aa1ad0dd39",
+              "Text": "This abstraction enables meaningful comparisons between algorithms regardless of the environment in which they are executed.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "64c40d5b-7bc1-4935-8188-b6046b03c369",
+              "Text": "The goal is to reason about algorithms in a hardware-agnostic way, producing insights that remain valid across different systems and languages.",
+              "SortOrder": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "fb7ae6ba-92b2-4a70-b898-52a747833388",
+      "Title": "Big O Notation Fundamentals",
+      "Summary": "Explains Big O notation as a standardized way to express algorithmic efficiency, covering common complexity classes such as O(1), O(n), and O(n\u00B2) with clear examples.",
+      "SortOrder": 5,
+      "CreatedDate": "2026-06-26T13:50:03.291949-04:00",
+      "ModifiedDate": "2026-06-26T13:50:03.291949-04:00",
+      "Elements": [
+        {
+          "Id": "4fb03bc6-3dad-4519-95d1-c6512cfa7908",
+          "TopicId": "fb7ae6ba-92b2-4a70-b898-52a747833388",
+          "Title": "What Is Big O Notation?",
+          "BodyText": "Big O notation is a standardized mathematical language used to describe how the runtime or space requirements of an algorithm scale as the input size grows.",
+          "Notes": "Think of Big O as a worst-case guarantee: it tells you the upper bound of an algorithm\u0027s cost, helping you compare algorithms independently of hardware or language.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T13:52:15.9849642-04:00",
+          "ModifiedDate": "2026-06-26T13:52:15.9849642-04:00",
+          "Items": [
+            {
+              "Id": "16eea6b2-eee8-46c2-ad14-170b3bd4e400",
+              "Text": "Big O focuses on the dominant term as input size (n) approaches infinity, ignoring constants and lower-order terms.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "c0d8c63a-a52a-4e38-9ba2-92a149b547ff",
+              "Text": "It provides a hardware-agnostic, language-agnostic way to compare algorithmic efficiency.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "43d60e9f-54a1-4ca6-ab87-b39f41da2b60",
+              "Text": "The notation is written as O(f(n)), where f(n) describes how cost grows relative to input size n.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "87410cff-5a70-4b55-b2bc-1d538a40099d",
+          "TopicId": "fb7ae6ba-92b2-4a70-b898-52a747833388",
+          "Title": "O(1) \u2014 Constant Time Complexity",
+          "BodyText": "An algorithm runs in O(1) time when its execution time remains the same regardless of how large the input is.",
+          "Notes": "Example: Accessing an element in an array by index (e.g., arr[5]) always takes the same number of steps whether the array has 10 or 10,000 elements.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T13:52:15.9849642-04:00",
+          "ModifiedDate": "2026-06-26T13:52:15.9849642-04:00",
+          "Items": [
+            {
+              "Id": "5fa02f6f-a74a-4a7c-aa5a-8e6e7bd36d1e",
+              "Text": "O(1) operations are the most efficient class because cost does not grow with input size.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "fd40b139-6042-488d-942f-42b146afd186",
+              "Text": "Direct index-based lookups in arrays are the classic O(1) example.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "574ffd25-4b2d-47c4-9ef5-163a3a76fbf7",
+              "Text": "Even if an operation takes several fixed steps, it is still classified as O(1) because the count does not depend on n.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "46f7d8cc-d292-437f-9d17-7d34d3ee9735",
+          "TopicId": "fb7ae6ba-92b2-4a70-b898-52a747833388",
+          "Title": "O(n) \u2014 Linear Time Complexity",
+          "BodyText": "An algorithm runs in O(n) time when its cost grows proportionally to the number of elements in the input.",
+          "Notes": "Example: Searching for a value in an unsorted list requires checking each element one by one, so doubling the list size roughly doubles the time needed.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T13:52:15.9849642-04:00",
+          "ModifiedDate": "2026-06-26T13:52:15.9849642-04:00",
+          "Items": [
+            {
+              "Id": "18247126-4042-43d6-b4a4-47f876d0890b",
+              "Text": "A single loop that iterates over every element in a list is the most common source of O(n) complexity.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "2d6d07dc-cc86-4094-95f0-624fb16b6db5",
+              "Text": "As n doubles, the number of operations doubles, producing a straight-line (linear) growth curve.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "f9204d2f-e4d8-4d62-9cfb-35ea8a2e6e7c",
+              "Text": "O(n) algorithms are generally considered efficient for large inputs when no faster alternative exists.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "f5888f28-d127-4f53-86ce-9f8e5f33789c",
+          "TopicId": "fb7ae6ba-92b2-4a70-b898-52a747833388",
+          "Title": "O(n\u00B2) \u2014 Quadratic Time Complexity",
+          "BodyText": "An algorithm runs in O(n\u00B2) time when its cost grows proportionally to the square of the input size, commonly caused by nested loops.",
+          "Notes": "Example: A naive algorithm that compares every pair of elements in a list \u2014 such as bubble sort \u2014 uses a loop inside a loop, resulting in n \u00D7 n operations.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T13:52:15.9849642-04:00",
+          "ModifiedDate": "2026-06-26T13:52:15.9849642-04:00",
+          "Items": [
+            {
+              "Id": "be403bfa-b92f-4ef6-9849-bb3ab0624cac",
+              "Text": "Nested loops where both iterate over the full input are the primary cause of O(n\u00B2) complexity.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "07f05c69-c81f-4ad1-a2ad-9ff96ed0e5ae",
+              "Text": "Doubling the input size quadruples the number of operations, making O(n\u00B2) algorithms expensive for large datasets.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "e48f97fa-c579-4de3-ba4e-1e1c704ed1be",
+              "Text": "O(n\u00B2) solutions are sometimes acceptable for small inputs but should be optimized or replaced for scalability.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "d2ca3ed9-226e-43bf-8d64-8a8371998158",
+          "TopicId": "fb7ae6ba-92b2-4a70-b898-52a747833388",
+          "Title": "Comparing Complexity Classes",
+          "BodyText": "Understanding how O(1), O(n), and O(n\u00B2) relate to each other allows developers to make informed decisions when choosing or designing algorithms.",
+          "Notes": "At small input sizes the differences may be negligible, but at n = 1,000 the gap between O(n) (1,000 steps) and O(n\u00B2) (1,000,000 steps) is dramatic.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T13:52:15.9849642-04:00",
+          "ModifiedDate": "2026-06-26T13:52:15.9849642-04:00",
+          "Items": [
+            {
+              "Id": "52ab2dc6-3347-4fdd-98ea-fff79a7eadc3",
+              "Text": "The efficiency ordering from best to worst among these classes is: O(1) \u003C O(n) \u003C O(n\u00B2).",
+              "SortOrder": 0
+            },
+            {
+              "Id": "3c2c4ab2-89d0-40aa-a41a-ca7ae506059d",
+              "Text": "Graphs plotting operations against input size visually reveal how steeply each complexity class grows.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "ca648622-95be-4fc6-b782-fadc3d129671",
+              "Text": "Choosing a lower complexity class \u2014 even at the cost of more complex code \u2014 is often worth it as data scales.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "911c7a35-3fad-4de9-804d-539b63183f2d",
+          "TopicId": "fb7ae6ba-92b2-4a70-b898-52a747833388",
+          "Title": "Dropping Constants and Non-Dominant Terms",
+          "BodyText": "Big O notation simplifies expressions by dropping constant multipliers and lower-order terms, keeping only the fastest-growing factor.",
+          "Notes": "For example, an algorithm with cost 3n\u00B2 \u002B 5n \u002B 100 is classified as O(n\u00B2) because n\u00B2 dominates as n grows large.",
+          "SortOrder": 5,
+          "CreatedDate": "2026-06-26T13:52:15.9849642-04:00",
+          "ModifiedDate": "2026-06-26T13:52:15.9849642-04:00",
+          "Items": [
+            {
+              "Id": "97df74f9-04dc-42c5-b5ca-8e97daafbe27",
+              "Text": "Constants are dropped because Big O measures growth rate, not exact step counts.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "b1448d98-3ec6-4982-8b2c-c976e8a481a4",
+              "Text": "Lower-order terms become insignificant compared to the dominant term at large n and are therefore omitted.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "c0e12a71-ad87-4a57-b613-c83954710be6",
+              "Text": "This simplification makes it easier to classify and compare algorithms at a high level.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "8afa37a1-9261-4100-b2af-3b494e50363a",
+          "TopicId": "fb7ae6ba-92b2-4a70-b898-52a747833388",
+          "Title": "Why Big O Matters for Lists and Arrays",
+          "BodyText": "Applying Big O thinking to list and array operations helps developers predict performance and avoid bottlenecks when working with data structures.",
+          "Notes": "For example, knowing that index access is O(1) but linear search is O(n) guides decisions about when to use direct lookups versus search algorithms.",
+          "SortOrder": 6,
+          "CreatedDate": "2026-06-26T13:52:15.9849642-04:00",
+          "ModifiedDate": "2026-06-26T13:52:15.9849642-04:00",
+          "Items": [
+            {
+              "Id": "b20f3af9-0e0f-48cb-aabf-0d8666a2bda8",
+              "Text": "Common array operations \u2014 access, search, insert, delete \u2014 each carry a Big O cost that affects overall program performance.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "be47b039-5173-40c1-877d-1f2feb3bfc68",
+              "Text": "Big O helps set realistic expectations: an O(n\u00B2) sort on a million-element list will be far slower than an O(n) traversal.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "68eeec8e-5d40-4699-94a4-95bcc962535c",
+              "Text": "Early awareness of complexity encourages writing more scalable code from the start of development.",
+              "SortOrder": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "82f0619b-7dfe-4d7a-8292-7dc9a4269fc2",
+      "Title": "Applying Big O to List and Array Operations",
+      "Summary": "Applies Big O notation to the core operations of lists and arrays, enabling students to reason about and compare the relative efficiency of different data structure choices.",
+      "SortOrder": 6,
+      "CreatedDate": "2026-06-26T13:50:03.291949-04:00",
+      "ModifiedDate": "2026-06-26T13:50:03.291949-04:00",
+      "Elements": [
+        {
+          "Id": "482c963d-e74d-4043-9b75-50ad8ba1d5a6",
+          "TopicId": "82f0619b-7dfe-4d7a-8292-7dc9a4269fc2",
+          "Title": "Access by Index: O(1) Constant Time",
+          "BodyText": "Accessing an element in an array or list by its index is one of the most efficient operations possible, classified as O(1) or constant time.",
+          "Notes": "Example: retrieving arr[5] in an array of one million elements takes the same time as retrieving arr[5] in an array of ten elements, because the memory address is calculated directly from the index.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T13:52:35.3530166-04:00",
+          "ModifiedDate": "2026-06-26T13:52:35.3530166-04:00",
+          "Items": [
+            {
+              "Id": "8021472e-0274-415c-b6ec-0b1601b329f9",
+              "Text": "Arrays store elements in contiguous memory locations, allowing any element to be reached in a single calculation regardless of array size.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "14a8add4-e6b0-4df7-af07-8bca9d07785b",
+              "Text": "O(1) means the operation time does not grow as the data structure grows.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "95596849-97a5-461d-8352-9d205bcbdf1d",
+              "Text": "This makes index-based access the fastest core operation for arrays and lists.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "093412df-8387-4c29-903f-d0764cd9c6cd",
+          "TopicId": "82f0619b-7dfe-4d7a-8292-7dc9a4269fc2",
+          "Title": "Search: O(n) Linear Time",
+          "BodyText": "Searching an unsorted list or array for a specific value requires examining elements one by one, resulting in O(n) linear time complexity.",
+          "Notes": "Example: finding the value 42 in an unsorted list of 1,000 elements may require up to 1,000 comparisons in the worst case. If the list doubles to 2,000 elements, the worst-case comparisons also double.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T13:52:35.3530166-04:00",
+          "ModifiedDate": "2026-06-26T13:52:35.3530166-04:00",
+          "Items": [
+            {
+              "Id": "0ef1824f-bece-43e9-8392-c86ef640c961",
+              "Text": "In the worst case, the target element is at the end or not present at all, requiring a full traversal of the structure.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "6dfcf7d8-a6d5-4051-9a72-7ca64d9416df",
+              "Text": "O(n) means the time taken grows proportionally with the number of elements n.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "76f12e20-02b1-43f3-9b4a-c865e8933412",
+              "Text": "Linear search applies equally to both arrays and linked lists when data is unsorted.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "d2c9b17c-57bf-4e6b-ba84-4db560e4b2a4",
+          "TopicId": "82f0619b-7dfe-4d7a-8292-7dc9a4269fc2",
+          "Title": "Insertion and Deletion: Position Matters",
+          "BodyText": "The efficiency of inserting or deleting an element in an array or list depends heavily on where in the structure the operation occurs.",
+          "Notes": "Inserting at the end of a dynamic array is typically O(1) amortized, while inserting at the beginning requires shifting all existing elements, making it O(n).",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T13:52:35.3530166-04:00",
+          "ModifiedDate": "2026-06-26T13:52:35.3530166-04:00",
+          "Items": [
+            {
+              "Id": "365dbf41-d2af-4a9d-8e20-5b9e045912e1",
+              "Text": "Inserting or deleting at the end of a list is O(1) when no shifting or reallocation is needed.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "a62a1211-b726-4462-9dee-c2c4af131923",
+              "Text": "Inserting or deleting at the beginning or middle of an array is O(n) because all subsequent elements must be shifted to fill or create the gap.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "1dcfcd15-019b-47c1-8a6e-4588480d4b86",
+              "Text": "Understanding position-based complexity helps in choosing where to perform operations to maximize efficiency.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "ea9dfd3a-bb13-4313-bad4-2db4ec74c5a0",
+          "TopicId": "82f0619b-7dfe-4d7a-8292-7dc9a4269fc2",
+          "Title": "Using Big O to Compare List and Array Operations",
+          "BodyText": "Big O notation provides a common language for directly comparing the efficiency of the same operation across different data structures.",
+          "Notes": "For example, if your program frequently needs to access elements by index, arrays with O(1) access are preferable. If frequent insertions at arbitrary positions are needed, other structures may offer better average complexity.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T13:52:35.3530166-04:00",
+          "ModifiedDate": "2026-06-26T13:52:35.3530166-04:00",
+          "Items": [
+            {
+              "Id": "daac16a9-1cef-4304-bf1c-4c9d6fd6ec8e",
+              "Text": "Comparing O(1) access against O(n) search illustrates why the choice of operation\u2014not just the data structure\u2014impacts performance.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "d6b22b25-2929-4033-8735-4ca1a34dcfd9",
+              "Text": "A structured comparison table of operations (access, search, insert, delete) and their Big O values helps make informed design decisions.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "12f3e848-bd0a-453c-a2eb-d452961d4074",
+              "Text": "Big O focuses on worst-case scaling, allowing fair comparisons even when exact runtimes vary by hardware or implementation.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "18a39a0a-1899-4b4d-9b7b-5965bdf56bfe",
+          "TopicId": "82f0619b-7dfe-4d7a-8292-7dc9a4269fc2",
+          "Title": "Reasoning About Efficiency Trade-offs",
+          "BodyText": "No single data structure is optimal for every operation; understanding Big O for lists and arrays allows students to reason about which trade-offs are acceptable for a given use case.",
+          "Notes": "A common trade-off: arrays offer fast O(1) access but slow O(n) insertion in arbitrary positions, while other structures may reverse these properties. Knowing this guides better software design choices.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T13:52:35.3530166-04:00",
+          "ModifiedDate": "2026-06-26T13:52:35.3530166-04:00",
+          "Items": [
+            {
+              "Id": "8c64568e-fd74-4549-8fb6-5a15177a1f50",
+              "Text": "Efficient programs are designed by matching the data structure to the dominant operations the program will perform.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "cef450b6-aaae-4668-9e9a-513df335b995",
+              "Text": "If reads vastly outnumber writes, a structure with O(1) access is favored even if insertions are costly.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "57cb2700-a126-4ae2-9235-d2e552df71fb",
+              "Text": "Big O notation gives a scalable, size-independent way to justify and communicate these trade-off decisions to other developers.",
+              "SortOrder": 2
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "TotalElementCount": 42
+}

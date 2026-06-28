@@ -1,0 +1,35 @@
+﻿{
+  "ModuleName": "Recursion: Concepts and Implementation",
+  "CourseName": "COP3530 - Data Structures",
+  "ModuleFolderName": "Recursion_Concepts_and",
+  "GeneratedUtc": "2026-06-27T17:20:20.5891738Z",
+  "HtmlIndexSignature": "41ABE88003E1F9603B829859D219D69FFCD935E32519916F0A3926312469F41B",
+  "Artifacts": [
+    {
+      "Name": "Module Topics",
+      "Type": "Module Topics",
+      "FileType": ".json",
+      "Description": "A structured outline of the module\u0027s core topics \u2014 including the definition of recursion, base and recursive cases, call stack mechanics, and classic implementations like factorial and Fibonacci \u2014 that serves as a navigational guide for learners and instructors to understand the scope and sequence of the module\u0027s content.",
+      "CustomName": null,
+      "FilePath": "C:\\Users\\ronal\\OneDrive - Daytona State College\\Documents\\PreseMaker\\Courses\\COP3530_-_Data_Structures\\Modules\\Recursion_Concepts_and\\hierarchy.json",
+      "ViewerKind": 2,
+      "WebHref": "content/module_topics.html",
+      "LocalHref": "module_topics.html",
+      "RawHref": "../hierarchy.json",
+      "SourceModifiedTicks": 639180937589409156
+    },
+    {
+      "Name": "Module Topics (HTML)",
+      "Type": "Module Topics (HTML)",
+      "FileType": ".html",
+      "Description": "A navigation page listing the topics covered in the Recursion module\u2014including defining recursion, base cases, recursive problem-solving strategies, and implementation details\u2014used by learners and instructors to get an overview of the module\u0027s scope and jump to specific sections.",
+      "CustomName": null,
+      "FilePath": "C:\\Users\\ronal\\OneDrive - Daytona State College\\Documents\\PreseMaker\\Courses\\COP3530_-_Data_Structures\\Modules\\Recursion_Concepts_and\\output\\module_topics.html",
+      "ViewerKind": 1,
+      "WebHref": "",
+      "LocalHref": "module_topics.html",
+      "RawHref": "",
+      "SourceModifiedTicks": 639181682992731198
+    }
+  ]
+}

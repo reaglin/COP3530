@@ -1,0 +1,9 @@
+{
+  "Id": "038f27c9-4522-4d52-8087-1ae5111757d3",
+  "Name": "The Queue: Structure and Use Cases",
+  "Description": "This lesson introduces the queue data structure, explaining its FIFO principle, implementation approaches, and real-world applications such as scheduling and buffering. Students will implement queue operations and compare the structure to stacks.",
+  "CreatedBy": "Ron Eaglin",
+  "CreatedDate": "2026-06-26T11:23:12.6722119-04:00",
+  "LastModifiedDate": "2026-06-26T11:23:12.6732588-04:00",
+  "Actions": []
+}

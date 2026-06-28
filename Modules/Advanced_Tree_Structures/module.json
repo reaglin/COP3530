@@ -1,0 +1,9 @@
+{
+  "Id": "9c3fd8cb-3b26-4d26-8562-b190c2b986ef",
+  "Name": "Advanced Tree Structures: AVL Trees, Heaps, and Tries",
+  "Description": "This lesson explores specialized tree structures beyond the binary search tree, including self-balancing AVL trees, heap trees used in priority queues, and trie structures for string storage. Students will examine the use cases and performance trade-offs of each structure.",
+  "CreatedBy": "Ron Eaglin",
+  "CreatedDate": "2026-06-26T11:23:12.7366329-04:00",
+  "LastModifiedDate": "2026-06-26T11:23:12.7375975-04:00",
+  "Actions": []
+}

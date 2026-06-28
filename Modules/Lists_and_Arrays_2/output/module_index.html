@@ -1,0 +1,371 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lists and Arrays: Algorithms and Operations — COP3530</title>
+  <style>
+    /* ── Reset & Base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f4f6f9;
+      color: #1e2530;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    header {
+      background: linear-gradient(135deg, #1a3a5c 0%, #25527e 60%, #1e6fa8 100%);
+      color: #fff;
+      padding: 2.5rem 1.5rem 2rem;
+      text-align: center;
+    }
+
+    header .course-label {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.35);
+      border-radius: 20px;
+      padding: 0.25rem 0.85rem;
+      margin-bottom: 0.85rem;
+      color: #cde6ff;
+    }
+
+    header h1 {
+      font-size: clamp(1.5rem, 4vw, 2.3rem);
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin-bottom: 0.75rem;
+      line-height: 1.25;
+    }
+
+    header p {
+      max-width: 680px;
+      margin: 0 auto;
+      font-size: 1rem;
+      color: #cde6ff;
+      opacity: 0.92;
+    }
+
+    /* ── Main Content ── */
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2.5rem 1.25rem 3.5rem;
+    }
+
+    .section-heading {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #6b7a93;
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid #dde3ed;
+    }
+
+    /* ── Card Grid ── */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .card {
+      background: #ffffff;
+      border: 1px solid #dde3ed;
+      border-radius: 10px;
+      padding: 1.35rem 1.4rem 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+      transition: box-shadow 0.2s ease, transform 0.2s ease;
+      position: relative;
+    }
+
+    .card:hover {
+      box-shadow: 0 6px 22px rgba(30, 80, 140, 0.12);
+      transform: translateY(-2px);
+    }
+
+    /* ── Card Badges Row ── */
+    .card-badges {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      font-size: 0.67rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 0.18rem 0.6rem;
+      border-radius: 20px;
+    }
+
+    .badge-type {
+      background: #e8f0fb;
+      color: #1a5296;
+      border: 1px solid #c0d4f0;
+    }
+
+    .badge-filetype {
+      background: #eef6f0;
+      color: #1e6640;
+      border: 1px solid #b6dfc4;
+      font-family: 'Courier New', monospace;
+      letter-spacing: 0.04em;
+    }
+
+    /* ── Card Title ── */
+    .card-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #1e2530;
+      line-height: 1.35;
+      display: flex;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+    }
+
+    .card-title a.primary-link {
+      color: #1a5296;
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: color 0.15s, border-color 0.15s;
+    }
+
+    .card-title a.primary-link:hover {
+      color: #0d3870;
+      border-bottom-color: #0d3870;
+    }
+
+    .card-title span.plain-title {
+      color: #1e2530;
+    }
+
+    /* ── Source Link ── */
+    a.source-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #5a7a9a;
+      text-decoration: none;
+      background: #f0f5fb;
+      border: 1px solid #c7d9ef;
+      border-radius: 4px;
+      padding: 0.14rem 0.5rem;
+      white-space: nowrap;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    a.source-link:hover {
+      background: #ddeaf8;
+      color: #1a3a5c;
+    }
+
+    a.source-link::before {
+      content: "⬡";
+      font-size: 0.65rem;
+    }
+
+    /* ── Card Description ── */
+    .card-desc {
+      font-size: 0.875rem;
+      color: #4a5568;
+      line-height: 1.6;
+      flex: 1;
+    }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      padding: 1.5rem 1rem;
+      font-size: 0.78rem;
+      color: #8a97aa;
+      border-top: 1px solid #dde3ed;
+      background: #f4f6f9;
+    }
+
+    /* ── Responsive tweaks ── */
+    @media (max-width: 480px) {
+      .card-grid { grid-template-columns: 1fr; }
+      header { padding: 2rem 1rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="course-label">COP3530 — Data Structures</div>
+    <h1>Lists and Arrays: Algorithms and Operations</h1>
+    <p>
+      A curated collection of readings, references, and interactive resources
+      covering array fundamentals, insertion and deletion operations, searching
+      algorithms, traversal techniques, and complexity analysis.
+    </p>
+  </header>
+
+  <main>
+    <p class="section-heading">Module Artifacts &mdash; 8 items</p>
+
+    <div class="card-grid">
+
+      <!-- 1: Module Topics -->
+      <article class="card">
+        <div class="card-badges">
+          <span class="badge badge-type">Module Topics</span>
+          <span class="badge badge-filetype">.json</span>
+        </div>
+        <div class="card-title">
+          <a class="primary-link" href="module_topics.html">Module Topics</a>
+          <a class="source-link" href="../hierarchy.json">source file</a>
+        </div>
+        <p class="card-desc">
+          A structured outline of the module's topics covering array fundamentals,
+          insertion and deletion operations, and searching algorithms, used by
+          learners and instructors to navigate and sequence the learning content.
+        </p>
+      </article>
+
+      <!-- 2: Time and Space Complexity Analysis (interactive) -->
+      <article class="card">
+        <div class="card-badges">
+          <span class="badge badge-type">Text Content</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <div class="card-title">
+          <a class="primary-link" href="_interactive.html">Time and Space Complexity Analysis</a>
+        </div>
+        <p class="card-desc">
+          Introduces Big O notation and explains how to evaluate the time and space
+          efficiency of algorithms as input size grows, serving as a conceptual
+          reference learners read before or alongside coding exercises to understand
+          why efficiency matters.
+        </p>
+      </article>
+
+      <!-- 3: Introduction to Lists and Arrays -->
+      <article class="card">
+        <div class="card-badges">
+          <span class="badge badge-type">Text Content</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <div class="card-title">
+          <a class="primary-link" href="Lists_and_Arrays_2_interactive_topics_t1.html">Introduction to Lists and Arrays</a>
+        </div>
+        <p class="card-desc">
+          Explains what lists and arrays are, how they store and organize multiple
+          data items, and how they differ, giving learners a foundational reference
+          to read before studying specific array operations and algorithms.
+        </p>
+      </article>
+
+      <!-- 4: Insertion Operations -->
+      <article class="card">
+        <div class="card-badges">
+          <span class="badge badge-type">Text Content</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <div class="card-title">
+          <a class="primary-link" href="Lists_and_Arrays_2_interactive_topics_t2.html">Insertion Operations</a>
+        </div>
+        <p class="card-desc">
+          Covers how inserting a new value into an array works at different positions
+          (beginning, middle, and end), explains the shifting cost that re-indexing
+          requires, and serves as a reading resource for learners analyzing the
+          performance trade-offs of insertion.
+        </p>
+      </article>
+
+      <!-- 5: Deletion Operations -->
+      <article class="card">
+        <div class="card-badges">
+          <span class="badge badge-type">Text Content</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <div class="card-title">
+          <a class="primary-link" href="Lists_and_Arrays_2_interactive_topics_t3.html">Deletion Operations</a>
+        </div>
+        <p class="card-desc">
+          Explains how deleting elements from an array at various positions triggers
+          internal re-indexing in JavaScript, describes the performance implications
+          of different deletion scenarios, and is read by learners to understand the
+          hidden cost of removal operations.
+        </p>
+      </article>
+
+      <!-- 6: Searching Algorithms -->
+      <article class="card">
+        <div class="card-badges">
+          <span class="badge badge-type">Text Content</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <div class="card-title">
+          <a class="primary-link" href="Lists_and_Arrays_2_interactive_topics_t4.html">Searching Algorithms</a>
+        </div>
+        <p class="card-desc">
+          Introduces linear and binary search algorithms, explains how each scans a
+          data structure to locate a target value, and is used by learners to compare
+          the conditions, steps, and efficiency of each searching approach.
+        </p>
+      </article>
+
+      <!-- 7: Traversal Techniques -->
+      <article class="card">
+        <div class="card-badges">
+          <span class="badge badge-type">Text Content</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <div class="card-title">
+          <a class="primary-link" href="Lists_and_Arrays_2_interactive_topics_t5.html">Traversal Techniques</a>
+        </div>
+        <p class="card-desc">
+          Explains systematic techniques for visiting every element in an array or
+          list in a defined order, covering common loop-based and iterator-based
+          traversal patterns that learners apply before implementing sorting,
+          searching, or transformation operations.
+        </p>
+      </article>
+
+      <!-- 8: Time and Space Complexity Analysis (t6) -->
+      <article class="card">
+        <div class="card-badges">
+          <span class="badge badge-type">Text Content</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <div class="card-title">
+          <a class="primary-link" href="Lists_and_Arrays_2_interactive_topics_t6.html">Time and Space Complexity Analysis</a>
+        </div>
+        <p class="card-desc">
+          Introduces Big O notation and explains how to evaluate the time and space
+          efficiency of algorithms as input size grows, serving as a conceptual
+          reference learners read before or alongside coding exercises to understand
+          why efficiency matters.
+        </p>
+      </article>
+
+    </div><!-- /.card-grid -->
+  </main>
+
+  <footer>
+    COP3530 &mdash; Data Structures &nbsp;&bull;&nbsp; Lists and Arrays: Algorithms and Operations
+  </footer>
+
+
+<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
+</body>
+</html>

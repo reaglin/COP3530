@@ -1,0 +1,291 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Queue: Structure and Use Cases — COP3530</title>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --color-bg: #f4f6f9;
+      --color-surface: #ffffff;
+      --color-primary: #1a3a5c;
+      --color-primary-light: #2558a0;
+      --color-accent: #2e7d32;
+      --color-accent-light: #43a047;
+      --color-text: #1e2a38;
+      --color-text-muted: #5a6a7e;
+      --color-border: #d0d9e4;
+      --color-tag-bg: #e8eff8;
+      --color-tag-text: #1a3a5c;
+      --color-filetype-bg: #eaf4ea;
+      --color-filetype-text: #2e7d32;
+      --radius: 10px;
+      --shadow: 0 2px 12px rgba(26, 58, 92, 0.09);
+      --font-main: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      font-family: var(--font-main);
+      background-color: var(--color-bg);
+      color: var(--color-text);
+      min-height: 100vh;
+      padding: 0;
+    }
+
+    /* ── Header ── */
+    header {
+      background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+      color: #ffffff;
+      padding: 48px 24px 40px;
+      text-align: center;
+    }
+
+    header .course-label {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      background: rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      border-radius: 20px;
+      padding: 4px 14px;
+      margin-bottom: 16px;
+      color: #d9eaff;
+    }
+
+    header h1 {
+      font-size: clamp(1.6rem, 4vw, 2.6rem);
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+      margin-bottom: 14px;
+    }
+
+    header p.intro {
+      font-size: clamp(0.95rem, 2vw, 1.08rem);
+      line-height: 1.7;
+      color: #c8dcf5;
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    /* ── Main content ── */
+    main {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 40px 20px 60px;
+    }
+
+    .section-title {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      margin-bottom: 18px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--color-border);
+    }
+
+    /* ── Artifact grid ── */
+    .artifact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 420px), 1fr));
+      gap: 20px;
+    }
+
+    .artifact-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 24px 26px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: box-shadow 0.2s ease, transform 0.2s ease;
+    }
+
+    .artifact-card:hover {
+      box-shadow: 0 6px 24px rgba(26, 58, 92, 0.14);
+      transform: translateY(-2px);
+    }
+
+    /* Card top row: name + badges */
+    .card-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .card-title-block {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+
+    .artifact-name {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--color-text);
+      line-height: 1.3;
+      display: block;
+    }
+
+    .artifact-name a.primary-link {
+      color: var(--color-primary-light);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    .artifact-name a.primary-link:hover {
+      color: var(--color-primary);
+      text-decoration: underline;
+    }
+
+    .source-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 5px;
+      font-size: 0.76rem;
+      font-weight: 600;
+      color: var(--color-accent-light);
+      text-decoration: none;
+      border: 1px solid #b5ddb7;
+      background: #f3faf3;
+      border-radius: 5px;
+      padding: 2px 8px;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .source-link:hover {
+      background: #dff2df;
+      color: var(--color-accent);
+    }
+
+    .source-link::before {
+      content: "⬇";
+      font-size: 0.7rem;
+    }
+
+    /* Badges */
+    .badge-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .badge {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      border-radius: 5px;
+      padding: 3px 9px;
+      white-space: nowrap;
+    }
+
+    .badge-type {
+      background: var(--color-tag-bg);
+      color: var(--color-tag-text);
+      border: 1px solid #bfd0e8;
+    }
+
+    .badge-filetype {
+      background: var(--color-filetype-bg);
+      color: var(--color-filetype-text);
+      border: 1px solid #b5ddb7;
+      font-family: 'Courier New', monospace;
+    }
+
+    /* Description */
+    .artifact-description {
+      font-size: 0.9rem;
+      line-height: 1.65;
+      color: var(--color-text-muted);
+    }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      padding: 20px 16px 32px;
+      font-size: 0.8rem;
+      color: var(--color-text-muted);
+      border-top: 1px solid var(--color-border);
+    }
+
+    /* ── Responsive tweaks ── */
+    @media (max-width: 520px) {
+      header {
+        padding: 36px 16px 30px;
+      }
+
+      .artifact-card {
+        padding: 18px 18px;
+      }
+
+      .card-header {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="course-label">COP3530 — Data Structures</div>
+    <h1>The Queue: Structure and Use Cases</h1>
+    <p class="intro">
+      This module explores the queue abstract data type, a foundational structure governed by the
+      First-In, First-Out (FIFO) principle. Learners will examine core operations, key terminology,
+      and both array-based and linked list-based implementation strategies through a curated set
+      of instructional artifacts.
+    </p>
+  </header>
+
+  <main>
+    <p class="section-title">Module Artifacts</p>
+
+    <div class="artifact-grid">
+
+      <!-- Artifact: Module Topics -->
+      <div class="artifact-card">
+        <div class="card-header">
+          <div class="card-title-block">
+            <span class="artifact-name">
+              <a class="primary-link" href="module_topics.html">Module Topics</a>
+            </span>
+            <a class="source-link" href="../hierarchy.json">source file</a>
+          </div>
+          <div class="badge-group">
+            <span class="badge badge-type">Module Topics</span>
+            <span class="badge badge-filetype">.json</span>
+          </div>
+        </div>
+        <p class="artifact-description">
+          Outlines the module's learning topics covering queue fundamentals (FIFO principle, core
+          terminology), standard operations (enqueue, dequeue, peek), and implementation approaches
+          (array-based and linked list-based), serving as a navigational guide for learners and
+          instructors to understand the scope and sequence of the module.
+        </p>
+      </div>
+
+    </div>
+  </main>
+
+  <footer>
+    COP3530 — Data Structures &nbsp;|&nbsp; Module: The Queue: Structure and Use Cases
+  </footer>
+
+
+<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
+</body>
+</html>

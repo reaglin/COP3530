@@ -1,0 +1,900 @@
+{
+  "ModuleFolderName": "Hash_Compression_Concepts",
+  "CourseName": "COP3530 - Data Structures",
+  "GeneratedDate": "2026-06-26T14:09:00.3445505-04:00",
+  "ModifiedDate": "2026-06-26T14:10:52.7431651-04:00",
+  "Outcomes": [],
+  "Topics": [
+    {
+      "Id": "3989bb61-bccd-467c-a944-1566d15d92e8",
+      "Title": "Introduction to Hash Compression",
+      "Summary": "Defines hash compression and explains the fundamental problem of mapping large key spaces to smaller, bounded index ranges. Establishes the motivation and core vocabulary for understanding hash functions.",
+      "SortOrder": 0,
+      "CreatedDate": "2026-06-26T14:09:00.3445505-04:00",
+      "ModifiedDate": "2026-06-26T14:09:00.3445505-04:00",
+      "Elements": [
+        {
+          "Id": "6d1de49c-21f4-490d-82e9-02877862c398",
+          "TopicId": "3989bb61-bccd-467c-a944-1566d15d92e8",
+          "Title": "What Is Hash Compression?",
+          "BodyText": "Hash compression is the process of transforming a value from a large key space into a smaller, bounded index range suitable for use in a data structure such as a hash table.",
+          "Notes": "Think of it as a funnel: many possible input values are mapped down to a limited set of output positions, making storage and retrieval efficient.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T14:09:22.5385914-04:00",
+          "ModifiedDate": "2026-06-26T14:09:22.5385914-04:00",
+          "Items": [
+            {
+              "Id": "aa6ec4ff-9d95-4ffb-9692-8fce2a333308",
+              "Text": "A hash function takes an input key and produces an integer index within a defined range.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "adc133bf-84c8-425d-ba8b-3f59154a4567",
+              "Text": "The output range is typically determined by the size of the underlying array or table.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "a99ea517-929e-487a-aeeb-65b6cbf9e755",
+              "Text": "Compression is necessary because real-world keys (strings, large integers, objects) far outnumber the available storage slots.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "3773d343-e7f3-41c1-b236-b4ae5ab25dbd",
+          "TopicId": "3989bb61-bccd-467c-a944-1566d15d92e8",
+          "Title": "The Core Problem: Large Key Spaces",
+          "BodyText": "The fundamental challenge in hashing is that the universe of possible keys is vastly larger than the number of available storage positions.",
+          "Notes": "For example, a table with 1,000 slots must somehow accommodate keys drawn from a space of millions or even billions of possible values.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T14:09:22.5385914-04:00",
+          "ModifiedDate": "2026-06-26T14:09:22.5385914-04:00",
+          "Items": [
+            {
+              "Id": "4eb2f698-4b93-4beb-bf36-58c30b050451",
+              "Text": "Key spaces can be theoretically infinite or astronomically large (e.g., all possible strings).",
+              "SortOrder": 0
+            },
+            {
+              "Id": "d1979f10-7109-4f5e-b321-b0920bc6272a",
+              "Text": "Storage structures have finite, predetermined capacities, creating a mismatch that hash compression must resolve.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "f3ea692a-8ba1-4056-846e-65aa6390ac61",
+              "Text": "Without compression, direct-address tables would require memory proportional to the entire key space, which is impractical.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "50270d93-afa8-4a7f-8235-3f59886b929a",
+          "TopicId": "3989bb61-bccd-467c-a944-1566d15d92e8",
+          "Title": "Mapping Keys to Index Ranges",
+          "BodyText": "Hash compression defines a mapping from an input key to an integer index that falls within the valid bounds of a target structure.",
+          "Notes": "A valid index for a table of size N must satisfy 0 \u2264 index \u003C N. The hash function\u0027s job is to guarantee this constraint for any input.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T14:09:22.5385914-04:00",
+          "ModifiedDate": "2026-06-26T14:09:22.5385914-04:00",
+          "Items": [
+            {
+              "Id": "9d7de43c-10c9-41ff-ad21-790000def736",
+              "Text": "The mapping must produce an index within [0, N-1] for a table of size N, regardless of the input key.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "201b5e2a-cb0a-4c46-aec4-4b45f27b01c8",
+              "Text": "The same key must always map to the same index \u2014 hash functions are deterministic.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "a83a4eaf-79e0-4ca1-926a-c5686460acbc",
+              "Text": "A good mapping spreads keys as evenly as possible across the available index range to minimize clustering.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "5807101d-8d98-4c03-87f7-d73791825b36",
+          "TopicId": "3989bb61-bccd-467c-a944-1566d15d92e8",
+          "Title": "Motivation for Hash Compression",
+          "BodyText": "Hash compression enables fast, constant-time average lookup, insertion, and deletion by translating arbitrary keys into direct array positions.",
+          "Notes": "Without an effective compression strategy, the performance benefits of hashing cannot be realized, as poor mappings lead to collisions and degraded performance.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T14:09:22.5385914-04:00",
+          "ModifiedDate": "2026-06-26T14:09:22.5385914-04:00",
+          "Items": [
+            {
+              "Id": "6381e15b-97aa-4ac8-a4f5-9d67748ed8d4",
+              "Text": "Direct array access (O(1)) is only possible when a key can be reliably converted to a valid index.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "5953df90-63b0-4a39-9b10-69f34d52ccb9",
+              "Text": "Hash compression makes hash tables practical for real-world data sets with diverse and unpredictable key types.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "8163768b-0ae7-4dd0-8694-62024bbc4956",
+              "Text": "Efficient compression is the foundation for applications such as databases, caches, and symbol tables.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "5676adc1-56e8-4beb-a33d-87f99bd4d060",
+          "TopicId": "3989bb61-bccd-467c-a944-1566d15d92e8",
+          "Title": "Core Vocabulary",
+          "BodyText": "Understanding hash compression requires familiarity with a set of foundational terms that appear throughout the study of hash functions and hash tables.",
+          "Notes": "Mastering this vocabulary early allows students to precisely discuss the behavior and quality of different hash compression strategies.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T14:09:22.5385914-04:00",
+          "ModifiedDate": "2026-06-26T14:09:22.5385914-04:00",
+          "Items": [
+            {
+              "Id": "f2824117-7d17-43fa-9a99-7f1b5321d4ac",
+              "Text": "Key: the input value to be stored or retrieved, which may be any data type.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "33d93d5f-117b-49d3-9cad-ee79c142a178",
+              "Text": "Hash function: the algorithm that converts a key into a numeric index.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "41f418d9-29d1-4c54-bba9-720df74a392f",
+              "Text": "Index range: the bounded set of valid output positions, typically [0, N-1].",
+              "SortOrder": 2
+            },
+            {
+              "Id": "7716c501-391a-4399-b903-e3f2e05bbed7",
+              "Text": "Collision: the situation where two distinct keys map to the same index, an unavoidable consequence of compression.",
+              "SortOrder": 3
+            },
+            {
+              "Id": "a37c0f4a-4336-4ecf-835a-dd725e6e9e1a",
+              "Text": "Load factor: the ratio of stored entries to table capacity, influencing how often collisions occur.",
+              "SortOrder": 4
+            }
+          ]
+        },
+        {
+          "Id": "b8ae3db9-244b-44ca-9686-24f1828323bd",
+          "TopicId": "3989bb61-bccd-467c-a944-1566d15d92e8",
+          "Title": "Properties of an Effective Hash Function",
+          "BodyText": "Not all mappings from keys to indices are equally useful; a good hash function must satisfy several important properties to support efficient data access.",
+          "Notes": "These properties collectively determine whether a hash function is suitable for practical use or only theoretically valid.",
+          "SortOrder": 5,
+          "CreatedDate": "2026-06-26T14:09:22.5385914-04:00",
+          "ModifiedDate": "2026-06-26T14:09:22.5385914-04:00",
+          "Items": [
+            {
+              "Id": "dfef80dc-8f53-48f7-9f4a-800dda234d5e",
+              "Text": "Determinism: identical inputs must always produce the same output index.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "4e67c80d-36bd-4e32-9d6e-6cc78ab3ab78",
+              "Text": "Uniform distribution: keys should be spread as evenly as possible across the index range to minimize collisions.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "8d6f54c8-52f0-4d9e-9b0a-a16b6abbd6ac",
+              "Text": "Efficiency: the function should compute the index quickly, ideally in O(1) or O(k) time where k is key length.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "ee2af1e3-be15-4465-99ed-6ccee2455310",
+              "Text": "Compression guarantee: the output must always fall within the valid index range, never exceeding table bounds.",
+              "SortOrder": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "1ed426cc-8e32-4272-bbfc-cad5bda9f4b9",
+      "Title": "Modular Arithmetic as a Compression Strategy",
+      "Summary": "Explores the use of the modulo operation to compress hash values into a target index range. Examines how table size selection affects the quality and uniformity of the resulting distribution.",
+      "SortOrder": 1,
+      "CreatedDate": "2026-06-26T14:09:00.3445505-04:00",
+      "ModifiedDate": "2026-06-26T14:09:00.3445505-04:00",
+      "Elements": [
+        {
+          "Id": "7b1756e9-ee94-4862-a3d4-dea64f570ecd",
+          "TopicId": "1ed426cc-8e32-4272-bbfc-cad5bda9f4b9",
+          "Title": "The Role of Modular Arithmetic in Hash Compression",
+          "BodyText": "Modular arithmetic provides a straightforward mechanism for compressing an arbitrary hash value into a bounded index range suitable for a hash table.",
+          "Notes": "For example, if a hash value is 1,047 and the table size is 100, then 1,047 mod 100 = 47, placing the key at index 47.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T14:09:46.9479749-04:00",
+          "ModifiedDate": "2026-06-26T14:09:46.9479749-04:00",
+          "Items": [
+            {
+              "Id": "79715392-1714-43ff-b21f-e1451c700411",
+              "Text": "The modulo operation (%) takes a hash value h and a table size m, returning a remainder in the range [0, m-1].",
+              "SortOrder": 0
+            },
+            {
+              "Id": "b0a91989-400e-4bc3-b0c9-8f053e8faf6c",
+              "Text": "This guarantees that any hash value, regardless of magnitude, maps to a valid index within the table.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "56fce6f8-2a76-4f85-907b-b879770adfab",
+              "Text": "The formula index = h(k) mod m is one of the most widely used compression functions in practice.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "2671d1dd-042d-4e55-9b93-9814847c43d9",
+          "TopicId": "1ed426cc-8e32-4272-bbfc-cad5bda9f4b9",
+          "Title": "How the Modulo Operation Reduces Key Space",
+          "BodyText": "The modulo operation effectively wraps a large numeric domain around a fixed-size table, collapsing an enormous key space into a manageable index range.",
+          "Notes": "Think of it like a clock: no matter how many hours pass, the clock face always shows a value between 0 and 11 (mod 12).",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T14:09:46.9479749-04:00",
+          "ModifiedDate": "2026-06-26T14:09:46.9479749-04:00",
+          "Items": [
+            {
+              "Id": "0e02223c-23bc-476b-9d49-00cf0ef0803b",
+              "Text": "Without compression, hash values could span billions of possible integers, making direct indexing impractical.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "a66c0983-5937-4f0c-8e5c-c9c6721376ef",
+              "Text": "Applying mod m folds this large range into exactly m distinct slots, one for each table position.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "f3c81f0d-ea6b-4ce3-8d0a-79d8e8c8e827",
+              "Text": "Keys that differ greatly in magnitude can still map to the same index, which is expected behavior managed by collision resolution.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "0a1f1d43-54e7-4a67-8190-8363e19d9cea",
+          "TopicId": "1ed426cc-8e32-4272-bbfc-cad5bda9f4b9",
+          "Title": "Selecting Table Size: Prime Numbers and Distribution Quality",
+          "BodyText": "The choice of table size m critically influences how uniformly keys are distributed across the table when using modular compression.",
+          "Notes": "For instance, if m = 10 and many keys are multiples of 5, then only indices 0 and 5 will ever be used, wasting half the table.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T14:09:46.9479749-04:00",
+          "ModifiedDate": "2026-06-26T14:09:46.9479749-04:00",
+          "Items": [
+            {
+              "Id": "bd150d54-b9f4-4b12-8f39-d6bbb1993418",
+              "Text": "Choosing a prime number for m reduces the likelihood that common patterns in key values will cause clustering at specific indices.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "4967ef96-2292-4ce2-9b77-9f58101b88bf",
+              "Text": "Non-prime table sizes can create systematic collisions when key values share a common factor with m.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "4ef42961-8afe-4bd3-91e7-57ded5d66055",
+              "Text": "Prime-sized tables help ensure that the remainder cycles through all available indices more evenly.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "8999bbb4-3bad-49e5-a3ab-78b7b57fa800",
+              "Text": "A well-chosen prime m that is not close to a power of 2 or 10 further avoids bias introduced by binary or decimal patterns in keys.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "bf948113-f5da-4488-b16c-339383483cb8",
+          "TopicId": "1ed426cc-8e32-4272-bbfc-cad5bda9f4b9",
+          "Title": "Uniformity of Distribution and Its Importance",
+          "BodyText": "A high-quality compression function spreads keys as evenly as possible across all table indices, minimizing collisions and preserving lookup efficiency.",
+          "Notes": "Poor distribution causes some slots to overflow with collisions while others remain empty, degrading average-case performance toward O(n) instead of O(1).",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T14:09:46.9479749-04:00",
+          "ModifiedDate": "2026-06-26T14:09:46.9479749-04:00",
+          "Items": [
+            {
+              "Id": "ac58f975-19fb-4819-bff2-7befe93c03f1",
+              "Text": "Uniform distribution means each of the m slots receives approximately the same number of keys on average.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "be83c182-3efb-423c-af82-1050ee3674d0",
+              "Text": "Skewed distributions arise when the compression function interacts poorly with regularities in the input key set.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "b94864f3-c588-42ea-b9d3-f93f3c12a6d0",
+              "Text": "Evaluating distribution quality often involves measuring the variance in slot occupancy or the load factor per bucket.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "7c29f357-deff-4929-84ea-791f6e79fa12",
+          "TopicId": "1ed426cc-8e32-4272-bbfc-cad5bda9f4b9",
+          "Title": "Limitations and Failure Cases of Simple Modular Compression",
+          "BodyText": "While easy to implement, the basic modulo method can perform poorly when input keys exhibit certain structured or repetitive patterns.",
+          "Notes": "Sequential integer keys with m = 8 distribute well, but keys that are all even numbers with m = 8 will only occupy even-numbered indices.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T14:09:46.9479749-04:00",
+          "ModifiedDate": "2026-06-26T14:09:46.9479749-04:00",
+          "Items": [
+            {
+              "Id": "c9be8ac8-66af-43de-b995-2ad27569726b",
+              "Text": "Keys with a regular stride or arithmetic progression can map to only a subset of indices if that stride shares a factor with m.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "60354f54-6a0d-4fc6-bf91-bdfcea42cdf4",
+              "Text": "Poorly chosen table sizes amplify input regularities rather than neutralizing them.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "177791a4-e18d-4611-8bb9-8696be100268",
+              "Text": "Combining modular compression with a strong preliminary hash function helps break up patterns before the mod operation is applied.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "4524b817-4854-41d8-af92-d151b29fce07",
+          "TopicId": "1ed426cc-8e32-4272-bbfc-cad5bda9f4b9",
+          "Title": "Relationship Between Load Factor and Table Size Choice",
+          "BodyText": "The table size m directly determines the load factor, which measures how full the table is and influences both collision frequency and performance.",
+          "Notes": "A load factor above 0.7\u20130.8 is commonly considered a threshold for resizing the table to maintain efficient operations.",
+          "SortOrder": 5,
+          "CreatedDate": "2026-06-26T14:09:46.9479749-04:00",
+          "ModifiedDate": "2026-06-26T14:09:46.9479749-04:00",
+          "Items": [
+            {
+              "Id": "ac6e342b-40bf-4391-8718-1149445ee489",
+              "Text": "Load factor \u03BB = n / m, where n is the number of stored keys and m is the table size.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "8f2a13b5-6cc2-4a1f-b9ab-269cfccb28c8",
+              "Text": "A larger m reduces the load factor and collision probability but increases memory consumption.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "a2d7aa37-6105-4068-a04a-adc4c931b575",
+              "Text": "Selecting m requires balancing memory efficiency against the performance cost of frequent collisions.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "26c4b127-11b1-424a-a9a3-cc707e4f7888",
+              "Text": "Resizing the table (rehashing) resets the load factor but requires recomputing indices for all existing keys.",
+              "SortOrder": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "bea76626-aac2-4783-8789-29e70c2f9459",
+      "Title": "Folding and Other Compression Techniques",
+      "Summary": "Introduces folding methods that divide keys into segments and combine them to produce a compressed index. Surveys additional compression strategies and compares their approaches to reducing key space.",
+      "SortOrder": 2,
+      "CreatedDate": "2026-06-26T14:09:00.3445505-04:00",
+      "ModifiedDate": "2026-06-26T14:09:00.3445505-04:00",
+      "Elements": [
+        {
+          "Id": "6c544949-271d-454a-8f10-904d4e7ad5a0",
+          "TopicId": "bea76626-aac2-4783-8789-29e70c2f9459",
+          "Title": "Introduction to Folding",
+          "BodyText": "Folding is a compression technique that divides a key into multiple segments of equal or near-equal size and combines those segments to produce a smaller index value.",
+          "Notes": "Folding is particularly useful when keys are large integers or long strings that exceed the desired index range.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T14:10:07.5263302-04:00",
+          "ModifiedDate": "2026-06-26T14:10:07.5263302-04:00",
+          "Items": [
+            {
+              "Id": "a1f3ad30-b6a3-4e28-a17f-4c5d6c35f51b",
+              "Text": "The key is split into parts, typically of a fixed width matching the desired index size.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "b0d53c62-cf19-43a8-971c-5bf8a726df48",
+              "Text": "The parts are then added or otherwise combined to yield a single compressed value.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "0dad89f0-4917-42f4-829a-8b9e130fb40c",
+              "Text": "This approach distributes large key values across a smaller address space without complex arithmetic.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "0c6198fb-09ea-4bf7-a984-4fbf48728d41",
+          "TopicId": "bea76626-aac2-4783-8789-29e70c2f9459",
+          "Title": "Shift Folding",
+          "BodyText": "Shift folding divides the key into segments and adds them together directly, shifting each segment into alignment before summing.",
+          "Notes": "For example, the key 123456789 might be split into 123, 456, and 789, which are then summed to give 1368 as the hash base.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T14:10:07.5263302-04:00",
+          "ModifiedDate": "2026-06-26T14:10:07.5263302-04:00",
+          "Items": [
+            {
+              "Id": "1f49ae99-60ff-4fcf-a60b-ef552fe16c37",
+              "Text": "Each segment is treated as an independent numeric value and added to the others.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "74bfc1df-d4f1-4967-92be-83e4d9815aaf",
+              "Text": "The resulting sum may be further reduced using modular arithmetic to fit the table size.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "f06c6284-066d-4853-bba8-69d58f55eb9d",
+              "Text": "Shift folding is simple to implement and works well for uniformly distributed numeric keys.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "91887c2a-6928-46f8-a740-25045e949fae",
+          "TopicId": "bea76626-aac2-4783-8789-29e70c2f9459",
+          "Title": "Boundary Folding",
+          "BodyText": "Boundary folding is a variation in which alternate segments are reversed before being added, simulating the physical folding of a strip of digits at segment boundaries.",
+          "Notes": "Using the same key 123456789 split into 123, 456, and 789, boundary folding would reverse every other segment, adding 123, 654, and 789 instead.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T14:10:07.5263302-04:00",
+          "ModifiedDate": "2026-06-26T14:10:07.5263302-04:00",
+          "Items": [
+            {
+              "Id": "91411e47-cea5-48e8-b08f-79e1254cbf9f",
+              "Text": "Reversing alternate segments introduces additional mixing, which can improve distribution over shift folding alone.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "697ddcdb-161c-4f76-a359-61385741de09",
+              "Text": "The reversal step helps avoid clustering that can occur when many keys share similar digit patterns in the same segment positions.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "3d69dae4-0046-44ac-89d3-6d819b6c1043",
+              "Text": "Boundary folding is slightly more complex to implement but often produces better spread across the index range.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "24440046-2416-45b1-a3df-43f8c2ef5254",
+          "TopicId": "bea76626-aac2-4783-8789-29e70c2f9459",
+          "Title": "Digit Extraction",
+          "BodyText": "Digit extraction selects specific digits or characters from predetermined positions within a key and concatenates or combines them to form the compressed index.",
+          "Notes": "This technique is effective when certain positions in a key are known to vary widely while others remain nearly constant across all keys.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T14:10:07.5263302-04:00",
+          "ModifiedDate": "2026-06-26T14:10:07.5263302-04:00",
+          "Items": [
+            {
+              "Id": "6fda9677-f349-41f7-be19-6cd9955da654",
+              "Text": "Positions with the greatest variation are chosen to maximize spread across the hash table.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "9c018c47-48e3-46e3-921e-1220c7763686",
+              "Text": "Poorly chosen positions can lead to severe clustering if many keys share the same digits at those locations.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "a3813860-b776-4f07-a561-3c656f17ae7c",
+              "Text": "Digit extraction requires prior knowledge of the key distribution to be applied effectively.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "2d9cbe35-f34a-4cab-8083-93dd3a35c983",
+          "TopicId": "bea76626-aac2-4783-8789-29e70c2f9459",
+          "Title": "Mid-Square Method",
+          "BodyText": "The mid-square method squares the key value and then extracts the middle digits of the result as the compressed index.",
+          "Notes": "For a key of 3121, squaring yields 9,740,641; extracting the middle three digits might give 406 as the hash index.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T14:10:07.5263302-04:00",
+          "ModifiedDate": "2026-06-26T14:10:07.5263302-04:00",
+          "Items": [
+            {
+              "Id": "c349fffe-96e4-4a04-82a1-2b4f00f9151a",
+              "Text": "Squaring the key causes the middle digits to depend on all digits of the original key, improving mixing.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "04dc4b1a-45ca-4350-bda7-e77ead0eb833",
+              "Text": "The number of middle digits extracted is chosen to match the desired index range size.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "b7eaf0af-1fef-45fd-995e-0eca94b19739",
+              "Text": "This method can produce good distribution but requires handling very large intermediate values when keys are large.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "e705d700-4f1a-4581-9a61-9c8c4a8cc298",
+          "TopicId": "bea76626-aac2-4783-8789-29e70c2f9459",
+          "Title": "Comparing Compression Strategies",
+          "BodyText": "Different compression techniques vary in computational cost, implementation complexity, and the quality of distribution they produce across the hash table.",
+          "Notes": "No single method is universally best; the choice depends on the key type, key distribution, and table size requirements.",
+          "SortOrder": 5,
+          "CreatedDate": "2026-06-26T14:10:07.5263302-04:00",
+          "ModifiedDate": "2026-06-26T14:10:07.5263302-04:00",
+          "Items": [
+            {
+              "Id": "a7f3fdd9-2d99-48b5-975a-6524197844a0",
+              "Text": "Folding methods are computationally inexpensive and easy to implement for numeric keys of fixed length.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "08903861-f758-4d3a-9ae4-ed5584676343",
+              "Text": "Digit extraction is fast but highly dependent on domain knowledge about the key structure.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "2e6ffdb5-6203-41d0-89a3-785797aaa353",
+              "Text": "The mid-square method provides stronger mixing at the cost of handling large intermediate values.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "c470b1d1-c940-4cca-8c03-8c81c78b11f7",
+              "Text": "All these techniques may be combined with modular arithmetic as a final step to ensure the index fits within the table bounds.",
+              "SortOrder": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "99cd42f4-01c1-4ebd-a996-88a9d2591bbb",
+      "Title": "Distribution Properties of Hash Functions",
+      "Summary": "Analyzes how well different compression techniques spread keys uniformly across the index range. Discusses concepts such as clustering, load factor, and what makes a distribution desirable for hash table performance.",
+      "SortOrder": 3,
+      "CreatedDate": "2026-06-26T14:09:00.3445505-04:00",
+      "ModifiedDate": "2026-06-26T14:09:00.3445505-04:00",
+      "Elements": [
+        {
+          "Id": "03336665-917c-453c-8d5b-e1129dd5c789",
+          "TopicId": "99cd42f4-01c1-4ebd-a996-88a9d2591bbb",
+          "Title": "Uniform Distribution as the Ideal Goal",
+          "BodyText": "A well-designed hash function should spread keys as evenly as possible across all available index slots in the hash table.",
+          "Notes": "Uniform distribution minimizes wasted space and reduces the likelihood of multiple keys competing for the same slot.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T14:10:29.6773394-04:00",
+          "ModifiedDate": "2026-06-26T14:10:29.6773394-04:00",
+          "Items": [
+            {
+              "Id": "d28e7777-7908-4347-b431-136bf986fc94",
+              "Text": "Uniform distribution means each index slot receives approximately the same number of keys, regardless of input patterns.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "d0c6614a-6d7b-4855-9c7b-d61ae62b3433",
+              "Text": "When keys cluster in certain slots, other slots remain empty, wasting memory and degrading lookup performance.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "b68a7d9e-4802-41ca-bede-4aea5b4676e7",
+              "Text": "The closer a hash function approximates a uniform random distribution, the more predictable and efficient the table\u0027s performance becomes.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "337924eb-99f5-4f5f-9ab0-580c427a038f",
+          "TopicId": "99cd42f4-01c1-4ebd-a996-88a9d2591bbb",
+          "Title": "Clustering and Its Impact on Performance",
+          "BodyText": "Clustering occurs when a disproportionate number of keys hash to the same or nearby index slots, creating hotspots in the table.",
+          "Notes": "Primary clustering is common with linear probing; secondary clustering can occur even with quadratic probing. Both degrade average-case lookup time.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T14:10:29.6773394-04:00",
+          "ModifiedDate": "2026-06-26T14:10:29.6773394-04:00",
+          "Items": [
+            {
+              "Id": "b6702a4d-21b6-42a7-ba8f-f3f9fba1fa2a",
+              "Text": "Clustered keys force collision resolution to probe many occupied slots before finding an empty one, increasing average search time.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "f91e1efc-ff78-4da1-b397-100aed6576d0",
+              "Text": "Poor compression techniques\u2014such as a poorly chosen modulus\u2014can cause systematic clustering if keys share common factors with the table size.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "2f92fa1b-dd7a-4a18-8ff1-8ce2e65b67ba",
+              "Text": "Recognizing clustering patterns helps diagnose whether a chosen compression strategy is suitable for a given key set.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "65b01d98-82cb-4f79-8b98-50edad3705b0",
+          "TopicId": "99cd42f4-01c1-4ebd-a996-88a9d2591bbb",
+          "Title": "Load Factor and Table Occupancy",
+          "BodyText": "The load factor is the ratio of the number of stored keys to the total number of slots in the hash table, and it directly influences collision frequency and performance.",
+          "Notes": "A load factor of 0.7 (70% full) is often cited as a practical upper bound for open-addressing tables before performance degrades noticeably.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T14:10:29.6773394-04:00",
+          "ModifiedDate": "2026-06-26T14:10:29.6773394-04:00",
+          "Items": [
+            {
+              "Id": "89c0055f-b4de-4746-ae33-3d64e13d4b9e",
+              "Text": "Load factor \u03BB = n / m, where n is the number of keys inserted and m is the number of slots available.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "295aac99-5e8f-4bfc-97c0-3f91a8bd8132",
+              "Text": "As the load factor rises toward 1.0, the probability of collisions increases sharply, making good distribution even more critical.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "04808aec-edd1-42bb-a350-3223b93c1ad3",
+              "Text": "Keeping the load factor low (typically below 0.75) reduces clustering and maintains near-constant average lookup time.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "99761469-076b-41d2-a8f8-5c0d1d6d3db9",
+          "TopicId": "99cd42f4-01c1-4ebd-a996-88a9d2591bbb",
+          "Title": "How Compression Technique Choice Affects Distribution",
+          "BodyText": "Different compression strategies\u2014such as modular arithmetic or folding\u2014produce different distribution qualities depending on the structure of the key set.",
+          "Notes": "For example, using a modulus that shares factors with key values can cause keys to map exclusively to a subset of slots, severely reducing effective table size.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T14:10:29.6773394-04:00",
+          "ModifiedDate": "2026-06-26T14:10:29.6773394-04:00",
+          "Items": [
+            {
+              "Id": "3b0f4f00-8553-4751-ab1a-d777f4edb829",
+              "Text": "Modular compression with a prime-number table size tends to break up regularities in key values, improving uniformity.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "0a375601-39a0-426d-adce-66d51380e3c1",
+              "Text": "Folding-based compression can distribute bit patterns more evenly but may still cluster if the folded segments are correlated.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "ca9efd8c-83fb-41b5-bd1c-d288fe8639a9",
+              "Text": "The best compression technique for a given application depends on the expected distribution and structure of the actual keys being stored.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "6dc451ae-92f9-4ca7-b460-ef4375c7254a",
+          "TopicId": "99cd42f4-01c1-4ebd-a996-88a9d2591bbb",
+          "Title": "Measuring Distribution Quality",
+          "BodyText": "Evaluating how well a hash function distributes keys requires quantitative measures that go beyond simply counting collisions.",
+          "Notes": "Statistical tests such as the chi-squared test can formally assess whether an observed distribution significantly deviates from uniform expectation.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T14:10:29.6773394-04:00",
+          "ModifiedDate": "2026-06-26T14:10:29.6773394-04:00",
+          "Items": [
+            {
+              "Id": "ddcfb72e-cc30-428e-89b5-551720ec8020",
+              "Text": "Counting the number of collisions per slot and computing variance across slots provides a practical empirical measure of uniformity.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "3c357cb2-b56b-4190-a1f5-85c7b68b2cfb",
+              "Text": "A low variance in slot occupancy indicates good distribution; high variance signals clustering problems.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "8bdace19-d502-49aa-be72-c227076f0280",
+              "Text": "Empirical testing with representative key samples is essential because theoretical analysis alone may not capture real-world input patterns.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "1cf52d59-8eff-4b5f-9e0e-b5f106aaf29f",
+          "TopicId": "99cd42f4-01c1-4ebd-a996-88a9d2591bbb",
+          "Title": "Desirable Properties for Hash Table Performance",
+          "BodyText": "Beyond uniformity, a distribution is considered desirable when it remains stable and predictable across a wide variety of input key sets.",
+          "Notes": "Hash functions used in security-sensitive applications also require unpredictability, but for general hash tables the focus is on speed and uniformity.",
+          "SortOrder": 5,
+          "CreatedDate": "2026-06-26T14:10:29.6773394-04:00",
+          "ModifiedDate": "2026-06-26T14:10:29.6773394-04:00",
+          "Items": [
+            {
+              "Id": "9f890a27-be02-4ea6-bfc8-c34cc83875f6",
+              "Text": "A desirable distribution minimizes both the expected number of collisions and the worst-case number of keys in any single slot.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "74643d1a-b8ff-4d17-a034-9485dc320dcb",
+              "Text": "Consistency across different key types\u2014integers, strings, floating-point values\u2014ensures the compression technique generalizes well.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "f81a7d94-366d-496e-889b-9fc434fed951",
+              "Text": "Low computational cost combined with good distribution quality is the practical sweet spot for most hash table implementations.",
+              "SortOrder": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "186c9c44-ca92-4778-9d45-526d4d963b2e",
+      "Title": "Comparing and Selecting Compression Methods",
+      "Summary": "Provides a framework for evaluating trade-offs among compression strategies based on efficiency, uniformity, and implementation complexity. Guides students in choosing an appropriate method for a given use case.",
+      "SortOrder": 4,
+      "CreatedDate": "2026-06-26T14:09:00.3445505-04:00",
+      "ModifiedDate": "2026-06-26T14:09:00.3445505-04:00",
+      "Elements": [
+        {
+          "Id": "3f0461be-0ce6-4cec-a43a-18ae3d1b2a23",
+          "TopicId": "186c9c44-ca92-4778-9d45-526d4d963b2e",
+          "Title": "Understanding Compression Efficiency",
+          "BodyText": "Efficiency in a compression method refers to how well it utilizes the available index range while minimizing wasted slots and collisions.",
+          "Notes": "A method that maps most keys to only a fraction of available indices wastes space and degrades hash table performance significantly.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T14:10:52.7425529-04:00",
+          "ModifiedDate": "2026-06-26T14:10:52.7425529-04:00",
+          "Items": [
+            {
+              "Id": "046e2b5d-22e6-4bff-ab26-a334eaad36f2",
+              "Text": "An efficient compression method distributes keys as evenly as possible across all available indices.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "b9a4446b-ab8d-4b0d-b66f-47db26ba75a0",
+              "Text": "High collision rates indicate poor efficiency, requiring more complex collision resolution strategies and slowing lookups.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "89342400-ee99-4e98-a16d-bd0f42a98d6f",
+              "Text": "Measuring efficiency involves analyzing the load factor and the expected number of collisions under a given key distribution.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "14622ef8-c574-44c0-a761-c7f53353a72e",
+          "TopicId": "186c9c44-ca92-4778-9d45-526d4d963b2e",
+          "Title": "Evaluating Distribution Uniformity",
+          "BodyText": "Uniformity measures how evenly a compression function spreads hash values across the index range, which is critical for balanced hash table performance.",
+          "Notes": "For example, modular compression using a prime table size tends to produce more uniform distributions than using a power-of-two size, which may favor lower-order bits.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T14:10:52.7425529-04:00",
+          "ModifiedDate": "2026-06-26T14:10:52.7425529-04:00",
+          "Items": [
+            {
+              "Id": "dec30a22-3147-43f7-84d4-421cc45be8d1",
+              "Text": "A uniform distribution minimizes clustering, ensuring no single bucket becomes a hotspot for collisions.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "62488f83-94b2-4940-b908-28643b0ad786",
+              "Text": "The choice of table size and compression parameters directly affects uniformity; prime sizes are generally preferred for modular arithmetic.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "3f42a6a5-aea3-4cb4-88bb-eef1647b8525",
+              "Text": "Statistical tests such as chi-square analysis can be applied to empirically verify whether a compression method achieves near-uniform distribution.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "50a9f992-edd1-4132-894a-2e2dfe4f3070",
+          "TopicId": "186c9c44-ca92-4778-9d45-526d4d963b2e",
+          "Title": "Assessing Implementation Complexity",
+          "BodyText": "Implementation complexity describes how difficult it is to code, debug, and maintain a given compression method within a larger system.",
+          "Notes": "Folding methods, while often producing good distributions, require more implementation steps than simple modular division, which may matter in resource-constrained environments.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T14:10:52.7425529-04:00",
+          "ModifiedDate": "2026-06-26T14:10:52.7425529-04:00",
+          "Items": [
+            {
+              "Id": "293f6c84-da88-448a-b90e-21774aeabb60",
+              "Text": "Simple methods like the division method (mod p) are easy to implement but may require careful selection of the divisor to perform well.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "d3e0426d-abfd-4bfb-8659-92d0068d2761",
+              "Text": "More sophisticated methods such as folding or polynomial hashing offer better distribution properties but introduce additional coding and maintenance overhead.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "57de8c35-70fe-4868-be0d-50354563c44e",
+              "Text": "Teams should weigh whether the performance gains of a complex method justify the added development and debugging cost.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "391f4679-8186-4745-a192-79f6565799ff",
+          "TopicId": "186c9c44-ca92-4778-9d45-526d4d963b2e",
+          "Title": "Trade-Off Framework for Method Selection",
+          "BodyText": "Selecting a compression method requires balancing efficiency, uniformity, and complexity against the specific requirements and constraints of the use case.",
+          "Notes": "A quick-lookup dictionary application may prioritize speed and simplicity, while a cryptographic or security-sensitive application may demand stronger distribution guarantees above all else.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T14:10:52.7425529-04:00",
+          "ModifiedDate": "2026-06-26T14:10:52.7425529-04:00",
+          "Items": [
+            {
+              "Id": "373d1da1-b049-42e5-b746-e50eea776f2d",
+              "Text": "Identify the primary performance goal first\u2014whether it is speed, minimal collisions, or memory efficiency\u2014before comparing methods.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "a568c62a-2b84-4bdd-bfb9-4389d5692c16",
+              "Text": "Consider the key distribution of actual data; some methods perform well on random data but degrade on structured or clustered inputs.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "56da05fb-ef77-4eea-becc-9131b79b29f9",
+              "Text": "Document the trade-offs explicitly so that future maintainers understand why a particular compression strategy was chosen.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "bc9bf085-92fe-4aa7-82f3-9b263a860894",
+          "TopicId": "186c9c44-ca92-4778-9d45-526d4d963b2e",
+          "Title": "Matching Methods to Use Cases",
+          "BodyText": "Different application contexts favor different compression strategies, and no single method is universally optimal across all scenarios.",
+          "Notes": "For instance, folding is well-suited when keys are long numeric strings, while modular arithmetic is often sufficient for smaller, well-distributed integer key sets.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T14:10:52.7425529-04:00",
+          "ModifiedDate": "2026-06-26T14:10:52.7425529-04:00",
+          "Items": [
+            {
+              "Id": "e7eba93d-8fe0-4a25-a6e6-63a6ada71863",
+              "Text": "High-frequency, performance-critical applications benefit from computationally cheap methods like the division method with a prime modulus.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "17d15f48-d965-4b7c-add5-61319ff536d0",
+              "Text": "Applications with long or variable-length keys may benefit from folding, which breaks keys into segments and combines them before compression.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "e6d3aad4-6968-4817-b858-90468778489b",
+              "Text": "When key distributions are unknown or unpredictable, methods with stronger theoretical uniformity guarantees should be preferred to reduce worst-case behavior.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "8fc4c305-47ed-433f-997c-ce60f7de3765",
+          "TopicId": "186c9c44-ca92-4778-9d45-526d4d963b2e",
+          "Title": "Iterative Evaluation and Testing",
+          "BodyText": "Choosing a compression method should not be a one-time decision; empirical testing with real or representative data is essential to validate theoretical expectations.",
+          "Notes": "Benchmarking multiple candidate methods on actual workload data often reveals practical differences that theoretical analysis alone cannot predict.",
+          "SortOrder": 5,
+          "CreatedDate": "2026-06-26T14:10:52.7425529-04:00",
+          "ModifiedDate": "2026-06-26T14:10:52.7425529-04:00",
+          "Items": [
+            {
+              "Id": "6f6fa0f7-d414-47e9-9310-790fade0f7cd",
+              "Text": "Prototype candidate compression methods and measure collision rates, lookup times, and memory usage against realistic datasets.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "4f363e9b-1a1e-4531-8820-4c0281c3d3db",
+              "Text": "Compare results across multiple table sizes to determine whether a method\u0027s performance is sensitive to the size parameter.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "9aa2b5d1-a481-4a40-8317-28454b322f67",
+              "Text": "Be prepared to revisit the compression strategy if the key distribution or access patterns of the application change significantly over time.",
+              "SortOrder": 2
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "TotalElementCount": 30
+}

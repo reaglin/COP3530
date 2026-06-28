@@ -1,0 +1,1400 @@
+{
+  "ModuleFolderName": "Hash_Algorithms_and",
+  "CourseName": "COP3530 - Data Structures",
+  "GeneratedDate": "2026-06-26T14:14:12.9300612-04:00",
+  "ModifiedDate": "2026-06-26T14:17:36.1243518-04:00",
+  "Outcomes": [],
+  "Topics": [
+    {
+      "Id": "10250af6-655f-4c10-aa03-fd163435f33c",
+      "Title": "Introduction to Hashing Algorithms",
+      "Summary": "This topic introduces the foundational concepts of hashing algorithms, explaining what hash functions are and how they transform input data into fixed-length outputs. It establishes the vocabulary and core principles needed for deeper exploration throughout the module.",
+      "SortOrder": 0,
+      "CreatedDate": "2026-06-26T14:14:12.9300612-04:00",
+      "ModifiedDate": "2026-06-26T14:14:12.9300612-04:00",
+      "Elements": [
+        {
+          "Id": "e6dea913-4874-4da6-a450-63f4c57c99f5",
+          "TopicId": "10250af6-655f-4c10-aa03-fd163435f33c",
+          "Title": "What Is a Hash Function?",
+          "BodyText": "A hash function is a mathematical algorithm that takes an input of arbitrary length and produces a fixed-length output, commonly called a hash, digest, or checksum.",
+          "Notes": "For example, the string \u0027hello\u0027 passed through SHA-256 always produces the same 64-character hexadecimal string, regardless of how many times the function is run.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T14:14:37.5549199-04:00",
+          "ModifiedDate": "2026-06-26T14:14:37.5549199-04:00",
+          "Items": [
+            {
+              "Id": "e3cd6546-3ea5-47c9-bb3e-a1c7354c609a",
+              "Text": "Hash functions accept any input size \u2014 a single character or an entire file \u2014 and always return an output of the same fixed length.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "2af7a7b9-9ac0-4a6d-b7d9-850a8bff8d5e",
+              "Text": "The output is often called a \u0027digest\u0027 or \u0027fingerprint\u0027 because it uniquely represents the original input in a compact form.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "9c9c410f-f017-496a-8586-cbff7482186f",
+              "Text": "Hash functions are deterministic: the same input will always produce the same output.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "c6a445af-cd63-4fe9-9970-88d4e89e9984",
+          "TopicId": "10250af6-655f-4c10-aa03-fd163435f33c",
+          "Title": "Fixed-Length Output and the Transformation Process",
+          "BodyText": "One of the defining characteristics of a hash function is that no matter how large or small the input, the resulting hash is always the same predetermined length.",
+          "Notes": "SHA-256 always produces a 256-bit (32-byte) output, while MD5 produces a 128-bit output \u2014 regardless of whether the input is one word or an entire novel.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T14:14:37.5549199-04:00",
+          "ModifiedDate": "2026-06-26T14:14:37.5549199-04:00",
+          "Items": [
+            {
+              "Id": "9eac3625-6e29-4bb4-bfb1-dfe15332e7ef",
+              "Text": "The fixed-length property makes hashes predictable in storage size and easy to compare programmatically.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "4d9d3ecc-9e8f-4887-b64b-3c7654d9b996",
+              "Text": "The transformation is a one-way process: the hash value cannot be reversed to reconstruct the original input.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "62b558af-def6-4d3f-8863-cb764a313fe8",
+              "Text": "Different hash algorithms produce different output lengths, which affects their suitability for various security applications.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "61bbe7ba-7fa9-451a-9083-6435c8d752fd",
+          "TopicId": "10250af6-655f-4c10-aa03-fd163435f33c",
+          "Title": "Core Properties of Cryptographic Hash Functions",
+          "BodyText": "Cryptographic hash functions must satisfy a set of strict properties that distinguish them from simple checksums or non-cryptographic hash functions.",
+          "Notes": "These properties are what make cryptographic hashes useful for security-sensitive tasks like password storage and digital signatures.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T14:14:37.5549199-04:00",
+          "ModifiedDate": "2026-06-26T14:14:37.5549199-04:00",
+          "Items": [
+            {
+              "Id": "e21542fb-1902-4f1d-af12-da2e5237b49e",
+              "Text": "Pre-image resistance means it is computationally infeasible to reconstruct the original input from its hash output.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "9b2de5f9-06c0-49db-a40d-8e7410c5bfc0",
+              "Text": "Collision resistance means it is extremely unlikely for two different inputs to produce the same hash output.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "3bdd2c7c-63e0-4e05-8f5b-9da007c4db4a",
+              "Text": "The avalanche effect ensures that even a tiny change in the input \u2014 such as changing one character \u2014 produces a drastically different hash.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "79ef1764-8800-497b-a10d-d44a82965f06",
+          "TopicId": "10250af6-655f-4c10-aa03-fd163435f33c",
+          "Title": "Hashing vs. Encryption: A Key Distinction",
+          "BodyText": "Hashing and encryption are both techniques used to protect data, but they serve fundamentally different purposes and should not be confused with one another.",
+          "Notes": "A common mistake in software development is using encryption where hashing is appropriate, such as storing passwords \u2014 passwords should be hashed, not encrypted.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T14:14:37.5549199-04:00",
+          "ModifiedDate": "2026-06-26T14:14:37.5549199-04:00",
+          "Items": [
+            {
+              "Id": "baf02686-dfb1-4c1b-8d40-936423c00915",
+              "Text": "Encryption is a two-way process: data can be encrypted and later decrypted using a key, whereas hashing is a one-way transformation with no decryption step.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "fabda9d2-0d03-414f-bc52-3d9751b222d1",
+              "Text": "Hashing is used when you need to verify data without ever needing to recover the original value, such as confirming a password at login.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "69e57a34-7d13-451b-8197-747444e99b00",
+              "Text": "Because hashing is irreversible, it provides stronger guarantees for sensitive data storage than reversible encryption.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "85dcd4dd-e72b-4ee8-9ffa-aa4bc08e0d9a",
+          "TopicId": "10250af6-655f-4c10-aa03-fd163435f33c",
+          "Title": "Common Hashing Algorithms and Their Use Cases",
+          "BodyText": "Several hashing algorithms are widely used in practice, each with different characteristics in terms of output length, speed, and security strength.",
+          "Notes": "MD5 and SHA-1 are now considered cryptographically broken for security-sensitive uses, while SHA-256 and SHA-3 remain widely trusted.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T14:14:37.5549199-04:00",
+          "ModifiedDate": "2026-06-26T14:14:37.5549199-04:00",
+          "Items": [
+            {
+              "Id": "f7d2c59e-83e5-4c8d-a7c0-383d1a4dae75",
+              "Text": "MD5 produces a 128-bit hash and was once widely used, but is now considered insecure due to known collision vulnerabilities.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "278570a0-7711-4d18-bca1-9361e5743808",
+              "Text": "SHA-256, part of the SHA-2 family, is a current industry standard used in TLS certificates, blockchain, and data integrity verification.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "19ae8618-85a5-49b6-8819-fefb1ea8c985",
+              "Text": "Purpose-built password hashing algorithms such as bcrypt and Argon2 are specifically designed to be computationally slow, resisting brute-force attacks.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "0145147e-4471-4466-94fb-4498ae2728ed",
+          "TopicId": "10250af6-655f-4c10-aa03-fd163435f33c",
+          "Title": "The Role of Hashing in Data Integrity",
+          "BodyText": "Hashing plays a critical role in verifying that data has not been altered or corrupted during storage or transmission.",
+          "Notes": "Software download sites commonly publish the SHA-256 hash of a file so users can verify the downloaded file matches the original.",
+          "SortOrder": 5,
+          "CreatedDate": "2026-06-26T14:14:37.5549199-04:00",
+          "ModifiedDate": "2026-06-26T14:14:37.5549199-04:00",
+          "Items": [
+            {
+              "Id": "aa064945-dcb5-497b-b753-9e1c79587990",
+              "Text": "By comparing the hash of received data against a known hash value, systems can detect any unauthorized modification or accidental corruption.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "6df8c3db-3eae-4b17-ba52-445db8249ab4",
+              "Text": "Even a single bit change in a file will produce a completely different hash, making tampering immediately detectable.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "733ccb85-c8bf-4fad-878d-e6b9a5c53feb",
+              "Text": "This integrity-checking capability is foundational to applications like digital signatures, version control systems, and secure communications.",
+              "SortOrder": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "98d5ce14-7703-428a-8625-0c0dd57a0586",
+      "Title": "Cryptographic Hash Functions",
+      "Summary": "This topic examines the properties that distinguish cryptographic hash functions from general-purpose hash functions, including collision resistance, preimage resistance, and avalanche effect. Students explore widely used algorithms such as SHA-256 and MD5 and understand their roles in security contexts.",
+      "SortOrder": 1,
+      "CreatedDate": "2026-06-26T14:14:12.9300612-04:00",
+      "ModifiedDate": "2026-06-26T14:14:12.9300612-04:00",
+      "Elements": [
+        {
+          "Id": "113718f9-5740-461f-beb6-fae1f8707194",
+          "TopicId": "98d5ce14-7703-428a-8625-0c0dd57a0586",
+          "Title": "What Makes a Hash Function Cryptographic",
+          "BodyText": "Cryptographic hash functions are a specialized subset of hash functions designed to meet rigorous security requirements beyond simple data lookup or checksum tasks.",
+          "Notes": "General-purpose hash functions prioritize speed and uniform distribution for data structures like hash tables, whereas cryptographic hash functions prioritize security properties even at the cost of some computational overhead.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T14:15:08.281038-04:00",
+          "ModifiedDate": "2026-06-26T14:15:08.281038-04:00",
+          "Items": [
+            {
+              "Id": "da274c90-b5dc-478a-8a58-c044697d574c",
+              "Text": "Cryptographic hash functions must produce a fixed-length output regardless of the input size, making outputs predictable in length but not in value.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "a3bff562-2ecd-4108-86d4-37b73c91c0be",
+              "Text": "They are deterministic, meaning the same input always produces the same hash output.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "fddebca6-4b4a-4bf8-b24e-a46f1e8a7657",
+              "Text": "They must be computationally efficient to compute in the forward direction while being practically infeasible to reverse.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "48deebea-43a8-4d91-8fee-75fc1cd2342b",
+              "Text": "Security guarantees distinguish them fundamentally from non-cryptographic hash functions used in data structures.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "39e2099e-3fd1-4c90-abd8-9d1fab19d66a",
+          "TopicId": "98d5ce14-7703-428a-8625-0c0dd57a0586",
+          "Title": "Preimage Resistance",
+          "BodyText": "Preimage resistance ensures that given a hash output, it is computationally infeasible to determine any input that would produce that specific hash value.",
+          "Notes": "This property is sometimes called \u0027one-wayness\u0027 and is foundational to password hashing \u2014 even if an attacker obtains the stored hash, they cannot trivially recover the original password.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T14:15:08.281038-04:00",
+          "ModifiedDate": "2026-06-26T14:15:08.281038-04:00",
+          "Items": [
+            {
+              "Id": "50d95dd1-4d47-45de-a2ac-59550355a315",
+              "Text": "First preimage resistance means an attacker cannot find any input m such that hash(m) equals a given target hash.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "0cb324fd-714b-48e8-8873-c334f65c95e9",
+              "Text": "Second preimage resistance means that given a specific input, an attacker cannot find a different input that produces the same hash output.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "5ffcb51d-bec1-410d-beff-e6151f5b0a95",
+              "Text": "Both forms of preimage resistance are essential for protecting sensitive data like passwords stored as hashes.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "accc4e19-9ac1-499f-a510-b5b1cda25cd3",
+          "TopicId": "98d5ce14-7703-428a-8625-0c0dd57a0586",
+          "Title": "Collision Resistance",
+          "BodyText": "Collision resistance is the property that it is computationally infeasible to find two distinct inputs that produce the same hash output.",
+          "Notes": "MD5 and SHA-1 have both been demonstrated to have practical collision vulnerabilities, which is why they are no longer recommended for security-critical applications. The SHA-2 family, including SHA-256, is currently considered collision resistant.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T14:15:08.281038-04:00",
+          "ModifiedDate": "2026-06-26T14:15:08.281038-04:00",
+          "Items": [
+            {
+              "Id": "1aed93e1-76a9-441d-8034-6e41cf92c84d",
+              "Text": "A collision occurs when two different inputs, m1 and m2, yield the same hash digest even though m1 \u2260 m2.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "bf359b01-9752-44ca-8fc8-2883b6b04980",
+              "Text": "Collision resistance is critical for digital signatures and certificate integrity, where an attacker crafting a colliding document could substitute malicious content.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "c12bb3cf-efaa-4a5e-9f6b-31ea4b38ba90",
+              "Text": "By the birthday paradox, finding a collision requires roughly 2^(n/2) operations for an n-bit hash, making longer hash outputs significantly more secure.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "ed688751-554b-4f27-b0d9-abc686d010d7",
+              "Text": "Algorithms like MD5 have known practical collision attacks and should not be used in security contexts.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "6952f166-3f4d-4d23-b36a-958441fa8033",
+          "TopicId": "98d5ce14-7703-428a-8625-0c0dd57a0586",
+          "Title": "The Avalanche Effect",
+          "BodyText": "The avalanche effect describes the property whereby a tiny change in input \u2014 even a single bit \u2014 produces a drastically different and unpredictable hash output.",
+          "Notes": "For example, hashing \u0027password\u0027 and \u0027Password\u0027 with SHA-256 yields completely different digests with no visible relationship, illustrating the avalanche effect in practice.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T14:15:08.281038-04:00",
+          "ModifiedDate": "2026-06-26T14:15:08.281038-04:00",
+          "Items": [
+            {
+              "Id": "0f90ff2f-7ad9-40c3-a48e-1a331d8b7f98",
+              "Text": "A well-designed cryptographic hash function should change approximately half of its output bits when a single input bit is flipped.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "4952f451-5b2b-4ee3-b090-20179432481c",
+              "Text": "The avalanche effect prevents attackers from making incremental guesses about an input based on partial knowledge of the hash.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "2e222e67-a17f-48b9-a2ed-4507ab949871",
+              "Text": "This property ensures that similar inputs cannot be distinguished as \u0027close\u0027 based on their hash outputs, protecting against certain inference attacks.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "ec2fe3eb-0140-45ff-b19c-b4b7562d938e",
+          "TopicId": "98d5ce14-7703-428a-8625-0c0dd57a0586",
+          "Title": "MD5: Capabilities and Known Weaknesses",
+          "BodyText": "MD5 (Message Digest Algorithm 5) was once widely used for checksums and password hashing but is now considered cryptographically broken for security-sensitive applications.",
+          "Notes": "MD5 produces a 128-bit digest and remains useful for non-security purposes such as verifying accidental file corruption, but should never be used for password storage or digital signatures.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T14:15:08.281038-04:00",
+          "ModifiedDate": "2026-06-26T14:15:08.281038-04:00",
+          "Items": [
+            {
+              "Id": "90368486-e6b3-4e26-ace8-64b31364f7a8",
+              "Text": "MD5 generates a 128-bit (16-byte) hash and is very fast to compute, which makes it efficient but also vulnerable to brute-force attacks.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "50464355-b062-47e4-9ccf-4cc725abb03a",
+              "Text": "Practical collision attacks against MD5 have been demonstrated, meaning two different files can be crafted to share the same MD5 hash.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "e0bcd520-f76e-49a7-b015-2957679ce116",
+              "Text": "Its speed, while a performance advantage in some contexts, makes it dangerous for password hashing because attackers can test billions of candidates per second.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "cb1e4efe-c181-4a73-a71f-a741a13308d6",
+              "Text": "MD5 should be considered deprecated for any application requiring genuine security guarantees.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "a6918ea6-f4b6-4f6f-8beb-56e06a4a57af",
+          "TopicId": "98d5ce14-7703-428a-8625-0c0dd57a0586",
+          "Title": "SHA-256 and the SHA-2 Family",
+          "BodyText": "SHA-256 is part of the SHA-2 family of cryptographic hash functions developed by the NSA and standardized by NIST, producing a 256-bit digest that is widely trusted for security applications.",
+          "Notes": "SHA-256 is used extensively in TLS/SSL certificates, blockchain technologies like Bitcoin, and file integrity verification. The SHA-2 family also includes SHA-224, SHA-384, and SHA-512, offering different digest sizes for varying security requirements.",
+          "SortOrder": 5,
+          "CreatedDate": "2026-06-26T14:15:08.281038-04:00",
+          "ModifiedDate": "2026-06-26T14:15:08.281038-04:00",
+          "Items": [
+            {
+              "Id": "9a0bf25b-1044-4d8a-9720-ceeedcd3281b",
+              "Text": "SHA-256 produces a 256-bit (32-byte) output, providing a substantially larger output space than MD5 and making brute-force and collision attacks far more difficult.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "02791435-20a4-4692-9e11-3f72796dc297",
+              "Text": "No practical collision attacks against SHA-256 have been demonstrated, making it currently suitable for digital signatures, certificates, and integrity verification.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "9da6b4b3-bdad-470a-933c-c420a1e85169",
+              "Text": "SHA-256 remains computationally efficient while offering strong security properties, striking a balance that makes it the dominant choice in modern cryptographic protocols.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "27066a57-e41a-4c69-b5d0-018e1194ead2",
+              "Text": "For password hashing specifically, SHA-256 alone is insufficient without additional techniques like salting, due to its raw computational speed enabling dictionary attacks.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "588bd73d-b503-4214-b8f2-b6170f71f142",
+          "TopicId": "98d5ce14-7703-428a-8625-0c0dd57a0586",
+          "Title": "Role of Cryptographic Hash Functions in Security Systems",
+          "BodyText": "Cryptographic hash functions serve as foundational primitives across a wide range of security contexts, including data integrity verification, digital signatures, and authentication systems.",
+          "Notes": "Understanding where cryptographic hash functions fit within larger security architectures helps clarify why their specific properties \u2014 particularly preimage and collision resistance \u2014 are non-negotiable requirements.",
+          "SortOrder": 6,
+          "CreatedDate": "2026-06-26T14:15:08.281038-04:00",
+          "ModifiedDate": "2026-06-26T14:15:08.281038-04:00",
+          "Items": [
+            {
+              "Id": "14eee2ee-25e1-49bb-b94b-2e80a5a9d2b5",
+              "Text": "In data integrity checking, a hash of a file or message can be published separately; any tampering with the data will produce a different hash, alerting recipients.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "a3d29149-bf31-40d2-9e83-8bb97cc029a5",
+              "Text": "Digital signature schemes rely on hashing a message first and then signing the hash, making collision resistance essential to prevent signature forgery.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "d8df1b3b-b033-4b34-8f96-999d3e08b92e",
+              "Text": "Authentication systems use hashed passwords so that stored credentials are not plaintext, limiting damage from database breaches.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "032ec275-b73c-46e7-b378-89453b513f67",
+              "Text": "Cryptographic hash functions also underpin constructs like HMACs (Hash-based Message Authentication Codes), which combine hashing with secret keys for message authentication.",
+              "SortOrder": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "61991c6a-3157-431d-950a-37dbce9f17b2",
+      "Title": "Password Hashing Fundamentals",
+      "Summary": "This topic covers how hashing is applied specifically to password storage, explaining why plain-text and simple-hash storage are insecure. Students learn how systems use dedicated password hashing algorithms to protect user credentials at rest.",
+      "SortOrder": 2,
+      "CreatedDate": "2026-06-26T14:14:12.9300612-04:00",
+      "ModifiedDate": "2026-06-26T14:14:12.9300612-04:00",
+      "Elements": [
+        {
+          "Id": "87e16f18-bf0f-40eb-a4d6-6e6bc90cf790",
+          "TopicId": "61991c6a-3157-431d-950a-37dbce9f17b2",
+          "Title": "Why Plain-Text Password Storage Is Dangerous",
+          "BodyText": "Storing passwords in plain text means any unauthorized access to the database immediately exposes every user\u0027s credentials.",
+          "Notes": "High-profile breaches such as the RockYou leak exposed millions of plain-text passwords, demonstrating the catastrophic real-world impact of this practice.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T14:15:31.0134485-04:00",
+          "ModifiedDate": "2026-06-26T14:15:31.0134485-04:00",
+          "Items": [
+            {
+              "Id": "6b9e46bc-b4f9-470d-beb2-ca77a22fa682",
+              "Text": "A compromised database gives attackers instant access to every account without any additional effort.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "2261ad19-c94e-42db-bb8f-975b10cb516d",
+              "Text": "Plain-text storage violates the principle of defense in depth, leaving no second layer of protection for user credentials.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "9cab7c44-2f38-4b91-a6f8-df278415b438",
+              "Text": "Regulatory frameworks such as GDPR and PCI-DSS explicitly require that passwords not be stored in recoverable plain-text form.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "68ef3300-09ca-4197-82dd-66963742dc29",
+          "TopicId": "61991c6a-3157-431d-950a-37dbce9f17b2",
+          "Title": "Limitations of Simple Cryptographic Hashes for Passwords",
+          "BodyText": "General-purpose hash functions like MD5 or SHA-256 were designed for speed, which makes them poorly suited for protecting passwords.",
+          "Notes": "Modern GPUs can compute billions of SHA-256 hashes per second, making brute-force and dictionary attacks highly practical against databases hashed with these algorithms.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T14:15:31.0134485-04:00",
+          "ModifiedDate": "2026-06-26T14:15:31.0134485-04:00",
+          "Items": [
+            {
+              "Id": "fae46687-0982-4b61-b509-59909f08b5eb",
+              "Text": "Because the same password always produces the same hash, identical passwords across users produce identical hash values, revealing patterns to an attacker.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "1544b295-fca3-43e0-985e-b91610cd0b2f",
+              "Text": "High computational speed allows attackers to rapidly test enormous lists of candidate passwords against stolen hashes.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "d685a251-6b35-4fa5-8857-9670f431e02d",
+              "Text": "Precomputed rainbow tables can reverse unsalted simple hashes for common passwords almost instantly.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "82a2524a-6c70-46b2-a75d-1762a0e366c5",
+          "TopicId": "61991c6a-3157-431d-950a-37dbce9f17b2",
+          "Title": "The Role of Salting in Password Hashing",
+          "BodyText": "A salt is a unique, randomly generated value added to each password before hashing, ensuring that identical passwords produce different hash outputs.",
+          "Notes": "Salts do not need to be secret; they are typically stored alongside the hash in the database. Their purpose is uniqueness, not secrecy.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T14:15:31.0134485-04:00",
+          "ModifiedDate": "2026-06-26T14:15:31.0134485-04:00",
+          "Items": [
+            {
+              "Id": "173e179e-9f1e-44fc-bc1b-2c621e674fbd",
+              "Text": "Per-user salts defeat rainbow table attacks because precomputed tables cannot account for an unpredictable random value.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "876dec6e-3c53-42d5-8f75-66a6c84159f9",
+              "Text": "Even if two users choose the same password, their stored hashes will differ due to their distinct salts.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "06449ace-3d03-4158-91bf-9170eb949cdb",
+              "Text": "Salts should be generated using a cryptographically secure random number generator and be sufficiently long, typically at least 16 bytes.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "148d4f37-ca4b-4881-8986-7ff9338e219d",
+          "TopicId": "61991c6a-3157-431d-950a-37dbce9f17b2",
+          "Title": "Dedicated Password Hashing Algorithms",
+          "BodyText": "Algorithms such as bcrypt, scrypt, and Argon2 were specifically designed for password hashing, incorporating features that resist modern attack methods.",
+          "Notes": "Argon2 won the Password Hashing Competition in 2015 and is currently considered the gold standard for new systems. bcrypt remains widely deployed and trusted in legacy systems.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T14:15:31.0134485-04:00",
+          "ModifiedDate": "2026-06-26T14:15:31.0134485-04:00",
+          "Items": [
+            {
+              "Id": "a682508f-f043-4431-b477-9aaccf9c1a51",
+              "Text": "These algorithms are intentionally slow and computationally expensive, dramatically increasing the cost of brute-force attacks.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "85d84e19-39cb-4657-9f26-11b899d46cde",
+              "Text": "They include built-in salting mechanisms, removing the burden of correct salt management from the developer.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "4638b04e-3ca0-4904-b70f-c8933769a638",
+              "Text": "A configurable work factor or cost parameter allows the algorithm\u0027s difficulty to be increased over time as hardware becomes more powerful.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "bc42569b-e2ab-4b30-ad24-1ec7f9ea8f87",
+          "TopicId": "61991c6a-3157-431d-950a-37dbce9f17b2",
+          "Title": "Work Factors and Computational Cost Tuning",
+          "BodyText": "Password hashing algorithms expose a work factor setting that controls how much computation is required to produce a single hash.",
+          "Notes": "A common guideline is to set the work factor so that hashing takes approximately 100\u2013300 milliseconds on the target production hardware, balancing security against user-perceived latency.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T14:15:31.0134485-04:00",
+          "ModifiedDate": "2026-06-26T14:15:31.0134485-04:00",
+          "Items": [
+            {
+              "Id": "32d753ff-58f9-4dec-884e-677bb5216ca9",
+              "Text": "Increasing the work factor exponentially increases attacker cost while adding only a small, acceptable delay for legitimate login attempts.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "16e5fd4d-baa7-4365-9832-f9ac4e193dfa",
+              "Text": "Work factors should be re-evaluated periodically and increased as server hardware and attacker GPU capabilities improve.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "02a4dc2f-5d4d-40d7-b887-32a4ee0f2941",
+              "Text": "Most dedicated password hashing libraries encode the work factor directly into the stored hash string, simplifying future upgrades.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "8472dae8-4e9c-445b-a452-a5cc1eb4d0c1",
+          "TopicId": "61991c6a-3157-431d-950a-37dbce9f17b2",
+          "Title": "How Systems Verify Passwords at Login",
+          "BodyText": "Because cryptographic hashes are one-way functions, systems verify passwords by re-hashing the candidate input and comparing the result to the stored hash.",
+          "Notes": "The comparison should use a constant-time equality function to prevent timing attacks that could leak information about how many characters matched.",
+          "SortOrder": 5,
+          "CreatedDate": "2026-06-26T14:15:31.0134485-04:00",
+          "ModifiedDate": "2026-06-26T14:15:31.0134485-04:00",
+          "Items": [
+            {
+              "Id": "e264b4ef-6d87-4e9a-81d3-b5530cbe93bc",
+              "Text": "At login, the system retrieves the stored hash and its associated salt, then hashes the user-supplied password with that same salt.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "a0f2cd3b-d37b-40a8-887c-4e10cb71df39",
+              "Text": "If the newly computed hash matches the stored hash, the password is confirmed correct without ever storing or reconstructing the original password.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "d4618fef-1ffa-438e-9cb6-12f3864851ea",
+              "Text": "This one-way verification means even database administrators and developers cannot retrieve a user\u0027s plain-text password.",
+              "SortOrder": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "010bfccd-9f44-4390-954a-83f49804e16d",
+      "Title": "Salting and Advanced Password Protection Techniques",
+      "Summary": "This topic explores salting as a critical technique for defending against rainbow table and dictionary attacks, detailing how random salts are generated and stored alongside password hashes. It also introduces concepts such as key stretching and modern algorithms like bcrypt, scrypt, and Argon2.",
+      "SortOrder": 3,
+      "CreatedDate": "2026-06-26T14:14:12.9300612-04:00",
+      "ModifiedDate": "2026-06-26T14:14:12.9300612-04:00",
+      "Elements": [
+        {
+          "Id": "2cd8f4ee-9ebe-4b99-a33c-ccf575e0167d",
+          "TopicId": "010bfccd-9f44-4390-954a-83f49804e16d",
+          "Title": "What Is Salting and Why It Matters",
+          "BodyText": "Salting is the practice of appending or prepending a unique, randomly generated value (the \u0027salt\u0027) to a password before hashing it, ensuring that identical passwords produce different hash outputs.",
+          "Notes": "For example, two users with the password \u0027password123\u0027 will have completely different stored hashes if each was salted with a distinct random value before hashing.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T14:16:00.1089154-04:00",
+          "ModifiedDate": "2026-06-26T14:16:00.1089154-04:00",
+          "Items": [
+            {
+              "Id": "5f62e17d-ce26-4b9d-9ebb-ddcf6d26b6d5",
+              "Text": "Without salting, identical passwords always produce identical hashes, making bulk cracking trivial.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "6536a203-7aa1-4de6-8b3c-8d45f152820b",
+              "Text": "A salt does not need to be secret; its purpose is uniqueness, not confidentiality.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "e83bc47a-9ebf-4f7b-bb14-9b09bbb1a2ad",
+              "Text": "Salting directly defeats precomputed attack strategies by making each hash effectively unique.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "e89f64fe-93d1-4f3d-97a1-a5f65201a855",
+          "TopicId": "010bfccd-9f44-4390-954a-83f49804e16d",
+          "Title": "Defending Against Rainbow Table Attacks",
+          "BodyText": "Rainbow tables are precomputed lookup tables mapping common passwords to their hash values, allowing attackers to reverse hashes rapidly without brute-force computation.",
+          "Notes": "A rainbow table built for unsalted MD5 hashes, for instance, can crack millions of common passwords in seconds. Salting renders these tables useless because the attacker would need a separate table for every possible salt value.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T14:16:00.1089154-04:00",
+          "ModifiedDate": "2026-06-26T14:16:00.1089154-04:00",
+          "Items": [
+            {
+              "Id": "6deb13a2-bedc-43c4-8876-446562bc5e47",
+              "Text": "Salts force an attacker to recompute hashes individually for each account rather than using a single precomputed table.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "a578beeb-1df1-4689-8c44-dde3f89abc98",
+              "Text": "Even a short random salt of 16 bytes increases the attack space astronomically, making rainbow tables computationally infeasible.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "f4d4fb3c-3ae0-4477-9ba3-7287bb9072ee",
+              "Text": "This is why modern authentication systems always store a per-user salt alongside the password hash.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "bb767a2e-496e-48b1-a00d-3cc4530ce12e",
+          "TopicId": "010bfccd-9f44-4390-954a-83f49804e16d",
+          "Title": "Defending Against Dictionary and Brute-Force Attacks",
+          "BodyText": "Dictionary attacks rely on hashing lists of common passwords and comparing results to stored hashes; salting forces attackers to rehash every candidate password with each unique salt.",
+          "Notes": "An attacker targeting 10,000 user accounts without salting can hash each dictionary word once and compare to all accounts simultaneously. With unique salts, each account requires its own full dictionary pass.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T14:16:00.1089154-04:00",
+          "ModifiedDate": "2026-06-26T14:16:00.1089154-04:00",
+          "Items": [
+            {
+              "Id": "427e3c86-bbb7-40f4-aef5-2f1bfa2a066f",
+              "Text": "Per-user salts eliminate the efficiency advantage of dictionary attacks performed across multiple accounts at once.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "c47a61ca-f18a-4781-b8d1-e69e5287b3c4",
+              "Text": "Salting alone does not slow down attacks on a single account; additional techniques such as key stretching are needed for that purpose.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "4501abd2-4765-48b2-adf8-01a42c618c3a",
+              "Text": "Combining salting with slow hash functions maximizes resistance to both dictionary and brute-force attacks.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "0bdcd812-f438-47e6-9509-8307316f7fbe",
+          "TopicId": "010bfccd-9f44-4390-954a-83f49804e16d",
+          "Title": "Generating and Storing Salts",
+          "BodyText": "A salt must be generated using a cryptographically secure random number generator (CSPRNG) to ensure unpredictability, and it must be stored alongside the password hash for verification during login.",
+          "Notes": "Most modern password hashing libraries handle salt generation and storage automatically, embedding the salt directly within the output hash string (e.g., bcrypt\u0027s output contains the salt, cost factor, and hash together).",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T14:16:00.1089154-04:00",
+          "ModifiedDate": "2026-06-26T14:16:00.1089154-04:00",
+          "Items": [
+            {
+              "Id": "b8988289-2b99-4b54-9bf6-a0396993d0a7",
+              "Text": "Salts should be at least 16 bytes (128 bits) long to provide sufficient uniqueness across a large user base.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "c54b93c4-c880-48f3-b19c-13f4e1fc285c",
+              "Text": "Each user account must have its own independently generated salt; reusing salts across accounts defeats their purpose.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "988b241c-6e86-4a60-845a-00213f2f6722",
+              "Text": "During login, the stored salt is retrieved and combined with the entered password before hashing, then compared to the stored hash.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "3fb5f073-6261-44c1-aeaf-e0800d366c94",
+          "TopicId": "010bfccd-9f44-4390-954a-83f49804e16d",
+          "Title": "Key Stretching",
+          "BodyText": "Key stretching is a technique that deliberately increases the computational cost of hashing a password by iterating the hash function many times, slowing down attackers attempting rapid brute-force guesses.",
+          "Notes": "A single SHA-256 computation takes microseconds, allowing billions of guesses per second on modern hardware. Key stretching can reduce this to thousands of guesses per second, drastically increasing attack time.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T14:16:00.1089154-04:00",
+          "ModifiedDate": "2026-06-26T14:16:00.1089154-04:00",
+          "Items": [
+            {
+              "Id": "accfa381-777d-4ebb-ab2c-cdddbf36b7a8",
+              "Text": "Common approaches include iterating the hash function thousands or millions of times (e.g., PBKDF2 with a configurable iteration count).",
+              "SortOrder": 0
+            },
+            {
+              "Id": "da1fcb7d-3757-400e-bd27-ee7d349ee22f",
+              "Text": "The cost parameter can be tuned upward over time as hardware improves, maintaining strong protection.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "44ac56f2-73f6-42dd-a383-5225b841af21",
+              "Text": "Key stretching adds negligible delay for a legitimate user logging in (milliseconds) but imposes enormous cumulative cost on an attacker.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "86bb032c-e930-4343-b42f-35c2ae9a3191",
+          "TopicId": "010bfccd-9f44-4390-954a-83f49804e16d",
+          "Title": "Modern Password Hashing Algorithms: bcrypt and scrypt",
+          "BodyText": "bcrypt and scrypt are purpose-built password hashing algorithms that incorporate salting and key stretching by design, and are considered significantly more secure than applying a general-purpose cryptographic hash directly to a password.",
+          "Notes": "bcrypt has been widely used since 1999 and remains a strong default choice. scrypt was designed to be both CPU-intensive and memory-intensive, further raising the cost of hardware-accelerated attacks using GPUs or ASICs.",
+          "SortOrder": 5,
+          "CreatedDate": "2026-06-26T14:16:00.1089154-04:00",
+          "ModifiedDate": "2026-06-26T14:16:00.1089154-04:00",
+          "Items": [
+            {
+              "Id": "2904dcfa-0a0f-4d90-a704-2211a94d7f78",
+              "Text": "bcrypt includes a built-in cost factor that controls the number of iterations, making it adaptable to increasing hardware speeds.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "afb443de-3276-4541-91a6-b048ac2183a5",
+              "Text": "scrypt adds a memory-hardness requirement, meaning attackers cannot simply use more processors to speed up cracking without also scaling memory resources.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "bfebf1d6-6c7e-4479-9cda-d211659db058",
+              "Text": "Both algorithms automatically handle salt generation and embedding, reducing the risk of developer implementation errors.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "46c09b63-fc60-4e35-9beb-d22e400344a1",
+          "TopicId": "010bfccd-9f44-4390-954a-83f49804e16d",
+          "Title": "Argon2: The Modern Standard",
+          "BodyText": "Argon2 is the winner of the Password Hashing Competition (2015) and is now widely recommended as the state-of-the-art algorithm for password hashing, offering configurable time, memory, and parallelism cost parameters.",
+          "Notes": "Argon2 comes in three variants: Argon2d (optimized against GPU attacks), Argon2i (optimized against side-channel attacks), and Argon2id (a hybrid recommended for most use cases).",
+          "SortOrder": 6,
+          "CreatedDate": "2026-06-26T14:16:00.1089154-04:00",
+          "ModifiedDate": "2026-06-26T14:16:00.1089154-04:00",
+          "Items": [
+            {
+              "Id": "335640eb-d1c4-4713-84b3-aa72c21fee20",
+              "Text": "Argon2\u0027s three tunable parameters \u2014 time cost, memory cost, and parallelism \u2014 allow fine-grained control over computational difficulty.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "8eda5cf7-20eb-4404-a53a-07161f413da5",
+              "Text": "Its memory-hardness property makes it highly resistant to attacks using specialized hardware such as ASICs and FPGAs.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "3929503a-5d79-4f56-8363-b552ba1b60ab",
+              "Text": "Argon2id is the variant recommended by OWASP and most modern security guidelines for general password hashing applications.",
+              "SortOrder": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "ad5ab132-9d11-45f7-9df1-35fb62762d11",
+      "Title": "Ensuring Data Integrity with Hashing",
+      "Summary": "This topic demonstrates how hash functions are used beyond passwords to verify the integrity of files, messages, and software distributions. Students examine real-world use cases including checksums, digital signatures, and hash-based message authentication codes (HMACs).",
+      "SortOrder": 4,
+      "CreatedDate": "2026-06-26T14:14:12.9300612-04:00",
+      "ModifiedDate": "2026-06-26T14:14:12.9300612-04:00",
+      "Elements": [
+        {
+          "Id": "45a562a0-7c9c-4812-9950-1dffcd88973e",
+          "TopicId": "ad5ab132-9d11-45f7-9df1-35fb62762d11",
+          "Title": "Hash Functions as Integrity Verification Tools",
+          "BodyText": "Hash functions produce a fixed-length digest that acts as a unique fingerprint for any given input, making them ideal for verifying that data has not been altered.",
+          "Notes": "Even a single-bit change in the source data produces a completely different hash value \u2014 a property known as the avalanche effect. This makes hashes extremely sensitive detectors of tampering.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T14:16:27.7277192-04:00",
+          "ModifiedDate": "2026-06-26T14:16:27.7277192-04:00",
+          "Items": [
+            {
+              "Id": "36e47e75-89f3-4fab-a9ac-4b5397215df3",
+              "Text": "A hash function maps arbitrary-length input data to a fixed-length output, ensuring consistent fingerprint sizes regardless of file size.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "21955fdc-fa92-413d-bc6d-b0169b9959f5",
+              "Text": "If the computed hash of received data matches the original hash, the data is confirmed to be unaltered.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "685085ab-09fd-4e3e-bf19-b1908ac907d6",
+              "Text": "Hash-based integrity checks are used at rest (stored files) and in transit (network transmissions) to detect corruption or tampering.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "f8b6370f-aaa7-45c8-9262-f1cfecd38dde",
+          "TopicId": "ad5ab132-9d11-45f7-9df1-35fb62762d11",
+          "Title": "Checksums for File and Data Verification",
+          "BodyText": "Checksums are hash values published alongside files or data packages, allowing recipients to independently verify that what they downloaded or received matches the original.",
+          "Notes": "Common algorithms used for checksums include MD5, SHA-1, and SHA-256. While MD5 and SHA-1 are considered cryptographically weak for security-critical uses, they are still widely used for basic integrity checks where adversarial tampering is not a primary concern.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T14:16:27.7277192-04:00",
+          "ModifiedDate": "2026-06-26T14:16:27.7277192-04:00",
+          "Items": [
+            {
+              "Id": "9b548193-f104-4a45-93fb-c2bf3c1fa323",
+              "Text": "A publisher computes the hash of a file and posts it publicly; downloaders recompute the hash locally and compare values.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "26fcc04e-6d0f-452d-84c8-d42d9142667e",
+              "Text": "A mismatch between the expected and computed checksum signals file corruption, incomplete download, or deliberate tampering.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "55eb1d94-0fdd-4fc4-ad12-c51f9d169034",
+              "Text": "Checksum verification is a standard step in distributing operating system images, software installers, and large datasets.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "d9e7c400-7909-45d0-8d42-0e6c6bed3eb7",
+          "TopicId": "ad5ab132-9d11-45f7-9df1-35fb62762d11",
+          "Title": "Verifying Software Distribution Integrity",
+          "BodyText": "Software vendors and open-source projects use cryptographic hashes to ensure that distributed packages have not been modified by a malicious third party before installation.",
+          "Notes": "Supply chain attacks \u2014 where malware is injected into legitimate software packages \u2014 are a growing threat. Hash verification is a critical defense layer in package managers such as npm, pip, and apt.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T14:16:27.7277192-04:00",
+          "ModifiedDate": "2026-06-26T14:16:27.7277192-04:00",
+          "Items": [
+            {
+              "Id": "cdff791c-f2de-4aa8-a823-34b4288933d6",
+              "Text": "Package managers automatically compare the hash of a downloaded package against a known-good value before installation proceeds.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "06119f99-5930-453e-a1ab-2208dd4beba4",
+              "Text": "Developers sign release artifacts with their private key and publish the corresponding hash, enabling users to verify both authenticity and integrity.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "c7ce5ef7-b0a3-46ee-85eb-81ff68fe0b18",
+              "Text": "Failing to verify software hashes has led to high-profile supply chain compromises affecting millions of end users.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "33e1bda9-41c4-4bc7-9f60-ec3697e7d0e9",
+          "TopicId": "ad5ab132-9d11-45f7-9df1-35fb62762d11",
+          "Title": "Hash-Based Message Authentication Codes (HMACs)",
+          "BodyText": "An HMAC combines a cryptographic hash function with a secret key to produce a message authentication code that verifies both the integrity and authenticity of a message.",
+          "Notes": "HMAC is defined in RFC 2104 and is widely used in protocols such as TLS, JWT token signing, and API request authentication. Unlike a plain hash, an HMAC cannot be forged without knowledge of the shared secret key.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T14:16:27.7277192-04:00",
+          "ModifiedDate": "2026-06-26T14:16:27.7277192-04:00",
+          "Items": [
+            {
+              "Id": "3f05303b-73f2-45e5-a8de-b032de2e8ec1",
+              "Text": "HMAC takes a secret key and the message as inputs, producing a digest that only parties sharing the key can reproduce or verify.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "d6fe029a-d3d3-40df-a526-8d7f54c766a7",
+              "Text": "Because the key is embedded in the computation, an attacker cannot generate a valid HMAC for a forged message without knowing the secret.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "4af696a9-29e9-4039-950b-fc4b792b3031",
+              "Text": "HMACs protect against both accidental data corruption and deliberate message tampering in transit.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "d23a56a9-9b0b-4d98-9878-b9b2b7be7355",
+              "Text": "Common HMAC variants include HMAC-SHA256 and HMAC-SHA512, chosen based on the required security level.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "afae6384-073d-47a5-aa8b-e0612fee05de",
+          "TopicId": "ad5ab132-9d11-45f7-9df1-35fb62762d11",
+          "Title": "Digital Signatures and Hash Functions",
+          "BodyText": "Digital signatures use asymmetric cryptography together with hash functions to provide non-repudiable proof of data origin and integrity.",
+          "Notes": "In practice, the private key signs the hash of the document rather than the document itself, because asymmetric encryption of large data is computationally expensive. This makes hash selection critical \u2014 a weak hash function undermines the entire signature scheme.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T14:16:27.7277192-04:00",
+          "ModifiedDate": "2026-06-26T14:16:27.7277192-04:00",
+          "Items": [
+            {
+              "Id": "a97e0bca-6e69-4cda-b469-f282548f0cb5",
+              "Text": "A sender hashes the message and encrypts the resulting digest with their private key, producing the digital signature.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "15fc0af9-283b-455b-b794-95b932713cc7",
+              "Text": "Recipients decrypt the signature with the sender\u0027s public key, recompute the hash independently, and compare the two values to confirm integrity and authenticity.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "43a63692-bb19-454b-b33e-80210a2bf414",
+              "Text": "Digital signatures are foundational to code signing, SSL/TLS certificates, and document authentication standards such as PDF signing.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "5402a998-a1e8-4554-9d5a-8599ff6555e3",
+              "Text": "The security of a digital signature scheme depends on both the asymmetric algorithm and the strength of the underlying hash function.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "d588722b-5572-4e61-9fb9-6844a590ead8",
+          "TopicId": "ad5ab132-9d11-45f7-9df1-35fb62762d11",
+          "Title": "Comparing Integrity Mechanisms: Checksums vs. HMACs vs. Digital Signatures",
+          "BodyText": "Different integrity mechanisms offer different levels of security and serve distinct use cases depending on whether authentication and non-repudiation are required.",
+          "Notes": "Choosing the right mechanism depends on the threat model: checksums suit low-risk integrity checks, HMACs suit authenticated channels with shared secrets, and digital signatures suit scenarios requiring public verifiability and non-repudiation.",
+          "SortOrder": 5,
+          "CreatedDate": "2026-06-26T14:16:27.7277192-04:00",
+          "ModifiedDate": "2026-06-26T14:16:27.7277192-04:00",
+          "Items": [
+            {
+              "Id": "3e22cc67-d678-492c-931b-48a507e55620",
+              "Text": "Plain checksums verify integrity against accidental corruption but offer no protection against deliberate forgery by an adversary.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "f0982711-c2dc-4fc2-b925-acbdb09b1c5c",
+              "Text": "HMACs add authentication by requiring a shared secret, making them suitable for securing API calls and session tokens.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "7a4aa5fa-780d-438c-bff1-3791175b75a7",
+              "Text": "Digital signatures add non-repudiation, meaning the signer cannot deny having signed the data, which is essential for legal and compliance contexts.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "a219d828-5357-4153-9651-704db0fde5c5",
+              "Text": "All three mechanisms rely on the collision resistance and pre-image resistance properties of the underlying hash function.",
+              "SortOrder": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "4e90b8e5-e402-44e3-a38e-61956db7084e",
+      "Title": "Common Attacks and Vulnerabilities",
+      "Summary": "This topic identifies the most significant threats against hashing implementations, including brute-force attacks, collision attacks, and rainbow table lookups. Students learn to recognize weak hashing practices and understand the conditions under which hash-based security can fail.",
+      "SortOrder": 5,
+      "CreatedDate": "2026-06-26T14:14:12.9300612-04:00",
+      "ModifiedDate": "2026-06-26T14:14:12.9300612-04:00",
+      "Elements": [
+        {
+          "Id": "893d9674-2dc0-406b-9fc1-115312cf9293",
+          "TopicId": "4e90b8e5-e402-44e3-a38e-61956db7084e",
+          "Title": "Brute-Force Attacks on Hashed Passwords",
+          "BodyText": "A brute-force attack attempts to recover a plaintext password by systematically hashing every possible input and comparing it to a stored hash value.",
+          "Notes": "Modern GPUs can compute billions of hashes per second, making fast hash functions like MD5 or SHA-1 dangerously vulnerable when used without additional protections.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T14:17:01.4063914-04:00",
+          "ModifiedDate": "2026-06-26T14:17:01.4063914-04:00",
+          "Items": [
+            {
+              "Id": "d24e9e94-ff43-483e-83b9-4b14fb10b962",
+              "Text": "Attackers exploit the deterministic nature of hash functions \u2014 the same input always produces the same output \u2014 to verify candidate passwords.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "37a65b28-8ed4-485a-b0d9-85d3e0d8b567",
+              "Text": "Short, simple passwords are most at risk because the search space is small enough to exhaust quickly.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "4f3f6e6c-46e5-4ca8-9429-7cd73e128e5a",
+              "Text": "Using slow, computationally expensive hash functions such as bcrypt or Argon2 dramatically increases the time required per guess.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "d0ae64da-8356-4896-b394-ad7880f830ce",
+              "Text": "Enforcing strong password policies reduces the effectiveness of brute-force attempts by expanding the search space.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "639c1412-be4d-4e14-8c1f-4ba317b5cff7",
+          "TopicId": "4e90b8e5-e402-44e3-a38e-61956db7084e",
+          "Title": "Rainbow Table Attacks",
+          "BodyText": "Rainbow tables are precomputed lookup tables that map common plaintext values to their corresponding hash digests, allowing attackers to reverse a hash almost instantly.",
+          "Notes": "Free rainbow tables covering billions of MD5 and SHA-1 hashes for common passwords are publicly available online, illustrating why unsalted legacy hashes remain a critical risk.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T14:17:01.4063914-04:00",
+          "ModifiedDate": "2026-06-26T14:17:01.4063914-04:00",
+          "Items": [
+            {
+              "Id": "ef6e1706-86d4-4107-a192-660fc902e185",
+              "Text": "Because hash functions are deterministic, a precomputed table built offline can be reused against any database that stores hashes of the same algorithm without salting.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "c255ce20-8e1f-45bd-a443-6b5ad6015b81",
+              "Text": "Salting defeats rainbow tables by ensuring that even identical passwords produce unique hash outputs, requiring attackers to rebuild a separate table per salt value.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "89332377-2247-446e-b351-9fed352c3438",
+              "Text": "Longer and more random salts increase storage and computation requirements for any attempted precomputation attack.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "0b2ea8f4-9edd-4428-b397-a278374448ec",
+              "Text": "Systems still using unsalted MD5 or SHA-1 for password storage are immediately vulnerable to publicly available rainbow tables.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "9e882f73-c7d0-4a77-8425-e51dbc88e48e",
+          "TopicId": "4e90b8e5-e402-44e3-a38e-61956db7084e",
+          "Title": "Collision Attacks",
+          "BodyText": "A collision attack occurs when an adversary finds two different inputs that produce the same hash output, undermining the integrity guarantees a hash function is expected to provide.",
+          "Notes": "The famous 2017 SHAttered attack demonstrated practical SHA-1 collisions, producing two different PDF files with identical SHA-1 hashes, which led major platforms to deprecate SHA-1.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T14:17:01.4063914-04:00",
+          "ModifiedDate": "2026-06-26T14:17:01.4063914-04:00",
+          "Items": [
+            {
+              "Id": "81564968-19cf-4b4e-b0bc-38889728afd7",
+              "Text": "Hash functions depend on collision resistance \u2014 it must be computationally infeasible to find any two distinct inputs that hash to the same digest.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "573b60c5-73c7-4040-8b57-8ab0aa0bbefd",
+              "Text": "Collisions can allow an attacker to substitute a malicious file or certificate while preserving a valid hash signature.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "79c66977-211c-40a4-a045-4316e3d89922",
+              "Text": "MD5 is fully broken for collision resistance and should never be used in security-sensitive contexts.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "af748df4-1935-4422-a9cf-0e9eaf7a5cb0",
+              "Text": "SHA-2 and SHA-3 families currently maintain strong collision resistance and are recommended for cryptographic use.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "96dc4267-6bad-4935-a06a-f9b00626f2e8",
+          "TopicId": "4e90b8e5-e402-44e3-a38e-61956db7084e",
+          "Title": "Weak and Deprecated Hash Functions",
+          "BodyText": "Certain hash algorithms that were once considered acceptable have been proven cryptographically weak and are no longer safe for security applications.",
+          "Notes": "Many legacy systems continue to use MD5 or SHA-1 due to backwards compatibility constraints, creating persistent vulnerabilities that attackers actively target.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T14:17:01.4063914-04:00",
+          "ModifiedDate": "2026-06-26T14:17:01.4063914-04:00",
+          "Items": [
+            {
+              "Id": "d5d63c1e-e8f4-4b07-b478-608aaec35457",
+              "Text": "MD5 produces a 128-bit digest and is vulnerable to both collision and preimage attacks, making it unsuitable for any integrity or authentication purpose.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "6c8caf55-06b6-46bb-8df4-3cdb3cc5efa3",
+              "Text": "SHA-1 has been formally broken for collision resistance and is deprecated by NIST and major browser vendors.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "6c9585c5-6f7e-4793-bd76-f50cad22ac82",
+              "Text": "Using a weak algorithm for password hashing compounds the risk because brute-force speed is also dramatically higher against shorter digests.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "10323300-4eaf-47df-9b3c-98a13dd19ef1",
+              "Text": "Migrating from deprecated algorithms requires a careful transition plan, often involving rehashing credentials on next user login.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "f56dcc63-c09a-4716-b6a7-3b51d96a792e",
+          "TopicId": "4e90b8e5-e402-44e3-a38e-61956db7084e",
+          "Title": "Unsalted Hashing and Its Consequences",
+          "BodyText": "Storing passwords as plain, unsalted hashes is one of the most common and dangerous implementation mistakes, enabling multiple classes of attacks simultaneously.",
+          "Notes": "In large breached databases, unsalted hashes reveal shared passwords instantly \u2014 if two users have the same hash, an attacker knows they share the same password without cracking either.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T14:17:01.4063914-04:00",
+          "ModifiedDate": "2026-06-26T14:17:01.4063914-04:00",
+          "Items": [
+            {
+              "Id": "046ea27c-7b81-478c-a9b9-e026d28953fa",
+              "Text": "Without a unique salt per user, identical passwords across accounts produce identical hashes, allowing bulk recovery from a single cracked value.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "d872fe84-e144-41a2-8845-1c3f26dc5b83",
+              "Text": "Unsalted hashes are trivially reversible via rainbow tables for any password appearing in common wordlists.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "741b8d45-f421-41fa-87ae-d4f4cd6b204a",
+              "Text": "Password reuse across services becomes especially dangerous when one unsalted breach reveals credentials valid elsewhere.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "6335677b-db27-416a-827d-5300be996b37",
+              "Text": "Proper salting must be applied at the point of initial hashing and the salt must be stored alongside the hash for later verification.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "1e686d9f-e593-442a-b20f-35ca6679cb26",
+          "TopicId": "4e90b8e5-e402-44e3-a38e-61956db7084e",
+          "Title": "Timing Attacks on Hash Comparison",
+          "BodyText": "Timing attacks exploit measurable differences in computation time during hash comparison to infer information about a secret value, even without direct access to the hash.",
+          "Notes": "This vulnerability is subtle and often overlooked by developers who assume that hash comparison is inherently safe once the algorithm itself is secure.",
+          "SortOrder": 5,
+          "CreatedDate": "2026-06-26T14:17:01.4063914-04:00",
+          "ModifiedDate": "2026-06-26T14:17:01.4063914-04:00",
+          "Items": [
+            {
+              "Id": "67f8c317-cdd2-4c82-913d-28f991503791",
+              "Text": "Standard string comparison functions return early as soon as a mismatch is found, causing execution time to vary based on how many characters match.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "b6420b39-cd57-45e3-8eac-ef3b498c17b0",
+              "Text": "An attacker can measure these time differences across many requests to gradually deduce the correct hash or token byte by byte.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "c57d3c32-7cd4-4b87-89a4-88cdf79c2da1",
+              "Text": "Constant-time comparison functions, such as Python\u0027s hmac.compare_digest, eliminate timing variation by always comparing all bytes regardless of where a mismatch occurs.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "73a2d78e-e7e9-4b05-8449-c832daeffb08",
+              "Text": "Any system that compares user-supplied tokens, HMACs, or hash values must use constant-time comparison to prevent this class of side-channel attack.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "3437b1a0-3a0e-43f6-bcd5-1982a8807fb9",
+          "TopicId": "4e90b8e5-e402-44e3-a38e-61956db7084e",
+          "Title": "Dictionary and Wordlist Attacks",
+          "BodyText": "Dictionary attacks narrow the brute-force search space by hashing known words, common passwords, and their variations rather than trying every possible character combination.",
+          "Notes": "Tools such as Hashcat and John the Ripper include extensive rule engines that apply transformations like character substitution, appending numbers, and capitalization, dramatically expanding the effective wordlist coverage.",
+          "SortOrder": 6,
+          "CreatedDate": "2026-06-26T14:17:01.4063914-04:00",
+          "ModifiedDate": "2026-06-26T14:17:01.4063914-04:00",
+          "Items": [
+            {
+              "Id": "7dc7c42c-fe4d-4181-9b42-411d2fee1f0e",
+              "Text": "Attackers leverage large curated wordlists derived from previous breaches, making common passwords recoverable within seconds even against stronger hash algorithms.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "5a8ffcce-c5b2-495a-b368-17010fa10fe3",
+              "Text": "Password policies that require complexity help but can be undermined by predictable substitution patterns such as replacing \u0027a\u0027 with \u0027@\u0027.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "1856bc64-1467-405d-ba10-05a3cd0e9540",
+              "Text": "Slow hashing functions increase the cost of each wordlist candidate, making dictionary attacks less practical at scale.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "c97d7e33-9441-4961-9a96-060f8950bedf",
+              "Text": "Encouraging users to adopt long passphrases made of random words provides high entropy while remaining memorable, resisting dictionary attacks effectively.",
+              "SortOrder": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "b61083b3-894f-4ac7-9429-eff1a23b81f8",
+      "Title": "Best Practices and Real-World Applications",
+      "Summary": "This topic synthesizes the module by presenting industry best practices for implementing hashing securely in modern software systems. Students explore practical applications across authentication, blockchain, digital forensics, and secure communications.",
+      "SortOrder": 6,
+      "CreatedDate": "2026-06-26T14:14:12.9300612-04:00",
+      "ModifiedDate": "2026-06-26T14:14:12.9300612-04:00",
+      "Elements": [
+        {
+          "Id": "1c58a58f-da62-4da9-9bac-4ccb1d13cf97",
+          "TopicId": "b61083b3-894f-4ac7-9429-eff1a23b81f8",
+          "Title": "Choosing the Right Hash Algorithm for the Job",
+          "BodyText": "Selecting an appropriate hashing algorithm is the foundation of secure implementation, as different use cases demand different algorithmic properties.",
+          "Notes": "For example, MD5 and SHA-1 are considered cryptographically broken and should never be used for security-sensitive tasks, while SHA-256 or SHA-3 are suitable for integrity checks, and bcrypt/Argon2 are preferred for password storage.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T14:17:36.1242818-04:00",
+          "ModifiedDate": "2026-06-26T14:17:36.1242818-04:00",
+          "Items": [
+            {
+              "Id": "32fda5a3-3739-49a0-91f7-170b6b720606",
+              "Text": "General-purpose cryptographic hashing (e.g., file integrity, digital signatures) should use SHA-256 or SHA-3 due to their collision resistance and wide adoption.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "fa690492-58ef-4ecf-8880-5c214db15e30",
+              "Text": "Password storage requires slow, memory-hard algorithms such as bcrypt, scrypt, or Argon2 to resist brute-force and GPU-accelerated attacks.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "4494d4ac-0626-420f-a00e-2f9dff0d1185",
+              "Text": "Never use deprecated algorithms like MD5 or SHA-1 for any security-critical application, as known collision vulnerabilities make them exploitable.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "045ed1e8-e28d-40c9-a382-a17525b68c48",
+              "Text": "Always align algorithm choice with current NIST or industry standards, and plan for algorithm agility to migrate when newer recommendations emerge.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "815bc4e7-cced-4479-afba-98dbeea3a401",
+          "TopicId": "b61083b3-894f-4ac7-9429-eff1a23b81f8",
+          "Title": "Salting and Peppering in Authentication Systems",
+          "BodyText": "Salting and peppering are complementary techniques that significantly harden password hashing against precomputation and database-leak attacks.",
+          "Notes": "A salt is stored alongside the hash in the database, while a pepper is a secret value kept separately (e.g., in application configuration or a hardware security module), adding an additional layer even if the database is compromised.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T14:17:36.1242818-04:00",
+          "ModifiedDate": "2026-06-26T14:17:36.1242818-04:00",
+          "Items": [
+            {
+              "Id": "720c8b5d-cb08-4386-b1e9-e95027b3338f",
+              "Text": "A unique, randomly generated salt must be applied per user before hashing to ensure that identical passwords produce different hash outputs, defeating rainbow table attacks.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "8af11b26-4a1e-4099-9d03-b8db1ada9929",
+              "Text": "Peppers add a server-side secret to the hashing process, meaning an attacker who steals the password database alone cannot crack hashes without also obtaining the pepper.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "c6a481ad-1290-40d4-9e4b-eab91753f0c6",
+              "Text": "Salts should be generated using a cryptographically secure random number generator (CSPRNG) and should be of sufficient length (at least 16 bytes).",
+              "SortOrder": 2
+            },
+            {
+              "Id": "d0b1f6c5-8657-4161-9a70-a8c025bff535",
+              "Text": "Modern password hashing libraries such as bcrypt handle salt generation and storage automatically, reducing the risk of developer error.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "35316a20-8d11-49f9-8cec-7fe32d8f6744",
+          "TopicId": "b61083b3-894f-4ac7-9429-eff1a23b81f8",
+          "Title": "Hashing in Blockchain and Distributed Ledger Technology",
+          "BodyText": "Cryptographic hashing is the structural backbone of blockchain systems, enabling tamper-evident chaining of transaction records.",
+          "Notes": "Bitcoin uses SHA-256 twice (double SHA-256) for block hashing and mining, while Ethereum uses Keccak-256. The immutability guarantee of a blockchain fundamentally relies on the avalanche effect of hash functions.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T14:17:36.1242818-04:00",
+          "ModifiedDate": "2026-06-26T14:17:36.1242818-04:00",
+          "Items": [
+            {
+              "Id": "9657bcb7-e2d5-49de-a524-4a42f0ef451a",
+              "Text": "Each block in a blockchain contains the hash of the previous block, creating a chain where altering any historical record invalidates all subsequent hashes.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "376de78c-afcc-43ae-9807-ca982fce4028",
+              "Text": "Proof-of-Work consensus mechanisms require miners to find a nonce such that the block hash meets a target difficulty, leveraging the one-way property of hash functions.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "46334ef1-484c-4340-8b02-5b5793b61bb5",
+              "Text": "Merkle trees use hierarchical hashing to allow efficient and tamper-evident verification of individual transactions within a block without processing the entire block.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "3bc89c9a-9bfd-4620-a14e-e8dc22a9bfc8",
+              "Text": "The collision resistance of the chosen hash function is critical to blockchain security \u2014 a practical collision attack would allow double-spending or history rewriting.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "63d88fe7-f2b3-4496-a88a-87c08438e061",
+          "TopicId": "b61083b3-894f-4ac7-9429-eff1a23b81f8",
+          "Title": "Digital Forensics and Data Integrity Verification",
+          "BodyText": "In digital forensics, hash functions serve as cryptographic fingerprints that verify the authenticity and integrity of evidence throughout an investigation.",
+          "Notes": "Tools like MD5sum, SHA1sum, and SHA256sum are standard in forensic workflows, though MD5 and SHA-1 are now used only for legacy compatibility rather than security assurance.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T14:17:36.1242818-04:00",
+          "ModifiedDate": "2026-06-26T14:17:36.1242818-04:00",
+          "Items": [
+            {
+              "Id": "78423d83-f813-4737-9820-3cf1dde7a526",
+              "Text": "Forensic investigators hash disk images and files immediately upon acquisition to establish a baseline, then re-hash at every transfer or analysis step to prove the evidence was not altered.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "ba505c98-f2fa-46c2-bf93-f765a46d189d",
+              "Text": "Chain-of-custody documentation records hash values at each stage, providing legally admissible proof that digital evidence remains intact.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "857053b9-f42f-49a8-8029-01ebbc9a1861",
+              "Text": "Hash-based file filtering (known-good and known-bad hash sets, such as NIST\u0027s NSRL database) allows investigators to quickly exclude system files and focus on relevant evidence.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "4db71102-3f90-4551-a64e-50ca7183efd0",
+              "Text": "Any mismatch between recorded and recomputed hashes signals potential tampering, corruption, or procedural error, which can affect the admissibility of evidence in court.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "4208f53e-0fa5-480e-8148-b3b6f37ded63",
+          "TopicId": "b61083b3-894f-4ac7-9429-eff1a23b81f8",
+          "Title": "Secure Communications: HMACs and TLS",
+          "BodyText": "Hash-based Message Authentication Codes (HMACs) and hashing within TLS protocols ensure both the integrity and authenticity of data in transit.",
+          "Notes": "HMAC combines a shared secret key with a hash function (e.g., HMAC-SHA256), making it resistant to length-extension attacks that would affect plain hashing. TLS 1.3 mandates stronger hash-based constructs and deprecates weaker cipher suites.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T14:17:36.1242818-04:00",
+          "ModifiedDate": "2026-06-26T14:17:36.1242818-04:00",
+          "Items": [
+            {
+              "Id": "18bb029c-fdda-4d3d-8531-069792605e4a",
+              "Text": "HMACs provide message integrity and origin authentication simultaneously, verifying that a message was sent by a party holding the correct secret key and was not modified in transit.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "8fd53596-0887-4b66-a781-7d52cdfbc82d",
+              "Text": "TLS handshakes use hashing extensively \u2014 for certificate fingerprinting, key derivation (via HKDF), and the Finished message that verifies the entire handshake was not tampered with.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "35356751-6696-4619-aceb-e0f83bc81932",
+              "Text": "Developers should use well-tested cryptographic libraries (e.g., OpenSSL, libsodium) rather than implementing HMAC or TLS constructs from scratch to avoid subtle vulnerabilities.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "c34b53fa-7720-4fcd-bf17-0a99a567c354",
+              "Text": "Key rotation and algorithm agility policies ensure that if a hash function used in HMAC or TLS is weakened over time, systems can migrate without full redesign.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "ffc77f4f-9f60-4570-b48f-9a4233b6b9f2",
+          "TopicId": "b61083b3-894f-4ac7-9429-eff1a23b81f8",
+          "Title": "Industry Standards, Compliance, and Ongoing Vigilance",
+          "BodyText": "Adhering to established standards and maintaining awareness of evolving threats is essential for sustaining the security of hash-based systems over time.",
+          "Notes": "Regulatory frameworks such as PCI-DSS, HIPAA, and GDPR reference cryptographic standards either directly or by implication. NIST\u0027s ongoing Post-Quantum Cryptography standardization effort also has implications for hash-based signature schemes.",
+          "SortOrder": 5,
+          "CreatedDate": "2026-06-26T14:17:36.1242818-04:00",
+          "ModifiedDate": "2026-06-26T14:17:36.1242818-04:00",
+          "Items": [
+            {
+              "Id": "23a24586-6e1e-42e4-b477-a705907b8855",
+              "Text": "Follow NIST Special Publications (e.g., SP 800-63B for authentication, SP 800-107 for hash usage) to ensure implementations meet government and industry benchmarks.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "bc0bde05-cdd8-41af-ab0f-2a86e84e0fc9",
+              "Text": "Conduct regular cryptographic audits to identify deprecated algorithms, insufficient key lengths, or outdated libraries that may expose systems to known attacks.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "86caf433-5a73-4167-b797-16dd1441f6fe",
+              "Text": "Implement algorithm agility \u2014 the architectural ability to swap hash functions with minimal disruption \u2014 so that future deprecations do not require complete system rewrites.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "67e2ebd2-d6d3-46c5-b0bc-825f3c0d80f7",
+              "Text": "Stay current with advisories from organizations such as NIST, OWASP, and ENISA, as new collision techniques or computational advances (e.g., quantum computing) can rapidly change the security landscape.",
+              "SortOrder": 3
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "TotalElementCount": 45
+}

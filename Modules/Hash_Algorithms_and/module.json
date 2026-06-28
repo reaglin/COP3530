@@ -1,0 +1,9 @@
+{
+  "Id": "b2f7e722-d16f-4ab1-89c7-8d6b3e5e6529",
+  "Name": "Hash Algorithms and Applications: Password Hashing and Beyond",
+  "Description": "This lesson examines real-world applications of hashing algorithms, with a focus on cryptographic hash functions and password hashing techniques such as salting. Students will explore how hashing ensures data integrity and security in modern software systems.",
+  "CreatedBy": "Ron Eaglin",
+  "CreatedDate": "2026-06-26T11:23:12.7213655-04:00",
+  "LastModifiedDate": "2026-06-26T11:23:12.7220204-04:00",
+  "Actions": []
+}

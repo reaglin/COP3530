@@ -1,0 +1,9 @@
+{
+  "Id": "85f7bc42-a89a-4ae1-8515-3d097f7e418e",
+  "Name": "Sorting Algorithms: Comparison and Implementation",
+  "Description": "This lesson covers fundamental and advanced sorting algorithms including bubble sort, insertion sort, merge sort, and quicksort. Students will implement each algorithm in JavaScript and compare their time complexities and practical performance characteristics.",
+  "CreatedBy": "Ron Eaglin",
+  "CreatedDate": "2026-06-26T11:23:12.6964001-04:00",
+  "LastModifiedDate": "2026-06-26T11:23:12.6970871-04:00",
+  "Actions": []
+}

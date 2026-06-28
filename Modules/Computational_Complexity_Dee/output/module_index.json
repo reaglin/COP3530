@@ -1,0 +1,35 @@
+﻿{
+  "ModuleName": "Computational Complexity: Deep Dive into Analysis",
+  "CourseName": "COP3530 - Data Structures",
+  "ModuleFolderName": "Computational_Complexity_Dee",
+  "GeneratedUtc": "2026-06-27T17:20:20.6091848Z",
+  "HtmlIndexSignature": "FC6C33473D0580C79C265760E533D0D9A9E73CD0F5291CDFC566ACF791D8A7C1",
+  "Artifacts": [
+    {
+      "Name": "Module Topics",
+      "Type": "Module Topics",
+      "FileType": ".json",
+      "Description": "Covers computational complexity fundamentals including Big O notation, best/worst/average case analysis, and Omega notation, serving as a navigational outline that guides learners and instructors through the module\u0027s core topics in algorithm efficiency analysis.",
+      "CustomName": null,
+      "FilePath": "C:\\Users\\ronal\\OneDrive - Daytona State College\\Documents\\PreseMaker\\Courses\\COP3530_-_Data_Structures\\Modules\\Computational_Complexity_Dee\\hierarchy.json",
+      "ViewerKind": 2,
+      "WebHref": "content/module_topics.html",
+      "LocalHref": "module_topics.html",
+      "RawHref": "../hierarchy.json",
+      "SourceModifiedTicks": 639180939689272705
+    },
+    {
+      "Name": "Module Topics (HTML)",
+      "Type": "Module Topics (HTML)",
+      "FileType": ".html",
+      "Description": "A navigational overview page listing the core topics in the Computational Complexity module \u2014 including complexity theory foundations, algorithm efficiency vocabulary, and analytical mental models \u2014 which learners use to orient themselves and access the module\u0027s content sections.",
+      "CustomName": null,
+      "FilePath": "C:\\Users\\ronal\\OneDrive - Daytona State College\\Documents\\PreseMaker\\Courses\\COP3530_-_Data_Structures\\Modules\\Computational_Complexity_Dee\\output\\module_topics.html",
+      "ViewerKind": 1,
+      "WebHref": "",
+      "LocalHref": "module_topics.html",
+      "RawHref": "",
+      "SourceModifiedTicks": 639181683319598635
+    }
+  ]
+}

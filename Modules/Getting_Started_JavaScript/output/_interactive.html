@@ -1,0 +1,421 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Foundational Programming Strategies</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+</head><body>
+  <header>
+    <h1>Foundational Programming Strategies</h1>
+  </header><main>
+    <div class="slide-card">
+      <div class="slide-header"><span class="slide-num">1</span><h2>Foundational Programming Strategies</h2><span class="chevron">▶</span></div>
+      <div class="slide-body">
+        <p>Every meaningful program, regardless of its complexity, is built on a small set of foundational concepts that appear again and again. Whether you are implementing a linked list, designing a search algorithm, or writing a simple utility script, you will rely on variables to store data, conditionals to make decisions, loops to repeat operations, and functions to organize logic into reusable units. Understanding these building blocks deeply — not just knowing their syntax but grasping <em>why</em> they work the way they do — is what separates a programmer who can follow examples from one who can solve novel problems independently. This topic covers each of these pillars in depth, along with a practical framework for thinking through problems algorithmically before writing a single line of code.</p>
+
+<p><strong>Variables and Data Storage</strong></p>
+
+<p>A variable is a named container that holds a value in memory. In JavaScript, you declare variables using <code>let</code>, <code>const</code>, or the older <code>var</code>. The choice between <code>let</code> and <code>const</code> is not merely stylistic — it communicates intent and prevents entire categories of bugs.</p>
+
+<p>Use <code>let</code> whenever the value stored in a variable is expected to change during the course of the program. A classic example is a counter in a loop:</p>
+
+<pre><code>let count = 0;
+count = count + 1; // count is now 1
+count++;           // count is now 2
+</code></pre>
+
+<p>Another natural use of <code>let</code> is a pointer or index that moves through a data structure. Imagine scanning an array looking for a target value — you need a variable to track your current position, and that position changes with every step. Using <code>let</code> signals to every reader of the code, including your future self, that this value is intentionally mutable.</p>
+
+<p>Use <code>const</code> when a value should not be reassigned after its initial declaration. This is appropriate for fixed configuration values, mathematical constants, or the capacity of a data structure:</p>
+
+<pre><code>const MAX_SIZE = 100;
+const PI = 3.14159;
+</code></pre>
+
+<p>An important subtlety: <code>const</code> prevents <em>reassignment</em>, but it does not make objects or arrays immutable. The variable binding is fixed, but the contents of the object can still change:</p>
+
+<pre><code>const stack = [];
+stack.push(10); // perfectly valid — we're modifying the array, not reassigning 'stack'
+stack = [];     // TypeError: Assignment to constant variable
+</code></pre>
+
+<p>This distinction matters enormously when working with data structures. You can declare your array or object with <code>const</code> and still mutate its contents freely, which is usually the right approach — it locks the reference in place while allowing the structure to grow and shrink.</p>
+
+<p>Meaningful variable names are one of the highest-leverage habits a programmer can develop. Compare these two snippets:</p>
+
+<pre><code>// Hard to understand
+let x = [];
+let y = 0;
+for (let i = 0; i &lt; x.length; i++) {
+  y += x[i];
+}
+</code></pre>
+
+<pre><code>// Immediately clear
+let scores = [];
+let totalScore = 0;
+for (let index = 0; index &lt; scores.length; index++) {
+  totalScore += scores[index];
+}
+</code></pre>
+
+<p>The second version requires no mental translation. When a variable name accurately describes the data it holds, you can read the code almost like a sentence. This becomes especially valuable in complex programs where you might be managing a dozen variables simultaneously — a node pointer, a previous pointer, a current index, a running sum, and so on.</p>
+
+<p>Variable <strong>scope</strong> determines where in a program a variable is accessible. Variables declared with <code>let</code> or <code>const</code> are <em>block-scoped</em>, meaning they exist only within the curly braces <code>{ }</code> of the block where they are declared. This is a crucial safeguard:</p>
+
+<pre><code>function processItems(items) {
+  for (let i = 0; i &lt; items.length; i++) {
+    let current = items[i]; // 'current' only exists inside this loop iteration
+    console.log(current);
+  }
+  console.log(current); // ReferenceError: current is not defined
+}
+</code></pre>
+
+<p>Block scoping prevents a variable declared deep inside a loop or conditional from accidentally being read or modified by unrelated code elsewhere in the function. The older <code>var</code> keyword is function-scoped, meaning a <code>var</code> declared inside a <code>for</code> loop is accessible anywhere in the surrounding function — a behavior that has caused countless subtle bugs and is one of the reasons modern JavaScript strongly favors <code>let</code> and <code>const</code>.</p>
+
+<p><strong>Control Flow with Conditionals</strong></p>
+
+<p>Programs are not always executed top to bottom in a straight line. Conditionals allow a program to make decisions — to take one path or another depending on whether some condition is true or false. The fundamental structure is the <code>if/else</code> statement:</p>
+
+<pre><code>if (temperature &gt; 100) {
+  console.log("Too hot");
+} else {
+  console.log("Within range");
+}
+</code></pre>
+
+<p>The expression inside the parentheses — called the <em>condition</em> or <em>Boolean expression</em> — is evaluated. If it produces <code>true</code>, the first block runs. If it produces <code>false</code>, the <code>else</code> block runs. You can extend this with <code>else if</code> to handle multiple distinct cases:</p>
+
+<pre><code>if (score &gt;= 90) {
+  grade = "A";
+} else if (score &gt;= 80) {
+  grade = "B";
+} else if (score &gt;= 70) {
+  grade = "C";
+} else {
+  grade = "F";
+}
+</code></pre>
+
+<p>JavaScript evaluates these conditions from top to bottom and executes the first block whose condition is true, then skips the rest. Order matters — if you placed the <code>score &gt;= 70</code> check first, every score above 70 would receive a "C" regardless of how high it actually was.</p>
+
+<p><strong>Nested conditionals</strong> place one <code>if/else</code> structure inside another, allowing programs to check multiple layers of logic. Imagine a function that inserts a value into a data structure — you might first check whether the structure is full, and only if it is not full do you then check whether the value is valid:</p>
+
+<pre><code>function insert(structure, value) {
+  if (structure.length &lt; MAX_SIZE) {
+    if (value !== null &amp;&amp; value !== undefined) {
+      structure.push(value);
+      console.log("Inserted successfully");
+    } else {
+      console.log("Invalid value — cannot insert null or undefined");
+    }
+  } else {
+    console.log("Structure is full — cannot insert");
+  }
+}
+</code></pre>
+
+<p>Nesting should be used thoughtfully. Deeply nested conditionals quickly become hard to read. A useful technique is <em>early return</em> — checking for the failure cases first and returning immediately, so the main logic can proceed without nesting:</p>
+
+<pre><code>function insert(structure, value) {
+  if (structure.length &gt;= MAX_SIZE) {
+    console.log("Structure is full");
+    return;
+  }
+  if (value === null || value === undefined) {
+    console.log("Invalid value");
+    return;
+  }
+  structure.push(value);
+  console.log("Inserted successfully");
+}
+</code></pre>
+
+<p>This pattern — sometimes called a <em>guard clause</em> — eliminates nesting and reads more naturally from top to bottom.</p>
+
+<p><strong>Short-circuit evaluation</strong> is a behavior of the logical operators <code>&&</code> (AND) and <code>||</code> (OR) that can make conditionals more efficient and concise. With <code>&&</code>, if the left operand is false, JavaScript does not even evaluate the right operand — because the whole expression must be false regardless. With <code>||</code>, if the left operand is true, the right operand is skipped because the whole expression is already true:</p>
+
+<pre><code>// Without short-circuit awareness
+if (array !== null) {
+  if (array.length &gt; 0) {
+    process(array[0]);
+  }
+}
+
+// Leveraging short-circuit evaluation
+if (array !== null &amp;&amp; array.length &gt; 0) {
+  process(array[0]);
+}
+</code></pre>
+
+<p>The second version is cleaner and safe because if <code>array</code> is <code>null</code>, JavaScript will not attempt to evaluate <code>array.length</code> — it will short-circuit and skip the block entirely, preventing a runtime error.</p>
+
+<p>One of the most critical habits in conditional logic is accounting for <strong>edge cases</strong> — the boundary conditions and unusual inputs that can trip up code that works perfectly under normal circumstances. The most common edge case in data structure work is the empty collection:</p>
+
+<pre><code>function getFirst(array) {
+  if (array.length === 0) {
+    return null; // or throw an error, depending on the design
+  }
+  return array[0];
+}
+</code></pre>
+
+<p>Without the empty-check, calling <code>getFirst([])</code> returns <code>undefined</code>, which can propagate silently through the rest of a program and cause confusing failures far from the actual source of the problem. Other common edge cases include: a structure with exactly one element, a structure that is completely full, inputs of zero or negative numbers, and duplicate values. Thinking through these before writing code is a discipline that pays dividends in program reliability.</p>
+
+<p><strong>Loops and Iteration</strong></p>
+
+<p>Loops allow a program to repeat a block of code multiple times without writing it out repeatedly. They are the mechanism by which programs process collections of data, search for values, build structures incrementally, and implement algorithms that involve repetition.</p>
+
+<p>The <strong><code>for</code> loop</strong> is the most common choice when you know in advance how many iterations you need, or when you are stepping through a sequence by index:</p>
+
+<pre><code>const numbers = [3, 7, 2, 9, 5];
+
+for (let i = 0; i &lt; numbers.length; i++) {
+  console.log(numbers[i]);
+}
+</code></pre>
+
+<p>The <code>for</code> loop has three parts separated by semicolons: an <em>initializer</em> (<code>let i = 0</code>) that runs once before the loop starts, a <em>condition</em> (<code>i &lt; numbers.length</code>) that is checked before each iteration and stops the loop when false, and an <em>update expression</em> (<code>i++</code>) that runs after each iteration. The index variable <code>i</code> gives you direct access to each element's position, which is invaluable when you need to compare adjacent elements, swap values, or refer back to earlier positions.</p>
+
+<p>The <strong><code>while</code> loop</strong> is the right tool when you do not know in advance how many iterations you will need, and instead want to keep looping as long as some condition remains true. This is typical in search problems:</p>
+
+<pre><code>let left = 0;
+let right = sortedArray.length - 1;
+
+while (left &lt;= right) {
+  let mid = Math.floor((left + right) / 2);
+  if (sortedArray[mid] === target) {
+    return mid;
+  } else if (sortedArray[mid] &lt; target) {
+    left = mid + 1;
+  } else {
+    right = mid - 1;
+  }
+}
+return -1; // target not found
+</code></pre>
+
+<p>In this binary search example, the number of iterations depends on the data and the target — you cannot calculate it up front. The <code>while</code> loop continues narrowing the search window until either the target is found or the window collapses.</p>
+
+<p>One of the most dreaded bugs in programming is the <strong>infinite loop</strong> — a loop whose exit condition is never reached, causing the program to run forever (or until it crashes or is terminated). Infinite loops happen when the condition never becomes false, usually because the update expression is missing or incorrect:</p>
+
+<pre><code>// Infinite loop — 'i' never changes
+let i = 0;
+while (i &lt; 10) {
+  console.log(i);
+  // forgot to write i++
+}
+</code></pre>
+
+<pre><code>// Also an infinite loop — condition never becomes false
+for (let i = 10; i &gt; 0; i++) { // should be i-- not i++
+  console.log(i);
+}
+</code></pre>
+
+<p>Always verify that your loop's update expression genuinely moves the state toward the termination condition, and that your loop condition will eventually evaluate to false. When writing a <code>while</code> loop, it is a good habit to ask yourself: "What guarantees that this loop will end?"</p>
+
+<p><strong>Loop control statements</strong> give you finer control over how iteration proceeds. The <code>break</code> statement immediately exits the loop, even if the condition is still true:</p>
+
+<pre><code>for (let i = 0; i &lt; items.length; i++) {
+  if (items[i] === target) {
+    console.log("Found at index " + i);
+    break; // no need to keep searching
+  }
+}
+</code></pre>
+
+<p>Without <code>break</code>, the loop would continue running through the rest of the array even after finding the target — wasting computation. The <code>continue</code> statement skips the rest of the current iteration and jumps immediately to the next one:</p>
+
+<pre><code>for (let i = 0; i &lt; numbers.length; i++) {
+  if (numbers[i] &lt; 0) {
+    continue; // skip negative numbers
+  }
+  total += numbers[i];
+}
+</code></pre>
+
+<p>Used thoughtfully, <code>break</code> and <code>continue</code> make loops cleaner and more efficient. Overused or placed in unexpected locations, they can make code harder to follow — so reserve them for situations where they genuinely clarify the logic.</p>
+
+<p><strong>Functions and Code Reusability</strong></p>
+
+<p>A function is a named, self-contained block of code that performs a specific task. Functions are the primary tool for organizing programs into logical units, eliminating repetition, and making complex systems manageable. When a piece of logic appears in more than one place in your code, it belongs in a function.</p>
+
+<p>A <strong>function declaration</strong> defines the function with the <code>function</code> keyword, a name, a parameter list in parentheses, and a body in curly braces:</p>
+
+<pre><code>function greet(name) {
+  console.log("Hello, " + name + "!");
+}
+
+greet("Alice"); // prints: Hello, Alice!
+greet("Bob");   // prints: Hello, Bob!
+</code></pre>
+
+<p>Function declarations in JavaScript are <em>hoisted</em>, meaning they are available throughout their enclosing scope even if the call appears before the definition in the source file. This makes them a reliable choice for organizing programs where you want to define helper functions at the bottom and call them from the top.</p>
+
+<p><strong>Parameters</strong> are the variables listed in the function's definition. They act as placeholders for the actual values — called <em>arguments</em> — that will be passed in when the function is called. Parameters are what make functions reusable: the same function can process different data each time it is called.</p>
+
+<pre><code>function add(a, b) {
+  return a + b;
+}
+
+let sum1 = add(3, 5);   // sum1 = 8
+let sum2 = add(10, 20); // sum2 = 30
+</code></pre>
+
+<p>Without parameters, a function can only work on fixed, hard-coded data — which defeats the purpose of reusability. With parameters, a single well-designed function can serve many different inputs. In data structure implementations, you will write functions that accept a structure and a value, or a node and a target, and the parameters make those functions flexible enough to operate on any valid input.</p>
+
+<p>The <strong><code>return</code> statement</strong> ends a function's execution and sends a value back to the code that called the function. This is essential for functions that compute results:</p>
+
+<pre><code>function findMax(array) {
+  if (array.length === 0) {
+    return null;
+  }
+  let max = array[0];
+  for (let i = 1; i &lt; array.length; i++) {
+    if (array[i] &gt; max) {
+      max = array[i];
+    }
+  }
+  return max;
+}
+
+let largest = findMax([4, 8, 2, 15, 7]); // largest = 15
+</code></pre>
+
+<p>Without <code>return</code>, calling <code>findMax</code> would always produce <code>undefined</code>, and the computation would be wasted. A function that does not return a value is called for its <em>side effects</em> — printing output, modifying an external data structure, sending a network request. A function that returns a value is called for its <em>result</em>. Many functions do both, but it is useful to be clear in your mind about which role a given function is primarily serving.</p>
+
+<p>The practice of <strong>decomposing complex problems into small, focused functions</strong> is one of the most powerful techniques in programming. A function should ideally do one thing and do it well. Compare these two approaches:</p>
+
+<pre><code>// Everything in one monolithic block — hard to read, test, and debug
+function processStudentData(students) {
+  let total = 0;
+  for (let i = 0; i &lt; students.length; i++) {
+    total += students[i].score;
+  }
+  let average = total / students.length;
+  let passing = [];
+  for (let i = 0; i &lt; students.length; i++) {
+    if (students[i].score &gt;= 60) {
+      passing.push(students[i].name);
+    }
+  }
+  console.log("Average score: " + average);
+  console.log("Passing students: " + passing.join(", "));
+}
+</code></pre>
+
+<pre><code>// Decomposed into focused, testable functions
+function calculateAverage(students) {
+  let total = 0;
+  for (let student of students) {
+    total += student.score;
+  }
+  return total / students.length;
+}
+
+function getPassingStudents(students, passingScore) {
+  return students
+    .filter(student =&gt; student.score &gt;= passingScore)
+    .map(student =&gt; student.name);
+}
+
+function processStudentData(students) {
+  const average = calculateAverage(students);
+  const passing = getPassingStudents(students, 60);
+  console.log("Average score: " + average);
+  console.log("Passing students: " + passing.join(", "));
+}
+</code></pre>
+
+<p>The decomposed version is easier to read because each function has a clear, descriptive name. It is easier to test because you can call <code>calculateAverage</code> or <code>getPassingStudents</code> independently and verify they work correctly in isolation. And it is easier to maintain because a change to how the average is calculated does not affect the logic for filtering passing students.</p>
+
+<p><strong>Problem-Solving Strategy and Algorithmic Thinking</strong></p>
+
+<p>Strong programming is less about typing speed or memorizing syntax and more about having a reliable process for moving from a problem statement to a working solution. Algorithmic thinking is the discipline of reasoning through a problem systematically before committing to code.</p>
+
+<p>The first step is to <strong>define the problem clearly</strong>. This sounds obvious but is frequently skipped in the rush to start coding. Before you write a single line, ask: What are the inputs? What exactly should the output be? Are there constraints — on size, on data types, on time, on memory? What counts as a correct answer? Writing these out in plain language, or even sketching an example by hand, forces you to confront ambiguities before they become expensive bugs.</p>
+
+<p>For example: "Write a function that finds duplicates in an array." At first glance this seems clear, but define it more carefully: Should it return the duplicate values, or their indices? If a value appears three times, is it one duplicate or two? Should the output be sorted? What if the array is empty? What types of values might it contain? Answering these questions precisely shapes the entire implementation.</p>
+
+<p>The second step is <strong>decomposition</strong> — breaking the problem into smaller sub-problems, each of which is manageable on its own. This mirrors how you would structure functions in the final code. A complex problem like "implement a spell-checker" decomposes into: loading a dictionary, parsing the input text into words, looking up each word in the dictionary, collecting unrecognized words, and reporting them. Each of those sub-problems can be solved independently and combined.</p>
+
+<p>The third step is <strong>tracing through your logic manually</strong> with a concrete, small example before running the program. This is sometimes called a <em>dry run</em> or a <em>desk check</em>. Take your algorithm — even if it only exists as pseudocode or a mental model — and simulate its execution step by step with sample data, tracking the state of each variable as you go:</p>
+
+<pre><code>// Algorithm: find the sum of an array
+// Sample data: [2, 5, 3]
+// Step 1: total = 0, i = 0 → total = 0 + 2 = 2
+// Step 2: total = 2, i = 1 → total = 2 + 5 = 7
+// Step 3: total = 7, i = 2 → total = 7 + 3 = 10
+// Step 4: i = 3, loop ends (3 is not less than 3)
+// Result: 10 ✓
+</code></pre>
+
+<p>This kind of manual tracing catches a surprising number of bugs — off-by-one errors in loop bounds, incorrect initial values, missing edge case handling — before they ever appear as runtime errors. It is especially valuable when implementing algorithms that manipulate pointers or indices, where a single mistake can corrupt an entire data structure.</p>
+
+<p>The fourth step is <strong>iterative refinement</strong> — accepting that your first working solution does not need to be your best solution, and deliberately improving it over successive iterations. Write the simplest version that correctly handles the basic cases. Run it, test it, and only then think about edge cases, efficiency, and elegance. This approach avoids the paralysis that comes from trying to write a perfect solution from scratch:</p>
+
+<ul>
+  <li><strong>Iteration 1:</strong> Get something working for the normal case.</li>
+  <li><strong>Iteration 2:</strong> Handle edge cases (empty input, single element, maximum size).</li>
+  <li><strong>Iteration 3:</strong> Improve readability — rename variables, extract functions, add comments.</li>
+  <li><strong>Iteration 4:</strong> Optimize performance if needed — reduce unnecessary operations, choose better data structures.</li>
+</ul>
+
+<p>This process is not a sign of inexperience — it is how professional software is actually built. Requirements change, edge cases surface, and understanding deepens with each pass. The goal of the first iteration is simply to establish a foundation that can be refined, not to produce something final.</p>
+
+<p>Together, these strategies — clear problem definition, decomposition, manual tracing, and iterative refinement — form a complete workflow that transforms fuzzy problem statements into reliable, readable, and maintainable code. These habits are the foundation beneath every data structure and algorithm you will ever implement.</p>
+        <div class="notes"><strong>Notes</strong>This topic serves as the conceptual and practical foundation for all subsequent data structure implementation work. Emphasize the connections between these abstractions and their direct application: &lt;code&gt;let&lt;/code&gt; for mutable pointers in linked list traversal, &lt;code&gt;const&lt;/code&gt; for fixed stack capacity, &lt;code&gt;for&lt;/code&gt; loops for array traversal, &lt;code&gt;while&lt;/code&gt; loops for search algorithms, and functions for encapsulating push/pop/enqueue operations. Students who internalize the problem-solving workflow (define → decompose → trace → refine) will be significantly better equipped to tackle unfamiliar data structure challenges independently.</div>
+      </div></div>
+  </main>
+  <script>
+    document.querySelectorAll('.slide-header').forEach(function(h){
+      h.addEventListener('click',function(){
+        var b=this.nextElementSibling,c=this.querySelector('.chevron'),o=b.classList.contains('open');
+        b.classList.toggle('open',!o);c.style.transform=o?'':'rotate(90deg)';
+      });});
+    var f=document.querySelector('.slide-body');
+    if(f){f.classList.add('open');var c=f.previousElementSibling.querySelector('.chevron');if(c)c.style.transform='rotate(90deg)';}
+  </script>
+</body></html>

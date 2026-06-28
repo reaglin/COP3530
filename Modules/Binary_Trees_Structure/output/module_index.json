@@ -1,0 +1,35 @@
+﻿{
+  "ModuleName": "Binary Trees: Structure, Traversal, and Operations",
+  "CourseName": "COP3530 - Data Structures",
+  "ModuleFolderName": "Binary_Trees_Structure",
+  "GeneratedUtc": "2026-06-27T17:20:20.6941179Z",
+  "HtmlIndexSignature": "7BF55F01D6DF69EB2E4E0C0FF0904C5A59AF86BD8371666D34A191B11D56A90B",
+  "Artifacts": [
+    {
+      "Name": "Module Topics",
+      "Type": "Module Topics",
+      "FileType": ".json",
+      "Description": "A structured outline of the module\u0027s core topics\u2014covering binary tree fundamentals (nodes, edges, root), tree anatomy, BST ordering and node structure, insertion and search logic with JavaScript implementation, and tree traversal methods\u2014used by learners to preview what will be taught and by instructors to verify full curriculum coverage.",
+      "CustomName": null,
+      "FilePath": "C:\\Users\\ronal\\OneDrive - Daytona State College\\Documents\\PreseMaker\\Courses\\COP3530_-_Data_Structures\\Modules\\Binary_Trees_Structure\\hierarchy.json",
+      "ViewerKind": 2,
+      "WebHref": "content/module_topics.html",
+      "LocalHref": "module_topics.html",
+      "RawHref": "../hierarchy.json",
+      "SourceModifiedTicks": 639180948348772483
+    },
+    {
+      "Name": "Module Topics (HTML)",
+      "Type": "Module Topics (HTML)",
+      "FileType": ".html",
+      "Description": "A navigational overview page listing all topics covered in the module\u2014including binary tree definitions, terminology, structural rules, traversal methods, and core operations\u2014that learners and instructors can use to see the full scope of the module and jump to specific sections.",
+      "CustomName": null,
+      "FilePath": "C:\\Users\\ronal\\OneDrive - Daytona State College\\Documents\\PreseMaker\\Courses\\COP3530_-_Data_Structures\\Modules\\Binary_Trees_Structure\\output\\module_topics.html",
+      "ViewerKind": 1,
+      "WebHref": "",
+      "LocalHref": "module_topics.html",
+      "RawHref": "",
+      "SourceModifiedTicks": 639181685118947017
+    }
+  ]
+}

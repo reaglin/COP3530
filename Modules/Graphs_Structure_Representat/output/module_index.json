@@ -1,0 +1,35 @@
+﻿{
+  "ModuleName": "Graphs: Structure, Representation, and Traversal",
+  "CourseName": "COP3530 - Data Structures",
+  "ModuleFolderName": "Graphs_Structure_Representat",
+  "GeneratedUtc": "2026-06-27T17:20:20.7355885Z",
+  "HtmlIndexSignature": "6D8B5CB3EC747D01AABF4E052A8E0A4B9E163BA3E803724D63FC706E926340A8",
+  "Artifacts": [
+    {
+      "Name": "Module Topics",
+      "Type": "Module Topics",
+      "FileType": ".json",
+      "Description": "This module outline covers the core concepts of graph data structures\u2014including definitions of vertices and edges, directed vs. undirected graphs, adjacency matrix and adjacency list representations, and graph traversal algorithms\u2014serving as a navigational guide for learners and instructors to see the full scope of topics in the module.",
+      "CustomName": null,
+      "FilePath": "C:\\Users\\ronal\\OneDrive - Daytona State College\\Documents\\PreseMaker\\Courses\\COP3530_-_Data_Structures\\Modules\\Graphs_Structure_Representat\\hierarchy.json",
+      "ViewerKind": 2,
+      "WebHref": "content/module_topics.html",
+      "LocalHref": "module_topics.html",
+      "RawHref": "../hierarchy.json",
+      "SourceModifiedTicks": 639180952136452107
+    },
+    {
+      "Name": "Module Topics (HTML)",
+      "Type": "Module Topics (HTML)",
+      "FileType": ".html",
+      "Description": "A topic outline for the Graphs module that defines core graph concepts\u2014vertices, edges, structure, representation, and traversal\u2014serving as a navigational overview for learners to understand what will be covered and for instructors to see the module\u0027s scope.",
+      "CustomName": null,
+      "FilePath": "C:\\Users\\ronal\\OneDrive - Daytona State College\\Documents\\PreseMaker\\Courses\\COP3530_-_Data_Structures\\Modules\\Graphs_Structure_Representat\\output\\module_topics.html",
+      "ViewerKind": 1,
+      "WebHref": "",
+      "LocalHref": "module_topics.html",
+      "RawHref": "",
+      "SourceModifiedTicks": 639181685862918394
+    }
+  ]
+}

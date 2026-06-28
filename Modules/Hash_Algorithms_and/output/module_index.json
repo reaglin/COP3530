@@ -1,0 +1,35 @@
+﻿{
+  "ModuleName": "Hash Algorithms and Applications: Password Hashing and Beyond",
+  "CourseName": "COP3530 - Data Structures",
+  "ModuleFolderName": "Hash_Algorithms_and",
+  "GeneratedUtc": "2026-06-27T17:20:20.6773538Z",
+  "HtmlIndexSignature": "340E280E0168EA429CAAC2561AECE78941720BA5AA3B85ACE978784BE251796B",
+  "Artifacts": [
+    {
+      "Name": "Module Topics",
+      "Type": "Module Topics",
+      "FileType": ".json",
+      "Description": "Outlines the module\u0027s learning topics\u2014from basic hash function concepts and cryptographic properties (preimage and collision resistance) through password hashing fundamentals and beyond\u2014serving as a navigational overview for learners and instructors to understand the scope and sequence of the module.",
+      "CustomName": null,
+      "FilePath": "C:\\Users\\ronal\\OneDrive - Daytona State College\\Documents\\PreseMaker\\Courses\\COP3530_-_Data_Structures\\Modules\\Hash_Algorithms_and\\hierarchy.json",
+      "ViewerKind": 2,
+      "WebHref": "content/module_topics.html",
+      "LocalHref": "module_topics.html",
+      "RawHref": "../hierarchy.json",
+      "SourceModifiedTicks": 639180946561264329
+    },
+    {
+      "Name": "Module Topics (HTML)",
+      "Type": "Module Topics (HTML)",
+      "FileType": ".html",
+      "Description": "This HTML page outlines the topics covered in the module on hash algorithms and applications, including introductory hashing concepts, password hashing, and related use cases, giving learners and instructors a structured overview of what will be explored throughout the module.",
+      "CustomName": null,
+      "FilePath": "C:\\Users\\ronal\\OneDrive - Daytona State College\\Documents\\PreseMaker\\Courses\\COP3530_-_Data_Structures\\Modules\\Hash_Algorithms_and\\output\\module_topics.html",
+      "ViewerKind": 1,
+      "WebHref": "",
+      "LocalHref": "module_topics.html",
+      "RawHref": "",
+      "SourceModifiedTicks": 639181684739025782
+    }
+  ]
+}

@@ -1,0 +1,1049 @@
+{
+  "ModuleFolderName": "Applied_Data_Structures",
+  "CourseName": "COP3530 - Data Structures",
+  "GeneratedDate": "2026-06-26T14:27:09.9321492-04:00",
+  "ModifiedDate": "2026-06-26T14:29:36.8820256-04:00",
+  "Outcomes": [],
+  "Topics": [
+    {
+      "Id": "8b90ee6f-b0c2-4ecb-98c7-9362e2900634",
+      "Title": "Foundations of Data Structures in Real-World Systems",
+      "Summary": "Reviews core data structures including hash tables, trees, and graphs as building blocks for complex computing applications. Establishes the conceptual framework for understanding how these structures are combined in practice.",
+      "SortOrder": 0,
+      "CreatedDate": "2026-06-26T14:27:09.9321492-04:00",
+      "ModifiedDate": "2026-06-26T14:27:09.9321492-04:00",
+      "Elements": [
+        {
+          "Id": "2fe2edcc-26d5-46fb-a115-fb29e9a03145",
+          "TopicId": "8b90ee6f-b0c2-4ecb-98c7-9362e2900634",
+          "Title": "Hash Tables as Lookup Foundations",
+          "BodyText": "Hash tables provide fast key-value storage and retrieval, forming a critical building block in many real-world computing systems.",
+          "Notes": "Hash tables are used in database indexing, caching layers, and cryptographic applications where constant-time average lookup is essential.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T14:27:28.5248985-04:00",
+          "ModifiedDate": "2026-06-26T14:27:28.5248985-04:00",
+          "Items": [
+            {
+              "Id": "b60d50ff-925a-4d46-bdf9-81451ab6d808",
+              "Text": "A hash function maps keys to array indices, enabling O(1) average-case insertion and lookup.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "00cea9bb-5f93-4b7f-ae58-1bbfcde274c8",
+              "Text": "Collision resolution strategies such as chaining or open addressing determine practical performance.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "a9f50963-630a-419c-88f7-28df47729ff5",
+              "Text": "In complex systems, hash tables are rarely used alone but are composed with other structures to handle richer data relationships.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "f8bd2546-1f08-4a31-ad76-2fbbe4a43e89",
+          "TopicId": "8b90ee6f-b0c2-4ecb-98c7-9362e2900634",
+          "Title": "Trees as Hierarchical Organizers",
+          "BodyText": "Tree structures model hierarchical relationships and enable efficient search, insertion, and ordering operations across many domains.",
+          "Notes": "Binary search trees, balanced trees (AVL, Red-Black), and tries each offer different trade-offs suited to specific application needs such as file systems, routing tables, or autocomplete engines.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T14:27:28.5248985-04:00",
+          "ModifiedDate": "2026-06-26T14:27:28.5248985-04:00",
+          "Items": [
+            {
+              "Id": "5e2b3f23-f02b-4d68-9244-db1a42280429",
+              "Text": "Trees enforce a parent-child relationship that naturally represents hierarchical data such as organizational charts or file directories.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "134c7d72-3a39-4f01-a182-bc426e3eacca",
+              "Text": "Balanced trees guarantee O(log n) operations by maintaining height constraints during insertions and deletions.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "3ad3f10c-1f20-4b00-aba7-ca07a992f1d8",
+              "Text": "Specialized tree variants like Merkle trees extend the concept to support cryptographic verification, bridging into blockchain applications.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "d3e915de-7bf8-47a4-8154-9733fa03db45",
+          "TopicId": "8b90ee6f-b0c2-4ecb-98c7-9362e2900634",
+          "Title": "Graphs as Relationship Networks",
+          "BodyText": "Graphs represent arbitrary pairwise relationships between entities, making them the most expressive general-purpose data structure for connected systems.",
+          "Notes": "Social networks, road maps, and transaction ledgers are all naturally modeled as graphs. Adjacency lists are preferred for sparse graphs, while adjacency matrices suit dense graphs.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T14:27:28.5248985-04:00",
+          "ModifiedDate": "2026-06-26T14:27:28.5248985-04:00",
+          "Items": [
+            {
+              "Id": "eb4bca4f-0796-4e76-9e7d-7d3ce9cf9d27",
+              "Text": "A graph consists of vertices (nodes) and edges (connections), which can be directed or undirected and weighted or unweighted.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "4b36db83-b18e-4109-b08d-e6d4b6a8bed9",
+              "Text": "Graph traversal algorithms such as BFS and DFS are foundational tools for exploring relationships and detecting connectivity.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "b3a0f77d-b459-4ff5-986d-a1a5fb58580d",
+              "Text": "Real-world systems often embed graphs within larger architectures, combining them with hash tables for fast node lookup.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "ff26995f-78e3-4740-a71f-dadfc9fd83fc",
+          "TopicId": "8b90ee6f-b0c2-4ecb-98c7-9362e2900634",
+          "Title": "Composition of Structures in Practice",
+          "BodyText": "Complex computing systems rarely rely on a single data structure; instead, they compose multiple structures to balance competing performance and functional requirements.",
+          "Notes": "For example, a social network might use a graph to model friendships, hash tables to index user profiles, and trees to organize content feeds \u2014 all operating together within one platform.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T14:27:28.5248985-04:00",
+          "ModifiedDate": "2026-06-26T14:27:28.5248985-04:00",
+          "Items": [
+            {
+              "Id": "edbcf832-1761-4458-a0f2-96c7594db3fc",
+              "Text": "Choosing which structures to combine requires understanding each structure\u0027s time and space complexity trade-offs.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "8d47b77d-a0a5-4771-827a-0b87cf093eb3",
+              "Text": "Interfaces between structures must be carefully designed so that operations on one do not degrade the performance guarantees of another.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "a023df53-50d9-4385-9650-c20d7153c067",
+              "Text": "Recognizing compositional patterns in existing systems helps engineers adapt proven designs to new problem domains.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "32033c44-c6e6-4bd9-bbe8-119c21d6b29a",
+          "TopicId": "8b90ee6f-b0c2-4ecb-98c7-9362e2900634",
+          "Title": "Conceptual Framework for System Analysis",
+          "BodyText": "A shared conceptual vocabulary around data structures allows engineers and analysts to reason about, communicate, and evaluate system designs systematically.",
+          "Notes": "When studying systems like blockchain or digital currency, the ability to identify underlying structures \u2014 rather than treating the system as a black box \u2014 unlocks deeper understanding of both capabilities and limitations.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T14:27:28.5248985-04:00",
+          "ModifiedDate": "2026-06-26T14:27:28.5248985-04:00",
+          "Items": [
+            {
+              "Id": "6ffeb5b8-e83c-481a-b5b3-3d1cd562f57d",
+              "Text": "Every real-world system can be decomposed into the data it stores, the relationships it models, and the operations it must support efficiently.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "daf5a847-15da-4175-9a33-82de90e39378",
+              "Text": "Mapping system requirements to known data structure properties is a repeatable analysis technique applicable across domains.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "46f74085-248a-485d-ab90-aedc39ef5af7",
+              "Text": "This framework serves as the analytical lens for the remainder of the module as blockchain and other applied systems are examined.",
+              "SortOrder": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "df612415-bd75-425e-af18-74dd4dfe6a4e",
+      "Title": "Blockchain Architecture and Data Structures",
+      "Summary": "Examines how blockchain technology leverages linked data structures, cryptographic hashing, and trees to create immutable, distributed ledgers. Traces the specific structural decisions that make blockchain secure and verifiable.",
+      "SortOrder": 1,
+      "CreatedDate": "2026-06-26T14:27:09.9321492-04:00",
+      "ModifiedDate": "2026-06-26T14:27:09.9321492-04:00",
+      "Elements": [
+        {
+          "Id": "44abe887-3a8e-44fb-b1a7-e025e344178c",
+          "TopicId": "df612415-bd75-425e-af18-74dd4dfe6a4e",
+          "Title": "The Linked-List Foundation of a Blockchain",
+          "BodyText": "At its core, a blockchain is a linked list where each node (block) holds a reference to the previous block, forming a chronological chain.",
+          "Notes": "Unlike a standard singly linked list, traversal is used primarily for verification rather than arbitrary access, and insertion only occurs at the tail (the newest block).",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T14:27:58.3420633-04:00",
+          "ModifiedDate": "2026-06-26T14:27:58.3420633-04:00",
+          "Items": [
+            {
+              "Id": "83068bf6-768a-42ca-93b9-6339abbc92c9",
+              "Text": "Each block contains a header, a set of transaction data, and the cryptographic hash of the preceding block.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "6aab563f-e40f-4888-98a3-218a3731d9fb",
+              "Text": "This backward-pointing reference means altering any historical block breaks every subsequent link, making tampering immediately detectable.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "f075ea22-f126-4b30-8fe2-794513f71baa",
+              "Text": "The genesis block is the single block with no predecessor, serving as the fixed starting point of the entire chain.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "fe175ee4-c797-4bb9-b5fa-bd1b3e111b30",
+              "Text": "Appending a new block requires network consensus, unlike a traditional linked list where insertion is an O(1) local operation.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "2002d1f9-b3a5-49ef-a692-dcf0240cd055",
+          "TopicId": "df612415-bd75-425e-af18-74dd4dfe6a4e",
+          "Title": "Cryptographic Hashing as the Integrity Mechanism",
+          "BodyText": "Cryptographic hash functions convert block data into a fixed-length digest that acts as a unique fingerprint, binding blocks together securely.",
+          "Notes": "Common algorithms used in blockchains include SHA-256 (Bitcoin) and Keccak-256 (Ethereum). Even a single changed bit in the input produces a completely different hash output \u2014 the avalanche effect.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T14:27:58.3420633-04:00",
+          "ModifiedDate": "2026-06-26T14:27:58.3420633-04:00",
+          "Items": [
+            {
+              "Id": "39991299-cf39-41f0-80f4-99640509d083",
+              "Text": "A hash function is deterministic: the same input always produces the same output, enabling independent verification by any node.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "19e5ed17-1503-4709-a358-7e6ca0954702",
+              "Text": "Hashes are one-way functions; it is computationally infeasible to reconstruct the original data from the digest alone.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "ddaf0c3d-00ef-4ae5-a9e7-71633847f3ca",
+              "Text": "Each block stores its own hash and the previous block\u0027s hash, so the chain of hashes forms a tamper-evident ledger.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "a6c4d53a-a248-4695-97fa-dbb510a6e8f6",
+              "Text": "Proof-of-Work consensus requires miners to find an input (nonce) whose resulting hash meets a specific difficulty target, making block creation deliberately costly.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "94491902-996a-4172-ae6a-2614d241a757",
+          "TopicId": "df612415-bd75-425e-af18-74dd4dfe6a4e",
+          "Title": "Merkle Trees for Transaction Verification",
+          "BodyText": "Transactions within a block are organized into a Merkle tree, a binary tree of hashes that allows efficient and secure verification of any single transaction.",
+          "Notes": "Merkle trees enable \u0027lightweight\u0027 or SPV (Simplified Payment Verification) clients to confirm a transaction is included in a block without downloading the entire blockchain.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T14:27:58.3420633-04:00",
+          "ModifiedDate": "2026-06-26T14:27:58.3420633-04:00",
+          "Items": [
+            {
+              "Id": "4384fb55-0666-454d-91f4-bb48ca8521aa",
+              "Text": "Leaf nodes of the Merkle tree each hold the hash of an individual transaction; parent nodes hold the hash of their two children.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "b8af0498-f3c1-4863-981b-86df00bf8a3e",
+              "Text": "The single root hash (Merkle root) stored in the block header represents the entire set of transactions in O(1) space.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "bc69bebe-73c8-4efe-9461-2b4a8de1c374",
+              "Text": "Verifying one transaction requires only O(log n) hashes \u2014 the Merkle proof path \u2014 rather than all n transactions.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "efb42f25-759c-4ea5-8aa0-b01d450dff58",
+              "Text": "Any modification to a single transaction changes its leaf hash and cascades upward, altering the Merkle root and invalidating the block header.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "7ecb25e2-7d41-478a-a732-96158d6af9e2",
+          "TopicId": "df612415-bd75-425e-af18-74dd4dfe6a4e",
+          "Title": "Block Header Structure and Metadata",
+          "BodyText": "The block header is a compact data record that encapsulates all critical metadata needed to link, identify, and validate a block without referencing full transaction data.",
+          "Notes": "Because the header is small and self-contained, network nodes can efficiently compare and broadcast headers to synchronize the chain state.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T14:27:58.3420633-04:00",
+          "ModifiedDate": "2026-06-26T14:27:58.3420633-04:00",
+          "Items": [
+            {
+              "Id": "b9fb7ef1-968a-4b24-9ae6-c859b0a0da7d",
+              "Text": "Standard header fields include the previous block hash, Merkle root, timestamp, difficulty target, and nonce.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "8c210a9e-783f-42e2-ad00-f3289267eea9",
+              "Text": "The header\u0027s own hash becomes the identifier (block hash) referenced by the next block, tightening the chain linkage.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "dca5f604-9723-4d8f-8511-d90faa629f8f",
+              "Text": "Separating the header from transaction data allows lightweight clients to track the longest chain using headers alone.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "8017750e-9328-4413-ab99-c03c7ea9be22",
+              "Text": "Timestamps provide ordering context but are not strictly trusted in isolation; consensus rules enforce acceptable timestamp ranges.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "6af9e95b-d4d6-4874-b65b-42b4aac97b70",
+          "TopicId": "df612415-bd75-425e-af18-74dd4dfe6a4e",
+          "Title": "Distributed Ledger and the Role of Consensus",
+          "BodyText": "A blockchain is replicated across many nodes simultaneously, so structural integrity must be maintained without a central authority through consensus algorithms.",
+          "Notes": "Consensus mechanisms such as Proof-of-Work and Proof-of-Stake each impose different computational or economic costs to prevent a single actor from rewriting history.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T14:27:58.3420633-04:00",
+          "ModifiedDate": "2026-06-26T14:27:58.3420633-04:00",
+          "Items": [
+            {
+              "Id": "1e2d30bc-e541-4a1b-865d-5fb503409cd4",
+              "Text": "Every full node independently stores and validates a complete copy of the ledger, eliminating single points of failure.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "98121ea0-b8a4-4a0a-b4c1-28aee6ada268",
+              "Text": "When two valid blocks are found simultaneously, a temporary fork occurs; nodes adopt the longest (heaviest) chain once consensus resolves it.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "af9de681-8f03-49f6-b5e4-3caec1d5b44a",
+              "Text": "The combination of cryptographic linking and distributed replication means an attacker must control a majority of network resources to alter history.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "2aa3091c-1cca-4bbb-9819-c54a9462e66b",
+              "Text": "Consensus rules are encoded as protocol logic, acting as an implicit governance layer that enforces the structural validity of each new block.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "75f1d7ce-4a6d-494a-aed1-7f78efbd66eb",
+          "TopicId": "df612415-bd75-425e-af18-74dd4dfe6a4e",
+          "Title": "Immutability and the Structural Guarantee",
+          "BodyText": "The architectural choices of hash-linking, Merkle trees, and distributed consensus together produce the property of immutability \u2014 recorded data cannot be changed without network-wide detection.",
+          "Notes": "Immutability is not absolute; a 51% attack theoretically allows history rewriting, but the economic cost makes this impractical on large, established networks.",
+          "SortOrder": 5,
+          "CreatedDate": "2026-06-26T14:27:58.3420633-04:00",
+          "ModifiedDate": "2026-06-26T14:27:58.3420633-04:00",
+          "Items": [
+            {
+              "Id": "683b5ea9-5d1b-4677-9cc0-be9b9bb73d4d",
+              "Text": "Changing a past block requires recomputing its hash, then every subsequent block\u0027s hash, and then outpacing the rest of the network \u2014 an exponentially growing task.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "81d74078-2c90-4c27-9e15-40de3a405f7a",
+              "Text": "The deeper a block is buried under subsequent blocks, the higher the \u0027confirmation count\u0027 and the more computationally secure it is considered.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "6fbd0d28-f237-497c-8753-79b8a449257b",
+              "Text": "Smart contract platforms extend immutability to code: once deployed, contract logic stored on-chain cannot be secretly altered.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "ad7cc847-412a-4c7b-8707-a2cc7ecbc43d",
+              "Text": "Immutability makes blockchain suitable for audit trails, supply-chain records, and financial ledgers where historical fidelity is critical.",
+              "SortOrder": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "10c44ef5-9239-4598-8e18-dfe81a28d402",
+      "Title": "Digital Currency Systems",
+      "Summary": "Explores how cryptocurrencies and digital payment systems rely on underlying data structures to manage transactions, wallets, and consensus. Connects blockchain fundamentals to the practical mechanics of digital currency.",
+      "SortOrder": 2,
+      "CreatedDate": "2026-06-26T14:27:09.9321492-04:00",
+      "ModifiedDate": "2026-06-26T14:27:09.9321492-04:00",
+      "Elements": [
+        {
+          "Id": "28b872d3-7e8e-4953-ae44-ef6099111c9b",
+          "TopicId": "10c44ef5-9239-4598-8e18-dfe81a28d402",
+          "Title": "Wallets and Key-Value Storage",
+          "BodyText": "Digital currency wallets rely on hash table structures to map public keys to account balances and transaction histories.",
+          "Notes": "A wallet does not store coins directly; it stores cryptographic keys that prove ownership of funds recorded on the blockchain.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T14:28:28.3197425-04:00",
+          "ModifiedDate": "2026-06-26T14:28:28.3197425-04:00",
+          "Items": [
+            {
+              "Id": "f5245587-d7fb-44a6-b34c-4feef5d05526",
+              "Text": "Public and private key pairs are generated using cryptographic algorithms and stored as key-value entries.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "970bef80-73fe-4590-890e-4cc64558c7cd",
+              "Text": "Hash tables allow O(1) average-time lookups so a wallet\u0027s balance can be retrieved almost instantly.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "f50c3bc2-5ae9-46d0-b476-7510a6eb625e",
+              "Text": "The public key functions as an address others use to send funds, while the private key authorizes outgoing transactions.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "78e4ae54-876b-44c9-ab85-af5d93f0732b",
+              "Text": "Losing the private key means losing access to the associated funds permanently, since no central authority holds a backup.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "04bca13e-c7ba-41f7-8ec5-c7a4ef2ff8d0",
+          "TopicId": "10c44ef5-9239-4598-8e18-dfe81a28d402",
+          "Title": "Transaction Data and the UTXO Model",
+          "BodyText": "Many cryptocurrencies, including Bitcoin, represent spendable funds as Unspent Transaction Outputs (UTXOs) rather than simple account balances.",
+          "Notes": "Ethereum uses an account-balance model instead of UTXO, illustrating that different digital currencies choose different underlying data structures based on their design goals.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T14:28:28.3197425-04:00",
+          "ModifiedDate": "2026-06-26T14:28:28.3197425-04:00",
+          "Items": [
+            {
+              "Id": "430cce04-6421-4a21-93e2-8b1eed3a7bf4",
+              "Text": "Each transaction consumes one or more UTXOs as inputs and produces new UTXOs as outputs, forming a chain of ownership.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "c1ce29f9-7083-484c-9734-f7cbc9946540",
+              "Text": "The full UTXO set is maintained in a hash table so nodes can quickly verify whether an output has already been spent.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "3e9ad486-5e4a-4f72-bb47-a345df642b2f",
+              "Text": "Change from a transaction is returned to the sender as a new UTXO, similar to receiving physical change after a cash purchase.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "5b9e3b5c-4788-4b48-98c7-f768c958e041",
+              "Text": "The UTXO model naturally prevents double-spending because each output can appear as an input only once.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "82a7380d-276e-447e-9067-040d40514552",
+          "TopicId": "10c44ef5-9239-4598-8e18-dfe81a28d402",
+          "Title": "The Mempool: Queuing Pending Transactions",
+          "BodyText": "Before transactions are confirmed on the blockchain, they wait in a memory pool (mempool) that acts as a priority queue.",
+          "Notes": "During periods of high network congestion, the mempool can grow to hundreds of thousands of transactions, driving up fees as users compete for limited block space.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T14:28:28.3197425-04:00",
+          "ModifiedDate": "2026-06-26T14:28:28.3197425-04:00",
+          "Items": [
+            {
+              "Id": "38412613-7700-4608-8dfa-25f99e666aac",
+              "Text": "Miners or validators select transactions from the mempool, typically prioritizing those with higher fees.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "9b920da1-ad6c-4207-872f-f7d89cb239ee",
+              "Text": "A priority queue or heap structure allows efficient extraction of the highest-fee transactions to include in the next block.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "9d666b11-08eb-45b6-9ee8-7cc7ffb83e81",
+              "Text": "Transactions that remain unconfirmed for too long may be dropped from the mempool to free memory.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "4e317304-f625-4370-ac30-e4de8909f8a0",
+              "Text": "The mempool is local to each node, so its contents can differ slightly across the network at any given moment.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "4edcf84d-24e6-48b3-bcf4-42e452ab3a5d",
+          "TopicId": "10c44ef5-9239-4598-8e18-dfe81a28d402",
+          "Title": "Merkle Trees and Transaction Verification",
+          "BodyText": "Transactions within a block are organized into a Merkle tree, enabling efficient and tamper-evident verification.",
+          "Notes": "This structure is what allows lightweight clients (SPV nodes) to verify a single transaction without downloading the entire blockchain.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T14:28:28.3197425-04:00",
+          "ModifiedDate": "2026-06-26T14:28:28.3197425-04:00",
+          "Items": [
+            {
+              "Id": "a4d235e1-4d48-47d7-b88d-b32edbc28c19",
+              "Text": "Each leaf node in the Merkle tree holds the hash of one transaction; parent nodes hold the hash of their two children.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "15194d5f-726b-4120-aa1a-cf8f48b8d51f",
+              "Text": "The Merkle root, stored in the block header, is a single hash that represents all transactions in that block.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "fefdf585-73d0-4a61-b8f6-4e6496cd80f6",
+              "Text": "Altering any transaction changes its hash, cascading upward and changing the Merkle root, which invalidates the block.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "a5b01658-fe27-4778-ab24-c10ef89d8b5d",
+              "Text": "A Merkle proof verifies that a specific transaction is included in a block using only O(log n) hashes rather than all n transactions.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "a28b7f14-389a-4e28-ae7f-ee337939eec7",
+          "TopicId": "10c44ef5-9239-4598-8e18-dfe81a28d402",
+          "Title": "Consensus Mechanisms and Distributed Agreement",
+          "BodyText": "Consensus mechanisms are the protocols that allow a decentralized network of nodes to agree on a single valid version of the transaction ledger.",
+          "Notes": "Proof of Work and Proof of Stake are the two dominant consensus families, but many variants exist, each making different trade-offs between security, energy use, and throughput.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T14:28:28.3197425-04:00",
+          "ModifiedDate": "2026-06-26T14:28:28.3197425-04:00",
+          "Items": [
+            {
+              "Id": "9712eb0f-f6b9-4656-9523-4c546a60f45e",
+              "Text": "Proof of Work requires nodes to solve a computationally expensive puzzle, making fraudulent chain rewrites economically prohibitive.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "7ad827fb-0b85-4121-8d59-561f2e120fcf",
+              "Text": "Proof of Stake selects validators based on the amount of currency they lock up as collateral, reducing energy consumption significantly.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "f71dbabd-b030-4c10-9f8d-df1ab6b72f51",
+              "Text": "The longest-chain rule (or heaviest-chain rule in some protocols) determines which branch of a fork becomes the canonical ledger.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "521f6626-0742-4e26-8103-4478550bf2df",
+              "Text": "Consensus ensures that even if some nodes act maliciously, the honest majority maintains an accurate and consistent transaction history.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "c61ac2e8-e751-41fc-8760-17c880fa2638",
+          "TopicId": "10c44ef5-9239-4598-8e18-dfe81a28d402",
+          "Title": "Blockchain as a Linked List of Blocks",
+          "BodyText": "At its core, a blockchain is a linked list where each block contains a cryptographic hash pointer to the previous block, creating an immutable chain.",
+          "Notes": "This structure is intentionally simple but its combination with cryptographic hashing and distributed consensus is what produces the security properties digital currencies depend on.",
+          "SortOrder": 5,
+          "CreatedDate": "2026-06-26T14:28:28.3197425-04:00",
+          "ModifiedDate": "2026-06-26T14:28:28.3197425-04:00",
+          "Items": [
+            {
+              "Id": "3a4e84ef-3bf8-4350-adab-adbd4b0d5c74",
+              "Text": "Each block header stores the previous block\u0027s hash, its own Merkle root, a timestamp, and a nonce used in mining.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "ec58219a-9c6d-4d7b-bb0a-14d0079ad6c8",
+              "Text": "Because each block references the one before it, modifying any historical block invalidates every block that follows it.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "849a1bd2-a985-40b0-9720-90ffdb6f34a5",
+              "Text": "The genesis block is the hardcoded first block with no predecessor, serving as the anchor of the entire chain.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "aa8464bb-02ac-4317-aac1-17f5d82f932e",
+              "Text": "Forks occur when two valid blocks are found simultaneously; the network eventually converges on one branch, discarding the other as an orphan block.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "cb0ccbd7-d6ee-4327-b92b-d921e10497d9",
+          "TopicId": "10c44ef5-9239-4598-8e18-dfe81a28d402",
+          "Title": "Scalability Challenges and Data Structure Trade-Offs",
+          "BodyText": "As digital currency networks grow, the size and complexity of their underlying data structures create scalability bottlenecks that developers must address.",
+          "Notes": "Layer-2 solutions like the Lightning Network create off-chain payment channels represented as graph edges, routing micropayments without recording every transaction on the main blockchain.",
+          "SortOrder": 6,
+          "CreatedDate": "2026-06-26T14:28:28.3197425-04:00",
+          "ModifiedDate": "2026-06-26T14:28:28.3197425-04:00",
+          "Items": [
+            {
+              "Id": "03449df1-0b89-4606-b506-9c1e485f8753",
+              "Text": "The full Bitcoin blockchain exceeds 500 GB, making it impractical for all users to store a complete copy.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "69bc4f50-5831-4fd2-9a4a-7fc4e4151a72",
+              "Text": "State bloat in account-based systems like Ethereum occurs when the global state hash table grows too large for efficient node operation.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "dbb2235e-b8b3-4c15-b986-a7f3dff22eb0",
+              "Text": "Sharding partitions the blockchain\u0027s data across multiple subsets of nodes, trading some security assumptions for higher throughput.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "503184da-9d33-4afb-a2b5-f69a896c5709",
+              "Text": "Pruning allows nodes to discard spent transaction data while retaining enough information to validate new transactions.",
+              "SortOrder": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "c51c53ad-e180-49c3-954c-5fcf48d60964",
+      "Title": "Graphs and Social Network Applications",
+      "Summary": "Investigates how graph data structures model relationships, influence, and information flow within social networks. Highlights real-world algorithms and traversal strategies used by modern platforms.",
+      "SortOrder": 3,
+      "CreatedDate": "2026-06-26T14:27:09.9321492-04:00",
+      "ModifiedDate": "2026-06-26T14:27:09.9321492-04:00",
+      "Elements": [
+        {
+          "Id": "864dee38-344e-46a6-bf3d-22562fd37a06",
+          "TopicId": "c51c53ad-e180-49c3-954c-5fcf48d60964",
+          "Title": "Graph Fundamentals for Social Networks",
+          "BodyText": "A graph is a data structure composed of nodes (vertices) and edges that model relationships between entities, making it ideal for representing social connections.",
+          "Notes": "In a social network, each user is a node and each friendship, follow, or interaction is an edge. Directed graphs model asymmetric relationships (e.g., Twitter follows), while undirected graphs model mutual connections (e.g., Facebook friendships).",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T14:29:01.1543133-04:00",
+          "ModifiedDate": "2026-06-26T14:29:01.1543133-04:00",
+          "Items": [
+            {
+              "Id": "06d7b283-d62a-4195-b160-7dde808ed090",
+              "Text": "Nodes represent individual users or entities, while edges represent relationships or interactions between them.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "b60ee877-df29-41cb-9f47-338ba9120faf",
+              "Text": "Directed edges capture one-way relationships such as following or messaging, whereas undirected edges capture mutual connections.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "86ed2ca2-bd0e-492a-b1a9-28ccf060cc1c",
+              "Text": "Weighted edges can encode the strength or frequency of interactions between users.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "c7de93e5-807e-4551-942e-66d49a0da600",
+              "Text": "Graph density and degree distribution reveal structural properties of a social network, such as the presence of highly connected hubs.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "9f0a4fcc-9989-4851-af82-bc4b05848f44",
+          "TopicId": "c51c53ad-e180-49c3-954c-5fcf48d60964",
+          "Title": "Adjacency Representations and Storage Trade-offs",
+          "BodyText": "Social networks with millions of users require efficient graph storage strategies, with adjacency lists and adjacency matrices offering different performance trade-offs.",
+          "Notes": "Real-world platforms like Facebook and LinkedIn favor adjacency lists because social graphs are typically sparse \u2014 most users connect with only a tiny fraction of the total user base.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T14:29:01.1543133-04:00",
+          "ModifiedDate": "2026-06-26T14:29:01.1543133-04:00",
+          "Items": [
+            {
+              "Id": "8c743e8b-979e-4b30-aa57-0d0aa5fb40da",
+              "Text": "An adjacency matrix uses a 2D array where entry [i][j] indicates an edge between nodes i and j, enabling O(1) edge lookup but consuming O(V\u00B2) space.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "e703e3e3-cd62-4eec-b07d-0360c59568a1",
+              "Text": "An adjacency list stores each node\u0027s neighbors in a list or hash set, using O(V \u002B E) space and working efficiently for sparse graphs.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "dd3d5a4e-fada-4e93-b175-bc895c758709",
+              "Text": "Hash-map-based adjacency lists allow rapid neighbor lookup and dynamic updates, which are essential for growing social platforms.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "86f8226d-7394-4117-8d83-e9f6e5453b63",
+              "Text": "Choosing the right representation directly impacts the scalability and speed of network operations like friend suggestions and feed ranking.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "2f9e83e4-73c3-4224-b71b-c85aa6660efb",
+          "TopicId": "c51c53ad-e180-49c3-954c-5fcf48d60964",
+          "Title": "Breadth-First Search and Connection Discovery",
+          "BodyText": "Breadth-First Search (BFS) traverses a graph level by level and is the core algorithm behind features like \u0027People You May Know\u0027 and degrees of separation.",
+          "Notes": "LinkedIn\u0027s degree indicators (1st, 2nd, 3rd connections) are a direct application of BFS, where the algorithm expands outward from a source node layer by layer.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T14:29:01.1543133-04:00",
+          "ModifiedDate": "2026-06-26T14:29:01.1543133-04:00",
+          "Items": [
+            {
+              "Id": "10c55a09-045b-436f-a909-6560f1cd28b0",
+              "Text": "BFS uses a queue to systematically explore all neighbors at the current depth before moving to the next level.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "e677a6de-3a6b-4f79-9c0f-3a2cf34ed272",
+              "Text": "It finds the shortest path in an unweighted graph, allowing platforms to compute the minimum number of hops between any two users.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "2c60e891-43e0-4579-a863-c6e0b2f476a9",
+              "Text": "BFS can identify mutual friends by intersecting neighbor sets discovered during traversal from two different source nodes.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "569e92b8-8817-463e-a87c-10f590684cec",
+              "Text": "The time complexity of BFS is O(V \u002B E), making it practical for large but bounded neighborhood searches.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "944b96fc-5b94-4c4d-b17a-cd9d25a62d07",
+          "TopicId": "c51c53ad-e180-49c3-954c-5fcf48d60964",
+          "Title": "Depth-First Search and Community Detection",
+          "BodyText": "Depth-First Search (DFS) explores as far as possible along each branch before backtracking and is useful for identifying clusters and connected components in social graphs.",
+          "Notes": "DFS-based algorithms can detect isolated sub-communities within a network, which is valuable for targeted content delivery and spam detection.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T14:29:01.1543133-04:00",
+          "ModifiedDate": "2026-06-26T14:29:01.1543133-04:00",
+          "Items": [
+            {
+              "Id": "6f7cfaee-ba3c-4ce1-b16c-f8555fa8e8c6",
+              "Text": "DFS uses a stack (or recursion) to dive deep into a graph path before exploring alternative branches.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "961ed19d-7a7d-411a-9497-2664e5f52198",
+              "Text": "Connected components found via DFS reveal distinct groups or communities within a larger social network.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "8a913cf1-edab-47a6-87bd-fc62b173f728",
+              "Text": "DFS underpins cycle detection algorithms, which help identify feedback loops or circular referral chains in networks.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "9de6f332-4769-406a-9ad3-b6a9312c0ed6",
+              "Text": "Topological sorting via DFS is applicable in directed acyclic graphs to order dependencies, such as content prerequisite chains.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "66a7990f-8281-4686-b066-43b863afc89e",
+          "TopicId": "c51c53ad-e180-49c3-954c-5fcf48d60964",
+          "Title": "Influence and Centrality Metrics",
+          "BodyText": "Centrality algorithms measure the importance or influence of individual nodes within a graph, enabling platforms to identify key influencers and information brokers.",
+          "Notes": "PageRank, originally developed for web link graphs, is a centrality measure also applied to social influence ranking. Betweenness centrality identifies users who act as bridges between communities.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T14:29:01.1543133-04:00",
+          "ModifiedDate": "2026-06-26T14:29:01.1543133-04:00",
+          "Items": [
+            {
+              "Id": "96e5b8e4-6ea4-493b-9e65-f06b6fec647d",
+              "Text": "Degree centrality counts the number of direct connections a node has, serving as a simple proxy for user popularity.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "2cd22294-64b3-40b8-9d9e-a9567666ec5e",
+              "Text": "Betweenness centrality measures how often a node appears on the shortest path between other nodes, highlighting information gatekeepers.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "d81b0a68-f43c-4ba9-b833-ea0bbefbf432",
+              "Text": "Closeness centrality quantifies how quickly a node can reach all other nodes, indicating how efficiently a user can spread information.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "7147b06c-1541-4a9a-b085-f38ee320b0d6",
+              "Text": "PageRank assigns scores based on the quality and quantity of incoming edges, weighting connections from influential nodes more heavily.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "d362fba6-4244-47c3-9a8b-3d83ca58b6d9",
+          "TopicId": "c51c53ad-e180-49c3-954c-5fcf48d60964",
+          "Title": "Information Flow and Viral Propagation",
+          "BodyText": "Graph traversal strategies directly model how content, rumors, or trends propagate through a social network, informing how platforms design recommendation and alert systems.",
+          "Notes": "Epidemic models such as SIR (Susceptible-Infected-Recovered) are mapped onto graph structures to simulate and predict viral content spread across connected user communities.",
+          "SortOrder": 5,
+          "CreatedDate": "2026-06-26T14:29:01.1543133-04:00",
+          "ModifiedDate": "2026-06-26T14:29:01.1543133-04:00",
+          "Items": [
+            {
+              "Id": "c0655c0d-da59-45c5-96cc-67769f7ff530",
+              "Text": "Information spread can be modeled as a traversal starting from a seed node, with each edge representing a potential transmission path.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "8a5ae1bf-c153-4ce5-be5c-43fd124ffa24",
+              "Text": "BFS-based propagation models assume uniform spread speed, while weighted-edge models account for varying interaction strength between users.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "ddb6897f-f6fd-4487-8848-2e848fec7f88",
+              "Text": "Identifying high-centrality nodes as initial seeds maximizes the reach of viral campaigns or critical public-health messages.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "2e0e8ea7-67c2-4d0e-a82a-b4fb8b878d36",
+              "Text": "Graph algorithms help platforms throttle misinformation by detecting rapid, anomalous spread patterns that deviate from normal diffusion.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "b21a2ca4-95f5-4163-b7d7-14b87544d905",
+          "TopicId": "c51c53ad-e180-49c3-954c-5fcf48d60964",
+          "Title": "Real-World Platform Applications of Graph Structures",
+          "BodyText": "Modern social platforms integrate graph data structures with other components such as hash tables and caches to deliver friend recommendations, feed ranking, and network analytics at scale.",
+          "Notes": "Facebook\u0027s social graph, LinkedIn\u0027s professional network, and Twitter\u0027s follower graph each involve billions of nodes and edges, requiring distributed graph processing frameworks like Apache Giraph or Meta\u0027s TAO system.",
+          "SortOrder": 6,
+          "CreatedDate": "2026-06-26T14:29:01.1543133-04:00",
+          "ModifiedDate": "2026-06-26T14:29:01.1543133-04:00",
+          "Items": [
+            {
+              "Id": "25b65e0b-aea0-4823-b489-bce19b8cc3db",
+              "Text": "Friend and follower recommendation engines combine BFS traversal with machine learning signals derived from graph topology features.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "d3ee888b-a89a-410b-a667-8f4d6ef491df",
+              "Text": "Feed ranking algorithms use graph-derived engagement signals \u2014 such as edge weights and centrality scores \u2014 to prioritize content for each user.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "db2b7fb1-a31e-41e9-bb8d-4103459d9d81",
+              "Text": "Graph databases like Neo4j store and query relationship-heavy data more efficiently than relational databases for social network use cases.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "01dbc405-8537-48c0-ae0a-cb2e08a97b67",
+              "Text": "Distributed graph processing systems partition the graph across many servers, enabling traversal and analytics on networks with billions of nodes.",
+              "SortOrder": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "b179d7a6-d303-41d5-83d2-164ab67aaa29",
+      "Title": "Combining Data Structures in Complex Systems",
+      "Summary": "Analyzes how real-world applications integrate multiple data structures simultaneously to achieve performance, scalability, and functionality. Uses case studies to illustrate the trade-offs involved in structural design decisions.",
+      "SortOrder": 4,
+      "CreatedDate": "2026-06-26T14:27:09.9321492-04:00",
+      "ModifiedDate": "2026-06-26T14:27:09.9321492-04:00",
+      "Elements": [
+        {
+          "Id": "f88a60b1-c679-468b-acd0-19ca6986ed89",
+          "TopicId": "b179d7a6-d303-41d5-83d2-164ab67aaa29",
+          "Title": "Why Real-World Systems Require Multiple Data Structures",
+          "BodyText": "No single data structure optimally solves every requirement of a complex system. Real-world applications combine structures to balance competing needs such as fast lookup, ordered traversal, and relationship modeling.",
+          "Notes": "For example, a social network may use hash tables for instant user lookup, graphs to model connections, and trees to organize hierarchical content feeds \u2014 each structure handling what it does best.",
+          "SortOrder": 0,
+          "CreatedDate": "2026-06-26T14:29:36.8819623-04:00",
+          "ModifiedDate": "2026-06-26T14:29:36.8819623-04:00",
+          "Items": [
+            {
+              "Id": "1b9ed255-6796-44da-b2d1-60d54c048630",
+              "Text": "Different operations (search, insert, traverse, relate) have different optimal structures, making hybrid design necessary.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "7545d1f9-0a93-47d9-adec-67ab94829e00",
+              "Text": "Combining structures allows a system to achieve O(1) lookup while still supporting ordered or relational queries.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "01b91658-6459-4a15-b147-8f4353b952f3",
+              "Text": "The choice of which structures to combine directly impacts memory usage, latency, and scalability.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "c1e3df32-cf92-4918-81a9-f78e492b1090",
+          "TopicId": "b179d7a6-d303-41d5-83d2-164ab67aaa29",
+          "Title": "Blockchain as a Case Study in Structural Integration",
+          "BodyText": "Blockchain technology is a prime example of multiple data structures working in concert to achieve security, immutability, and verifiability. It combines linked lists, hash functions, and Merkle trees into a unified architecture.",
+          "Notes": "Each block acts as a node in a linked list, while the Merkle tree within each block allows efficient and tamper-evident verification of transactions without downloading the entire chain.",
+          "SortOrder": 1,
+          "CreatedDate": "2026-06-26T14:29:36.8819623-04:00",
+          "ModifiedDate": "2026-06-26T14:29:36.8819623-04:00",
+          "Items": [
+            {
+              "Id": "7b2d4969-dc00-4063-9c6b-aed7f3d795c1",
+              "Text": "The chain of blocks is structurally a singly linked list, where each block references its predecessor via a cryptographic hash.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "8db84c2b-717f-4b2d-a3c1-8f95fefdeba4",
+              "Text": "Merkle trees inside each block enable O(log n) proof of inclusion for any individual transaction.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "466465e8-2d00-46d0-b13b-e9b4753ea127",
+              "Text": "Hash tables are used in node implementations to index unspent transaction outputs (UTXOs) for fast balance lookups.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "8a6f2b9b-a91c-462b-b1c9-cafc2e073932",
+              "Text": "This layered design means that tampering with any element invalidates the hash chain, providing structural integrity.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "3730cc9e-1f16-43d5-b191-df872ef64bcd",
+          "TopicId": "b179d7a6-d303-41d5-83d2-164ab67aaa29",
+          "Title": "Digital Currency Systems and Hash Table Usage",
+          "BodyText": "Digital currency platforms rely heavily on hash tables to manage account states, transaction pools, and address mappings at scale. Speed of lookup is critical when processing thousands of transactions per second.",
+          "Notes": "Ethereum\u0027s world state, for instance, is stored in a Merkle Patricia Trie \u2014 a hybrid of a trie and a Merkle tree \u2014 to combine efficient key-value lookup with cryptographic verifiability.",
+          "SortOrder": 2,
+          "CreatedDate": "2026-06-26T14:29:36.8819623-04:00",
+          "ModifiedDate": "2026-06-26T14:29:36.8819623-04:00",
+          "Items": [
+            {
+              "Id": "83b1c1c3-6117-417d-8f03-1683f125ceac",
+              "Text": "Hash tables provide near-constant time access to account balances and transaction records, essential for high-throughput systems.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "1db69240-9555-409a-93f8-8b2fcc690fe0",
+              "Text": "Collision resolution strategies and load factor tuning become critical design decisions at the scale of a global currency network.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "f01ddcfd-b405-4b7d-849a-acb10a37521f",
+              "Text": "Hybrid structures like Merkle Patricia Tries demonstrate how combining two structures can satisfy both performance and security requirements simultaneously.",
+              "SortOrder": 2
+            }
+          ]
+        },
+        {
+          "Id": "eb6f3b66-4734-4bc7-a722-555976dd0e12",
+          "TopicId": "b179d7a6-d303-41d5-83d2-164ab67aaa29",
+          "Title": "Graph Structures in Social and Transactional Networks",
+          "BodyText": "Social networks and transaction graphs use graph data structures to represent and query relationships between entities. The choice between adjacency lists and adjacency matrices reflects trade-offs in density and operation type.",
+          "Notes": "Twitter\u0027s follower graph uses adjacency list representations because the graph is sparse \u2014 most users follow a small fraction of all users. Dense graphs, like those in recommendation engines, may favor matrix representations.",
+          "SortOrder": 3,
+          "CreatedDate": "2026-06-26T14:29:36.8819623-04:00",
+          "ModifiedDate": "2026-06-26T14:29:36.8819623-04:00",
+          "Items": [
+            {
+              "Id": "13bce8d5-f265-48dd-bae8-65fe0fbe030e",
+              "Text": "Adjacency lists are memory-efficient for sparse graphs and support fast neighbor enumeration, making them ideal for social connections.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "9fea26eb-642c-4d26-a5d0-37993b7a11de",
+              "Text": "Adjacency matrices enable O(1) edge existence checks but consume O(n\u00B2) memory, suitable only for dense graphs.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "01db4651-a7d0-4ccb-a4b7-65a49e114617",
+              "Text": "Graph traversal algorithms (BFS, DFS) are applied on top of these representations to power features like friend recommendations and fraud detection.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "dbf61067-e7f2-46ed-bfcb-ec86aa3ac986",
+              "Text": "In cryptocurrency networks, transaction graphs are analyzed to trace fund flows and detect anomalous patterns.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "c5beabff-4e88-43a7-ab3c-46cf746ce7af",
+          "TopicId": "b179d7a6-d303-41d5-83d2-164ab67aaa29",
+          "Title": "Trade-offs in Structural Design Decisions",
+          "BodyText": "Every decision to use one data structure over another \u2014 or to combine them \u2014 involves explicit trade-offs across time complexity, space complexity, and implementation complexity. Designers must weigh these against system requirements.",
+          "Notes": "A common trade-off is between read performance and write performance: structures like balanced BSTs offer consistent O(log n) for both, while hash tables give O(1) reads but can degrade under high write/collision loads.",
+          "SortOrder": 4,
+          "CreatedDate": "2026-06-26T14:29:36.8819623-04:00",
+          "ModifiedDate": "2026-06-26T14:29:36.8819623-04:00",
+          "Items": [
+            {
+              "Id": "d440f9ab-1762-455c-a20e-46af45323589",
+              "Text": "Time-space trade-offs are fundamental: caching with hash tables speeds up reads but increases memory consumption.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "f58ab7f7-5099-4f79-9c39-bf3fa40734c0",
+              "Text": "Write-heavy systems may favor append-only logs (linked list variants) over structures that require rebalancing or rehashing.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "ddd51c12-427d-482a-9058-435ebfbb92f6",
+              "Text": "Scalability requirements may force a shift from in-memory structures to distributed equivalents, such as distributed hash tables (DHTs) used in peer-to-peer networks.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "021b945a-a290-4fba-8bfb-fe84827e2e2f",
+              "Text": "Choosing the wrong structure for a bottleneck operation can cascade into system-wide performance failures, making structural analysis a critical engineering skill.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "ddc73cb4-178b-4314-b3c1-02ecaa99dafc",
+          "TopicId": "b179d7a6-d303-41d5-83d2-164ab67aaa29",
+          "Title": "Layered Architecture: Structures Within Structures",
+          "BodyText": "Complex systems often nest data structures within one another, creating layered architectures where each layer optimizes a specific concern. Understanding these layers is key to reasoning about overall system behavior.",
+          "Notes": "A database index is a B-tree of pointers to rows stored in a hash-partitioned table \u2014 the B-tree handles ordered range queries while the hash partitioning ensures even data distribution across storage nodes.",
+          "SortOrder": 5,
+          "CreatedDate": "2026-06-26T14:29:36.8819623-04:00",
+          "ModifiedDate": "2026-06-26T14:29:36.8819623-04:00",
+          "Items": [
+            {
+              "Id": "4a67f7ae-79c9-4ea4-b997-f3c47d1ba79c",
+              "Text": "Nesting structures allows each layer to specialize: an outer graph can index nodes stored in inner hash tables for O(1) node access during traversal.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "360d80a3-c768-44d9-9adc-0e647d072f70",
+              "Text": "Blockchain\u0027s Merkle tree sits inside a linked-list block structure, illustrating how inner structures can add properties (verifiability) without changing the outer structure\u0027s behavior.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "2eee71e7-7d37-4133-b4d5-60a22c7988e4",
+              "Text": "Layered designs increase implementation complexity and require careful documentation so that developers understand which structure governs each type of operation.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "d118e655-968c-48b8-a02c-1dfa797ab48f",
+              "Text": "Performance analysis of layered systems must account for the compounded costs of operations that touch multiple structural layers.",
+              "SortOrder": 3
+            }
+          ]
+        },
+        {
+          "Id": "9ec4506e-3a32-43e1-b9ec-c501b7d3efbc",
+          "TopicId": "b179d7a6-d303-41d5-83d2-164ab67aaa29",
+          "Title": "Design Principles for Integrating Multiple Data Structures",
+          "BodyText": "Successful integration of multiple data structures follows recognizable design principles: match structure to operation, minimize cross-structure dependencies, and benchmark against realistic workloads.",
+          "Notes": "Engineers often prototype with simpler structures first and introduce complexity only when profiling reveals a bottleneck \u2014 premature structural optimization can introduce bugs and maintenance burden without measurable benefit.",
+          "SortOrder": 6,
+          "CreatedDate": "2026-06-26T14:29:36.8819623-04:00",
+          "ModifiedDate": "2026-06-26T14:29:36.8819623-04:00",
+          "Items": [
+            {
+              "Id": "f3028787-3f37-4078-9d87-c886bc55aee1",
+              "Text": "Identify the dominant operations (lookup, insert, traverse, relate) before selecting any structure, then compose structures to cover the full operation set.",
+              "SortOrder": 0
+            },
+            {
+              "Id": "d009e513-3f6f-472d-9a97-50cc039c9a54",
+              "Text": "Minimize the number of structural boundaries data must cross per operation to reduce latency and synchronization overhead.",
+              "SortOrder": 1
+            },
+            {
+              "Id": "d1fcf5b6-6f02-45b7-b3b8-4022a72477bd",
+              "Text": "Document invariants at each structural boundary so that changes to one structure do not silently corrupt another.",
+              "SortOrder": 2
+            },
+            {
+              "Id": "6fcd41a6-f023-427a-9f58-e4e8aef759f9",
+              "Text": "Benchmark with production-representative data distributions, since structural performance can vary dramatically between average-case and worst-case inputs.",
+              "SortOrder": 3
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "TotalElementCount": 32
+}

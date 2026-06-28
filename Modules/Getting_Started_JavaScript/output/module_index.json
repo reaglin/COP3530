@@ -1,0 +1,100 @@
+﻿{
+  "ModuleName": "1. Getting Started: JavaScript and JSFiddle Environment",
+  "CourseName": "COP3530 - Data Structures",
+  "ModuleFolderName": "Getting_Started_JavaScript",
+  "GeneratedUtc": "2026-06-27T17:20:20.3801679Z",
+  "HtmlIndexSignature": "048D5BAFA2E63C63636B93795111646A2F20806744A73AE8F616DBD5EB1C8869",
+  "Artifacts": [
+    {
+      "Name": "Module Topics",
+      "Type": "Module Topics",
+      "FileType": ".json",
+      "Description": "Covers the fundamentals of JavaScript (its definition, role in software development, and relevance to the course), how to navigate and configure the JSFiddle environment, and how to write, run, and debug a first JavaScript program; learners use this as a roadmap of what the module will teach, while instructors use it to confirm curricular alignment.",
+      "CustomName": null,
+      "FilePath": "C:\\Users\\ronal\\OneDrive - Daytona State College\\Documents\\PreseMaker\\Courses\\COP3530_-_Data_Structures\\Modules\\Getting_Started_JavaScript\\hierarchy.json",
+      "ViewerKind": 2,
+      "WebHref": "content/module_topics.html",
+      "LocalHref": "module_topics.html",
+      "RawHref": "../hierarchy.json",
+      "SourceModifiedTicks": 639180929886340564
+    },
+    {
+      "Name": "Module Topics (HTML)",
+      "Type": "Module Topics (HTML)",
+      "FileType": ".html",
+      "Description": "Outlines the module\u0027s topics including an introduction to JavaScript\u0027s role in the course, its key language features, and how the JSFiddle online environment will be used to write and test data structure implementations.",
+      "CustomName": null,
+      "FilePath": "C:\\Users\\ronal\\OneDrive - Daytona State College\\Documents\\PreseMaker\\Courses\\COP3530_-_Data_Structures\\Modules\\Getting_Started_JavaScript\\output\\module_topics.html",
+      "ViewerKind": 1,
+      "WebHref": "",
+      "LocalHref": "module_topics.html",
+      "RawHref": "",
+      "SourceModifiedTicks": 639181681111269587
+    },
+    {
+      "Name": "Foundational Programming Strategies",
+      "Type": "Text Content",
+      "FileType": ".html",
+      "Description": "Covers core programming building blocks \u2014 variables, conditionals, loops, and functions \u2014 that recur throughout data structures implementations, serving as a conceptual reference learners read before tackling more complex topics.",
+      "CustomName": null,
+      "FilePath": "C:\\Users\\ronal\\OneDrive - Daytona State College\\Documents\\PreseMaker\\Courses\\COP3530_-_Data_Structures\\Modules\\Getting_Started_JavaScript\\output\\_interactive.html",
+      "ViewerKind": 1,
+      "WebHref": "content/_interactive.html",
+      "LocalHref": "_interactive.html",
+      "RawHref": "",
+      "SourceModifiedTicks": 639181738988506740
+    },
+    {
+      "Name": "Introduction to JavaScript",
+      "Type": "Text Content",
+      "FileType": ".html",
+      "Description": "Introduces JavaScript as the primary language for the course, explaining its real-world prevalence and role in the curriculum so learners understand why it was chosen and what to expect going forward.",
+      "CustomName": null,
+      "FilePath": "C:\\Users\\ronal\\OneDrive - Daytona State College\\Documents\\PreseMaker\\Courses\\COP3530_-_Data_Structures\\Modules\\Getting_Started_JavaScript\\output\\Getting_Started_JavaScript_interactive_topics_t1.html",
+      "ViewerKind": 1,
+      "WebHref": "content/Getting_Started_JavaScript_interactive_topics_t1.html",
+      "LocalHref": "Getting_Started_JavaScript_interactive_topics_t1.html",
+      "RawHref": "",
+      "SourceModifiedTicks": 639181736779958996
+    },
+    {
+      "Name": "The JSFiddle Development Environment",
+      "Type": "Text Content",
+      "FileType": ".html",
+      "Description": "Explains the JSFiddle browser-based coding environment \u2014 its layout, panels, and how to run code \u2014 so learners can begin writing and testing JavaScript immediately without installing any local tools.",
+      "CustomName": null,
+      "FilePath": "C:\\Users\\ronal\\OneDrive - Daytona State College\\Documents\\PreseMaker\\Courses\\COP3530_-_Data_Structures\\Modules\\Getting_Started_JavaScript\\output\\Getting_Started_JavaScript_interactive_topics_t2.html",
+      "ViewerKind": 1,
+      "WebHref": "content/Getting_Started_JavaScript_interactive_topics_t2.html",
+      "LocalHref": "Getting_Started_JavaScript_interactive_topics_t2.html",
+      "RawHref": "",
+      "SourceModifiedTicks": 639181737370245963
+    },
+    {
+      "Name": "Writing and Running Your First Program",
+      "Type": "Text Content",
+      "FileType": ".html",
+      "Description": "Guides learners through writing and executing their first JavaScript program in JSFiddle, emphasizing the habit of running code early and often to establish a working feedback loop between the learner and their tools.",
+      "CustomName": null,
+      "FilePath": "C:\\Users\\ronal\\OneDrive - Daytona State College\\Documents\\PreseMaker\\Courses\\COP3530_-_Data_Structures\\Modules\\Getting_Started_JavaScript\\output\\Getting_Started_JavaScript_interactive_topics_t3.html",
+      "ViewerKind": 1,
+      "WebHref": "content/Getting_Started_JavaScript_interactive_topics_t3.html",
+      "LocalHref": "Getting_Started_JavaScript_interactive_topics_t3.html",
+      "RawHref": "",
+      "SourceModifiedTicks": 639181737911087992
+    },
+    {
+      "Name": "Foundational Programming Strategies",
+      "Type": "Text Content",
+      "FileType": ".html",
+      "Description": "Covers core programming building blocks \u2014 variables, conditionals, loops, and functions \u2014 that recur throughout data structures implementations, serving as a conceptual reference learners read before tackling more complex topics.",
+      "CustomName": null,
+      "FilePath": "C:\\Users\\ronal\\OneDrive - Daytona State College\\Documents\\PreseMaker\\Courses\\COP3530_-_Data_Structures\\Modules\\Getting_Started_JavaScript\\output\\Getting_Started_JavaScript_interactive_topics_t4.html",
+      "ViewerKind": 1,
+      "WebHref": "content/Getting_Started_JavaScript_interactive_topics_t4.html",
+      "LocalHref": "Getting_Started_JavaScript_interactive_topics_t4.html",
+      "RawHref": "",
+      "SourceModifiedTicks": 639181738988506740
+    }
+  ]
+}

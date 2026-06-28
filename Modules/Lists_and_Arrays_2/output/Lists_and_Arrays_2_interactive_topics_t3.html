@@ -1,0 +1,220 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Deletion Operations</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+</head><body>
+  <header>
+    <h1>Deletion Operations</h1>
+  </header><main>
+    <div class="slide-card">
+      <div class="slide-header"><span class="slide-num">1</span><h2>Deletion Operations</h2><span class="chevron">▶</span></div>
+      <div class="slide-body">
+        <p>Deletion is one of the fundamental operations performed on arrays, and in JavaScript it comes with important nuances that directly affect the performance of your programs. Unlike adding an element to the end of an array, which is straightforward and cheap, removing elements can trigger a cascade of internal re-indexing work depending on <em>where</em> in the array the deletion takes place. To write efficient code, you need to understand not just <em>how</em> to delete an element, but <em>what happens underneath</em> when you do.</p>
+
+<p>JavaScript arrays are <strong>zero-indexed</strong>, meaning the first element sits at index 0, the second at index 1, and so on. This indexing is not just a labeling convenience — it is a contract the array maintains at all times. When you remove an element from somewhere other than the very end, the array must update the indices of every element that came after the removed one. This internal bookkeeping is what makes some deletions expensive and others trivial.</p>
+
+<p>Before diving into specific methods, it helps to build a mental model. Imagine an array as a row of numbered seats in a theater. If the person in the last seat leaves, no one else has to move. But if the person in seat 1 leaves, every single other person must shift one seat forward to keep the row contiguous — that is exactly what happens inside a JavaScript array when you remove an element from the beginning or middle.</p>
+
+<p><strong>Deleting from the End of an Array</strong></p>
+
+<p>The simplest and most efficient deletion is removing the last element of an array. JavaScript provides the built-in <code>pop()</code> method for exactly this purpose. It removes the final element, returns it, and mutates the original array — all in <strong>O(1)</strong> constant time.</p>
+
+<p>The reason this is O(1) is precisely that no re-indexing is required. The element at the last position is simply removed, and every other element's index remains exactly as it was. The array shrinks by one slot, but nothing else changes internally.</p>
+
+<pre><code>const fruits = ['apple', 'banana', 'cherry', 'date'];
+const removed = fruits.pop();
+
+console.log(removed); // 'date'
+console.log(fruits);  // ['apple', 'banana', 'cherry']
+</code></pre>
+
+<p>In this example, <code>'date'</code> is removed and stored in <code>removed</code>. The remaining three elements are completely undisturbed. This makes <code>pop()</code> the go-to choice whenever you can design your algorithm to work from the end of the array — for example, when implementing a stack data structure where elements are always added and removed from the same end.</p>
+
+<p><strong>Deleting from the Beginning of an Array</strong></p>
+
+<p>Removing the first element of an array is significantly more expensive than removing the last. JavaScript's <code>shift()</code> method does this: it removes and returns the element at index 0 and then <strong>re-indexes every remaining element</strong>, decrementing each index by one. Because every element after position 0 must be touched, this operation runs in <strong>O(n)</strong> time, where n is the number of elements in the array.</p>
+
+<pre><code>const scores = [10, 20, 30, 40, 50];
+const first = scores.shift();
+
+console.log(first);  // 10
+console.log(scores); // [20, 30, 40, 50]
+</code></pre>
+
+<p>After <code>shift()</code> executes, what was at index 1 is now at index 0, what was at index 2 is now at index 1, and so on. For a small array like this the cost is negligible, but in a loop over a large array, repeatedly calling <code>shift()</code> can make an otherwise O(n) algorithm balloon into O(n²) — a serious performance problem. This is why <code>shift()</code> should be used thoughtfully, and why queue-like patterns that dequeue from the front of a plain JavaScript array can be inefficient for large data sets.</p>
+
+<p><strong>Deleting from the Middle of an Array</strong></p>
+
+<p>Deletion from any position other than the last element is handled by JavaScript's versatile <code>splice()</code> method. The signature relevant here is <code>splice(startIndex, deleteCount)</code>, where <code>startIndex</code> is the position to begin removing and <code>deleteCount</code> is how many elements to remove.</p>
+
+<pre><code>const letters = ['a', 'b', 'c', 'd', 'e'];
+letters.splice(2, 1);
+
+console.log(letters); // ['a', 'b', 'd', 'e']
+</code></pre>
+
+<p>Here, the element <code>'c'</code> at index 2 is removed. Everything after it — <code>'d'</code> and <code>'e'</code> — shifts one position to the left. Like <code>shift()</code>, this is an <strong>O(n)</strong> operation in the worst case, because in the worst scenario (deleting from index 0), all n-1 remaining elements must be re-indexed. When deleting from exactly the middle, roughly n/2 elements are shifted, which is still O(n) in Big-O terms.</p>
+
+<p><code>splice()</code> also returns an array containing the removed elements, which you can capture if you need them:</p>
+
+<pre><code>const colors = ['red', 'green', 'blue', 'yellow'];
+const removed = colors.splice(1, 2);
+
+console.log(removed); // ['green', 'blue']
+console.log(colors);  // ['red', 'yellow']
+</code></pre>
+
+<p>This mutates the original array and gives you back whatever was taken out. It is a powerful method, but its O(n) cost means it should be avoided inside loops over large arrays.</p>
+
+<p><strong>Deleting by Value</strong></p>
+
+<p>Frequently you do not know the index of the element you want to remove — you only know its value. In this case, the process involves two steps: first, <em>find</em> the index of the target value, and second, <em>remove</em> the element at that index.</p>
+
+<p>JavaScript provides <code>indexOf()</code> for primitive values (numbers, strings, booleans) and <code>findIndex()</code> for more complex conditions or objects. Both return the index of the first matching element, or <code>-1</code> if no match is found.</p>
+
+<pre><code>const animals = ['cat', 'dog', 'rabbit', 'dog', 'parrot'];
+const target = 'rabbit';
+
+const idx = animals.indexOf(target);
+if (idx !== -1) {
+  animals.splice(idx, 1);
+}
+
+console.log(animals); // ['cat', 'dog', 'dog', 'parrot']
+</code></pre>
+
+<p>The guard clause <code>if (idx !== -1)</code> is critical. Without it, if <code>target</code> were not present in the array, <code>indexOf()</code> would return <code>-1</code>, and <code>splice(-1, 1)</code> would mistakenly remove the <em>last</em> element of the array — a subtle and dangerous bug. Always check for <code>-1</code> before proceeding with the deletion.</p>
+
+<p>When you need to match by a condition rather than exact equality, <code>findIndex()</code> is the appropriate tool:</p>
+
+<pre><code>const users = [
+  { id: 1, name: 'Alice' },
+  { id: 2, name: 'Bob' },
+  { id: 3, name: 'Carol' }
+];
+
+const idx = users.findIndex(user => user.id === 2);
+if (idx !== -1) {
+  users.splice(idx, 1);
+}
+
+console.log(users);
+// [{ id: 1, name: 'Alice' }, { id: 3, name: 'Carol' }]
+</code></pre>
+
+<p>Note that both <code>indexOf()</code> and <code>findIndex()</code> only remove the <strong>first</strong> occurrence of a matching element. If duplicates exist and you need to remove all of them, the filtering approach described next is far more appropriate.</p>
+
+<p><strong>Filtering as a Non-Mutating Deletion</strong></p>
+
+<p>All the methods discussed so far — <code>pop()</code>, <code>shift()</code>, and <code>splice()</code> — <strong>mutate</strong> the original array. Sometimes this is exactly what you want, but modern JavaScript development, particularly in frameworks like React, often favors <strong>immutability</strong>: instead of modifying existing data, you produce a new version of it. JavaScript's <code>filter()</code> method is the idiomatic tool for this.</p>
+
+<p><code>filter()</code> takes a callback function and returns a <strong>new array</strong> containing only the elements for which the callback returns <code>true</code>. Elements for which the callback returns <code>false</code> are excluded — effectively deleted — from the result. The original array is not touched.</p>
+
+<pre><code>const numbers = [1, 2, 3, 4, 2, 5, 2];
+const target = 2;
+
+const updated = numbers.filter(item => item !== target);
+
+console.log(updated);  // [1, 3, 4, 5]
+console.log(numbers);  // [1, 2, 3, 4, 2, 5, 2] — unchanged
+</code></pre>
+
+<p>This is particularly powerful when you want to remove <em>all</em> occurrences of a value, not just the first one. With <code>splice()</code> in a loop you would need extra logic to track shifting indices; with <code>filter()</code> it happens cleanly in a single pass.</p>
+
+<p><code>filter()</code> runs in <strong>O(n)</strong> time because it must examine every element. It also uses <strong>O(n)</strong> additional space because it creates a brand-new array to hold the results. This space cost is the trade-off for non-mutation. For most applications this is entirely acceptable, and the clarity and safety of the immutable pattern often outweigh the memory overhead.</p>
+
+<p>You can also use <code>filter()</code> with complex conditions, making it highly flexible:</p>
+
+<pre><code>const orders = [
+  { id: 101, status: 'pending' },
+  { id: 102, status: 'shipped' },
+  { id: 103, status: 'pending' },
+  { id: 104, status: 'delivered' }
+];
+
+const activeOrders = orders.filter(order => order.status !== 'delivered');
+
+console.log(activeOrders);
+// [{ id: 101, ... }, { id: 102, ... }, { id: 103, ... }]
+</code></pre>
+
+<p><strong>Time Complexity of Deletion Operations — A Summary</strong></p>
+
+<p>Understanding the time complexity of each deletion strategy is essential for writing scalable code. Here is how they compare:</p>
+
+<ul>
+  <li><strong>pop() — O(1):</strong> Removes the last element with no re-indexing. The most efficient deletion possible. Ideal for stack implementations and any situation where you control the order of processing.</li>
+  <li><strong>shift() — O(n):</strong> Removes the first element but forces all remaining elements to be re-indexed. Acceptable for occasional use on small arrays; costly when called repeatedly in loops on large arrays.</li>
+  <li><strong>splice() at index k — O(n):</strong> Removes an element at an arbitrary position and re-indexes all elements after it. The further from the end the deletion occurs, the more work is done — though it is always O(n) in the worst case.</li>
+  <li><strong>filter() — O(n) time, O(n) space:</strong> Produces a new array with unwanted elements excluded. Efficient when multiple removals are needed in one pass, and safe when immutability is required.</li>
+</ul>
+
+<p>A particularly important practical insight: if you need to remove multiple specific elements from an array, you should <strong>prefer a single call to <code>filter()</code></strong> over calling <code>splice()</code> inside a loop. Each <code>splice()</code> call is O(n), so doing it m times results in O(n × m) total work. A single <code>filter()</code> pass is O(n) regardless of how many elements are being excluded — a significant improvement when m is large.</p>
+
+<pre><code>// Inefficient: O(n * m) — splice inside a loop
+const toRemove = new Set([2, 4, 6]);
+for (const val of toRemove) {
+  const idx = arr.indexOf(val);
+  if (idx !== -1) arr.splice(idx, 1);
+}
+
+// Efficient: O(n) — single filter pass
+const cleaned = arr.filter(item => !toRemove.has(item));
+</code></pre>
+
+<p>Choosing the right deletion strategy is not merely an academic exercise. In real applications processing thousands or millions of records, the difference between O(1) and O(n) — or between O(n) and O(n²) — can mean the difference between a fast, responsive application and one that grinds to a halt under load.</p>
+        <div class="notes"><strong>Notes</strong>Covers all listed subtopics in depth: conceptual understanding of zero-indexing and re-indexing costs, pop/shift/splice/filter methods with examples, deletion by value with guard clauses, immutability via filter, and time complexity comparisons including the loop-vs-filter efficiency insight.</div>
+      </div></div>
+  </main>
+  <script>
+    document.querySelectorAll('.slide-header').forEach(function(h){
+      h.addEventListener('click',function(){
+        var b=this.nextElementSibling,c=this.querySelector('.chevron'),o=b.classList.contains('open');
+        b.classList.toggle('open',!o);c.style.transform=o?'':'rotate(90deg)';
+      });});
+    var f=document.querySelector('.slide-body');
+    if(f){f.classList.add('open');var c=f.previousElementSibling.querySelector('.chevron');if(c)c.style.transform='rotate(90deg)';}
+  </script>
+</body></html>
