@@ -1,0 +1,52 @@
+﻿[
+  {
+    "title": "Lists and Arrays: Algorithms and Operations \u2014 Topics \u0026 Learning Outcomes",
+    "href": "topics-outcomes.html",
+    "type": "Page"
+  },
+  {
+    "title": "Lists and Arrays: Algorithms and Operations \u2014 Module Topics",
+    "href": "topics.html",
+    "type": "Page"
+  },
+  {
+    "title": "Introduction to Lists and Arrays",
+    "href": "content/Lists_and_Arrays_2_interactive_topics_t1.html",
+    "type": "Content"
+  },
+  {
+    "title": "Insertion Operations",
+    "href": "content/Lists_and_Arrays_2_interactive_topics_t2.html",
+    "type": "Content"
+  },
+  {
+    "title": "Deletion Operations",
+    "href": "content/Lists_and_Arrays_2_interactive_topics_t3.html",
+    "type": "Content"
+  },
+  {
+    "title": "Searching Algorithms",
+    "href": "content/Lists_and_Arrays_2_interactive_topics_t4.html",
+    "type": "Content"
+  },
+  {
+    "title": "Traversal Techniques",
+    "href": "content/Lists_and_Arrays_2_interactive_topics_t5.html",
+    "type": "Content"
+  },
+  {
+    "title": "Time and Space Complexity Analysis",
+    "href": "content/Lists_and_Arrays_2_interactive_topics_t6.html",
+    "type": "Content"
+  },
+  {
+    "title": "Lists and Arrays: Algorithms and Operations \u2014 Module Topics",
+    "href": "content/module_topics.html",
+    "type": "Content"
+  },
+  {
+    "title": "Time and Space Complexity Analysis",
+    "href": "content/_interactive.html",
+    "type": "Content"
+  }
+]

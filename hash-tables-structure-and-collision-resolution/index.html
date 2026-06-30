@@ -1,8 +1,8 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Hash Tables: Structure and Collision Resolution — COP3530</title>
   <style>
     /* ── Reset & Base ── */
@@ -20,206 +20,221 @@
     body {
       font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
       background-color: #f4f6f9;
-      color: #1e2a3a;
+      color: #1e2535;
       line-height: 1.65;
       min-height: 100vh;
     }
 
     /* ── Layout Wrapper ── */
     .page-wrapper {
-      max-width: 1080px;
+      max-width: 960px;
       margin: 0 auto;
       padding: 2.5rem 1.5rem 4rem;
     }
 
-    /* ── Course Label ── */
-    .course-label {
+    /* ── Course Badge ── */
+    .course-badge {
       display: inline-block;
-      font-size: 0.78rem;
-      font-weight: 600;
+      background-color: #1a4f8a;
+      color: #e8f0fb;
+      font-size: 0.72rem;
+      font-weight: 700;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      color: #ffffff;
-      background-color: #1a5fa8;
       padding: 0.3rem 0.75rem;
       border-radius: 4px;
-      margin-bottom: 1rem;
+      margin-bottom: 0.85rem;
     }
 
     /* ── Header ── */
     .module-header {
-      border-bottom: 3px solid #1a5fa8;
+      border-bottom: 3px solid #1a4f8a;
       padding-bottom: 1.5rem;
       margin-bottom: 2rem;
     }
 
     .module-header h1 {
-      font-size: clamp(1.6rem, 3.5vw, 2.4rem);
-      font-weight: 700;
-      color: #0f1e30;
+      font-size: clamp(1.55rem, 3.5vw, 2.25rem);
+      font-weight: 800;
+      color: #0d1f3c;
       line-height: 1.25;
-      margin-bottom: 0.85rem;
+      margin-bottom: 0.75rem;
     }
 
     .module-header p {
-      font-size: 1rem;
-      color: #3d4f63;
+      font-size: 0.985rem;
+      color: #3d4e66;
       max-width: 72ch;
     }
 
-    /* ── Section Title ── */
-    .section-title {
-      font-size: 1.05rem;
+    /* ── Section Label ── */
+    .section-label {
+      font-size: 0.75rem;
       font-weight: 700;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: #1a5fa8;
-      margin-bottom: 1.1rem;
+      color: #5a6f8a;
+      margin-bottom: 1rem;
     }
 
-    /* ── Card Grid ── */
-    .card-grid {
+    /* ── Artifact Grid ── */
+    .artifact-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(min(100%, 460px), 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
       gap: 1.25rem;
     }
 
     /* ── Artifact Card ── */
     .artifact-card {
       background: #ffffff;
-      border: 1px solid #dce3ed;
-      border-radius: 10px;
-      padding: 1.4rem 1.5rem;
+      border: 1px solid #d6dde8;
+      border-radius: 8px;
+      padding: 1.35rem 1.4rem 1.25rem;
       display: flex;
       flex-direction: column;
-      gap: 0.65rem;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-      transition: box-shadow 0.2s ease, transform 0.2s ease;
+      gap: 0.55rem;
+      transition: box-shadow 0.18s ease, transform 0.18s ease;
     }
 
     .artifact-card:hover {
-      box-shadow: 0 6px 18px rgba(26, 95, 168, 0.12);
+      box-shadow: 0 6px 20px rgba(26, 79, 138, 0.12);
       transform: translateY(-2px);
     }
 
-    /* ── Card Header Row ── */
-    .card-header {
+    /* ── Card Top Row ── */
+    .card-top {
       display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 0.6rem;
       flex-wrap: wrap;
-      align-items: baseline;
-      gap: 0.5rem 0.75rem;
     }
 
+    /* ── Artifact Name / Link ── */
     .artifact-name {
-      font-size: 1.08rem;
+      font-size: 1rem;
       font-weight: 700;
-      color: #0f1e30;
+      color: #0d1f3c;
       line-height: 1.3;
     }
 
     .artifact-name a {
-      color: #1a5fa8;
+      color: #1a4f8a;
       text-decoration: none;
-      border-bottom: 2px solid transparent;
-      transition: border-color 0.18s ease, color 0.18s ease;
+      border-bottom: 1.5px solid transparent;
+      transition: border-color 0.15s ease, color 0.15s ease;
     }
 
     .artifact-name a:hover,
     .artifact-name a:focus {
-      color: #0d3f74;
-      border-bottom-color: #0d3f74;
+      color: #0d3468;
+      border-bottom-color: #0d3468;
       outline: none;
     }
 
     .artifact-name a:focus-visible {
-      outline: 3px solid #4a9eff;
+      outline: 2px solid #1a4f8a;
       outline-offset: 2px;
       border-radius: 2px;
     }
 
     /* ── Source File Link ── */
     .source-link {
-      font-size: 0.78rem;
-      font-weight: 500;
-      color: #5a7a9e;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #5a7fa8;
       text-decoration: none;
-      border: 1px solid #b3c6da;
-      border-radius: 20px;
-      padding: 0.15rem 0.55rem;
+      background: #eef3fb;
+      border: 1px solid #c4d4eb;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
       white-space: nowrap;
-      transition: background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+      transition: background 0.15s ease, color 0.15s ease;
+      flex-shrink: 0;
     }
 
     .source-link:hover,
     .source-link:focus {
-      background-color: #e8f0fb;
-      color: #1a5fa8;
-      border-color: #1a5fa8;
+      background: #d6e4f5;
+      color: #0d3468;
       outline: none;
     }
 
     .source-link:focus-visible {
-      outline: 3px solid #4a9eff;
+      outline: 2px solid #1a4f8a;
       outline-offset: 2px;
-      border-radius: 20px;
+      border-radius: 4px;
     }
 
-    /* ── Badges Row ── */
-    .badge-row {
+    .source-link svg {
+      flex-shrink: 0;
+    }
+
+    /* ── Meta Pills Row ── */
+    .card-meta {
       display: flex;
       flex-wrap: wrap;
       gap: 0.45rem;
       align-items: center;
     }
 
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.25rem;
-      font-size: 0.73rem;
+    .pill {
+      font-size: 0.68rem;
       font-weight: 600;
-      letter-spacing: 0.03em;
+      letter-spacing: 0.04em;
       text-transform: uppercase;
-      padding: 0.22rem 0.55rem;
-      border-radius: 5px;
+      padding: 0.18rem 0.6rem;
+      border-radius: 100px;
     }
 
-    .badge-type {
-      background-color: #eaf1fb;
-      color: #1a5fa8;
+    .pill-type {
+      background: #e6edf7;
+      color: #1a4f8a;
+      border: 1px solid #b8cde8;
     }
 
-    .badge-filetype {
-      background-color: #f0f4f0;
-      color: #2e6b3e;
-      border: 1px solid #c3d9c7;
+    .pill-filetype {
+      background: #f0f4f0;
+      color: #2d6a35;
+      border: 1px solid #b2d1b6;
+      font-family: 'Courier New', monospace;
+      letter-spacing: 0.03em;
     }
 
     /* ── Description ── */
     .artifact-description {
-      font-size: 0.9rem;
-      color: #3d4f63;
+      font-size: 0.875rem;
+      color: #47576e;
       line-height: 1.6;
+      flex-grow: 1;
     }
 
     /* ── Footer ── */
     .page-footer {
       margin-top: 3.5rem;
       padding-top: 1.25rem;
-      border-top: 1px solid #dce3ed;
+      border-top: 1px solid #d6dde8;
+      font-size: 0.78rem;
+      color: #8a99ae;
       text-align: center;
-      font-size: 0.8rem;
-      color: #7a8fa3;
     }
 
-    /* ── Responsive ── */
-    @media (max-width: 540px) {
+    /* ── Responsive tweaks ── */
+    @media (max-width: 520px) {
       .page-wrapper {
         padding: 1.75rem 1rem 3rem;
       }
 
-      .artifact-card {
-        padding: 1.1rem 1.15rem;
+      .module-header h1 {
+        font-size: 1.4rem;
+      }
+
+      .card-top {
+        flex-direction: column;
+        align-items: flex-start;
       }
     }
   </style>
@@ -231,46 +246,69 @@
 
     <!-- ── Header ── -->
     <header class="module-header">
-      <span class="course-label">COP3530 — Data Structures</span>
+      <div class="course-badge">COP3530 &mdash; Data Structures</div>
       <h1>Hash Tables: Structure and Collision Resolution</h1>
       <p>
-        This module introduces hash tables as a foundational data structure, examining their
-        array-based design and key-value storage model. Learners will explore the properties of
-        effective hash functions — including determinism, uniform distribution, and computational
-        speed — and then work through the primary strategies for handling collisions: chaining and
-        open addressing.
+        This module explores the design and internal workings of hash tables — one of the most
+        widely used data structures in computer science. Topics span the fundamentals of
+        key-value storage, hash function properties, and the core strategies used to handle
+        collisions: chaining and open addressing. Use the resources below to navigate the
+        module content.
       </p>
     </header>
 
     <!-- ── Artifacts ── -->
     <section aria-labelledby="artifacts-heading">
-      <h2 class="section-title" id="artifacts-heading">Module Artifacts</h2>
-      <div class="card-grid">
+      <p class="section-label" id="artifacts-heading">Module Artifacts</p>
 
-        <!-- Artifact: Module Topics -->
-        <article class="artifact-card" aria-label="Module Topics artifact">
-          <div class="card-header">
+      <div class="artifact-grid">
+
+        <!-- Card: Module Topics -->
+        <article class="artifact-card">
+          <div class="card-top">
             <span class="artifact-name">
+              <!-- viewHref is non-empty → hyperlink -->
               <a href="content/module_topics.html">Module Topics</a>
             </span>
+            <!-- sourceHref is non-empty → secondary link -->
             <a
               class="source-link"
               href="source/hierarchy.json"
+              title="View raw source file"
               aria-label="Source file for Module Topics"
-            >source file</a>
+            >
+              <!-- Small document icon -->
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="11"
+                height="11"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+              </svg>
+              source file
+            </a>
           </div>
 
-          <div class="badge-row">
-            <span class="badge badge-type" aria-label="Type: Module Topics">Module Topics</span>
-            <span class="badge badge-filetype" aria-label="File type: .json">.json</span>
+          <div class="card-meta">
+            <span class="pill pill-type">Module Topics</span>
+            <span class="pill pill-filetype">.json</span>
           </div>
 
           <p class="artifact-description">
             Outlines the module's learning topics spanning hash table fundamentals (structure,
-            key-value purpose, array-based design), hash function properties (determinism, uniform
-            distribution, speed), and collision resolution strategies (chaining and open
-            addressing), serving as a navigational overview for learners and instructors to
-            understand the scope and sequence of the module.
+            key-value purpose, array-based design), hash function properties (determinism,
+            uniform distribution, speed), and collision resolution strategies (chaining and
+            open addressing), serving as a navigational overview for learners and instructors
+            to understand the scope and sequence of the module.
           </p>
         </article>
 
@@ -279,11 +317,11 @@
 
     <!-- ── Footer ── -->
     <footer class="page-footer">
-      <p>COP3530 — Data Structures &nbsp;·&nbsp; Hash Tables: Structure and Collision Resolution</p>
+      <p>COP3530 &mdash; Data Structures &nbsp;&bull;&nbsp; Hash Tables: Structure and Collision Resolution</p>
     </footer>
 
   </div>
 
 <footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
-<section class="presemaker-extras" style="max-width:1000px;margin:2rem auto;padding:0 1rem;"><h2>Topics &amp; Learning Outcomes</h2><p><a href="topics-outcomes.html">View Topics &amp; Learning Outcomes</a></p></section></body>
+<section class="presemaker-extras" style="max-width:1000px;margin:2rem auto;padding:0 1rem;"><h2>Topics &amp; Learning Outcomes</h2><p><a href="topics-outcomes.html">View Topics &amp; Learning Outcomes</a></p></section><script src="embed-inject.js" defer></script></body>
 </html>

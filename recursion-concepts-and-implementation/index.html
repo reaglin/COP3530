@@ -1,8 +1,8 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Recursion: Concepts and Implementation | COP3530 - Data Structures</title>
   <style>
     /* ── Reset & Base ── */
@@ -12,210 +12,286 @@
       padding: 0;
     }
 
+    :root {
+      --color-bg:           #f4f6f9;
+      --color-surface:      #ffffff;
+      --color-primary:      #1a4f8a;
+      --color-primary-dark: #133a66;
+      --color-accent:       #2e7d32;
+      --color-accent-light: #e8f5e9;
+      --color-text:         #1e2d3d;
+      --color-text-muted:   #5a6a7a;
+      --color-border:       #d6dde6;
+      --color-tag-bg:       #e8eef6;
+      --color-tag-text:     #1a4f8a;
+      --radius:             8px;
+      --shadow:             0 2px 8px rgba(0, 0, 0, 0.08);
+      --shadow-hover:       0 6px 20px rgba(0, 0, 0, 0.13);
+      --font-sans:          'Segoe UI', system-ui, -apple-system, sans-serif;
+      --font-mono:          'Consolas', 'Courier New', monospace;
+      --max-width:          960px;
+    }
+
     html {
       font-size: 16px;
       scroll-behavior: smooth;
     }
 
     body {
-      font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-      background-color: #f4f6f9;
-      color: #2c3e50;
-      line-height: 1.65;
+      font-family: var(--font-sans);
+      background-color: var(--color-bg);
+      color: var(--color-text);
+      line-height: 1.6;
       min-height: 100vh;
     }
 
-    /* ── Header / Hero ── */
-    header {
-      background: linear-gradient(135deg, #1a3a5c 0%, #2563a8 100%);
+    /* ── Skip Link ── */
+    .skip-link {
+      position: absolute;
+      top: -40px;
+      left: 0;
+      background: var(--color-primary);
+      color: #fff;
+      padding: 8px 16px;
+      text-decoration: none;
+      border-radius: 0 0 var(--radius) 0;
+      font-size: 0.875rem;
+      z-index: 100;
+    }
+    .skip-link:focus {
+      top: 0;
+    }
+
+    /* ── Header / Banner ── */
+    .site-header {
+      background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%);
       color: #ffffff;
-      padding: 3rem 2rem 2.5rem;
-      border-bottom: 4px solid #f0a500;
+      padding: 48px 24px 40px;
+      text-align: center;
     }
 
-    .header-inner {
-      max-width: 900px;
-      margin: 0 auto;
-    }
-
-    .course-label {
+    .site-header .course-label {
       display: inline-block;
       font-size: 0.8rem;
       font-weight: 600;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-      background-color: rgba(255, 255, 255, 0.15);
-      color: #d6e8ff;
-      padding: 0.25rem 0.75rem;
+      background: rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.3);
       border-radius: 20px;
-      margin-bottom: 1rem;
+      padding: 4px 14px;
+      margin-bottom: 16px;
     }
 
-    header h1 {
+    .site-header h1 {
       font-size: clamp(1.6rem, 4vw, 2.4rem);
       font-weight: 700;
+      letter-spacing: -0.02em;
       line-height: 1.25;
-      margin-bottom: 1rem;
-      letter-spacing: -0.01em;
+      margin-bottom: 16px;
     }
 
-    header p {
-      font-size: 1rem;
-      color: #cce0f5;
-      max-width: 680px;
+    .site-header .intro {
+      font-size: clamp(0.95rem, 2vw, 1.075rem);
+      color: rgba(255, 255, 255, 0.88);
+      max-width: 640px;
+      margin: 0 auto;
       line-height: 1.7;
     }
 
-    /* ── Main Content ── */
-    main {
-      max-width: 900px;
-      margin: 2.5rem auto;
-      padding: 0 1.5rem;
+    /* ── Main Container ── */
+    .container {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 40px 24px 64px;
     }
 
+    /* ── Section Heading ── */
     .section-heading {
-      font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: #6b7e96;
-      margin-bottom: 1.25rem;
-      padding-bottom: 0.5rem;
-      border-bottom: 1px solid #dce3ec;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
     }
 
-    /* ── Artifact Cards ── */
-    .artifact-grid {
+    .section-heading h2 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--color-text);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .section-heading .count-badge {
+      background: var(--color-tag-bg);
+      color: var(--color-tag-text);
+      font-size: 0.78rem;
+      font-weight: 700;
+      border-radius: 20px;
+      padding: 2px 10px;
+    }
+
+    .section-heading::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--color-border);
+    }
+
+    /* ── Card Grid ── */
+    .card-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 1.25rem;
+      gap: 20px;
       list-style: none;
     }
 
-    .artifact-card {
-      background: #ffffff;
-      border: 1px solid #dce3ec;
-      border-radius: 10px;
-      padding: 1.5rem;
+    /* ── Artifact Card ── */
+    .card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 24px;
       display: flex;
       flex-direction: column;
-      gap: 0.75rem;
+      gap: 12px;
       transition: box-shadow 0.2s ease, transform 0.2s ease;
-      position: relative;
     }
 
-    .artifact-card:hover {
-      box-shadow: 0 6px 20px rgba(37, 99, 168, 0.12);
+    .card:hover {
+      box-shadow: var(--shadow-hover);
       transform: translateY(-2px);
     }
 
-    /* Type + FileType badges row */
-    .badge-row {
+    /* Card top row: type tag + file type */
+    .card-meta-top {
       display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
       align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
     }
 
-    .badge {
-      display: inline-block;
-      font-size: 0.7rem;
-      font-weight: 600;
-      letter-spacing: 0.05em;
+    .tag-type {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
-      padding: 0.2rem 0.6rem;
-      border-radius: 20px;
+      background: var(--color-tag-bg);
+      color: var(--color-tag-text);
+      border-radius: 4px;
+      padding: 3px 9px;
     }
 
-    .badge-type {
-      background-color: #e8f0fb;
-      color: #2563a8;
+    .tag-filetype {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--color-text-muted);
+      background: #f0f2f5;
+      border: 1px solid var(--color-border);
+      border-radius: 4px;
+      padding: 2px 8px;
     }
 
-    .badge-filetype {
-      background-color: #fff4e0;
-      color: #a05c00;
+    /* Card title row */
+    .card-title-row {
+      display: flex;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 10px;
     }
 
-    /* Artifact name */
-    .artifact-name {
+    .card-name {
       font-size: 1.05rem;
       font-weight: 700;
-      color: #1a3a5c;
+      color: var(--color-text);
       line-height: 1.3;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 0.6rem;
     }
 
-    .artifact-name a.primary-link {
-      color: #2563a8;
+    .card-name a {
+      color: var(--color-primary);
       text-decoration: none;
       border-bottom: 2px solid transparent;
       transition: border-color 0.15s ease, color 0.15s ease;
     }
 
-    .artifact-name a.primary-link:hover,
-    .artifact-name a.primary-link:focus {
-      color: #1a3a5c;
-      border-bottom-color: #f0a500;
+    .card-name a:hover,
+    .card-name a:focus {
+      color: var(--color-primary-dark);
+      border-bottom-color: var(--color-primary-dark);
       outline: none;
     }
 
+    .card-name a:focus-visible {
+      outline: 3px solid var(--color-primary);
+      outline-offset: 2px;
+      border-radius: 2px;
+    }
+
+    /* Source link */
     .source-link {
-      font-size: 0.72rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.75rem;
       font-weight: 600;
-      text-decoration: none;
-      color: #6b7e96;
-      background: #f0f3f7;
-      border: 1px solid #cdd5e0;
+      color: var(--color-accent);
+      background: var(--color-accent-light);
+      border: 1px solid #c8e6c9;
       border-radius: 4px;
-      padding: 0.15rem 0.5rem;
+      padding: 2px 8px;
+      text-decoration: none;
       white-space: nowrap;
       transition: background 0.15s ease, color 0.15s ease;
     }
 
     .source-link:hover,
     .source-link:focus {
-      background: #dce3ec;
-      color: #1a3a5c;
+      background: #c8e6c9;
+      color: #1b5e20;
       outline: none;
     }
 
+    .source-link:focus-visible {
+      outline: 3px solid var(--color-accent);
+      outline-offset: 2px;
+      border-radius: 4px;
+    }
+
+    .source-link::before {
+      content: '⬇';
+      font-size: 0.65rem;
+    }
+
     /* Description */
-    .artifact-description {
-      font-size: 0.88rem;
-      color: #4a5e72;
+    .card-description {
+      font-size: 0.9rem;
+      color: var(--color-text-muted);
       line-height: 1.65;
-      flex-grow: 1;
+      flex: 1;
     }
 
     /* ── Footer ── */
-    footer {
+    .site-footer {
+      background: var(--color-surface);
+      border-top: 1px solid var(--color-border);
       text-align: center;
-      padding: 2rem 1rem;
+      padding: 20px 24px;
       font-size: 0.8rem;
-      color: #8fa3b8;
-      border-top: 1px solid #dce3ec;
-      margin-top: 3rem;
-    }
-
-    /* ── Accessibility: Focus Ring ── */
-    a:focus-visible {
-      outline: 3px solid #f0a500;
-      outline-offset: 2px;
-      border-radius: 3px;
+      color: var(--color-text-muted);
     }
 
     /* ── Responsive ── */
     @media (max-width: 500px) {
-      header {
-        padding: 2rem 1.25rem 1.75rem;
+      .site-header {
+        padding: 36px 16px 32px;
       }
-
-      .artifact-grid {
-        grid-template-columns: 1fr;
+      .container {
+        padding: 28px 16px 48px;
+      }
+      .card {
+        padding: 18px;
       }
     }
   </style>
@@ -224,46 +300,69 @@
 <div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ COP3530 - Data Structures</a></div>
 <div style="border:1px solid #c9d4e3;background:#f5f8fc;border-radius:8px;padding:10px 16px;margin:0 0 18px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;font-family:'Segoe UI',Arial,sans-serif"><strong style="color:#1a3c6e">Module outline:</strong><a href="topics-outcomes.html#topics" style="color:#1a3c6e;font-weight:600;text-decoration:none">📋 Module Topics</a><a href="topics-outcomes.html#outcomes" style="color:#137333;font-weight:600;text-decoration:none">🎯 Student Learning Outcomes</a></div>
 
-  <header>
-    <div class="header-inner">
-      <span class="course-label">COP3530 &mdash; Data Structures</span>
-      <h1>Recursion: Concepts and Implementation</h1>
-      <p>
-        Explore the principles of recursion from the ground up — understanding how functions call themselves,
-        how the call stack manages execution, and how to construct correct base and recursive cases.
-        This module covers foundational recursive patterns and classic implementations to build confident,
-        practical problem-solving skills.
-      </p>
-    </div>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- ── Site Header ── -->
+  <header class="site-header" role="banner">
+    <p class="course-label">COP3530 &mdash; Data Structures</p>
+    <h1>Recursion: Concepts and Implementation</h1>
+    <p class="intro">
+      This module explores recursion as a fundamental programming paradigm — covering
+      how recursive functions are structured, how the call stack manages execution,
+      and how classic recursive algorithms such as factorial and Fibonacci are designed
+      and analysed. Use the artifacts below to navigate the module content.
+    </p>
   </header>
 
-  <main>
-    <h2 class="section-heading">Module Artifacts</h2>
+  <!-- ── Main Content ── -->
+  <main id="main-content">
+    <div class="container">
 
-    <ul class="artifact-grid" role="list">
+      <div class="section-heading" aria-label="Module artifacts">
+        <h2>Module Artifacts</h2>
+        <span class="count-badge" aria-label="1 artifact">1</span>
+      </div>
 
-        <li class="artifact-card">
-          <div class="badge-row">
-            <span class="badge badge-type">Module Topics</span>
-            <span class="badge badge-filetype">.json</span>
+      <ul class="card-grid" aria-label="List of module artifacts">
+
+        <!-- ── Artifact: Module Topics ── -->
+        <li class="card">
+          <div class="card-meta-top">
+            <span class="tag-type">Module Topics</span>
+            <span class="tag-filetype" title="File type">.json</span>
           </div>
-          <div class="artifact-name">
-              <a class="primary-link" href="content/module_topics.html">Module Topics</a>
-              <a class="source-link" href="source/hierarchy.json" aria-label="Source file for Module Topics">source file</a>
+
+          <div class="card-title-row">
+            <span class="card-name">
+              <a href="content/module_topics.html">Module Topics</a>
+            </span>
+            <a
+              href="source/hierarchy.json"
+              class="source-link"
+              title="Download or view the raw source file"
+              aria-label="Source file for Module Topics"
+            >source file</a>
           </div>
-          <p class="artifact-description">
-            A structured outline of the module&#x27;s core topics — including the definition of recursion, base and recursive cases, call stack mechanics, and classic implementations like factorial and Fibonacci — that serves as a navigational guide for learners and instructors to understand the scope and sequence of the module&#x27;s content.
+
+          <p class="card-description">
+            A structured outline of the module's core topics — including the definition
+            of recursion, base and recursive cases, call stack mechanics, and classic
+            implementations like factorial and Fibonacci — that serves as a navigational
+            guide for learners and instructors to understand the scope and sequence of
+            the module's content.
           </p>
         </li>
 
-    </ul>
+      </ul>
+    </div>
   </main>
 
-  <footer>
-    <p>COP3530 &mdash; Data Structures &bull; Recursion: Concepts and Implementation</p>
+  <!-- ── Footer ── -->
+  <footer class="site-footer" role="contentinfo">
+    <p>COP3530 &mdash; Data Structures &nbsp;|&nbsp; Recursion: Concepts and Implementation</p>
   </footer>
 
 
 <footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
-<section class="presemaker-extras" style="max-width:1000px;margin:2rem auto;padding:0 1rem;"><h2>Topics &amp; Learning Outcomes</h2><p><a href="topics-outcomes.html">View Topics &amp; Learning Outcomes</a></p></section></body>
+<section class="presemaker-extras" style="max-width:1000px;margin:2rem auto;padding:0 1rem;"><h2>Topics &amp; Learning Outcomes</h2><p><a href="topics-outcomes.html">View Topics &amp; Learning Outcomes</a></p></section><script src="embed-inject.js" defer></script></body>
 </html>

@@ -12,19 +12,24 @@
       padding: 0;
     }
 
+    html {
+      font-size: 16px;
+      scroll-behavior: smooth;
+    }
+
     body {
-      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      font-family: 'Segoe UI', system-ui, -apple-system, Arial, sans-serif;
       background-color: #f4f6f9;
-      color: #2c3e50;
-      line-height: 1.6;
+      color: #1e2533;
+      line-height: 1.65;
       min-height: 100vh;
     }
 
     /* ── Header / Hero ── */
     header {
-      background: linear-gradient(135deg, #1a3a5c 0%, #2e6da4 100%);
+      background: linear-gradient(135deg, #1a3a5c 0%, #2563a8 100%);
       color: #ffffff;
-      padding: 3rem 2rem 2.5rem;
+      padding: 3rem 1.5rem 2.5rem;
       text-align: center;
     }
 
@@ -34,10 +39,10 @@
       font-weight: 600;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      background-color: rgba(255, 255, 255, 0.18);
-      border: 1px solid rgba(255, 255, 255, 0.35);
-      border-radius: 20px;
-      padding: 0.25rem 0.85rem;
+      background-color: rgba(255, 255, 255, 0.15);
+      color: #cfe0f5;
+      border-radius: 999px;
+      padding: 0.25rem 0.9rem;
       margin-bottom: 1rem;
     }
 
@@ -45,33 +50,35 @@
       font-size: clamp(1.6rem, 4vw, 2.6rem);
       font-weight: 700;
       letter-spacing: -0.01em;
-      margin-bottom: 1rem;
       line-height: 1.2;
+      margin-bottom: 1rem;
     }
 
-    header p {
+    header p.intro {
       max-width: 680px;
       margin: 0 auto;
       font-size: 1rem;
-      color: rgba(255, 255, 255, 0.88);
+      color: #d6e8f7;
+      line-height: 1.7;
     }
 
     /* ── Main Content ── */
     main {
       max-width: 960px;
-      margin: 0 auto;
-      padding: 2.5rem 1.5rem 4rem;
+      margin: 2.5rem auto;
+      padding: 0 1.25rem 3rem;
     }
 
-    .section-label {
-      font-size: 0.75rem;
+    /* ── Section Heading ── */
+    .section-heading {
+      font-size: 1.1rem;
       font-weight: 700;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.06em;
       text-transform: uppercase;
-      color: #6b7c93;
-      margin-bottom: 1.2rem;
+      color: #4a5568;
+      margin-bottom: 1.25rem;
       padding-bottom: 0.5rem;
-      border-bottom: 2px solid #dde3eb;
+      border-bottom: 2px solid #dce3ed;
     }
 
     /* ── Card Grid ── */
@@ -81,20 +88,21 @@
       gap: 1.25rem;
     }
 
+    /* ── Artifact Card ── */
     .card {
       background: #ffffff;
-      border: 1px solid #dde3eb;
+      border: 1px solid #dce3ed;
       border-radius: 10px;
-      padding: 1.4rem 1.5rem;
+      padding: 1.4rem 1.5rem 1.3rem;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
       display: flex;
       flex-direction: column;
       gap: 0.65rem;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
       transition: box-shadow 0.2s ease, transform 0.2s ease;
     }
 
     .card:hover {
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.10);
       transform: translateY(-2px);
     }
 
@@ -102,127 +110,131 @@
     .card-header {
       display: flex;
       align-items: flex-start;
-      gap: 0.6rem;
+      justify-content: space-between;
+      gap: 0.5rem;
       flex-wrap: wrap;
     }
 
-    .card-name {
-      font-size: 1.05rem;
+    .card-title {
+      font-size: 1rem;
       font-weight: 700;
       color: #1a3a5c;
-      flex: 1 1 auto;
+      line-height: 1.3;
     }
 
-    .card-name a {
-      color: #1a3a5c;
+    .card-title a {
+      color: #2563a8;
       text-decoration: none;
-      border-bottom: 2px solid #2e6da4;
-      padding-bottom: 1px;
-      transition: color 0.15s ease, border-color 0.15s ease;
+      border-bottom: 2px solid transparent;
+      transition: border-color 0.15s ease, color 0.15s ease;
     }
 
-    .card-name a:hover,
-    .card-name a:focus {
-      color: #2e6da4;
-      border-color: #5b9fd4;
+    .card-title a:hover,
+    .card-title a:focus {
+      color: #1a3a5c;
+      border-bottom-color: #2563a8;
       outline: none;
     }
 
-    /* ── Source File Link ── */
+    .card-title a:focus-visible {
+      outline: 2px solid #2563a8;
+      outline-offset: 2px;
+      border-radius: 2px;
+    }
+
+    /* ── Source Link ── */
     .source-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.28rem;
       font-size: 0.72rem;
       font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
       color: #5a7fa8;
       text-decoration: none;
-      background-color: #eaf2fb;
-      border: 1px solid #c0d9ef;
-      border-radius: 4px;
-      padding: 0.2rem 0.5rem;
+      background-color: #eaf1fa;
+      border: 1px solid #c5d8ef;
+      border-radius: 999px;
+      padding: 0.18rem 0.6rem;
       white-space: nowrap;
-      align-self: flex-start;
-      margin-top: 0.15rem;
       transition: background-color 0.15s ease, color 0.15s ease;
+      align-self: flex-start;
+      margin-top: 0.1rem;
     }
 
     .source-link:hover,
     .source-link:focus {
-      background-color: #d0e7f8;
-      color: #1a5a8f;
+      background-color: #2563a8;
+      color: #ffffff;
+      border-color: #2563a8;
       outline: none;
     }
 
-    .source-link svg {
-      flex-shrink: 0;
+    .source-link:focus-visible {
+      outline: 2px solid #2563a8;
+      outline-offset: 2px;
     }
 
-    /* ── Badges ── */
-    .badge-row {
+    /* ── Badges Row ── */
+    .card-badges {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.4rem;
+      gap: 0.45rem;
+      align-items: center;
     }
 
     .badge {
-      font-size: 0.7rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      font-size: 0.72rem;
       font-weight: 600;
-      letter-spacing: 0.04em;
       border-radius: 4px;
       padding: 0.18rem 0.55rem;
-      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      white-space: nowrap;
     }
 
     .badge-type {
-      background-color: #eef0f5;
-      color: #4a5568;
-      border: 1px solid #d0d5e0;
+      background-color: #e8f0fb;
+      color: #2255a4;
+      border: 1px solid #c5d5f0;
     }
 
     .badge-filetype {
-      background-color: #fff4e5;
-      color: #7d5000;
-      border: 1px solid #f5d9a0;
+      background-color: #e9f7ef;
+      color: #1a6e3c;
+      border: 1px solid #b5dfc8;
+      font-family: 'Courier New', Courier, monospace;
     }
 
     /* ── Description ── */
     .card-description {
-      font-size: 0.88rem;
+      font-size: 0.9rem;
       color: #4a5568;
       line-height: 1.6;
-      flex: 1;
     }
 
     /* ── Footer ── */
     footer {
       text-align: center;
-      padding: 1.5rem;
+      padding: 1.5rem 1rem;
       font-size: 0.8rem;
-      color: #8a97a8;
-      border-top: 1px solid #dde3eb;
-      background-color: #f4f6f9;
-    }
-
-    /* ── Focus Visible Accessibility ── */
-    a:focus-visible {
-      outline: 3px solid #2e6da4;
-      outline-offset: 2px;
-      border-radius: 3px;
+      color: #8a97aa;
+      border-top: 1px solid #dce3ed;
+      background-color: #ffffff;
     }
 
     /* ── Responsive ── */
     @media (max-width: 480px) {
       header {
-        padding: 2rem 1.25rem 1.75rem;
-      }
-
-      main {
-        padding: 2rem 1rem 3rem;
+        padding: 2rem 1rem 1.75rem;
       }
 
       .card {
-        padding: 1.2rem 1.25rem;
+        padding: 1.15rem 1.15rem 1rem;
+      }
+
+      .card-header {
+        flex-direction: column;
       }
     }
   </style>
@@ -231,76 +243,71 @@
 <div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ COP3530 - Data Structures</a></div>
 <div style="border:1px solid #c9d4e3;background:#f5f8fc;border-radius:8px;padding:10px 16px;margin:0 0 18px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;font-family:'Segoe UI',Arial,sans-serif"><strong style="color:#1a3c6e">Module outline:</strong><a href="topics-outcomes.html#topics" style="color:#1a3c6e;font-weight:600;text-decoration:none">📋 Module Topics</a><a href="topics-outcomes.html#outcomes" style="color:#137333;font-weight:600;text-decoration:none">🎯 Student Learning Outcomes</a></div>
 
+  <!-- ═══════════════════════════════════════════
+       HEADER
+  ═══════════════════════════════════════════ -->
   <header>
-    <div class="course-label">COP3530 &mdash; Data Structures</div>
+    <div class="course-label">COP3530 — Data Structures</div>
     <h1>Graphs: Structure, Representation, and Traversal</h1>
-    <p>
-      Explore the foundational concepts of graph data structures, from vertices and
-      edges to adjacency representations and traversal algorithms. Use the resources
-      below to guide your study through this module.
+    <p class="intro">
+      This module explores the fundamental concepts of graph data structures,
+      covering vertices and edges, directed and undirected graphs, adjacency
+      matrix and adjacency list representations, and classic traversal
+      algorithms. Use the artifacts below to navigate the module's learning
+      materials.
     </p>
   </header>
 
+  <!-- ═══════════════════════════════════════════
+       MAIN
+  ═══════════════════════════════════════════ -->
   <main>
-    <p class="section-label">Module Artifacts</p>
+    <h2 class="section-heading">Module Artifacts</h2>
 
     <div class="card-grid">
 
       <!-- ── Artifact: Module Topics ── -->
-      <div class="card">
+      <article class="card">
         <div class="card-header">
-          <span class="card-name">
+          <div class="card-title">
+            <!-- viewHref is non-empty → link -->
             <a href="content/module_topics.html">Module Topics</a>
-          </span>
+          </div>
+          <!-- sourceHref is non-empty → secondary link -->
           <a
             class="source-link"
             href="source/hierarchy.json"
             title="View raw source file"
-          >
-            <!-- small document icon -->
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="11"
-              height="11"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              aria-hidden="true"
-            >
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-              <polyline points="14 2 14 8 20 8"/>
-              <line x1="9" y1="13" x2="15" y2="13"/>
-              <line x1="9" y1="17" x2="13" y2="17"/>
-            </svg>
-            source file
-          </a>
+            aria-label="Source file for Module Topics"
+          >source file</a>
         </div>
 
-        <div class="badge-row">
+        <div class="card-badges">
           <span class="badge badge-type">Module Topics</span>
           <span class="badge badge-filetype">.json</span>
         </div>
 
         <p class="card-description">
-          This module outline covers the core concepts of graph data structures—including
-          definitions of vertices and edges, directed vs. undirected graphs, adjacency
-          matrix and adjacency list representations, and graph traversal algorithms—serving
-          as a navigational guide for learners and instructors to see the full scope of
-          topics in the module.
+          This module outline covers the core concepts of graph data
+          structures—including definitions of vertices and edges, directed
+          vs. undirected graphs, adjacency matrix and adjacency list
+          representations, and graph traversal algorithms—serving as a
+          navigational guide for learners and instructors to see the full
+          scope of topics in the module.
         </p>
-      </div>
+      </article>
 
-    </div>
+    </div><!-- /.card-grid -->
   </main>
 
+  <!-- ═══════════════════════════════════════════
+       FOOTER
+  ═══════════════════════════════════════════ -->
   <footer>
-    COP3530 &mdash; Data Structures &nbsp;&bull;&nbsp; Graphs: Structure, Representation, and Traversal
+    <p>COP3530 — Data Structures &nbsp;|&nbsp; Graphs: Structure, Representation, and Traversal</p>
   </footer>
 
 
 <footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
-<section class="presemaker-extras" style="max-width:1000px;margin:2rem auto;padding:0 1rem;"><h2>Topics &amp; Learning Outcomes</h2><p><a href="topics-outcomes.html">View Topics &amp; Learning Outcomes</a></p></section></body>
+<section class="presemaker-extras" style="max-width:1000px;margin:2rem auto;padding:0 1rem;"><h2>Topics &amp; Learning Outcomes</h2><p><a href="topics-outcomes.html">View Topics &amp; Learning Outcomes</a></p></section><script src="embed-inject.js" defer></script></body>
 </html>
