@@ -1,51 +1,35 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Queue: Structure and Use Cases – COP3530</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Queue: Structure and Use Cases — COP3530</title>
   <style>
+    /* ── Reset & Base ── */
     *, *::before, *::after {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
 
-    :root {
-      --color-bg: #f4f6f9;
-      --color-surface: #ffffff;
-      --color-primary: #1a3a5c;
-      --color-primary-light: #2563a8;
-      --color-accent: #0e7490;
-      --color-accent-hover: #0c5f78;
-      --color-text: #1e2a38;
-      --color-text-muted: #4a5568;
-      --color-border: #d1dbe8;
-      --color-tag-bg: #e8f0fb;
-      --color-tag-text: #1a3a5c;
-      --color-source-bg: #f0fdf4;
-      --color-source-text: #166534;
-      --color-source-border: #bbf7d0;
-      --radius: 10px;
-      --shadow: 0 2px 8px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.05);
-      --shadow-hover: 0 6px 20px rgba(0,0,0,0.12), 0 2px 6px rgba(0,0,0,0.07);
-      --font-sans: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
-      --font-mono: 'Cascadia Code', 'Fira Mono', 'Courier New', monospace;
+    html {
+      font-size: 16px;
     }
 
     body {
-      font-family: var(--font-sans);
-      background-color: var(--color-bg);
-      color: var(--color-text);
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background-color: #f4f6f9;
+      color: #1e2533;
       line-height: 1.6;
       min-height: 100vh;
     }
 
-    /* ── Header / Hero ─────────────────────────────────────────── */
+    /* ── Header / Hero ── */
     header {
-      background: linear-gradient(135deg, var(--color-primary) 0%, #1e4d7b 60%, #1a6391 100%);
+      background: linear-gradient(135deg, #1a3a5c 0%, #2563a8 100%);
       color: #ffffff;
-      padding: 3rem 2rem 2.5rem;
+      padding: 2.75rem 2rem 2.25rem;
+      border-bottom: 4px solid #f0a500;
     }
 
     .header-inner {
@@ -59,35 +43,33 @@
       font-weight: 600;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      background: rgba(255,255,255,0.15);
-      border: 1px solid rgba(255,255,255,0.25);
-      border-radius: 4px;
+      background-color: rgba(255, 255, 255, 0.15);
+      color: #d6e8ff;
       padding: 0.25rem 0.65rem;
-      margin-bottom: 1rem;
-      color: #cde3f8;
+      border-radius: 3px;
+      margin-bottom: 0.75rem;
     }
 
     header h1 {
-      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-size: clamp(1.55rem, 4vw, 2.25rem);
       font-weight: 700;
-      letter-spacing: -0.02em;
-      line-height: 1.2;
-      margin-bottom: 1rem;
+      line-height: 1.25;
+      margin-bottom: 0.85rem;
       color: #ffffff;
     }
 
     header p {
-      font-size: 1rem;
+      font-size: 0.98rem;
       max-width: 680px;
-      color: #cde3f8;
+      color: #c8ddf5;
       line-height: 1.7;
     }
 
-    /* ── Main Content ──────────────────────────────────────────── */
+    /* ── Main Content ── */
     main {
       max-width: 960px;
-      margin: 2.5rem auto;
-      padding: 0 1.5rem 4rem;
+      margin: 2.5rem auto 3.5rem;
+      padding: 0 1.25rem;
     }
 
     .section-heading {
@@ -95,164 +77,151 @@
       font-weight: 700;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: var(--color-text-muted);
-      margin-bottom: 1.1rem;
+      color: #5a6a82;
+      margin-bottom: 1.25rem;
       padding-bottom: 0.5rem;
-      border-bottom: 1px solid var(--color-border);
+      border-bottom: 1px solid #dde3ec;
     }
 
-    /* ── Artifact Grid ─────────────────────────────────────────── */
-    .artifact-grid {
+    /* ── Card Grid ── */
+    .card-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(min(100%, 420px), 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
       gap: 1.25rem;
-      list-style: none;
     }
 
-    .artifact-card {
-      background: var(--color-surface);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 1.4rem 1.5rem 1.3rem;
+    .card {
+      background: #ffffff;
+      border: 1px solid #dde3ec;
+      border-radius: 8px;
+      padding: 1.35rem 1.4rem 1.3rem;
       display: flex;
       flex-direction: column;
-      gap: 0.65rem;
-      transition: box-shadow 0.2s ease, transform 0.2s ease;
+      gap: 0.55rem;
+      transition: box-shadow 0.18s ease, transform 0.18s ease;
     }
 
-    .artifact-card:hover {
-      box-shadow: var(--shadow-hover);
+    .card:hover {
+      box-shadow: 0 6px 22px rgba(37, 99, 168, 0.12);
       transform: translateY(-2px);
     }
 
-    /* Card top row */
-    .card-top {
+    /* ── Card Meta row ── */
+    .card-meta {
       display: flex;
+      align-items: center;
+      gap: 0.45rem;
       flex-wrap: wrap;
-      align-items: baseline;
-      gap: 0.5rem 0.75rem;
     }
 
-    .artifact-name {
-      font-size: 1.05rem;
+    .badge {
+      font-size: 0.68rem;
       font-weight: 600;
-      color: var(--color-text);
-      flex-shrink: 0;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.5rem;
+      border-radius: 3px;
+      white-space: nowrap;
     }
 
-    .artifact-name a {
-      color: var(--color-primary-light);
+    .badge-type {
+      background-color: #e8f0fb;
+      color: #2563a8;
+    }
+
+    .badge-filetype {
+      background-color: #f0f3f8;
+      color: #5a6a82;
+      border: 1px solid #dde3ec;
+    }
+
+    /* ── Card Title row ── */
+    .card-title-row {
+      display: flex;
+      align-items: baseline;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+    }
+
+    .card-name {
+      font-size: 1.0rem;
+      font-weight: 600;
+      color: #1e2533;
+      line-height: 1.35;
+    }
+
+    .card-name a {
+      color: #1a52a0;
       text-decoration: none;
-      border-bottom: 2px solid transparent;
+      border-bottom: 1px solid transparent;
       transition: border-color 0.15s ease, color 0.15s ease;
     }
 
-    .artifact-name a:hover,
-    .artifact-name a:focus {
-      color: var(--color-accent-hover);
-      border-bottom-color: var(--color-accent);
-      outline: none;
+    .card-name a:hover {
+      color: #0d3878;
+      border-bottom-color: #0d3878;
     }
 
-    .artifact-name a:focus-visible {
-      outline: 3px solid var(--color-accent);
+    .card-name a:focus-visible {
+      outline: 2px solid #2563a8;
       outline-offset: 2px;
       border-radius: 2px;
     }
 
     .source-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.3rem;
       font-size: 0.72rem;
-      font-weight: 600;
+      font-weight: 500;
+      color: #6b7d96;
       text-decoration: none;
-      color: var(--color-source-text);
-      background: var(--color-source-bg);
-      border: 1px solid var(--color-source-border);
-      border-radius: 4px;
-      padding: 0.18rem 0.55rem;
-      transition: background 0.15s ease, color 0.15s ease;
       white-space: nowrap;
+      border: 1px solid #c8d3e4;
+      border-radius: 3px;
+      padding: 0.15rem 0.45rem;
+      transition: background-color 0.15s ease, color 0.15s ease;
+      flex-shrink: 0;
     }
 
-    .source-link::before {
-      content: '⬇';
-      font-size: 0.65rem;
-    }
-
-    .source-link:hover,
-    .source-link:focus {
-      background: #dcfce7;
-      color: #14532d;
-      outline: none;
+    .source-link:hover {
+      background-color: #e8f0fb;
+      color: #1a52a0;
+      border-color: #9ab4d8;
     }
 
     .source-link:focus-visible {
-      outline: 3px solid #22c55e;
+      outline: 2px solid #2563a8;
       outline-offset: 2px;
-      border-radius: 3px;
     }
 
-    /* Tags row */
-    .card-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.45rem;
-    }
-
-    .tag {
-      font-size: 0.69rem;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      padding: 0.2rem 0.6rem;
-      border-radius: 4px;
-      background: var(--color-tag-bg);
-      color: var(--color-tag-text);
-      border: 1px solid #c1d3ec;
-    }
-
-    .tag--filetype {
-      background: #f1f5f9;
-      color: #475569;
-      border-color: #cbd5e1;
-      font-family: var(--font-mono);
-      text-transform: lowercase;
-    }
-
-    /* Description */
-    .artifact-description {
-      font-size: 0.9rem;
-      color: var(--color-text-muted);
+    /* ── Card Description ── */
+    .card-description {
+      font-size: 0.875rem;
+      color: #4a5568;
       line-height: 1.65;
-      flex-grow: 1;
+      flex: 1;
     }
 
-    /* ── Footer ────────────────────────────────────────────────── */
+    /* ── Footer ── */
     footer {
       text-align: center;
       padding: 1.5rem 1rem;
       font-size: 0.78rem;
-      color: #94a3b8;
-      border-top: 1px solid var(--color-border);
+      color: #8a97ab;
+      border-top: 1px solid #dde3ec;
+      background-color: #f4f6f9;
     }
 
-    /* ── Responsive tweaks ─────────────────────────────────────── */
-    @media (max-width: 600px) {
+    /* ── Responsive tweaks ── */
+    @media (max-width: 520px) {
       header {
-        padding: 2rem 1.25rem 2rem;
+        padding: 2rem 1.25rem 1.75rem;
       }
 
-      main {
-        margin-top: 1.75rem;
-        padding-left: 1rem;
-        padding-right: 1rem;
+      .card-grid {
+        grid-template-columns: 1fr;
       }
 
-      .artifact-card {
-        padding: 1.15rem 1.15rem 1.1rem;
+      .card {
+        padding: 1.15rem 1.2rem;
       }
     }
   </style>
@@ -266,40 +235,167 @@
       <span class="course-label">COP3530 &mdash; Data Structures</span>
       <h1>The Queue: Structure and Use Cases</h1>
       <p>
-        Explore the Queue abstract data type — its foundational FIFO principle,
-        essential operations, and real-world use cases. This module covers
-        conceptual underpinnings as well as practical implementation strategies
-        using both array-based and linked list-based approaches.
+        This module introduces the queue data structure, its defining First-In, First-Out (FIFO)
+        principle, and its fundamental operations. Learners will explore both array-based and
+        linked-list-based implementations, compare queues with stacks, and discover how queues
+        power real-world computing systems such as process scheduling, network buffering, and
+        graph traversal.
       </p>
     </div>
   </header>
 
   <main>
-    <h2 class="section-heading">Module Artifacts</h2>
+    <p class="section-heading">Module Artifacts &mdash; 7 items</p>
 
-    <ul class="artifact-grid">
+    <div class="card-grid">
 
-        <li class="artifact-card">
-          <div class="card-top">
-            <span class="artifact-name">
-                <a href="content/module_topics.html">Module Topics</a>
-                <a
-                  href="source/hierarchy.json"
-                  class="source-link"
-                  aria-label="Source file for Module Topics"
-                >source file</a>
-            </span>
-          </div>
-          <div class="card-tags">
-            <span class="tag">Module Topics</span>
-            <span class="tag tag--filetype">.json</span>
-          </div>
-          <p class="artifact-description">
-            Outlines the module's learning topics covering queue fundamentals (FIFO principle, core terminology), standard operations (enqueue, dequeue, peek), and implementation approaches (array-based and linked list-based), serving as a navigational guide for learners and instructors to understand the scope and sequence of the module.
-          </p>
-        </li>
+      <!-- 1. Module Topics -->
+      <article class="card">
+        <div class="card-meta">
+          <span class="badge badge-type">Module Topics</span>
+          <span class="badge badge-filetype">.json</span>
+        </div>
+        <div class="card-title-row">
+          <span class="card-name">
+            <a href="content/module_topics.html">Module Topics</a>
+          </span>
+          <a class="source-link" href="source/hierarchy.json">source file</a>
+        </div>
+        <p class="card-description">
+          Outlines the module's learning topics covering queue fundamentals (FIFO principle,
+          core terminology), standard operations (enqueue, dequeue, peek), and implementation
+          approaches (array-based and linked list-based), serving as a navigational guide for
+          learners and instructors to understand the scope and sequence of the module.
+        </p>
+      </article>
 
-    </ul>
+      <!-- 2. Queues vs. Stacks (Text Content) -->
+      <article class="card">
+        <div class="card-meta">
+          <span class="badge badge-type">Text Content</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <span class="card-name">
+            <a href="content/_interactive.html">Queues vs. Stacks: A Comparison</a>
+          </span>
+        </div>
+        <p class="card-description">
+          This reading contrasts queues and stacks by examining their structural similarities
+          and the key difference in ordering (FIFO vs. LIFO), helping learners understand when
+          to choose one over the other.
+        </p>
+      </article>
+
+      <!-- 3. Introduction to the Queue Data Structure -->
+      <article class="card">
+        <div class="card-meta">
+          <span class="badge badge-type">Topic Detail</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <span class="card-name">
+            <a href="content/The_Queue_Structure_interactive_topics_t1.html">Introduction to the Queue Data Structure</a>
+          </span>
+        </div>
+        <p class="card-description">
+          This introductory reading defines the queue data structure, explains its core concept
+          of ordered insertion and removal, and establishes the foundational vocabulary learners
+          need before studying queue operations and implementations.
+        </p>
+      </article>
+
+      <!-- 4. The FIFO Principle -->
+      <article class="card">
+        <div class="card-meta">
+          <span class="badge badge-type">Topic Detail</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <span class="card-name">
+            <a href="content/The_Queue_Structure_interactive_topics_t2.html">The FIFO Principle</a>
+          </span>
+        </div>
+        <p class="card-description">
+          This reading explains the First-In, First-Out (FIFO) principle as the defining rule
+          of queues, clarifying why it distinguishes queues from other data structures and how
+          it governs element ordering.
+        </p>
+      </article>
+
+      <!-- 5. Queue Operations -->
+      <article class="card">
+        <div class="card-meta">
+          <span class="badge badge-type">Topic Detail</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <span class="card-name">
+            <a href="content/The_Queue_Structure_interactive_topics_t3.html">Queue Operations</a>
+          </span>
+        </div>
+        <p class="card-description">
+          This reading covers the four fundamental queue operations—enqueue, dequeue, peek, and
+          isEmpty—describing what each does and how they collectively enforce FIFO behavior,
+          serving as a reference for learners before or during implementation.
+        </p>
+      </article>
+
+      <!-- 6. Implementing a Queue -->
+      <article class="card">
+        <div class="card-meta">
+          <span class="badge badge-type">Topic Detail</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <span class="card-name">
+            <a href="content/The_Queue_Structure_interactive_topics_t4.html">Implementing a Queue</a>
+          </span>
+        </div>
+        <p class="card-description">
+          This reading walks through how to implement a queue using concrete approaches (such
+          as arrays or linked lists), covering the trade-offs of each method so learners can
+          build a working queue in code.
+        </p>
+      </article>
+
+      <!-- 7. Real-World Applications of Queues -->
+      <article class="card">
+        <div class="card-meta">
+          <span class="badge badge-type">Topic Detail</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <span class="card-name">
+            <a href="content/The_Queue_Structure_interactive_topics_t5.html">Real-World Applications of Queues</a>
+          </span>
+        </div>
+        <p class="card-description">
+          This reading surveys practical computing scenarios where queues are applied—such as
+          OS process scheduling, network buffering, print job management, and breadth-first
+          traversal—helping learners connect the abstract FIFO concept to real systems.
+        </p>
+      </article>
+
+      <!-- 8. Queues vs. Stacks (Topic Detail) -->
+      <article class="card">
+        <div class="card-meta">
+          <span class="badge badge-type">Topic Detail</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <span class="card-name">
+            <a href="content/The_Queue_Structure_interactive_topics_t6.html">Queues vs. Stacks: A Comparison</a>
+          </span>
+        </div>
+        <p class="card-description">
+          This reading contrasts queues and stacks by examining their structural similarities
+          and the key difference in ordering (FIFO vs. LIFO), helping learners understand when
+          to choose one over the other.
+        </p>
+      </article>
+
+    </div>
   </main>
 
   <footer>

@@ -1,0 +1,72 @@
+﻿[
+  {
+    "title": "2 - Lists and Arrays: Structure and Introduction to Big O Notation \u2014 Topics \u0026 Learning Outcomes",
+    "href": "topics-outcomes.html",
+    "type": "Page"
+  },
+  {
+    "title": "2 - Lists and Arrays: Structure and Introduction to Big O Notation \u2014 Module Topics",
+    "href": "topics.html",
+    "type": "Page"
+  },
+  {
+    "title": "Introduction to Lists and Arrays",
+    "href": "content/Lists_and_Arrays_interactive_topics_t1.html",
+    "type": "Content"
+  },
+  {
+    "title": "Array Structure and Memory Layout",
+    "href": "content/Lists_and_Arrays_interactive_topics_t2.html",
+    "type": "Content"
+  },
+  {
+    "title": "List Structure and Dynamic Behavior",
+    "href": "content/Lists_and_Arrays_interactive_topics_t3.html",
+    "type": "Content"
+  },
+  {
+    "title": "Core Data Operations on Lists and Arrays",
+    "href": "content/Lists_and_Arrays_interactive_topics_t4.html",
+    "type": "Content"
+  },
+  {
+    "title": "Introduction to Computational Complexity",
+    "href": "content/Lists_and_Arrays_interactive_topics_t5.html",
+    "type": "Content"
+  },
+  {
+    "title": "Big O Notation Fundamentals",
+    "href": "content/Lists_and_Arrays_interactive_topics_t6.html",
+    "type": "Content"
+  },
+  {
+    "title": "Applying Big O to List and Array Operations",
+    "href": "content/Lists_and_Arrays_interactive_topics_t7.html",
+    "type": "Content"
+  },
+  {
+    "title": "2 - Lists and Arrays: Structure and Introduction to Big O Notation \u2014 Module Topics",
+    "href": "content/module_topics.html",
+    "type": "Content"
+  },
+  {
+    "title": "Applying Big O to List and Array Operations",
+    "href": "content/_interactive.html",
+    "type": "Content"
+  },
+  {
+    "title": "Drag-and-Drop Match: Lists and Arrays",
+    "href": "interactive/drag-and-drop-match.html",
+    "type": "Interactive"
+  },
+  {
+    "title": "Big O Notation \u2013 List \u0026 Array Operations",
+    "href": "interactive/drag-and-drop-match_20260701152850.html",
+    "type": "Interactive"
+  },
+  {
+    "title": "Interactive Activities \u2014 2 - Lists and Arrays: Structure and Introduction to Big O Notation",
+    "href": "interactive/index.html",
+    "type": "Interactive"
+  }
+]

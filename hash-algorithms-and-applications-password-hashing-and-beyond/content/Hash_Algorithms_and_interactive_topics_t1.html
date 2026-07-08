@@ -1,0 +1,232 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Introduction to Hashing Algorithms</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+  <style>
+    body { padding-left: 1.1rem; padding-right: 1.1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid rgba(128,128,128,.45); padding: .45em .7em; text-align: left; vertical-align: top; }
+    thead th { background: rgba(128,128,128,.18); font-weight: 600; }
+    tbody tr:nth-child(even) { background: rgba(128,128,128,.08); }
+    a.topic-detail-link { text-decoration: underline; }
+  </style>
+  <style>
+    summary.slide-header { list-style: none; }
+    summary.slide-header::-webkit-details-marker { display: none; }
+    details.slide-card[open] > .slide-body { display: block; }
+    details.slide-card[open] .chevron { transform: rotate(90deg); }
+    @media print { details.slide-card > .slide-body { display: block !important; } .chevron { display: none; } }
+  </style>
+</head><body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Hash Algorithms and Applications: Password Hashing and Beyond</a></div>
+  <header>
+    <h1>Introduction to Hashing Algorithms</h1>
+  </header><main>
+    <details class="slide-card" open>
+      <summary class="slide-header"><span class="slide-num">1</span><h2>Introduction to Hashing Algorithms</h2><span class="chevron">▶</span></summary>
+      <div class="slide-body">
+        <p>Hashing algorithms sit at the heart of modern computing security, data integrity, and authentication systems. At their most fundamental level, a hashing algorithm is a mathematical function that takes some input — whether a single letter, a lengthy document, or an entire software package — and transforms it into a compact, fixed-length string of characters. That output string goes by several names: a <strong>hash value</strong>, a <strong>digest</strong>, or a <strong>fingerprint</strong>. Understanding what makes this transformation special, and why it is so widely relied upon, requires exploring the properties that define a well-designed hash function and the ways those properties translate into real-world security guarantees.</p>
+
+<p>To appreciate what a hash function does, consider a simple analogy. Imagine you have a machine into which you can feed any document — a single Post-it note or the complete works of Shakespeare — and the machine always prints out a receipt exactly 64 characters long. The receipt looks like random gibberish, but it is completely determined by what you fed in. Feed in exactly the same document again, and you get exactly the same receipt. Feed in a document with even one comma changed, and the receipt looks entirely different. That machine is, conceptually, a hash function.</p>
+
+<p>A more concrete illustration uses the SHA-256 algorithm. Hashing the word <em>hello</em> produces:</p>
+
+<pre><code>Input:  hello
+Output: 2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824</code></pre>
+
+<p>Now change just one character — lowercase the <em>H</em> in a capitalized version:</p>
+
+<pre><code>Input:  Hello
+Output: 185f8db32921bd46d35f6f7157b16a674f0cef9a16245f57b01b5cf4bc40c7b4</code></pre>
+
+<p>The two outputs share no obvious relationship even though the inputs differ by only one bit of capitalization. This dramatic divergence is not an accident; it is a deliberate and essential design goal.</p>
+
+<p><strong>What Is a Hash Function?</strong></p>
+
+<p>A hash function is a deterministic algorithm that maps data of arbitrary size to a fixed-size value. <em>Deterministic</em> is the key word here: given the same input, a hash function must always return the same output, without exception. This predictability is what makes hash functions useful. If the same password hashed differently each time you typed it, a login system could never verify your credentials.</p>
+
+<p>The output — the digest — is described as a <em>fingerprint</em> of the original input because, like a human fingerprint, it is intended to be unique to that specific input. Just as no two people are supposed to share the same fingerprint pattern, no two different inputs should ideally produce the same hash. In practice, collisions (two different inputs producing the same output) are mathematically inevitable because the input space is infinite while the output space is finite, but a well-designed algorithm makes finding such collisions computationally infeasible.</p>
+
+<p><strong>Fixed-Length Output and the Transformation Process</strong></p>
+
+<p>One of the most immediately useful properties of a hash function is its fixed-length output. Regardless of whether you hash a two-character string or a two-gigabyte video file, the output digest is always the same number of bits. The specific length depends on the algorithm chosen:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Algorithm</th>
+      <th>Output Length (bits)</th>
+      <th>Output Length (hex characters)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>MD5</td>
+      <td>128</td>
+      <td>32</td>
+    </tr>
+    <tr>
+      <td>SHA-1</td>
+      <td>160</td>
+      <td>40</td>
+    </tr>
+    <tr>
+      <td>SHA-256</td>
+      <td>256</td>
+      <td>64</td>
+    </tr>
+    <tr>
+      <td>SHA-512</td>
+      <td>512</td>
+      <td>128</td>
+    </tr>
+    <tr>
+      <td>bcrypt</td>
+      <td>184 (encoded output)</td>
+      <td>60 (standard encoded string)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>This fixed-length property makes hashes extremely practical for storage and comparison. A database storing user passwords does not need to allocate variable amounts of space depending on how long each user's password is; it simply stores a 64-character string for every account when using SHA-256. Comparing two hashes to check equality is always an operation on strings of known, identical length, which is both computationally efficient and straightforward to implement.</p>
+
+<p>The transformation process itself is <em>one-way</em>. The algorithm applies a series of mathematical operations — mixing, permuting, compressing — to the input in ways that are easy to perform in the forward direction but practically impossible to reverse. This is sometimes described as a <strong>trapdoor function</strong>: easy to fall through, impossible to climb back out of. There is no inverse function, no decryption key, and no mathematical shortcut that allows you to recover the original input from the digest alone.</p>
+
+<p><strong>Core Properties of Cryptographic Hash Functions</strong></p>
+
+<p>Not every hash function qualifies as a <em>cryptographic</em> hash function. Non-cryptographic hash functions (used in hash tables and checksums) prioritize speed over security. Cryptographic hash functions must satisfy three rigorous properties:</p>
+
+<ul>
+  <li><strong>Pre-image resistance:</strong> Given a hash value <em>h</em>, it must be computationally infeasible to find any input <em>m</em> such that hash(<em>m</em>) = <em>h</em>. This means an attacker who sees a stored hash digest cannot work backwards to find the original input. For a 256-bit hash, brute-forcing all possible inputs would require on the order of 2<sup>256</sup> attempts — a number so astronomically large that no computer, or collection of computers, could complete such a search within any practical timeframe.</li>
+  <li><strong>Collision resistance:</strong> It must be computationally infeasible to find two different inputs <em>m1</em> and <em>m2</em> such that hash(<em>m1</em>) = hash(<em>m2</em>). Collisions are mathematically guaranteed to exist (pigeonhole principle), but finding them intentionally must require so much computing effort that it is practically impossible. When researchers <em>can</em> find collisions efficiently — as happened with MD5 and SHA-1 — the algorithm is considered broken for security purposes.</li>
+  <li><strong>The avalanche effect:</strong> A change of even a single bit in the input should cause approximately half of the output bits to flip, in an unpredictable way. This prevents an attacker from making incremental guesses by slightly modifying inputs and observing small, predictable changes in the output. The avalanche effect is what caused the dramatic difference between the <em>hello</em> and <em>Hello</em> examples shown earlier.</li>
+</ul>
+
+<p>A fourth property, <strong>second pre-image resistance</strong>, is closely related: given a specific input <em>m1</em>, it must be infeasible to find a different input <em>m2</em> that produces the same hash. This is subtly different from general collision resistance because the attacker is constrained to match a specific, known input rather than finding any pair of colliding inputs.</p>
+
+<p><strong>Hashing vs. Encryption: A Key Distinction</strong></p>
+
+<p>A common source of confusion — even among developers — is treating hashing and encryption as interchangeable. They are fundamentally different tools serving different purposes, and conflating them leads to serious security mistakes.</p>
+
+<p><em>Encryption</em> is a <strong>two-way</strong> process. Data is transformed using an algorithm and a key into an unreadable ciphertext, and anyone with the correct key can reverse the process to recover the original plaintext. Encryption is designed for confidentiality: you want to protect data in transit or at rest, but you (or an authorized party) will need to read it again later. Examples include encrypting a file on disk or establishing a secure HTTPS connection.</p>
+
+<p><em>Hashing</em> is a <strong>one-way</strong> process. Once data is hashed, the original cannot be recovered from the digest — not even by the system that created the hash. This is precisely what you want for password storage. When a user creates a password, the system hashes it and stores the digest. When the user logs in later, the system hashes the typed password and compares the two digests. The original password is never stored anywhere. Even if an attacker steals the database, they have only a list of hashes — not passwords.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Hashing</th>
+      <th>Encryption</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Reversible?</td>
+      <td>No</td>
+      <td>Yes (with correct key)</td>
+    </tr>
+    <tr>
+      <td>Uses a key?</td>
+      <td>No (standard hashing)</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td>Output length</td>
+      <td>Fixed</td>
+      <td>Variable (typically similar to input size)</td>
+    </tr>
+    <tr>
+      <td>Primary use</td>
+      <td>Integrity, authentication</td>
+      <td>Confidentiality</td>
+    </tr>
+    <tr>
+      <td>Can recover original data?</td>
+      <td>No</td>
+      <td>Yes</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>A critical security mistake is storing passwords using reversible encryption instead of hashing. If the encryption key is ever compromised — which it can be, because it must be stored somewhere accessible to the application — every password in the database becomes recoverable. With proper hashing, there is no key to steal and no reversal path to follow.</p>
+
+<p><strong>Common Hashing Algorithms and Their Use Cases</strong></p>
+
+<p><em>MD5</em> (Message Digest 5) was designed by Ronald Rivest in 1991 and produces a 128-bit digest. For much of the 1990s and early 2000s it was the default choice for checksums and password storage. However, MD5 is now considered cryptographically broken. Researchers demonstrated practical collision attacks — meaning two different inputs can be engineered to produce the same MD5 hash — and MD5 is vulnerable to fast brute-force attacks due to its speed and short output. It remains in use for non-security purposes like verifying accidental file corruption, but it must never be used for passwords or digital signatures.</p>
+
+<p><em>SHA-1</em> (Secure Hash Algorithm 1), producing a 160-bit digest, was the successor to MD5 and was widely adopted in SSL certificates, version control systems, and digital signatures. SHA-1 was deprecated for most security uses after 2011 and officially broken by the SHAttered attack in 2017, which produced a real-world SHA-1 collision. Major browsers and certificate authorities no longer accept SHA-1 certificates.</p>
+
+<p><em>SHA-256</em>, part of the SHA-2 family developed by the NSA and standardized by NIST, produces a 256-bit digest and is currently the dominant general-purpose cryptographic hash. It is used in TLS/SSL certificates (securing HTTPS connections), Bitcoin and many other blockchain systems, code-signing certificates, and file integrity verification. SHA-256 has no known practical attacks and its 256-bit output makes brute-force pre-image attacks impossible with any foreseeable technology.</p>
+
+<p><em>bcrypt</em> and <em>Argon2</em> occupy a special category: they are purpose-built for password hashing rather than general data hashing. The distinguishing design goal is <em>intentional slowness</em>. A general hash like SHA-256 can process hundreds of millions of inputs per second on commodity hardware — which is great for hashing large files quickly but catastrophic for password storage, because an attacker with stolen hashes can test enormous numbers of candidate passwords per second. bcrypt and Argon2 incorporate a configurable <strong>work factor</strong> (or cost parameter) that forces each hash computation to take a measurable amount of time (typically 100–500 milliseconds). This slows legitimate logins negligibly — a user waits a fraction of a second — but reduces an attacker's cracking speed from millions of attempts per second to perhaps tens or hundreds per second.</p>
+
+<p>Argon2 is the winner of the Password Hashing Competition (2015) and offers additional resistance to GPU- and ASIC-based attacks by allowing configuration of memory usage. It is considered the current best practice for new systems.</p>
+
+<p><strong>The Role of Hashing in Data Integrity</strong></p>
+
+<p>Beyond passwords, one of hashing's most important applications is <em>data integrity verification</em>. The core idea is simple: if you hash a piece of data before transmitting or storing it, and later hash it again and compare the two digests, you can determine with extremely high confidence whether the data has been modified.</p>
+
+<p>Consider a practical scenario. A software publisher releases a new version of their application as a downloadable file. They publish the SHA-256 hash of that file on their website. A user downloads the file (possibly from a mirror server they do not fully trust), then runs SHA-256 on the downloaded file themselves. If the computed hash matches the published hash exactly, the file is intact and unaltered. If even a single byte was changed — whether by a man-in-the-middle attacker injecting malware or by a network transmission error — the computed hash will be completely different, and the user knows not to trust the file.</p>
+
+<pre><code># Example: Verifying a downloaded file on Linux
+sha256sum downloaded_software.tar.gz
+# Output: a3b1c2d4e5f6... downloaded_software.tar.gz
+
+# Compare with the publisher's listed hash:
+# a3b1c2d4e5f6...  ← match confirms integrity</code></pre>
+
+<p>This same principle underpins <strong>digital signatures</strong>: rather than signing an entire large document (which would be slow), a cryptographic signature is applied to the document's hash. Verifying the signature means hashing the received document and checking that the signature matches that hash value, confirming both authenticity and integrity in a single efficient step.</p>
+
+<p><strong>Version control systems</strong> like Git rely entirely on hashing for their internal data model. Every file, directory snapshot, and commit is identified by its SHA-1 (historically) or SHA-256 (in newer versions) hash. This means any accidental or malicious change to any historical commit is immediately detectable, because the hash of the modified object will no longer match the stored reference.</p>
+
+<p>The integrity-checking application of hashing is a direct consequence of the avalanche effect: because a one-bit change in input causes roughly half of the output bits to flip unpredictably, there is no such thing as a "small" or "undetected" alteration. Either the data is exactly identical (same hash) or it is different in any way (completely different hash). There is no middle ground, and this binary certainty is what makes hashing such a powerful tool for trust and verification.</p>
+        <div class="notes"><strong>Notes</strong>The topic covers all listed subtopics. Tables compare hash algorithm output lengths and hashing vs. encryption properties. Code examples illustrate the avalanche effect with SHA-256 and show a practical file verification workflow. Argon2 context (Password Hashing Competition) is added as well-established supplementary information. bcrypt and Argon2 are explained as password-specific algorithms with work factors, directly extending the listed subtopic on slow hashing.</div>
+      </div>
+    </details>
+  </main>
+
+<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
+</body></html>

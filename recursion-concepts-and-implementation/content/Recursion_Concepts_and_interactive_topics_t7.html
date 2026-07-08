@@ -1,0 +1,274 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>When to Use Recursion</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+  <style>
+    body { padding-left: 1.1rem; padding-right: 1.1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid rgba(128,128,128,.45); padding: .45em .7em; text-align: left; vertical-align: top; }
+    thead th { background: rgba(128,128,128,.18); font-weight: 600; }
+    tbody tr:nth-child(even) { background: rgba(128,128,128,.08); }
+    a.topic-detail-link { text-decoration: underline; }
+  </style>
+  <style>
+    summary.slide-header { list-style: none; }
+    summary.slide-header::-webkit-details-marker { display: none; }
+    details.slide-card[open] > .slide-body { display: block; }
+    details.slide-card[open] .chevron { transform: rotate(90deg); }
+    @media print { details.slide-card > .slide-body { display: block !important; } .chevron { display: none; } }
+  </style>
+</head><body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Recursion: Concepts and Implementation</a></div>
+  <header>
+    <h1>When to Use Recursion</h1>
+  </header><main>
+    <details class="slide-card" open>
+      <summary class="slide-header"><span class="slide-num">1</span><h2>When to Use Recursion</h2><span class="chevron">▶</span></summary>
+      <div class="slide-body">
+        <p>Recursion is one of the most powerful and elegant tools in a programmer's toolkit, but it is not always the right tool for the job. Knowing <em>when</em> to reach for recursion — and when to stick with a straightforward loop — is a skill that separates programmers who merely understand recursion from those who apply it with good judgment. This topic examines the core trade-offs between recursion and iteration, identifies the categories of problems where recursion genuinely shines, and provides concrete guidelines you can apply immediately in your own code.</p>
+
+<p><strong>Recursion vs. Iteration: Core Trade-offs</strong></p>
+
+<p>At the most fundamental level, both recursion and iteration are mechanisms for repeating a computation. They differ in <em>how</em> that repetition is expressed and managed by the runtime environment.</p>
+
+<p><strong>Iteration</strong> uses explicit looping constructs — <code>for</code>, <code>while</code>, <code>do...while</code> — and tracks progress through loop variables that are updated on each pass. Because all state lives in those variables (which occupy the same memory addresses throughout the loop's lifetime), the memory footprint of a pure iterative solution is typically constant, often described as O(1) space for the loop machinery itself. Consider a simple iterative factorial:</p>
+
+<pre><code>function factorialIterative(n) {
+  let result = 1;
+  for (let i = 2; i &lt;= n; i++) {
+    result *= i;
+  }
+  return result;
+}
+</code></pre>
+
+<p>Here, only <code>result</code> and <code>i</code> consume memory, regardless of how large <code>n</code> is. The loop runs and overwrites those same variables on every iteration.</p>
+
+<p><strong>Recursion</strong>, by contrast, expresses repetition through a function that calls itself. Each call creates a brand-new <em>stack frame</em> — a block of memory that stores the function's local variables, its parameters, and the return address telling the engine where to go once that call finishes. Stack frames are pushed onto the call stack as the recursion deepens and popped off as it unwinds. The equivalent recursive factorial looks like this:</p>
+
+<pre><code>function factorialRecursive(n) {
+  if (n &lt;= 1) return 1;          // base case
+  return n * factorialRecursive(n - 1); // recursive step
+}
+</code></pre>
+
+<p>Calling <code>factorialRecursive(5)</code> generates five nested stack frames before any multiplication is performed. For large <code>n</code>, this can become a problem — but for small, well-bounded inputs the code is compact and mirrors the mathematical definition directly.</p>
+
+<p>The table below summarizes the fundamental differences:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Dimension</th>
+      <th>Iteration</th>
+      <th>Recursion</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>State management</td>
+      <td>Explicit loop variables updated in place</td>
+      <td>Implicit — carried through function parameters and the call stack</td>
+    </tr>
+    <tr>
+      <td>Memory usage</td>
+      <td>O(1) stack space for the loop itself</td>
+      <td>O(d) stack space, where d is the recursion depth</td>
+    </tr>
+    <tr>
+      <td>Risk of overflow</td>
+      <td>Very low — bounded by loop variable range</td>
+      <td>Real — each call consumes a stack frame; deep recursion can crash</td>
+    </tr>
+    <tr>
+      <td>Expressiveness</td>
+      <td>Excellent for sequential, flat data</td>
+      <td>Excellent for hierarchical, self-similar structures</td>
+    </tr>
+    <tr>
+      <td>Code length</td>
+      <td>Often more lines for complex, nested problems</td>
+      <td>Often more concise for problems with a recursive definition</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Problem Types Best Suited to Recursion</strong></p>
+
+<p>Not every problem benefits from a recursive solution — but some problem families are so naturally self-similar that iteration can feel like trying to write a poem in a spreadsheet. The hallmark of a recursion-friendly problem is that the problem of size <em>n</em> can be cleanly reduced to one or more problems of size <em>n − 1</em> (or some smaller fraction), plus a trivial base case that terminates the reduction.</p>
+
+<p><strong>Tree and graph traversal</strong> is the canonical example. A binary tree node contains a value and two subtrees — each of which is itself a binary tree. This self-similar structure practically begs for recursion:</p>
+
+<pre><code>function inOrder(node) {
+  if (node === null) return;   // base case: empty subtree
+  inOrder(node.left);          // recurse into left subtree
+  console.log(node.value);     // process current node
+  inOrder(node.right);         // recurse into right subtree
+}
+</code></pre>
+
+<p>Writing this iteratively requires manually maintaining a stack data structure to simulate what recursion gives you for free. The recursive version is shorter, corresponds directly to the definition of in-order traversal, and is far easier to verify by inspection.</p>
+
+<p><strong>Divide-and-conquer algorithms</strong> split a problem into independent subproblems of the same type, solve each subproblem recursively, and combine the results. Merge sort is the textbook illustration:</p>
+
+<pre><code>function mergeSort(arr) {
+  if (arr.length &lt;= 1) return arr;             // base case
+  const mid = Math.floor(arr.length / 2);
+  const left  = mergeSort(arr.slice(0, mid));  // recursive left half
+  const right = mergeSort(arr.slice(mid));     // recursive right half
+  return merge(left, right);                   // combine step
+}
+
+function merge(left, right) {
+  const result = [];
+  let i = 0, j = 0;
+  while (i &lt; left.length &amp;&amp; j &lt; right.length) {
+    if (left[i] &lt;= right[j]) result.push(left[i++]);
+    else result.push(right[j++]);
+  }
+  return result.concat(left.slice(i)).concat(right.slice(j));
+}
+</code></pre>
+
+<p>The recursive structure of <code>mergeSort</code> directly encodes the algorithm's logic: split, sort each half, merge. An iterative merge sort exists but is significantly more complex to write and understand.</p>
+
+<p><strong>Nested data parsing</strong> is another strong candidate. JSON objects and XML trees are hierarchically nested: an object can contain arrays, which can contain objects, and so on to arbitrary depth. A recursive descent parser naturally mirrors this structure — it calls itself whenever it encounters a nested construct. Writing such a parser iteratively would require a hand-rolled stack and complex state management.</p>
+
+<p><strong>Backtracking algorithms</strong> — such as solving a maze, generating all permutations of a set, or solving Sudoku — explore a tree of possible decisions. At each step you make a choice, recurse to explore the consequences, and then undo that choice (backtrack) to try alternatives. This explore-then-undo pattern maps naturally onto recursion's push-and-pop call stack behavior.</p>
+
+<pre><code>// Generate all permutations of an array
+function permutations(arr, current = []) {
+  if (arr.length === 0) {
+    console.log(current);
+    return;
+  }
+  for (let i = 0; i &lt; arr.length; i++) {
+    const remaining = arr.filter((_, idx) =&gt; idx !== i);
+    permutations(remaining, [...current, arr[i]]);
+  }
+}
+
+permutations([1, 2, 3]);
+</code></pre>
+
+<p>As a general rule of thumb: if you find yourself mentally drawing a tree of subproblems when you think about a problem, recursion is likely the right fit.</p>
+
+<p><strong>Readability and Code Clarity</strong></p>
+
+<p>One of recursion's most frequently cited advantages is that a well-written recursive solution can read almost like a specification. Consider the definition of a Fibonacci number: "The nth Fibonacci number is the sum of the (n−1)th and (n−2)th Fibonacci numbers, with F(0) = 0 and F(1) = 1." A direct recursive implementation transcribes that definition almost word-for-word:</p>
+
+<pre><code>function fib(n) {
+  if (n === 0) return 0;
+  if (n === 1) return 1;
+  return fib(n - 1) + fib(n - 2);
+}
+</code></pre>
+
+<p>This is far easier to map back to the mathematical definition than an iterative version using temporary variables. For a code reviewer or a future maintainer unfamiliar with the problem, the recursive version communicates <em>intent</em> with minimal cognitive overhead.</p>
+
+<p>However, readability gains are not unlimited. They tend to erode in several situations:</p>
+
+<ul>
+  <li><strong>Deep or indirect recursion:</strong> If a function calls a helper which calls another helper which eventually calls the original function, tracing the execution mentally becomes as hard as tracing a loop with complex state. Mutual recursion should be documented carefully.</li>
+  <li><strong>Poorly named parameters:</strong> Recursive clarity depends on parameters carrying meaningful state. A function like <code>solve(a, b, c, d)</code> with no comments is just as opaque recursively as iteratively.</li>
+  <li><strong>Missing or unclear base cases:</strong> If the base case is not immediately obvious, readers must reverse-engineer when the recursion terminates, which defeats the clarity advantage.</li>
+</ul>
+
+<p>The bottom line is that recursion improves clarity when the problem itself has a recursive structure — but it is not a magic clarity pill that makes any solution easier to read.</p>
+
+<p><strong>Performance Considerations and Pitfalls</strong></p>
+
+<p>Recursion's elegance comes with concrete costs that every practitioner must understand.</p>
+
+<p><strong>Stack overflow risk:</strong> JavaScript engines (like V8) allocate a fixed-size call stack. Each recursive call consumes stack space for its frame. If the recursion depth grows too large — typically into the thousands, though the exact limit is engine- and environment-dependent — the engine throws a <code>RangeError: Maximum call stack size exceeded</code>. For a flat array of 100,000 elements, a recursive solution that makes one call per element will almost certainly crash. An iterative loop handles 100,000 elements without breaking a sweat.</p>
+
+<p><strong>Exponential time complexity from naive recursion:</strong> The simple Fibonacci implementation above is deceptively expensive. To compute <code>fib(5)</code>, it computes <code>fib(4)</code> and <code>fib(3)</code>. To compute <code>fib(4)</code>, it computes <code>fib(3)</code> and <code>fib(2)</code>. Notice that <code>fib(3)</code> is computed twice — and this redundancy compounds exponentially. The naive recursive Fibonacci has O(2ⁿ) time complexity, making it essentially unusable for values of n above 40 or 50.</p>
+
+<p><strong>Memoization</strong> solves the redundant-computation problem while preserving the recursive structure. You cache the result of each subproblem after computing it the first time, and return the cached value on subsequent calls:</p>
+
+<pre><code>function fibMemo(n, memo = {}) {
+  if (n in memo) return memo[n];   // return cached result
+  if (n === 0) return 0;
+  if (n === 1) return 1;
+  memo[n] = fibMemo(n - 1, memo) + fibMemo(n - 2, memo);
+  return memo[n];
+}
+</code></pre>
+
+<p>With memoization, each unique value of <code>n</code> is computed exactly once, reducing time complexity to O(n). This is a critical technique whenever you find that a recursive solution recomputes the same subproblems.</p>
+
+<p><strong>Tail-call optimization (TCO)</strong> is a compiler or engine optimization where a function call in <em>tail position</em> (the very last thing a function does before returning) does not add a new stack frame — it reuses the current one, effectively converting the recursion into a loop at the machine level. A tail-recursive factorial looks like this:</p>
+
+<pre><code>function factorialTail(n, accumulator = 1) {
+  if (n &lt;= 1) return accumulator;
+  return factorialTail(n - 1, n * accumulator); // tail call
+}
+</code></pre>
+
+<p>In an environment that supports TCO, this runs in O(1) stack space. However, JavaScript's TCO story is problematic: the ECMAScript 2015 specification included TCO as a requirement, but as of today only Safari's JavaScriptCore engine implements it. V8 (Node.js, Chrome) and SpiderMonkey (Firefox) do not. This means you cannot rely on tail-recursive patterns in JavaScript to avoid stack overflow in production Node.js applications. If you need true O(1) stack space, convert the recursion to an explicit loop.</p>
+
+<p><strong>Practical Guidelines for Choosing Recursion</strong></p>
+
+<p>Armed with an understanding of the trade-offs, here are actionable guidelines for making the right choice in practice:</p>
+
+<ul>
+  <li><strong>Use recursion when the problem has a clear recursive definition.</strong> If you can describe the solution to a problem of size n in terms of the solution to a smaller version of the same problem, recursion is a natural fit. Trees, graphs, nested structures, and divide-and-conquer algorithms all qualify.</li>
+  <li><strong>Use recursion when the input depth is bounded and manageable.</strong> Traversing a directory tree five or ten levels deep is fine. Processing a flat list of one million items recursively — one call per item — is not.</li>
+  <li><strong>Use iteration for large flat data sets.</strong> If you are processing elements in a simple sequential fashion, a <code>for</code> loop is faster, uses less memory, and cannot stack-overflow.</li>
+  <li><strong>Always define a clear base case first.</strong> Before writing a single recursive call, identify and implement the base case — the condition under which the function returns immediately without recursing. Omitting the base case, or writing it incorrectly, causes infinite recursion and a guaranteed stack overflow. Test the base case in isolation before testing the recursive step.</li>
+  <li><strong>Apply memoization proactively when subproblems overlap.</strong> If you notice that your recursion tree will revisit the same inputs (as in Fibonacci or shortest-path problems), add a cache before the performance problem becomes visible.</li>
+  <li><strong>Start with recursion for clarity, then optimize if needed.</strong> During development and design, a recursive solution is often easier to reason about, easier to prove correct, and faster to write. Only refactor to an iterative approach if performance profiling reveals a concrete bottleneck. Premature optimization at the cost of readability is rarely worth it.</li>
+  <li><strong>Document the base case and recursive step explicitly.</strong> A comment like <code>// Base case: empty node signals end of branch</code> followed by <code>// Recursive step: process left subtree, then right</code> pays dividends for future maintainers who may not immediately see the structure you saw when writing the code.</li>
+  <li><strong>Do not rely on tail-call optimization in JavaScript.</strong> If you are targeting Node.js or browser environments other than Safari, assume TCO is not available. Either accept the O(n) stack usage (if depth is bounded), use memoization (if subproblems overlap), or convert to an explicit iterative loop using your own stack data structure when large inputs are expected.</li>
+</ul>
+
+<p>To put these guidelines in perspective, consider a developer tasked with writing a function to deeply clone a nested JavaScript object. The input could theoretically be nested to any depth, but in practice real-world configuration objects are rarely more than five or six levels deep. A recursive solution is clean, easy to verify, and perfectly safe at that depth. A flat array of a million user records, on the other hand, should be processed with a loop. Recognizing which category your problem falls into is the essential skill this topic aims to develop.</p>
+        <div class="notes"><strong>Notes</strong>Emphasize to students that the naive recursive Fibonacci is the single most important example of exponential blowup from overlapping subproblems — it is worth running it live to show how slow fib(45) becomes without memoization. Also worth mentioning that JavaScript&#39;s lack of reliable TCO means tail-recursive patterns are mostly academic in that language; students should not depend on them in production Node.js code.</div>
+      </div>
+    </details>
+  </main>
+
+<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
+</body></html>

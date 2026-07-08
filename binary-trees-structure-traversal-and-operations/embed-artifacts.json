@@ -10,6 +10,46 @@
     "type": "Page"
   },
   {
+    "title": "Implementing a BST in JavaScript",
+    "href": "content/Binary_Trees_Structure_interactive.html",
+    "type": "Content"
+  },
+  {
+    "title": "Introduction to Binary Trees",
+    "href": "content/Binary_Trees_Structure_interactive_topics_t1.html",
+    "type": "Content"
+  },
+  {
+    "title": "Node Structure and Tree Anatomy",
+    "href": "content/Binary_Trees_Structure_interactive_topics_t2.html",
+    "type": "Content"
+  },
+  {
+    "title": "Binary Search Trees (BST) Concepts",
+    "href": "content/Binary_Trees_Structure_interactive_topics_t3.html",
+    "type": "Content"
+  },
+  {
+    "title": "Insertion and Search Operations",
+    "href": "content/Binary_Trees_Structure_interactive_topics_t4.html",
+    "type": "Content"
+  },
+  {
+    "title": "Deletion Operations",
+    "href": "content/Binary_Trees_Structure_interactive_topics_t5.html",
+    "type": "Content"
+  },
+  {
+    "title": "Tree Traversal Strategies",
+    "href": "content/Binary_Trees_Structure_interactive_topics_t6.html",
+    "type": "Content"
+  },
+  {
+    "title": "Implementing a BST in JavaScript",
+    "href": "content/Binary_Trees_Structure_interactive_topics_t7.html",
+    "type": "Content"
+  },
+  {
     "title": "Binary Trees: Structure, Traversal, and Operations \u2014 Module Topics",
     "href": "content/module_topics.html",
     "type": "Content"

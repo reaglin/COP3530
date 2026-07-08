@@ -1,0 +1,249 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Call Stack and Recursion</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+  <style>
+    body { padding-left: 1.1rem; padding-right: 1.1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid rgba(128,128,128,.45); padding: .45em .7em; text-align: left; vertical-align: top; }
+    thead th { background: rgba(128,128,128,.18); font-weight: 600; }
+    tbody tr:nth-child(even) { background: rgba(128,128,128,.08); }
+    a.topic-detail-link { text-decoration: underline; }
+  </style>
+  <style>
+    summary.slide-header { list-style: none; }
+    summary.slide-header::-webkit-details-marker { display: none; }
+    details.slide-card[open] > .slide-body { display: block; }
+    details.slide-card[open] .chevron { transform: rotate(90deg); }
+    @media print { details.slide-card > .slide-body { display: block !important; } .chevron { display: none; } }
+  </style>
+</head><body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Recursion: Concepts and Implementation</a></div>
+  <header>
+    <h1>The Call Stack and Recursion</h1>
+  </header><main>
+    <details class="slide-card" open>
+      <summary class="slide-header"><span class="slide-num">1</span><h2>The Call Stack and Recursion</h2><span class="chevron">▶</span></summary>
+      <div class="slide-body">
+        <p>When a program runs, the computer needs a reliable way to keep track of which function is currently executing, what data that function is working with, and where execution should return once the function finishes. This bookkeeping is handled by a data structure built into every language runtime called the <strong>call stack</strong>. Understanding the call stack is not merely an academic exercise — it is the key to understanding why recursion works the way it does, why it can be powerful, and why it can also go catastrophically wrong if used carelessly.</p>
+
+<p>The call stack is a region of memory organized according to the <strong>Last-In, First-Out (LIFO)</strong> principle. Think of it like a stack of plates: you can only add a new plate to the top, and you can only remove the plate that is currently on top. In the same way, when a function is called, a new entry is placed on top of the stack. When that function finishes, its entry is removed from the top, and the program resumes wherever it left off in the function below. This discipline ensures that no matter how deeply nested the function calls become, the program always knows exactly where to return after each one completes.</p>
+
+<p>To make the LIFO behavior concrete, consider a simple chain of function calls:</p>
+
+<pre><code>def greet():
+    message = build_message()
+    print(message)
+
+def build_message():
+    name = get_name()
+    return "Hello, " + name
+
+def get_name():
+    return "Alice"
+
+greet()
+</code></pre>
+
+<p>When <code>greet()</code> is called, its frame is pushed onto the stack. Inside <code>greet()</code>, <code>build_message()</code> is called, so its frame is pushed on top. Then <code>get_name()</code> is called, pushing a third frame. <code>get_name()</code> returns <code>"Alice"</code>, its frame is popped, and control returns to <code>build_message()</code>. That function returns <code>"Hello, Alice"</code>, its frame is popped, and control returns to <code>greet()</code>, which prints the message and finishes. The last frame is popped, and the stack is empty. The LIFO order is preserved throughout.</p>
+
+<p>Every entry placed on the call stack is called a <strong>stack frame</strong> (also called an activation record). A stack frame is not just a marker saying "this function is running." It is a structured container that holds everything the function needs to do its work:</p>
+
+<ul>
+  <li><strong>Local variables</strong> — any variable declared inside the function body lives in its stack frame and exists only for the duration of that call.</li>
+  <li><strong>Parameters</strong> — the argument values passed into the function are stored in the frame, so the function can reference them by name.</li>
+  <li><strong>Return address</strong> — when the function finishes, the runtime needs to know exactly which instruction in the calling function to resume from. This address is stored in the frame.</li>
+  <li><strong>Saved register state</strong> — at a lower level, the processor's registers may be saved so they can be restored after the call returns, though this detail is usually hidden from the programmer.</li>
+</ul>
+
+<p>The critical consequence of each function call getting its own isolated stack frame is that <strong>variables at different call levels never interfere with one another</strong>. When a recursive function calls itself, the new invocation gets a completely fresh frame with its own copy of the parameters and local variables. Changes inside the inner call cannot overwrite values in the outer call's frame. This isolation is what makes recursion logically coherent.</p>
+
+<p>Recursion is the practice of a function calling itself as part of its own definition. Every recursive algorithm depends on the call stack to function correctly. Consider computing the factorial of a number, where <em>n! = n × (n−1)!</em> and the base case is <em>0! = 1</em>:</p>
+
+<pre><code>def factorial(n):
+    if n == 0:          # base case
+        return 1
+    return n * factorial(n - 1)   # recursive case
+
+result = factorial(4)
+</code></pre>
+
+<p>Tracing the call stack frame by frame reveals how recursive calls accumulate and then resolve:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Step</th>
+      <th>Action</th>
+      <th>Stack State (top → bottom)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td><code>factorial(4)</code> is called</td>
+      <td>factorial(n=4)</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td><code>factorial(4)</code> calls <code>factorial(3)</code></td>
+      <td>factorial(n=3) | factorial(n=4)</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td><code>factorial(3)</code> calls <code>factorial(2)</code></td>
+      <td>factorial(n=2) | factorial(n=3) | factorial(n=4)</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td><code>factorial(2)</code> calls <code>factorial(1)</code></td>
+      <td>factorial(n=1) | factorial(n=2) | factorial(n=3) | factorial(n=4)</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td><code>factorial(1)</code> calls <code>factorial(0)</code></td>
+      <td>factorial(n=0) | factorial(n=1) | factorial(n=2) | factorial(n=3) | factorial(n=4)</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td><code>factorial(0)</code> hits base case, returns 1, frame popped</td>
+      <td>factorial(n=1) | factorial(n=2) | factorial(n=3) | factorial(n=4)</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td><code>factorial(1)</code> computes 1×1=1, returns 1, frame popped</td>
+      <td>factorial(n=2) | factorial(n=3) | factorial(n=4)</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td><code>factorial(2)</code> computes 2×1=2, returns 2, frame popped</td>
+      <td>factorial(n=3) | factorial(n=4)</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td><code>factorial(3)</code> computes 3×2=6, returns 6, frame popped</td>
+      <td>factorial(n=4)</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td><code>factorial(4)</code> computes 4×6=24, returns 24, frame popped</td>
+      <td>(empty)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>This trace illustrates the two-phase life of a recursive computation. During the <strong>winding phase</strong>, each call suspends its own work and pushes a new frame for the next recursive call. No multiplication happens yet — the function is purely descending toward the base case. During the <strong>unwinding phase</strong>, once the base case returns a value, each suspended frame picks up where it left off, computes its result using the value returned from below, and passes its own result back up. The answer is assembled on the way back up the stack, not on the way down.</p>
+
+<p>The <strong>recursion depth</strong> of an algorithm is the maximum number of stack frames that exist simultaneously at any point during execution. For <code>factorial(n)</code>, the recursion depth is exactly <em>n + 1</em> — one frame for each value from <em>n</em> down to 0. Since each frame occupies memory, deeper recursion means more memory usage. For <code>factorial(10)</code> the stack holds 11 frames at peak; for <code>factorial(10000)</code> it would hold 10,001. This relationship between input size and stack depth matters enormously when choosing whether to use recursion and when estimating resource usage.</p>
+
+<p>Some recursive algorithms have much more aggressive stack growth than a simple linear chain. The naive recursive Fibonacci algorithm is a classic example:</p>
+
+<pre><code>def fib(n):
+    if n <= 1:
+        return n
+    return fib(n - 1) + fib(n - 2)
+</code></pre>
+
+<p>Each call to <code>fib(n)</code> spawns <em>two</em> recursive sub-calls. The call tree branches exponentially. While the maximum stack depth at any moment is still proportional to <em>n</em> (the algorithm descends one branch at a time before backtracking), the <em>total number</em> of calls made is roughly 2<sup>n</sup>. For <code>fib(50)</code> that is over a quadrillion calls. Even though the stack itself does not overflow for modest inputs, the time taken becomes astronomical. This illustrates that stack depth and computational complexity are related but distinct concerns.</p>
+
+<p>Every runtime environment places a hard limit on the size of the call stack. This limit is set by the operating system, the language runtime configuration, and hardware constraints. When a program attempts to push a new stack frame but there is no more stack memory available, the runtime raises a <strong>stack overflow error</strong> (called <code>RecursionError</code> in Python, <code>StackOverflowError</code> in Java, or a segmentation fault in C when the stack segment is exhausted).</p>
+
+<p>The most common cause of stack overflow is <strong>infinite recursion</strong> — a recursive function that lacks a valid base case or whose base case can never actually be reached for some inputs. Consider this broken version of factorial:</p>
+
+<pre><code># BUG: base case checks n == 0, but n starts negative
+def broken_factorial(n):
+    if n == 0:
+        return 1
+    return n * broken_factorial(n - 1)
+
+broken_factorial(-5)   # will recurse: -5, -6, -7, -8, ... forever
+</code></pre>
+
+<p>Because <em>n</em> starts at −5 and the subtraction <em>n − 1</em> only makes it more negative, the value of <em>n</em> will never equal 0. The function recurses infinitely, filling the stack until the runtime terminates the program with an error. Even a correctly designed recursive algorithm can overflow the stack if given an input that demands too many levels of recursion. Python, for instance, defaults to a recursion limit of around 1,000 frames; calling <code>factorial(5000)</code> will hit that limit even though the algorithm itself is logically correct.</p>
+
+<p>Preventing stack overflow and writing robust recursive code requires several practical habits:</p>
+
+<ul>
+  <li><strong>Always define a clear, reachable base case.</strong> Every path through the recursive function's logic must eventually lead to the base case for any valid input. Before writing the recursive case, ask: "Will every input I could reasonably receive eventually satisfy the base condition?" If the answer is uncertain, the algorithm has a bug.</li>
+  <li><strong>Validate inputs before the first call.</strong> If a function expects a non-negative integer, enforce that constraint at the entry point. Raise an error or clamp the value before the recursive machinery even begins. This prevents surprising behavior caused by out-of-range inputs reaching the recursive logic.</li>
+  <li><strong>Consider the expected recursion depth for your inputs.</strong> If the problem domain could realistically produce inputs requiring tens of thousands of recursive calls, recursion may not be the right tool in that language without special support. Estimate the maximum depth and compare it to the runtime's stack limit.</li>
+  <li><strong>Convert to an iterative solution with an explicit stack when depth is a concern.</strong> Any recursive algorithm can be rewritten using a loop and a programmer-managed stack (a list or deque) that simulates what the call stack does. This trades implicit stack usage for explicit heap usage. Because heap memory is typically much larger than the call stack, this approach can handle far deeper "recursions" without crashing.</li>
+</ul>
+
+<p>The iterative equivalent of factorial demonstrates converting deep recursion to a loop:</p>
+
+<pre><code>def factorial_iterative(n):
+    result = 1
+    while n > 1:
+        result *= n
+        n -= 1
+    return result
+</code></pre>
+
+<p>No stack frames accumulate here beyond the single frame for <code>factorial_iterative</code> itself. The accumulation of intermediate values happens in the <code>result</code> variable in heap-allocated memory rather than across multiple stack frames. For tree traversal or other inherently recursive structures, an explicit stack can preserve the logical structure of the algorithm while eliminating dependence on the call stack:</p>
+
+<pre><code>def dfs_iterative(graph, start):
+    visited = set()
+    stack = [start]          # explicit stack on the heap
+    while stack:
+        node = stack.pop()   # LIFO — same behavior as recursive DFS
+        if node not in visited:
+            visited.add(node)
+            for neighbor in graph[node]:
+                if neighbor not in visited:
+                    stack.append(neighbor)
+    return visited
+</code></pre>
+
+<p>This iterative depth-first search behaves identically to its recursive counterpart but can explore graphs of arbitrary depth without ever risking a stack overflow. The <code>stack</code> list grows on the heap, which has orders of magnitude more available memory than the call stack in most environments.</p>
+
+<p>The call stack is ultimately the silent engine behind every function call a program makes, recursive or not. Recursion simply makes the stack's behavior more visible and more consequential, because a single function call can trigger a chain reaction of many more. By understanding how frames are pushed and popped, how isolation between frames enables recursion to work correctly, and how uncontrolled depth leads to overflow, a programmer gains both the intuition to write correct recursive algorithms and the judgment to know when to reach for an iterative alternative instead.</p>
+        <div class="notes"><strong>Notes</strong>The trace table showing the factorial call stack frame by frame is particularly important for learners who are new to recursion — consider pausing on it and relating each step back to the LIFO principle. The distinction between recursion depth (maximum simultaneous frames) and total call count (relevant for exponential algorithms like naive Fibonacci) is a nuance worth reinforcing explicitly. The iterative DFS example can be extended in follow-on lessons to demonstrate other tree/graph traversals converted from recursive to iterative form.</div>
+      </div>
+    </details>
+  </main>
+
+<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
+</body></html>

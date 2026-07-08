@@ -1,0 +1,230 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Combining Data Structures in Complex Systems</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+  <style>
+    body { padding-left: 1.1rem; padding-right: 1.1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid rgba(128,128,128,.45); padding: .45em .7em; text-align: left; vertical-align: top; }
+    thead th { background: rgba(128,128,128,.18); font-weight: 600; }
+    tbody tr:nth-child(even) { background: rgba(128,128,128,.08); }
+    a.topic-detail-link { text-decoration: underline; }
+  </style>
+  <style>
+    summary.slide-header { list-style: none; }
+    summary.slide-header::-webkit-details-marker { display: none; }
+    details.slide-card[open] > .slide-body { display: block; }
+    details.slide-card[open] .chevron { transform: rotate(90deg); }
+    @media print { details.slide-card > .slide-body { display: block !important; } .chevron { display: none; } }
+  </style>
+</head><body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Applied Data Structures: Blockchain, Digital Currency, and Beyond</a></div>
+  <header>
+    <h1>Combining Data Structures in Complex Systems</h1>
+  </header><main>
+    <details class="slide-card" open>
+      <summary class="slide-header"><span class="slide-num">1</span><h2>Combining Data Structures in Complex Systems</h2><span class="chevron">▶</span></summary>
+      <div class="slide-body">
+        <p>Modern software systems rarely rely on a single data structure. Instead, they are engineered as careful compositions of multiple structures, each chosen because it excels at a specific class of operation. Understanding why this is necessary, how it is done well, and what the consequences of poor choices look like is one of the most important skills a systems engineer or computer scientist can develop. This topic explores these ideas in depth, using blockchain and digital currency networks as richly detailed case studies, and then generalizes the lessons into principles that apply to any complex system.</p>
+
+<p><strong>Why Real-World Systems Require Multiple Data Structures</strong></p>
+
+<p>Every data structure represents a trade-off. A hash table delivers near-constant-time lookup but gives you no ordering and no efficient way to find the minimum or maximum element. A balanced binary search tree keeps elements sorted and supports range queries, but its O(log n) access is slower than a hash table's O(1) for pure key lookups. A linked list allows O(1) insertion at the head and requires no contiguous memory, but searching it is O(n). No single structure dominates across all operations, which is exactly why real systems use many of them simultaneously.</p>
+
+<p>Consider the operations that a typical application must support. A web server's session store needs <em>fast lookup by session ID</em> (favoring a hash table) but may also need to <em>expire sessions in order of creation time</em> (favoring a queue or sorted structure). A route-finding application needs to <em>relate nodes to each other</em> (favoring a graph) but also needs to <em>look up individual nodes instantly</em> (favoring a hash table). These are not competing requirements to be compromised away — they are simultaneous requirements that demand a composed solution.</p>
+
+<p>The performance consequences of this mismatch are concrete. If you force all operations through a single structure that is optimal for only one of them, you pay a performance penalty every time you perform a different kind of operation. At the scale of millions of users or transactions per second, these penalties are not abstract — they translate directly into latency spikes, dropped requests, and infrastructure cost. Hybrid design is therefore not an architectural luxury; it is an engineering necessity.</p>
+
+<p>Memory consumption is also shaped by structural composition. Storing a large dataset in both a hash table (for fast lookup) and a sorted array (for range queries) costs roughly twice the memory of either alone. This time-space trade-off must be analyzed against the actual access patterns of the system. If range queries happen once per hour and key lookups happen ten million times per second, the memory cost of the sorted array is justified. If the ratio is reversed, the hash table is the redundant copy.</p>
+
+<p><strong>Blockchain as a Case Study in Structural Integration</strong></p>
+
+<p>Blockchain is one of the most instructive examples of sophisticated structural composition in production software because every structure it uses was chosen for a specific, non-negotiable reason, and the structures interlock in ways that create emergent properties — particularly the tamper-evidence that makes the system trustworthy without a central authority.</p>
+
+<p>At the outermost level, a blockchain is a <em>singly linked list</em>. Each block contains a cryptographic hash of its predecessor block. This is structurally identical to a linked list node that holds a pointer to the previous node, except that instead of a memory address the "pointer" is a SHA-256 (or equivalent) hash of the entire previous block's contents. This distinction is critical: a memory pointer tells you <em>where</em> the previous node is, while a cryptographic hash tells you <em>what</em> the previous node contains. If the previous block's contents are altered in any way, its hash changes, which means the current block's stored hash no longer matches, which breaks the chain. The linked-list structure, combined with cryptographic hashing, thus provides a property that a plain linked list could never offer: structural integrity across time.</p>
+
+<p>Traversal of this outer linked list is O(n), which is acceptable because full-chain traversal is rare. The far more common operation is verifying that a specific transaction occurred at some point in history, and for that, blockchain uses a completely different structure inside each block: the <em>Merkle tree</em>.</p>
+
+<p>A Merkle tree is a binary tree in which every leaf node holds the hash of one transaction, and every internal node holds the hash of its two children's hashes combined. The root of the tree — called the Merkle root — is a single hash that cryptographically commits to every transaction in the block. This structure enables a remarkable operation called a <em>Merkle proof</em> (also called a proof of inclusion): to prove that a specific transaction is included in a block containing n transactions, you only need to provide O(log n) sibling hashes along the path from the transaction's leaf to the root. A verifier can recompute the root from these hashes and compare it to the stored Merkle root without knowing any of the other transactions. This is invaluable for lightweight clients (such as mobile wallets) that cannot store the entire blockchain.</p>
+
+<p>The relationship between the outer linked list and the inner Merkle tree is a layered design: the Merkle root is simply a field stored inside each block, so from the perspective of the linked list structure, it is just data. The Merkle tree adds a whole layer of verifiable structure to that data without changing how blocks are chained together. This is the essence of structural layering — inner structures add capabilities without disrupting the invariants of outer structures.</p>
+
+<p>At the implementation level, most full node software also maintains a <em>hash table</em> (or a hash-indexed database) of <em>Unspent Transaction Outputs (UTXOs)</em>. When a new transaction arrives and claims to spend a certain output, the node must quickly determine whether that output is actually unspent. Scanning the entire blockchain to answer this question would be O(n) in the number of historical transactions — completely impractical. Instead, the UTXO set is maintained as a hash table keyed by transaction ID and output index, allowing O(1) lookup. When a transaction is confirmed, its outputs are added to the UTXO set, and when those outputs are spent by a later transaction, they are removed. This hash table is a derived index — it is redundant in theory (you could reconstruct it by replaying history) but indispensable in practice.</p>
+
+<p>The structural composition of a full blockchain node can thus be summarized:</p>
+
+<ul>
+  <li><strong>Outer linked list:</strong> chains blocks together with cryptographic integrity guarantees, supporting sequential traversal and tamper detection.</li>
+  <li><strong>Inner Merkle tree (per block):</strong> organizes transactions for O(log n) inclusion proofs, enabling lightweight verification without full data.</li>
+  <li><strong>UTXO hash table:</strong> provides O(1) lookup of spendable outputs, enabling fast transaction validation at high throughput.</li>
+</ul>
+
+<p>Each structure serves a distinct role. Removing any one of them would either destroy a security property or make the system impractically slow. This is the hallmark of well-designed structural composition.</p>
+
+<p><strong>Digital Currency Systems and Hash Table Usage</strong></p>
+
+<p>Beyond blockchain, digital currency and financial systems more broadly depend heavily on hash tables for their core performance characteristics. A payment network processing millions of transactions per minute must be able to look up account balances, check transaction history, and validate identities in microseconds. Hash tables, with their average-case O(1) access, are the dominant structure for these hot-path operations.</p>
+
+<p>However, hash tables at global scale introduce engineering challenges that are largely invisible at small scale. <em>Collision resolution</em> — the strategy used when two keys hash to the same bucket — becomes a critical design decision. Open addressing (probing for the next available slot) keeps data in contiguous memory and is cache-friendly, but degrades severely as the table fills up. Separate chaining (storing a linked list at each bucket) handles high load factors more gracefully but incurs pointer indirection and is less cache-friendly. At the scale of a global currency network, the wrong choice can mean the difference between linear and constant-time access under peak load.</p>
+
+<p><em>Load factor tuning</em> — the ratio of stored entries to total buckets — is equally critical. A load factor that is too high increases collision probability and degrades performance. A load factor that is too low wastes memory. Production systems often trigger automatic rehashing when the load factor crosses a threshold (commonly 0.75), but rehashing is itself an O(n) operation that causes a latency spike if performed on the hot path. Mitigation strategies include <em>incremental rehashing</em>, where the old and new tables coexist temporarily and entries are migrated lazily, a technique used in Redis, for example.</p>
+
+<p>Ethereum's state — the mapping from account addresses to account state objects (balance, nonce, contract code, storage) — is stored in a <em>Merkle Patricia Trie</em>, a structure that combines the key-indexed access of a hash table with the cryptographic commitability of a Merkle tree. A Patricia trie (also called a radix tree) encodes keys as paths through the tree, so lookup is O(k) where k is the key length rather than O(log n) in the number of entries. By Merklizing this trie (hashing child nodes into parent nodes), every state can be committed to a single 32-byte root hash, which is stored in the block header. This means that the entire state of a network with millions of accounts can be cryptographically summarized in 32 bytes, and any account's state can be proven in O(log n) steps. The Merkle Patricia Trie is a powerful example of how combining two structural concepts — the trie for efficient key-addressed access and the Merkle tree for cryptographic commitment — produces capabilities that neither structure could provide alone.</p>
+
+<p><strong>Graph Structures in Social and Transactional Networks</strong></p>
+
+<p>Graphs are the natural representation for any system where the <em>relationships between entities</em> are as important as the entities themselves. Social networks, fraud detection systems, recommendation engines, and cryptocurrency transaction tracers all rely on graph structures at their core.</p>
+
+<p>The two primary representations of a graph in memory lead to very different performance characteristics. An <em>adjacency matrix</em> is a two-dimensional array where entry [i][j] is 1 if there is an edge from node i to node j, and 0 otherwise. This representation allows O(1) edge existence checks (simply index into the array) but requires O(n²) memory for n nodes. For a social network with a billion users, an adjacency matrix would require on the order of 10¹⁸ bits of storage — completely infeasible. Social graphs are also <em>sparse</em>: a typical user has hundreds of connections out of a possible billion, so the matrix would be overwhelmingly filled with zeros.</p>
+
+<p>An <em>adjacency list</em> represents each node as a list (or hash set) of its neighbors. Memory consumption is O(n + e) where e is the number of edges, which for a sparse graph is far more efficient. Neighbor enumeration — iterating over all connections of a given user — is also efficient because only actual neighbors are stored, not absent connections. The trade-off is that checking whether a specific edge exists between two nodes requires searching through one node's neighbor list, which is O(degree) rather than O(1). In practice, this is managed by using a hash set instead of a linked list for the neighbor collection, recovering O(1) edge checks at the cost of slightly higher memory than a plain list.</p>
+
+<p>Graph traversal algorithms are applied on top of these representations to power higher-level features. <em>Breadth-first search (BFS)</em> explores nodes layer by layer, which makes it ideal for finding shortest paths and for the "degrees of separation" queries underlying friend recommendations. Starting from a user node, BFS identifies all direct friends (distance 1), then all friends-of-friends not yet seen (distance 2), and so on. The set of reachable nodes at each distance is the recommendation pool. BFS requires a queue (typically implemented as a deque or a linked list) and a visited set (typically a hash set for O(1) membership testing) — so even this "graph algorithm" requires combining a graph representation with additional data structures to run efficiently.</p>
+
+<p><em>Depth-first search (DFS)</em> is used when the goal is to explore entire connected components, detect cycles, or perform topological ordering. In fraud detection, DFS can identify clusters of accounts that are all connected through a chain of suspicious transactions, which may indicate coordinated fraud rings. The DFS call stack (or an explicit stack data structure) again illustrates how graph algorithms depend on auxiliary structures.</p>
+
+<p>In cryptocurrency networks, the transaction graph — where nodes are addresses and directed edges represent value transfers — is a rich source of analytical signal. Fund-tracing tools traverse this graph to determine whether funds in a given address can be traced back to a known illicit source. Clustering algorithms group addresses likely controlled by the same entity. Anomaly detection looks for graph patterns — such as a single address receiving funds from thousands of distinct addresses in a short time — that are statistically improbable under normal use. These analyses are often implemented by loading transaction data into a graph database (which internally uses adjacency list representations) and then running traversal algorithms over it.</p>
+
+<p><strong>Trade-offs in Structural Design Decisions</strong></p>
+
+<p>Every choice of data structure embeds a set of trade-offs, and in a composed system, these trade-offs interact and sometimes amplify each other. Understanding the most common categories of trade-off is essential for making principled design decisions.</p>
+
+<p>The <em>time-space trade-off</em> is the most fundamental. Caching — storing a computed or retrieved value in a fast-access structure (typically a hash table) so it does not have to be recomputed or re-fetched — is the universal example. A database query that takes 50 milliseconds becomes a sub-millisecond hash table lookup if the result is cached. The cost is the memory consumed by the cache and the complexity of maintaining cache coherence (ensuring the cached value is invalidated or updated when the underlying data changes). At scale, a caching layer can reduce load on a database by orders of magnitude, but it also introduces the risk of serving stale data.</p>
+
+<p>The <em>read-write trade-off</em> is closely related. Structures that are optimized for reads often impose costs on writes. A sorted array supports O(log n) binary search but requires O(n) time to insert a new element (shifting all subsequent elements). A balanced BST supports both O(log n) search and O(log n) insert, but requires rebalancing operations that can be complex and lock-intensive in concurrent settings. For <em>write-heavy</em> systems — such as a log aggregation service that ingests millions of events per second — an <em>append-only log</em> (structurally a linked list variant where new data is always added at the tail) is often preferred because it requires no rebalancing, no rehashing, and can be written sequentially, which is optimal for both memory and disk I/O patterns. The trade-off is that reads from an append-only log may require scanning, which is why production systems like Kafka pair the log with an index structure to support efficient position-based access.</p>
+
+<p>The <em>scalability trade-off</em> becomes dominant when a system must distribute data across many machines. In-memory hash tables on a single machine can handle millions of operations per second, but cannot exceed the memory capacity of that machine. <em>Distributed hash tables (DHTs)</em>, used in peer-to-peer networks like BitTorrent's Kademlia protocol, partition the key space across many nodes and route lookup requests to the correct node. The structural elegance of DHTs is that they provide O(log n) lookup in a network of n nodes with no central directory — each node only needs to maintain contact information for O(log n) other nodes. The trade-off is that every lookup involves network round-trips, each of which adds latency, so DHT-based systems have higher latency per lookup than local hash tables even though they scale to arbitrarily large datasets.</p>
+
+<p>Choosing the wrong structure for a bottleneck operation is particularly dangerous in composed systems because the cost compounds. If a frequently-called function performs an O(n) linear scan through a linked list when an O(1) hash table lookup would suffice, and that function is called by a graph traversal that runs on every incoming transaction, the entire system's throughput becomes bounded by the linear scan, not by the graph traversal, not by the hash table. Identifying these structural bottlenecks requires both algorithmic analysis (what is the complexity of this operation?) and profiling with production-representative data (is this the operation that actually runs most often?).</p>
+
+<p><strong>Layered Architecture: Structures Within Structures</strong></p>
+
+<p>Layered structural design — embedding one data structure inside another — is a powerful pattern that allows each layer to specialize without affecting the interface of adjacent layers. The outer structure provides one capability (organization, ordering, linking); the inner structure provides another (fast lookup, verification, compression). Together they provide both.</p>
+
+<p>A canonical example outside of blockchain: a graph where each node represents a city and is stored in a hash table keyed by city name. The graph (adjacency list) provides the relational structure — which cities are connected by roads, and what those roads cost. The hash table provides O(1) access to any city's node given its name. When running Dijkstra's algorithm to find the shortest path between two cities, the algorithm traverses the graph structure but initializes itself by looking up the source node in the hash table in O(1). Without the hash table, finding the source node in the graph would require O(n) linear search. This two-level structure — outer graph, inner hash table for node indexing — is so common that graph libraries often provide it automatically.</p>
+
+<p>The blockchain Merkle tree example illustrates a different layering relationship: the inner structure (Merkle tree) adds a property (cryptographic verifiability) to data that is organized by the outer structure (linked list). From the outer structure's perspective, the Merkle root is just a 32-byte field. The outer structure does not need to understand what a Merkle tree is or how it works. This separation of concerns is what makes layered design maintainable: changes to the Merkle tree format do not require changes to how blocks are linked together, and vice versa.</p>
+
+<p>Layered designs do, however, increase implementation complexity. A developer working on the system must understand which structure governs which type of operation. Without clear documentation of invariants at each layer boundary, changes to one layer can silently corrupt another. For example, in a system that uses a linked list for ordering and a hash table for lookup, both structures must be updated atomically whenever an element is inserted or removed. If the hash table is updated but the linked list is not (or vice versa), the two structures become inconsistent, and queries may return different results depending on which structure is used. Maintaining these invariants is a primary source of complexity in composed systems.</p>
+
+<p>Performance analysis of layered systems must account for the compounded cost of cross-layer operations. If a lookup requires first traversing the outer graph to reach the right node (O(log n) or O(degree)), then performing a hash table lookup inside that node (O(1) average), then computing a Merkle proof from the inner tree (O(log m)), the total cost is the sum of all these operations. In the best case, each operation is fast and the compound cost is still fast. In the worst case — a deep traversal triggering a large hash table with many collisions, then a proof over a large Merkle tree — the compound cost can be much worse than any single structure would suggest.</p>
+
+<p><strong>Design Principles for Integrating Multiple Data Structures</strong></p>
+
+<p>Given the complexity and the stakes, it is useful to articulate principles that guide good structural design in complex systems. These are not rules to follow mechanically but heuristics derived from the patterns of success and failure seen in real systems.</p>
+
+<p><strong>Identify dominant operations first.</strong> Before choosing any structure, enumerate all the operations the system must perform and estimate their relative frequency and latency requirements. A lookup that happens a billion times per day and must complete in under a millisecond is a dominant operation that must drive structural choices. An administrative report generated once per week can tolerate O(n) scan. Optimizing for the wrong operation — the one that is interesting algorithmically but rare in practice — is a common and costly mistake. Once dominant operations are identified, select structures that are optimal for each, then look for combinations that cover the full operation set without catastrophic performance on any single operation.</p>
+
+<p><strong>Minimize structural boundary crossings per operation.</strong> Every time a operation crosses a structural boundary — moving from the graph layer to the hash table layer, from in-memory to on-disk, from local to remote — it incurs overhead: function calls, serialization, network latency, or lock acquisition. Designing operations so that they touch as few layers as possible keeps latency low and reduces the surface area for bugs. When a boundary crossing is unavoidable, batch multiple operations that cross the same boundary together, amortizing the overhead cost.</p>
+
+<p><strong>Document invariants at structural boundaries.</strong> For every boundary between two structures, write down explicitly what must be true for the system to be in a consistent state. For example: "Every key that appears in the linked list must also appear in the hash table with the same associated value, and vice versa." These invariants should be checked in tests (and, where performance allows, at runtime with assertions). When modifying one structure, always ask: which invariants does this change affect, and what corresponding changes are needed in adjacent structures to restore them?</p>
+
+<p><strong>Benchmark with production-representative data.</strong> Algorithmic complexity analysis tells you the asymptotic behavior of a structure, but actual performance depends on constants, cache behavior, memory layout, and the distribution of inputs. A hash table with a poor hash function can degrade to O(n) on adversarially chosen inputs. A graph traversal that is O(V + E) in theory can be extremely slow in practice if the graph has a specific structure (e.g., very high-degree nodes) that causes bad cache behavior. Always benchmark with data that matches production distributions — including worst-case inputs where practical — before committing to a structural design. This is especially important in composed systems, where the interaction between structures can produce performance profiles that are difficult to predict analytically.</p>
+
+<p>The following table summarizes the key structures discussed, their primary strengths, their primary weaknesses, and the contexts in which they appear in the case studies above:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Structure</th>
+      <th>Primary Strength</th>
+      <th>Primary Weakness</th>
+      <th>Role in Case Studies</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Hash Table</td>
+      <td>O(1) average-case lookup and insert</td>
+      <td>No ordering; degrades under high load factor or poor hash function</td>
+      <td>UTXO indexing in blockchain; account state lookup in currency networks; node indexing in graph systems</td>
+    </tr>
+    <tr>
+      <td>Singly Linked List</td>
+      <td>O(1) head insertion; no contiguous memory required</td>
+      <td>O(n) search; poor cache locality</td>
+      <td>Block chaining in blockchain; append-only log for write-heavy systems</td>
+    </tr>
+    <tr>
+      <td>Merkle Tree</td>
+      <td>O(log n) inclusion proofs; cryptographic commitment to all data</td>
+      <td>O(n) construction; requires traversal for updates</td>
+      <td>Transaction verification inside each blockchain block; Ethereum state root</td>
+    </tr>
+    <tr>
+      <td>Adjacency List (Graph)</td>
+      <td>Memory-efficient for sparse graphs; fast neighbor enumeration</td>
+      <td>O(degree) edge existence check without augmentation</td>
+      <td>Social networks; cryptocurrency transaction graph analysis; fraud detection</td>
+    </tr>
+    <tr>
+      <td>Adjacency Matrix (Graph)</td>
+      <td>O(1) edge existence check</td>
+      <td>O(n²) memory; impractical for sparse graphs</td>
+      <td>Dense interaction graphs where edge checks dominate</td>
+    </tr>
+    <tr>
+      <td>Merkle Patricia Trie</td>
+      <td>O(k) key lookup; cryptographic commitment; efficient updates</td>
+      <td>Implementation complexity; overhead for short keys</td>
+      <td>Ethereum global state representation</td>
+    </tr>
+    <tr>
+      <td>Distributed Hash Table (DHT)</td>
+      <td>Scales to arbitrary dataset size across many nodes; no central directory</td>
+      <td>O(log n) lookup involves multiple network round-trips</td>
+      <td>Peer-to-peer networks (BitTorrent, early blockchain discovery layers)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The overarching lesson is that structural design in complex systems is an act of composition: you understand the strengths and weaknesses of individual structures, you understand the operation profile of your system, and you combine structures so that each one covers for the weaknesses of the others. The result is a system that is not optimal in any single dimension but is robust and performant across the full range of operations it must support. Blockchain is a compelling example precisely because its structural choices are so clearly motivated by concrete requirements — decentralization, tamper-evidence, high throughput — and the resulting composition is elegant, well-documented, and widely studied. The principles it embodies apply equally to any system where multiple, competing performance and correctness requirements must be satisfied simultaneously.</p>
+        <div class="notes"><strong>Notes</strong>The Merkle Patricia Trie discussion under the Ethereum section accurately reflects Ethereum&#39;s Yellow Paper specification. The DHT discussion references Kademlia, which underlies both BitTorrent and several peer-to-peer blockchain discovery layers. Instructors may wish to pair this material with a hands-on exercise asking students to design a structural composition for a given operation profile before revealing the architecture used by an actual system.</div>
+      </div>
+    </details>
+  </main>
+
+<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
+</body></html>

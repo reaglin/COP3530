@@ -1,0 +1,836 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Big O Notation – List & Array Operations</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    min-height: 100vh;
+    color: #e0e0e0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+
+  h1 {
+    font-size: clamp(1.2rem, 3vw, 1.8rem);
+    text-align: center;
+    margin-bottom: 6px;
+    color: #00d4ff;
+    text-shadow: 0 0 12px rgba(0, 212, 255, 0.4);
+    letter-spacing: 1px;
+  }
+
+  .subtitle {
+    font-size: 0.95rem;
+    color: #a0b4c8;
+    text-align: center;
+    margin-bottom: 14px;
+  }
+
+  .instructions {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(0, 212, 255, 0.25);
+    border-radius: 10px;
+    padding: 12px 20px;
+    max-width: 720px;
+    width: 100%;
+    font-size: 0.9rem;
+    color: #c8d8e8;
+    margin-bottom: 16px;
+    line-height: 1.5;
+    text-align: center;
+  }
+
+  .hud {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+  }
+
+  .score-box {
+    background: rgba(0, 212, 255, 0.1);
+    border: 1px solid rgba(0, 212, 255, 0.4);
+    border-radius: 8px;
+    padding: 8px 22px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #00d4ff;
+  }
+
+  .score-box span {
+    font-size: 1.3rem;
+  }
+
+  .round-box {
+    background: rgba(255, 200, 0, 0.1);
+    border: 1px solid rgba(255, 200, 0, 0.4);
+    border-radius: 8px;
+    padding: 8px 22px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #ffd700;
+  }
+
+  .round-box span {
+    font-size: 1.3rem;
+  }
+
+  .btn-reset {
+    background: linear-gradient(135deg, #0f3460, #16213e);
+    border: 2px solid #00d4ff;
+    color: #00d4ff;
+    font-size: 0.95rem;
+    font-weight: 600;
+    padding: 10px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+    min-height: 44px;
+  }
+
+  .btn-reset:hover {
+    background: rgba(0, 212, 255, 0.15);
+    box-shadow: 0 0 12px rgba(0, 212, 255, 0.4);
+  }
+
+  .btn-reset:active { transform: scale(0.97); }
+
+  .game-area {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+    justify-content: center;
+    width: 100%;
+    max-width: 780px;
+    flex-wrap: wrap;
+  }
+
+  .column-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    min-width: 240px;
+    max-width: 340px;
+  }
+
+  .column-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #a0b4c8;
+    margin-bottom: 10px;
+  }
+
+  .source-column {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .draggable-label {
+    background: linear-gradient(135deg, #1a3a5c, #0f2944);
+    border: 2px solid #00d4ff;
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #d0ecff;
+    cursor: grab;
+    user-select: none;
+    transition: transform 0.15s, box-shadow 0.15s, opacity 0.15s;
+    text-align: center;
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1.3;
+  }
+
+  .draggable-label:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0, 212, 255, 0.35);
+  }
+
+  .draggable-label.dragging {
+    opacity: 0.4;
+    cursor: grabbing;
+  }
+
+  .draggable-label.matched {
+    opacity: 0;
+    pointer-events: none;
+    border-color: transparent;
+    background: transparent;
+  }
+
+  .target-column {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .drop-zone {
+    background: rgba(255,255,255,0.04);
+    border: 2px dashed #4a6080;
+    border-radius: 10px;
+    padding: 12px 16px;
+    min-height: 56px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    transition: border-color 0.2s, background 0.2s;
+    position: relative;
+  }
+
+  .drop-zone-description {
+    font-size: 0.82rem;
+    color: #7090a8;
+    line-height: 1.35;
+    font-style: italic;
+  }
+
+  .drop-zone-placeholder {
+    font-size: 0.78rem;
+    color: #4a6080;
+    margin-top: 4px;
+  }
+
+  .drop-zone.drag-over {
+    border-color: #00d4ff;
+    background: rgba(0, 212, 255, 0.07);
+  }
+
+  .drop-zone.correct {
+    border: 2px solid #28c99a;
+    background: rgba(40, 201, 154, 0.1);
+    animation: correctFlash 0.5s ease;
+  }
+
+  .drop-zone.incorrect {
+    border-color: #e05a5a;
+    background: rgba(224, 90, 90, 0.1);
+    animation: shake 0.4s ease;
+  }
+
+  @keyframes correctFlash {
+    0%   { background: rgba(40, 201, 154, 0.35); }
+    100% { background: rgba(40, 201, 154, 0.1); }
+  }
+
+  @keyframes shake {
+    0%   { transform: translateX(0); }
+    20%  { transform: translateX(-8px); }
+    40%  { transform: translateX(8px); }
+    60%  { transform: translateX(-6px); }
+    80%  { transform: translateX(6px); }
+    100% { transform: translateX(0); }
+  }
+
+  .matched-label {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #28c99a;
+    margin-top: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .matched-label::before {
+    content: '✔';
+    font-size: 0.9rem;
+  }
+
+  .drop-zone-description.matched-desc {
+    color: #7dc8a0;
+    font-style: normal;
+  }
+
+  /* Feedback bar */
+  .feedback-bar {
+    min-height: 36px;
+    max-width: 720px;
+    width: 100%;
+    text-align: center;
+    font-size: 0.95rem;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 8px;
+    margin-bottom: 14px;
+    transition: opacity 0.4s;
+    opacity: 0;
+  }
+
+  .feedback-bar.show { opacity: 1; }
+  .feedback-bar.correct-fb { background: rgba(40,201,154,0.15); color: #28c99a; border: 1px solid #28c99a; }
+  .feedback-bar.incorrect-fb { background: rgba(224,90,90,0.12); color: #e08080; border: 1px solid #e05a5a; }
+
+  /* Win / lose overlays */
+  .overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.78);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 18px;
+    text-align: center;
+    padding: 24px;
+  }
+
+  .overlay.visible { display: flex; }
+
+  .overlay-card {
+    background: linear-gradient(135deg, #0f2944, #1a3a5c);
+    border-radius: 18px;
+    padding: 36px 44px;
+    max-width: 480px;
+    width: 100%;
+    box-shadow: 0 0 60px rgba(0,212,255,0.25);
+  }
+
+  .overlay-card h2 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+  }
+
+  .overlay-card.win h2 { color: #28c99a; }
+  .overlay-card.lose h2 { color: #e08080; }
+
+  .overlay-card p {
+    font-size: 1rem;
+    color: #c0d8e8;
+    margin-bottom: 18px;
+    line-height: 1.5;
+  }
+
+  .overlay-card .big-score {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 8px;
+  }
+
+  .overlay-card.win .big-score { color: #00d4ff; }
+  .overlay-card.lose .big-score { color: #ffd700; }
+
+  .btn-play-again {
+    background: linear-gradient(135deg, #00d4ff, #0099cc);
+    color: #0f2944;
+    border: none;
+    border-radius: 10px;
+    padding: 14px 36px;
+    font-size: 1.05rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.2s;
+    min-height: 50px;
+    letter-spacing: 0.5px;
+  }
+
+  .btn-play-again:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,212,255,0.45);
+  }
+
+  .progress-bar-track {
+    background: rgba(255,255,255,0.08);
+    border-radius: 100px;
+    height: 8px;
+    max-width: 720px;
+    width: 100%;
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #00d4ff, #28c99a);
+    border-radius: 100px;
+    width: 0%;
+    transition: width 0.4s ease;
+  }
+
+  /* Touch drag ghost */
+  .touch-ghost {
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.85;
+    transform: translate(-50%, -50%);
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #d0ecff;
+    background: linear-gradient(135deg, #1a3a5c, #0f2944);
+    border: 2px solid #00d4ff;
+    border-radius: 10px;
+    padding: 10px 16px;
+    max-width: 200px;
+    text-align: center;
+    white-space: normal;
+    line-height: 1.3;
+    box-shadow: 0 6px 20px rgba(0, 212, 255, 0.45);
+  }
+</style>
+</head>
+<body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ 2 - Lists and Arrays: Structure and Introduction to Big O Notation</a></div>
+<div class="pm-injected-nav"><a href="../index.html">← Back to Module</a><span class="sep">|</span><span style="color:#555">Drag-and-Drop Match</span></div>
+<div class="pm-injected-spacer"></div>
+
+<h1>🔢 Big O Notation: List &amp; Array Operations</h1>
+<p class="subtitle">Module 2 – Applying Big O to List and Array Operations</p>
+
+<div class="instructions">
+  <strong>Instructions:</strong> Drag each <em>operation label</em> from the left column and drop it onto its correct
+  <em>Big O description</em> in the right column. Correct matches lock in place. Incorrect drops bounce back.
+  Match all pairs to complete the activity!
+</div>
+
+<div class="hud">
+  <div class="score-box">Score: <span id="scoreDisplay">0</span></div>
+  <div class="round-box">Matched: <span id="matchedDisplay">0</span> / <span id="totalDisplay">0</span></div>
+  <button class="btn-reset" id="resetButton">↺ Reset</button>
+</div>
+
+<div class="progress-bar-track">
+  <div class="progress-bar-fill" id="progressFill"></div>
+</div>
+
+<div class="feedback-bar" id="feedbackBar"></div>
+
+<div class="game-area">
+  <div class="column-wrapper">
+    <div class="column-title">Operations</div>
+    <div class="source-column" id="sourceColumn"></div>
+  </div>
+  <div class="column-wrapper">
+    <div class="column-title">Big O &amp; Descriptions</div>
+    <div class="target-column" id="targetColumn"></div>
+  </div>
+</div>
+
+<!-- Win Overlay -->
+<div class="overlay visible" id="winOverlay">
+  <div class="overlay-card win">
+    <h2>🎉 Excellent Work!</h2>
+    <div class="big-score" id="finalScore">0 pts</div>
+    <p>You correctly matched all Big O complexity descriptions to their list and array operations. You can now reason about the efficiency of different data structure choices!</p>
+    <button class="btn-play-again" id="playAgainWin">Play Again</button>
+  </div>
+</div>
+
+<!-- Lose / Complete Overlay (used when score is below threshold) -->
+<div class="overlay" id="loseOverlay">
+  <div class="overlay-card lose">
+    <h2>📚 Keep Practising!</h2>
+    <div class="big-score" id="loseScore">0 pts</div>
+    <p>You finished the activity but made some mistakes along the way. Review the correct Big O complexities and try again to improve your score!</p>
+    <button class="btn-play-again" id="playAgainLose">Try Again</button>
+  </div>
+</div>
+
+<div class="touch-ghost" id="touchGhost" style="display:none;"></div>
+
+<script>
+  // ─────────────────────────────────────────────────────────────────────────────
+  // DATA: All matchable pairs. label ↔ dropZone
+  // ─────────────────────────────────────────────────────────────────────────────
+  const ALL_PAIRS = [
+    {
+      id: 'pair1',
+      label: 'Access by Index',
+      description: 'O(1) – Constant Time: Directly jump to any element using its index. No traversal needed regardless of array size.',
+      bigO: 'O(1)'
+    },
+    {
+      id: 'pair2',
+      label: 'Search (Unsorted)',
+      description: 'O(n) – Linear Time: Scan elements one by one until the target value is found or the end is reached.',
+      bigO: 'O(n)'
+    },
+    {
+      id: 'pair3',
+      label: 'Insert at End',
+      description: 'O(1) Amortised – Appending to the end of a dynamic array or linked list tail requires no shifting of existing elements.',
+      bigO: 'O(1) amortised'
+    },
+    {
+      id: 'pair4',
+      label: 'Insert at Beginning',
+      description: 'O(n) – Every existing element must shift one position forward to make room for the new element at index 0.',
+      bigO: 'O(n) — shift required'
+    },
+    {
+      id: 'pair5',
+      label: 'Delete at Beginning',
+      description: 'O(n) – Removing the first element requires shifting all remaining elements one position backwards.',
+      bigO: 'O(n) — shift required'
+    },
+    {
+      id: 'pair6',
+      label: 'Delete at End',
+      description: 'O(1) – Removing the last element requires only decrementing the length; no shifting occurs.',
+      bigO: 'O(1) — no shift'
+    },
+    {
+      id: 'pair7',
+      label: 'Insert at Middle',
+      description: 'O(n) – On average, half the elements must be shifted to accommodate the new element at an arbitrary position.',
+      bigO: 'O(n) — partial shift'
+    },
+    {
+      id: 'pair8',
+      label: 'Get Length / Size',
+      description: 'O(1) – The length is stored as a property and returned immediately without iterating through the structure.',
+      bigO: 'O(1) — stored property'
+    }
+  ];
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // STATE
+  // ─────────────────────────────────────────────────────────────────────────────
+  let currentPairs = [];
+  let playerScore = 0;
+  let matchedCount = 0;
+  let totalPairs = 0;
+  let incorrectPenalty = 0;
+  let draggedLabelId = null;
+  let feedbackTimer = null;
+
+  // Touch drag state
+  let touchActiveLabelId = null;
+  let touchGhostEl = null;
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // UTILITY: Shuffle array in place (Fisher-Yates)
+  // ─────────────────────────────────────────────────────────────────────────────
+  function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // INIT: Build the game
+  // ─────────────────────────────────────────────────────────────────────────────
+  function initGame() {
+    playerScore = 0;
+    matchedCount = 0;
+    incorrectPenalty = 0;
+    currentPairs = JSON.parse(JSON.stringify(ALL_PAIRS));
+    totalPairs = currentPairs.length;
+
+    updateScoreDisplay();
+    updateProgressBar();
+    hideFeedback();
+    hideOverlays();
+
+    document.getElementById('totalDisplay').textContent = totalPairs;
+
+    buildSourceColumn();
+    buildTargetColumn();
+  }
+
+  function buildSourceColumn() {
+    const sourceColumn = document.getElementById('sourceColumn');
+    sourceColumn.innerHTML = '';
+
+    const shuffledPairs = shuffleArray([...currentPairs]);
+
+    shuffledPairs.forEach(pair => {
+      const labelEl = document.createElement('div');
+      labelEl.classList.add('draggable-label');
+      labelEl.setAttribute('draggable', 'true');
+      labelEl.dataset.pairId = pair.id;
+      labelEl.id = 'label-' + pair.id;
+      labelEl.textContent = pair.label;
+
+      // Mouse drag events
+      labelEl.addEventListener('dragstart', handleDragStart);
+      labelEl.addEventListener('dragend', handleDragEnd);
+
+      // Touch events
+      labelEl.addEventListener('touchstart', handleTouchStart, { passive: false });
+      labelEl.addEventListener('touchmove', handleTouchMove, { passive: false });
+      labelEl.addEventListener('touchend', handleTouchEnd, { passive: false });
+
+      sourceColumn.appendChild(labelEl);
+    });
+  }
+
+  function buildTargetColumn() {
+    const targetColumn = document.getElementById('targetColumn');
+    targetColumn.innerHTML = '';
+
+    const shuffledPairs = shuffleArray([...currentPairs]);
+
+    shuffledPairs.forEach(pair => {
+      const zoneEl = document.createElement('div');
+      zoneEl.classList.add('drop-zone');
+      zoneEl.dataset.pairId = pair.id;
+      zoneEl.id = 'zone-' + pair.id;
+
+      const descEl = document.createElement('div');
+      descEl.classList.add('drop-zone-description');
+      descEl.textContent = pair.description;
+
+      const placeholderEl = document.createElement('div');
+      placeholderEl.classList.add('drop-zone-placeholder');
+      placeholderEl.textContent = '← Drop operation here';
+      placeholderEl.id = 'placeholder-' + pair.id;
+
+      zoneEl.appendChild(descEl);
+      zoneEl.appendChild(placeholderEl);
+
+      // Mouse drop events
+      zoneEl.addEventListener('dragover', handleDragOver);
+      zoneEl.addEventListener('dragleave', handleDragLeave);
+      zoneEl.addEventListener('drop', handleDrop);
+
+      targetColumn.appendChild(zoneEl);
+    });
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // MOUSE DRAG HANDLERS
+  // ─────────────────────────────────────────────────────────────────────────────
+  function handleDragStart(event) {
+    draggedLabelId = event.currentTarget.dataset.pairId;
+    event.currentTarget.classList.add('dragging');
+    event.dataTransfer.effectAllowed = 'move';
+    event.dataTransfer.setData('text/plain', draggedLabelId);
+  }
+
+  function handleDragEnd(event) {
+    event.currentTarget.classList.remove('dragging');
+    draggedLabelId = null;
+    document.querySelectorAll('.drop-zone').forEach(z => z.classList.remove('drag-over'));
+  }
+
+  function handleDragOver(event) {
+    event.preventDefault();
+    event.dataTransfer.dropEffect = 'move';
+    event.currentTarget.classList.add('drag-over');
+  }
+
+  function handleDragLeave(event) {
+    event.currentTarget.classList.remove('drag-over');
+  }
+
+  function handleDrop(event) {
+    event.preventDefault();
+    const dropZoneEl = event.currentTarget;
+    dropZoneEl.classList.remove('drag-over');
+
+    const droppedPairId = event.dataTransfer.getData('text/plain') || draggedLabelId;
+    if (!droppedPairId) return;
+
+    const targetPairId = dropZoneEl.dataset.pairId;
+    processMatchAttempt(droppedPairId, targetPairId, dropZoneEl);
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // TOUCH DRAG HANDLERS
+  // ─────────────────────────────────────────────────────────────────────────────
+  touchGhostEl = document.getElementById('touchGhost');
+
+  function handleTouchStart(event) {
+    const labelEl = event.currentTarget;
+    touchActiveLabelId = labelEl.dataset.pairId;
+    touchGhostEl.textContent = labelEl.textContent;
+    touchGhostEl.style.display = 'block';
+    const touch = event.touches[0];
+    touchGhostEl.style.left = touch.clientX + 'px';
+    touchGhostEl.style.top = touch.clientY + 'px';
+    labelEl.classList.add('dragging');
+    event.preventDefault();
+  }
+
+  function handleTouchMove(event) {
+    if (!touchActiveLabelId) return;
+    const touch = event.touches[0];
+    touchGhostEl.style.left = touch.clientX + 'px';
+    touchGhostEl.style.top = touch.clientY + 'px';
+
+    // Highlight potential drop zone
+    touchGhostEl.style.display = 'none';
+    const elementBelow = document.elementFromPoint(touch.clientX, touch.clientY);
+    touchGhostEl.style.display = 'block';
+
+    document.querySelectorAll('.drop-zone').forEach(z => z.classList.remove('drag-over'));
+    if (elementBelow) {
+      const zone = elementBelow.closest('.drop-zone');
+      if (zone) zone.classList.add('drag-over');
+    }
+    event.preventDefault();
+  }
+
+  function handleTouchEnd(event) {
+    if (!touchActiveLabelId) return;
+    const touch = event.changedTouches[0];
+
+    touchGhostEl.style.display = 'none';
+
+    const labelEl = document.getElementById('label-' + touchActiveLabelId);
+    if (labelEl) labelEl.classList.remove('dragging');
+
+    touchGhostEl.style.display = 'none';
+    const elementBelow = document.elementFromPoint(touch.clientX, touch.clientY);
+    touchGhostEl.style.display = 'none';
+
+    document.querySelectorAll('.drop-zone').forEach(z => z.classList.remove('drag-over'));
+
+    if (elementBelow) {
+      const zone = elementBelow.closest('.drop-zone');
+      if (zone) {
+        const targetPairId = zone.dataset.pairId;
+        processMatchAttempt(touchActiveLabelId, targetPairId, zone);
+      }
+    }
+
+    touchActiveLabelId = null;
+    event.preventDefault();
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // MATCH LOGIC
+  // ─────────────────────────────────────────────────────────────────────────────
+  function processMatchAttempt(droppedPairId, targetPairId, dropZoneEl) {
+    // Ignore if already matched
+    if (dropZoneEl.classList.contains('correct')) return;
+    const labelEl = document.getElementById('label-' + droppedPairId);
+    if (!labelEl || labelEl.classList.contains('matched')) return;
+
+    if (droppedPairId === targetPairId) {
+      handleCorrectMatch(droppedPairId, dropZoneEl, labelEl);
+    } else {
+      handleIncorrectMatch(droppedPairId, dropZoneEl, labelEl);
+    }
+  }
+
+  function handleCorrectMatch(pairId, dropZoneEl, labelEl) {
+    matchedCount++;
+    const pointsAwarded = 10;
+    playerScore += pointsAwarded;
+
+    // Update drop zone
+    dropZoneEl.classList.remove('incorrect');
+    dropZoneEl.classList.add('correct');
+
+    const descEl = dropZoneEl.querySelector('.drop-zone-description');
+    if (descEl) descEl.classList.add('matched-desc');
+
+    const placeholderEl = document.getElementById('placeholder-' + pairId);
+    if (placeholderEl) {
+      placeholderEl.classList.add('matched-label');
+      placeholderEl.classList.remove('drop-zone-placeholder');
+      placeholderEl.textContent = labelEl.textContent;
+    }
+
+    // Hide source label
+    labelEl.classList.add('matched');
+
+    updateScoreDisplay();
+    updateProgressBar();
+    showFeedback(true, `✔ Correct! "${labelEl.textContent}" matched. +${pointsAwarded} pts`);
+
+    if (matchedCount === totalPairs) {
+      setTimeout(handleGameComplete, 700);
+    }
+  }
+
+  function handleIncorrectMatch(pairId, dropZoneEl, labelEl) {
+    incorrectPenalty++;
+    playerScore = Math.max(0, playerScore - 3);
+
+    dropZoneEl.classList.remove('drag-over');
+    dropZoneEl.classList.add('incorrect');
+    setTimeout(() => dropZoneEl.classList.remove('incorrect'), 600);
+
+    updateScoreDisplay();
+    showFeedback(false, `✘ Not quite right. "${labelEl.textContent}" doesn't belong here. Try again! (-3 pts)`);
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // GAME COMPLETE
+  // ─────────────────────────────────────────────────────────────────────────────
+  function handleGameComplete() {
+    const isExcellent = incorrectPenalty <= 2;
+    if (isExcellent) {
+      document.getElementById('finalScore').textContent = playerScore + ' pts';
+      document.getElementById('winOverlay').classList.add('visible');
+    } else {
+      document.getElementById('loseScore').textContent = playerScore + ' pts';
+      document.getElementById('loseOverlay').classList.add('visible');
+    }
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // UI HELPERS
+  // ─────────────────────────────────────────────────────────────────────────────
+  function updateScoreDisplay() {
+    document.getElementById('scoreDisplay').textContent = playerScore;
+    document.getElementById('matchedDisplay').textContent = matchedCount;
+  }
+
+  function updateProgressBar() {
+    const pct = totalPairs > 0 ? (matchedCount / totalPairs) * 100 : 0;
+    document.getElementById('progressFill').style.width = pct + '%';
+  }
+
+  function showFeedback(isCorrect, message) {
+    const bar = document.getElementById('feedbackBar');
+    bar.textContent = message;
+    bar.className = 'feedback-bar show ' + (isCorrect ? 'correct-fb' : 'incorrect-fb');
+    if (feedbackTimer) clearTimeout(feedbackTimer);
+    feedbackTimer = setTimeout(hideFeedback, 2800);
+  }
+
+  function hideFeedback() {
+    const bar = document.getElementById('feedbackBar');
+    bar.classList.remove('show', 'correct-fb', 'incorrect-fb');
+    bar.textContent = '';
+  }
+
+  function hideOverlays() {
+    document.getElementById('winOverlay').classList.remove('visible');
+    document.getElementById('loseOverlay').classList.remove('visible');
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // BUTTON EVENTS
+  // ─────────────────────────────────────────────────────────────────────────────
+  document.getElementById('resetButton').addEventListener('click', initGame);
+  document.getElementById('playAgainWin').addEventListener('click', initGame);
+  document.getElementById('playAgainLose').addEventListener('click', initGame);
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // BOOTSTRAP
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Hide overlays initially, then show win overlay only after game starts
+  document.getElementById('winOverlay').classList.remove('visible');
+  document.getElementById('loseOverlay').classList.remove('visible');
+  initGame();
+</script>
+
+<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
+</body>
+</html>

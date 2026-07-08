@@ -1,0 +1,515 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Implementing a Hash Table in JavaScript</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+  <style>
+    body { padding-left: 1.1rem; padding-right: 1.1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid rgba(128,128,128,.45); padding: .45em .7em; text-align: left; vertical-align: top; }
+    thead th { background: rgba(128,128,128,.18); font-weight: 600; }
+    tbody tr:nth-child(even) { background: rgba(128,128,128,.08); }
+    a.topic-detail-link { text-decoration: underline; }
+  </style>
+  <style>
+    summary.slide-header { list-style: none; }
+    summary.slide-header::-webkit-details-marker { display: none; }
+    details.slide-card[open] > .slide-body { display: block; }
+    details.slide-card[open] .chevron { transform: rotate(90deg); }
+    @media print { details.slide-card > .slide-body { display: block !important; } .chevron { display: none; } }
+  </style>
+</head><body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Hash Tables: Structure and Collision Resolution</a></div>
+  <header>
+    <h1>Implementing a Hash Table in JavaScript</h1>
+  </header><main>
+    <details class="slide-card" open>
+      <summary class="slide-header"><span class="slide-num">1</span><h2>Implementing a Hash Table in JavaScript</h2><span class="chevron">▶</span></summary>
+      <div class="slide-body">
+        <p>A hash table is one of the most powerful and widely used data structures in computer science, offering average-case O(1) time complexity for insertion, lookup, and deletion. JavaScript's built-in objects and <code>Map</code> type are themselves implemented as hash tables under the hood, but building one from scratch reveals exactly how that performance is achieved. In this deep dive you will construct a fully functional <code>HashTable</code> class step by step, implementing every essential operation — hashing, setting, getting, removing, and iterating — while handling the inevitable collisions that arise when two different keys map to the same bucket.</p>
+
+<p>The core idea is straightforward: convert an arbitrary key (typically a string) into an integer index via a <em>hash function</em>, then store the associated value at that index inside a fixed-size array. Because the array provides O(1) random access by index, retrieving a value is nearly instantaneous once you have the index. The engineering challenge is writing a hash function that distributes keys uniformly and handling the cases where two keys inevitably collide at the same index.</p>
+
+<p><strong>Setting Up the HashTable Class</strong></p>
+
+<p>Every implementation begins with a class definition and a constructor that establishes two things: the size of the internal array and the array itself. Choosing a <em>prime number</em> for the size is a deliberate mathematical choice — prime-sized tables reduce clustering because primes share fewer common factors with typical key-hash values, spreading entries more evenly across buckets.</p>
+
+<pre><code>class HashTable {
+  constructor(size = 53) {
+    this.size  = size;               // prime number → better distribution
+    this.table = new Array(this.size); // sparse array; slots start as undefined
+  }
+}</code></pre>
+
+<p>Storing <code>size</code> as an instance property (<code>this.size</code>) is important because both the hash function and every other method need to know the array's length to compute valid indices and to iterate correctly. Using <code>new Array(53)</code> creates a sparse array with 53 empty slots — none of them are initialised — which is fine because the methods will initialise each bucket on first use.</p>
+
+<p>Common prime choices for the size include 53, 97, 193, 389, and 769. For production tables that grow dynamically, the size would double (to the next prime) and all entries would be <em>rehashed</em> when the load factor exceeds a threshold such as 0.75, but for this implementation the size is fixed.</p>
+
+<p><strong>Writing the Hash Function</strong></p>
+
+<p>The hash function is the engine of the entire structure. A good hash function must satisfy three properties: it must be <em>deterministic</em> (the same key always produces the same index), it must be <em>fast</em> (ideally O(k) where k is the length of the key), and it must <em>distribute keys uniformly</em> to minimise collisions.</p>
+
+<pre><code>class HashTable {
+  constructor(size = 53) {
+    this.size  = size;
+    this.table = new Array(this.size);
+  }
+
+  // "Private" convention: prefix with underscore
+  _hash(key) {
+    let total = 0;
+    const PRIME = 31; // small prime multiplier improves distribution
+
+    for (let i = 0; i &lt; Math.min(key.length, 100); i++) {
+      const charCode = key.charCodeAt(i) - 96; // 'a' → 1, 'b' → 2, …
+      total = (total * PRIME + charCode) % this.size;
+    }
+
+    return total; // always in range [0, this.size - 1]
+  }
+}</code></pre>
+
+<p>Let's unpack every decision in this function:</p>
+
+<ul>
+  <li><strong>charCodeAt(i) − 96</strong> — Subtracting 96 maps lowercase letters to small positive integers ('a' = 97 − 96 = 1, 'z' = 122 − 96 = 26). This isn't strictly necessary but keeps the numbers tidy. For a more general implementation you would omit the subtraction and work with the full Unicode code point.</li>
+  <li><strong>Multiplying by a prime (31)</strong> — Polynomial rolling hash: each step computes <code>total = total * PRIME + charCode</code>. The prime multiplier ensures that anagram-like keys (e.g., "abc" and "bca") hash to different values because the position of each character influences the accumulated result differently. Java's <code>String.hashCode()</code> uses the same technique with 31.</li>
+  <li><strong>Modulo (% this.size)</strong> — Applied at every iteration rather than only at the end to prevent integer overflow in environments without big-integer arithmetic. JavaScript numbers are IEEE 754 doubles, which lose integer precision beyond 2⁵³, so keeping the running total small is important.</li>
+  <li><strong>Capping at 100 characters</strong> — For very long strings the loop is bounded to 100 iterations so the function remains practically O(1) even if keys are lengthy paragraphs.</li>
+</ul>
+
+<p>To see the function in action, consider two keys with a table size of 53:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Key</th>
+      <th>Computation sketch</th>
+      <th>Result index</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>"pink"</code></td>
+      <td>0→'p'→31·0+16=16→'i'→31·16+9=505→… % 53</td>
+      <td>example: 17</td>
+    </tr>
+    <tr>
+      <td><code>"cyan"</code></td>
+      <td>0→'c'→31·0+3=3→'y'→31·3+25=118→… % 53</td>
+      <td>example: 5</td>
+    </tr>
+    <tr>
+      <td><code>"blue"</code></td>
+      <td>0→'b'→31·0+2=2→'l'→31·2+12=74→… % 53</td>
+      <td>example: 21</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Two different keys <em>may</em> produce the same index — that is a collision, and it is handled by the set and get methods below.</p>
+
+<p><strong>Implementing the set Method with Chaining</strong></p>
+
+<p>The most common strategy for resolving collisions is <em>separate chaining</em>: each bucket in the table holds an array (a "chain") of all key-value pairs that hashed to that index. When a new key arrives at an already-occupied bucket it is simply appended to that bucket's array. Retrieval then scans the (typically very short) chain for the matching key.</p>
+
+<pre><code>set(key, value) {
+  const index = this._hash(key);
+
+  // 1. Initialise the bucket if it does not yet exist
+  if (!this.table[index]) {
+    this.table[index] = [];
+  }
+
+  // 2. Check for an existing entry with the same key (update in place)
+  const bucket = this.table[index];
+  for (let i = 0; i &lt; bucket.length; i++) {
+    if (bucket[i][0] === key) {
+      bucket[i][1] = value; // update existing key
+      return;
+    }
+  }
+
+  // 3. No existing entry — append a new [key, value] pair
+  bucket.push([key, value]);
+}</code></pre>
+
+<p>The three-phase logic is critical:</p>
+
+<ul>
+  <li><strong>Phase 1 — Lazy initialisation:</strong> The bucket is created as an empty array only when it is first needed. This keeps the table memory-efficient when most slots are empty.</li>
+  <li><strong>Phase 2 — Duplicate check:</strong> Before pushing, the code scans the existing pairs. If a pair with the same key already exists its value is overwritten rather than creating a second entry for the same key. This matches the expected behaviour of any key-value store (the last write wins).</li>
+  <li><strong>Phase 3 — Insertion:</strong> Only if no duplicate is found is the new pair appended. Each pair is stored as a two-element array <code>[key, value]</code>, making it easy to destructure during retrieval.</li>
+</ul>
+
+<p>Example of a collision being handled gracefully:</p>
+
+<pre><code>const ht = new HashTable(7); // small size forces collisions quickly
+
+ht.set("grape",  2.99);
+ht.set("apple",  1.49);
+ht.set("mango",  3.49); // may collide with "grape" or "apple"
+
+// Even if two keys share index 4, both are stored in that bucket's array:
+// table[4] → [ ["grape", 2.99], ["mango", 3.49] ]</code></pre>
+
+<p><strong>Implementing the get Method</strong></p>
+
+<p>Retrieving a value mirrors the insertion logic: hash the key to find the bucket, then walk the bucket's chain looking for a matching key.</p>
+
+<pre><code>get(key) {
+  const index = this._hash(key);
+  const bucket = this.table[index];
+
+  // Bucket doesn't exist → key was never inserted
+  if (!bucket) return undefined;
+
+  // Search the chain for the matching key
+  for (let i = 0; i &lt; bucket.length; i++) {
+    if (bucket[i][0] === key) {
+      return bucket[i][1]; // found — return the value
+    }
+  }
+
+  // Key not found in the bucket
+  return undefined;
+}</code></pre>
+
+<p>The early return when <code>!bucket</code> is an important short-circuit: if the slot was never initialised there is nothing to search. The scan uses <em>strict equality</em> (<code>===</code>) so that keys are compared by value and type without any type coercion that could lead to subtle bugs. In the average case the bucket chain is length 1 so the loop terminates immediately — O(1). In the worst case (every key hashing to the same bucket) it degrades to O(n), which is why a good hash function and an appropriately sized table matter.</p>
+
+<pre><code>console.log(ht.get("grape"));  // 2.99
+console.log(ht.get("apple"));  // 1.49
+console.log(ht.get("kiwi"));   // undefined — never inserted
+console.log(ht.get("Grape"));  // undefined — keys are case-sensitive</code></pre>
+
+<p><strong>Implementing the remove Method</strong></p>
+
+<p>Removal requires finding the entry and then cleanly excising it from the bucket's chain without disrupting the other entries sharing that bucket.</p>
+
+<pre><code>remove(key) {
+  const index = this._hash(key);
+  const bucket = this.table[index];
+
+  if (!bucket) return false; // nothing to remove
+
+  for (let i = 0; i &lt; bucket.length; i++) {
+    if (bucket[i][0] === key) {
+      const removed = bucket.splice(i, 1)[0]; // removes 1 element at position i
+      // Optional: clean up the bucket reference if now empty
+      if (bucket.length === 0) {
+        this.table[index] = undefined;
+      }
+      return removed; // truthy — the removed [key, value] pair
+    }
+  }
+
+  return false; // key not found — falsy
+}</code></pre>
+
+<p>Key design decisions in <code>remove</code>:</p>
+
+<ul>
+  <li><strong>splice(i, 1)</strong> mutates the bucket array by removing exactly one element at position <code>i</code> and returns it as a single-element array, hence <code>[0]</code> to unwrap it. An alternative approach using <code>filter()</code> creates a new array (<code>bucket.filter(pair => pair[0] !== key)</code>) and reassigns it to <code>this.table[index]</code> — cleaner but slightly less memory-efficient.</li>
+  <li><strong>Clearing empty buckets</strong> — Setting the slot back to <code>undefined</code> when the chain becomes empty allows the <code>keys()</code> method (below) to skip it efficiently and keeps memory tidy.</li>
+  <li><strong>Return value semantics</strong> — Returning the removed pair on success gives callers the old value (useful if they want to do something with it), while returning <code>false</code> for a missing key lets callers distinguish "removed" from "not found" without throwing an error.</li>
+</ul>
+
+<pre><code>console.log(ht.remove("grape"));  // ["grape", 2.99] — success
+console.log(ht.remove("grape"));  // false — already removed
+console.log(ht.remove("kiwi"));   // false — never existed</code></pre>
+
+<p><strong>Adding a keys Method to Iterate Entries</strong></p>
+
+<p>Because the internal array is sparse and each occupied slot holds a chain of pairs, iterating over all entries requires a two-level loop. A <code>keys()</code> method collects every unique key; an <code>entries()</code> variant collects <code>[key, value]</code> tuples; a <code>values()</code> variant collects just the values.</p>
+
+<pre><code>keys() {
+  const results = [];
+
+  for (let i = 0; i &lt; this.table.length; i++) {
+    const bucket = this.table[i];
+    if (bucket) {                          // skip empty slots
+      for (const [key] of bucket) {        // destructure each [key, value] pair
+        results.push(key);
+      }
+    }
+  }
+
+  return results;
+}
+
+// entries() variant — returns [[key, value], …]
+entries() {
+  const results = [];
+
+  for (let i = 0; i &lt; this.table.length; i++) {
+    const bucket = this.table[i];
+    if (bucket) {
+      for (const pair of bucket) {
+        results.push(pair); // push the full [key, value] pair
+      }
+    }
+  }
+
+  return results;
+}
+
+// values() variant — returns values only (may contain duplicates)
+values() {
+  const seen = new Set();   // deduplicate if multiple keys map to same value
+  const results = [];
+
+  for (let i = 0; i &lt; this.table.length; i++) {
+    const bucket = this.table[i];
+    if (bucket) {
+      for (const [, value] of bucket) {
+        if (!seen.has(value)) {
+          seen.add(value);
+          results.push(value);
+        }
+      }
+    }
+  }
+
+  return results;
+}</code></pre>
+
+<p>Note that the order in which keys are returned is determined by their hash index, not by insertion order. If you need insertion-order iteration, JavaScript's native <code>Map</code> guarantees that, but a hand-rolled hash table does not without extra bookkeeping (such as maintaining a separate doubly linked list of entries, as the <em>LinkedHashMap</em> in Java does).</p>
+
+<p><strong>The Complete Implementation</strong></p>
+
+<pre><code>class HashTable {
+  constructor(size = 53) {
+    this.size  = size;
+    this.table = new Array(this.size);
+  }
+
+  _hash(key) {
+    let total = 0;
+    const PRIME = 31;
+    for (let i = 0; i &lt; Math.min(key.length, 100); i++) {
+      total = (total * PRIME + (key.charCodeAt(i) - 96)) % this.size;
+    }
+    return total;
+  }
+
+  set(key, value) {
+    const index = this._hash(key);
+    if (!this.table[index]) this.table[index] = [];
+    const bucket = this.table[index];
+    for (let i = 0; i &lt; bucket.length; i++) {
+      if (bucket[i][0] === key) { bucket[i][1] = value; return; }
+    }
+    bucket.push([key, value]);
+  }
+
+  get(key) {
+    const bucket = this.table[this._hash(key)];
+    if (!bucket) return undefined;
+    for (const [k, v] of bucket) if (k === key) return v;
+    return undefined;
+  }
+
+  remove(key) {
+    const index  = this._hash(key);
+    const bucket = this.table[index];
+    if (!bucket) return false;
+    for (let i = 0; i &lt; bucket.length; i++) {
+      if (bucket[i][0] === key) {
+        const removed = bucket.splice(i, 1)[0];
+        if (bucket.length === 0) this.table[index] = undefined;
+        return removed;
+      }
+    }
+    return false;
+  }
+
+  keys() {
+    const results = [];
+    for (const bucket of this.table) {
+      if (bucket) for (const [k] of bucket) results.push(k);
+    }
+    return results;
+  }
+
+  entries() {
+    const results = [];
+    for (const bucket of this.table) {
+      if (bucket) for (const pair of bucket) results.push(pair);
+    }
+    return results;
+  }
+}</code></pre>
+
+<p><strong>Testing and Validating the Implementation</strong></p>
+
+<p>A rigorous test suite checks not only the happy path but also edge cases that commonly expose bugs in hash table implementations. Work through each category systematically.</p>
+
+<p><em>Basic operations:</em></p>
+
+<pre><code>const ht = new HashTable(53);
+
+// Insert several entries
+ht.set("name",    "Alice");
+ht.set("age",     30);
+ht.set("country", "Canada");
+
+// Retrieve them
+console.assert(ht.get("name")    === "Alice",  "name should be Alice");
+console.assert(ht.get("age")     === 30,        "age should be 30");
+console.assert(ht.get("country") === "Canada",  "country should be Canada");</code></pre>
+
+<p><em>Collision handling — use a small table to force collisions:</em></p>
+
+<pre><code>const small = new HashTable(7); // only 7 buckets → high collision probability
+
+small.set("a", 1);
+small.set("b", 2);
+small.set("c", 3);
+small.set("d", 4);
+small.set("e", 5);
+small.set("f", 6);
+small.set("g", 7);
+
+// All values must still be independently retrievable
+["a","b","c","d","e","f","g"].forEach((key, i) => {
+  console.assert(small.get(key) === i + 1, `${key} should be ${i + 1}`);
+});</code></pre>
+
+<p><em>Update an existing key (no duplicate entries):</em></p>
+
+<pre><code>ht.set("age", 31);           // overwrite the existing "age" entry
+console.assert(ht.get("age") === 31, "age should be updated to 31");
+
+// Confirm only one entry for "age" exists
+const ageEntries = ht.entries().filter(([k]) => k === "age");
+console.assert(ageEntries.length === 1, "no duplicate keys should exist");</code></pre>
+
+<p><em>Remove operations:</em></p>
+
+<pre><code>const removed = ht.remove("name");
+console.assert(removed[0] === "name" && removed[1] === "Alice",
+               "remove should return the removed pair");
+
+console.assert(ht.get("name") === undefined,
+               "get after remove should return undefined");
+
+console.assert(ht.remove("name") === false,
+               "removing a non-existent key should return false");</code></pre>
+
+<p><em>Edge cases:</em></p>
+
+<pre><code>const empty = new HashTable();
+
+// get on a completely empty table
+console.assert(empty.get("anything") === undefined,
+               "get on empty table should return undefined");
+
+// remove on a completely empty table
+console.assert(empty.remove("anything") === false,
+               "remove on empty table should return false");
+
+// keys() on an empty table
+console.assert(empty.keys().length === 0,
+               "keys on empty table should return empty array");
+
+// Case sensitivity
+empty.set("Key", "upper");
+empty.set("key", "lower");
+console.assert(empty.get("Key")  === "upper", "'Key' and 'key' are different");
+console.assert(empty.get("key")  === "lower", "'key' entry must not be overwritten");
+console.assert(empty.keys().length === 2,      "two distinct entries expected");</code></pre>
+
+<p>The table below summarises the expected time complexity of each operation under the two most important conditions:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Operation</th>
+      <th>Average Case</th>
+      <th>Worst Case (all keys collide)</th>
+      <th>Space</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>_hash(key)</code></td>
+      <td>O(k) — k = key length</td>
+      <td>O(k)</td>
+      <td>O(1)</td>
+    </tr>
+    <tr>
+      <td><code>set(key, value)</code></td>
+      <td>O(1)</td>
+      <td>O(n)</td>
+      <td>O(1) amortised</td>
+    </tr>
+    <tr>
+      <td><code>get(key)</code></td>
+      <td>O(1)</td>
+      <td>O(n)</td>
+      <td>O(1)</td>
+    </tr>
+    <tr>
+      <td><code>remove(key)</code></td>
+      <td>O(1)</td>
+      <td>O(n)</td>
+      <td>O(1)</td>
+    </tr>
+    <tr>
+      <td><code>keys()</code> / <code>entries()</code></td>
+      <td>O(n)</td>
+      <td>O(n)</td>
+      <td>O(n)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The worst case only occurs when every single key hashes to the same bucket, which a well-designed hash function with a prime-sized table makes astronomically unlikely in practice. That is why the choice of hash function, the prime size, and keeping the load factor low are the three pillars of a performant hash table. With those in place the implementation above delivers the near-constant-time performance that makes hash tables indispensable across virtually every domain of software engineering.</p>
+        <div class="notes"><strong>Notes</strong>The complete class is assembled incrementally so students can build it method by method. The test section deliberately includes a small-table scenario to guarantee students observe collisions being resolved correctly rather than accidentally avoiding them with a large table. The time-complexity table reinforces why average-case O(1) holds only with a good hash function and an appropriately sized table.</div>
+      </div>
+    </details>
+  </main>
+
+<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
+</body></html>

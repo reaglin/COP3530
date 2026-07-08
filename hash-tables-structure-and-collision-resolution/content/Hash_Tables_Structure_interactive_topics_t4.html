@@ -1,0 +1,361 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Collision Resolution: Chaining</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+  <style>
+    body { padding-left: 1.1rem; padding-right: 1.1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid rgba(128,128,128,.45); padding: .45em .7em; text-align: left; vertical-align: top; }
+    thead th { background: rgba(128,128,128,.18); font-weight: 600; }
+    tbody tr:nth-child(even) { background: rgba(128,128,128,.08); }
+    a.topic-detail-link { text-decoration: underline; }
+  </style>
+  <style>
+    summary.slide-header { list-style: none; }
+    summary.slide-header::-webkit-details-marker { display: none; }
+    details.slide-card[open] > .slide-body { display: block; }
+    details.slide-card[open] .chevron { transform: rotate(90deg); }
+    @media print { details.slide-card > .slide-body { display: block !important; } .chevron { display: none; } }
+  </style>
+</head><body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Hash Tables: Structure and Collision Resolution</a></div>
+  <header>
+    <h1>Collision Resolution: Chaining</h1>
+  </header><main>
+    <details class="slide-card" open>
+      <summary class="slide-header"><span class="slide-num">1</span><h2>Collision Resolution: Chaining</h2><span class="chevron">▶</span></summary>
+      <div class="slide-body">
+        <p>When two or more keys produce the same hash value and therefore map to the same index in the underlying array, a <strong>collision</strong> occurs. Every hash table implementation must have a strategy for handling collisions, and one of the oldest, most intuitive, and most widely used strategies is called <strong>chaining</strong>. Instead of searching for a different empty slot elsewhere in the array, chaining allows multiple key-value pairs to coexist peacefully at the same index by attaching them together in a secondary data structure — most commonly a linked list — that hangs off that bucket. Understanding chaining deeply means understanding not just how to implement it, but why it behaves the way it does under different workloads, and where its strengths and weaknesses lie compared with alternative approaches.</p>
+
+<p><strong>What Is Chaining?</strong></p>
+
+<p>The fundamental idea behind chaining is elegantly simple: every slot in the hash table's backing array does not hold a single key-value pair — it holds the <em>head</em> of an independent collection. When no keys have hashed to that index, the slot is empty (or holds a null reference). As soon as one key maps there, a node containing that key-value pair is placed in the slot. When a second key maps to the same index, rather than displacing the first or hunting for another slot, a new node is created and linked to the existing one. The slot now points to a list of two entries. A third collision at the same index simply extends the list to three nodes, and so on.</p>
+
+<p>This approach means each bucket is entirely <strong>self-contained</strong>. A collision at index 5 has absolutely no effect on index 6 or any other index. The entries at index 5 form their own private list, and entries everywhere else in the table are completely unaffected. This isolation is one of chaining's most appealing characteristics.</p>
+
+<p>While <strong>singly linked lists</strong> are the canonical choice for the bucket container — they are dynamic, require no pre-allocated memory, and support prepend in O(1) — they are not the only option. Some implementations use:</p>
+
+<ul>
+  <li><strong>Doubly linked lists</strong>, which make deletion slightly easier because you already have a pointer to the previous node.</li>
+  <li><strong>Dynamic arrays</strong> (like Python lists or Java ArrayLists), which offer better cache locality within a bucket at the cost of occasional resizing.</li>
+  <li><strong>Self-balancing binary search trees</strong> (such as red-black trees), which guarantee O(log k) worst-case lookup within a bucket of size k. Java's <code>HashMap</code> actually converts a bucket's linked list into a red-black tree when that bucket's chain length exceeds 8 entries, providing a safety net against degenerate inputs.</li>
+</ul>
+
+<p>For the purposes of this discussion, a singly linked list is the primary mental model, as it illustrates all the essential concepts most clearly.</p>
+
+<p>Consider a hash table with 7 buckets and keys <em>"apple"</em>, <em>"grape"</em>, and <em>"mango"</em>, where suppose <code>hash("apple") % 7 = 3</code>, <code>hash("grape") % 7 = 3</code>, and <code>hash("mango") % 7 = 1</code>. After all insertions, the table looks conceptually like this:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Index</th>
+      <th>Bucket Contents</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td><em>empty</em></td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>"mango" → null</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td><em>empty</em></td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>"apple" → "grape" → null</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td><em>empty</em></td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td><em>empty</em></td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td><em>empty</em></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Index 3 holds a two-node chain because both "apple" and "grape" hashed there. Every other index is either empty or holds a single-element chain. The key insight is that no slot is ever "full" — a bucket's chain can grow as long as memory permits.</p>
+
+<p><strong>Inserting with Chaining</strong></p>
+
+<p>Inserting a new key-value pair into a chaining hash table follows a straightforward sequence of steps:</p>
+
+<ul>
+  <li>Compute the hash of the key and reduce it to a valid index: <code>index = hash(key) % capacity</code>.</li>
+  <li><strong>Check for an existing key first.</strong> Walk the chain at that index looking for a node whose key equals the new key. If found, update its value in place and stop. This prevents duplicate keys, which would corrupt the logical map abstraction.</li>
+  <li>If no matching key exists, create a new node containing the key-value pair and insert it into the list. The most common insertion point is the <strong>head</strong> of the list, because prepending to a singly linked list is O(1) — you simply point the new node's <code>next</code> to the current head and update the bucket pointer to the new node.</li>
+</ul>
+
+<p>Here is a pseudocode representation of this process:</p>
+
+<pre><code>function insert(table, key, value):
+    index = hash(key) % table.capacity
+    current = table.buckets[index]
+
+    // Check for existing key
+    while current is not null:
+        if current.key == key:
+            current.value = value   // update in place
+            return
+        current = current.next
+
+    // Key not found — prepend a new node
+    newNode = Node(key, value)
+    newNode.next = table.buckets[index]
+    table.buckets[index] = newNode
+    table.size = table.size + 1
+</code></pre>
+
+<p>On average, when chains are short (which is the goal of a well-designed hash table), the while loop terminates quickly, making insertion effectively <strong>O(1) on average</strong>. The single expensive case is when many keys collide at the same bucket, but a good hash function and appropriate load factor management prevent this in practice.</p>
+
+<p>It is worth noting that some implementations choose to <em>append</em> to the tail of the list instead of prepending. This is slightly more expensive for a singly linked list (requiring a traversal to find the tail), but it preserves insertion order within a bucket, which can occasionally matter. The duplicate-check traversal required anyway means the tail position is already known by the time insertion occurs, so appending adds no extra cost in that context.</p>
+
+<p><strong>Searching and Retrieving Values</strong></p>
+
+<p>Lookup in a chaining hash table is conceptually identical to the first phase of insertion:</p>
+
+<ul>
+  <li>Compute <code>index = hash(key) % capacity</code>.</li>
+  <li>Walk the linked list at <code>table.buckets[index]</code>, comparing each node's key against the target key.</li>
+  <li>If a match is found, return the associated value.</li>
+  <li>If the end of the list is reached without a match, return <code>null</code> or <code>undefined</code> to signal that the key is absent.</li>
+</ul>
+
+<pre><code>function search(table, key):
+    index = hash(key) % table.capacity
+    current = table.buckets[index]
+
+    while current is not null:
+        if current.key == key:
+            return current.value
+        current = current.next
+
+    return null   // key not found
+</code></pre>
+
+<p>The <strong>average-case</strong> time complexity of lookup is <strong>O(1)</strong>, but this statement deserves a careful qualification. It holds when two conditions are met: (1) the hash function distributes keys approximately uniformly across buckets, and (2) the load factor — the ratio of stored entries to the number of buckets — is kept reasonably low. When both conditions hold, the expected chain length at any given bucket is proportional to the load factor, which is treated as a small constant, giving O(1) expected time.</p>
+
+<p>The <strong>worst-case</strong> time complexity of lookup is <strong>O(n)</strong>, where n is the total number of entries in the table. This worst case materializes when <em>every single key</em> hashes to the same index, turning the entire hash table into one long linked list and reducing it to a structure no better than a linear search. This is not merely a theoretical concern — an adversary who knows the hash function can craft inputs that deliberately trigger this scenario, a vulnerability known as a <strong>hash collision attack</strong>. Modern hash table implementations defend against this with randomized hash seeds (hash randomization), switching to tree-based buckets at high chain lengths, or both.</p>
+
+<p><strong>Deleting Entries with Chaining</strong></p>
+
+<p>Deletion is one of the areas where chaining shines compared with alternative strategies like open addressing. To delete a key:</p>
+
+<ul>
+  <li>Compute the bucket index as usual.</li>
+  <li>Walk the list, keeping track of both the current node and the <strong>previous node</strong>.</li>
+  <li>When the target key is found:
+    <ul>
+      <li>If it is the <strong>head node</strong> (previous is null), update the bucket pointer directly to <code>current.next</code>.</li>
+      <li>If it is a <strong>deeper node</strong>, set <code>previous.next = current.next</code>, which stitches the list back together, skipping the deleted node.</li>
+    </ul>
+  </li>
+  <li>Decrement the table's size counter.</li>
+  <li>If the key is not found, report failure or simply do nothing.</li>
+</ul>
+
+<pre><code>function delete(table, key):
+    index = hash(key) % table.capacity
+    current = table.buckets[index]
+    previous = null
+
+    while current is not null:
+        if current.key == key:
+            if previous is null:
+                table.buckets[index] = current.next  // was head node
+            else:
+                previous.next = current.next          // bypass deleted node
+            table.size = table.size - 1
+            return true   // deletion succeeded
+        previous = current
+        current = current.next
+
+    return false   // key not found
+</code></pre>
+
+<p>The performance profile of deletion mirrors that of lookup: <strong>O(1) average</strong> and <strong>O(n) worst case</strong>. Crucially, deletion in chaining is semantically clean — once a node is unlinked and its memory freed, it is truly gone. There are no ghost entries or special sentinel values left behind in the array. This cleanliness is a significant advantage over open addressing schemes, which must leave behind "tombstone" markers at deleted positions to avoid breaking the probe sequence for other keys that passed through that slot during their own insertion.</p>
+
+<p><strong>Load Factor and Its Effect on Chain Length</strong></p>
+
+<p>The <strong>load factor</strong> (commonly written as λ or α) is defined as:</p>
+
+<pre><code>load_factor = number_of_entries / number_of_buckets
+</code></pre>
+
+<p>It is the single most important quantity governing the performance of a chaining hash table. Under the assumption of uniform hashing (which a good hash function approximates), the expected length of the chain at any given bucket equals the load factor. This relationship directly determines the cost of all three operations:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Load Factor</th>
+      <th>Expected Chain Length</th>
+      <th>Performance Character</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0.1 (very low)</td>
+      <td>~0.1 nodes/bucket</td>
+      <td>Most buckets empty; chains are trivially short; near-instant operations</td>
+    </tr>
+    <tr>
+      <td>0.5 (moderate)</td>
+      <td>~0.5 nodes/bucket</td>
+      <td>Good balance of memory usage and speed</td>
+    </tr>
+    <tr>
+      <td>1.0 (balanced)</td>
+      <td>~1.0 nodes/bucket</td>
+      <td>Acceptable; operations still roughly O(1) on average</td>
+    </tr>
+    <tr>
+      <td>3.0 (high)</td>
+      <td>~3.0 nodes/bucket</td>
+      <td>Chains growing noticeably; lookup cost visibly increasing</td>
+    </tr>
+    <tr>
+      <td>10.0+ (very high)</td>
+      <td>~10+ nodes/bucket</td>
+      <td>Severely degraded; table behaves like linked list traversal</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Most practical implementations target a maximum load factor between <strong>0.7 and 1.0</strong> before triggering a <strong>resize</strong>. Resizing involves allocating a new, larger array (typically double the previous capacity), recomputing the hash-based index for every existing key-value pair in the old table, and reinserting each one into the new array. This process is called <strong>rehashing</strong>. It is an O(n) operation — every entry must be touched — but because it happens at most every time the table doubles in size, the amortized cost per insertion remains O(1).</p>
+
+<p>After a resize, the load factor drops by approximately half (since capacity doubled while the number of entries stayed the same), chains become very short again, and fast O(1) average performance is restored. This dynamic resizing is what allows hash tables to maintain their performance guarantees as data grows, without requiring the programmer to predict in advance how many entries will be stored.</p>
+
+<p><strong>Trade-offs of Chaining vs. Other Strategies</strong></p>
+
+<p>Chaining is not the only collision resolution strategy. <strong>Open addressing</strong> is the primary alternative, where all entries are stored directly inside the backing array and a collision triggers a probe sequence to find the next available slot (using linear probing, quadratic probing, or double hashing). Understanding where chaining wins and loses relative to open addressing is essential for choosing the right implementation.</p>
+
+<ul>
+  <li>
+    <strong>Load factor ceiling:</strong> Chaining allows the load factor to exceed 1.0 without any logical failure — the chains simply grow longer. Open addressing fundamentally requires the load factor to remain strictly below 1.0, because every entry must occupy one of the array's slots, and a full array leaves nowhere to probe. In practice, open addressing becomes severely degraded well before the load factor reaches 1.0 (typically at around 0.7–0.8 for linear probing), making aggressive resizing mandatory.
+  </li>
+  <li>
+    <strong>Memory layout and cache behavior:</strong> Open addressing stores all data inside a single contiguous array. This is extremely cache-friendly — probing nearby slots during a collision hits memory that the CPU has likely already fetched into cache. Chaining, by contrast, stores overflow nodes in heap-allocated memory scattered throughout RAM. Accessing the bucket itself is cache-friendly, but <em>following the linked list's next pointers</em> is a series of pointer dereferences into potentially distant memory locations, which the CPU's cache cannot predict or prefetch efficiently. For workloads with high lookup frequency and short chains, open addressing often wins on raw speed due to this cache advantage.
+  </li>
+  <li>
+    <strong>Memory overhead:</strong> Each node in a linked list carries a <code>next</code> pointer in addition to the key and value. For small keys and values (like integers), this pointer overhead can double the memory footprint per entry compared with open addressing, which stores entries inline. However, chaining avoids the need to over-provision the backing array — with open addressing, a table at 50% load has half its array slots sitting empty as wasted reserved space.
+  </li>
+  <li>
+    <strong>Deletion simplicity:</strong> As discussed, deletion in chaining is clean and leaves no side effects. In open addressing, deleting an entry by simply clearing its slot would break the probe chain for other entries that were displaced through that slot during their insertions. The standard fix — marking deleted slots with a special "tombstone" value — accumulates over time, degrading performance and requiring periodic compaction or rehashing to clear tombstones. Chaining completely avoids this problem.
+  </li>
+  <li>
+    <strong>Predictability under adversarial inputs:</strong> Both strategies are vulnerable to adversarial key patterns, but the degradation manifests differently. With chaining, adversarial keys pile into one bucket creating a single long list; with open addressing, adversarial keys create long clustering patterns that slow probing across wide regions of the array. Both can be mitigated with hash randomization.
+  </li>
+  <li>
+    <strong>Suitability for unpredictable workloads:</strong> Because chaining can absorb arbitrarily many entries per bucket (memory permitting) and because deletion is side-effect free, chaining is generally the preferred choice when the number of insertions is unknown in advance, when deletions are frequent, or when the table will be heavily loaded. Open addressing tends to be favored in performance-critical systems where the working set is known, the load factor can be tightly controlled, and cache efficiency is paramount (such as in embedded systems, database indexes, or CPU caches themselves).
+  </li>
+</ul>
+
+<p>To summarize the comparison concisely:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Chaining</th>
+      <th>Open Addressing</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Max load factor</td>
+      <td>Unlimited (graceful degradation)</td>
+      <td>Must be &lt; 1.0 (hard limit)</td>
+    </tr>
+    <tr>
+      <td>Average lookup</td>
+      <td>O(1)</td>
+      <td>O(1)</td>
+    </tr>
+    <tr>
+      <td>Worst-case lookup</td>
+      <td>O(n)</td>
+      <td>O(n)</td>
+    </tr>
+    <tr>
+      <td>Cache efficiency</td>
+      <td>Moderate (pointer chasing)</td>
+      <td>High (contiguous array)</td>
+    </tr>
+    <tr>
+      <td>Deletion</td>
+      <td>Simple, no side effects</td>
+      <td>Requires tombstones or rehashing</td>
+    </tr>
+    <tr>
+      <td>Memory overhead per entry</td>
+      <td>Higher (pointer per node)</td>
+      <td>Lower (inline storage)</td>
+    </tr>
+    <tr>
+      <td>Best for</td>
+      <td>Unpredictable load, frequent deletions</td>
+      <td>Known load, performance-critical, cache-sensitive</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Chaining is the backbone of many production hash table implementations, including the default dictionaries in Python (which uses open addressing, but Java's <code>HashMap</code>, Ruby's <code>Hash</code>, and many C++ <code>std::unordered_map</code> implementations use chaining). Its simplicity, flexibility, and graceful handling of high load and frequent deletions make it an enduringly practical choice wherever the full generality of a hash map is needed.</p>
+        <div class="notes"><strong>Notes</strong>Covers the chaining strategy for handling collisions, where multiple key-value pairs at the same index are stored in a linked list or similar structure. Analyzes the trade-offs and performance implications of chaining. Pseudocode examples are included for insert, search, and delete operations. Java HashMap&#39;s hybrid chaining/tree-bucket approach is noted as a real-world refinement.</div>
+      </div>
+    </details>
+  </main>
+
+<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
+</body></html>

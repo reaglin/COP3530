@@ -1,224 +1,253 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Hash Algorithms and Applications: Password Hashing and Beyond — COP3530</title>
   <style>
-    /* ── Reset & Base ── */
     *, *::before, *::after {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
 
-    body {
-      font-family: 'Segoe UI', system-ui, -apple-system, Arial, sans-serif;
-      font-size: 16px;
-      line-height: 1.6;
-      background-color: #f4f6f9;
-      color: #2c3e50;
+    :root {
+      --color-bg: #f4f6f9;
+      --color-surface: #ffffff;
+      --color-border: #dde2ea;
+      --color-primary: #1a4f8a;
+      --color-primary-light: #2563b0;
+      --color-accent: #0f7b6c;
+      --color-accent-light: #e6f4f2;
+      --color-text: #1e2430;
+      --color-muted: #5a6376;
+      --color-badge-bg: #eef2f8;
+      --color-badge-text: #1a4f8a;
+      --color-filetype-bg: #f0faf8;
+      --color-filetype-text: #0f7b6c;
+      --radius: 8px;
+      --shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+      --shadow-hover: 0 6px 18px rgba(0, 0, 0, 0.12);
+      --font-main: 'Segoe UI', system-ui, -apple-system, sans-serif;
     }
 
-    /* ── Page Header ── */
+    body {
+      font-family: var(--font-main);
+      background-color: var(--color-bg);
+      color: var(--color-text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
     header {
-      background: linear-gradient(135deg, #1a3a5c 0%, #2563a8 100%);
-      color: #ffffff;
-      padding: 48px 24px 40px;
+      background: linear-gradient(135deg, #0d3264 0%, #1a4f8a 60%, #1e6fa0 100%);
+      color: #fff;
+      padding: 3rem 1.5rem 2.5rem;
       text-align: center;
     }
 
     header .course-label {
       display: inline-block;
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       font-weight: 600;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      background-color: rgba(255, 255, 255, 0.18);
-      border: 1px solid rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.25);
       border-radius: 20px;
-      padding: 4px 14px;
-      margin-bottom: 18px;
-      color: #d6e8ff;
+      padding: 0.28rem 0.9rem;
+      margin-bottom: 1.1rem;
+      color: #cfe4f8;
     }
 
     header h1 {
-      font-size: clamp(1.5rem, 3vw, 2.4rem);
+      font-size: clamp(1.5rem, 3.5vw, 2.4rem);
       font-weight: 700;
       line-height: 1.25;
-      max-width: 800px;
-      margin: 0 auto 18px;
-      letter-spacing: -0.01em;
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem;
+      max-width: 780px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     header p.intro {
-      font-size: 1rem;
+      font-size: 1.02rem;
+      color: #cfe4f8;
       max-width: 680px;
       margin: 0 auto;
-      color: #c8dcf5;
       line-height: 1.7;
     }
 
-    /* ── Main Content ── */
+    /* ── Main layout ── */
     main {
       max-width: 1100px;
-      margin: 0 auto;
-      padding: 40px 24px 60px;
+      margin: 2.5rem auto 3.5rem;
+      padding: 0 1.25rem;
     }
 
-    .section-heading {
-      font-size: 0.75rem;
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      gap: 0.75rem;
+      margin-bottom: 1.4rem;
+    }
+
+    .section-header h2 {
+      font-size: 1.15rem;
       font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: #6b7c93;
-      margin-bottom: 20px;
-      padding-bottom: 8px;
-      border-bottom: 2px solid #dce3ec;
+      color: var(--color-primary);
     }
 
-    /* ── Card Grid ── */
+    .section-header .count {
+      font-size: 0.82rem;
+      color: var(--color-muted);
+      background: var(--color-badge-bg);
+      border-radius: 20px;
+      padding: 0.15rem 0.65rem;
+      font-weight: 600;
+    }
+
+    /* ── Card grid ── */
     .card-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 24px;
+      gap: 1.25rem;
     }
 
     .card {
-      background: #ffffff;
-      border: 1px solid #dce3ec;
-      border-radius: 10px;
-      padding: 24px;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 1.35rem 1.4rem 1.3rem;
       display: flex;
       flex-direction: column;
-      gap: 12px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      gap: 0.65rem;
       transition: box-shadow 0.2s ease, transform 0.2s ease;
     }
 
     .card:hover {
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+      box-shadow: var(--shadow-hover);
       transform: translateY(-2px);
     }
 
-    /* ── Card Top Row: badges ── */
+    /* ── Card meta row ── */
     .card-meta {
       display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
       align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
     }
 
     .badge {
-      font-size: 0.7rem;
+      font-size: 0.72rem;
       font-weight: 600;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.04em;
+      padding: 0.2rem 0.6rem;
+      border-radius: 20px;
       text-transform: uppercase;
-      border-radius: 4px;
-      padding: 3px 9px;
     }
 
     .badge-type {
-      background-color: #e8f0fc;
-      color: #2563a8;
-      border: 1px solid #c3d5f5;
+      background: var(--color-badge-bg);
+      color: var(--color-badge-text);
+      border: 1px solid #c5d5ed;
     }
 
     .badge-filetype {
-      background-color: #f0f4f8;
-      color: #4a5568;
-      border: 1px solid #d2dce9;
+      background: var(--color-filetype-bg);
+      color: var(--color-filetype-text);
+      border: 1px solid #b3ddd8;
       font-family: 'Courier New', Courier, monospace;
     }
 
-    /* ── Card Title Row ── */
+    /* ── Card title row ── */
     .card-title-row {
       display: flex;
+      align-items: flex-start;
+      gap: 0.55rem;
       flex-wrap: wrap;
-      align-items: baseline;
-      gap: 10px;
     }
 
     .card-title {
-      font-size: 1.05rem;
+      font-size: 1.02rem;
       font-weight: 700;
-      color: #1a3a5c;
-      line-height: 1.3;
+      color: var(--color-text);
+      line-height: 1.35;
+      flex: 1 1 auto;
     }
 
     .card-title a {
-      color: #2563a8;
+      color: var(--color-primary-light);
       text-decoration: none;
-      border-bottom: 2px solid transparent;
-      transition: border-color 0.15s ease, color 0.15s ease;
+      transition: color 0.15s;
     }
 
-    .card-title a:hover,
-    .card-title a:focus {
-      color: #1a4f9c;
-      border-bottom-color: #2563a8;
-      outline: none;
+    .card-title a:hover {
+      color: var(--color-primary);
+      text-decoration: underline;
     }
 
     .source-link {
-      font-size: 0.75rem;
-      font-weight: 500;
-      color: #5a7fa8;
-      text-decoration: none;
       display: inline-flex;
       align-items: center;
-      gap: 4px;
+      gap: 0.25rem;
+      font-size: 0.74rem;
+      font-weight: 600;
+      color: var(--color-accent);
+      text-decoration: none;
+      background: var(--color-accent-light);
+      border: 1px solid #a8d8d2;
+      border-radius: 5px;
+      padding: 0.18rem 0.5rem;
       white-space: nowrap;
-      padding: 2px 8px;
-      border: 1px solid #b3cce5;
-      border-radius: 4px;
-      background-color: #f0f6ff;
-      transition: background-color 0.15s ease, color 0.15s ease;
+      flex-shrink: 0;
+      transition: background 0.15s, color 0.15s;
+      align-self: flex-start;
+      margin-top: 0.05rem;
+    }
+
+    .source-link:hover {
+      background: #c5ecea;
+      color: #0a5e52;
     }
 
     .source-link::before {
-      content: "⤓";
-      font-size: 0.85rem;
+      content: '⬇';
+      font-size: 0.68rem;
     }
 
-    .source-link:hover,
-    .source-link:focus {
-      background-color: #dceeff;
-      color: #1a4f9c;
-      border-color: #7aafd4;
-      outline: none;
-    }
-
-    /* ── Card Description ── */
+    /* ── Description ── */
     .card-description {
-      font-size: 0.9rem;
-      color: #4a5568;
+      font-size: 0.88rem;
+      color: var(--color-muted);
       line-height: 1.65;
-      flex-grow: 1;
+      flex: 1;
     }
 
     /* ── Footer ── */
     footer {
       text-align: center;
-      padding: 24px 16px;
+      padding: 1.5rem 1rem 2rem;
       font-size: 0.8rem;
-      color: #8a9bb0;
-      border-top: 1px solid #dce3ec;
-      background-color: #f4f6f9;
+      color: var(--color-muted);
+      border-top: 1px solid var(--color-border);
     }
 
-    /* ── Responsive tweaks ── */
-    @media (max-width: 480px) {
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
       header {
-        padding: 36px 16px 30px;
+        padding: 2.2rem 1.2rem 2rem;
       }
 
-      main {
-        padding: 28px 16px 48px;
+      .card-grid {
+        grid-template-columns: 1fr;
       }
 
       .card {
-        padding: 20px;
+        padding: 1.1rem 1.15rem;
       }
     }
   </style>
@@ -228,22 +257,24 @@
 <div style="border:1px solid #c9d4e3;background:#f5f8fc;border-radius:8px;padding:10px 16px;margin:0 0 18px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;font-family:'Segoe UI',Arial,sans-serif"><strong style="color:#1a3c6e">Module outline:</strong><a href="topics-outcomes.html#topics" style="color:#1a3c6e;font-weight:600;text-decoration:none">📋 Module Topics</a><a href="topics-outcomes.html#outcomes" style="color:#137333;font-weight:600;text-decoration:none">🎯 Student Learning Outcomes</a></div>
 
   <header>
-    <div class="course-label">COP3530 &mdash; Data Structures</div>
+    <div class="course-label">COP3530 — Data Structures</div>
     <h1>Hash Algorithms and Applications: Password Hashing and Beyond</h1>
     <p class="intro">
-      Explore the theory and practical applications of hash algorithms, from foundational hash
-      function concepts and cryptographic properties&mdash;including preimage and collision
-      resistance&mdash;to real-world password hashing techniques and their broader uses in
-      modern computing systems.
+      Explore how hash functions underpin modern security and data integrity — from cryptographic
+      properties and password storage fundamentals to real-world applications, attack vectors,
+      and industry best practices. Use the resources below to navigate this module's topics and materials.
     </p>
   </header>
 
   <main>
-    <p class="section-heading">Module Artifacts</p>
+    <div class="section-header">
+      <h2>Module Artifacts</h2>
+      <span class="count">9 items</span>
+    </div>
 
     <div class="card-grid">
 
-      <!-- Artifact: Module Topics -->
+      <!-- Artifact 1: Module Topics -->
       <div class="card">
         <div class="card-meta">
           <span class="badge badge-type">Module Topics</span>
@@ -253,17 +284,161 @@
           <span class="card-title">
             <a href="content/module_topics.html">Module Topics</a>
           </span>
-          <a
-            class="source-link"
-            href="source/hierarchy.json"
-            aria-label="Source file for Module Topics"
-          >source file</a>
+          <a class="source-link" href="source/hierarchy.json">source file</a>
         </div>
         <p class="card-description">
-          Outlines the module&rsquo;s learning topics&mdash;from basic hash function concepts
-          and cryptographic properties (preimage and collision resistance) through password
-          hashing fundamentals and beyond&mdash;serving as a navigational overview for learners
-          and instructors to understand the scope and sequence of the module.
+          Outlines the module's learning topics — from basic hash function concepts and cryptographic
+          properties (preimage and collision resistance) through password hashing fundamentals and beyond —
+          serving as a navigational overview for learners and instructors to understand the scope and sequence
+          of the module.
+        </p>
+      </div>
+
+      <!-- Artifact 2: Introduction to Hashing Algorithms -->
+      <div class="card">
+        <div class="card-meta">
+          <span class="badge badge-type">Topic Detail</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <span class="card-title">
+            <a href="content/Hash_Algorithms_and_interactive_topics_t1.html">Introduction to Hashing Algorithms</a>
+          </span>
+        </div>
+        <p class="card-description">
+          This reading introduces hashing algorithms by explaining what they are, how they transform
+          arbitrary input into fixed-length output, and why they are central to security, data integrity,
+          and authentication — serving as a conceptual starting point for learners new to the topic.
+        </p>
+      </div>
+
+      <!-- Artifact 3: Cryptographic Hash Functions -->
+      <div class="card">
+        <div class="card-meta">
+          <span class="badge badge-type">Topic Detail</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <span class="card-title">
+            <a href="content/Hash_Algorithms_and_interactive_topics_t2.html">Cryptographic Hash Functions</a>
+          </span>
+        </div>
+        <p class="card-description">
+          This reading explains the defining properties of cryptographic hash functions (arbitrary input,
+          fixed-length digest, determinism, avalanche effect, and one-way nature), covering how they underpin
+          modern information security and how learners should evaluate and distinguish them from general-purpose
+          hash functions.
+        </p>
+      </div>
+
+      <!-- Artifact 4: Password Hashing Fundamentals -->
+      <div class="card">
+        <div class="card-meta">
+          <span class="badge badge-type">Topic Detail</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <span class="card-title">
+            <a href="content/Hash_Algorithms_and_interactive_topics_t3.html">Password Hashing Fundamentals</a>
+          </span>
+        </div>
+        <p class="card-description">
+          This reading covers why secure password storage matters, the history of mishandled credential
+          storage, and the fundamentals of hashing passwords — explaining why plaintext and weakly hashed
+          storage fail and establishing the baseline techniques learners and developers should apply.
+        </p>
+      </div>
+
+      <!-- Artifact 5: Salting and Advanced Password Protection Techniques -->
+      <div class="card">
+        <div class="card-meta">
+          <span class="badge badge-type">Topic Detail</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <span class="card-title">
+            <a href="content/Hash_Algorithms_and_interactive_topics_t4.html">Salting and Advanced Password Protection Techniques</a>
+          </span>
+        </div>
+        <p class="card-description">
+          This reading explains the salting technique — why it is necessary on top of basic password hashing,
+          how unique salts defeat precomputed attacks such as rainbow tables, and what additional advanced
+          password-protection strategies (e.g., key stretching, adaptive algorithms) learners and developers
+          should adopt.
+        </p>
+      </div>
+
+      <!-- Artifact 6: Ensuring Data Integrity with Hashing -->
+      <div class="card">
+        <div class="card-meta">
+          <span class="badge badge-type">Topic Detail</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <span class="card-title">
+            <a href="content/Hash_Algorithms_and_interactive_topics_t5.html">Ensuring Data Integrity with Hashing</a>
+          </span>
+        </div>
+        <p class="card-description">
+          This reading describes how hash functions are used beyond passwords to verify data integrity —
+          covering checksum verification for downloads, software package signing, and tampered-document
+          detection — showing learners how to apply hashing as a practical integrity assurance tool.
+        </p>
+      </div>
+
+      <!-- Artifact 7: Common Attacks and Vulnerabilities -->
+      <div class="card">
+        <div class="card-meta">
+          <span class="badge badge-type">Topic Detail</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <span class="card-title">
+            <a href="content/Hash_Algorithms_and_interactive_topics_t6.html">Common Attacks and Vulnerabilities</a>
+          </span>
+        </div>
+        <p class="card-description">
+          This reading surveys common attacks that exploit weaknesses in hashing systems — such as brute-force,
+          dictionary, rainbow table, collision, and length-extension attacks — helping learners and instructors
+          understand what goes wrong when hash functions are misapplied or weakened.
+        </p>
+      </div>
+
+      <!-- Artifact 8: Best Practices and Real-World Applications (Topic Detail) -->
+      <div class="card">
+        <div class="card-meta">
+          <span class="badge badge-type">Topic Detail</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <span class="card-title">
+            <a href="content/Hash_Algorithms_and_interactive_topics_t7.html">Best Practices and Real-World Applications</a>
+          </span>
+        </div>
+        <p class="card-description">
+          This reading consolidates best practices for selecting and applying the right cryptographic hash
+          algorithm for each use case (password storage, file integrity, digital signatures) and illustrates
+          real-world applications, helping learners translate theoretical knowledge into correct implementation
+          decisions.
+        </p>
+      </div>
+
+      <!-- Artifact 9: Best Practices and Real-World Applications (Text Content) -->
+      <div class="card">
+        <div class="card-meta">
+          <span class="badge badge-type">Text Content</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <span class="card-title">
+            <a href="content/Hash_Algorithms_and_interactive.html">Best Practices and Real-World Applications</a>
+          </span>
+        </div>
+        <p class="card-description">
+          This reading covers the same best-practices and real-world applications content as the preceding
+          Topic Detail, consolidating guidance on choosing appropriate hash algorithms by context and
+          illustrating deployment scenarios — learners can use it as a reference or review resource alongside
+          the preceding readings.
         </p>
       </div>
 
@@ -271,7 +446,7 @@
   </main>
 
   <footer>
-    COP3530 &mdash; Data Structures &bull; Hash Algorithms and Applications: Password Hashing and Beyond
+    COP3530 — Data Structures &nbsp;·&nbsp; Hash Algorithms and Applications: Password Hashing and Beyond
   </footer>
 
 

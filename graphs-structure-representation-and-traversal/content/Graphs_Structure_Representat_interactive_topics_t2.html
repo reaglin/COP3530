@@ -1,0 +1,194 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Directed and Undirected Graphs</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+  <style>
+    body { padding-left: 1.1rem; padding-right: 1.1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid rgba(128,128,128,.45); padding: .45em .7em; text-align: left; vertical-align: top; }
+    thead th { background: rgba(128,128,128,.18); font-weight: 600; }
+    tbody tr:nth-child(even) { background: rgba(128,128,128,.08); }
+    a.topic-detail-link { text-decoration: underline; }
+  </style>
+  <style>
+    summary.slide-header { list-style: none; }
+    summary.slide-header::-webkit-details-marker { display: none; }
+    details.slide-card[open] > .slide-body { display: block; }
+    details.slide-card[open] .chevron { transform: rotate(90deg); }
+    @media print { details.slide-card > .slide-body { display: block !important; } .chevron { display: none; } }
+  </style>
+</head><body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Graphs: Structure, Representation, and Traversal</a></div>
+  <header>
+    <h1>Directed and Undirected Graphs</h1>
+  </header><main>
+    <details class="slide-card" open>
+      <summary class="slide-header"><span class="slide-num">1</span><h2>Directed and Undirected Graphs</h2><span class="chevron">▶</span></summary>
+      <div class="slide-body">
+        <p>Graphs are one of the most fundamental and expressive data structures in computer science and mathematics. Unlike linear structures such as arrays or linked lists, or hierarchical structures such as trees, a graph can represent virtually any kind of relationship between objects — whether that relationship is symmetric or one-sided, simple or complex, sparse or densely connected. Understanding graphs begins with a precise definition and then broadens into the rich landscape of directed and undirected variants, each with its own structural rules, properties, and real-world domains of application.</p>
+
+<p>A graph <strong>G</strong> is formally defined as <strong>G = (V, E)</strong>, where <strong>V</strong> is a finite, non-empty set of <em>vertices</em> (also called nodes) and <strong>E</strong> is a set of <em>edges</em> that encode relationships between pairs of vertices. A vertex represents an entity — a person, a city, a web page, a task — and an edge represents some meaningful connection or relationship between two such entities. The power of the graph model lies in its generality: by choosing appropriate vertices and edges, you can model an extraordinary range of real-world problems and reason about them using a unified body of theory and algorithms.</p>
+
+<p>For example, consider a small graph with four vertices and four edges:</p>
+
+<pre><code>V = { A, B, C, D }
+E = { (A, B), (A, C), (B, D), (C, D) }
+</code></pre>
+
+<p>This graph captures that A is connected to B and C, and that both B and C are connected to D. Depending on whether those edges carry a direction, this same structure could represent very different real-world situations — a symmetric road network or an asymmetric dependency chain. That distinction is precisely what separates undirected graphs from directed graphs.</p>
+
+<p><strong>Undirected graphs</strong> are graphs in which every edge is inherently bidirectional. When we write an edge as the pair <em>(A, B)</em>, we mean simultaneously that A is connected to B <em>and</em> B is connected to A. There is no source and no target — the relationship is symmetric by definition. Visually, undirected edges are drawn as plain lines without arrowheads. The most natural way to think about an undirected edge is as a two-way street: if you can drive from city A to city B along that road, you can equally drive from B to A.</p>
+
+<p>A central property of every vertex in an undirected graph is its <strong>degree</strong>, which is the total number of edges incident to (touching) that vertex. If vertex A participates in three edges, its degree is 3. A useful identity called the <em>Handshaking Lemma</em> states that the sum of all vertex degrees equals exactly twice the number of edges, because every edge contributes one to the degree of each of its two endpoints:</p>
+
+<pre><code>Sum of all degrees = 2 × |E|
+</code></pre>
+
+<p>This has immediate practical consequences: the sum of degrees in any undirected graph is always even, so a graph can never have an odd number of vertices with odd degree. Understanding vertex degrees helps in tasks such as detecting Eulerian paths and identifying highly connected hub nodes in a network.</p>
+
+<p>Undirected graphs are the natural model whenever a relationship is <em>mutual</em> — when the fact that A relates to B automatically implies that B relates to A. Common examples include:</p>
+
+<ul>
+  <li><strong>Friendship networks</strong> on platforms like Facebook, where if Alice is friends with Bob, Bob is equally friends with Alice. Each user is a vertex and each friendship is an undirected edge.</li>
+  <li><strong>Road maps</strong> where every road segment permits travel in both directions. Intersections become vertices and road segments become undirected edges. Shortest-path algorithms on such maps rely on this symmetry.</li>
+  <li><strong>Computer network topologies</strong> where an Ethernet cable or wireless link between two machines supports bidirectional communication. Network reliability analysis, bandwidth planning, and fault detection all leverage the undirected graph model.</li>
+  <li><strong>Collaboration and co-authorship networks</strong>, where two researchers share an undirected edge if they have co-authored a paper. Community detection algorithms use such graphs to find clusters of closely collaborating scientists.</li>
+</ul>
+
+<p><strong>Directed graphs</strong>, commonly called <em>digraphs</em>, introduce directionality to edges. An edge in a directed graph is an <em>ordered pair</em> <strong>(A, B)</strong>, meaning there is a directed connection <em>from</em> A <em>to</em> B. This does <em>not</em> imply the existence of an edge from B to A. Visually, directed edges are drawn as arrows. The vertex A is called the <em>tail</em> or <em>source</em> of the edge, and B is called the <em>head</em> or <em>target</em>.</p>
+
+<p>Because edges carry direction, each vertex in a directed graph has two distinct degree measures:</p>
+
+<ul>
+  <li><strong>In-degree</strong>: the number of edges arriving at the vertex (edges for which this vertex is the target). A high in-degree indicates that many other nodes point to this one — a property exploited by Google's PageRank algorithm, where a web page with many incoming links is considered authoritative.</li>
+  <li><strong>Out-degree</strong>: the number of edges departing from the vertex (edges for which this vertex is the source). A high out-degree indicates that this node references or leads to many others.</li>
+</ul>
+
+<p>Consider the following directed graph:</p>
+
+<pre><code>V = { A, B, C, D }
+E = { (A, B), (A, C), (B, D), (C, B) }
+
+In-degrees:  A=0, B=2, C=1, D=1
+Out-degrees: A=2, B=1, C=1, D=0
+</code></pre>
+
+<p>Here, A has no incoming edges but two outgoing ones, while D has one incoming edge but no outgoing edges. Such structural analysis is essential for topological sorting: in dependency resolution, vertices with in-degree zero are the ones with no prerequisites and can be processed first.</p>
+
+<p>Directed graphs are the natural model whenever a relationship is <em>asymmetric</em> — when A relating to B does not necessarily mean B relates to A. Common examples include:</p>
+
+<ul>
+  <li><strong>The World Wide Web</strong>: each web page is a vertex, and each hyperlink is a directed edge pointing from the linking page to the linked page. A page may be linked to by thousands of others while itself linking to only a handful. Web crawlers traverse this directed graph, and search engine ranking algorithms exploit its structure.</li>
+  <li><strong>Task scheduling and build systems</strong>: in a software build system such as Make or Gradle, tasks are vertices and a directed edge from task A to task B means "A must be completed before B begins." The build system performs a topological sort of this directed acyclic graph (DAG) to determine a valid execution order. Cycles in this graph represent impossible dependency loops, which the system must detect and reject.</li>
+  <li><strong>Social follower relationships</strong> on platforms like Twitter or Instagram: user A can follow user B without B following A back. The directed edge (A, B) means "A follows B." Algorithms for finding influencers (high in-degree nodes), detecting echo chambers, and recommending accounts all operate on this directed structure.</li>
+  <li><strong>Citation networks</strong>: in academic literature, a paper that cites another paper creates a directed edge. Because time flows forward, a paper cannot cite a future paper, making the citation graph a DAG — a fact used in algorithms for measuring academic influence.</li>
+</ul>
+
+<p>The table below summarizes the key structural differences between undirected and directed graphs side by side:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Undirected Graph</th>
+      <th>Directed Graph (Digraph)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Edge representation</td>
+      <td>Unordered pair {A, B}</td>
+      <td>Ordered pair (A, B)</td>
+    </tr>
+    <tr>
+      <td>Edge symmetry</td>
+      <td>Always symmetric: {A,B} = {B,A}</td>
+      <td>Not necessarily symmetric: (A,B) ≠ (B,A)</td>
+    </tr>
+    <tr>
+      <td>Degree measure</td>
+      <td>Single degree per vertex</td>
+      <td>In-degree and out-degree per vertex</td>
+    </tr>
+    <tr>
+      <td>Maximum edges (simple graph)</td>
+      <td>|V| × (|V| − 1) / 2</td>
+      <td>|V| × (|V| − 1)</td>
+    </tr>
+    <tr>
+      <td>Connectivity concept</td>
+      <td>Connected / disconnected</td>
+      <td>Strongly connected / weakly connected</td>
+    </tr>
+    <tr>
+      <td>Cycle detection</td>
+      <td>Any back edge in DFS indicates a cycle</td>
+      <td>Only back edges in DFS tree indicate cycles</td>
+    </tr>
+    <tr>
+      <td>Topological sort</td>
+      <td>Not applicable (no ordering implied)</td>
+      <td>Applicable on DAGs; used for scheduling</td>
+    </tr>
+    <tr>
+      <td>Typical use cases</td>
+      <td>Road maps, social friendships, network links</td>
+      <td>Web links, dependencies, follower graphs</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>One subtle but important distinction concerns <strong>counting edges</strong>. In an undirected simple graph on <em>n</em> vertices, the maximum number of edges is <em>n(n−1)/2</em>, because each unordered pair of distinct vertices can appear at most once. In a directed simple graph on the same <em>n</em> vertices, the maximum number of edges is <em>n(n−1)</em>, because the ordered pairs (A, B) and (B, A) are counted separately and both may exist simultaneously. This means a directed graph can encode up to twice as much pairwise relationship information as its undirected counterpart on the same vertex set.</p>
+
+<p>The directionality of a graph also has deep implications for <strong>connectivity</strong>. In an undirected graph, a graph is simply called <em>connected</em> if there exists a path between every pair of vertices. In a directed graph, stronger distinctions apply: a digraph is <em>strongly connected</em> if for every ordered pair (A, B) there exists a directed path from A to B <em>and</em> a directed path from B to A. It is <em>weakly connected</em> if the underlying undirected version (obtained by ignoring edge directions) would be connected. Many real-world directed graphs — such as the web graph — are not strongly connected but do contain large <em>strongly connected components</em>, groups of pages that can mutually reach one another via hyperlinks.</p>
+
+<p>Finally, the choice between directed and undirected representation directly affects which algorithms are applicable and how they behave. <strong>Cycle detection</strong> differs: in an undirected graph, any back edge encountered during a depth-first search (DFS) reveals a cycle, whereas in a directed graph, only back edges — edges pointing to an ancestor in the DFS tree — signal a directed cycle (cross edges and forward edges do not). <strong>Topological sorting</strong> is defined only for directed acyclic graphs and has no meaningful counterpart in undirected graphs. <strong>Shortest path algorithms</strong> such as Dijkstra's operate similarly in both, but directed graphs allow one-way constraints that undirected graphs cannot express. Choosing the right graph type at the outset of problem modeling is therefore not merely a cosmetic decision — it determines the entire algorithmic toolkit available to solve the problem.</p>
+        <div class="notes"><strong>Notes</strong>Covers formal graph definition G=(V,E), undirected vs directed edge semantics, degree/in-degree/out-degree, the Handshaking Lemma, maximum edge counts, connectivity concepts (strongly vs weakly connected), and algorithmic implications including cycle detection and topological sort. Real-world use cases grounded in Facebook, Twitter, WWW, build systems, and road maps.</div>
+      </div>
+    </details>
+  </main>
+
+<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
+</body></html>

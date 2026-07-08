@@ -1,0 +1,62 @@
+﻿[
+  {
+    "title": "4- The Stack: Structure and Use Cases \u2014 Topics \u0026 Learning Outcomes",
+    "href": "topics-outcomes.html",
+    "type": "Page"
+  },
+  {
+    "title": "4- The Stack: Structure and Use Cases \u2014 Module Topics",
+    "href": "topics.html",
+    "type": "Page"
+  },
+  {
+    "title": "4- The Stack: Structure and Use Cases \u2014 Module Topics",
+    "href": "content/module_topics.html",
+    "type": "Content"
+  },
+  {
+    "title": "Introduction to the Stack Data Structure",
+    "href": "content/The_Stack_Structure_interactive_topics_t1.html",
+    "type": "Content"
+  },
+  {
+    "title": "The LIFO Principle",
+    "href": "content/The_Stack_Structure_interactive_topics_t2.html",
+    "type": "Content"
+  },
+  {
+    "title": "Internal Implementation of a Stack",
+    "href": "content/The_Stack_Structure_interactive_topics_t3.html",
+    "type": "Content"
+  },
+  {
+    "title": "Building a Stack in JavaScript",
+    "href": "content/The_Stack_Structure_interactive_topics_t4.html",
+    "type": "Content"
+  },
+  {
+    "title": "Expression Evaluation Using Stacks",
+    "href": "content/The_Stack_Structure_interactive_topics_t5.html",
+    "type": "Content"
+  },
+  {
+    "title": "Undo Mechanisms and Other Real-World Use Cases",
+    "href": "content/The_Stack_Structure_interactive_topics_t6.html",
+    "type": "Content"
+  },
+  {
+    "title": "Undo Mechanisms and Other Real-World Use Cases",
+    "href": "content/_interactive.html",
+    "type": "Content"
+  },
+  {
+    "title": "Cloze Passage: The Stack Data Structure",
+    "href": "interactive/cloze-passage-interactive.html",
+    "type": "Interactive"
+  },
+  {
+    "title": "Interactive Activities \u2014 4- The Stack: Structure and Use Cases",
+    "href": "interactive/index.html",
+    "type": "Interactive"
+  }
+]

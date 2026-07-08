@@ -1,0 +1,219 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Omega and Theta Notations</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+  <style>
+    body { padding-left: 1.1rem; padding-right: 1.1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid rgba(128,128,128,.45); padding: .45em .7em; text-align: left; vertical-align: top; }
+    thead th { background: rgba(128,128,128,.18); font-weight: 600; }
+    tbody tr:nth-child(even) { background: rgba(128,128,128,.08); }
+    a.topic-detail-link { text-decoration: underline; }
+  </style>
+  <style>
+    summary.slide-header { list-style: none; }
+    summary.slide-header::-webkit-details-marker { display: none; }
+    details.slide-card[open] > .slide-body { display: block; }
+    details.slide-card[open] .chevron { transform: rotate(90deg); }
+    @media print { details.slide-card > .slide-body { display: block !important; } .chevron { display: none; } }
+  </style>
+</head><body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Computational Complexity: Deep Dive into Analysis</a></div>
+  <header>
+    <h1>Omega and Theta Notations</h1>
+  </header><main>
+    <details class="slide-card" open>
+      <summary class="slide-header"><span class="slide-num">1</span><h2>Omega and Theta Notations</h2><span class="chevron">▶</span></summary>
+      <div class="slide-body">
+        <p>When analyzing algorithms, a single perspective is rarely enough. Big O notation tells you the worst that can happen — an upper ceiling on how badly an algorithm's resource consumption can grow — but it says nothing about how well the algorithm might perform under favorable conditions, nor does it tell you whether the upper bound you have found is the tightest possible description. To complete the picture, computer scientists use two additional asymptotic notations: <strong>Omega (Ω)</strong> and <strong>Theta (Θ)</strong>. Together, all three notations form a coherent framework for describing algorithmic complexity with precision, and understanding when and why to reach for each one is a foundational skill in algorithm analysis.</p>
+
+<p><strong>Omega Notation: Defining Lower Bounds</strong></p>
+
+<p>Omega notation answers a fundamentally different question than Big O. Where Big O asks "how bad can this get?", Omega asks: <em>"What is the minimum amount of work this algorithm must do?"</em> It establishes a <strong>lower bound</strong> on a function's growth rate — a floor below which the function cannot fall, at least for sufficiently large inputs.</p>
+
+<p>Formally, a function <code>f(n)</code> is said to be <code>Ω(g(n))</code> if and only if there exist positive constants <code>c</code> and <code>n₀</code> such that:</p>
+
+<pre><code>f(n) ≥ c · g(n)   for all n ≥ n₀</code></pre>
+
+<p>In plain language, this says that beyond some threshold input size <code>n₀</code>, the function <code>f(n)</code> is always at least as large as some positive constant multiple of <code>g(n)</code>. The function <code>g(n)</code> grows <em>no faster</em> than <code>f(n)</code>; it is permanently outpaced by <code>f(n)</code> (up to a constant factor) once inputs are large enough.</p>
+
+<p>Consider a concrete example. Let <code>f(n) = 3n² + 5n</code>. We claim <code>f(n) = Ω(n²)</code>. To verify this, we need to find constants <code>c</code> and <code>n₀</code> such that <code>3n² + 5n ≥ c · n²</code> for all <code>n ≥ n₀</code>. Choosing <code>c = 3</code> works immediately, since <code>3n² + 5n ≥ 3n²</code> for all positive <code>n</code>. Here <code>n₀ = 1</code> suffices. The lower-order term <code>5n</code> only makes <code>f(n)</code> larger, so the quadratic term alone is already enough to serve as the lower bound.</p>
+
+<p>It is also correct — though less informative — to say <code>f(n) = Ω(n)</code> or even <code>f(n) = Ω(1)</code>, because those functions also grow no faster than <code>f(n)</code>. Omega establishes <em>a</em> lower bound, not necessarily the <em>tightest</em> one. A tighter Omega bound carries more information, which is why the search for the best matching function is important in practice.</p>
+
+<p><strong>Interpreting Omega in Algorithm Analysis</strong></p>
+
+<p>Omega notation is most naturally associated with the <strong>best-case</strong> scenario of an algorithm's execution. If an algorithm has Ω(g(n)) complexity, it means that even in the most favorable circumstances — the luckiest input arrangement, the shortest execution path — the algorithm cannot finish in fewer than a constant multiple of <code>g(n)</code> steps for large enough <code>n</code>. This is a guarantee about minimum effort, not maximum effort.</p>
+
+<p>However, Omega is also used in a deeper, more powerful sense: establishing <strong>lower bounds on entire problem classes</strong>. When researchers prove that any algorithm solving a given problem must perform at least <code>Ω(n log n)</code> comparisons (as in the case of comparison-based sorting), they are saying something profound — no matter how clever the algorithm, no comparison-based sort can beat this barrier. This is a statement about the problem itself, not just a specific algorithm.</p>
+
+<p>Another critical insight is that when an algorithm's Omega bound and its Big O bound refer to the <em>same</em> function <code>g(n)</code>, the two notations together tell you the behavior is tightly pinned. This observation leads directly to the third notation.</p>
+
+<p><strong>Theta Notation: Capturing Tight Bounds</strong></p>
+
+<p>Theta notation is the most informative and precise of the three asymptotic notations. It applies when a function is simultaneously bounded above <em>and</em> below by the same growth function, up to constant factors. Formally:</p>
+
+<pre><code>f(n) = Θ(g(n))   if and only if   f(n) = O(g(n))  AND  f(n) = Ω(g(n))</code></pre>
+
+<p>Equivalently, there exist positive constants <code>c₁</code>, <code>c₂</code>, and <code>n₀</code> such that:</p>
+
+<pre><code>c₁ · g(n) ≤ f(n) ≤ c₂ · g(n)   for all n ≥ n₀</code></pre>
+
+<p>The function <code>f(n)</code> is permanently <em>sandwiched</em> between two constant multiples of <code>g(n)</code> for all sufficiently large inputs. It cannot grow faster than <code>c₂ · g(n)</code>, and it cannot shrink below <code>c₁ · g(n)</code>. This is what is meant by a <strong>tight bound</strong> — the asymptotic behavior is exactly characterized by <code>g(n)</code>.</p>
+
+<p>Returning to the example <code>f(n) = 3n² + 5n</code>: we already showed <code>f(n) = Ω(n²)</code>. For the upper bound, note that for <code>n ≥ 1</code>, we have <code>5n ≤ 5n²</code>, so <code>3n² + 5n ≤ 8n²</code>, confirming <code>f(n) = O(n²)</code>. Since both bounds use <code>n²</code>, we conclude <code>f(n) = Θ(n²)</code> with constants <code>c₁ = 3</code>, <code>c₂ = 8</code>, and <code>n₀ = 1</code>.</p>
+
+<p>Theta is the asymptotic analog of equality. If Big O is "less than or equal to" and Omega is "greater than or equal to", then Theta is "equal to" — in the asymptotic sense. It is the most complete and useful description when it applies, because it tells you there is no slack in either direction.</p>
+
+<p><strong>Comparing O, Ω, and Θ: A Unified View</strong></p>
+
+<p>To see all three notations side by side, it helps to think of them as analogous to the familiar comparison operators from mathematics. For non-negative functions of <code>n</code>:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Notation</th>
+      <th>Informal Meaning</th>
+      <th>Mathematical Analogy</th>
+      <th>Bound Type</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>f(n) = O(g(n))</code></td>
+      <td><code>f</code> grows no faster than <code>g</code> (up to a constant)</td>
+      <td><code>f ≤ g</code> asymptotically</td>
+      <td>Upper bound</td>
+    </tr>
+    <tr>
+      <td><code>f(n) = Ω(g(n))</code></td>
+      <td><code>f</code> grows at least as fast as <code>g</code> (up to a constant)</td>
+      <td><code>f ≥ g</code> asymptotically</td>
+      <td>Lower bound</td>
+    </tr>
+    <tr>
+      <td><code>f(n) = Θ(g(n))</code></td>
+      <td><code>f</code> grows at exactly the same rate as <code>g</code> (up to constants)</td>
+      <td><code>f = g</code> asymptotically</td>
+      <td>Tight bound</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>A key subtlety: <strong>not every algorithm or function has a Theta bound</strong>. Theta only applies when the upper and lower bounds happen to be the same asymptotic function. If the best-case and worst-case growth rates of an algorithm differ, there is no single function that simultaneously serves as both a tight upper and tight lower bound for all cases, and Theta cannot be applied to describe the algorithm uniformly across all inputs.</p>
+
+<p>For example, if an algorithm runs in <code>O(n²)</code> on its worst-case inputs but completes in <code>Ω(1)</code> on its best-case inputs (finding a result immediately), then there is no single function <code>g(n)</code> such that <code>Θ(g(n))</code> accurately captures the behavior in <em>all</em> cases. In such situations you must state the Big O and Omega bounds separately, or qualify them by case (best, average, worst).</p>
+
+<p><strong>When to Apply Each Notation</strong></p>
+
+<p>Choosing the right notation is not merely a technical exercise — it is a matter of communicating precisely what you mean about an algorithm's behavior.</p>
+
+<ul>
+  <li><strong>Use Big O</strong> when your primary goal is to give a guarantee about the <em>worst-case</em> or maximum resource usage. If you tell a client "this algorithm is O(n log n)", you are promising it will never grow worse than a constant multiple of <code>n log n</code>. This is the most commonly used notation in practical software engineering because users care most about the worst they might experience.</li>
+  <li><strong>Use Omega</strong> when you want to establish a <em>lower bound</em>, either to characterize the best-case performance of a specific algorithm or — more powerfully — to argue that no algorithm solving a given problem can do better than a certain growth rate. The latter use is essential in theoretical computer science for proving optimality results.</li>
+  <li><strong>Use Theta</strong> when you have done the work to prove both bounds and they match. Theta is the most informative statement; it closes all ambiguity about the asymptotic rate. When you can say an algorithm is <code>Θ(n log n)</code>, you are saying the upper and lower bounds are the same, and that the chosen function is the exact asymptotic characterization.</li>
+  <li><strong>Avoid forcing Theta</strong> when the best and worst cases differ in growth rate. In such cases, it is more accurate and honest to report separate Omega and Big O bounds, possibly annotated by case. Applying Theta uniformly to an algorithm whose behavior varies significantly by case would be misleading.</li>
+</ul>
+
+<p><strong>Applying Theta and Omega to Course Algorithms</strong></p>
+
+<p>Grounding these abstract definitions in familiar algorithms clarifies when each notation is appropriate and what it reveals.</p>
+
+<p><em>Linear Search:</em> In linear search, you scan an array element by element looking for a target. In the best case, the target is the very first element, and the algorithm terminates in constant time regardless of array size: <code>Ω(1)</code>. In the worst case, the target is absent or at the last position, requiring examination of all <code>n</code> elements: <code>O(n)</code>. Because the best and worst cases have different growth rates (<code>1</code> versus <code>n</code>), there is no single Theta that describes all cases uniformly. You must report <code>Ω(1)</code> and <code>O(n)</code> separately to be accurate.</p>
+
+<p><em>Bubble Sort:</em> In a naive implementation of bubble sort that always performs all passes regardless of sortedness, every case requires <code>n²</code> comparisons. This version is <code>Θ(n²)</code> — both bounds are tight and equal. However, an optimized implementation that tracks whether any swap occurred during a pass and halts early if none did can detect an already-sorted array in a single pass. This gives the optimized version a best-case of <code>Ω(n)</code> (you still need one full pass to confirm sortedness) and a worst-case of <code>O(n²)</code>. The best and worst cases differ, so the optimized version has no uniform Theta.</p>
+
+<p><em>Merge Sort:</em> Merge sort's divide-and-conquer structure is remarkably uniform. Regardless of the input arrangement — sorted, reverse-sorted, random — the algorithm always divides the array into halves and merges them, performing <code>Θ(n log n)</code> work in every case. The best case, average case, and worst case all require the same asymptotic number of operations. This makes merge sort one of the cleanest examples of a tight Theta bound that applies uniformly across all inputs, without qualification by case.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Algorithm</th>
+      <th>Best Case (Ω)</th>
+      <th>Worst Case (O)</th>
+      <th>Theta (Θ) Applicable?</th>
+      <th>Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Linear Search</td>
+      <td>Ω(1)</td>
+      <td>O(n)</td>
+      <td>No</td>
+      <td>Best and worst cases differ in growth rate</td>
+    </tr>
+    <tr>
+      <td>Bubble Sort (naive)</td>
+      <td>Ω(n²)</td>
+      <td>O(n²)</td>
+      <td>Yes — Θ(n²)</td>
+      <td>Always performs all comparisons</td>
+    </tr>
+    <tr>
+      <td>Bubble Sort (optimized)</td>
+      <td>Ω(n)</td>
+      <td>O(n²)</td>
+      <td>No</td>
+      <td>Early termination on sorted input</td>
+    </tr>
+    <tr>
+      <td>Merge Sort</td>
+      <td>Ω(n log n)</td>
+      <td>O(n log n)</td>
+      <td>Yes — Θ(n log n)</td>
+      <td>Uniform across all cases</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Examining these examples side by side reveals the deeper lesson: the choice of notation is not arbitrary. It reflects the analyst's intention and the specific scenario being described. Reaching for Theta when bounds differ, or using only Big O when a tight Theta exists, would misrepresent an algorithm's true behavior. A careful analyst uses all three notations purposefully, selecting the one that communicates the most accurate and complete picture for the question at hand.</p>
+        <div class="notes"><strong>Notes</strong>Introduces Omega notation for lower bounds and Theta notation for tight bounds, complementing the upper-bound perspective of Big O. Students learn when and how to apply each notation appropriately.</div>
+      </div>
+    </details>
+  </main>
+
+<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
+</body></html>

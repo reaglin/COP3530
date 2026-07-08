@@ -1,0 +1,265 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Salting and Advanced Password Protection Techniques</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+  <style>
+    body { padding-left: 1.1rem; padding-right: 1.1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid rgba(128,128,128,.45); padding: .45em .7em; text-align: left; vertical-align: top; }
+    thead th { background: rgba(128,128,128,.18); font-weight: 600; }
+    tbody tr:nth-child(even) { background: rgba(128,128,128,.08); }
+    a.topic-detail-link { text-decoration: underline; }
+  </style>
+  <style>
+    summary.slide-header { list-style: none; }
+    summary.slide-header::-webkit-details-marker { display: none; }
+    details.slide-card[open] > .slide-body { display: block; }
+    details.slide-card[open] .chevron { transform: rotate(90deg); }
+    @media print { details.slide-card > .slide-body { display: block !important; } .chevron { display: none; } }
+  </style>
+</head><body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Hash Algorithms and Applications: Password Hashing and Beyond</a></div>
+  <header>
+    <h1>Salting and Advanced Password Protection Techniques</h1>
+  </header><main>
+    <details class="slide-card" open>
+      <summary class="slide-header"><span class="slide-num">1</span><h2>Salting and Advanced Password Protection Techniques</h2><span class="chevron">▶</span></summary>
+      <div class="slide-body">
+        <p>When a system stores user passwords, the most dangerous mistake it can make is storing them in a form that allows an attacker who gains database access to recover those passwords quickly. Hashing passwords is the foundational countermeasure, but hashing alone is not enough. A technique called <strong>salting</strong> — combined with purpose-built, computationally expensive hashing algorithms — forms the backbone of modern password protection. Understanding why salting matters, how it works mechanically, and how it integrates with advanced algorithms like bcrypt, scrypt, and Argon2 is essential for anyone building or auditing authentication systems.</p>
+
+<p><strong>What Is Salting and Why It Matters</strong></p>
+
+<p>A <strong>salt</strong> is a randomly generated value that is appended or prepended to a password before it is hashed. The resulting hash is therefore not just a hash of the password itself, but a hash of the password combined with a unique random string. This seemingly small change has profound security consequences.</p>
+
+<p>Consider what happens without salting. If two users both choose the password <code>hunter2</code>, a standard hash function such as SHA-256 will produce the exact same digest for both:</p>
+
+<pre><code>SHA-256("hunter2") = f52fbd32b2b3b86ff88ef6c490628285f482af15ddcb29541f94bcf526a3f6c7
+SHA-256("hunter2") = f52fbd32b2b3b86ff88ef6c490628285f482af15ddcb29541f94bcf526a3f6c7
+</code></pre>
+
+<p>An attacker looking at the database immediately knows both accounts share the same password. Worse, cracking one cracks both. With salting, each user receives a different random salt, so even identical passwords produce entirely different stored values:</p>
+
+<pre><code>SHA-256("hunter2" + "a3f9c21b...") = 8d07e329...  (User A)
+SHA-256("hunter2" + "7b14e803...") = c4f19a02...  (User B)
+</code></pre>
+
+<p>A critical point that trips up many developers: <strong>the salt does not need to be secret</strong>. It is typically stored in plaintext right next to the password hash in the database. Its purpose is not confidentiality — it is <em>uniqueness</em>. The salt's job is to ensure that each hash in the database is derived from a unique input, so that no two accounts share the same hash even when they share the same password.</p>
+
+<p><strong>Defending Against Rainbow Table Attacks</strong></p>
+
+<p>A <strong>rainbow table</strong> is a precomputed data structure that maps hash values back to the passwords that produced them. An attacker who builds a rainbow table for SHA-256 can, in theory, look up any hash in the table and instantly find the corresponding password — no brute-force computation required at attack time. All the computation happens once, during table construction, and the resulting table can be reused against any database that uses the same unsalted hashing scheme.</p>
+
+<p>Salting destroys the utility of rainbow tables entirely. Here is why: to build a rainbow table that works against salted hashes, an attacker would need to precompute hashes not just for every possible password, but for every possible password combined with every possible salt value. With a 16-byte (128-bit) random salt, there are 2<sup>128</sup> possible salt values. Even if an attacker focused on only the most common passwords, they would need to compute a separate hash for each password paired with each possible salt. The storage and computation requirements become astronomically infeasible.</p>
+
+<p>This is why modern authentication systems <strong>always store a per-user salt alongside the password hash</strong>. During login, the system retrieves the stored salt for the user, combines it with the password the user just entered, hashes the combination, and compares the result to the stored hash. The salt is not a secret — the attacker can see it in the database — but that does not help them build a precomputed table, because the salt is unique to that user and was chosen randomly.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Attack Type</th>
+      <th>Without Salting</th>
+      <th>With Salting</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Rainbow Table Lookup</td>
+      <td>Instant — precomputed tables work directly</td>
+      <td>Tables are useless; must recompute per account</td>
+    </tr>
+    <tr>
+      <td>Batch Dictionary Attack (all accounts)</td>
+      <td>One hash per guess covers all accounts simultaneously</td>
+      <td>Each account requires independent computation</td>
+    </tr>
+    <tr>
+      <td>Single-Account Brute Force</td>
+      <td>Limited only by hash function speed</td>
+      <td>Limited only by hash function speed (salting alone does not help here)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Defending Against Dictionary and Brute-Force Attacks</strong></p>
+
+<p>A <strong>dictionary attack</strong> involves trying a large list of likely passwords — common words, known breached passwords, variations — against stored hashes. Without salting, an attacker can hash each dictionary word once and check it against every account in the database simultaneously. With a million accounts, a single hash computation tests all million accounts at once. This bulk efficiency is what salting eliminates: with per-user salts, the attacker must compute a separate hash for each password guess <em>per account</em>, multiplying the workload by the number of accounts.</p>
+
+<p>However, there is an important limitation to understand: <strong>salting alone does not slow down an attack targeting a single account</strong>. If an attacker focuses on cracking one specific user's password, they retrieve that user's salt, then start guessing passwords and computing hashes just as fast as the underlying hash function allows. A modern GPU can compute billions of SHA-256 hashes per second. Against a single account, salting provides no speed penalty — the attacker simply incorporates the known salt into every guess.</p>
+
+<p>This is where <strong>key stretching</strong> becomes essential. Salting and key stretching are complementary, not interchangeable: salting defeats bulk attacks and precomputation; key stretching slows down attacks on individual accounts.</p>
+
+<p><strong>Generating and Storing Salts</strong></p>
+
+<p>Generating salts correctly matters enormously. A salt that is too short, predictable, or reused across accounts provides much weaker protection than intended.</p>
+
+<ul>
+  <li><strong>Length:</strong> Salts should be at least <strong>16 bytes (128 bits)</strong> long. This ensures that even with a massive user base of hundreds of millions of accounts, the probability of any two users having the same salt remains negligibly small, preserving the uniqueness property that makes salting effective.</li>
+  <li><strong>Randomness:</strong> Salts must be generated using a <strong>cryptographically secure pseudo-random number generator (CSPRNG)</strong>, not a standard library random function. In Python, for example, <code>os.urandom(16)</code> or <code>secrets.token_bytes(16)</code> are appropriate; <code>random.random()</code> is not.</li>
+  <li><strong>Uniqueness:</strong> Every user account must have its own independently generated salt. Reusing the same salt across multiple accounts recreates the problem salting is meant to solve — accounts with the same password will again produce the same hash.</li>
+  <li><strong>Storage:</strong> The salt is stored alongside the hash, typically in the same database row. There is no security benefit to storing it elsewhere, and doing so adds operational complexity without gain.</li>
+</ul>
+
+<p>The login flow with salting works as follows:</p>
+
+<pre><code># Registration
+salt = generate_random_salt()           # e.g., 16 random bytes
+hash = slow_hash_function(password + salt)
+store(user_id, salt, hash)
+
+# Login
+stored_salt, stored_hash = retrieve(user_id)
+candidate_hash = slow_hash_function(entered_password + stored_salt)
+if candidate_hash == stored_hash:
+    # Authentication successful
+</code></pre>
+
+<p><strong>Key Stretching</strong></p>
+
+<p>Key stretching deliberately makes the hash computation slow. The core idea is simple: instead of computing a hash once, the algorithm applies the hash function (or a related computation) <strong>thousands or millions of times in sequence</strong>. Because each iteration depends on the output of the previous one, the process cannot be parallelized to complete faster — it must run through all iterations serially.</p>
+
+<p><strong>PBKDF2</strong> (Password-Based Key Derivation Function 2) is one of the earliest and most widely used key-stretching constructions. It takes a password, a salt, an iteration count, and a pseudorandom function (typically HMAC-SHA-256), and runs the PRF iteratively:</p>
+
+<pre><code>PBKDF2(password, salt, iterations=600000, hash=SHA-256)
+</code></pre>
+
+<p>OWASP's current recommendation for PBKDF2-HMAC-SHA-256 is 600,000 iterations. At this setting, even a high-end server takes a noticeable fraction of a second to compute a single hash — imperceptible to a legitimate user logging in, but devastating for an attacker trying to test millions of password guesses.</p>
+
+<p>The <strong>cost parameter</strong> (iteration count) is tunable and should be reviewed and increased over time as hardware improves. A system deployed today with 600,000 iterations should be redesigned to use more iterations five years from now, when the same computation will be proportionally cheaper. Modern formats like bcrypt, scrypt, and Argon2 store the cost parameter inside the hash string itself, making it straightforward to recognize and upgrade outdated hashes.</p>
+
+<p>The asymmetry between legitimate use and attack is the key insight: a 300-millisecond login delay is completely acceptable to a real user and represents a negligible operational cost. But if an attacker has a list of 100 million password guesses and must spend 300 milliseconds on each one, cracking a single account would take nearly 10 years on a single machine. Even with a large cluster, the cost becomes prohibitive.</p>
+
+<p><strong>Modern Password Hashing Algorithms: bcrypt and scrypt</strong></p>
+
+<p><strong>bcrypt</strong> was designed in 1999 specifically for password hashing and remains widely used today. It incorporates both salting and key stretching in a single integrated algorithm. Its defining feature is a <strong>cost factor</strong> (also called the work factor), an integer that controls the number of iterations as a power of two:</p>
+
+<pre><code>bcrypt(password, cost=12)
+# Performs 2^12 = 4,096 iterations of the core function
+</code></pre>
+
+<p>When bcrypt generates a hash, it automatically generates a random 128-bit salt, embeds it in the output string along with the cost factor, and returns a self-contained string like:</p>
+
+<pre><code>$2b$12$EXRkfkdmXn2gzds2SSitu.MW9.TNunO3a7bTe7tJeoGTsJHZOAg2K
+ ^^  ^^  ^^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^^
+ alg cost       salt (22 chars)           hash (31 chars)
+</code></pre>
+
+<p>This self-contained format means the application only needs to store one string per user, and the verification function automatically extracts the salt and cost factor to reproduce the hash. The cost factor can be increased over time: when a user next logs in, the system can rehash their password with the new cost factor and store the updated string.</p>
+
+<p>bcrypt's limitation is that it is purely CPU-bound. Attackers using GPUs or FPGAs can still gain significant parallelism advantages over a CPU-based server, though the per-iteration cost reduces this advantage considerably.</p>
+
+<p><strong>scrypt</strong>, introduced in 2009, addressed this limitation by adding a <strong>memory-hardness requirement</strong>. scrypt requires not just CPU time but a configurable amount of RAM to compute. Its parameters include:</p>
+
+<ul>
+  <li><strong>N</strong> — the CPU/memory cost parameter (must be a power of 2)</li>
+  <li><strong>r</strong> — the block size, which scales memory and CPU usage together</li>
+  <li><strong>p</strong> — parallelization factor</li>
+</ul>
+
+<pre><code>scrypt(password, salt, N=2^17, r=8, p=1)
+# Requires ~128 MB of RAM and significant CPU time
+</code></pre>
+
+<p>Memory hardness is important because specialized hardware like ASICs and FPGAs can be built with many parallel processing units but have limited RAM per unit. An algorithm that requires 128 MB of RAM per computation prevents an attacker from running thousands of parallel computations on a single chip — they would need 128 MB of fast memory for each parallel thread. This dramatically narrows the hardware advantage attackers enjoy over defenders.</p>
+
+<p>Both bcrypt and scrypt handle salt generation and embedding automatically, reducing the risk of developer errors such as forgetting to generate a salt, reusing salts, or storing the salt and hash in incompatible formats.</p>
+
+<p><strong>Argon2: The Modern Standard</strong></p>
+
+<p>Argon2 won the Password Hashing Competition in 2015 and is now the algorithm recommended by OWASP, the IETF, and most current security guidelines for new systems. It refines and unifies the lessons of PBKDF2, bcrypt, and scrypt into a single, well-analyzed design with three independently tunable parameters:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Parameter</th>
+      <th>Controls</th>
+      <th>Typical Starting Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Time cost</strong> (<code>t</code>)</td>
+      <td>Number of iterations over the memory block</td>
+      <td>1–3 iterations</td>
+    </tr>
+    <tr>
+      <td><strong>Memory cost</strong> (<code>m</code>)</td>
+      <td>Amount of RAM required, in kibibytes</td>
+      <td>64 MB (65536 KiB) or more</td>
+    </tr>
+    <tr>
+      <td><strong>Parallelism</strong> (<code>p</code>)</td>
+      <td>Number of parallel threads used during computation</td>
+      <td>1–4 threads</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>This fine-grained control allows security engineers to tune Argon2 to precisely the resource budget available on their servers — maximizing the cost imposed on attackers without making the login experience unacceptably slow.</p>
+
+<p>Argon2 comes in three variants:</p>
+
+<ul>
+  <li><strong>Argon2d</strong> — maximizes resistance to GPU cracking by making memory access data-dependent, but is potentially vulnerable to side-channel timing attacks. Suitable for applications without side-channel risk (e.g., cryptocurrency).</li>
+  <li><strong>Argon2i</strong> — uses data-independent memory access patterns, eliminating side-channel timing attacks, at some cost to GPU resistance. Suitable for password hashing in environments with side-channel risk.</li>
+  <li><strong>Argon2id</strong> — a hybrid: uses data-independent access for the first half of the computation and data-dependent access for the second half. This provides strong GPU resistance while maintaining side-channel resistance, making it the <strong>recommended variant for general password hashing</strong> according to OWASP and RFC 9106.</li>
+</ul>
+
+<p>Like bcrypt and scrypt, Argon2 automatically generates and embeds a random salt in its output string, so the full output is self-contained and portable:</p>
+
+<pre><code>$argon2id$v=19$m=65536,t=2,p=1$c29tZXNhbHQ$RdescudvJCsgt3ub+b+dWRWJTmaaJObG
+</code></pre>
+
+<p>The output encodes the algorithm variant, version, parameters, salt, and hash — everything needed for verification in a single string.</p>
+
+<p>Argon2's memory hardness makes it particularly resistant to attacks using <strong>ASICs</strong> (Application-Specific Integrated Circuits) and <strong>FPGAs</strong> (Field-Programmable Gate Arrays), which attackers have used to crack bcrypt hashes at speeds far exceeding what general-purpose CPUs can achieve. Because Argon2 requires a large, configurable block of RAM, building dedicated cracking hardware requires incorporating proportional RAM — eliminating most of the cost and size advantage such hardware otherwise offers.</p>
+
+<p>The combined picture of modern password protection therefore looks like this: a randomly generated, per-user salt of at least 16 bytes eliminates precomputed attacks and bulk dictionary attacks; key stretching via a purpose-built algorithm imposes significant per-guess cost on attackers targeting individual accounts; and memory hardness neutralizes the advantage of specialized cracking hardware. Algorithms like Argon2id implement all three properties in a single, well-tested, standards-backed package, which is why they represent the current best practice for any system that needs to store user passwords securely.</p>
+        <div class="notes"><strong>Notes</strong>OWASP recommended minimum parameters for Argon2id (as of current guidelines): m=19456 (19 MiB), t=2, p=1 as a conservative minimum; m=65536 (64 MiB), t=3, p=4 for higher-security contexts. PBKDF2-HMAC-SHA-256 recommendation is 600,000 iterations. bcrypt cost factor of 10 is a common minimum; 12 is preferable for new systems. Instructors may wish to note that bcrypt has a maximum input password length of 72 bytes — a known limitation not shared by Argon2 or scrypt.</div>
+      </div>
+    </details>
+  </main>
+
+<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
+</body></html>

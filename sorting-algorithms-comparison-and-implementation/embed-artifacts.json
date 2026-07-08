@@ -13,5 +13,40 @@
     "title": "Sorting Algorithms: Comparison and Implementation \u2014 Module Topics",
     "href": "content/module_topics.html",
     "type": "Content"
+  },
+  {
+    "title": "Comparing Sorting Algorithms",
+    "href": "content/Sorting_Algorithms_Compariso_interactive.html",
+    "type": "Content"
+  },
+  {
+    "title": "Introduction to Sorting Algorithms",
+    "href": "content/Sorting_Algorithms_Compariso_interactive_topics_t1.html",
+    "type": "Content"
+  },
+  {
+    "title": "Bubble Sort",
+    "href": "content/Sorting_Algorithms_Compariso_interactive_topics_t2.html",
+    "type": "Content"
+  },
+  {
+    "title": "Insertion Sort",
+    "href": "content/Sorting_Algorithms_Compariso_interactive_topics_t3.html",
+    "type": "Content"
+  },
+  {
+    "title": "Merge Sort",
+    "href": "content/Sorting_Algorithms_Compariso_interactive_topics_t4.html",
+    "type": "Content"
+  },
+  {
+    "title": "Quicksort",
+    "href": "content/Sorting_Algorithms_Compariso_interactive_topics_t5.html",
+    "type": "Content"
+  },
+  {
+    "title": "Comparing Sorting Algorithms",
+    "href": "content/Sorting_Algorithms_Compariso_interactive_topics_t6.html",
+    "type": "Content"
   }
 ]

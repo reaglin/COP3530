@@ -1,0 +1,342 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Internal Implementation of a Stack</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+  <style>
+    body { padding-left: 1.1rem; padding-right: 1.1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid rgba(128,128,128,.45); padding: .45em .7em; text-align: left; vertical-align: top; }
+    thead th { background: rgba(128,128,128,.18); font-weight: 600; }
+    tbody tr:nth-child(even) { background: rgba(128,128,128,.08); }
+  </style>
+  <style>
+    summary.slide-header { list-style: none; }
+    summary.slide-header::-webkit-details-marker { display: none; }
+    details.slide-card[open] > .slide-body { display: block; }
+    details.slide-card[open] .chevron { transform: rotate(90deg); }
+    @media print { details.slide-card > .slide-body { display: block !important; } .chevron { display: none; } }
+  </style>
+</head><body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ 4- The Stack: Structure and Use Cases</a></div>
+  <header>
+    <h1>Internal Implementation of a Stack</h1>
+  </header><main>
+    <details class="slide-card" open>
+      <summary class="slide-header"><span class="slide-num">1</span><h2>Internal Implementation of a Stack</h2><span class="chevron">▶</span></summary>
+      <div class="slide-body">
+        <p>A stack is one of the most fundamental data structures in computer science, embodying the Last-In, First-Out (LIFO) principle: the most recently added element is always the first one removed. While the <em>concept</em> of a stack is straightforward, understanding <em>how</em> it actually works internally — how memory is organized, how elements are tracked, and how each operation is carried out step by step — is what separates a developer who merely uses a stack from one who truly understands it. This deep dive examines every internal mechanism that makes a stack tick, from the choice of backing data container all the way to the time and space complexity guarantees that make stacks so powerful.</p>
+
+<p>Before looking at individual operations, it is worth appreciating why implementation details matter. Two stacks can offer identical public interfaces yet behave very differently under the hood in terms of memory consumption, cache performance, and the cost of edge-case operations. Knowing those differences allows you to choose and build the right stack for the right situation.</p>
+
+<p><strong>Underlying Data Containers</strong></p>
+
+<p>Every stack needs something to hold its elements. In practice, two structures dominate: a contiguous block of memory (an array) and a chain of nodes (a linked list). Each brings a distinct set of trade-offs.</p>
+
+<p>An <strong>array-backed stack</strong> stores all elements side by side in memory. Because modern CPUs load memory in cache lines, accessing sequentially stored data is extremely fast. A single integer index — commonly called <code>top</code> — tracks which slot currently holds the most recently pushed element. Pushing is as simple as writing a value into the next available slot and bumping the index; popping is the reverse. The downside is that a fixed-size array requires you to declare a maximum capacity upfront. Dynamic arrays (like JavaScript's built-in <code>Array</code>) sidestep that limitation by doubling in size when they run out of room, but that occasional resize carries a temporary O(n) cost. Overall, array-backed stacks are compact, cache-friendly, and simple to implement.</p>
+
+<p>A <strong>linked-list-backed stack</strong> stores each element inside a <em>node</em> object that also holds a reference (pointer) to the node beneath it in the stack. The top of the stack is simply the head of the list. Pushing allocates a new node and points it at the current head; popping removes the head node and promotes its successor. Because every node is a separately allocated object, the elements need not live in contiguous memory. This makes linked-list stacks naturally dynamic — they never need resizing — but each node consumes extra memory for its pointer field, and scattered memory locations reduce cache efficiency compared with arrays.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Characteristic</th>
+      <th>Array-Backed Stack</th>
+      <th>Linked-List-Backed Stack</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Memory layout</td>
+      <td>Contiguous</td>
+      <td>Scattered (heap nodes)</td>
+    </tr>
+    <tr>
+      <td>Cache performance</td>
+      <td>Excellent</td>
+      <td>Poor for large stacks</td>
+    </tr>
+    <tr>
+      <td>Capacity limit</td>
+      <td>Fixed (static) or amortized growth (dynamic)</td>
+      <td>Effectively unbounded (limited only by heap memory)</td>
+    </tr>
+    <tr>
+      <td>Per-element overhead</td>
+      <td>None beyond the element itself</td>
+      <td>One extra pointer per node</td>
+    </tr>
+    <tr>
+      <td>Implementation complexity</td>
+      <td>Low</td>
+      <td>Moderate (node management)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The choice between these two containers shapes every other aspect of the implementation. For the remainder of this discussion, the examples use an array-backed approach in JavaScript because it maps most naturally to the language's built-in <code>Array</code>, but the logical principles apply equally to linked-list stacks.</p>
+
+<p><strong>The Top Pointer</strong></p>
+
+<p>The <em>top pointer</em> (often simply an integer index named <code>top</code> or <code>_top</code>) is the single most important piece of internal state in an array-backed stack. It is the stack's memory of where it currently stands.</p>
+
+<p>When the stack is empty, <code>top</code> is typically initialized to <code>-1</code> (meaning "no element has been stored yet") or to <code>0</code> (meaning "the next available slot is index 0"). The <code>-1</code> convention is common because it makes the "is the stack empty?" test trivially simple: <code>top === -1</code>. The <code>0</code> convention treats <code>top</code> as a count rather than an index, which is equally valid but requires adjusting how you read and write elements.</p>
+
+<ul>
+  <li><strong>After a push:</strong> <code>top</code> moves forward (increases by 1) to point at the newly added element.</li>
+  <li><strong>After a pop:</strong> <code>top</code> moves backward (decreases by 1), effectively making the previously top-most element invisible to the stack's logic.</li>
+  <li><strong>During a peek:</strong> <code>top</code> is read but never changed — the operation is purely observational.</li>
+</ul>
+
+<p>Notice that a "pop" does not necessarily erase the data from the array slot; it just moves the boundary. The old data sits in memory but is unreachable through normal stack operations and will be overwritten by the next push. In a language with garbage collection (like JavaScript), if the elements are objects, you should explicitly set that slot to <code>null</code> after decrementing <code>top</code> so the garbage collector can reclaim the memory — otherwise you create an <em>object loitering</em> bug.</p>
+
+<p><strong>Push Operation Mechanics</strong></p>
+
+<p>A push places a new element on top of the stack. Internally, several things must happen in a specific order:</p>
+
+<ul>
+  <li><strong>Capacity check (fixed-size arrays only):</strong> If the backing array has a maximum size, you must verify that <code>top</code> has not yet reached that limit. Attempting to push onto a full stack causes a <em>stack overflow</em> — a condition that must be caught and reported rather than silently corrupting memory.</li>
+  <li><strong>Placement:</strong> The new value is written into the array at the index determined by the incremented <code>top</code>. Using the <code>-1</code> convention, you first increment <code>top</code> to get the target index, then write: <code>this._data[++this._top] = value</code>. With the count convention, you write first, then increment: <code>this._data[this._top++] = value</code>.</li>
+  <li><strong>Pointer update:</strong> The increment of <code>top</code> completes the operation. The stack now considers the new element its topmost entry.</li>
+</ul>
+
+<pre><code>// Array-backed push using the -1 convention
+push(value) {
+  if (this._top === this._capacity - 1) {
+    throw new Error("Stack overflow: cannot push onto a full stack");
+  }
+  this._data[++this._top] = value;
+  this._size++;
+}
+</code></pre>
+
+<p>When JavaScript's dynamic <code>Array</code> is used as the backing store, capacity management is handled automatically, so the overflow check can be omitted (unless you want to enforce an artificial maximum). In that case, push reduces to appending to the array and incrementing the size counter — a single amortized O(1) operation.</p>
+
+<p><strong>Pop Operation Mechanics</strong></p>
+
+<p>A pop removes and returns the topmost element. Like push, it follows a strict sequence of steps to avoid bugs:</p>
+
+<ul>
+  <li><strong>Underflow check:</strong> Before anything else, verify that the stack is not empty (<code>this._top === -1</code> or <code>this._size === 0</code>). Calling pop on an empty stack is a logic error — returning <code>undefined</code> silently can mask serious bugs, so throwing a descriptive error is often preferable.</li>
+  <li><strong>Retrieve the value:</strong> Read the element at <code>this._data[this._top]</code> and store it in a local variable so it can be returned at the end of the method.</li>
+  <li><strong>Nullify (optional but recommended):</strong> Set <code>this._data[this._top] = null</code> to release any object reference and allow garbage collection.</li>
+  <li><strong>Decrement the pointer:</strong> Decrease <code>top</code> by 1. The stack now treats the element as gone.</li>
+  <li><strong>Return the stored value:</strong> Hand the retrieved element back to the caller.</li>
+</ul>
+
+<pre><code>// Array-backed pop using the -1 convention
+pop() {
+  if (this._top === -1) {
+    throw new Error("Stack underflow: cannot pop from an empty stack");
+  }
+  const value = this._data[this._top];
+  this._data[this._top] = null; // prevent object loitering
+  this._top--;
+  this._size--;
+  return value;
+}
+</code></pre>
+
+<p>The order of operations matters. You must read the value <em>before</em> you decrement the pointer, not after — otherwise you would return the element that is now below the one that was just logically removed.</p>
+
+<p><strong>Size Tracking and Boundary Conditions</strong></p>
+
+<p>A stack's implementation must always know its current occupancy. There are two common approaches, and they are often used together for clarity:</p>
+
+<ul>
+  <li><strong>Deriving size from the top pointer:</strong> With the <code>-1</code> convention, the number of elements is simply <code>this._top + 1</code>. This avoids maintaining a separate counter but requires callers to understand the pointer's semantics.</li>
+  <li><strong>Maintaining an explicit size counter:</strong> A dedicated <code>_size</code> variable is incremented on every push and decremented on every pop. This is slightly redundant with the top pointer but makes the <code>size()</code> and <code>isEmpty()</code> methods cleaner and less error-prone.</li>
+</ul>
+
+<p>Two boundary conditions deserve special attention:</p>
+
+<p><strong>isEmpty():</strong> Returns <code>true</code> when the stack holds zero elements. This guard is essential before any pop or peek operation. Without it, those methods would read from index <code>-1</code> (in JavaScript this returns <code>undefined</code> rather than throwing, which silently corrupts program logic).</p>
+
+<pre><code>isEmpty() {
+  return this._size === 0;
+  // Equivalently: return this._top === -1;
+}
+</code></pre>
+
+<p><strong>isFull():</strong> Relevant only when a fixed capacity has been set. Returns <code>true</code> when <code>_size === _capacity</code>. Dynamic stacks implemented over JavaScript arrays effectively never become full in normal use, but exposing this method as always returning <code>false</code> keeps the interface consistent for callers who expect it.</p>
+
+<pre><code>isFull() {
+  if (this._capacity === null) return false; // dynamic stack, never full
+  return this._size === this._capacity;
+}
+</code></pre>
+
+<p><strong>Encapsulation in a JavaScript Class</strong></p>
+
+<p>Bundling all of the above into a well-designed class separates the stack's internal machinery from the code that uses it. Callers interact only with the public interface; they never reach into the backing array directly. This is the essence of encapsulation.</p>
+
+<pre><code>class Stack {
+  constructor(capacity = null) {
+    this._data = [];        // backing array
+    this._top = -1;         // index of the current top element
+    this._size = 0;         // number of elements stored
+    this._capacity = capacity; // null means unlimited
+  }
+
+  push(value) {
+    if (this._capacity !== null && this._size === this._capacity) {
+      throw new Error("Stack overflow");
+    }
+    this._data[++this._top] = value;
+    this._size++;
+  }
+
+  pop() {
+    if (this.isEmpty()) {
+      throw new Error("Stack underflow");
+    }
+    const value = this._data[this._top];
+    this._data[this._top] = null; // aid garbage collection
+    this._top--;
+    this._size--;
+    return value;
+  }
+
+  peek() {
+    if (this.isEmpty()) {
+      throw new Error("Stack is empty");
+    }
+    return this._data[this._top]; // read only — top pointer unchanged
+  }
+
+  isEmpty() {
+    return this._size === 0;
+  }
+
+  isFull() {
+    return this._capacity !== null && this._size === this._capacity;
+  }
+
+  size() {
+    return this._size;
+  }
+}
+</code></pre>
+
+<p>Key design choices in this class:</p>
+
+<ul>
+  <li>The underscore prefix on <code>_data</code>, <code>_top</code>, <code>_size</code>, and <code>_capacity</code> signals by convention that these are private implementation details. JavaScript's newer <code>#</code> private field syntax (<code>#data</code>, etc.) can enforce this at the language level if the runtime supports it.</li>
+  <li>The <code>constructor</code> accepts an optional <code>capacity</code> argument, making the same class usable as either a fixed-size or a dynamic stack.</li>
+  <li>Every public method (<code>push</code>, <code>pop</code>, <code>peek</code>, <code>isEmpty</code>, <code>isFull</code>, <code>size</code>) operates exclusively through the class's own internal state, never exposing the raw array to outside code.</li>
+</ul>
+
+<p>A short usage demonstration illustrates all operations together:</p>
+
+<pre><code>const s = new Stack();
+
+s.push(10);
+s.push(20);
+s.push(30);
+
+console.log(s.size());   // 3
+console.log(s.peek());   // 30  (top element, stack unchanged)
+console.log(s.pop());    // 30  (removed and returned)
+console.log(s.pop());    // 20
+console.log(s.isEmpty()); // false (10 still remains)
+console.log(s.pop());    // 10
+console.log(s.isEmpty()); // true
+</code></pre>
+
+<p><strong>Time and Space Complexity of Core Operations</strong></p>
+
+<p>One of the most important properties of a stack is that its core operations are extraordinarily efficient. Because every operation touches only the <em>top</em> of the stack — a single, immediately known location — none of them require scanning or rearranging any other elements.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Operation</th>
+      <th>Time Complexity</th>
+      <th>Reason</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>push()</code></td>
+      <td>O(1) amortized</td>
+      <td>Writes one element and increments one counter; occasional dynamic-array resize is O(n) but amortized across n pushes</td>
+    </tr>
+    <tr>
+      <td><code>pop()</code></td>
+      <td>O(1)</td>
+      <td>Reads and nullifies one slot, decrements one counter</td>
+    </tr>
+    <tr>
+      <td><code>peek()</code></td>
+      <td>O(1)</td>
+      <td>Reads one array index; no mutation, no traversal</td>
+    </tr>
+    <tr>
+      <td><code>isEmpty()</code></td>
+      <td>O(1)</td>
+      <td>Compares a single integer to zero</td>
+    </tr>
+    <tr>
+      <td><code>isFull()</code></td>
+      <td>O(1)</td>
+      <td>Compares two integers</td>
+    </tr>
+    <tr>
+      <td><code>size()</code></td>
+      <td>O(1)</td>
+      <td>Returns a maintained counter</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The <strong>space complexity</strong> of the entire stack structure is <strong>O(n)</strong>, where <em>n</em> is the number of elements currently stored. Each element occupies one slot in the backing array (plus, for a linked-list implementation, one node pointer per element). The stack's overhead beyond its stored data — the top pointer, the size counter, and the capacity variable — is O(1) because it is a fixed number of scalar values regardless of how many elements the stack holds.</p>
+
+<p>These O(1) time guarantees are why stacks are so widely used in algorithm design: function call management (the call stack), expression evaluation, undo/redo systems, depth-first graph traversal, and bracket matching all rely on the fact that pushing and popping are essentially free in terms of computational cost. Understanding the internals confirms that these guarantees are not accidental — they are a direct consequence of always working with just one end of the collection.</p>
+        <div class="notes"><strong>Notes</strong>Consider pairing this topic with a linked-list-backed stack implementation exercise to reinforce the contrast between the two backing structures. The object-loitering note (nullifying popped slots) is a subtle but interview-relevant point worth highlighting in discussion.</div>
+      </div>
+    </details>
+  </main>
+
+<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
+</body></html>

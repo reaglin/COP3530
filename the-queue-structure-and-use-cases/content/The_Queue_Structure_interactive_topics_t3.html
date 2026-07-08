@@ -1,0 +1,266 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Queue Operations</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+  <style>
+    body { padding-left: 1.1rem; padding-right: 1.1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid rgba(128,128,128,.45); padding: .45em .7em; text-align: left; vertical-align: top; }
+    thead th { background: rgba(128,128,128,.18); font-weight: 600; }
+    tbody tr:nth-child(even) { background: rgba(128,128,128,.08); }
+  </style>
+  <style>
+    summary.slide-header { list-style: none; }
+    summary.slide-header::-webkit-details-marker { display: none; }
+    details.slide-card[open] > .slide-body { display: block; }
+    details.slide-card[open] .chevron { transform: rotate(90deg); }
+    @media print { details.slide-card > .slide-body { display: block !important; } .chevron { display: none; } }
+  </style>
+</head><body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ The Queue: Structure and Use Cases</a></div>
+  <header>
+    <h1>Queue Operations</h1>
+  </header><main>
+    <details class="slide-card" open>
+      <summary class="slide-header"><span class="slide-num">1</span><h2>Queue Operations</h2><span class="chevron">▶</span></summary>
+      <div class="slide-body">
+        <p>A queue is a linear data structure governed by the <strong>First-In, First-Out (FIFO)</strong> principle: the element that has waited the longest is always the first one to be served. Think of a line at a ticket counter — the person who joined the line first is the first to be helped, and every new arrival joins at the back. The four fundamental operations that make a queue useful are <strong>enqueue</strong>, <strong>dequeue</strong>, <strong>peek</strong>, and <strong>isEmpty</strong>. Understanding exactly what each operation does, what invariants it must respect, and how it behaves under edge conditions is essential before implementing or using a queue in any real system.</p>
+
+<p>Queues appear throughout computer science: scheduling tasks in an operating system, buffering data packets in a network router, managing print jobs, performing breadth-first graph traversal, and handling asynchronous messages between services. In every one of these scenarios, the same four operations are at work, and every one of them ideally runs in <strong>O(1) constant time</strong>, meaning the time required does not grow with the number of elements already in the queue.</p>
+
+<p><strong>The Enqueue Operation</strong></p>
+
+<p>Enqueue is the operation that <em>adds</em> a new element to the queue. The defining rule is that the new element is <strong>always inserted at the rear (tail) end</strong> of the queue, never anywhere else. This single rule is what enforces FIFO ordering: because elements join at the back and leave from the front, the relative order of arrival is perfectly preserved.</p>
+
+<p>Every successful enqueue increases the size of the queue by exactly one. When a queue has a <strong>fixed capacity</strong> — as is common in array-based (circular buffer) implementations — the operation must first check whether the queue is already full. Attempting to enqueue into a full fixed-capacity queue causes an <strong>overflow condition</strong>, which should be signalled to the caller via an exception or an error return value. Dynamically sized implementations (backed by a linked list or a resizable array) do not have this limit under normal memory conditions, but even they must handle memory-allocation failures gracefully.</p>
+
+<p>In a <strong>linked-list implementation</strong>, enqueue works as follows:</p>
+<ul>
+  <li>A new node is allocated and its data field is set to the value being enqueued.</li>
+  <li>The <em>next</em> pointer of the current tail node is updated to point to the new node.</li>
+  <li>The <em>tail pointer</em> of the queue itself is advanced to reference the new node.</li>
+  <li>The size counter is incremented by one.</li>
+</ul>
+
+<p>In an <strong>array-based circular-buffer implementation</strong>, enqueue works like this:</p>
+<ul>
+  <li>Check that <code>size &lt; capacity</code>; if not, raise an overflow error.</li>
+  <li>Calculate the new rear index as <code>rear = (rear + 1) % capacity</code>.</li>
+  <li>Place the new element at <code>array[rear]</code>.</li>
+  <li>Increment the size counter by one.</li>
+</ul>
+
+<p>The modulo arithmetic is what makes the array circular, allowing the rear pointer to wrap around to the beginning of the array once it reaches the end, reusing slots freed by previous dequeues without shifting any elements.</p>
+
+<pre><code>// Pseudocode — linked-list enqueue
+procedure enqueue(queue, value):
+    node = new Node(value)
+    node.next = null
+    if queue.tail is not null:
+        queue.tail.next = node
+    queue.tail = node
+    if queue.head is null:        // first element ever inserted
+        queue.head = node
+    queue.size = queue.size + 1
+</code></pre>
+
+<p><strong>The Dequeue Operation</strong></p>
+
+<p>Dequeue is the operation that <em>removes and returns</em> the element that has been in the queue the longest — the element sitting at the <strong>front (head)</strong> position. Removing from the front, combined with inserting at the rear, is precisely what upholds FIFO ordering. Dequeue never removes an arbitrary element from the middle or end; doing so would violate the queue contract entirely.</p>
+
+<p>Before any removal takes place, the operation must check for an <strong>underflow condition</strong>: dequeuing from an empty queue is a logical error. Depending on the implementation contract, this check triggers either a thrown exception (e.g., <code>NoSuchElementException</code> in Java) or a return of a sentinel value such as <code>null</code> or <code>-1</code>. Silently ignoring the underflow — returning garbage data — is always the wrong choice.</p>
+
+<p>After a successful dequeue:</p>
+<ul>
+  <li>The value stored at the head node (or head index) is saved to be returned.</li>
+  <li>The <em>front pointer</em> advances to the next element: in a linked list, <code>head = head.next</code>; in a circular array, <code>front = (front + 1) % capacity</code>.</li>
+  <li>If the queue is now empty after removal, both head and tail pointers should be reset to <code>null</code> (linked list) or the size counter should reach zero (array).</li>
+  <li>The size counter is decremented by one.</li>
+  <li>The saved value is returned to the caller.</li>
+</ul>
+
+<pre><code>// Pseudocode — linked-list dequeue
+procedure dequeue(queue):
+    if queue.head is null:
+        raise UnderflowException("Queue is empty")
+    value = queue.head.data
+    queue.head = queue.head.next
+    if queue.head is null:        // queue is now empty
+        queue.tail = null
+    queue.size = queue.size - 1
+    return value
+</code></pre>
+
+<p>Notice that in the linked-list version, the old head node becomes unreferenced and is reclaimed by the garbage collector (in managed languages) or must be explicitly freed (in C/C++). In the circular-array version, the slot at the old front index is logically vacated and will be overwritten by a future enqueue — no data movement is required.</p>
+
+<p><strong>The Peek (Front) Operation</strong></p>
+
+<p>Peek (sometimes called <em>front</em> or <em>element</em>) answers a simple question: <em>What is the next element that would be dequeued, without actually removing it?</em> It returns the value at the head of the queue while leaving the queue's structure <strong>completely unchanged</strong>. The head pointer, tail pointer, and size counter are all unmodified.</p>
+
+<p>Like dequeue, peek must first verify that the queue is not empty. Peeking into an empty queue is just as erroneous as dequeuing from one, because there is no element whose value can be returned. The same signalling mechanisms apply — throw an exception or return a sentinel value.</p>
+
+<ul>
+  <li>In a linked-list queue: <code>return queue.head.data</code></li>
+  <li>In an array-based queue: <code>return array[front]</code></li>
+</ul>
+
+<pre><code>// Pseudocode — peek
+procedure peek(queue):
+    if isEmpty(queue):
+        raise UnderflowException("Queue is empty")
+    return queue.head.data     // linked list
+    // or: return array[front] // circular array
+</code></pre>
+
+<p>Peek is particularly useful when a program needs to make a decision based on <em>what comes next</em> before committing to the removal. For example, a scheduler might peek at the next task's priority before deciding whether to interrupt the current task. Because peek is non-destructive, calling it any number of times in a row always returns the same value as long as no enqueue or dequeue occurs in between.</p>
+
+<p><strong>The isEmpty Operation</strong></p>
+
+<p>isEmpty is the queue's <em>sentinel guard</em>. It returns <code>true</code> when the queue holds no elements and <code>false</code> otherwise. Nearly every other queue operation calls isEmpty (or an equivalent check) as a prerequisite before performing its work, making it arguably the most frequently invoked operation of all four.</p>
+
+<p>Implementation of isEmpty is straightforward and varies slightly by the underlying data structure:</p>
+
+<ul>
+  <li><strong>Array-based with a size counter:</strong> <code>return size == 0</code></li>
+  <li><strong>Array-based tracking front and rear indices (no explicit counter):</strong> a common convention is to treat the queue as empty when <code>front == rear</code> in a circular buffer that sacrifices one slot, or to maintain a boolean flag.</li>
+  <li><strong>Linked-list implementation:</strong> <code>return head == null</code> — if there is no head node, there are no elements.</li>
+</ul>
+
+<pre><code>// Pseudocode — isEmpty
+procedure isEmpty(queue):
+    return queue.size == 0     // array-based with counter
+    // or: return queue.head is null   // linked-list
+</code></pre>
+
+<p>isEmpty executes in true O(1) time because it inspects only a single field — no traversal or comparison loop is needed. Its simplicity is precisely why it can be invoked freely as a guard inside dequeue, peek, and any other logic that operates on queue contents.</p>
+
+<p><strong>Operation Behavior and Expected Outcomes</strong></p>
+
+<p>Taken together, the four operations define the complete behavioral contract of a queue. The table below summarises their key characteristics side by side:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Operation</th>
+      <th>Modifies Queue?</th>
+      <th>Where It Acts</th>
+      <th>Edge-Case Risk</th>
+      <th>Time Complexity</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>enqueue(value)</strong></td>
+      <td>Yes — adds element, updates tail, increments size</td>
+      <td>Rear (tail)</td>
+      <td>Overflow on fixed-capacity queue</td>
+      <td>O(1)</td>
+    </tr>
+    <tr>
+      <td><strong>dequeue()</strong></td>
+      <td>Yes — removes element, advances front, decrements size</td>
+      <td>Front (head)</td>
+      <td>Underflow on empty queue</td>
+      <td>O(1)</td>
+    </tr>
+    <tr>
+      <td><strong>peek()</strong></td>
+      <td>No — read-only inspection</td>
+      <td>Front (head)</td>
+      <td>Underflow on empty queue</td>
+      <td>O(1)</td>
+    </tr>
+    <tr>
+      <td><strong>isEmpty()</strong></td>
+      <td>No — read-only check</td>
+      <td>Whole queue (size or head)</td>
+      <td>None</td>
+      <td>O(1)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>A key insight is that <strong>enqueue and dequeue work as complementary opposites</strong>: enqueue grows the queue at the rear while dequeue shrinks it from the front. Executed in any sequence, they jointly enforce the FIFO invariant — the element enqueued earliest among all currently present elements is always the next one dequeued. This invariant is not just a convention; it is the entire reason queues exist as a distinct data structure.</p>
+
+<p><strong>Peek</strong> and <strong>isEmpty</strong> are <em>non-destructive</em> (also called <em>accessor</em> or <em>observer</em>) operations. No matter how many times you call them in any order, the queue's state remains identical to what it was before the first call. This property allows them to be used freely inside conditional logic, loops, and debugging code without any risk of accidental data loss.</p>
+
+<p>Consider the following sequence of operations to see all four in action together:</p>
+
+<pre><code>Queue q  (initially empty)
+
+isEmpty(q)        → true
+enqueue(q, 10)    → queue: [10]          size = 1
+enqueue(q, 20)    → queue: [10, 20]      size = 2
+enqueue(q, 30)    → queue: [10, 20, 30]  size = 3
+isEmpty(q)        → false
+peek(q)           → 10  (queue unchanged: [10, 20, 30])
+dequeue(q)        → 10  queue: [20, 30]  size = 2
+dequeue(q)        → 20  queue: [30]      size = 1
+peek(q)           → 30  (queue unchanged: [30])
+dequeue(q)        → 30  queue: []        size = 0
+isEmpty(q)        → true
+dequeue(q)        → *** UnderflowException ***
+peek(q)           → *** UnderflowException ***
+</code></pre>
+
+<p>This trace illustrates several important points simultaneously. The values emerge in exactly the order they were inserted (10 → 20 → 30), confirming FIFO. Peek at any point returns the same value as the next dequeue would, without altering the queue. Once the queue is drained, both dequeue and peek correctly signal an error rather than producing undefined behaviour.</p>
+
+<p>When designing or selecting a queue implementation for a real application, keep the following considerations in mind:</p>
+
+<ul>
+  <li><strong>Overflow handling:</strong> If a bounded queue is used (e.g., a ring buffer for network packets), enqueue must gracefully reject or drop elements when the buffer is full. The policy — drop oldest, drop newest, block, or throw — depends on application requirements.</li>
+  <li><strong>Underflow handling:</strong> Consistent signalling on underflow (always throw, or always return a sentinel, but never mix both for the same method) makes the queue easier to use correctly.</li>
+  <li><strong>Thread safety:</strong> In concurrent environments, all four operations must be protected by synchronisation mechanisms (locks, atomic operations, or lock-free algorithms) to prevent race conditions; a common mistake is checking isEmpty and then calling dequeue in two unsynchronised steps.</li>
+  <li><strong>Memory management:</strong> In linked-list implementations, dequeue must release the memory of the removed node in languages without garbage collection to prevent memory leaks.</li>
+</ul>
+
+<p>Mastering these four operations — their mechanics, their invariants, their edge cases, and their time complexities — provides the complete foundation needed to implement queues from scratch, use them in algorithms such as breadth-first search, and reason confidently about system-level constructs like job schedulers and message buffers that queue operations power every day.</p>
+        <div class="notes"><strong>Notes</strong>The trace example near the end of the body clearly demonstrates all four operations in sequence, including the overflow/underflow error cases. The table renders all key properties side by side for quick reference. The pseudocode blocks cover both linked-list and array-based perspectives for enqueue and dequeue. Thread-safety and memory-management notes are included as supplementary context without overloading the core explanations.</div>
+      </div>
+    </details>
+  </main>
+
+<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
+</body></html>

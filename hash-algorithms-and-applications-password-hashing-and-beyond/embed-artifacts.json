@@ -10,6 +10,46 @@
     "type": "Page"
   },
   {
+    "title": "Best Practices and Real-World Applications",
+    "href": "content/Hash_Algorithms_and_interactive.html",
+    "type": "Content"
+  },
+  {
+    "title": "Introduction to Hashing Algorithms",
+    "href": "content/Hash_Algorithms_and_interactive_topics_t1.html",
+    "type": "Content"
+  },
+  {
+    "title": "Cryptographic Hash Functions",
+    "href": "content/Hash_Algorithms_and_interactive_topics_t2.html",
+    "type": "Content"
+  },
+  {
+    "title": "Password Hashing Fundamentals",
+    "href": "content/Hash_Algorithms_and_interactive_topics_t3.html",
+    "type": "Content"
+  },
+  {
+    "title": "Salting and Advanced Password Protection Techniques",
+    "href": "content/Hash_Algorithms_and_interactive_topics_t4.html",
+    "type": "Content"
+  },
+  {
+    "title": "Ensuring Data Integrity with Hashing",
+    "href": "content/Hash_Algorithms_and_interactive_topics_t5.html",
+    "type": "Content"
+  },
+  {
+    "title": "Common Attacks and Vulnerabilities",
+    "href": "content/Hash_Algorithms_and_interactive_topics_t6.html",
+    "type": "Content"
+  },
+  {
+    "title": "Best Practices and Real-World Applications",
+    "href": "content/Hash_Algorithms_and_interactive_topics_t7.html",
+    "type": "Content"
+  },
+  {
     "title": "Hash Algorithms and Applications: Password Hashing and Beyond \u2014 Module Topics",
     "href": "content/module_topics.html",
     "type": "Content"

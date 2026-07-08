@@ -1,0 +1,325 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Insertion Sort</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+  <style>
+    body { padding-left: 1.1rem; padding-right: 1.1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid rgba(128,128,128,.45); padding: .45em .7em; text-align: left; vertical-align: top; }
+    thead th { background: rgba(128,128,128,.18); font-weight: 600; }
+    tbody tr:nth-child(even) { background: rgba(128,128,128,.08); }
+    a.topic-detail-link { text-decoration: underline; }
+  </style>
+  <style>
+    summary.slide-header { list-style: none; }
+    summary.slide-header::-webkit-details-marker { display: none; }
+    details.slide-card[open] > .slide-body { display: block; }
+    details.slide-card[open] .chevron { transform: rotate(90deg); }
+    @media print { details.slide-card > .slide-body { display: block !important; } .chevron { display: none; } }
+  </style>
+</head><body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Sorting Algorithms: Comparison and Implementation</a></div>
+  <header>
+    <h1>Insertion Sort</h1>
+  </header><main>
+    <details class="slide-card" open>
+      <summary class="slide-header"><span class="slide-num">1</span><h2>Insertion Sort</h2><span class="chevron">▶</span></summary>
+      <div class="slide-body">
+        <p>Insertion sort is one of the most intuitive sorting algorithms, closely mirroring the way a person might sort a hand of playing cards. You pick up one card at a time and slide it into its correct position among the cards you are already holding. The algorithm works by maintaining a <strong>sorted region</strong> on the left side of the array and an <strong>unsorted region</strong> on the right, progressively growing the sorted region until it encompasses the entire array. Despite its simplicity, insertion sort has genuine strengths that make it a practical choice in specific scenarios, and understanding it deeply provides a strong foundation for reasoning about more advanced sorting algorithms.</p>
+
+<p>The algorithm begins with the sorted region containing only the very first element of the array — a single-element collection is trivially sorted. On each subsequent pass, it takes the first element of the unsorted region (called the <strong>key</strong>) and walks it leftward through the sorted region, comparing it against each element it encounters. Any sorted-region element that is greater than the key is shifted one position to the right, opening up a slot. This leftward walk continues until the algorithm finds an element that is less than or equal to the key, or until it runs off the left edge of the array. At that point the key is dropped into the vacated slot. After <em>n − 1</em> passes for an array of <em>n</em> elements, the sorted region has swallowed the entire array and every element is in its correct position.</p>
+
+<p><strong>How Insertion Sort Works</strong></p>
+
+<p>It helps to think of the array as being divided by an invisible boundary that moves one step to the right after each pass. Everything to the left of the boundary is sorted relative to itself; everything to the right is waiting to be processed. The key insight is that the sorted region is not just "partially sorted" in some loose sense — it is fully sorted at every moment, which is why the leftward scan can stop as soon as it finds a smaller-or-equal element.</p>
+
+<p>The three operations that drive insertion sort are:</p>
+<ul>
+  <li><strong>Selection:</strong> Pick the first element of the unsorted region as the key.</li>
+  <li><strong>Shifting:</strong> Move elements in the sorted region that are larger than the key one position to the right, overwriting the slot the shifted element just vacated.</li>
+  <li><strong>Insertion:</strong> Place the key into the slot opened by the last shift (or into position 0 if all sorted elements were shifted).</li>
+</ul>
+
+<p>Notice that "shifting" is not the same as "swapping." A swap exchanges two values and requires three assignments. Shifting overwrites a single slot, which is why insertion sort performs fewer write operations than bubble sort — an important practical advantage on real hardware where memory writes can be expensive.</p>
+
+<p><strong>Step-by-Step Example</strong></p>
+
+<p>Consider sorting the array <code>[5, 2, 4, 6, 1, 3]</code>. The table below traces the state of the array after each pass. The <em>key</em> column shows the value being inserted, and the <em>Array State</em> column shows the final arrangement after insertion. The vertical bar <code>|</code> represents the boundary between the sorted (left) and unsorted (right) regions.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Pass</th>
+      <th>Key</th>
+      <th>Array State After Insertion</th>
+      <th>What Happened</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Start</td>
+      <td>—</td>
+      <td>[5 | 2, 4, 6, 1, 3]</td>
+      <td>Sorted region is just index 0 (value 5).</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>2</td>
+      <td>[2, 5 | 4, 6, 1, 3]</td>
+      <td>2 &lt; 5, so 5 shifts right; 2 is placed at index 0.</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>4</td>
+      <td>[2, 4, 5 | 6, 1, 3]</td>
+      <td>4 &lt; 5, so 5 shifts right; 4 ≥ 2, so 4 is placed at index 1.</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>6</td>
+      <td>[2, 4, 5, 6 | 1, 3]</td>
+      <td>6 ≥ 5, no shifts needed; 6 stays at index 3.</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>1</td>
+      <td>[1, 2, 4, 5, 6 | 3]</td>
+      <td>1 is smaller than all sorted elements; all four shift right; 1 lands at index 0.</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>3</td>
+      <td>[1, 2, 3, 4, 5, 6]</td>
+      <td>3 &lt; 4, 3 &lt; 5, 3 &lt; 6 (shifts); 3 ≥ 2, so 3 is placed at index 2.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Pass 3 is instructive: when the key is already larger than every element in the sorted region, the inner loop body never executes. The key effectively stays where it is. This is exactly what happens on every pass when the array is already sorted — leading to the best-case O(n) performance discussed later.</p>
+
+<p><strong>JavaScript Implementation</strong></p>
+
+<p>Below is a clean, well-commented JavaScript implementation of insertion sort. Read through the code and then the explanation that follows.</p>
+
+<pre><code>function insertionSort(arr) {
+  // Outer loop: i is the index of the key (first element of unsorted region)
+  // We start at 1 because a single element (index 0) is already "sorted"
+  for (let i = 1; i &lt; arr.length; i++) {
+
+    // Save the current element before the inner loop overwrites positions
+    let key = arr[i];
+
+    // j will walk leftward through the sorted region
+    let j = i - 1;
+
+    // Shift elements that are greater than key one position to the right
+    while (j &gt;= 0 &amp;&amp; arr[j] &gt; key) {
+      arr[j + 1] = arr[j]; // shift element right
+      j--;                  // move one step left
+    }
+
+    // j+1 is the correct position for key:
+    // either arr[j] &lt;= key (so key goes just after j),
+    // or j fell below 0 (so key goes at index 0, which is j+1 = 0)
+    arr[j + 1] = key;
+  }
+
+  return arr;
+}
+
+// --- Example usage ---
+let data = [5, 2, 4, 6, 1, 3];
+console.log(insertionSort(data)); // [1, 2, 3, 4, 5, 6]
+</code></pre>
+
+<p>Let's walk through each structural decision:</p>
+
+<ul>
+  <li><strong>Outer <code>for</code> loop starting at index 1:</strong> Index 0 is treated as the entire initial sorted region. Starting <code>i</code> at 1 means the very first key is <code>arr[1]</code>, which is compared against the one-element sorted region <code>[arr[0]]</code>. This is correct and avoids an unnecessary iteration where nothing can be compared.</li>
+  <li><strong>Saving the key before the inner loop:</strong> This is critical. The inner loop shifts elements rightward by writing <code>arr[j + 1] = arr[j]</code>. If <code>i = 3</code> and we shift <code>arr[2]</code> into <code>arr[3]</code>, the original value at index 3 would be lost unless we saved it in <code>key</code> first. The variable <code>key</code> holds the value we are trying to insert throughout the entire inner loop.</li>
+  <li><strong>The <code>while</code> loop condition <code>j &gt;= 0 &amp;&amp; arr[j] &gt; key</code>:</strong> The left boundary check (<code>j &gt;= 0</code>) prevents reading before the start of the array. The comparison (<code>arr[j] &gt; key</code>) uses strict greater-than, not greater-than-or-equal. This is what makes insertion sort <em>stable</em>: equal elements are not shifted past each other, so their original relative order is preserved.</li>
+  <li><strong>Placing the key at <code>arr[j + 1]</code> after the loop:</strong> When the <code>while</code> loop exits, <code>j</code> points to the last element that did <em>not</em> need to be shifted (i.e., the last element ≤ key), or <code>j</code> is <code>-1</code> if every sorted element was shifted. In either case, <code>j + 1</code> is the correct insertion index. If <code>j === -1</code>, then <code>j + 1 === 0</code>, placing the key at the very beginning of the array.</li>
+</ul>
+
+<p>It is worth noting that the sort operates <strong>in place</strong>: no second array is ever allocated. The only extra memory used is the single <code>key</code> variable and the loop indices, which is O(1) auxiliary space regardless of array size.</p>
+
+<p><strong>Time Complexity Analysis</strong></p>
+
+<p>Understanding the performance of insertion sort requires examining how many comparisons and shifts occur as a function of the input size <em>n</em>.</p>
+
+<ul>
+  <li><strong>Best case — O(n):</strong> This occurs when the input array is already sorted in ascending order. On each of the <em>n − 1</em> passes, the key is compared to exactly one element (the rightmost element of the sorted region) and found to be greater-than-or-equal, so the <code>while</code> loop exits immediately without any shifts. The total work is proportional to <em>n</em> comparisons, making the best case linear. This is a significant practical advantage: insertion sort degrades <em>gracefully</em> when given nearly sorted data.</li>
+  <li><strong>Worst case — O(n²):</strong> This occurs when the array is sorted in reverse order (descending). On pass <em>i</em>, the key is smaller than all <em>i</em> elements in the sorted region, so all <em>i</em> of them must be shifted. Summing across all passes: 1 + 2 + 3 + … + (n − 1) = n(n − 1)/2 shifts and comparisons, which is O(n²). An array like <code>[6, 5, 4, 3, 2, 1]</code> triggers this worst case.</li>
+  <li><strong>Average case — O(n²):</strong> For a randomly ordered array, on pass <em>i</em> the key is expected to be smaller than roughly half the sorted-region elements, requiring about <em>i/2</em> shifts on average. Summing (1/2 + 2/2 + … + (n−1)/2) still yields O(n²). While the constant factor is roughly half that of the worst case, the quadratic growth dominates and average-case performance is still O(n²).</li>
+  <li><strong>Space complexity — O(1):</strong> Insertion sort is an <em>in-place</em> algorithm. The single auxiliary variable <code>key</code> is the only extra storage required, making the space overhead constant regardless of the size of the input array. This contrasts with merge sort, for example, which requires O(n) auxiliary space for the temporary merge buffer.</li>
+</ul>
+
+<table>
+  <thead>
+    <tr>
+      <th>Case</th>
+      <th>Time Complexity</th>
+      <th>Condition</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Best</td>
+      <td>O(n)</td>
+      <td>Array is already sorted in ascending order</td>
+    </tr>
+    <tr>
+      <td>Average</td>
+      <td>O(n²)</td>
+      <td>Array is in random order</td>
+    </tr>
+    <tr>
+      <td>Worst</td>
+      <td>O(n²)</td>
+      <td>Array is sorted in reverse (descending) order</td>
+    </tr>
+    <tr>
+      <td>Space</td>
+      <td>O(1)</td>
+      <td>Always — only one temporary variable used</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Stability and In-Place Properties</strong></p>
+
+<p>Two formal properties of sorting algorithms are especially important when choosing one for a real-world task: <em>stability</em> and <em>in-place</em> behavior.</p>
+
+<p>A sorting algorithm is called <strong>stable</strong> if, whenever two elements have equal keys, they appear in the same relative order in the output as they did in the input. Consider sorting a list of student records first by grade and then by name. If the grade-sort is stable, students with the same grade will still be alphabetically ordered (from the prior name-sort) after the grade-sort completes. If it is unstable, that secondary ordering could be scrambled.</p>
+
+<p>Insertion sort is inherently stable because the <code>while</code> loop condition uses strict greater-than (<code>arr[j] &gt; key</code>). An element equal to the key is <em>not</em> shifted rightward; the loop stops and the key is inserted <em>after</em> its equal peer, preserving the original order. No equal elements ever pass each other. This guarantee holds without any special handling — it is a natural consequence of the algorithm's structure.</p>
+
+<p>An algorithm is called <strong>in-place</strong> if it requires only a constant amount of auxiliary memory beyond the input itself — O(1) extra space. Insertion sort qualifies: the original array is rearranged by shifting elements within it, and the only extra variable needed is <code>key</code>. In memory-constrained environments (embedded systems, microcontrollers, environments where heap allocation is avoided), this property is highly desirable. An out-of-place algorithm like merge sort, by contrast, must allocate O(n) temporary storage to merge its subarrays.</p>
+
+<p>Together, these two properties make insertion sort a strong candidate in situations where you need guaranteed stability without incurring any memory overhead — for instance, sorting a small linked list of records by one field while preserving existing ordering by another field.</p>
+
+<p><strong>Practical Use Cases and Comparisons</strong></p>
+
+<p>Given its O(n²) average and worst-case behavior, it might seem like insertion sort should be avoided in favor of O(n log n) algorithms like merge sort, quicksort, or heapsort. In practice, however, insertion sort fills several important niches.</p>
+
+<ul>
+  <li><strong>Small arrays:</strong> Asymptotic analysis describes behavior as <em>n</em> grows large, but for small <em>n</em> the constant factors hidden inside Big-O notation matter enormously. Insertion sort has very low overhead — no recursive calls, no partitioning, no heap maintenance. For arrays of roughly 10–20 elements, benchmarks consistently show insertion sort outperforming merge sort or quicksort. This is why the standard libraries of many languages (including Python's Timsort and many implementations of C's <code>qsort</code>) switch to insertion sort for small subarrays within their divide-and-conquer algorithms.</li>
+  <li><strong>Nearly sorted data:</strong> Because the inner loop makes comparisons and shifts only for elements that are out of place, insertion sort approaches O(n) performance when the input is "almost sorted" — for example, a sorted array with a handful of elements added to the end or a small number of elements that have drifted out of position. In such scenarios it dramatically outperforms algorithms with guaranteed O(n log n) behavior but higher constant costs.</li>
+  <li><strong>Online sorting:</strong> Insertion sort is naturally suited to <em>online</em> algorithms — scenarios where elements arrive one at a time and must be incorporated into a sorted structure as they arrive, without the ability to see future elements. Because the sorted region grows incrementally and each new element is inserted into the correct position immediately, there is no need to wait for all elements before beginning. A real-time leaderboard that must stay sorted as new scores arrive is a classic example.</li>
+  <li><strong>Comparison with bubble sort:</strong> Both insertion sort and bubble sort are simple O(n²) comparison-based sorts, but insertion sort is generally superior in practice. Bubble sort makes adjacent swaps (three assignments each) to move an element toward its destination; insertion sort shifts elements (one assignment each) and then performs a single insertion. For the same randomly ordered data, insertion sort typically performs fewer total data movements. Additionally, insertion sort's best case (already sorted) is O(n), while bubble sort's optimized best case is also O(n) but requires the extra overhead of a "swap occurred" flag. Without that flag, naïve bubble sort is O(n²) even on sorted data.</li>
+  <li><strong>Comparison with selection sort:</strong> Selection sort always performs exactly n(n−1)/2 comparisons regardless of the input order (always O(n²)), while insertion sort can do as few as n−1 comparisons on a sorted array. Selection sort does have one advantage — it performs at most <em>n − 1</em> swaps — but insertion sort's shifting approach is competitive in write-cost while also being adaptive (faster on easier inputs) and stable.</li>
+</ul>
+
+<table>
+  <thead>
+    <tr>
+      <th>Algorithm</th>
+      <th>Best Case</th>
+      <th>Average Case</th>
+      <th>Worst Case</th>
+      <th>Space</th>
+      <th>Stable</th>
+      <th>Adaptive</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Insertion Sort</td>
+      <td>O(n)</td>
+      <td>O(n²)</td>
+      <td>O(n²)</td>
+      <td>O(1)</td>
+      <td>Yes</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td>Bubble Sort</td>
+      <td>O(n)*</td>
+      <td>O(n²)</td>
+      <td>O(n²)</td>
+      <td>O(1)</td>
+      <td>Yes</td>
+      <td>Yes*</td>
+    </tr>
+    <tr>
+      <td>Selection Sort</td>
+      <td>O(n²)</td>
+      <td>O(n²)</td>
+      <td>O(n²)</td>
+      <td>O(1)</td>
+      <td>No</td>
+      <td>No</td>
+    </tr>
+    <tr>
+      <td>Merge Sort</td>
+      <td>O(n log n)</td>
+      <td>O(n log n)</td>
+      <td>O(n log n)</td>
+      <td>O(n)</td>
+      <td>Yes</td>
+      <td>No</td>
+    </tr>
+    <tr>
+      <td>Quicksort</td>
+      <td>O(n log n)</td>
+      <td>O(n log n)</td>
+      <td>O(n²)</td>
+      <td>O(log n)</td>
+      <td>No</td>
+      <td>No</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><em>* Bubble sort achieves O(n) best case only with the optimized "early exit" flag variant; naïve bubble sort is O(n²) always.</em></p>
+
+<p>In summary, insertion sort is not merely a pedagogical toy. It is a carefully understood algorithm with well-defined strengths: O(n) best-case performance, O(1) space, guaranteed stability, natural fit for online processing, and superior practical speed on small or nearly-sorted datasets. Recognizing the conditions under which insertion sort is the right tool — rather than defaulting to more complex algorithms — is a mark of algorithmic maturity.</p>
+        <div class="notes"><strong>Notes</strong>The comparison table includes merge sort and quicksort for broader context, helping learners understand where insertion sort fits in the broader landscape of sorting algorithms. The asterisk footnote on bubble sort clarifies the optimized vs. na&#239;ve variant distinction, which is a common source of confusion.</div>
+      </div>
+    </details>
+  </main>
+
+<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
+</body></html>

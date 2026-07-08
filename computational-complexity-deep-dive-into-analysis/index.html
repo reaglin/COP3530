@@ -8,226 +8,247 @@
     /* ── Reset & Base ── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    :root {
+      --color-bg:          #f4f6f9;
+      --color-surface:     #ffffff;
+      --color-border:      #dde2ea;
+      --color-primary:     #1a4f8a;
+      --color-primary-dk:  #133a66;
+      --color-accent:      #2e7fd4;
+      --color-accent-lt:   #e8f1fb;
+      --color-text:        #1e2430;
+      --color-muted:       #5a6577;
+      --color-tag-bg:      #eef2f8;
+      --color-tag-text:    #3a4d6b;
+      --color-ft-bg:       #f0f4f0;
+      --color-ft-text:     #2e5c2e;
+      --radius:            8px;
+      --shadow:            0 2px 8px rgba(0,0,0,0.08);
+      --shadow-hover:      0 6px 18px rgba(0,0,0,0.13);
+      --font:              'Segoe UI', system-ui, -apple-system, sans-serif;
+      --transition:        0.18s ease;
+    }
+
     body {
-      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-      background-color: #f4f6f9;
-      color: #1e2a38;
-      line-height: 1.65;
+      font-family: var(--font);
+      background: var(--color-bg);
+      color: var(--color-text);
+      line-height: 1.6;
       min-height: 100vh;
     }
 
-    /* ── Header ── */
-    header {
-      background: linear-gradient(135deg, #1a3557 0%, #24527a 60%, #2e6fa3 100%);
+    /* ── Header Banner ── */
+    .site-header {
+      background: linear-gradient(135deg, var(--color-primary-dk) 0%, var(--color-primary) 60%, #2563a8 100%);
       color: #fff;
-      padding: 3rem 2rem 2.5rem;
-      text-align: center;
+      padding: 2.5rem 1.5rem 2rem;
     }
 
-    header .course-label {
+    .header-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .course-label {
       display: inline-block;
-      background: rgba(255, 255, 255, 0.15);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      border-radius: 20px;
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       font-weight: 600;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      padding: 0.3rem 1rem;
-      margin-bottom: 1rem;
-      color: #c9e0f5;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.25);
+      color: #d6e8ff;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      margin-bottom: 0.85rem;
     }
 
-    header h1 {
-      font-size: clamp(1.6rem, 4vw, 2.6rem);
+    .site-header h1 {
+      font-size: clamp(1.5rem, 3vw, 2.2rem);
       font-weight: 700;
-      letter-spacing: -0.02em;
-      margin-bottom: 1rem;
       line-height: 1.25;
+      margin-bottom: 0.9rem;
+      letter-spacing: -0.01em;
     }
 
-    header p {
-      max-width: 680px;
-      margin: 0 auto;
+    .site-header p {
       font-size: 1rem;
-      color: #c9ddef;
-      line-height: 1.7;
+      color: #c8dcf5;
+      max-width: 720px;
+      line-height: 1.65;
     }
 
-    /* ── Main Layout ── */
+    /* ── Main Content ── */
     main {
-      max-width: 960px;
+      max-width: 1100px;
       margin: 0 auto;
-      padding: 2.5rem 1.5rem 4rem;
+      padding: 2.5rem 1.5rem 3.5rem;
     }
 
-    /* ── Section Heading ── */
-    .section-heading {
-      font-size: 0.75rem;
+    .section-label {
+      font-size: 0.72rem;
       font-weight: 700;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: #5a7a99;
-      margin-bottom: 1.25rem;
+      color: var(--color-muted);
+      margin-bottom: 1.2rem;
       padding-bottom: 0.5rem;
-      border-bottom: 2px solid #dde4ed;
+      border-bottom: 2px solid var(--color-border);
     }
 
     /* ── Card Grid ── */
     .card-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
       gap: 1.25rem;
     }
 
-    /* ── Artifact Card ── */
     .card {
-      background: #ffffff;
-      border: 1px solid #dde4ed;
-      border-radius: 10px;
-      padding: 1.4rem 1.5rem;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 1.4rem 1.5rem 1.35rem;
       display: flex;
       flex-direction: column;
-      gap: 0.6rem;
-      box-shadow: 0 2px 8px rgba(30, 60, 100, 0.06);
-      transition: box-shadow 0.2s ease, transform 0.2s ease;
+      gap: 0.65rem;
+      transition: box-shadow var(--transition), transform var(--transition), border-color var(--transition);
     }
 
     .card:hover {
-      box-shadow: 0 6px 20px rgba(30, 60, 100, 0.12);
+      box-shadow: var(--shadow-hover);
       transform: translateY(-2px);
+      border-color: #b8cde8;
     }
 
-    /* ── Card Header Row ── */
-    .card-header {
+    /* Card top row: tags */
+    .card-meta {
       display: flex;
-      align-items: flex-start;
-      gap: 0.75rem;
+      align-items: center;
+      gap: 0.5rem;
       flex-wrap: wrap;
     }
 
-    .card-icon {
-      width: 38px;
-      height: 38px;
-      border-radius: 8px;
-      background: #e8f0fa;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-    .card-icon svg {
-      width: 20px;
-      height: 20px;
-      fill: #24527a;
-    }
-
-    .card-title-block {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .card-name {
-      font-size: 1rem;
-      font-weight: 700;
-      color: #1a3557;
-      line-height: 1.3;
-      word-break: break-word;
-    }
-
-    .card-name a {
-      color: #1a6fb5;
-      text-decoration: none;
-      transition: color 0.15s;
-    }
-
-    .card-name a:hover {
-      color: #0f4d85;
-      text-decoration: underline;
-    }
-
-    /* ── Source Link ── */
-    .source-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.25rem;
-      font-size: 0.72rem;
+    .tag {
+      font-size: 0.7rem;
       font-weight: 600;
-      color: #5a7a99;
-      text-decoration: none;
-      border: 1px solid #b8ccdf;
-      border-radius: 4px;
-      padding: 0.15rem 0.45rem;
-      margin-top: 0.3rem;
-      transition: background 0.15s, color 0.15s, border-color 0.15s;
-      white-space: nowrap;
-    }
-
-    .source-link:hover {
-      background: #e8f0fa;
-      color: #1a3557;
-      border-color: #24527a;
-    }
-
-    .source-link svg {
-      width: 11px;
-      height: 11px;
-      fill: currentColor;
-      flex-shrink: 0;
-    }
-
-    /* ── Badges ── */
-    .badge-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.4rem;
-    }
-
-    .badge {
-      display: inline-block;
-      font-size: 0.68rem;
-      font-weight: 600;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.05em;
       text-transform: uppercase;
-      padding: 0.2rem 0.55rem;
-      border-radius: 20px;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
     }
 
-    .badge-type {
-      background: #e3ecf7;
-      color: #1e4d7b;
+    .tag-type {
+      background: var(--color-tag-bg);
+      color: var(--color-tag-text);
+      border: 1px solid #c8d5ea;
     }
 
-    .badge-filetype {
-      background: #eaf4ec;
-      color: #1d6b2f;
+    .tag-filetype {
+      background: var(--color-ft-bg);
+      color: var(--color-ft-text);
+      border: 1px solid #bfd4bf;
       font-family: 'Courier New', Courier, monospace;
     }
 
-    /* ── Description ── */
-    .card-description {
-      font-size: 0.875rem;
-      color: #4a5e72;
-      line-height: 1.65;
+    /* Card name / title row */
+    .card-title-row {
+      display: flex;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 0.5rem 0.75rem;
+    }
+
+    .card-name {
+      font-size: 1.02rem;
+      font-weight: 700;
+      color: var(--color-text);
+      line-height: 1.3;
+    }
+
+    .card-name a {
+      color: var(--color-accent);
+      text-decoration: none;
+      transition: color var(--transition);
+    }
+
+    .card-name a:hover,
+    .card-name a:focus {
+      color: var(--color-primary-dk);
+      text-decoration: underline;
+    }
+
+    .card-name a:focus-visible {
+      outline: 2px solid var(--color-accent);
+      outline-offset: 2px;
+      border-radius: 2px;
+    }
+
+    .source-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.73rem;
+      font-weight: 600;
+      color: var(--color-muted);
+      text-decoration: none;
+      border: 1px solid var(--color-border);
+      background: var(--color-bg);
+      padding: 0.15rem 0.55rem;
+      border-radius: 4px;
+      white-space: nowrap;
+      transition: background var(--transition), color var(--transition), border-color var(--transition);
+      flex-shrink: 0;
+    }
+
+    .source-link:hover,
+    .source-link:focus {
+      background: var(--color-accent-lt);
+      color: var(--color-accent);
+      border-color: #a0c0e8;
+      text-decoration: none;
+    }
+
+    .source-link:focus-visible {
+      outline: 2px solid var(--color-accent);
+      outline-offset: 2px;
+    }
+
+    .source-link svg {
+      flex-shrink: 0;
+    }
+
+    /* Card description */
+    .card-desc {
+      font-size: 0.88rem;
+      color: var(--color-muted);
+      line-height: 1.6;
       flex: 1;
     }
 
+    /* Divider line inside card */
+    .card-divider {
+      border: none;
+      border-top: 1px solid var(--color-border);
+      margin: 0.1rem 0 0;
+    }
+
     /* ── Footer ── */
-    footer {
+    .site-footer {
       text-align: center;
       padding: 1.5rem 1rem;
-      font-size: 0.78rem;
-      color: #8fa5bb;
-      border-top: 1px solid #dde4ed;
-      background: #f4f6f9;
+      font-size: 0.8rem;
+      color: #8a95a5;
+      border-top: 1px solid var(--color-border);
+      background: var(--color-surface);
     }
 
     /* ── Responsive ── */
-    @media (max-width: 500px) {
-      header { padding: 2rem 1.25rem 2rem; }
-      main { padding: 2rem 1rem 3rem; }
-      .card { padding: 1.1rem 1.1rem; }
+    @media (max-width: 600px) {
+      .site-header { padding: 2rem 1rem 1.75rem; }
+      main { padding: 1.75rem 1rem 3rem; }
+      .card-grid { grid-template-columns: 1fr; }
+      .card { padding: 1.2rem 1.2rem 1.15rem; }
     }
   </style>
 </head>
@@ -235,73 +256,170 @@
 <div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ COP3530 - Data Structures</a></div>
 <div style="border:1px solid #c9d4e3;background:#f5f8fc;border-radius:8px;padding:10px 16px;margin:0 0 18px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;font-family:'Segoe UI',Arial,sans-serif"><strong style="color:#1a3c6e">Module outline:</strong><a href="topics-outcomes.html#topics" style="color:#1a3c6e;font-weight:600;text-decoration:none">📋 Module Topics</a><a href="topics-outcomes.html#outcomes" style="color:#137333;font-weight:600;text-decoration:none">🎯 Student Learning Outcomes</a></div>
 
-  <!-- ══════════════ HEADER ══════════════ -->
-  <header>
-    <div class="course-label">COP3530 — Data Structures</div>
-    <h1>Computational Complexity:<br>Deep Dive into Analysis</h1>
-    <p>
-      Explore the theory and practice of algorithm efficiency analysis.
-      This module covers Big O notation, best, worst, and average case analysis,
-      and Omega notation — equipping you with the tools to reason rigorously
-      about the performance of data structures and algorithms.
-    </p>
+  <header class="site-header" role="banner">
+    <div class="header-inner">
+      <span class="course-label">COP3530 — Data Structures</span>
+      <h1>Computational Complexity: Deep Dive into Analysis</h1>
+      <p>
+        This module provides a rigorous exploration of computational complexity, equipping learners
+        with the mathematical tools and analytical frameworks needed to evaluate algorithm efficiency.
+        Topics span Big O, Omega, and Theta notations, best/worst/average case reasoning, and the
+        practical software-engineering implications of asymptotic analysis.
+      </p>
+    </div>
   </header>
 
-  <!-- ══════════════ MAIN ══════════════ -->
   <main>
-    <p class="section-heading">Module Artifacts</p>
+    <p class="section-label">Module Artifacts &mdash; 9 items</p>
 
-    <div class="card-grid">
+    <div class="card-grid" role="list">
 
-      <!-- ── Artifact: Module Topics ── -->
-      <div class="card">
-        <div class="card-header">
-          <!-- Document icon -->
-          <div class="card-icon">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0
-                       2-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM6 20V4h5v7h7v9H6z"/>
-              <path d="M8 13h8v1.5H8zm0 3h8v1.5H8zm0-6h3v1.5H8z"/>
+      <!-- Card 1 -->
+      <article class="card" role="listitem">
+        <div class="card-meta">
+          <span class="tag tag-type">Module Topics</span>
+          <span class="tag tag-filetype">.json</span>
+        </div>
+        <div class="card-title-row">
+          <span class="card-name">
+            <a href="content/module_topics.html">Module Topics</a>
+          </span>
+          <a class="source-link" href="source/hierarchy.json" aria-label="Source file for Module Topics">
+            <svg width="11" height="11" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M13 10v3H3v-3H1v3a2 2 0 002 2h10a2 2 0 002-2v-3h-2zM8 1L4 5h3v6h2V5h3L8 1z" fill="currentColor"/>
             </svg>
-          </div>
-
-          <div class="card-title-block">
-            <div class="card-name">
-              <!-- viewHref is non-empty → hyperlink -->
-              <a href="content/module_topics.html">Module Topics</a>
-            </div>
-
-            <!-- sourceHref is non-empty → secondary source link -->
-            <a class="source-link" href="source/hierarchy.json" title="View raw source file">
-              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                <path d="M9.4 16.6 4.8 12l4.6-4.6L8 6l-6 6 6 6
-                         1.4-1.4zm5.2 0 4.6-4.6-4.6-4.6L16 6l6
-                         6-6 6-1.4-1.4z"/>
-              </svg>
-              source file
-            </a>
-          </div>
+            source file
+          </a>
         </div>
+        <hr class="card-divider" />
+        <p class="card-desc">Covers computational complexity fundamentals including Big O notation, best/worst/average case analysis, and Omega notation, serving as a navigational outline that guides learners and instructors through the module's core topics in algorithm efficiency analysis.</p>
+      </article>
 
-        <div class="badge-row">
-          <span class="badge badge-type">Module Topics</span>
-          <span class="badge badge-filetype">.json</span>
+      <!-- Card 2 -->
+      <article class="card" role="listitem">
+        <div class="card-meta">
+          <span class="tag tag-type">Topic Detail</span>
+          <span class="tag tag-filetype">.html</span>
         </div>
+        <div class="card-title-row">
+          <span class="card-name">
+            <a href="content/Computational_Complexity_Dee_interactive_topics_t1.html">Foundations of Computational Complexity</a>
+          </span>
+        </div>
+        <hr class="card-divider" />
+        <p class="card-desc">This reading introduces computational complexity theory, explaining how and why resource usage (time, memory, bandwidth) scales with problem size, and serves as foundational background for learners beginning their study of algorithm analysis.</p>
+      </article>
 
-        <p class="card-description">
-          Covers computational complexity fundamentals including Big O notation,
-          best/worst/average case analysis, and Omega notation, serving as a
-          navigational outline that guides learners and instructors through the
-          module's core topics in algorithm efficiency analysis.
-        </p>
-      </div>
+      <!-- Card 3 -->
+      <article class="card" role="listitem">
+        <div class="card-meta">
+          <span class="tag tag-type">Topic Detail</span>
+          <span class="tag tag-filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <span class="card-name">
+            <a href="content/Computational_Complexity_Dee_interactive_topics_t2.html">Big O Notation Revisited</a>
+          </span>
+        </div>
+        <hr class="card-divider" />
+        <p class="card-desc">This reading revisits Big O notation as a mathematical tool for expressing how an algorithm's time or space consumption scales with input size, and learners use it to understand upper-bound analysis independent of hardware or implementation details.</p>
+      </article>
 
-    </div><!-- /.card-grid -->
+      <!-- Card 4 -->
+      <article class="card" role="listitem">
+        <div class="card-meta">
+          <span class="tag tag-type">Topic Detail</span>
+          <span class="tag tag-filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <span class="card-name">
+            <a href="content/Computational_Complexity_Dee_interactive_topics_t3.html">Best, Worst, and Average Case Analysis</a>
+          </span>
+        </div>
+        <hr class="card-divider" />
+        <p class="card-desc">This reading explains how best, worst, and average case analysis capture the range of an algorithm's performance depending on input characteristics, and learners use it to develop a nuanced understanding of why a single complexity figure may not tell the full story.</p>
+      </article>
+
+      <!-- Card 5 -->
+      <article class="card" role="listitem">
+        <div class="card-meta">
+          <span class="tag tag-type">Topic Detail</span>
+          <span class="tag tag-filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <span class="card-name">
+            <a href="content/Computational_Complexity_Dee_interactive_topics_t4.html">Omega and Theta Notations</a>
+          </span>
+        </div>
+        <hr class="card-divider" />
+        <p class="card-desc">This reading introduces Omega (lower-bound) and Theta (tight-bound) notations alongside Big O, and learners use it to describe algorithm performance from multiple perspectives and identify when a bound is as precise as possible.</p>
+      </article>
+
+      <!-- Card 6 -->
+      <article class="card" role="listitem">
+        <div class="card-meta">
+          <span class="tag tag-type">Topic Detail</span>
+          <span class="tag tag-filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <span class="card-name">
+            <a href="content/Computational_Complexity_Dee_interactive_topics_t5.html">Comparing Asymptotic Notations</a>
+          </span>
+        </div>
+        <hr class="card-divider" />
+        <p class="card-desc">This reading compares Big O, Omega, and Theta notations side by side, clarifying when each is appropriate, and learners and instructors use it to consolidate understanding of the full asymptotic notation toolkit and how to select the right notation for a given analysis.</p>
+      </article>
+
+      <!-- Card 7 -->
+      <article class="card" role="listitem">
+        <div class="card-meta">
+          <span class="tag tag-type">Topic Detail</span>
+          <span class="tag tag-filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <span class="card-name">
+            <a href="content/Computational_Complexity_Dee_interactive_topics_t6.html">Complexity Analysis of Known Algorithms</a>
+          </span>
+        </div>
+        <hr class="card-divider" />
+        <p class="card-desc">This reading walks through the complexity analysis of well-known algorithms (such as sorting and searching), and learners use it to practice deriving and interpreting time and space complexity for concrete, familiar examples.</p>
+      </article>
+
+      <!-- Card 8 -->
+      <article class="card" role="listitem">
+        <div class="card-meta">
+          <span class="tag tag-type">Topic Detail</span>
+          <span class="tag tag-filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <span class="card-name">
+            <a href="content/Computational_Complexity_Dee_interactive_topics_t7.html">Practical Implications of Complexity</a>
+          </span>
+        </div>
+        <hr class="card-divider" />
+        <p class="card-desc">This reading connects complexity theory to real-world software engineering decisions about performance, scalability, and resource investment, and learners use it to understand how algorithmic analysis directly influences practical system design choices.</p>
+      </article>
+
+      <!-- Card 9 -->
+      <article class="card" role="listitem">
+        <div class="card-meta">
+          <span class="tag tag-type">Text Content</span>
+          <span class="tag tag-filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <span class="card-name">
+            <a href="content/Computational_Complexity_Dee_interactive.html">Practical Implications of Complexity</a>
+          </span>
+        </div>
+        <hr class="card-divider" />
+        <p class="card-desc">This reading connects complexity theory to real-world software engineering decisions about performance, scalability, and resource investment, and learners use it to understand how algorithmic analysis directly influences practical system design choices.</p>
+      </article>
+
+    </div>
   </main>
 
-  <!-- ══════════════ FOOTER ══════════════ -->
-  <footer>
-    <p>COP3530 — Data Structures &nbsp;|&nbsp; Computational Complexity Module &nbsp;|&nbsp; All rights reserved.</p>
+  <footer class="site-footer" role="contentinfo">
+    COP3530 &mdash; Data Structures &nbsp;|&nbsp; Computational Complexity: Deep Dive into Analysis
   </footer>
 
 

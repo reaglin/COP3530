@@ -1,0 +1,271 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hash Function Design and Properties</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+  <style>
+    body { padding-left: 1.1rem; padding-right: 1.1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid rgba(128,128,128,.45); padding: .45em .7em; text-align: left; vertical-align: top; }
+    thead th { background: rgba(128,128,128,.18); font-weight: 600; }
+    tbody tr:nth-child(even) { background: rgba(128,128,128,.08); }
+    a.topic-detail-link { text-decoration: underline; }
+  </style>
+  <style>
+    summary.slide-header { list-style: none; }
+    summary.slide-header::-webkit-details-marker { display: none; }
+    details.slide-card[open] > .slide-body { display: block; }
+    details.slide-card[open] .chevron { transform: rotate(90deg); }
+    @media print { details.slide-card > .slide-body { display: block !important; } .chevron { display: none; } }
+  </style>
+</head><body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Hash Tables: Structure and Collision Resolution</a></div>
+  <header>
+    <h1>Hash Function Design and Properties</h1>
+  </header><main>
+    <details class="slide-card" open>
+      <summary class="slide-header"><span class="slide-num">1</span><h2>Hash Function Design and Properties</h2><span class="chevron">▶</span></summary>
+      <div class="slide-body">
+        <p>A hash function is the engine at the heart of every hash table. It takes a key — whether an integer, a string, or some other data type — and converts it into an integer index that identifies a storage location (a <em>bucket</em>) inside the underlying array. The entire promise of O(1) average-case lookup, insertion, and deletion depends on the quality of that function. A well-designed hash function is fast, spreads keys evenly across the available buckets, and behaves consistently. A poorly designed one introduces clustering, excessive collisions, and in the worst case can turn an O(1) data structure into something that behaves like a linked list with O(n) operations. Understanding what separates a good hash function from a bad one requires examining four interconnected properties: determinism, uniform distribution, computational speed, and the careful use of arithmetic techniques such as the modulo operation.</p>
+
+<p><strong>Determinism: The Foundational Property</strong></p>
+
+<p>Determinism is the non-negotiable baseline. A hash function must return the <em>exact same index</em> for the same key, every single time it is called, regardless of when or how often it is invoked. This is not a performance concern — it is a correctness concern. Consider what happens during a lookup: the hash function computes an index from the search key, and the program goes directly to that bucket. If the function could return a different index on a second call, the program would look in the wrong bucket and report that a previously inserted key is missing, even though it is stored somewhere in the table.</p>
+
+<p>Determinism also underpins deletions. When a key is removed, the program must locate it first. If the hash value could drift between the insertion call and the deletion call, the delete operation would never find the right bucket. The same logic applies to updates: reading a value by key and then writing back a modified value must target the same bucket both times.</p>
+
+<p>A subtle but real violation of determinism occurs when a hash function incorporates values that can change between calls. Classic examples include:</p>
+<ul>
+  <li><strong>Random seeds initialized at program startup</strong> — some languages apply a random salt to string hashes to prevent denial-of-service attacks (this is desirable for security, but the seed must remain constant for the lifetime of the hash table, not change on every call).</li>
+  <li><strong>Memory addresses of objects</strong> — if an object moves in memory (for example, due to garbage collection), its address changes and so does its hash value. This is why languages like Java require that if you override <code>equals()</code> you must also override <code>hashCode()</code> to be based on immutable fields, not the object's address.</li>
+  <li><strong>System time or thread IDs</strong> — incorporating wall-clock time or concurrency identifiers into a hash computation would produce different results on different calls.</li>
+</ul>
+<p>The practical rule is simple: a hash function's output must be a pure function of its input. Given the same key, the output is always the same.</p>
+
+<p><strong>Uniform Distribution of Hash Values</strong></p>
+
+<p>Assuming determinism is satisfied, the next critical property is how evenly the function spreads keys across the available buckets. In an ideal hash function, every bucket has an equal probability of being selected for any randomly chosen key — the distribution approximates a uniform random assignment. This ideal is captured in the concept of a <em>universal hash function</em>, but even practical, non-universal functions can achieve excellent distribution in practice.</p>
+
+<p>Poor uniformity manifests as <em>clustering</em>: many keys end up hashing to the same small set of buckets while other buckets stay empty or nearly empty. Clustering has cascading negative effects:</p>
+<ul>
+  <li>In <strong>separate chaining</strong> (where each bucket holds a linked list of entries), clustered buckets develop long chains that require O(k) traversal time, where k is the chain length.</li>
+  <li>In <strong>open addressing</strong> (where collisions are resolved by probing adjacent slots), clusters of occupied slots form, forcing long probe sequences before an empty slot is found.</li>
+  <li>Average-case performance degrades from O(1) toward O(n) as the load concentrates on a few buckets.</li>
+</ul>
+
+<p>To make uniformity concrete, imagine a hash table with 10 buckets and 100 keys. With a perfectly uniform hash function, each bucket would receive exactly 10 keys. With a poor hash function, bucket 0 might receive 60 keys and bucket 5 might receive 30 keys, while buckets 1 through 4 and 6 through 9 receive a combined 10 keys. Any lookup for a key in bucket 0 would require examining up to 60 entries in a chain — an O(60) operation on a table that promised O(1).</p>
+
+<p>Uniformity is typically measured empirically by inserting a representative sample of keys and counting how many land in each bucket. The <em>load variance</em> (or equivalently, the chi-squared statistic compared against an expected uniform distribution) quantifies how far the actual distribution is from ideal. A well-designed hash function should produce low variance across realistic key sets.</p>
+
+<p><strong>Computational Speed</strong></p>
+
+<p>Every table operation — insert, lookup, delete — begins with a call to the hash function. That call's cost adds directly to the cost of the operation. If the hash function itself takes O(n) time (say, because it processes every character of an arbitrarily long string in a slow loop), then the overall operation is no longer O(1) in the size of the data structure; it is O(key length). For short keys this is fine in practice, but it highlights why speed matters.</p>
+
+<p>Fast hash functions rely on a small number of arithmetic operations per unit of input:</p>
+<ul>
+  <li><strong>Bitwise operations</strong> (XOR, shifts, AND) — these execute in a single CPU cycle on modern hardware.</li>
+  <li><strong>Integer multiplication</strong> — slightly more expensive than bitwise ops but still extremely fast; multiplying by a prime constant is a common technique.</li>
+  <li><strong>Modulo division</strong> — the most expensive of the common operations, but necessary to map the raw hash to a valid index. When the table size is a power of two, modulo can be replaced by a bitwise AND, which is much faster.</li>
+</ul>
+
+<p>Speed and quality are in tension. A function that simply returns <code>key % tableSize</code> is extremely fast but distributes poorly when keys share common factors with the table size. A cryptographic hash function like SHA-256 distributes beautifully and has strong collision resistance, but it performs dozens of rounds of mixing operations — orders of magnitude slower than what a hash table needs. The goal is to find a fast function that still achieves good distribution for the expected key set. Functions like <em>FNV-1a</em>, <em>MurmurHash</em>, and <em>xxHash</em> have been engineered specifically to sit at this sweet spot: they are simple enough to run in nanoseconds per key while distributing nearly as well as cryptographic functions for typical inputs.</p>
+
+<p><strong>Common Hashing Techniques for Integers and Strings</strong></p>
+
+<p>The two most common key types — integers and strings — call for different techniques, though both share the same underlying goals of speed and uniformity.</p>
+
+<p><em>Hashing Integers</em></p>
+
+<p>The simplest integer hash is direct modulo division:</p>
+<pre><code>index = key % tableSize</code></pre>
+<p>This is fast and intuitive, but it has a well-known weakness: if many keys share a common factor with <code>tableSize</code>, they all map to the same small subset of buckets. For example, if <code>tableSize = 10</code> and all keys are multiples of 5 (5, 10, 15, 20, …), all keys hash to either 0 or 5, colliding heavily. Choosing a prime number for <code>tableSize</code> eliminates this problem because a prime shares no common factors with any key except multiples of itself, making systematic collisions far less likely.</p>
+
+<p>A slightly better integer hash applies a multiplicative step before the modulo:</p>
+<pre><code>index = (key * PRIME_CONSTANT) % tableSize</code></pre>
+<p>The multiplication scrambles the bit pattern of the key, breaking up arithmetic patterns in the key set before the modulo collapses it to a valid index. A commonly used constant is <code>2654435761</code> (derived from the golden ratio), sometimes called the Knuth multiplicative hash.</p>
+
+<p><em>Hashing Strings</em></p>
+
+<p>Strings are sequences of characters, so a hash function must combine information from all the characters rather than using just one attribute (such as the first character or the string's length). Using only the first character would map "apple", "ant", and "arrow" to the same bucket. Using only the length would map "cat", "dog", and "hat" to the same bucket.</p>
+
+<p>The standard approach is the <strong>polynomial rolling hash</strong>:</p>
+<pre><code>hash = 0
+for i from 0 to length - 1:
+    hash = (hash * BASE + charCode(key[i])) % tableSize</code></pre>
+<p>Here, <code>BASE</code> is a small prime (31 and 37 are popular choices for lowercase ASCII keys; larger primes like 131 are used for broader character sets). Each iteration multiplies the running hash by <code>BASE</code> and adds the numeric value of the next character. The effect is that position matters: the character at index 0 contributes <code>charCode(key[0]) * BASE^(n-1)</code> to the final hash, while the character at index n-1 contributes only <code>charCode(key[n-1]) * BASE^0</code>. This means "abc" and "bca" produce different hash values, which is exactly what we want.</p>
+
+<p>A worked example with <code>BASE = 31</code> and <code>tableSize = 97</code> for the key <code>"cat"</code>:</p>
+<pre><code>c = 99, a = 97, t = 116   (ASCII values)
+
+hash = 0
+Step 1: hash = (0 * 31 + 99) % 97  =  99 % 97  =  2
+Step 2: hash = (2 * 31 + 97) % 97  = (62 + 97) % 97 = 159 % 97 = 62
+Step 3: hash = (62 * 31 + 116) % 97 = (1922 + 116) % 97 = 2038 % 97 = 2038 - 20*97 = 2038 - 1940 = 98 % 97 = 1
+
+Final index: 1</code></pre>
+<p>The same computation on "tac" would yield a completely different index, demonstrating that the function is sensitive to both the values and the positions of the characters.</p>
+
+<p>Why use a <em>prime</em> as the base? When the base shares factors with the alphabet size (typically 256 for byte-level hashing), certain character combinations cancel each other out in the multiplication, creating systematic collisions. A prime base has no such common factors, so the mixing is more thorough.</p>
+
+<p><strong>The Role of the Modulo Operation</strong></p>
+
+<p>The modulo operation is the bridge between the raw hash value (which can be any integer) and a valid array index in the range <code>[0, tableSize - 1]</code>. Without it, the raw hash — potentially a very large number — would cause an out-of-bounds array access.</p>
+
+<p>The formula is:</p>
+<pre><code>index = rawHash % tableSize</code></pre>
+
+<p>This looks simple, but modulo has several important implications for hash table design:</p>
+
+<ul>
+  <li><strong>Prime table sizes reduce collision patterns.</strong> As explained above, when <code>tableSize</code> is prime, the modulo operation is less likely to map structurally similar keys (those with common arithmetic relationships) to the same bucket. If <code>tableSize = 12</code> (not prime), then keys 0, 12, 24, 36, … all hash to index 0; keys 6, 18, 30, … all hash to index 6. The factor of 6 (common to 12 and these key gaps) causes systematic clustering. A prime table size breaks these patterns.</li>
+  <li><strong>Power-of-two sizes allow fast modulo via bitwise AND.</strong> When <code>tableSize</code> is a power of two, the modulo can be computed as <code>rawHash &amp; (tableSize - 1)</code>, which is a single bitwise AND — much faster than integer division. This is why many high-performance hash tables (including Java's <code>HashMap</code>) use power-of-two sizes. The tradeoff is that the hash function itself must do more work to avoid clustering that the prime-size modulo would have suppressed.</li>
+  <li><strong>Resizing invalidates all existing indices.</strong> When a hash table grows (or shrinks), <code>tableSize</code> changes, which changes the modulo divisor. A key that was stored at index <code>rawHash % oldSize</code> must now be stored at <code>rawHash % newSize</code>, which is almost certainly a different value. This means every existing key must be <em>rehashed</em> and moved to its new bucket during a resize operation. Rehashing is an O(n) operation, though it is amortized across many insertions so the average insertion cost remains O(1).</li>
+</ul>
+
+<p>The following table summarizes the tradeoffs between prime and power-of-two table sizes:</p>
+<table>
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Prime Table Size</th>
+      <th>Power-of-Two Table Size</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Modulo cost</td>
+      <td>Integer division (slower)</td>
+      <td>Bitwise AND (faster)</td>
+    </tr>
+    <tr>
+      <td>Collision resistance with weak hash functions</td>
+      <td>Better — prime suppresses arithmetic patterns</td>
+      <td>Worse — low-order bits determine index; upper bits ignored</td>
+    </tr>
+    <tr>
+      <td>Resize sequence</td>
+      <td>Next prime above 2× current size</td>
+      <td>Exactly 2× current size</td>
+    </tr>
+    <tr>
+      <td>Common usage</td>
+      <td>Python dicts (historically), many textbook implementations</td>
+      <td>Java HashMap, C++ unordered_map (many implementations)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Consequences of Poor Hash Function Design</strong></p>
+
+<p>The consequences of a weak hash function are not merely theoretical — they show up as measurable performance degradation in production systems.</p>
+
+<p><em>High Collision Rates and Degraded Lookup Time</em></p>
+<p>Every collision means that two or more keys occupy the same bucket. In separate chaining, those keys form a chain that must be traversed linearly. If the average chain length is k, the average lookup time is O(k) instead of O(1). With a pathologically bad hash function that sends all n keys to the same bucket, k = n and lookup time degrades to O(n) — no better than an unsorted array.</p>
+
+<p><em>Memory Waste Through Uneven Bucket Utilization</em></p>
+<p>A clustered distribution leaves many buckets empty while a few become overloaded. The empty buckets represent allocated memory that is never used. The overloaded buckets represent a bottleneck. The hash table's memory allocation assumed n/tableSize keys per bucket on average; a poor hash function violates this assumption and delivers neither the memory efficiency nor the time efficiency the data structure promises.</p>
+
+<p><em>Adversarial Collision Attacks</em></p>
+<p>When a hash function's behavior is predictable (because it is deterministic and publicly known), an attacker can deliberately craft a set of keys that all hash to the same bucket. Submitting these keys as input to a web server or other application causes the hash table to degrade to O(n) per operation, effectively causing a <em>denial-of-service</em> condition. This attack was demonstrated practically against PHP, Python, and Java web frameworks around 2011–2012. The mitigation is to incorporate a secret random seed (hash randomization) so that the attacker cannot predict which keys will collide — but as noted earlier, this seed must remain constant for the lifetime of the table to preserve determinism.</p>
+
+<p><em>Diagnosing a Poor Hash Function</em></p>
+<p>Identifying a poorly performing hash function requires measurement rather than intuition. Useful diagnostic approaches include:</p>
+<ul>
+  <li><strong>Bucket load histogram</strong> — count how many keys land in each bucket and plot the distribution. A good hash function produces a histogram that looks like a Poisson distribution with mean equal to the load factor. A poor function produces a histogram with a long tail of heavily loaded buckets.</li>
+  <li><strong>Chain length statistics</strong> — record the minimum, maximum, mean, and variance of chain lengths across all buckets. High variance indicates clustering.</li>
+  <li><strong>Chi-squared test</strong> — compare the observed bucket distribution to the expected uniform distribution statistically. A large chi-squared statistic indicates a non-uniform distribution.</li>
+  <li><strong>Avalanche effect test</strong> — flip a single bit in the input key and measure how many bits change in the output hash. A well-designed hash function should cause roughly 50% of output bits to flip (the <em>avalanche effect</em>). A function where a one-bit input change produces a one-bit output change is highly vulnerable to clustering with structurally similar keys.</li>
+</ul>
+
+<p>The following table summarizes the properties of a good hash function and the failure modes when each property is violated:</p>
+<table>
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>What It Ensures</th>
+      <th>Failure Mode When Violated</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Determinism</td>
+      <td>Same key always maps to same bucket</td>
+      <td>Keys cannot be found after insertion; data structure is broken</td>
+    </tr>
+    <tr>
+      <td>Uniform distribution</td>
+      <td>Keys spread evenly across all buckets</td>
+      <td>Clustering; long chains; O(n) worst-case lookup</td>
+    </tr>
+    <tr>
+      <td>Computational speed</td>
+      <td>Hash computation does not dominate operation cost</td>
+      <td>Every table operation is slower than necessary</td>
+    </tr>
+    <tr>
+      <td>Prime multipliers / table size</td>
+      <td>Breaks arithmetic patterns in key sets</td>
+      <td>Systematic collisions for keys with common factors</td>
+    </tr>
+    <tr>
+      <td>Multi-attribute combination (strings)</td>
+      <td>Position and value of all characters contribute to hash</td>
+      <td>Anagrams and similar strings collide; poor distribution for string keys</td>
+    </tr>
+    <tr>
+      <td>Resistance to adversarial inputs</td>
+      <td>Attacker cannot predict collisions</td>
+      <td>Denial-of-service via deliberate collision flooding</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>In summary, designing a hash function requires balancing correctness (determinism), quality (uniform distribution and low collision rates), and efficiency (fast computation). The modulo operation and the choice of prime numbers are not arbitrary — they are mathematical tools that counteract the patterns naturally present in real-world key sets. Understanding these design principles explains both why well-implemented hash tables achieve near-constant-time performance and why poorly implemented ones can fail so dramatically.</p>
+        <div class="notes"><strong>Notes</strong>The worked example for the polynomial rolling hash demonstrates step-by-step computation with actual ASCII values, which aids students who benefit from seeing the arithmetic made explicit. The two HTML tables (prime vs. power-of-two comparison, and the property/failure-mode summary) consolidate comparative information that would be harder to absorb as prose.</div>
+      </div>
+    </details>
+  </main>
+
+<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
+</body></html>

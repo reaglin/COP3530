@@ -10,6 +10,36 @@
     "type": "Page"
   },
   {
+    "title": "Combining Data Structures in Complex Systems",
+    "href": "content/Applied_Data_Structures_interactive.html",
+    "type": "Content"
+  },
+  {
+    "title": "Foundations of Data Structures in Real-World Systems",
+    "href": "content/Applied_Data_Structures_interactive_topics_t1.html",
+    "type": "Content"
+  },
+  {
+    "title": "Blockchain Architecture and Data Structures",
+    "href": "content/Applied_Data_Structures_interactive_topics_t2.html",
+    "type": "Content"
+  },
+  {
+    "title": "Digital Currency Systems",
+    "href": "content/Applied_Data_Structures_interactive_topics_t3.html",
+    "type": "Content"
+  },
+  {
+    "title": "Graphs and Social Network Applications",
+    "href": "content/Applied_Data_Structures_interactive_topics_t4.html",
+    "type": "Content"
+  },
+  {
+    "title": "Combining Data Structures in Complex Systems",
+    "href": "content/Applied_Data_Structures_interactive_topics_t5.html",
+    "type": "Content"
+  },
+  {
     "title": "Applied Data Structures: Blockchain, Digital Currency, and Beyond \u2014 Module Topics",
     "href": "content/module_topics.html",
     "type": "Content"

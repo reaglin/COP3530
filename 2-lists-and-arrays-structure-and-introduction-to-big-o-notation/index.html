@@ -1,0 +1,443 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Module 2 – Lists and Arrays | COP3530</title>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --color-bg: #f4f6f9;
+      --color-surface: #ffffff;
+      --color-border: #dde2ea;
+      --color-primary: #1a4f8a;
+      --color-primary-dark: #13396b;
+      --color-accent: #2e7d32;
+      --color-accent-hover: #1b5e20;
+      --color-text: #1c2330;
+      --color-text-muted: #5a6478;
+      --color-tag-bg: #e8eef6;
+      --color-tag-text: #1a4f8a;
+      --color-filetype-bg: #f0f4f0;
+      --color-filetype-text: #2e7d32;
+      --color-header-bg: #0f2d52;
+      --color-header-text: #ffffff;
+      --color-course-label: #a8c4e0;
+      --radius: 8px;
+      --shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      --shadow-hover: 0 6px 20px rgba(0, 0, 0, 0.13);
+      --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      font-family: var(--font);
+      background-color: var(--color-bg);
+      color: var(--color-text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    header {
+      background-color: var(--color-header-bg);
+      color: var(--color-header-text);
+      padding: 2.5rem 1.5rem 2rem;
+    }
+
+    .header-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .course-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-course-label);
+      margin-bottom: 0.5rem;
+    }
+
+    header h1 {
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 1rem;
+      color: #ffffff;
+    }
+
+    header p {
+      font-size: 1rem;
+      color: #c5d8ee;
+      max-width: 720px;
+      line-height: 1.7;
+    }
+
+    /* ── Main ── */
+    main {
+      max-width: 1100px;
+      margin: 2rem auto;
+      padding: 0 1.5rem 3rem;
+    }
+
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      margin-bottom: 1rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 2px solid var(--color-border);
+    }
+
+    /* ── Card Grid ── */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .card {
+      background-color: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 1.25rem 1.375rem 1.375rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.625rem;
+      transition: box-shadow 0.2s ease, transform 0.2s ease;
+    }
+
+    .card:hover {
+      box-shadow: var(--shadow-hover);
+      transform: translateY(-2px);
+    }
+
+    /* ── Card Meta Row ── */
+    .card-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      padding: 0.2rem 0.55rem;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    .badge-type {
+      background-color: var(--color-tag-bg);
+      color: var(--color-tag-text);
+    }
+
+    .badge-filetype {
+      background-color: var(--color-filetype-bg);
+      color: var(--color-filetype-text);
+      font-family: 'Courier New', Courier, monospace;
+    }
+
+    /* ── Card Title ── */
+    .card-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--color-text);
+      line-height: 1.35;
+    }
+
+    .card-title a {
+      color: var(--color-primary);
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+
+    .card-title a:hover,
+    .card-title a:focus {
+      color: var(--color-primary-dark);
+      text-decoration: underline;
+    }
+
+    .card-title a:focus-visible {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 2px;
+      border-radius: 2px;
+    }
+
+    /* ── Source Link ── */
+    .source-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--color-accent);
+      text-decoration: none;
+      margin-left: 0.5rem;
+      padding: 0.15rem 0.4rem;
+      border: 1px solid #b2dfb4;
+      border-radius: 4px;
+      background-color: #f1f8f1;
+      white-space: nowrap;
+      transition: background-color 0.15s ease, color 0.15s ease;
+    }
+
+    .source-link:hover,
+    .source-link:focus {
+      background-color: #dceedd;
+      color: var(--color-accent-hover);
+      text-decoration: none;
+    }
+
+    .source-link:focus-visible {
+      outline: 2px solid var(--color-accent);
+      outline-offset: 2px;
+    }
+
+    .source-link svg {
+      flex-shrink: 0;
+    }
+
+    /* ── Card Title Row ── */
+    .card-title-row {
+      display: flex;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      row-gap: 0.35rem;
+    }
+
+    /* ── Card Description ── */
+    .card-description {
+      font-size: 0.875rem;
+      color: var(--color-text-muted);
+      line-height: 1.65;
+      flex: 1;
+    }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      font-size: 0.78rem;
+      color: var(--color-text-muted);
+      padding: 1.5rem 1rem 2rem;
+      border-top: 1px solid var(--color-border);
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 500px) {
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      header {
+        padding: 2rem 1rem 1.5rem;
+      }
+
+      main {
+        padding: 0 1rem 2.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ COP3530 - Data Structures</a></div>
+<div style="border:1px solid #c9d4e3;background:#f5f8fc;border-radius:8px;padding:10px 16px;margin:0 0 18px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;font-family:'Segoe UI',Arial,sans-serif"><strong style="color:#1a3c6e">Module outline:</strong><a href="topics-outcomes.html#topics" style="color:#1a3c6e;font-weight:600;text-decoration:none">📋 Module Topics</a><a href="topics-outcomes.html#outcomes" style="color:#137333;font-weight:600;text-decoration:none">🎯 Student Learning Outcomes</a></div>
+
+  <header>
+    <div class="header-inner">
+      <p class="course-label">COP3530 &mdash; Data Structures</p>
+      <h1>Module 2 &mdash; Lists and Arrays: Structure and Introduction to Big O Notation</h1>
+      <p>
+        This module builds a solid foundation in two of the most fundamental data structures&mdash;lists and arrays&mdash;exploring how they organise data in memory, how core operations work, and how Big O notation gives us a precise language for comparing algorithmic efficiency. Work through the topics in order, then test your understanding with the interactive activities.
+      </p>
+    </div>
+  </header>
+
+  <main>
+    <p class="section-label">Module Artifacts &mdash; 11 items</p>
+
+    <div class="card-grid">
+
+      <!-- 1. Module Topics -->
+      <article class="card">
+        <div class="card-meta">
+          <span class="badge badge-type">Module Topics</span>
+          <span class="badge badge-filetype">.json</span>
+        </div>
+        <div class="card-title-row">
+          <h2 class="card-title">
+            <a href="content/module_topics.html">Module Topics</a>
+          </h2>
+          <a class="source-link" href="source/hierarchy.json" aria-label="Source file for Module Topics">
+            <svg width="11" height="11" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+              <path d="M4.5 3a.5.5 0 0 0 0 1H6v8H4.5a.5.5 0 0 0 0 1h7a.5.5 0 0 0 0-1H10V4h1.5a.5.5 0 0 0 0-1h-7zm2.5 1h2v8H7V4z"/>
+            </svg>
+            source file
+          </a>
+        </div>
+        <p class="card-description">Covers foundational concepts of arrays and lists&mdash;including definitions, memory layout, zero-based indexing, dynamic sizing, and core operations such as accessing, searching, inserting, and deleting elements&mdash;serving as the structural outline that guides learners and instructors through the sequence of topics in this module.</p>
+      </article>
+
+      <!-- 2. Applying Big O – Text Content -->
+      <article class="card">
+        <div class="card-meta">
+          <span class="badge badge-type">Text Content</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <h2 class="card-title">
+            <a href="content/_interactive.html">Applying Big O to List and Array Operations</a>
+          </h2>
+        </div>
+        <p class="card-description">Covers how Big O notation is applied to common list and array operations, explaining how to analyse and compare the time complexity of tasks such as access, search, insertion, and deletion so learners can reason about which data structure suits a given use case.</p>
+      </article>
+
+      <!-- 3. Introduction to Lists and Arrays -->
+      <article class="card">
+        <div class="card-meta">
+          <span class="badge badge-type">Topic Detail</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <h2 class="card-title">
+            <a href="content/Lists_and_Arrays_interactive_topics_t1.html">Introduction to Lists and Arrays</a>
+          </h2>
+        </div>
+        <p class="card-description">Introduces the concepts of lists and arrays as fundamental data structures, explaining the problem they solve&mdash;organising collections of data in memory&mdash;and providing learners with a foundation for understanding how programs store and manipulate multiple values efficiently.</p>
+      </article>
+
+      <!-- 4. Array Structure and Memory Layout -->
+      <article class="card">
+        <div class="card-meta">
+          <span class="badge badge-type">Topic Detail</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <h2 class="card-title">
+            <a href="content/Lists_and_Arrays_interactive_topics_t2.html">Array Structure and Memory Layout</a>
+          </h2>
+        </div>
+        <p class="card-description">Explains how arrays are laid out in contiguous memory, how index-based addressing works at a low level, and why this structure has direct implications for performance, giving learners the mental model needed to reason about array efficiency.</p>
+      </article>
+
+      <!-- 5. List Structure and Dynamic Behavior -->
+      <article class="card">
+        <div class="card-meta">
+          <span class="badge badge-type">Topic Detail</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <h2 class="card-title">
+            <a href="content/Lists_and_Arrays_interactive_topics_t3.html">List Structure and Dynamic Behavior</a>
+          </h2>
+        </div>
+        <p class="card-description">Describes how lists differ from arrays by supporting dynamic resizing, explaining the underlying mechanisms that allow lists to grow and shrink at runtime and what that flexibility costs in terms of memory and performance.</p>
+      </article>
+
+      <!-- 6. Core Data Operations -->
+      <article class="card">
+        <div class="card-meta">
+          <span class="badge badge-type">Topic Detail</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <h2 class="card-title">
+            <a href="content/Lists_and_Arrays_interactive_topics_t4.html">Core Data Operations on Lists and Arrays</a>
+          </h2>
+        </div>
+        <p class="card-description">Defines and illustrates the four core data operations&mdash;access, search, insertion, and deletion&mdash;as applied to lists and arrays, giving learners the vocabulary and conceptual baseline needed before comparing algorithmic efficiency across data structures.</p>
+      </article>
+
+      <!-- 7. Introduction to Computational Complexity -->
+      <article class="card">
+        <div class="card-meta">
+          <span class="badge badge-type">Topic Detail</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <h2 class="card-title">
+            <a href="content/Lists_and_Arrays_interactive_topics_t5.html">Introduction to Computational Complexity</a>
+          </h2>
+        </div>
+        <p class="card-description">Introduces computational complexity as a mathematical and conceptual framework for measuring how algorithm resource usage scales with input size, distinguishing it from raw execution speed and establishing the groundwork for Big O analysis.</p>
+      </article>
+
+      <!-- 8. Big O Notation Fundamentals -->
+      <article class="card">
+        <div class="card-meta">
+          <span class="badge badge-type">Topic Detail</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <h2 class="card-title">
+            <a href="content/Lists_and_Arrays_interactive_topics_t6.html">Big O Notation Fundamentals</a>
+          </h2>
+        </div>
+        <p class="card-description">Explains the fundamentals of Big O notation&mdash;including common complexity classes such as O(1), O(n), and O(n&sup2;)&mdash;and teaches learners how to read, write, and interpret Big O expressions to evaluate how code performance scales with data size.</p>
+      </article>
+
+      <!-- 9. Applying Big O – Topic Detail -->
+      <article class="card">
+        <div class="card-meta">
+          <span class="badge badge-type">Topic Detail</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <h2 class="card-title">
+            <a href="content/Lists_and_Arrays_interactive_topics_t7.html">Applying Big O to List and Array Operations</a>
+          </h2>
+        </div>
+        <p class="card-description">Covers how Big O notation is applied to common list and array operations, explaining how to analyse and compare the time complexity of tasks such as access, search, insertion, and deletion so learners can reason about which data structure suits a given use case.</p>
+      </article>
+
+      <!-- 10. Drag-and-Drop Match – vocabulary -->
+      <article class="card">
+        <div class="card-meta">
+          <span class="badge badge-type">Interactive Activity</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <h2 class="card-title">
+            <a href="interactive/drag-and-drop-match.html">Drag-and-Drop Match</a>
+          </h2>
+        </div>
+        <p class="card-description">This interactive drag-and-drop activity presents seven key terms related to lists, arrays, and Big O notation that learners must match to their correct definitions, providing immediate feedback on each attempt; instructors can use it as a formative assessment to check students&rsquo; understanding of foundational vocabulary before or after the Module 2 lesson.</p>
+      </article>
+
+      <!-- 11. Drag-and-Drop Match – operations & complexity -->
+      <article class="card">
+        <div class="card-meta">
+          <span class="badge badge-type">Interactive Activity</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <h2 class="card-title">
+            <a href="interactive/drag-and-drop-match_20260701152850.html">Drag-and-Drop Match</a>
+          </h2>
+        </div>
+        <p class="card-description">A drag-and-drop matching activity where learners pair common list and array operations (e.g., access, insertion, deletion) with their correct Big O time complexity descriptions, receiving immediate feedback on each match to reinforce understanding of algorithmic efficiency.</p>
+      </article>
+
+    </div>
+  </main>
+
+  <footer>
+    <p>COP3530 &mdash; Data Structures &nbsp;&bull;&nbsp; Module 2: Lists and Arrays &amp; Big O Notation</p>
+  </footer>
+
+
+<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
+<section class="presemaker-extras" style="max-width:1000px;margin:2rem auto;padding:0 1rem;"><h2>Topics &amp; Learning Outcomes</h2><p><a href="topics-outcomes.html">View Topics &amp; Learning Outcomes</a></p></section><script src="embed-inject.js" defer></script></body>
+</html>

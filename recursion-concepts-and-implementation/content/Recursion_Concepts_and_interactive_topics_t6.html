@@ -1,0 +1,376 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recursive List Traversal</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+  <style>
+    body { padding-left: 1.1rem; padding-right: 1.1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid rgba(128,128,128,.45); padding: .45em .7em; text-align: left; vertical-align: top; }
+    thead th { background: rgba(128,128,128,.18); font-weight: 600; }
+    tbody tr:nth-child(even) { background: rgba(128,128,128,.08); }
+    a.topic-detail-link { text-decoration: underline; }
+  </style>
+  <style>
+    summary.slide-header { list-style: none; }
+    summary.slide-header::-webkit-details-marker { display: none; }
+    details.slide-card[open] > .slide-body { display: block; }
+    details.slide-card[open] .chevron { transform: rotate(90deg); }
+    @media print { details.slide-card > .slide-body { display: block !important; } .chevron { display: none; } }
+  </style>
+</head><body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Recursion: Concepts and Implementation</a></div>
+  <header>
+    <h1>Recursive List Traversal</h1>
+  </header><main>
+    <details class="slide-card" open>
+      <summary class="slide-header"><span class="slide-num">1</span><h2>Recursive List Traversal</h2><span class="chevron">▶</span></summary>
+      <div class="slide-body">
+        <p>Recursion is one of the most elegant tools in a programmer's toolkit, and one of its most natural applications is traversing a list. When we talk about <strong>recursive list traversal</strong>, we mean the technique of processing a list — such as a JavaScript array — by repeatedly breaking it into a smaller piece and a remainder, then handling those pieces through successive calls to the same function. Rather than looping through elements with an index variable, we let the structure of the problem itself drive the repetition. This way of thinking reshapes how you see a list: not as a flat sequence of indexed slots, but as a <em>head</em> (the first element) attached to a <em>tail</em> (everything else), which is itself just another list.</p>
+
+<p>Understanding recursive list traversal deeply requires grasping three interlocking ideas: how the list is structurally decomposed on each call, what condition tells the function to stop, and how results are assembled on the way back up. Let's build each of these ideas from the ground up.</p>
+
+<p><strong>What Is Recursive List Traversal?</strong></p>
+
+<p>At its heart, recursive list traversal is the practice of writing a function that, instead of looping over all elements at once, handles <em>one element at a time</em> and delegates the rest to a fresh call of itself. Each call sees a slightly shorter version of the list, until eventually there is nothing left — and that empty list triggers the stopping condition.</p>
+
+<p>Think of it like eating a stack of pancakes one at a time. You don't eat all of them simultaneously. You eat the top one, then look down at the remaining stack and repeat. Each time you look at the stack, it is shorter by one pancake. When the plate is empty, you stop. In code, the "eating" is the processing logic, the "looking down" is the recursive call, and the "empty plate" is the base case.</p>
+
+<p>This approach treats every list as having two parts:</p>
+<ul>
+  <li><strong>Head</strong> — the first element, the one being processed right now.</li>
+  <li><strong>Tail</strong> — all remaining elements, passed into the next recursive call.</li>
+</ul>
+
+<p>In JavaScript, if <code>arr</code> is your array, then <code>arr[0]</code> is the head and <code>arr.slice(1)</code> is the tail. The <code>slice(1)</code> call returns a new array starting from index 1 — it does <em>not</em> mutate the original array, which is an important property for keeping recursive logic clean and predictable.</p>
+
+<p>Here is the simplest possible example — a function that prints every element of an array using recursion:</p>
+
+<pre><code>function printAll(arr) {
+  if (arr.length === 0) return; // base case: nothing left to print
+
+  console.log(arr[0]);          // process the head
+  printAll(arr.slice(1));       // recurse on the tail
+}
+
+printAll(['apple', 'banana', 'cherry']);
+// Output:
+// apple
+// banana
+// cherry
+</code></pre>
+
+<p>Each call handles one element and passes a shorter array to the next call. The recursion terminates automatically when the array has no elements left.</p>
+
+<p><strong>Defining the Base Case for List Traversal</strong></p>
+
+<p>The <strong>base case</strong> is the single most critical component of any recursive function. Without it, the function would call itself forever — or until JavaScript's call stack runs out of space and throws a <em>RangeError: Maximum call stack size exceeded</em> (commonly called a stack overflow). For list traversal, the base case is almost always: <em>if the array is empty, stop and return an appropriate default value</em>.</p>
+
+<p>What "appropriate default" means depends on the task:</p>
+<ul>
+  <li>Summing numbers → return <code>0</code> (adding zero has no effect on the sum).</li>
+  <li>Multiplying numbers → return <code>1</code> (multiplying by one has no effect).</li>
+  <li>Building a new array → return <code>[]</code> (an empty array to concatenate onto).</li>
+  <li>Searching for a value → return <code>false</code> (not found in an empty list).</li>
+  <li>Finding the maximum → return <code>-Infinity</code> or handle differently.</li>
+</ul>
+
+<p>The base case is your guarantee that the recursion ends. Every recursive call must bring the function <em>closer</em> to the base case. In list traversal, this is almost automatic: each call passes <code>arr.slice(1)</code>, which is always one element shorter than the previous <code>arr</code>. Eventually, after as many calls as there are elements, the array passed in will be empty and the base case fires.</p>
+
+<p>A very common beginner mistake is forgetting the base case entirely, or writing it incorrectly — for example, checking <code>arr.length === 1</code> instead of <code>arr.length === 0</code>, which would cause an error when called with an empty array. Always ask: <em>what is the smallest possible input this function could receive, and does it handle that gracefully?</em></p>
+
+<pre><code>// WRONG: base case is off by one
+function sumWrong(arr) {
+  if (arr.length === 1) return arr[0]; // crashes if arr is []
+  return arr[0] + sumWrong(arr.slice(1));
+}
+
+// CORRECT: handles the truly empty list
+function sumCorrect(arr) {
+  if (arr.length === 0) return 0;
+  return arr[0] + sumCorrect(arr.slice(1));
+}
+
+console.log(sumCorrect([]));        // 0  ✓
+console.log(sumCorrect([5]));       // 5  ✓
+console.log(sumCorrect([1, 2, 3])); // 6  ✓
+</code></pre>
+
+<p><strong>JavaScript Implementation: Traversing an Array</strong></p>
+
+<p>Let's look more carefully at how the JavaScript mechanics work. The key operations are:</p>
+<ul>
+  <li><code>arr[0]</code> — accesses the <strong>head</strong>, the element currently being processed.</li>
+  <li><code>arr.slice(1)</code> — produces the <strong>tail</strong>, a new array containing everything after the head.</li>
+  <li><code>arr.length === 0</code> — the guard condition for the base case.</li>
+</ul>
+
+<p><code>Array.prototype.slice</code> is non-destructive: it returns a brand-new array and leaves the original untouched. This is crucial in recursion because each function call needs to work with its own version of the data independently. If you were to mutate the array (for example, using <code>arr.shift()</code>), all calls would be sharing and modifying the same array, which leads to subtle and hard-to-debug errors.</p>
+
+<pre><code>const original = [10, 20, 30];
+const tail = original.slice(1);
+
+console.log(original); // [10, 20, 30] — unchanged
+console.log(tail);     // [20, 30]     — a new array
+</code></pre>
+
+<p>A full traversal using this pattern looks like this:</p>
+
+<pre><code>function traverse(arr) {
+  if (arr.length === 0) {
+    console.log('Base case reached — list is empty.');
+    return;
+  }
+
+  const head = arr[0];
+  const tail = arr.slice(1);
+
+  console.log('Processing:', head, '| Remaining:', tail);
+  traverse(tail);
+}
+
+traverse([1, 2, 3, 4]);
+// Processing: 1 | Remaining: [2, 3, 4]
+// Processing: 2 | Remaining: [3, 4]
+// Processing: 3 | Remaining: [4]
+// Processing: 4 | Remaining: []
+// Base case reached — list is empty.
+</code></pre>
+
+<p>Notice how each call sees a list that is exactly one element shorter than the previous one. The function is making consistent progress toward the base case on every invocation.</p>
+
+<p><strong>Processing Elements During Traversal</strong></p>
+
+<p>Merely visiting elements is rarely the end goal. Most of the time you want to <em>do something</em> with each element — sum them, transform them, or search through them. Recursive list traversal handles all three patterns elegantly.</p>
+
+<p><em>Accumulation — Summing Values</em></p>
+
+<p>To sum a list recursively, you combine the current head with whatever the recursive call returns for the tail. The base case returns <code>0</code>, and each level adds its element on top of that.</p>
+
+<pre><code>function sum(arr) {
+  if (arr.length === 0) return 0;
+  return arr[0] + sum(arr.slice(1));
+}
+
+console.log(sum([3, 7, 2, 8])); // 20
+</code></pre>
+
+<p>Let's trace this call by call to make it concrete:</p>
+
+<pre><code>sum([3, 7, 2, 8])
+  = 3 + sum([7, 2, 8])
+  = 3 + (7 + sum([2, 8]))
+  = 3 + (7 + (2 + sum([8])))
+  = 3 + (7 + (2 + (8 + sum([]))))
+  = 3 + (7 + (2 + (8 + 0)))
+  = 3 + (7 + (2 + 8))
+  = 3 + (7 + 10)
+  = 3 + 17
+  = 20
+</code></pre>
+
+<p><em>Transformation — Doubling Each Value</em></p>
+
+<p>For transformation tasks, you construct a new array on the way back up. Process the head, then prepend (or concatenate) it with the recursive result from the tail.</p>
+
+<pre><code>function doubleAll(arr) {
+  if (arr.length === 0) return [];
+  return [arr[0] * 2, ...doubleAll(arr.slice(1))];
+}
+
+console.log(doubleAll([1, 2, 3, 4])); // [2, 4, 6, 8]
+</code></pre>
+
+<p>The spread syntax <code>[arr[0] * 2, ...doubleAll(arr.slice(1))]</code> places the processed head at the front of whatever array the recursive call produces for the tail. When the base case returns <code>[]</code>, the concatenation builds up the full result as calls resolve in reverse.</p>
+
+<p><em>Search — Finding a Value</em></p>
+
+<p>Recursive search is particularly elegant because it can <strong>short-circuit</strong>: as soon as you find the target element, you return <code>true</code> immediately without processing the rest of the list.</p>
+
+<pre><code>function contains(arr, target) {
+  if (arr.length === 0) return false;     // exhausted list, not found
+  if (arr[0] === target) return true;     // found it, stop now
+  return contains(arr.slice(1), target); // keep looking in the tail
+}
+
+console.log(contains([4, 9, 1, 7], 1)); // true
+console.log(contains([4, 9, 1, 7], 5)); // false
+</code></pre>
+
+<p>The second conditional — <code>if (arr[0] === target) return true</code> — stops the chain of recursive calls the moment the value is located. No further calls are made, no further stack frames are created. This is efficient and clean.</p>
+
+<p>Here is a comparison of all three patterns side by side:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Task</th>
+      <th>Base Case Return</th>
+      <th>Recursive Step</th>
+      <th>Result Type</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Sum elements</td>
+      <td><code>0</code></td>
+      <td><code>arr[0] + sum(tail)</code></td>
+      <td>Number</td>
+    </tr>
+    <tr>
+      <td>Double elements</td>
+      <td><code>[]</code></td>
+      <td><code>[arr[0] * 2, ...double(tail)]</code></td>
+      <td>Array</td>
+    </tr>
+    <tr>
+      <td>Search for value</td>
+      <td><code>false</code></td>
+      <td><code>arr[0] === target || contains(tail, target)</code></td>
+      <td>Boolean</td>
+    </tr>
+    <tr>
+      <td>Count elements</td>
+      <td><code>0</code></td>
+      <td><code>1 + count(tail)</code></td>
+      <td>Number</td>
+    </tr>
+    <tr>
+      <td>Filter elements</td>
+      <td><code>[]</code></td>
+      <td><code>[arr[0], ...filter(tail)]</code> or <code>filter(tail)</code></td>
+      <td>Array</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Recursive Thinking vs. Iterative Thinking for Lists</strong></p>
+
+<p>When you write an iterative loop to process a list, you track progress explicitly with a counter or index variable:</p>
+
+<pre><code>// Iterative sum
+function sumIterative(arr) {
+  let total = 0;
+  for (let i = 0; i < arr.length; i++) {
+    total += arr[i];
+  }
+  return total;
+}
+</code></pre>
+
+<p>The state — how far along you are, what has been accumulated so far — lives in the <em>variables</em> <code>i</code> and <code>total</code>. You mutate those variables step by step.</p>
+
+<p>In the recursive version, that same state is encoded differently. There are no mutable index variables. Instead:</p>
+<ul>
+  <li><strong>Progress through the list</strong> is captured by which array is passed as the argument — each call receives a shorter array, implicitly encoding "how far along we are."</li>
+  <li><strong>Accumulated results</strong> are captured by the return values that propagate back up through the call stack.</li>
+</ul>
+
+<p>This shift from explicit state mutation to implicit state-via-arguments is the essence of recursive thinking. It can feel strange at first, but it becomes natural with practice.</p>
+
+<p>Recursion particularly shines when the data structure itself is recursive — that is, when it contains nested or tree-like structures. Consider a nested array like <code>[1, [2, [3, 4]], 5]</code>. Flattening this with a loop requires complex bookkeeping. Recursively, it is almost trivial:</p>
+
+<pre><code>function flatten(arr) {
+  if (arr.length === 0) return [];
+
+  const head = arr[0];
+  const tail = arr.slice(1);
+
+  if (Array.isArray(head)) {
+    // If the head is itself an array, flatten it first, then continue
+    return [...flatten(head), ...flatten(tail)];
+  } else {
+    return [head, ...flatten(tail)];
+  }
+}
+
+console.log(flatten([1, [2, [3, 4]], 5])); // [1, 2, 3, 4, 5]
+</code></pre>
+
+<p>The recursive structure of the function mirrors the recursive structure of the data — each nested list is handled by the same function, no matter how deep it goes. This symmetry between code and data structure is one of the most compelling arguments for recursive thinking.</p>
+
+<p>That said, for <em>flat</em> arrays in JavaScript, iterative solutions typically outperform recursive ones. Every recursive call creates a new stack frame and, in our examples, also creates a new array via <code>slice</code>. For large lists this can be measurably slower than a simple <code>for</code> loop. The choice between approaches should consider both clarity and performance for the problem at hand.</p>
+
+<p><strong>The Call Stack During List Traversal</strong></p>
+
+<p>To truly understand recursion, you must understand what is happening in memory as the calls unfold. Each time a function calls itself, JavaScript pushes a new <strong>stack frame</strong> onto the call stack. This frame holds the local variables and arguments for that particular invocation, as well as a record of where to return when the function completes. As recursion descends into the list, the stack grows — one frame per element.</p>
+
+<p>Consider <code>sum([1, 2, 3])</code>. Here is what the call stack looks like at its deepest point, just before the base case fires:</p>
+
+<pre><code>--- Top of stack (most recent call) ---
+  sum([])           waiting to return 0
+  sum([3])          waiting for sum([]) → will return 3 + 0
+  sum([2, 3])       waiting for sum([3]) → will return 2 + 3
+  sum([1, 2, 3])    waiting for sum([2,3]) → will return 1 + 5
+--- Bottom of stack (original call) ---
+</code></pre>
+
+<p>Once the base case (<code>sum([])</code>) returns <code>0</code>, the stack begins to unwind. Each frame resolves in <em>reverse order</em> — last in, first out — passing its return value back to the frame below it. This is why recursion is said to "propagate results back up the stack."</p>
+
+<pre><code>sum([])     returns 0
+sum([3])    returns 3 + 0 = 3
+sum([2,3])  returns 2 + 3 = 5
+sum([1,2,3])returns 1 + 5 = 6
+</code></pre>
+
+<p>This unwinding behavior is beautiful, but it has a practical limitation. JavaScript engines have a finite call stack size — typically somewhere between 10,000 and 15,000 frames depending on the environment. If you attempt to recursively traverse an array with 100,000 elements, you will exceed this limit and receive a <code>RangeError: Maximum call stack size exceeded</code> — the dreaded stack overflow.</p>
+
+<pre><code>// This will crash for very large arrays
+function sumLarge(arr) {
+  if (arr.length === 0) return 0;
+  return arr[0] + sumLarge(arr.slice(1));
+}
+
+const bigArray = Array.from({ length: 100000 }, (_, i) => i);
+// sumLarge(bigArray); // RangeError: Maximum call stack size exceeded
+</code></pre>
+
+<p>For such cases, iterative solutions are the pragmatic choice. However, for typical use cases — moderate-sized arrays, nested structures, tree traversal, or problems where clarity is paramount — recursive list traversal is an exceptionally powerful and expressive technique. Understanding it deeply also prepares you for more advanced topics like tail-call optimization, higher-order functions, and working with tree and graph data structures, all of which build directly on this foundation.</p>
+        <div class="notes"><strong>Notes</strong>Covers all six subtopic groups: definition and head/tail decomposition, base case mechanics, JavaScript implementation details (arr[0] and slice), accumulation/transformation/search patterns with traced examples, recursive vs. iterative comparison including nested structures, and call stack visualization with stack overflow context. A comparison table of common traversal task patterns is included.</div>
+      </div>
+    </details>
+  </main>
+
+<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
+</body></html>

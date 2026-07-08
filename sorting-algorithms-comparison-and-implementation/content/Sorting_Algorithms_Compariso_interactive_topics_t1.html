@@ -1,0 +1,290 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Introduction to Sorting Algorithms</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+  <style>
+    body { padding-left: 1.1rem; padding-right: 1.1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid rgba(128,128,128,.45); padding: .45em .7em; text-align: left; vertical-align: top; }
+    thead th { background: rgba(128,128,128,.18); font-weight: 600; }
+    tbody tr:nth-child(even) { background: rgba(128,128,128,.08); }
+    a.topic-detail-link { text-decoration: underline; }
+  </style>
+  <style>
+    summary.slide-header { list-style: none; }
+    summary.slide-header::-webkit-details-marker { display: none; }
+    details.slide-card[open] > .slide-body { display: block; }
+    details.slide-card[open] .chevron { transform: rotate(90deg); }
+    @media print { details.slide-card > .slide-body { display: block !important; } .chevron { display: none; } }
+  </style>
+</head><body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Sorting Algorithms: Comparison and Implementation</a></div>
+  <header>
+    <h1>Introduction to Sorting Algorithms</h1>
+  </header><main>
+    <details class="slide-card" open>
+      <summary class="slide-header"><span class="slide-num">1</span><h2>Introduction to Sorting Algorithms</h2><span class="chevron">▶</span></summary>
+      <div class="slide-body">
+        <p>Sorting is one of the most fundamental operations in computer science. At its core, a sorting algorithm takes a collection of items and rearranges them into a defined order. Despite sounding simple, sorting sits at the intersection of nearly every major concept in algorithm design — complexity analysis, memory management, data structure choice, and practical engineering trade-offs. Before diving into individual algorithms, it is worth building a thorough understanding of what sorting algorithms are, why they matter, how we talk about them precisely, and what criteria we use to judge them.</p>
+
+<p><strong>What Is a Sorting Algorithm?</strong></p>
+
+<p>A sorting algorithm is a procedure that takes a sequence of elements — typically stored in an array or a linked list — and rearranges those elements so that they satisfy some defined ordering relation. The most familiar example is arranging a list of integers from smallest to largest, but sorting is far more general than that.</p>
+
+<p>The <em>ordering relation</em> is defined by a comparator: a function that takes two elements and tells you which one should come first. This comparator can implement numerical order, reverse numerical order, lexicographical (dictionary) order for strings, ordering by date, or any custom business rule you can imagine. For example, you might sort a list of employee records by last name, then by first name as a tiebreaker, then by hire date — all of this is expressible through a comparator.</p>
+
+<p>Sorting algorithms operate on <em>data structures</em> such as arrays or lists, but the choice of data structure matters. Arrays offer O(1) random access, which many sorting algorithms rely on heavily for swapping elements. Linked lists, by contrast, do not support efficient random access, which makes algorithms like merge sort a better fit because they work with sequential passes rather than index-based swaps.</p>
+
+<p>The output of a correct sorting algorithm must satisfy two properties: first, it must be a <em>permutation</em> of the original input — no elements are lost or duplicated; second, it must be <em>ordered</em> — every adjacent pair of elements satisfies the comparator relation. Sorting is one of the most studied problems in computer science precisely because of its universal applicability. It appears as a subroutine in database queries, search engines, compilers, graphics rendering, and virtually every domain of software engineering.</p>
+
+<p><strong>Why Sorting Algorithms Matter</strong></p>
+
+<p>Sorting is rarely an end in itself. Its real value comes from what it enables. A sorted collection supports <em>binary search</em>, which locates any element in O(log n) time instead of the O(n) time required by a linear scan. This is a transformative improvement: in a list of one million items, binary search takes at most 20 comparisons, while a linear scan may require up to one million. Sorting once and searching many times yields enormous net savings.</p>
+
+<p>Beyond searching, sorted data also accelerates <em>merging</em> two collections into one sorted result — a task that takes O(n + m) time when both inputs are already sorted, compared to O((n + m) log(n + m)) if you had to sort the merged result from scratch. Similarly, finding <em>duplicates</em> becomes trivial in a sorted array because duplicates are adjacent; in an unsorted array, detecting all duplicates naively takes O(n²) comparisons.</p>
+
+<p>Choosing the wrong algorithm for a given dataset can cause severe performance problems. Imagine using a naïve O(n²) algorithm on a dataset of one million records: at 10⁸ operations per second, that algorithm would take roughly 10,000 seconds — nearly three hours. An O(n log n) algorithm on the same data would finish in under a second. This is not a theoretical concern; it is a practical engineering reality that has caused real system outages and user-facing slowdowns.</p>
+
+<p>Beyond the immediate performance implications, studying sorting algorithms is one of the most productive ways to develop general algorithmic intuition. Many of the most important algorithm design paradigms appear naturally in sorting:</p>
+
+<ul>
+  <li><strong>Divide and conquer</strong> — break the problem into smaller subproblems, solve them recursively, and combine the results (as in merge sort and quicksort).</li>
+  <li><strong>Incremental construction</strong> — maintain a sorted prefix of the array and extend it one element at a time (as in insertion sort).</li>
+  <li><strong>Selection</strong> — repeatedly identify the extreme element of the remaining unsorted portion (as in selection sort).</li>
+  <li><strong>Heapification</strong> — exploit a carefully maintained data structure invariant to extract elements in order (as in heapsort).</li>
+</ul>
+
+<p>Understanding these paradigms in the context of sorting builds the mental toolkit needed to attack unfamiliar algorithmic problems.</p>
+
+<p><strong>Core Vocabulary: Key Terms</strong></p>
+
+<p>Precise vocabulary is essential for comparing and discussing sorting algorithms. The three most important distinctions are whether an algorithm is <em>comparison-based</em>, <em>in-place</em>, and <em>stable</em>.</p>
+
+<p>A <strong>comparison-based sort</strong> determines the order of elements exclusively by comparing pairs of elements through a comparator function. It makes no assumptions about the values of the elements themselves — only their relative ordering. Bubble sort, merge sort, quicksort, and heapsort are all comparison-based. A celebrated theoretical result establishes that <em>any</em> comparison-based sort must perform at least O(n log n) comparisons in the worst case. This is a fundamental lower bound, not a limitation of any particular algorithm. Some non-comparison-based sorts, like counting sort and radix sort, can break this barrier, but only by exploiting additional structure in the data (such as knowing elements are bounded integers).</p>
+
+<p>An <strong>in-place sort</strong> rearranges elements within the original data structure, using only a small, constant amount of extra memory (O(1) auxiliary space) beyond the input itself. Bubble sort, insertion sort, selection sort, and heapsort are in-place. Merge sort, in its classic form, is <em>not</em> in-place because it requires an auxiliary array of size O(n) to perform its merge step. In-place sorts are preferable in memory-constrained environments, but this property sometimes comes at the cost of performance or simplicity.</p>
+
+<p>A <strong>stable sort</strong> preserves the relative order of elements that are considered equal by the comparator. This property is subtle but critically important in practice. Suppose you have a list of transactions sorted by date, and you want to re-sort them by amount. A stable sort will ensure that among all transactions with the same amount, those that came earlier in the date-sorted list still come earlier in the result. A non-stable sort gives no such guarantee. Merge sort and insertion sort are naturally stable; classic quicksort and heapsort are not. Many real-world applications — particularly in databases and spreadsheets — require stable sorting.</p>
+
+<p>These three properties can be summarized for common algorithms:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Algorithm</th>
+      <th>Comparison-Based</th>
+      <th>In-Place</th>
+      <th>Stable</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Bubble Sort</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td>Insertion Sort</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td>Selection Sort</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>No</td>
+    </tr>
+    <tr>
+      <td>Merge Sort</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td>Quicksort</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>No</td>
+    </tr>
+    <tr>
+      <td>Heapsort</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>No</td>
+    </tr>
+    <tr>
+      <td>Counting Sort</td>
+      <td>No</td>
+      <td>No</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td>Radix Sort</td>
+      <td>No</td>
+      <td>No</td>
+      <td>Yes</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Time Complexity as an Evaluation Criterion</strong></p>
+
+<p>Time complexity is the primary theoretical lens through which we evaluate and compare sorting algorithms. It describes how the number of operations an algorithm performs grows as a function of the input size n. Because we usually care about behavior at large scale, we use <em>asymptotic notation</em> — Big O, Big Ω, and Big Θ — to capture this growth rate while abstracting away constant factors and hardware specifics.</p>
+
+<p>Every algorithm has three time complexity cases worth knowing:</p>
+
+<ul>
+  <li><strong>Best case</strong> — the minimum number of operations over all possible inputs of size n. This often occurs with already-sorted or nearly-sorted input. Insertion sort, for example, runs in O(n) best-case time because each new element is already in its correct position and requires zero swaps.</li>
+  <li><strong>Worst case</strong> — the maximum number of operations. For quicksort with a naïve pivot selection strategy, the worst case is O(n²), occurring when the pivot is always the smallest or largest element (e.g., on already-sorted input).</li>
+  <li><strong>Average case</strong> — the expected number of operations over a random distribution of inputs. For quicksort with random pivot selection, the average case is O(n log n), which is why it is fast in practice despite its O(n²) worst case.</li>
+</ul>
+
+<p>The divide between O(n²) and O(n log n) is dramatic at scale. Consider the following comparison:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Input Size (n)</th>
+      <th>O(n²) Operations</th>
+      <th>O(n log₂ n) Operations</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>100</td>
+      <td>10,000</td>
+      <td>664</td>
+    </tr>
+    <tr>
+      <td>1,000</td>
+      <td>1,000,000</td>
+      <td>9,966</td>
+    </tr>
+    <tr>
+      <td>10,000</td>
+      <td>100,000,000</td>
+      <td>132,877</td>
+    </tr>
+    <tr>
+      <td>1,000,000</td>
+      <td>10¹²</td>
+      <td>19,931,568</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>At n = 1,000,000, an O(n²) algorithm performs about 50,000 times more operations than an O(n log n) algorithm. This is why O(n²) algorithms are described as <em>impractical at scale</em>, even if they perform well on small inputs. However, it is equally important to remember that time complexity is a <em>theoretical</em> measure. Actual wall-clock runtime depends on hardware, the size of constant factors hidden by Big O notation, memory access patterns, and many other implementation details. An O(n log n) algorithm with poor cache behavior may actually run slower than an O(n²) algorithm on small inputs where everything fits in CPU cache.</p>
+
+<p><strong>Space Complexity as an Evaluation Criterion</strong></p>
+
+<p>Space complexity describes how much memory an algorithm requires as a function of input size. When evaluating space, it is important to distinguish between two quantities:</p>
+
+<ul>
+  <li><strong>Total space</strong> — the sum of the input space and any extra memory the algorithm allocates during execution.</li>
+  <li><strong>Auxiliary space</strong> — only the <em>extra</em> memory used by the algorithm, not counting the space occupied by the input itself. This is the more informative measure when comparing algorithms, because all sorting algorithms must at minimum store the input.</li>
+</ul>
+
+<p>An in-place algorithm has O(1) auxiliary space — it may use a few local variables or a call stack of bounded depth, but allocates no large auxiliary data structures. Merge sort requires O(n) auxiliary space for its temporary arrays, which doubles the memory footprint of the data being sorted. In environments with strict memory limits — embedded systems, certain real-time applications, or sorting extremely large datasets that barely fit in RAM — this distinction becomes critical.</p>
+
+<p>There is a well-known tension between time and space. Merge sort achieves optimal O(n log n) time but at the cost of O(n) auxiliary space. Heapsort also achieves O(n log n) time <em>and</em> O(1) auxiliary space, but its cache behavior is poor because it accesses memory in a non-sequential pattern (jumping around the heap). Quicksort achieves O(1) auxiliary space for swaps but uses O(log n) stack space for recursion in the average case (O(n) in the worst case if not implemented carefully). No single algorithm wins on every dimension simultaneously — engineers must choose based on the constraints of their specific situation.</p>
+
+<p><strong>Practical Performance Characteristics</strong></p>
+
+<p>Theoretical complexity analysis is indispensable, but it does not tell the whole story. Real-world performance is shaped by several additional factors that Big O notation deliberately ignores.</p>
+
+<p><strong>Cache efficiency</strong> refers to how well an algorithm's memory access patterns match the structure of the CPU cache hierarchy. Modern CPUs have small but fast caches (L1, L2, L3) and large but slow main memory (RAM). Algorithms that access memory <em>sequentially</em> — reading neighboring addresses one after another — benefit from cache prefetching and avoid expensive cache misses. Merge sort's merge step is highly sequential and cache-friendly. Heapsort, by contrast, jumps between distant array positions (parent and child nodes of a heap), causing frequent cache misses and running much slower in practice than its O(n log n) complexity would suggest.</p>
+
+<p><strong>Branch prediction</strong> is another hardware-level factor. Modern CPUs speculatively execute instructions before conditional branches are resolved. If an algorithm has highly unpredictable branches (as quicksort's comparison-based partitioning can be on random data), the CPU wastes time discarding speculative work. Some sorting algorithms are engineered specifically to minimize unpredictable branches.</p>
+
+<p><strong>Constant factors</strong> hidden by Big O notation matter enormously on realistic input sizes. Insertion sort has complexity O(n²), but its inner loop is extremely tight — just a comparison and a shift — and performs excellently on small arrays (typically n ≤ 16 or so). This is why many high-performance sorting implementations switch to insertion sort for small subproblems.</p>
+
+<p>The <strong>nature of the input</strong> can dramatically change which algorithm is best:</p>
+
+<ul>
+  <li><strong>Random data</strong> — quicksort and merge sort both excel; quicksort tends to win due to better cache behavior.</li>
+  <li><strong>Nearly sorted data</strong> — insertion sort shines here, running close to O(n); quicksort degrades unless adaptive measures are taken.</li>
+  <li><strong>Reversed data</strong> — insertion sort and bubble sort perform at their worst (O(n²)); merge sort is unaffected.</li>
+  <li><strong>Many duplicates</strong> — standard quicksort can degrade badly; three-way partitioning (Dutch National Flag) variants handle this efficiently.</li>
+</ul>
+
+<p>These practical realities explain why modern production systems use <em>hybrid algorithms</em> that combine strategies based on observed input characteristics. <strong>Timsort</strong>, the default sorting algorithm in Python and Java (for object arrays), is a particularly sophisticated example. It identifies already-sorted or reverse-sorted runs in the data and merges them using a merge sort strategy, but falls back to binary insertion sort for short runs. This hybrid approach means Timsort achieves O(n) performance on nearly-sorted data while guaranteeing O(n log n) worst-case behavior. It is also stable and has been engineered for excellent cache performance. The existence and widespread adoption of Timsort is a testament to why understanding the full landscape of sorting algorithms — not just a single "best" answer — is so valuable.</p>
+
+<p>As a concrete illustration, consider this simple Python code that demonstrates the difference between a naïve O(n²) sort and Python's built-in O(n log n) Timsort on a large list:</p>
+
+<pre><code>import time
+import random
+
+data = [random.randint(0, 1_000_000) for _ in range(100_000)]
+
+# Naïve O(n²) bubble sort
+def bubble_sort(arr):
+    n = len(arr)
+    for i in range(n):
+        for j in range(0, n - i - 1):
+            if arr[j] > arr[j + 1]:
+                arr[j], arr[j + 1] = arr[j + 1], arr[j]
+
+data_copy = data[:]
+start = time.time()
+bubble_sort(data_copy)
+print(f"Bubble sort: {time.time() - start:.2f} seconds")
+
+# Python's built-in Timsort
+data_copy2 = data[:]
+start = time.time()
+data_copy2.sort()
+print(f"Timsort: {time.time() - start:.4f} seconds")
+</code></pre>
+
+<p>On a typical machine, bubble sort on 100,000 elements takes tens of seconds, while Timsort completes in milliseconds. This example makes the theoretical O(n²) versus O(n log n) distinction viscerally concrete. Understanding <em>why</em> this gap exists — and under what circumstances it can be mitigated or must be respected — is the central goal of studying sorting algorithms.</p>
+        <div class="notes"><strong>Notes</strong>This topic establishes all foundational vocabulary and evaluation criteria needed for every subsequent topic in the module. Emphasize the stable/in-place/comparison-based triad early since students will encounter these terms in every algorithm discussion. The Timsort example is useful to motivate why the module covers multiple algorithms rather than just teaching the &quot;best&quot; one.</div>
+      </div>
+    </details>
+  </main>
+
+<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
+</body></html>

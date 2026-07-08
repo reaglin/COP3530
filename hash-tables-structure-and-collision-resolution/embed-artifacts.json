@@ -10,6 +10,46 @@
     "type": "Page"
   },
   {
+    "title": "Implementing a Hash Table in JavaScript",
+    "href": "content/Hash_Tables_Structure_interactive.html",
+    "type": "Content"
+  },
+  {
+    "title": "Introduction to Hash Tables",
+    "href": "content/Hash_Tables_Structure_interactive_topics_t1.html",
+    "type": "Content"
+  },
+  {
+    "title": "Internal Array-Based Design",
+    "href": "content/Hash_Tables_Structure_interactive_topics_t2.html",
+    "type": "Content"
+  },
+  {
+    "title": "Hash Function Design and Properties",
+    "href": "content/Hash_Tables_Structure_interactive_topics_t3.html",
+    "type": "Content"
+  },
+  {
+    "title": "Collision Resolution: Chaining",
+    "href": "content/Hash_Tables_Structure_interactive_topics_t4.html",
+    "type": "Content"
+  },
+  {
+    "title": "Collision Resolution: Open Addressing",
+    "href": "content/Hash_Tables_Structure_interactive_topics_t5.html",
+    "type": "Content"
+  },
+  {
+    "title": "Performance Analysis of Hash Tables",
+    "href": "content/Hash_Tables_Structure_interactive_topics_t6.html",
+    "type": "Content"
+  },
+  {
+    "title": "Implementing a Hash Table in JavaScript",
+    "href": "content/Hash_Tables_Structure_interactive_topics_t7.html",
+    "type": "Content"
+  },
+  {
     "title": "Hash Tables: Structure and Collision Resolution \u2014 Module Topics",
     "href": "content/module_topics.html",
     "type": "Content"

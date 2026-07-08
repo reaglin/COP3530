@@ -1,0 +1,265 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Real-World Applications of Queues</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+  <style>
+    body { padding-left: 1.1rem; padding-right: 1.1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid rgba(128,128,128,.45); padding: .45em .7em; text-align: left; vertical-align: top; }
+    thead th { background: rgba(128,128,128,.18); font-weight: 600; }
+    tbody tr:nth-child(even) { background: rgba(128,128,128,.08); }
+  </style>
+  <style>
+    summary.slide-header { list-style: none; }
+    summary.slide-header::-webkit-details-marker { display: none; }
+    details.slide-card[open] > .slide-body { display: block; }
+    details.slide-card[open] .chevron { transform: rotate(90deg); }
+    @media print { details.slide-card > .slide-body { display: block !important; } .chevron { display: none; } }
+  </style>
+</head><body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ The Queue: Structure and Use Cases</a></div>
+  <header>
+    <h1>Real-World Applications of Queues</h1>
+  </header><main>
+    <details class="slide-card" open>
+      <summary class="slide-header"><span class="slide-num">1</span><h2>Real-World Applications of Queues</h2><span class="chevron">▶</span></summary>
+      <div class="slide-body">
+        <p>Queues are one of the most practically significant data structures in computer science, and their usefulness stems almost entirely from a single, elegant property: <strong>First-In, First-Out (FIFO)</strong>. Whatever enters the queue first is guaranteed to leave first. This seemingly simple guarantee turns out to be exactly what dozens of real-world systems need in order to behave fairly, correctly, and efficiently. From the moment you send a document to a shared office printer to the moment a video begins playing in your browser, queues are silently ensuring that data and tasks are handled in the right order, at the right time, without collision or loss.</p>
+
+<p>Understanding where and why queues are applied in practice deepens your intuition for when to reach for this structure in your own designs. The sections below walk through six major application domains in detail, explaining not just <em>what</em> a queue does in each context but <em>why</em> the FIFO property is the essential ingredient that makes the solution work.</p>
+
+<p><strong>Task Scheduling and the FIFO Guarantee</strong></p>
+
+<p>Any system that must execute multiple tasks submitted by different sources faces a fundamental question: in what order should work be done? The simplest and most defensible answer is: in the order the work arrived. A task scheduler backed by a queue does exactly this. Every newly submitted task is placed at the rear of the queue, and the processor always picks the task at the front. This produces a clean, predictable execution order.</p>
+
+<p>The FIFO guarantee carries an important fairness consequence — it eliminates <em>starvation</em>. Starvation occurs when a task is perpetually pushed aside because newer or differently prioritized work keeps jumping ahead. Because a queue advances every task toward the front with each dequeue operation, no task submitted earlier can ever be overtaken by one submitted later. The first task in will always be the first task out, regardless of how many new tasks flood in behind it.</p>
+
+<p>A concrete example is <strong>round-robin CPU scheduling</strong> in operating systems. When multiple processes are ready to run, the scheduler places them in a queue. The CPU dequeues the front process and allows it to execute for a fixed time slice (called a <em>quantum</em>). When the quantum expires, the process is re-enqueued at the rear if it has not finished. This cycle repeats. Because the queue maintains arrival order and each process gets equal time slices, no process monopolizes the CPU, and every waiting process makes measurable progress. The queue is the mechanism that enforces both fairness and orderly rotation.</p>
+
+<p>Consider a simplified simulation of round-robin scheduling where three processes — P1, P2, and P3 — each need three quanta of CPU time:</p>
+
+<pre><code>Initial queue: [P1, P2, P3]
+
+Cycle 1: Dequeue P1 → run 1 quantum → P1 needs 2 more → Enqueue P1
+         Queue: [P2, P3, P1]
+
+Cycle 2: Dequeue P2 → run 1 quantum → P2 needs 2 more → Enqueue P2
+         Queue: [P3, P1, P2]
+
+Cycle 3: Dequeue P3 → run 1 quantum → P3 needs 2 more → Enqueue P3
+         Queue: [P1, P2, P3]
+
+... (continues until all processes finish)
+</code></pre>
+
+<p>Each process takes exactly one turn per full rotation. No process waits indefinitely; the queue's FIFO ordering ensures perfectly fair rotation.</p>
+
+<p><strong>Print Spooling</strong></p>
+
+<p>Print spooling is one of the oldest and most intuitive applications of a queue. When multiple users or applications send documents to a shared printer, those jobs cannot all be processed at once — a printer handles one job at a time. A print spooler manages this by maintaining a queue of pending jobs.</p>
+
+<p>Each print job is <em>enqueued</em> the moment it is submitted, recording its arrival order regardless of file size, number of pages, or which user sent it. The printer service continuously <em>dequeues</em> the job at the front, prints it to completion, and only then moves on to the next. This has several important consequences:</p>
+
+<ul>
+  <li><strong>Order preservation:</strong> If you submit your report at 10:00 AM and a colleague submits theirs at 10:01 AM, yours will always print first, even if theirs is a single page and yours is fifty pages.</li>
+  <li><strong>Collision prevention:</strong> Without queuing, two print jobs sent simultaneously might try to write to the printer's memory at the same time, corrupting both documents. The queue serializes access, so the printer is never asked to do two things at once.</li>
+  <li><strong>Decoupling submission from execution:</strong> Your application does not need to wait for the printer to be free before returning control to you. It enqueues the job and proceeds. This is an early example of what modern systems call <em>asynchronous processing</em>.</li>
+</ul>
+
+<p>Without a queue structure, concurrent print requests would race to access the printer hardware in an undefined order, potentially interleaving pages from different documents or simply failing unpredictably. The queue transforms a chaotic multi-sender, single-receiver problem into an orderly, deterministic one.</p>
+
+<p><strong>Data Buffering in Streams</strong></p>
+
+<p>In streaming systems, data flows from a <em>producer</em> (the source) to a <em>consumer</em> (the destination). Ideally these two sides operate at the same speed, but in practice they almost never do. A network might deliver video data in bursts — fast for a moment, then slow — while your video player needs a steady, uninterrupted feed of frames. A <strong>buffer queue</strong> bridges this mismatch.</p>
+
+<p>As data arrives from the network, it is enqueued in the buffer. The player dequeues data at a steady rate to decode and display frames. If the network sends a burst of data faster than the player can consume it, the queue absorbs the excess without losing any data and holds it in arrival order. When the network slows down, the player draws down the buffer, continuing playback smoothly until new data arrives and refills the queue.</p>
+
+<p>The FIFO property is critical here for a subtle but important reason: <strong>data must be consumed in the same sequence it was produced</strong>. Audio samples, video frames, and sensor readings are all time-ordered. If a buffer reordered them — serving the fifth audio sample before the first — the output would be nonsensical noise. Because a queue guarantees that whatever was enqueued earliest is dequeued earliest, the temporal ordering of the original data stream is perfectly preserved through the buffer.</p>
+
+<p>This same principle applies in many other streaming contexts:</p>
+
+<ul>
+  <li><strong>Keyboard input buffers:</strong> Characters typed faster than the application can process them are queued and delivered in typing order.</li>
+  <li><strong>Network packet buffers:</strong> Incoming packets are queued at a router when outgoing bandwidth is temporarily saturated, preventing packet loss and preserving arrival order.</li>
+  <li><strong>Disk I/O queues:</strong> Read and write requests are buffered and served in submission order to avoid reordering that could corrupt file system state.</li>
+</ul>
+
+<p><strong>Message Queues in Distributed Systems</strong></p>
+
+<p>Modern applications are often composed of many independent services — an <em>order service</em>, a <em>payment service</em>, a <em>notification service</em> — that need to communicate with each other over a network. A naive approach would have one service call another directly and wait for a response. This creates tight coupling: if the payment service is slow or temporarily offline, the order service stalls or fails.</p>
+
+<p><strong>Message queues</strong> solve this with a simple architectural pattern. A <em>producer service</em> places messages onto a shared queue and immediately continues its own work without waiting. A <em>consumer service</em> reads messages from the queue at its own pace. The queue sits between them, decoupling their lifetimes and speeds. This pattern is the backbone of systems like <em>RabbitMQ</em>, <em>Apache Kafka</em>, and <em>Amazon SQS</em>.</p>
+
+<p>The FIFO property delivers critical guarantees for workflows that depend on sequence. Consider an e-commerce order pipeline:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Step</th>
+      <th>Message Enqueued</th>
+      <th>Consumer Service</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>OrderPlaced(order_id=42)</td>
+      <td>Inventory Service reserves stock</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>PaymentProcessed(order_id=42)</td>
+      <td>Shipping Service creates shipment</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>ShipmentCreated(order_id=42)</td>
+      <td>Notification Service emails customer</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>If these messages were delivered out of order — say, <em>ShipmentCreated</em> before <em>OrderPlaced</em> — the shipping service would try to create a shipment for an order that does not yet exist in the system, causing an error. FIFO ordering ensures each step happens in the logical sequence intended by the producer.</p>
+
+<p>Beyond correctness, message queues provide <strong>resilience under load</strong>. If a sudden surge of orders floods the system, the queue absorbs the burst. Consumer services process messages at a sustainable rate without being overwhelmed, and no messages are lost. Each service can also be scaled independently — more consumers can be added to drain a growing queue — without changing the producer at all.</p>
+
+<p><strong>Breadth-First Search (BFS) in Algorithms</strong></p>
+
+<p>Breadth-First Search is one of the most important graph traversal algorithms, and it is impossible to implement correctly without a queue. BFS explores a graph layer by layer, visiting all nodes at distance 1 from the start before visiting any node at distance 2, all nodes at distance 2 before any at distance 3, and so on. This level-by-level expansion is enforced entirely by the FIFO discipline of the queue.</p>
+
+<p>The algorithm works as follows:</p>
+
+<ul>
+  <li>Enqueue the starting node and mark it as visited.</li>
+  <li>While the queue is not empty: dequeue the front node, process it, then enqueue each of its unvisited neighbors and mark them visited.</li>
+</ul>
+
+<p>Here is a concrete example on a small undirected graph:</p>
+
+<pre><code>Graph (adjacency list):
+  A: [B, C]
+  B: [A, D, E]
+  C: [A, F]
+  D: [B]
+  E: [B]
+  F: [C]
+
+BFS from A:
+  Enqueue A        → Queue: [A]
+  Dequeue A        → Visit A, enqueue B, C    → Queue: [B, C]
+  Dequeue B        → Visit B, enqueue D, E    → Queue: [C, D, E]
+  Dequeue C        → Visit C, enqueue F       → Queue: [D, E, F]
+  Dequeue D        → Visit D (no new neighbors) → Queue: [E, F]
+  Dequeue E        → Visit E (no new neighbors) → Queue: [F]
+  Dequeue F        → Visit F (no new neighbors) → Queue: []
+
+Visit order: A → B → C → D → E → F
+</code></pre>
+
+<p>Notice that A (distance 0) is visited first, then B and C (distance 1), then D, E, and F (distance 2). This level-order guarantee is what makes BFS ideal for finding <strong>shortest paths in unweighted graphs</strong>: the first time BFS reaches a node, it has found the path with the fewest edges, because it exhausts all shorter paths before exploring longer ones.</p>
+
+<p>The contrast with <strong>Depth-First Search (DFS)</strong> illustrates why the queue is essential. DFS uses a <em>stack</em> (either explicitly or via recursion), which gives it LIFO behavior: it always dives as deep as possible along one branch before backtracking. A stack would cause the above traversal to go A → B → D (down one branch) rather than spreading evenly across levels. It is the queue's FIFO property — not any other aspect of the algorithm — that produces the breadth-first behavior.</p>
+
+<p><strong>Customer Service and Ticketing Systems</strong></p>
+
+<p>Customer support centers, help desks, and ticketing platforms all face the same organizational challenge: many requests arrive at unpredictable times, but a finite number of agents can handle them. A queue provides both the data structure and the management philosophy to handle this gracefully.</p>
+
+<p>When a customer submits a support ticket, calls a helpline, or enters a chat queue, their request is placed at the rear of the service queue. When an agent finishes with one customer and becomes available, they dequeue the front request and begin handling it. The process is straightforward, but the implications are significant:</p>
+
+<ul>
+  <li><strong>Fairness through FIFO:</strong> Customers are served in the order they arrived, not based on who they are, how large their issue is, or any arbitrary choice by the agent. This fairness is not just ethically desirable — it is often legally required in regulated industries.</li>
+  <li><strong>Measurable performance:</strong> Because a queue has well-defined properties, managers can measure concrete metrics: average queue length (how many requests are waiting), average wait time (how long from enqueue to dequeue), and throughput (how many requests are resolved per hour). These metrics directly inform staffing decisions and service-level agreement targets.</li>
+  <li><strong>Scalability:</strong> During high-volume periods such as a product launch or outage, the queue absorbs all incoming requests without any being lost. Additional agents can be brought online to drain the queue faster, and the queue structure does not change — it simply grows and shrinks as needed.</li>
+</ul>
+
+<p>A snapshot of a customer service queue at a given moment might look like this:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Position in Queue</th>
+      <th>Ticket ID</th>
+      <th>Arrival Time</th>
+      <th>Issue Type</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1 (Front)</td>
+      <td>TKT-1041</td>
+      <td>09:02 AM</td>
+      <td>Billing dispute</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>TKT-1042</td>
+      <td>09:05 AM</td>
+      <td>Password reset</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>TKT-1043</td>
+      <td>09:07 AM</td>
+      <td>Account locked</td>
+    </tr>
+    <tr>
+      <td>4 (Rear)</td>
+      <td>TKT-1044</td>
+      <td>09:10 AM</td>
+      <td>Feature inquiry</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>When the next agent becomes free, TKT-1041 is dequeued and assigned regardless of whether TKT-1043 might be a simpler, faster problem to solve. The queue enforces arrival order, protecting the customer who waited longest from being indefinitely bypassed by customers whose issues happen to be quicker to resolve.</p>
+
+<p>Across all of these application domains — task scheduling, print spooling, stream buffering, distributed messaging, graph traversal, and customer service — the same underlying structure provides the solution. A queue's power lies not in complexity but in the reliability of its one defining guarantee: <strong>what goes in first comes out first</strong>. That single property, applied in the right context, is enough to bring order to some of the most challenging coordination problems in computing and operations.</p>
+        <div class="notes"><strong>Notes</strong>The BFS code example uses a simple six-node undirected graph to make level-order traversal visually traceable. The two HTML tables (order pipeline and customer service queue snapshot) illustrate real data scenarios. Instructors may wish to pair the BFS section with a live coding exercise to reinforce the contrast between queue-driven BFS and stack-driven DFS.</div>
+      </div>
+    </details>
+  </main>
+
+<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
+</body></html>

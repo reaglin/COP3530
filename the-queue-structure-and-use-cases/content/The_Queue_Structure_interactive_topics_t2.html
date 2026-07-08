@@ -1,0 +1,212 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The FIFO Principle</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+  <style>
+    body { padding-left: 1.1rem; padding-right: 1.1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid rgba(128,128,128,.45); padding: .45em .7em; text-align: left; vertical-align: top; }
+    thead th { background: rgba(128,128,128,.18); font-weight: 600; }
+    tbody tr:nth-child(even) { background: rgba(128,128,128,.08); }
+  </style>
+  <style>
+    summary.slide-header { list-style: none; }
+    summary.slide-header::-webkit-details-marker { display: none; }
+    details.slide-card[open] > .slide-body { display: block; }
+    details.slide-card[open] .chevron { transform: rotate(90deg); }
+    @media print { details.slide-card > .slide-body { display: block !important; } .chevron { display: none; } }
+  </style>
+</head><body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ The Queue: Structure and Use Cases</a></div>
+  <header>
+    <h1>The FIFO Principle</h1>
+  </header><main>
+    <details class="slide-card" open>
+      <summary class="slide-header"><span class="slide-num">1</span><h2>The FIFO Principle</h2><span class="chevron">▶</span></summary>
+      <div class="slide-body">
+        <p>At the heart of every queue lies a single governing rule: the element that enters first must leave first. This rule is called <strong>First-In, First-Out</strong>, universally abbreviated as <strong>FIFO</strong>. It is not simply a convention or a preference — it is the defining constraint that separates a queue from every other data structure. Understanding FIFO deeply means understanding not just what it says, but why it exists, how it is enforced structurally, and what consequences it has for correctness, fairness, and predictability in computing systems.</p>
+
+<p>To appreciate FIFO, think of a familiar real-world scenario: a line of customers waiting at a bank. The first customer to join the line is the first to be served. No one who arrives later can be served before someone who arrived earlier. The line itself enforces this — there is only one way in (at the back) and one way out (at the front). A queue data structure works in exactly the same way, and this analogy is not accidental. The word "queue" is itself the British English word for such a waiting line.</p>
+
+<p><strong>What FIFO Means</strong></p>
+
+<p>FIFO encodes three related ideas that together define the ordering guarantee of a queue:</p>
+
+<ul>
+  <li><strong>The element inserted first is always the first to be removed.</strong> If element A is enqueued before element B, then A will be dequeued before B, regardless of how long either has been waiting or what their values are. The queue has no awareness of values — only of arrival order.</li>
+  <li><strong>No element can be removed before all elements that arrived ahead of it have been removed.</strong> This is the stricter implication of the first point. It is not enough to say "early elements tend to leave first." The guarantee is absolute: an element cannot exit the queue while any element that preceded it is still present. Every predecessor must be removed first.</li>
+  <li><strong>FIFO ensures a strict, predictable ordering enforced by the structure itself.</strong> The ordering is not something the programmer has to manually maintain or check. It emerges automatically from the way the queue allows elements to be inserted and removed. Correct use of a queue's operations is sufficient to guarantee FIFO; no additional bookkeeping is required.</li>
+</ul>
+
+<p>Consider a concrete example. Suppose the following elements are enqueued in this sequence:</p>
+
+<pre><code>Enqueue: 10
+Enqueue: 20
+Enqueue: 30
+Enqueue: 40
+</code></pre>
+
+<p>The internal state of the queue after all four insertions looks like this, with the front on the left:</p>
+
+<pre><code>Front → [ 10 | 20 | 30 | 40 ] ← Rear
+</code></pre>
+
+<p>Each dequeue operation removes the element at the front:</p>
+
+<pre><code>Dequeue → returns 10   Queue: [ 20 | 30 | 40 ]
+Dequeue → returns 20   Queue: [ 30 | 40 ]
+Dequeue → returns 30   Queue: [ 40 ]
+Dequeue → returns 40   Queue: []
+</code></pre>
+
+<p>The output sequence — 10, 20, 30, 40 — is identical to the input sequence. FIFO guarantees this identity. The queue acts as a perfect order-preserving channel between a producer of elements and a consumer of elements.</p>
+
+<p><strong>Insertion and Removal Under FIFO</strong></p>
+
+<p>FIFO is not merely an abstract policy; it is physically enforced by restricting <em>where</em> insertions and removals can happen within the structure. This physical separation of access points is what makes FIFO automatic rather than optional.</p>
+
+<ul>
+  <li><strong>New elements are always added at the rear of the queue, never in the middle or at the front.</strong> The rear is the only legal insertion point. This operation is called <em>enqueue</em> (also written as <em>push</em> or <em>offer</em> in some implementations). Inserting anywhere else would disrupt the arrival order and break the FIFO guarantee.</li>
+  <li><strong>Elements are always removed from the front of the queue, never from the rear or middle.</strong> The front is the only legal removal point. This operation is called <em>dequeue</em> (also written as <em>pop</em> or <em>poll</em> in some implementations). Removing from the rear or middle would allow a later-arriving element to exit before an earlier-arriving one, violating FIFO.</li>
+  <li><strong>The separation of insertion and removal points is what physically enforces FIFO order.</strong> Because new arrivals always go to the back and departures always come from the front, the position of an element within the queue is a direct reflection of its arrival order. The front always holds the oldest remaining element; the rear always holds the newest.</li>
+</ul>
+
+<p>This two-ended structure can be illustrated as a pipeline. Data flows in one direction only — from rear to front — as newer elements push their way toward the exit by virtue of older elements being removed ahead of them:</p>
+
+<pre><code>Enqueue →  [ newest | ... | ... | oldest ]  → Dequeue
+              Rear                  Front
+</code></pre>
+
+<p>An attempt to insert at the front, or remove from the rear, or access any middle element, is simply not a legal queue operation. The interface of a queue exposes only enqueue and dequeue (plus, typically, a peek at the front element without removing it). The absence of any other access method is not an oversight — it is a deliberate design choice that enforces FIFO at the interface level.</p>
+
+<p><strong>FIFO Compared to LIFO</strong></p>
+
+<p>FIFO is best understood in contrast with its structural opposite: <strong>Last-In, First-Out</strong>, or <strong>LIFO</strong>. A LIFO structure is called a <em>stack</em>. Where a queue serves the oldest element first, a stack serves the newest element first.</p>
+
+<ul>
+  <li><strong>In a LIFO structure, the most recently inserted element is the first to be removed.</strong> In a stack, both insertion (<em>push</em>) and removal (<em>pop</em>) happen at the same end, called the <em>top</em>. Every new element lands on top of all previous elements and is therefore the next to leave. This is the direct opposite of queue behavior.</li>
+  <li><strong>Queues and stacks both restrict access to elements, but they do so at different ends and in opposite orderings.</strong> Both structures are examples of <em>restricted-access</em> data structures — they deliberately limit which elements can be reached — but the restriction is applied differently. A queue restricts access to two separate ends serving opposite roles; a stack restricts access to a single end serving both roles.</li>
+  <li><strong>Choosing between FIFO and LIFO depends on whether the use case requires processing in arrival order or reverse arrival order.</strong> If tasks must be handled in the order they were received, a queue is correct. If the most recent item must always be addressed first — as in function call management, undo operations, or expression parsing — a stack is the right choice.</li>
+</ul>
+
+<p>The following table summarizes the key structural differences:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Queue (FIFO)</th>
+      <th>Stack (LIFO)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Insertion point</td>
+      <td>Rear</td>
+      <td>Top</td>
+    </tr>
+    <tr>
+      <td>Removal point</td>
+      <td>Front</td>
+      <td>Top</td>
+    </tr>
+    <tr>
+      <td>First element removed</td>
+      <td>Oldest (first inserted)</td>
+      <td>Newest (last inserted)</td>
+    </tr>
+    <tr>
+      <td>Order preserved</td>
+      <td>Arrival order</td>
+      <td>Reverse arrival order</td>
+    </tr>
+    <tr>
+      <td>Typical use cases</td>
+      <td>Scheduling, buffering, BFS</td>
+      <td>Call stack, undo, DFS, parsing</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>To make the contrast concrete, suppose the same elements — 10, 20, 30 — are inserted into both a queue and a stack in the same order. The removal sequences will be exactly opposite:</p>
+
+<pre><code>Queue (FIFO):  Remove order → 10, 20, 30  (same as insertion order)
+Stack (LIFO):  Remove order → 30, 20, 10  (reverse of insertion order)
+</code></pre>
+
+<p>Neither ordering is inherently superior. Each is correct for its intended purpose, and confusing the two leads to subtle, hard-to-diagnose bugs — for example, processing job requests in reverse order when they should have been handled in arrival order.</p>
+
+<p><strong>Why FIFO Matters for Fairness and Order</strong></p>
+
+<p>The FIFO guarantee is not merely a technical curiosity. It has real and important consequences for the correctness and fairness of any system that uses a queue.</p>
+
+<ul>
+  <li><strong>No element is skipped or prioritized over one that arrived earlier, which prevents starvation in processing pipelines.</strong> In computing, <em>starvation</em> refers to a situation where a task or process is perpetually denied access to a resource because other tasks keep taking priority. A strict FIFO queue eliminates starvation by construction: every element will eventually reach the front, because it can only be delayed by elements that arrived before it, and those elements are being continuously removed.</li>
+  <li><strong>FIFO guarantees that the relative order of elements is preserved from input to output.</strong> If elements enter the queue in a meaningful sequence — timestamped log entries, ordered transactions, sequenced network packets — they will emerge in that same meaningful sequence. The queue acts as an order-preserving buffer between a producer and a consumer that may operate at different speeds.</li>
+  <li><strong>Systems that must handle requests, tasks, or data in arrival order rely on the FIFO guarantee to produce correct and predictable results.</strong> Consider a web server handling incoming HTTP requests, a printer managing a print job queue, or a CPU scheduler handling process requests in round-robin order. In each case, the FIFO property is not optional — it is a correctness requirement. A server that randomly reorders requests, or a printer that sometimes prints later jobs first, would be functionally broken from the user's perspective.</li>
+</ul>
+
+<p>The fairness aspect of FIFO is especially important in multi-user or multi-process environments. When multiple producers submit elements to a shared queue, FIFO ensures that the consumer treats each producer's submissions in the order they arrived, with no producer receiving special treatment based on anything other than timing. This is a simple, universally understandable fairness criterion.</p>
+
+<p><strong>FIFO as a Defining Constraint of the Queue</strong></p>
+
+<p>The most important conceptual point about FIFO is that it is not a feature of queues — it <em>is</em> the queue. The FIFO principle is the defining constraint that makes something a queue in the first place.</p>
+
+<ul>
+  <li><strong>A data structure is classified as a queue specifically because it enforces FIFO access and no other access pattern.</strong> If you implement an array, linked list, or any other concrete structure, but you expose only enqueue-at-rear and dequeue-from-front operations, you have built a queue. The underlying implementation details are irrelevant to this classification — what matters is the access discipline.</li>
+  <li><strong>Violating FIFO — for example, by allowing removal from the rear — would change the structure into a different abstract data type.</strong> A structure that allows insertion and removal at both ends is called a <em>deque</em> (double-ended queue). A structure that allows removal of the highest-priority element regardless of arrival order is called a <em>priority queue</em>. These are legitimate and useful data structures, but they are not queues precisely because they do not enforce strict FIFO.</li>
+  <li><strong>Understanding FIFO as a strict constraint helps distinguish pure queues from related structures like deques or priority queues, which relax or modify this rule.</strong> A deque generalizes the queue by permitting operations at both ends. A priority queue replaces arrival-order priority with value-based priority. Neither provides the strict FIFO guarantee of a pure queue. In systems where arrival-order fairness is a correctness requirement, substituting a deque or priority queue for a pure queue could introduce serious bugs.</li>
+</ul>
+
+<p>This conceptual precision matters in practice. When a system specification says "use a queue," it means FIFO must be enforced. When a developer chooses a queue as an implementation tool, it is because FIFO is exactly the ordering behavior needed. Recognizing FIFO as a hard constraint — not a soft guideline — leads to clearer thinking about algorithm design, data structure selection, and system correctness.</p>
+
+<p>In summary, FIFO is a simple principle with far-reaching implications. It prescribes where insertions and removals must occur, distinguishes queues from stacks and other structures, guarantees fairness and order preservation, and serves as the definitional boundary of the queue abstract data type. Every queue operation, every queue-based algorithm, and every system built on queue semantics derives its correctness from this single foundational rule.</p>
+        <div class="notes"><strong>Notes</strong>The bank-line analogy introduced early is worth reinforcing verbally in instruction, as students consistently find it the most intuitive entry point. The comparison table between FIFO and LIFO is especially useful for students who have already studied stacks. Emphasize that a deque and a priority queue are not &quot;better queues&quot; but structurally different abstract data types — this distinction frequently appears in assessments.</div>
+      </div>
+    </details>
+  </main>
+
+<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
+</body></html>

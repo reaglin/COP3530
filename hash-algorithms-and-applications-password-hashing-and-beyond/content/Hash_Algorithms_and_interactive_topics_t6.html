@@ -1,0 +1,282 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Common Attacks and Vulnerabilities</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+  <style>
+    body { padding-left: 1.1rem; padding-right: 1.1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid rgba(128,128,128,.45); padding: .45em .7em; text-align: left; vertical-align: top; }
+    thead th { background: rgba(128,128,128,.18); font-weight: 600; }
+    tbody tr:nth-child(even) { background: rgba(128,128,128,.08); }
+    a.topic-detail-link { text-decoration: underline; }
+  </style>
+  <style>
+    summary.slide-header { list-style: none; }
+    summary.slide-header::-webkit-details-marker { display: none; }
+    details.slide-card[open] > .slide-body { display: block; }
+    details.slide-card[open] .chevron { transform: rotate(90deg); }
+    @media print { details.slide-card > .slide-body { display: block !important; } .chevron { display: none; } }
+  </style>
+</head><body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Hash Algorithms and Applications: Password Hashing and Beyond</a></div>
+  <header>
+    <h1>Common Attacks and Vulnerabilities</h1>
+  </header><main>
+    <details class="slide-card" open>
+      <summary class="slide-header"><span class="slide-num">1</span><h2>Common Attacks and Vulnerabilities</h2><span class="chevron">▶</span></summary>
+      <div class="slide-body">
+        <p>Hashing is a foundational primitive in modern security systems, used to protect stored passwords, verify file integrity, authenticate messages, and underpin digital signatures. Yet hashing is not magic — it is a mathematical operation with specific properties, and when those properties are weakened, misapplied, or deliberately exploited, entire security systems can collapse. Understanding the major attack categories against hash-based systems is essential for any practitioner who designs, evaluates, or maintains software that depends on cryptographic hashing. The attacks described here are not theoretical: they have been used in real-world breaches to recover millions of user credentials, forge digital signatures, and bypass authentication mechanisms. Each attack exploits a specific weakness, whether in the algorithm itself, in the way the algorithm is applied, or in the implementation details of comparison logic.</p>
+
+<p><strong>Brute-Force Attacks on Hashed Passwords</strong></p>
+<p>A brute-force attack on a hashed password database is deceptively straightforward in concept. Because hash functions are <em>deterministic</em> — the same input always produces exactly the same output — an attacker who obtains a stored hash can verify any candidate password by hashing it with the same algorithm and comparing the result. There is no need to reverse the hash mathematically. The attacker simply iterates through candidate passwords until a match is found.</p>
+<p>The practical feasibility of brute-force depends on three interacting factors: the size of the search space, the speed of the hash function, and the computational resources available to the attacker. Modern GPUs can compute billions of MD5 or SHA-1 hashes per second. A six-character lowercase password has only 26<sup>6</sup> ≈ 308 million combinations — a search space exhausted in a fraction of a second on commodity hardware. Even adding uppercase letters and digits grows the space to about 56 billion combinations for six characters, which still falls within reach of a determined attacker with GPU clusters.</p>
+<p>The primary defenses against brute-force are:</p>
+<ul>
+  <li><strong>Slow hashing functions:</strong> Algorithms such as <em>bcrypt</em>, <em>scrypt</em>, and <em>Argon2</em> are deliberately computationally expensive. bcrypt, for example, includes a configurable cost factor. Increasing this factor by one doubles the computation time. Where MD5 can be computed billions of times per second per GPU, bcrypt at a cost factor of 12 allows only a few hundred attempts per second on the same hardware. This asymmetry punishes attackers far more than it inconveniences legitimate logins.</li>
+  <li><strong>Strong password policies:</strong> Requiring longer passwords with diverse character classes expands the search space exponentially. A random 12-character password drawn from a 94-character printable ASCII set represents 94<sup>12</sup> ≈ 4.76 × 10<sup>23</sup> combinations — far beyond exhaustive search even with fast algorithms.</li>
+  <li><strong>Account lockout and rate limiting:</strong> Online brute-force (attacking a live login endpoint) is defeated by rate limiting and lockout policies, though these do not protect offline attacks against stolen hash databases.</li>
+</ul>
+<p>To illustrate the difference in hashing speed, consider the following rough comparison of candidate throughput on a single modern GPU:</p>
+<table>
+  <thead>
+    <tr>
+      <th>Hash Algorithm</th>
+      <th>Approximate Hashes/Second (GPU)</th>
+      <th>Time to Exhaust 6-char Lowercase</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>MD5</td>
+      <td>~50 billion</td>
+      <td>&lt; 1 second</td>
+    </tr>
+    <tr>
+      <td>SHA-256</td>
+      <td>~10 billion</td>
+      <td>~1 second</td>
+    </tr>
+    <tr>
+      <td>bcrypt (cost 10)</td>
+      <td>~20,000</td>
+      <td>~4 hours</td>
+    </tr>
+    <tr>
+      <td>Argon2id (moderate settings)</td>
+      <td>~1,000</td>
+      <td>~3.5 days</td>
+    </tr>
+  </tbody>
+</table>
+<p>The table makes clear why algorithm choice is not a cosmetic decision: the difference between MD5 and Argon2id represents many orders of magnitude in attacker cost, turning a trivial attack into an impractical one.</p>
+
+<p><strong>Rainbow Table Attacks</strong></p>
+<p>A rainbow table attack is a form of precomputed brute-force. Instead of computing hashes at attack time, an adversary builds a large lookup table <em>in advance</em>, mapping known passwords to their digests. When a hash database is stolen, the attacker simply queries the table for each hash, retrieving the corresponding plaintext instantly — no computation required at attack time.</p>
+<p>Rainbow tables exploit a key property of hash functions: given a fixed algorithm, the hash of a given string is always the same. If ten users all choose the password <code>password123</code> and the system stores unsalted SHA-1 hashes, all ten records will contain the identical hash <code>cbfdac6008f9cab4083784cbd1874f76618d2a97</code>. One table lookup recovers all ten passwords simultaneously.</p>
+<p>The critical defense against rainbow tables is <strong>salting</strong>. A salt is a random value — typically 16 bytes or more — generated uniquely for each user at account creation. The salt is concatenated with the password before hashing:</p>
+<pre><code>stored_hash = hash_function(salt + password)
+</code></pre>
+<p>The salt is then stored in plaintext alongside the hash (there is no security value in hiding the salt; its purpose is uniqueness, not secrecy). When the user logs in, the system retrieves their salt, recomputes the hash with the provided password, and compares. This defeats precomputed rainbow tables because:</p>
+<ul>
+  <li>Even if two users share the same password, their different salts produce different hashes, so a single table entry cannot match both.</li>
+  <li>An attacker would need to construct a separate rainbow table for every unique salt value, making precomputation astronomically expensive. With a 128-bit random salt, the number of possible salts is 2<sup>128</sup> — precomputation becomes completely infeasible.</li>
+  <li>Publicly available rainbow tables (which cover billions of common passwords against MD5, SHA-1, and NTLM) become useless because they contain entries computed without any salt.</li>
+</ul>
+<p>Systems that store passwords hashed with unsalted MD5 or SHA-1 — still found in legacy codebases and older CMS installations — are trivially broken. Services like CrackStation maintain freely accessible tables covering hundreds of billions of candidate strings. A breach of such a system results in near-instant mass credential recovery.</p>
+
+<p><strong>Collision Attacks</strong></p>
+<p>A hash collision occurs when two <em>distinct</em> inputs produce the <em>identical</em> digest. Formally, a collision-resistant hash function should make it computationally infeasible to find any pair (M<sub>1</sub>, M<sub>2</sub>) where M<sub>1</sub> ≠ M<sub>2</sub> yet <code>hash(M<sub>1</sub>) = hash(M<sub>2</sub>)</code>. When this property breaks down, serious integrity and authentication failures follow.</p>
+<p>The most consequential real-world exploitation of collision attacks involves digital certificates and file signatures. Consider a scenario where an attacker crafts two documents: one is a legitimate certificate signing request; the other is a malicious certificate for a different domain. If both documents hash to the same value, and a Certificate Authority signs the hash of the legitimate document, the resulting signature is mathematically valid for the malicious document as well. This is not hypothetical — the <em>Flame</em> malware (discovered 2012) used an MD5 collision against Microsoft's Terminal Services licensing certificates to forge a code-signing certificate, enabling it to impersonate Windows Update.</p>
+<p>MD5 is completely broken for collision resistance. The first practical MD5 collision was demonstrated in 2004, and today collisions can be generated in seconds on consumer hardware using tools like <em>HashClash</em>. SHA-1 was formally broken in 2017 when Google's Project Zero demonstrated the <em>SHAttered</em> attack, producing the first known SHA-1 collision — two different PDF files with the same SHA-1 hash.</p>
+<p>The implications extend beyond password storage:</p>
+<ul>
+  <li><strong>File integrity verification:</strong> Using MD5 or SHA-1 checksums to verify software downloads provides no meaningful security; an attacker can produce a malicious binary with the same checksum as the legitimate one.</li>
+  <li><strong>Digital signatures:</strong> Any signature scheme that hashes data before signing is only as strong as the collision resistance of the hash function used.</li>
+  <li><strong>Certificate forgery:</strong> As demonstrated by Flame, weak collision resistance in certificate hashing enables man-in-the-middle attacks at a fundamental level.</li>
+</ul>
+<p>SHA-2 (SHA-256, SHA-384, SHA-512) and the SHA-3 family (based on the Keccak construction) currently maintain strong collision resistance and are the recommended algorithms for all cryptographic applications requiring integrity guarantees.</p>
+
+<p><strong>Weak and Deprecated Hash Functions</strong></p>
+<p>Not all hash functions are created equal, and the security landscape has made certain algorithms obsolete for any security-sensitive use. Understanding why they are deprecated — rather than simply knowing which ones to avoid — allows practitioners to reason about future algorithm transitions and to evaluate vendor claims.</p>
+<table>
+  <thead>
+    <tr>
+      <th>Algorithm</th>
+      <th>Digest Size</th>
+      <th>Status</th>
+      <th>Primary Weaknesses</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>MD5</td>
+      <td>128 bits</td>
+      <td>Broken / Deprecated</td>
+      <td>Collision attacks (trivial), preimage attacks feasible, extremely fast (aids brute-force)</td>
+    </tr>
+    <tr>
+      <td>SHA-1</td>
+      <td>160 bits</td>
+      <td>Deprecated by NIST</td>
+      <td>Collision attacks demonstrated (SHAttered), deprecated in TLS and code signing</td>
+    </tr>
+    <tr>
+      <td>SHA-256</td>
+      <td>256 bits</td>
+      <td>Current / Recommended</td>
+      <td>No known practical attacks; suitable for integrity but too fast for password hashing alone</td>
+    </tr>
+    <tr>
+      <td>SHA-3 (Keccak)</td>
+      <td>224–512 bits</td>
+      <td>Current / Recommended</td>
+      <td>Different internal construction from SHA-2; no known practical weaknesses</td>
+    </tr>
+    <tr>
+      <td>bcrypt</td>
+      <td>192 bits (output)</td>
+      <td>Recommended for passwords</td>
+      <td>Slower to adapt to GPU parallelism due to memory access patterns; good for passwords</td>
+    </tr>
+    <tr>
+      <td>Argon2id</td>
+      <td>Configurable</td>
+      <td>Recommended for passwords (NIST SP 800-63B)</td>
+      <td>Memory-hard; resists GPU and ASIC acceleration; winner of Password Hashing Competition</td>
+    </tr>
+  </tbody>
+</table>
+<p>MD5's 128-bit digest is problematic beyond just collision attacks. A shorter digest means a smaller output space (2<sup>128</sup> possible values), and the computational speed of MD5 — orders of magnitude faster than purpose-built password hashing algorithms — means that brute-force and dictionary attacks run far more efficiently against it. Using MD5 or SHA-1 for password storage is a compounding mistake: the algorithm is already broken for collision resistance, and its speed makes it an ideal target for offline cracking campaigns.</p>
+<p>Migrating away from deprecated algorithms in production systems requires planning. A common and safe approach is <em>on-login rehashing</em>: when a user successfully authenticates (meaning you have their plaintext password momentarily available), rehash their credential with the new algorithm, update the stored record, and mark the account as migrated. Users who never log in may need to be prompted to reset their passwords. This approach avoids requiring a mass password reset and gradually upgrades the entire user base with each successful login.</p>
+
+<p><strong>Unsalted Hashing and Its Consequences</strong></p>
+<p>The consequences of storing unsalted hashes go beyond the individual user — they create systemic vulnerabilities that amplify the blast radius of any breach. When no salt is applied, every user who has chosen the same password (a common occurrence: <em>password</em>, <em>123456</em>, <em>letmein</em> are perennially popular) will have an identical stored hash. An attacker who cracks one hash has simultaneously compromised every account sharing that password.</p>
+<p>Consider a breach of 10 million user records stored as unsalted SHA-256 hashes. An attacker runs the top 10,000 most common passwords through SHA-256 — a computation taking milliseconds — and matches them against all 10 million records simultaneously. Password reuse statistics from breach analyses consistently show that 10–20% of accounts use passwords from the top 1,000. Without salts, those millions of accounts fall within seconds. With unique salts, the attacker must perform 10 million separate cracking campaigns, one per user, multiplying the cost by a factor of millions.</p>
+<p>The consequences extend beyond the breached service:</p>
+<ul>
+  <li><strong>Credential stuffing:</strong> Recovered credentials are immediately tested against other services (banking, email, social media). Password reuse across services is endemic, so a single unsalted breach often compromises accounts on dozens of other platforms.</li>
+  <li><strong>Bulk sale and automation:</strong> Cracked credential lists from unsalted breaches are packaged and sold on underground markets within hours of a breach being discovered, enabling automated credential stuffing attacks at scale.</li>
+  <li><strong>Regulatory consequences:</strong> Data protection frameworks such as GDPR and CCPA impose obligations regarding appropriate technical safeguards. Storing passwords as unsalted hashes — particularly with deprecated algorithms — may constitute a failure of these obligations, resulting in significant fines.</li>
+</ul>
+<p>Correct salting practice requires that: (1) a cryptographically secure random number generator produces the salt; (2) the salt is at minimum 16 bytes (128 bits) long; (3) a unique salt is generated for each user at registration and on each password change; and (4) the salt is stored alongside the hash so verification is possible. Modern password hashing libraries such as Python's <code>bcrypt</code> or <code>argon2-cffi</code> handle salt generation and storage automatically within the hash output string, reducing the risk of implementation errors.</p>
+<pre><code># Python example using argon2-cffi
+from argon2 import PasswordHasher
+
+ph = PasswordHasher()
+
+# Hashing a password — salt is generated and embedded automatically
+hash_value = ph.hash("user_password_here")
+# hash_value contains the algorithm, parameters, salt, and digest in one string
+
+# Verifying a password
+try:
+    ph.verify(hash_value, "user_password_here")
+    print("Password is correct")
+except Exception:
+    print("Password is incorrect")
+</code></pre>
+
+<p><strong>Timing Attacks on Hash Comparison</strong></p>
+<p>A timing attack is a <em>side-channel attack</em> — it does not exploit a weakness in the cryptographic algorithm itself, but rather in the way the algorithm's output is used in code. The vulnerability arises in how most programming languages implement string or byte comparison.</p>
+<p>Standard equality comparison (such as Python's <code>==</code> operator on strings, or C's <code>strcmp</code>) is short-circuit: it compares characters left to right and returns <code>False</code> the moment it finds a mismatch. This means a comparison between <code>"abcdef"</code> and <code>"aXYZWV"</code> returns faster than a comparison between <code>"abcdef"</code> and <code>"abcdeX"</code>, because the latter matches five characters before finding a mismatch while the former fails on the second character. The execution time therefore leaks information about how many leading characters match.</p>
+<p>In the context of token or HMAC verification, an attacker who can make repeated requests and measure response times (even across a network, using statistical averaging over many samples) can deduce the correct value one byte at a time. For a 32-byte HMAC, this reduces the verification space from 256<sup>32</sup> to 256 × 32 — a catastrophic reduction in security.</p>
+<p>The defense is mandatory use of <strong>constant-time comparison</strong> functions, which always compare every byte of both inputs regardless of where a mismatch is found, so execution time does not vary with the data:</p>
+<pre><code>import hmac
+
+# CORRECT: constant-time comparison
+def verify_token(user_supplied: bytes, expected: bytes) -> bool:
+    return hmac.compare_digest(user_supplied, expected)
+
+# INCORRECT: short-circuit comparison leaks timing information
+def verify_token_insecure(user_supplied: bytes, expected: bytes) -> bool:
+    return user_supplied == expected  # Do not use this for security comparisons
+</code></pre>
+<p>Any system that compares user-supplied values against stored secrets — including session tokens, CSRF tokens, API keys, HMACs, and password reset tokens — must use constant-time comparison. This is true even when the secret values are already hashed: if the comparison itself leaks timing information, an attacker can exploit it regardless of the algorithm used to produce the values being compared.</p>
+
+<p><strong>Dictionary and Wordlist Attacks</strong></p>
+<p>A dictionary attack is a targeted form of brute-force that exploits human psychology rather than mathematical exhaustion. Because users overwhelmingly choose passwords based on meaningful words, patterns, and keyboard sequences, attackers can recover a disproportionate number of passwords by testing only a curated list of candidates rather than the full character space.</p>
+<p>Modern wordlist attacks are sophisticated far beyond simple word lists. Tools like <em>Hashcat</em> and <em>John the Ripper</em> support rule-based mutation engines that transform base words with common substitutions (<code>a → @</code>, <code>e → 3</code>, <code>s → $</code>), capitalization patterns, number suffixes, and concatenations. A wordlist of 1 million words combined with a comprehensive rule set can generate billions of plausible candidate passwords while still targeting the patterns real users employ. Wordlists derived from previous breaches — including the <em>rockyou.txt</em> list of 14 million passwords leaked in 2009, still widely used today — provide a direct map of real human password behavior.</p>
+<p>The interaction between dictionary attacks and slow hashing functions is critical to understand. Against MD5, an attacker testing 10 billion candidates per second can process the entire <em>rockyou.txt</em> list in under two milliseconds. Against Argon2id configured to take 100 milliseconds per hash, the same list requires over 400,000 hours — rendering even dictionary attacks impractical. The following comparison illustrates this:</p>
+<table>
+  <thead>
+    <tr>
+      <th>Scenario</th>
+      <th>Hash Function</th>
+      <th>Time to Test rockyou.txt (14M entries)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Single GPU attacker</td>
+      <td>MD5 (unsalted)</td>
+      <td>&lt; 0.001 seconds</td>
+    </tr>
+    <tr>
+      <td>Single GPU attacker</td>
+      <td>SHA-256 (unsalted)</td>
+      <td>~0.001 seconds</td>
+    </tr>
+    <tr>
+      <td>Single GPU attacker</td>
+      <td>bcrypt cost 12</td>
+      <td>~19 hours</td>
+    </tr>
+    <tr>
+      <td>Single GPU attacker</td>
+      <td>Argon2id (100ms/hash)</td>
+      <td>~16,000 hours</td>
+    </tr>
+  </tbody>
+</table>
+<p>Password complexity requirements, while valuable, are insufficient on their own because users adapt to them in predictable ways: <code>Password1!</code> satisfies typical complexity rules (uppercase, lowercase, digit, symbol) while appearing in breach-derived wordlists. Security guidance has shifted toward prioritizing <em>length</em> and <em>randomness</em>. NIST SP 800-63B recommends allowing long passphrases (up to 64 characters or more) and checking new passwords against lists of known-compromised passwords rather than imposing arbitrary complexity rules that drive users toward predictable patterns.</p>
+<p>A passphrase composed of four or five random common words — sometimes called a <em>Diceware</em> passphrase — provides high entropy (approximately 12–15 bits per word from a large wordlist, yielding 60–75 bits for five words) while being significantly more memorable than a shorter random-character password. Against any realistic dictionary attack, such a passphrase remains secure even against adversaries using fast hash functions, because the combination of random words does not appear in any wordlist.</p>
+<p>Taken together, the attacks surveyed here — brute-force, rainbow table, collision, deprecation exploitation, unsalted hashing, timing side-channels, and dictionary attacks — represent the primary ways in which hash-based security fails in practice. Each has a corresponding set of defenses, and robust password hashing implementations address all of them simultaneously: use a slow, memory-hard algorithm such as Argon2id; generate a unique cryptographically random salt per credential; avoid deprecated algorithms like MD5 and SHA-1; and perform all comparisons using constant-time functions. No single measure is sufficient in isolation; defense in depth against the full threat model is the standard of care.</p>
+        <div class="notes"><strong>Notes</strong>The topic covers all seven subtopic areas (brute-force, rainbow tables, collisions, weak/deprecated algorithms, unsalted hashing, timing attacks, dictionary attacks) with in-depth explanations, comparative tables, and code examples. The Flame malware case study and SHAttered attack are included as real-world collision examples. NIST SP 800-63B guidance is referenced for password policy recommendations. Python code examples use argon2-cffi and hmac.compare_digest to illustrate correct implementation patterns.</div>
+      </div>
+    </details>
+  </main>
+
+<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
+</body></html>

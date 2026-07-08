@@ -1,0 +1,505 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cloze Passage: The Stack Data Structure</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Georgia', serif;
+      background-color: #f0f4f8;
+      color: #2d3748;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    header h1 {
+      font-size: 1.8rem;
+      color: #1a365d;
+      margin-bottom: 6px;
+    }
+
+    header p.subtitle {
+      font-size: 1rem;
+      color: #4a5568;
+      font-style: italic;
+    }
+
+    .score-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #2b6cb0;
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 10px;
+      max-width: 860px;
+      margin: 0 auto 20px auto;
+      font-size: 1.05rem;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .score-bar .score-label {
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+
+    .score-bar .score-value {
+      font-size: 1.4rem;
+      font-weight: bold;
+      background-color: #ebf8ff;
+      color: #2b6cb0;
+      padding: 4px 14px;
+      border-radius: 8px;
+    }
+
+    .reset-btn {
+      background-color: #fff;
+      color: #2b6cb0;
+      border: 2px solid #fff;
+      border-radius: 8px;
+      padding: 8px 18px;
+      font-size: 0.95rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.2s, color 0.2s;
+      min-height: 40px;
+    }
+
+    .reset-btn:hover {
+      background-color: #bee3f8;
+      color: #1a365d;
+    }
+
+    .notes-page {
+      background-color: #fffef5;
+      border: 1px solid #e2d891;
+      border-left: 6px solid #d69e2e;
+      border-radius: 8px;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 36px 44px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+      line-height: 1.85;
+      font-size: 1.02rem;
+    }
+
+    .notes-page h2 {
+      font-size: 1.35rem;
+      color: #744210;
+      border-bottom: 2px solid #d69e2e;
+      padding-bottom: 6px;
+      margin-bottom: 16px;
+      margin-top: 28px;
+    }
+
+    .notes-page h2:first-child {
+      margin-top: 0;
+    }
+
+    .notes-page p {
+      margin-bottom: 16px;
+    }
+
+    .notes-page ul {
+      margin: 0 0 16px 24px;
+    }
+
+    .notes-page ul li {
+      margin-bottom: 8px;
+    }
+
+    .blank-input {
+      display: inline-block;
+      border: none;
+      border-bottom: 2px solid #2b6cb0;
+      background-color: #ebf8ff;
+      color: #1a365d;
+      font-family: inherit;
+      font-size: 1rem;
+      padding: 2px 6px;
+      border-radius: 4px 4px 0 0;
+      min-width: 80px;
+      outline: none;
+      transition: background-color 0.3s, border-color 0.3s;
+      vertical-align: baseline;
+    }
+
+    .blank-input:focus {
+      border-bottom-color: #744210;
+      background-color: #fefcbf;
+    }
+
+    .blank-input.correct {
+      background-color: #c6f6d5;
+      border-bottom-color: #276749;
+      color: #22543d;
+      font-weight: bold;
+      cursor: default;
+    }
+
+    .win-banner {
+      display: none;
+      text-align: center;
+      background: linear-gradient(135deg, #276749, #2b6cb0);
+      color: #fff;
+      border-radius: 12px;
+      padding: 24px 20px;
+      max-width: 860px;
+      margin: 20px auto 0 auto;
+      font-size: 1.2rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    }
+
+    .win-banner .win-emoji {
+      font-size: 2.5rem;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .win-banner strong {
+      font-size: 1.5rem;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .instructions {
+      background-color: #ebf8ff;
+      border: 1px solid #bee3f8;
+      border-radius: 8px;
+      padding: 12px 18px;
+      max-width: 860px;
+      margin: 0 auto 18px auto;
+      font-size: 0.95rem;
+      color: #2c5282;
+      line-height: 1.6;
+    }
+
+    .instructions strong {
+      color: #1a365d;
+    }
+
+    @media (max-width: 600px) {
+      .notes-page {
+        padding: 20px 18px;
+      }
+      header h1 {
+        font-size: 1.4rem;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ 4- The Stack: Structure and Use Cases</a></div>
+<div class="pm-injected-nav"><a href="../index.html">← Back to Module</a><span class="sep">|</span><span style="color:#555">Cloze Passage (Interactive)</span></div>
+<div class="pm-injected-spacer"></div>
+
+  <header>
+    <h1>Module 4 — The Stack: Structure and Use Cases</h1>
+    <p class="subtitle">Study Notes Cloze Activity</p>
+  </header>
+
+  <div class="instructions">
+    <strong>Instructions:</strong> Read the study notes below and type the missing key terms into each blue box.
+    Each answer is checked automatically as you type — a correct answer turns <span style="color:#276749;font-weight:bold;">green</span> and is locked in.
+    Spelling is checked case-insensitively. Your score updates live. Fill all blanks to complete the activity!
+  </div>
+
+  <div class="score-bar">
+    <span class="score-label">Score:</span>
+    <span class="score-value" id="scoreDisplay">0 / 12</span>
+    <button class="reset-btn" id="resetBtn" onclick="resetActivity()">↺ Reset</button>
+  </div>
+
+  <div class="notes-page" id="notesPage">
+    <!-- Content is injected by JavaScript -->
+  </div>
+
+  <div class="win-banner" id="winBanner">
+    <span class="win-emoji">🎉</span>
+    <strong>Excellent Work — All Blanks Correct!</strong>
+    You have successfully recalled all key terms from Module 4.
+    You can reset and try again to reinforce your memory.
+  </div>
+
+  <script>
+    /*
+     * BLANK DEFINITIONS
+     * Each object holds:
+     *   id          – unique identifier used in the passage template
+     *   answer      – the primary correct answer (string)
+     *   variants    – array of accepted alternative spellings/synonyms (may be empty)
+     *   width       – approximate pixel width for the input box
+     */
+    const BLANK_DEFINITIONS = [
+      {
+        id: "b1",
+        answer: "LIFO",
+        variants: ["last-in first-out", "last in first out"],
+        width: 70
+      },
+      {
+        id: "b2",
+        answer: "stack",
+        variants: ["stacks"],
+        width: 70
+      },
+      {
+        id: "b3",
+        answer: "push",
+        variants: [],
+        width: 65
+      },
+      {
+        id: "b4",
+        answer: "pop",
+        variants: [],
+        width: 55
+      },
+      {
+        id: "b5",
+        answer: "top",
+        variants: ["peek"],
+        width: 55
+      },
+      {
+        id: "b6",
+        answer: "queue",
+        variants: ["queues"],
+        width: 70
+      },
+      {
+        id: "b7",
+        answer: "FIFO",
+        variants: ["first-in first-out", "first in first out"],
+        width: 65
+      },
+      {
+        id: "b8",
+        answer: "array",
+        variants: ["arrays"],
+        width: 65
+      },
+      {
+        id: "b9",
+        answer: "overflow",
+        variants: ["stack overflow"],
+        width: 95
+      },
+      {
+        id: "b10",
+        answer: "underflow",
+        variants: ["stack underflow"],
+        width: 95
+      },
+      {
+        id: "b11",
+        answer: "undo",
+        variants: [],
+        width: 60
+      },
+      {
+        id: "b12",
+        answer: "expression",
+        variants: ["expressions", "expression evaluation"],
+        width: 110
+      }
+    ];
+
+    /*
+     * PASSAGE TEMPLATE
+     * Use {{bN}} placeholders where each blank should appear.
+     * Written as an HTML string; injected into #notesPage.
+     */
+    const PASSAGE_TEMPLATE = `
+      <h2>1. What Is a Stack?</h2>
+      <p>
+        A <strong>{{b2}}</strong> is a linear data structure that organises its elements according
+        to the <strong>{{b1}}</strong> principle — meaning the <em>last</em> element added is always
+        the <em>first</em> one to be removed. Think of a physical stack of plates: you always place a
+        new plate on top, and you always remove the plate from the top first.
+      </p>
+      <p>
+        Because of this ordering rule, only one end of the structure — called the
+        <strong>{{b5}}</strong> — is ever accessible at a given moment. You cannot directly
+        reach elements buried deeper in the structure without first removing those above them.
+      </p>
+
+      <h2>2. Core Operations</h2>
+      <p>A stack exposes two fundamental operations:</p>
+      <ul>
+        <li>
+          <strong>{{b3}}</strong> — adds a new element onto the top of the stack,
+          increasing its size by one.
+        </li>
+        <li>
+          <strong>{{b4}}</strong> — removes and returns the element currently at the
+          top of the stack, decreasing its size by one.
+        </li>
+      </ul>
+      <p>
+        When a push operation is attempted on a full stack, the condition is called
+        <strong>{{b9}}</strong>. Conversely, attempting to pop from an empty stack causes
+        a condition known as <strong>{{b10}}</strong>. Good implementations check for both
+        conditions before executing their respective operations.
+      </p>
+
+      <h2>3. Contrasting Stacks with Queues</h2>
+      <p>
+        A common point of confusion is the difference between a stack and a
+        <strong>{{b6}}</strong>. While stacks follow the LIFO rule, queues follow the
+        <strong>{{b7}}</strong> principle — meaning the <em>first</em> element added is
+        always the <em>first</em> to be removed, much like people waiting in a line at a
+        ticket counter. In a queue, insertion happens at the <em>rear</em> and removal
+        happens at the <em>front</em>, so both ends of the structure are active. This
+        makes queues ideal for task scheduling and breadth-first search algorithms, whereas
+        stacks excel in scenarios that require reversing order or tracking nested context.
+      </p>
+
+      <h2>4. Internal Implementation</h2>
+      <p>
+        In JavaScript, a stack is most commonly implemented using an <strong>{{b8}}</strong>,
+        where the built-in <code>push()</code> and <code>pop()</code> methods map directly onto
+        the stack operations. The last index of the array always represents the top of the
+        stack. Alternatively, a stack can be built using a linked list, where the head node
+        serves as the top; however, the array-based approach is simpler and performs well for
+        most use cases.
+      </p>
+
+      <h2>5. Practical Applications</h2>
+      <p>
+        Stacks appear throughout computing in situations that require tracking history or
+        managing nested structures. Two important real-world use cases are:
+      </p>
+      <ul>
+        <li>
+          <strong>{{b11}} mechanisms</strong> — applications like text editors record each
+          user action onto a stack. Pressing "Undo" simply pops the most recent action and
+          reverses it, naturally restoring the previous state in LIFO order.
+        </li>
+        <li>
+          <strong>{{b12}} evaluation</strong> — compilers and calculators use stacks to
+          evaluate mathematical expressions written in postfix (Reverse Polish) notation,
+          pushing operands and applying operators by popping the most recently pushed values.
+        </li>
+      </ul>
+      <p>
+        Other applications include call-stack management in programming languages (which tracks
+        function calls and returns in LIFO order) and syntax parsing in compilers.
+      </p>
+    `;
+
+    // ─── STATE ───────────────────────────────────────────────────────────────
+    let correctCount = 0;
+    const totalBlanks = BLANK_DEFINITIONS.length;
+
+    // ─── RENDER PASSAGE ──────────────────────────────────────────────────────
+    function buildPassage() {
+      let html = PASSAGE_TEMPLATE;
+
+      BLANK_DEFINITIONS.forEach(function(blankDef) {
+        const placeholder = "{{" + blankDef.id + "}}";
+        const inputHTML =
+          '<input ' +
+            'type="text" ' +
+            'class="blank-input" ' +
+            'id="' + blankDef.id + '" ' +
+            'aria-label="Fill in the blank" ' +
+            'autocomplete="off" ' +
+            'autocorrect="off" ' +
+            'autocapitalize="off" ' +
+            'spellcheck="false" ' +
+            'style="width:' + blankDef.width + 'px;" ' +
+          '/>';
+        html = html.replace(placeholder, inputHTML);
+      });
+
+      document.getElementById("notesPage").innerHTML = html;
+
+      // Attach event listeners after DOM injection
+      BLANK_DEFINITIONS.forEach(function(blankDef) {
+        const inputEl = document.getElementById(blankDef.id);
+        if (inputEl) {
+          inputEl.addEventListener("input", function() {
+            checkBlank(blankDef.id);
+          });
+          inputEl.addEventListener("blur", function() {
+            checkBlank(blankDef.id);
+          });
+        }
+      });
+    }
+
+    // ─── CHECK A SINGLE BLANK ─────────────────────────────────────────────────
+    function checkBlank(blankId) {
+      const blankDef = BLANK_DEFINITIONS.find(function(b) { return b.id === blankId; });
+      if (!blankDef) return;
+
+      const inputEl = document.getElementById(blankId);
+      if (!inputEl || inputEl.disabled) return;
+
+      const userValue = inputEl.value.trim().toLowerCase();
+      if (userValue === "") return;
+
+      const primaryAnswer = blankDef.answer.toLowerCase();
+      const variantAnswers = blankDef.variants.map(function(v) { return v.toLowerCase(); });
+      const allAccepted = [primaryAnswer].concat(variantAnswers);
+
+      const isCorrect = allAccepted.indexOf(userValue) !== -1;
+
+      if (isCorrect) {
+        inputEl.classList.add("correct");
+        inputEl.disabled = true;
+        inputEl.value = blankDef.answer; // Normalise display to canonical form
+        correctCount++;
+        updateScoreDisplay();
+        checkWinCondition();
+      }
+    }
+
+    // ─── SCORE DISPLAY ───────────────────────────────────────────────────────
+    function updateScoreDisplay() {
+      document.getElementById("scoreDisplay").textContent =
+        correctCount + " / " + totalBlanks;
+    }
+
+    // ─── WIN CONDITION ───────────────────────────────────────────────────────
+    function checkWinCondition() {
+      if (correctCount === totalBlanks) {
+        document.getElementById("winBanner").style.display = "block";
+        document.getElementById("winBanner").scrollIntoView({
+          behavior: "smooth",
+          block: "center"
+        });
+      }
+    }
+
+    // ─── RESET ACTIVITY ──────────────────────────────────────────────────────
+    function resetActivity() {
+      correctCount = 0;
+      updateScoreDisplay();
+      document.getElementById("winBanner").style.display = "none";
+      buildPassage();
+    }
+
+    // ─── INITIALISE ──────────────────────────────────────────────────────────
+    buildPassage();
+    updateScoreDisplay();
+  </script>
+
+
+<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
+</body>
+</html>

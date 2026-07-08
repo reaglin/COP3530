@@ -1,0 +1,220 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Best Practices and Real-World Applications</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+  <style>
+    body { padding-left: 1.1rem; padding-right: 1.1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid rgba(128,128,128,.45); padding: .45em .7em; text-align: left; vertical-align: top; }
+    thead th { background: rgba(128,128,128,.18); font-weight: 600; }
+    tbody tr:nth-child(even) { background: rgba(128,128,128,.08); }
+    a.topic-detail-link { text-decoration: underline; }
+  </style>
+  <style>
+    summary.slide-header { list-style: none; }
+    summary.slide-header::-webkit-details-marker { display: none; }
+    details.slide-card[open] > .slide-body { display: block; }
+    details.slide-card[open] .chevron { transform: rotate(90deg); }
+    @media print { details.slide-card > .slide-body { display: block !important; } .chevron { display: none; } }
+  </style>
+</head><body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Hash Algorithms and Applications: Password Hashing and Beyond</a></div>
+  <header>
+    <h1>Best Practices and Real-World Applications</h1>
+  </header><main>
+    <details class="slide-card" open>
+      <summary class="slide-header"><span class="slide-num">1</span><h2>Best Practices and Real-World Applications</h2><span class="chevron">▶</span></summary>
+      <div class="slide-body">
+        <p>Cryptographic hashing is not a single technique applied uniformly across every security problem — it is a family of related tools, each suited to specific threats and contexts. A developer who uses the same algorithm for password storage as they do for file integrity checking, or who continues relying on MD5 because it "still works," is misapplying the technology in ways that can lead to catastrophic security failures. Real-world best practices demand not only selecting the right algorithm but also understanding why that selection matters, how supporting mechanisms like salts and peppers strengthen the overall system, and how hashing weaves through critical infrastructure from blockchain networks to courtroom-admissible digital evidence. This topic synthesizes those practical dimensions into a cohesive picture of responsible, security-conscious hashing.</p>
+
+<p><strong>Choosing the Right Hash Algorithm for the Job</strong></p>
+
+<p>The most fundamental decision in applied cryptography is algorithm selection. No single hash function is appropriate for every use case, and the cost of a wrong choice — whether in performance, security margin, or future maintainability — can be severe. The landscape broadly divides into two categories: general-purpose cryptographic hashing and purpose-built password hashing.</p>
+
+<p>For <strong>general-purpose cryptographic hashing</strong> — tasks such as verifying file integrity, generating digital signatures, producing certificate fingerprints, or constructing message authentication codes — <strong>SHA-256</strong> and <strong>SHA-3 (Keccak)</strong> are the current standards of practice. SHA-256 belongs to the SHA-2 family standardized by NIST and enjoys near-universal library support, hardware acceleration on modern CPUs (via Intel SHA Extensions), and a strong security margin with no known practical collision attacks. SHA-3 was standardized in 2015 and is based on a fundamentally different internal design (a sponge construction rather than Merkle-Damgård), offering structural diversity as a hedge against any future weaknesses discovered in SHA-2. For most new systems where SHA-2 is not yet entrenched, SHA-3/SHAKE variants are excellent choices. Both families produce digests large enough — 256 bits and above — that brute-force preimage attacks remain computationally infeasible under current and near-future computing models.</p>
+
+<p><strong>Password storage is an entirely different problem.</strong> The core threat model here is an adversary who has already stolen the password database and is performing offline attacks — trying billions of candidate passwords per second using GPUs or specialized hardware. A fast hash like SHA-256 is catastrophically wrong for this context precisely because it is fast: a modern GPU cluster can evaluate hundreds of billions of SHA-256 hashes per second, meaning even a 10-character random password can fall within hours. Purpose-built password hashing algorithms are intentionally slow and, critically, <em>memory-hard</em>:</p>
+
+<ul>
+  <li><strong>bcrypt</strong> — Introduced in 1999, bcrypt incorporates a configurable work factor (cost parameter) that allows administrators to increase computational cost as hardware improves. It is internally based on the Blowfish cipher's expensive key schedule. While it remains widely recommended, its memory requirements are modest by modern standards, making it somewhat more susceptible to GPU parallelism than newer alternatives.</li>
+  <li><strong>scrypt</strong> — Designed specifically to be memory-hard, scrypt requires large amounts of RAM proportional to its parameters, making GPU and ASIC attacks significantly more expensive. It is appropriate for high-security password storage and key derivation.</li>
+  <li><strong>Argon2</strong> — The winner of the Password Hashing Competition (2015) and the current best-practice recommendation. It offers three variants: Argon2d (maximizes resistance to GPU cracking), Argon2i (resistant to side-channel timing attacks), and Argon2id (a hybrid recommended for most use cases). Argon2 allows independent tuning of time cost, memory cost, and parallelism, making it highly adaptable as hardware evolves. NIST SP 800-63B explicitly references memory-hard functions for password storage, and Argon2 is the leading implementation of that guidance.</li>
+</ul>
+
+<p><strong>Deprecated algorithms must never be used for security-critical applications.</strong> MD5 has been demonstrably broken for collision resistance since Wang and Yu's 2004 attack, and chosen-prefix collisions — where an attacker can craft two different meaningful documents with the same MD5 hash — have been demonstrated in practical attacks including the 2008 rogue CA certificate attack and the Flame malware. SHA-1 was similarly broken for collision resistance with Google's SHAttered attack in 2017, which produced the first real-world SHA-1 collision. Neither algorithm should appear in new systems, and existing systems using them must prioritize migration. The phrase "it's only used for non-security purposes here" is a rationalization that rarely survives contact with actual threat modeling — hash outputs have a way of ending up in security-sensitive contexts even when designers intended otherwise.</p>
+
+<p><strong>Algorithm agility</strong> is the architectural principle that systems should be designed so that the hash function can be swapped out with minimal disruption. This means avoiding hard-coded algorithm identifiers in data formats, storing the algorithm name alongside the hash output (as bcrypt does in its output string, and as the modular crypt format supports), and abstracting cryptographic operations behind interfaces that can be reimplemented. The history of cryptography is a history of algorithms being deprecated — planning for migration is not pessimism, it is engineering realism.</p>
+
+<p><strong>Salting and Peppering in Authentication Systems</strong></p>
+
+<p>Even when a good password hashing algorithm is selected, the implementation details around how passwords are prepared before hashing are critical. Two concepts — salting and peppering — address different attack surfaces and work best when used together.</p>
+
+<p>A <strong>salt</strong> is a unique, randomly generated value that is concatenated with a password before hashing. Its purpose is to ensure that two users with the identical password produce completely different hash outputs, and to defeat precomputed attack tables. Without salts, an attacker who steals a password database can use a <em>rainbow table</em> — a massive precomputed mapping of passwords to their hashes — to instantly reverse millions of entries by table lookup. With a unique salt per user, the attacker must perform a fresh brute-force computation for each individual account, massively increasing the cost of a bulk attack.</p>
+
+<p>Consider the practical difference: without salting, if 1,000 users have the password "Summer2024!", their entries all produce the same hash, and cracking it once reveals all 1,000 accounts simultaneously. With per-user salts, cracking each account requires separate effort. Salts do not need to be secret — they are typically stored alongside the hash — but they must be:</p>
+
+<ul>
+  <li><strong>Unique per credential:</strong> The same salt must never be reused across different users or even across password changes for the same user. Reuse partially re-creates the vulnerability salting is designed to prevent.</li>
+  <li><strong>Generated by a CSPRNG:</strong> Salts must come from a cryptographically secure random number generator, not from predictable sources like timestamps, usernames, or sequential counters. In Python, <code>os.urandom()</code> or the <code>secrets</code> module are appropriate; in Java, <code>SecureRandom</code>; in C, <code>/dev/urandom</code> or platform equivalents.</li>
+  <li><strong>Of sufficient length:</strong> NIST SP 800-63B recommends at least 32 bits, but 16 bytes (128 bits) is the practical modern standard. A short salt reduces the space of possible salt values, re-enabling partially precomputed attacks.</li>
+</ul>
+
+<p>Modern password hashing libraries handle this automatically. When you call bcrypt's hash function, it internally generates a random salt, incorporates it into the hashing process, and embeds the salt (and the algorithm parameters) into the output string. The resulting string — for example, <code>$2b$12$EXAMPLEsaltEXAMPLEsaltEXAMPLEhashvalue</code> — contains everything needed to verify the password later. Developers who implement salting manually on top of a general-purpose hash are likely to make mistakes; using a purpose-built library is strongly preferred.</p>
+
+<p>A <strong>pepper</strong> is a secret value — typically a high-entropy string stored in the application's configuration or a hardware security module (HSM) — that is added to the password (and salt) before hashing, or used as a key in an HMAC wrapping the password hash. Unlike salts, peppers are <em>not</em> stored in the database. The security argument for peppers is that an attacker who exfiltrates only the password database cannot crack any hashes without also obtaining the pepper, because they cannot even correctly reproduce the hash inputs. This defense-in-depth approach means a database breach alone is insufficient; the attacker must additionally compromise the application server or secrets management system.</p>
+
+<p>Peppers introduce key management responsibilities: they must be rotated periodically (requiring re-hashing of all passwords, which typically happens on next login), and losing the pepper means losing the ability to verify all existing passwords. Systems using peppers must have a migration path and secure key storage. Despite this complexity, peppers represent a meaningful additional layer in high-security authentication systems, and their use is consistent with defense-in-depth principles.</p>
+
+<p><strong>Hashing in Blockchain and Distributed Ledger Technology</strong></p>
+
+<p>Blockchain technology is, at its architectural core, an elaborate application of cryptographic hashing. Understanding why blockchains are considered tamper-evident requires understanding exactly how hash functions are used at multiple levels of the data structure.</p>
+
+<p>At the macro level, a blockchain is a linked list of blocks where each block contains a cryptographic hash of its predecessor. If an attacker wishes to alter a transaction in block 500 of a 700-block chain, they must recompute block 500's hash (which now reflects the altered data), then recompute block 501's hash (which includes block 500's hash as a field), and so on through all subsequent blocks. Because each hash is computationally unpredictable from its inputs, this recomputation cannot be shortcut — and in Proof-of-Work systems, each block also contains a valid proof of work that must be redone. The cost of rewriting history grows with the depth of the alteration, making deep historical records practically immutable in a sufficiently large network.</p>
+
+<p>The <strong>Proof-of-Work</strong> mechanism (as used in Bitcoin, which uses double SHA-256) leverages the one-way, unpredictable nature of hash functions directly. Miners must find a <em>nonce</em> — an arbitrary number included in the block header — such that the hash of the entire block header begins with a specified number of zero bits. Because there is no way to reverse the hash function or predict which nonce will produce a valid result, miners have no choice but to try candidates sequentially. The expected number of attempts needed to find a valid nonce is determined by the difficulty target. This deliberate, computationally expensive process makes it economically irrational to attack the network unless the attacker controls more than half its total hashing power — the famous "51% attack" threshold. The security of this mechanism depends entirely on the collision resistance and unpredictability of the hash function.</p>
+
+<p><strong>Merkle trees</strong> bring hashing to the transaction level within a block. Rather than hashing all transactions in a block as a flat sequence, Bitcoin and similar systems build a binary tree of hashes: each leaf node is the hash of an individual transaction, and each internal node is the hash of the concatenation of its two children. The root of this tree — the Merkle root — is a single hash that commits to every transaction in the block. This structure has two powerful properties:</p>
+
+<ul>
+  <li><strong>Tamper evidence:</strong> Altering any single transaction changes its leaf hash, which changes its parent's hash, propagating up to change the Merkle root, which is embedded in the block header. Any modification is immediately detectable.</li>
+  <li><strong>Efficient membership proofs (SPV proofs):</strong> A light client can verify that a specific transaction is included in a block by receiving only the Merkle path — the sibling hashes from the leaf up to the root — rather than downloading the entire block. This is O(log n) in the number of transactions rather than O(n), enabling lightweight verification on resource-constrained devices.</li>
+</ul>
+
+<p>The collision resistance of the hash function underpins all of these guarantees. If an attacker could find two different transactions with the same hash (a collision), they could substitute a fraudulent transaction for a legitimate one while maintaining a valid Merkle root and block hash — enabling double-spending without detection. Similarly, a collision in the block-linking hash would allow history rewriting. These are not theoretical concerns: the deprecation of MD5 and SHA-1 in favor of SHA-256 for blockchain applications reflects exactly this threat model.</p>
+
+<p><strong>Digital Forensics and Data Integrity Verification</strong></p>
+
+<p>In digital forensics, the integrity of evidence is not merely a technical concern — it is a legal one. Courts require that evidence be demonstrably unaltered from the moment of collection through trial. Cryptographic hashing is the mechanism by which investigators establish and prove this integrity, and the discipline has developed rigorous procedures around its use.</p>
+
+<p>The process begins at <strong>acquisition</strong>: when a forensic investigator images a hard drive, memory card, or other storage medium, one of the first actions is computing a cryptographic hash of the acquired image — typically SHA-256 (MD5 was historically common but is being phased out due to its broken collision resistance). This hash value is the "fingerprint" of the evidence at the moment of capture. It is recorded in the chain-of-custody documentation along with the date, time, investigator identity, and storage location of the evidence.</p>
+
+<p>At every subsequent step — when the image is transferred to an analysis workstation, when a copy is made for a second investigator, when the evidence is submitted to a lab — the hash is recomputed and compared to the recorded value. A match proves bit-for-bit identity: the evidence is exactly what it was at acquisition. A mismatch is a red flag that demands explanation; it could indicate tampering, storage corruption, a transmission error, or a procedural mistake. Any unexplained mismatch can render evidence inadmissible in court, because the opposing counsel can argue the evidence was altered.</p>
+
+<p>Beyond individual file and image integrity, hashing enables <strong>automated file filtering</strong> through hash set databases. The most prominent example is NIST's <strong>National Software Reference Library (NSRL)</strong>, which maintains a database of hash values for known software files — operating system components, installed applications, and other files whose content is publicly documented. Forensic tools can automatically compare the hashes of files found on a suspect's drive against the NSRL. Files whose hashes match known-good system files can be excluded from the investigation immediately, dramatically reducing the volume of data an investigator must manually review. Conversely, <strong>known-bad hash sets</strong> — databases of hashes of malware, contraband, or other prohibited content — allow investigators to flag matching files for immediate attention without having to open and review each one, which also protects investigators from inadvertent exposure to harmful content.</p>
+
+<p>The integrity of the forensic process itself depends on using collision-resistant hash functions. If MD5 is used and an adversary could craft a modified disk image that produces the same MD5 hash as the original, they could potentially argue in court that their tampered version is the authentic evidence. While this level of attack is sophisticated, it is precisely this theoretical exposure that motivates the profession's migration to SHA-256. Tools such as <code>sha256sum</code> on Linux, FTK Imager, EnCase, and Autopsy all support SHA-256 hash verification as standard practice.</p>
+
+<p><strong>Secure Communications: HMACs and TLS</strong></p>
+
+<p>Hashing plays essential roles in secure communications protocols, most visibly through HMACs and the TLS protocol that underpins HTTPS and most modern encrypted communications.</p>
+
+<p>An <strong>HMAC (Hash-based Message Authentication Code)</strong> combines a hash function with a secret key to produce a tag that simultaneously proves two things: the message was not altered in transit (integrity), and it was produced by a party who holds the shared secret key (authentication). The construction — defined in RFC 2104 as <code>HMAC(K, m) = H((K ⊕ opad) || H((K ⊕ ipad) || m))</code> — is carefully designed to resist length extension attacks that would affect naive constructions like <code>H(K || m)</code>. An attacker who intercepts a message and its HMAC cannot forge a valid HMAC for a modified message without knowledge of the key, and cannot produce a valid HMAC for a new message. HMACs are used extensively in API authentication (AWS Signature Version 4 uses HMAC-SHA256), JWT validation (HS256 is HMAC-SHA256), and cookie integrity protection.</p>
+
+<p>In <strong>TLS (Transport Layer Security)</strong>, hashing appears at multiple stages of the protocol:</p>
+
+<ul>
+  <li><strong>Certificate fingerprinting:</strong> TLS certificates are identified by the hash of their content. Certificate pinning — where a client refuses to trust any certificate except a specific expected one — relies on comparing certificate hashes. Certificate authorities sign certificates by hashing the certificate content and signing the hash with their private key; the hash algorithm used must be collision-resistant (SHA-256 minimum; SHA-1 certificates were sunset by major browsers beginning in 2017).</li>
+  <li><strong>Key derivation:</strong> TLS 1.3 uses HKDF (HMAC-based Key Derivation Function) to derive session keys from the shared secret established during the handshake. HKDF takes a source key material and produces cryptographically strong derived keys of arbitrary length, using HMAC internally. The security of TLS session keys depends directly on the security of the underlying hash function.</li>
+  <li><strong>Finished message:</strong> At the conclusion of the TLS handshake, both parties compute a hash of all handshake messages exchanged, include it in the Finished message, and verify each other's Finished message. This ensures that neither party observed a different handshake — detecting any man-in-the-middle tampering with the negotiation. An attacker who could forge this hash could potentially negotiate different cipher suites with each side and mount a downgrade attack.</li>
+</ul>
+
+<p>The practical guidance here is consistent: <strong>use well-tested, maintained cryptographic libraries</strong> rather than implementing these constructions from scratch. Libraries such as OpenSSL, BoringSSL, libsodium, and language-standard cryptographic packages (Python's <code>cryptography</code> library, Java's JCA/JCE, Go's <code>crypto</code> package) have been reviewed by experts, undergo continuous security auditing, and receive timely patches for newly discovered vulnerabilities. Hand-rolled cryptographic implementations invariably contain subtle flaws — timing side-channels, incorrect padding, state machine errors — that are difficult to detect through standard testing but are exploitable by skilled adversaries. The principle "don't roll your own crypto" is one of the most consistently validated guidelines in applied security.</p>
+
+<p><strong>Key rotation</strong> and algorithm agility policies are essential complements to correct library use. If the HMAC-SHA1 used in an aging API authentication scheme is weakened by a future cryptanalytic advance, the system should be able to migrate to HMAC-SHA256 by changing a configuration parameter and re-issuing keys, not by rewriting the entire communication stack. Systems that hard-code hash algorithm identifiers into wire formats, database schemas, or compiled binaries make future migration unnecessarily painful — a cost that is entirely avoidable with modest architectural forethought.</p>
+
+<p><strong>Industry Standards, Compliance, and Ongoing Vigilance</strong></p>
+
+<p>Individual technical choices exist within a broader ecosystem of standards, regulations, and institutional guidance. Aligning implementations with recognized standards serves multiple purposes: it provides assurance that choices have been reviewed by subject matter experts, it satisfies compliance requirements in regulated industries, and it establishes a defensible record of due diligence.</p>
+
+<p>The most authoritative source for cryptographic guidance in the United States is <strong>NIST (National Institute of Standards and Technology)</strong>, whose Special Publications provide detailed, actionable requirements:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Publication</th>
+      <th>Scope</th>
+      <th>Key Hashing-Related Guidance</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>NIST SP 800-63B</td>
+      <td>Digital Identity Guidelines: Authentication and Lifecycle Management</td>
+      <td>Requires memory-hard functions (e.g., Argon2, bcrypt, scrypt) with appropriate cost parameters for password storage; mandates salting with at least 32-bit salts from an approved RNG</td>
+    </tr>
+    <tr>
+      <td>NIST SP 800-107</td>
+      <td>Recommendations for Applications Using Approved Hash Algorithms</td>
+      <td>Defines security strengths of SHA family members; provides guidance on algorithm selection for digital signatures, HMACs, key derivation, and random number generation</td>
+    </tr>
+    <tr>
+      <td>NIST SP 800-131A</td>
+      <td>Transitioning the Use of Cryptographic Algorithms and Key Lengths</td>
+      <td>Specifies which algorithms are acceptable, deprecated, or disallowed; provides transition timelines for moving off weakened algorithms</td>
+    </tr>
+    <tr>
+      <td>NIST SP 800-57</td>
+      <td>Recommendation for Key Management</td>
+      <td>Guidance on key lifecycle including generation, distribution, storage, use, and destruction — directly applicable to pepper management and HMAC key rotation</td>
+    </tr>
+    <tr>
+      <td>FIPS 180-4</td>
+      <td>Secure Hash Standard</td>
+      <td>Formal specification of SHA-1, SHA-224, SHA-256, SHA-384, SHA-512, and variants; required for use in U.S. federal information systems</td>
+    </tr>
+    <tr>
+      <td>FIPS 202</td>
+      <td>SHA-3 Standard: Permutation-Based Hash and Extendable-Output Functions</td>
+      <td>Formal specification of SHA3-224, SHA3-256, SHA3-384, SHA3-512, SHAKE128, and SHAKE256</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Beyond NIST, <strong>OWASP (Open Web Application Security Project)</strong> publishes the Password Storage Cheat Sheet and Cryptographic Storage Cheat Sheet, which translate standards into immediately actionable developer guidance — including specific recommended parameter values for Argon2, bcrypt, and scrypt, and lists of algorithms that must not be used. <strong>ENISA (the European Union Agency for Cybersecurity)</strong> publishes annual cryptographic recommendations relevant to organizations operating under EU frameworks, including GDPR-adjacent guidance on encryption and hashing for personal data protection.</p>
+
+<p><strong>Regular cryptographic audits</strong> are a practical mechanism for maintaining compliance and identifying drift. An audit should inventory every location where hashing is used in a system — authentication, file integrity checking, API authentication, data signing, logging — and verify that each use employs a currently approved algorithm with appropriate parameters. Common findings include: legacy MD5 or SHA-1 still present in non-obvious code paths (such as a logging library or an old file synchronization feature), bcrypt work factors that have not been increased as hardware improved, or dependencies on outdated cryptographic libraries with known vulnerabilities. Automated dependency scanning tools (such as OWASP Dependency-Check or GitHub's Dependabot) can flag library-level issues, but algorithm-level choices require human review.</p>
+
+<p><strong>Algorithm agility</strong> deserves emphasis as an architectural discipline, not merely a feature. Systems designed with agility in mind store algorithm identifiers alongside hash outputs (as bcrypt's format string does, encoding the algorithm version, cost factor, salt, and hash in a single self-describing string), expose cryptographic operations through abstract interfaces rather than concrete implementations, and maintain version negotiation mechanisms in protocols. When NIST announces that SHA-256 should transition to SHA-3 (a scenario that may eventually occur as quantum computing matures), organizations with agile architectures can migrate incrementally; those with hard-coded assumptions face expensive rewrites.</p>
+
+<p>The quantum computing threat deserves specific mention. Current cryptographic hash functions are affected by quantum algorithms — specifically, Grover's algorithm reduces the effective security of an n-bit hash function to n/2 bits against preimage attacks on a quantum computer. This means SHA-256 would provide approximately 128 bits of quantum security, which is still considered acceptable; SHA-512 would provide approximately 256 bits. However, this analysis assumes large-scale fault-tolerant quantum computers, which do not yet exist. NIST's post-quantum cryptography standardization effort (completed in 2024 for asymmetric algorithms) does not require immediate changes to hash functions, but the landscape is evolving. Organizations should monitor NIST's guidance and maintain the agility to respond as the science develops.</p>
+
+<p>In summary, responsible real-world application of cryptographic hashing requires: selecting algorithms appropriate to the specific security threat model rather than applying a single algorithm everywhere; implementing salting and peppering correctly in authentication systems; understanding how hashing underpins blockchain integrity and digital forensic chain of custody; using HMACs and TLS correctly through vetted libraries; and continuously aligning implementations with current standards while architecting for future migration. Security is not a destination but a practice — hashing implementations that are excellent today must be maintained, audited, and evolved as the cryptographic landscape changes.</p>
+        <div class="notes"><strong>Notes</strong>The table of NIST publications provides a useful reference overview that students can return to when seeking specific guidance. Instructors may wish to assign students to locate and read the OWASP Password Storage Cheat Sheet and compare its Argon2 parameter recommendations against a current bcrypt implementation, as a practical exercise in translating standards into code.</div>
+      </div>
+    </details>
+  </main>
+
+<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
+</body></html>

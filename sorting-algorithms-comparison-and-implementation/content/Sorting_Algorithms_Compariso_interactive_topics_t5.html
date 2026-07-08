@@ -1,0 +1,301 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quicksort</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+  <style>
+    body { padding-left: 1.1rem; padding-right: 1.1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid rgba(128,128,128,.45); padding: .45em .7em; text-align: left; vertical-align: top; }
+    thead th { background: rgba(128,128,128,.18); font-weight: 600; }
+    tbody tr:nth-child(even) { background: rgba(128,128,128,.08); }
+    a.topic-detail-link { text-decoration: underline; }
+  </style>
+  <style>
+    summary.slide-header { list-style: none; }
+    summary.slide-header::-webkit-details-marker { display: none; }
+    details.slide-card[open] > .slide-body { display: block; }
+    details.slide-card[open] .chevron { transform: rotate(90deg); }
+    @media print { details.slide-card > .slide-body { display: block !important; } .chevron { display: none; } }
+  </style>
+</head><body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Sorting Algorithms: Comparison and Implementation</a></div>
+  <header>
+    <h1>Quicksort</h1>
+  </header><main>
+    <details class="slide-card" open>
+      <summary class="slide-header"><span class="slide-num">1</span><h2>Quicksort</h2><span class="chevron">▶</span></summary>
+      <div class="slide-body">
+        <p>Quicksort is one of the most widely used and practically efficient sorting algorithms ever devised. Introduced by Tony Hoare in 1959, it operates on the principle of <strong>divide and conquer</strong>: select a <em>pivot</em> element, rearrange the array so that all elements smaller than the pivot sit to its left and all elements larger sit to its right, then recursively apply the same process to each of the two resulting sub-arrays. Unlike merge sort, which divides the array mechanically in half and does its main work during the merge step, quicksort does its main work <em>before</em> recursing — in the partition step — and requires no additional array allocation to do so. The result is an algorithm that is elegant, in-place, and extraordinarily fast in practice.</p>
+
+<p>Understanding quicksort deeply means understanding four interlocking ideas: how partitioning physically rearranges elements, how pivot choice shapes performance, what the algorithm's efficiency guarantees actually are, and how to translate the concept into working code. Each of these is explored in full below.</p>
+
+<p><strong>Partitioning Strategy</strong></p>
+
+<p>Partitioning is the engine of quicksort. Given a sub-array and a chosen pivot value, the partition operation scans the array and swaps elements so that every value less than the pivot ends up to its left and every value greater ends up to its right. When partitioning is complete, the pivot is placed at its final, correct position in the sorted array and <em>never needs to move again</em>. This is a crucial insight: after a single partition, at least one element — the pivot — is permanently in its sorted position.</p>
+
+<p>The operation is performed <strong>in-place</strong>. No second array is allocated; elements are swapped within the original array using only a constant amount of extra memory for index variables. This is one of the reasons quicksort is memory-efficient and cache-friendly compared to algorithms that allocate auxiliary arrays.</p>
+
+<p>The most common partitioning scheme is the <strong>Lomuto partition scheme</strong>, which uses a single pointer <code>i</code> to track the boundary between elements known to be smaller than the pivot and everything else. A second pointer <code>j</code> scans forward through the array. Whenever <code>j</code> finds an element smaller than or equal to the pivot, <code>i</code> is incremented and the elements at <code>i</code> and <code>j</code> are swapped. After the scan, the pivot (typically stored at the last position) is swapped into position <code>i + 1</code>, which is its final sorted location.</p>
+
+<p>The <strong>Hoare partition scheme</strong> — the original — uses two pointers that start at opposite ends of the array and move toward each other. The left pointer advances until it finds an element greater than or equal to the pivot; the right pointer retreats until it finds an element less than or equal to the pivot. The two elements are swapped, and the process continues until the pointers cross. Hoare's scheme typically performs fewer swaps on average than Lomuto's, though it is slightly more complex to implement correctly.</p>
+
+<p>To make this concrete, consider partitioning the array <code>[3, 6, 8, 10, 1, 2, 1]</code> using Lomuto's scheme with the last element (<code>1</code>) as the pivot:</p>
+
+<ul>
+  <li>Initial state: <code>[3, 6, 8, 10, 1, 2, 1]</code>, pivot = <code>1</code>, boundary pointer <code>i = -1</code></li>
+  <li><code>j=0</code>: element <code>3</code> is not ≤ 1, no swap.</li>
+  <li><code>j=1</code>: element <code>6</code> is not ≤ 1, no swap.</li>
+  <li><code>j=2</code>: element <code>8</code> is not ≤ 1, no swap.</li>
+  <li><code>j=3</code>: element <code>10</code> is not ≤ 1, no swap.</li>
+  <li><code>j=4</code>: element <code>1</code> ≤ 1 → increment <code>i</code> to 0, swap positions 0 and 4: <code>[1, 6, 8, 10, 3, 2, 1]</code></li>
+  <li><code>j=5</code>: element <code>2</code> is not ≤ 1, no swap.</li>
+  <li>Final swap: place pivot at <code>i+1 = 1</code>: <code>[1, 1, 8, 10, 3, 2, 6]</code></li>
+</ul>
+
+<p>The pivot value <code>1</code> is now at index 1, which is its correct sorted position. Everything to its left is ≤ 1 and everything to its right is ≥ 1. Each recursive call then processes a strictly smaller sub-array — <code>[1]</code> on the left and <code>[8, 10, 3, 2, 6]</code> on the right — until sub-arrays of zero or one element are reached, at which point they are trivially sorted.</p>
+
+<p><strong>Pivot Selection Considerations</strong></p>
+
+<p>The pivot is not just an implementation detail — it is the single biggest determinant of quicksort's performance on any given input. The choice of pivot controls how evenly the array is split at each recursive step, which in turn controls the depth of the recursion tree and thus the total work done.</p>
+
+<p><strong>First or last element as pivot</strong> is the simplest strategy to code. The pivot is just <code>arr[low]</code> or <code>arr[high]</code>. Unfortunately, this choice is catastrophically bad on arrays that are already sorted or reverse-sorted — two very common real-world inputs. On a sorted array of <em>n</em> elements, choosing the last element as pivot means every partition step places zero elements to the right and all remaining elements to the left, producing a recursion tree of depth <em>n</em> instead of log <em>n</em>. This is the worst-case O(n²) scenario.</p>
+
+<p><strong>Random pivot selection</strong> addresses this by choosing the pivot uniformly at random from the current sub-array. Before partitioning, the randomly chosen element is swapped with the last element, and the standard Lomuto scheme proceeds as normal. Because the choice is random, no adversarial input can reliably trigger worst-case behavior. The expected number of comparisons over all inputs becomes O(n log n) with very high probability. This is the most common improvement applied in practice.</p>
+
+<p><strong>Median-of-three</strong> is a practical compromise that examines three candidate elements — typically the first, middle, and last elements of the sub-array — and selects the median value as the pivot. For example, if those three values are <code>8</code>, <code>3</code>, and <code>6</code>, the median is <code>6</code>, which becomes the pivot. This strategy tends to produce more balanced partitions than a fixed-position strategy, handles already-sorted arrays well, and adds only a tiny constant overhead (three comparisons). Many real-world implementations of quicksort, including those in standard libraries, use median-of-three or a variant of it.</p>
+
+<p>It is important to understand that <strong>no pivot strategy can guarantee optimal partitioning for every possible input</strong>. A median-of-three strategy can still be fooled by specially constructed inputs (the "median-of-three killer"). Random selection is the most robust because its worst case depends on chance rather than input structure, making it essentially impossible to trigger reliably. The table below summarizes the tradeoffs:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Pivot Strategy</th>
+      <th>Implementation Complexity</th>
+      <th>Worst-Case Input</th>
+      <th>Practical Use</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>First / Last element</td>
+      <td>Trivial</td>
+      <td>Sorted or reverse-sorted arrays</td>
+      <td>Teaching / simple demos only</td>
+    </tr>
+    <tr>
+      <td>Random element</td>
+      <td>Simple (one extra swap)</td>
+      <td>Extremely unlikely (probabilistic)</td>
+      <td>Very common in production</td>
+    </tr>
+    <tr>
+      <td>Median-of-three</td>
+      <td>Moderate (three comparisons)</td>
+      <td>Specially constructed sequences</td>
+      <td>Standard library implementations</td>
+    </tr>
+    <tr>
+      <td>Median-of-medians</td>
+      <td>Complex</td>
+      <td>Guaranteed O(n log n)</td>
+      <td>Rarely — high constant factor</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Average-Case Efficiency</strong></p>
+
+<p>Quicksort's most celebrated property is its average-case time complexity of <strong>O(n log n)</strong>. To understand why, consider what happens when every partition step splits the array into two roughly equal halves. The recursion tree then has approximately log₂ n levels. At each level of the tree, the total amount of work done across all sub-arrays at that level is O(n) — every element participates in exactly one partition at each level. Multiplying the number of levels by the work per level gives O(n log n).</p>
+
+<p>The partitions do not need to be perfectly equal to achieve this bound. Even a consistent 9-to-1 split — where one sub-array has 90% of the elements and the other has 10% — produces a recursion tree of depth O(log n), just with a slightly larger constant. As long as there is no <em>systematic</em> imbalance, the algorithm runs in O(n log n) time on average.</p>
+
+<p>Compared to <strong>merge sort</strong>, which also runs in O(n log n) on average and in the worst case, quicksort is often <em>faster in practice</em> despite having the same asymptotic complexity. The reasons are concrete and worth understanding:</p>
+
+<ul>
+  <li><strong>Cache locality:</strong> Quicksort accesses memory in a sequential, localized pattern during partitioning. Merge sort requires copying data between arrays, producing more cache misses on modern hardware.</li>
+  <li><strong>Lower constant factors:</strong> The inner loop of quicksort's partition step is extremely tight — just comparisons and swaps within a contiguous block of memory. Merge sort's merge step involves more pointer management and auxiliary array writes.</li>
+  <li><strong>In-place operation:</strong> Quicksort does not allocate O(n) auxiliary memory, reducing memory bandwidth pressure.</li>
+</ul>
+
+<p>These practical advantages are why quicksort remains the default choice in many standard library implementations (often as a hybrid with insertion sort for small sub-arrays) even though merge sort offers a stronger worst-case guarantee.</p>
+
+<p><strong>Best and Worst-Case Performance</strong></p>
+
+<p>The <strong>best case</strong> for quicksort occurs when every pivot happens to be the exact median of its sub-array, splitting it into two equal halves at every level of recursion. This produces a perfectly balanced binary recursion tree of depth log₂ n, and the total work is <strong>O(n log n)</strong>. In practice, perfect splits are rare, but splits that are close to equal are common enough that average-case performance approaches the best case.</p>
+
+<p>The <strong>worst case</strong> arises when every partition step produces a maximally unbalanced split: one sub-array has zero elements and the other has all the remaining elements minus the pivot. This happens with a naive first-or-last-element pivot strategy when the input is:</p>
+
+<ul>
+  <li><strong>Already sorted</strong> in ascending order</li>
+  <li><strong>Already sorted</strong> in descending order</li>
+  <li><strong>All identical elements</strong> (every element equals every other)</li>
+</ul>
+
+<p>In this scenario, the recursion tree degenerates into a linear chain of depth <em>n</em>. The first call does O(n) work, the second does O(n−1), the third O(n−2), and so on. The total work is O(n) + O(n−1) + ... + O(1) = <strong>O(n²)</strong>, making this as slow as bubble sort on the same input.</p>
+
+<p>Randomized pivot selection transforms this worst case from a <em>deterministic outcome</em> for certain inputs into a <em>statistically unlikely event</em>. The probability of encountering O(n²) behavior with a random pivot on any specific input is astronomically small for large n, because it would require the random number generator to consistently pick the minimum or maximum element from every sub-array.</p>
+
+<p>The <strong>space complexity</strong> of quicksort comes from the recursive call stack. Each call to the partition function uses O(1) space, but the stack stores one frame per level of recursion. In the average case with balanced partitions, the stack depth is O(log n). In the worst case, the stack depth is O(n), which can cause a stack overflow for large inputs. This can be mitigated by always recursing into the <em>smaller</em> sub-array first and using an iterative approach with an explicit stack for the larger sub-array — a technique called <strong>tail call optimization</strong> or <strong>Sedgewick's improvement</strong>, which guarantees O(log n) stack depth regardless of pivot quality.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Case</th>
+      <th>Time Complexity</th>
+      <th>Space Complexity (Stack)</th>
+      <th>Condition</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Best</td>
+      <td>O(n log n)</td>
+      <td>O(log n)</td>
+      <td>Every pivot is the exact median</td>
+    </tr>
+    <tr>
+      <td>Average</td>
+      <td>O(n log n)</td>
+      <td>O(log n)</td>
+      <td>Random or well-distributed input</td>
+    </tr>
+    <tr>
+      <td>Worst</td>
+      <td>O(n²)</td>
+      <td>O(n)</td>
+      <td>Sorted / reverse-sorted / all-equal input with naive pivot</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>JavaScript Implementation</strong></p>
+
+<p>Implementing quicksort in JavaScript requires translating the conceptual steps — choose pivot, partition, recurse — into concrete index manipulation. The implementation below uses the Lomuto partition scheme with the last element of each sub-array as the pivot. It sorts the array in-place, meaning the original array is modified directly rather than returning a new one.</p>
+
+<p>The <strong>base case</strong> of the recursion is when the sub-array has zero or one element (<code>low >= high</code>). An array of one element is already sorted by definition; an array of zero elements is empty. Both require no action and the function simply returns.</p>
+
+<p>JavaScript's <strong>destructuring assignment</strong> provides a clean, idiomatic syntax for swapping two array elements without a temporary variable:</p>
+
+<pre><code>[arr[i], arr[j]] = [arr[j], arr[i]];</code></pre>
+
+<p>This is both readable and correct, though in performance-critical inner loops some developers prefer the traditional three-line swap with a temporary variable to avoid the overhead of creating a temporary array.</p>
+
+<p>Here is a complete, annotated implementation:</p>
+
+<pre><code>function quicksort(arr, low = 0, high = arr.length - 1) {
+  // Base case: sub-array of 0 or 1 element is already sorted
+  if (low >= high) return;
+
+  // Partition the array and get the pivot's final index
+  const pivotIndex = partition(arr, low, high);
+
+  // Recursively sort the sub-array to the left of the pivot
+  quicksort(arr, low, pivotIndex - 1);
+
+  // Recursively sort the sub-array to the right of the pivot
+  quicksort(arr, pivotIndex + 1, high);
+}
+
+function partition(arr, low, high) {
+  // Choose the last element as the pivot
+  const pivot = arr[high];
+
+  // i tracks the boundary: everything at index <= i is <= pivot
+  let i = low - 1;
+
+  for (let j = low; j < high; j++) {
+    if (arr[j] <= pivot) {
+      // Expand the "less than or equal" region and swap
+      i++;
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+  }
+
+  // Place the pivot in its correct sorted position
+  [arr[i + 1], arr[high]] = [arr[high], arr[i + 1]];
+
+  // Return the pivot's final index
+  return i + 1;
+}
+
+// Example usage:
+const data = [10, 7, 8, 9, 1, 5];
+quicksort(data);
+console.log(data); // [1, 5, 7, 8, 9, 10]</code></pre>
+
+<p>To trace through the execution on <code>[10, 7, 8, 9, 1, 5]</code> with pivot <code>5</code> (last element):</p>
+
+<ul>
+  <li>Scan: <code>10</code> &gt; 5 (no swap), <code>7</code> &gt; 5 (no swap), <code>8</code> &gt; 5 (no swap), <code>9</code> &gt; 5 (no swap), <code>1</code> ≤ 5 → swap positions 0 and 4: <code>[1, 7, 8, 9, 10, 5]</code></li>
+  <li>Place pivot: swap positions 1 and 5: <code>[1, 5, 8, 9, 10, 7]</code></li>
+  <li>Pivot <code>5</code> is now at index 1 — its final position.</li>
+  <li>Left sub-array <code>[1]</code> has one element, base case returns immediately.</li>
+  <li>Right sub-array <code>[8, 9, 10, 7]</code> is recursively sorted.</li>
+</ul>
+
+<p>To upgrade this implementation with a <strong>random pivot</strong>, simply add a swap before calling partition:</p>
+
+<pre><code>function quicksortRandom(arr, low = 0, high = arr.length - 1) {
+  if (low >= high) return;
+
+  // Pick a random index in [low, high] and swap it to the end
+  const randomIndex = Math.floor(Math.random() * (high - low + 1)) + low;
+  [arr[randomIndex], arr[high]] = [arr[high], arr[randomIndex]];
+
+  const pivotIndex = partition(arr, low, high);
+  quicksortRandom(arr, low, pivotIndex - 1);
+  quicksortRandom(arr, pivotIndex + 1, high);
+}</code></pre>
+
+<p>This single addition — moving a random element to the pivot position before the standard Lomuto partition — provides strong probabilistic protection against worst-case inputs with negligible overhead. The rest of the partition logic remains unchanged, making this an easy and highly recommended upgrade from the naive fixed-pivot version.</p>
+
+<p>For production use, it is also common to combine quicksort with <strong>insertion sort</strong> for small sub-arrays (typically those with fewer than 10–16 elements). Insertion sort has a small constant factor and performs very well on nearly-sorted small arrays, which is exactly what quicksort's recursive sub-arrays tend to look like near the base of the recursion tree. This hybrid approach is used in Java's <code>Arrays.sort</code> and many other standard library implementations.</p>
+        <div class="notes"><strong>Notes</strong>The Lomuto vs. Hoare distinction is worth mentioning verbally in lecture; students often see only Lomuto in textbooks but Hoare in production code. Emphasize that the in-place nature of quicksort is a key practical advantage. The random pivot upgrade is a one-liner improvement that dramatically changes worst-case behavior and should be highlighted as a best practice.</div>
+      </div>
+    </details>
+  </main>
+
+<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
+</body></html>

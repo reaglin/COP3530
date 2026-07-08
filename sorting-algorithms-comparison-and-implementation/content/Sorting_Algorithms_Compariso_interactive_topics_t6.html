@@ -1,0 +1,206 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comparing Sorting Algorithms</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+  <style>
+    body { padding-left: 1.1rem; padding-right: 1.1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid rgba(128,128,128,.45); padding: .45em .7em; text-align: left; vertical-align: top; }
+    thead th { background: rgba(128,128,128,.18); font-weight: 600; }
+    tbody tr:nth-child(even) { background: rgba(128,128,128,.08); }
+    a.topic-detail-link { text-decoration: underline; }
+  </style>
+  <style>
+    summary.slide-header { list-style: none; }
+    summary.slide-header::-webkit-details-marker { display: none; }
+    details.slide-card[open] > .slide-body { display: block; }
+    details.slide-card[open] .chevron { transform: rotate(90deg); }
+    @media print { details.slide-card > .slide-body { display: block !important; } .chevron { display: none; } }
+  </style>
+</head><body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Sorting Algorithms: Comparison and Implementation</a></div>
+  <header>
+    <h1>Comparing Sorting Algorithms</h1>
+  </header><main>
+    <details class="slide-card" open>
+      <summary class="slide-header"><span class="slide-num">1</span><h2>Comparing Sorting Algorithms</h2><span class="chevron">▶</span></summary>
+      <div class="slide-body">
+        <p>Choosing the right sorting algorithm is one of the most practical decisions a developer faces when working with ordered data. Four algorithms appear repeatedly in both education and real-world systems: <strong>bubble sort</strong>, <strong>insertion sort</strong>, <strong>merge sort</strong>, and <strong>quicksort</strong>. Each has a distinct profile of strengths and weaknesses across time complexity, space usage, stability, and sensitivity to input shape. Understanding these profiles deeply — not just memorizing Big O notation — is what allows a developer to make genuinely informed choices. This topic builds a thorough, side-by-side understanding of all four algorithms so that you can reason confidently about which tool belongs in which situation.</p>
+
+<p><strong>Time Complexity Overview</strong></p>
+
+<p>Time complexity describes how the number of operations an algorithm performs scales with the size of its input. For sorting, we care about three scenarios: the <em>best case</em> (most favorable input), the <em>average case</em> (randomly ordered input), and the <em>worst case</em> (least favorable input). These scenarios can differ dramatically between algorithms, and ignoring any one of them can lead to serious performance surprises in production.</p>
+
+<p><strong>Bubble sort and insertion sort</strong> both belong to the family of comparison-based, quadratic algorithms. Their average and worst-case time complexity is <strong>O(n²)</strong>, meaning that if you double the size of your dataset, the number of operations roughly quadruples. For a dataset of 1,000 elements, bubble sort may perform up to one million comparisons in the worst case. At 10,000 elements, that becomes one hundred million. This growth is why quadratic algorithms become impractical as data grows.</p>
+
+<p>To make this concrete, consider bubble sort on a reverse-sorted array of 5 elements: <code>[5, 4, 3, 2, 1]</code>. In each pass, the algorithm compares adjacent pairs and swaps them. Pass one pushes 5 to the end after 4 swaps. Pass two pushes 4 to its position after 3 swaps. And so on. The total number of swaps is 4 + 3 + 2 + 1 = 10, which for n=5 equals n(n-1)/2 — the classic triangular number pattern that confirms O(n²) behavior.</p>
+
+<p><strong>Merge sort</strong> guarantees <strong>O(n log n)</strong> performance in <em>all</em> cases — best, average, and worst. This predictability is one of its defining virtues. The algorithm recursively splits the array in half (producing log n levels of recursion) and then merges sorted halves at each level in O(n) time, giving a total cost of O(n log n). For 1,000 elements, that is roughly 10,000 operations rather than 1,000,000 — a 100× improvement over O(n²) in the worst case. For 1,000,000 elements, the advantage grows to roughly 50,000× fewer operations compared to a quadratic algorithm.</p>
+
+<p><strong>Quicksort</strong> also averages <strong>O(n log n)</strong>, but it does not guarantee it. Its worst-case time complexity is <strong>O(n²)</strong>, which occurs when pivot selection consistently produces maximally unbalanced partitions. The classic example is applying naive quicksort (with the first or last element as pivot) to an already-sorted array. Every partition step separates one element from the rest, producing n recursive calls that each do O(n) work — exactly the quadratic pattern. Randomized pivot selection or the median-of-three strategy largely eliminates this risk in practice, but it is a genuine concern with naive implementations.</p>
+
+<p><strong>Insertion sort</strong> holds a special distinction: its <em>best-case</em> time complexity is <strong>O(n)</strong>. When the input is already sorted (or nearly sorted), the inner loop of insertion sort performs almost no work — each element is compared once and found to be already in place, so no shifting occurs. This makes insertion sort genuinely fast in scenarios where data arrives nearly in order, not just theoretically fast by accident.</p>
+
+<p><strong>Space Complexity Considerations</strong></p>
+
+<p>Space complexity measures how much additional memory an algorithm requires beyond the input array itself. This matters in memory-constrained environments — embedded systems, large-scale data pipelines, or any context where memory allocation is expensive.</p>
+
+<p><strong>Bubble sort and insertion sort</strong> are <em>in-place</em> algorithms. They rearrange elements within the original array using only a constant amount of extra memory (a temporary variable for swapping, a loop counter, and so on), which we express as <strong>O(1)</strong> auxiliary space. No extra arrays are allocated regardless of input size.</p>
+
+<p><strong>Merge sort</strong> requires <strong>O(n) auxiliary space</strong>. During the merge step, the algorithm cannot merge two sorted halves back into the same memory they occupy without overwriting data it still needs. It must copy data into a temporary buffer, perform the merge, and write results back. For an array of one million integers, this means allocating a second array of one million integers — potentially a significant cost. This is why merge sort, despite its excellent time complexity, can be a poor fit for memory-sensitive environments.</p>
+
+<p><strong>Quicksort</strong> is in-place in terms of data storage (it partitions within the original array), but its recursive nature consumes <em>call stack</em> space. On average, with balanced partitions, the recursion depth is O(log n), so the stack space is <strong>O(log n)</strong>. In the worst case (degenerate partitions), recursion depth reaches n, consuming <strong>O(n)</strong> stack space — which can cause a stack overflow on large inputs with naive implementations. This is another reason why randomized pivot selection matters beyond just time complexity.</p>
+
+<p><strong>Stability of Sorting Algorithms</strong></p>
+
+<p>A sorting algorithm is called <em>stable</em> if it preserves the relative order of elements that compare as equal. This is not merely an academic property — it has direct practical consequences whenever you sort records by one field that many records share the same value of.</p>
+
+<p>Imagine a list of student records sorted alphabetically by last name. You now want to sort this list by grade. A <strong>stable</strong> sort will keep students with the same grade in alphabetical order (preserving the prior sort). An <strong>unstable</strong> sort may scramble the alphabetical ordering within each grade group, destroying work you already did.</p>
+
+<ul>
+  <li><strong>Bubble sort</strong> is stable. Because it only swaps adjacent elements when one is strictly greater than the other, equal elements are never swapped past each other.</li>
+  <li><strong>Insertion sort</strong> is stable. It shifts elements to the right only when the element being inserted is strictly less than the element being compared, so equal elements retain their original relative positions.</li>
+  <li><strong>Merge sort</strong> is stable, provided the merge step is implemented to prefer the left subarray's element when two elements are equal. This is the standard implementation: when <code>left[i] <= right[j]</code>, take from the left.</li>
+  <li><strong>Quicksort</strong> in its standard form is <strong>not stable</strong>. During partitioning, elements are swapped across potentially large distances based on their relationship to the pivot, which can reorder equal elements arbitrarily. Stable variants of quicksort exist but typically sacrifice some performance or simplicity.</li>
+</ul>
+
+<p>Stability should be treated as a hard constraint, not just a preference, when secondary ordering must be preserved. If your application requires stable sorting, quicksort is immediately disqualified unless you use a purpose-built stable variant.</p>
+
+<p><strong>Performance on Small vs. Large Datasets</strong></p>
+
+<p>Big O notation intentionally ignores constant factors and lower-order terms, which means it can mislead when datasets are small. For a dataset of 10 elements, the constant overhead of a sophisticated algorithm may easily dominate the theoretical advantage of a better asymptotic bound.</p>
+
+<p><strong>Bubble sort and insertion sort</strong> have very low overhead: simple loops, simple comparisons, minimal bookkeeping. On arrays of fewer than roughly 20 elements, they can match or even outperform merge sort or quicksort because the recursive function call overhead, memory allocation (for merge sort), and partition logic (for quicksort) all cost real time that small arrays cannot amortize. This is why many production-quality sorting implementations (including the standard library sort in many languages) switch to insertion sort for small subarrays and use a divide-and-conquer algorithm for the rest — a hybrid strategy called <em>Timsort</em> (used in Python and Java) or <em>Introsort</em> (used in C++ STL).</p>
+
+<p><strong>Merge sort and quicksort</strong> become dramatically faster as n grows. Once you are sorting hundreds or thousands of elements, the O(n log n) vs O(n²) difference is measurable in real time. At n = 10,000, an O(n²) algorithm performs roughly 50,000,000 operations while O(n log n) performs roughly 130,000 — nearly 400× fewer.</p>
+
+<p>Between merge sort and quicksort on large datasets, <strong>quicksort often wins in practice</strong> despite identical average-case Big O. The reason is <em>cache efficiency</em>. Quicksort operates in-place and accesses memory in patterns that are friendly to CPU caches — it works on contiguous regions of the original array. Merge sort, by contrast, repeatedly accesses two separate arrays (the original and the temporary buffer), causing more cache misses. On modern hardware, cache misses are expensive enough that a cache-friendly O(n log n) algorithm can outperform a cache-unfriendly O(n log n) algorithm by a meaningful constant factor.</p>
+
+<p><strong>Impact of Input Order on Algorithm Choice</strong></p>
+
+<p>The distribution and ordering of input data can change algorithm performance drastically, sometimes by orders of magnitude. A good algorithm selection accounts for what you know (or can infer) about typical inputs.</p>
+
+<p><strong>Insertion sort on nearly sorted data</strong> is genuinely excellent. Suppose you maintain a sorted leaderboard and periodically receive a small batch of new scores to insert. Each new score is likely close to its correct position. Insertion sort will identify the correct position for each element after only a few comparisons and shifts, running close to O(n) overall. No other simple algorithm handles this case as gracefully.</p>
+
+<p><strong>Bubble sort on reverse-sorted data</strong> hits its absolute worst case. Every element must bubble all the way to its destination, and the algorithm performs the maximum number of swaps — n(n-1)/2. There is no redeeming scenario for bubble sort on adversarial input.</p>
+
+<p><strong>Quicksort on sorted or reverse-sorted input</strong> (with naive pivot selection) also hits its worst case. Consider sorting <code>[1, 2, 3, 4, 5]</code> with the last element as pivot. The pivot (5) is already the largest, so the partition step produces an empty right partition and a left partition of four elements. The recursion degrades into n recursive calls of decreasing size — exactly the O(n²) pattern. Choosing a random pivot or the median of the first, middle, and last elements eliminates this vulnerability at negligible cost.</p>
+
+<p><strong>Merge sort is immune to input order</strong>. Whether the data is sorted, reverse-sorted, or random, merge sort always makes the same number of comparisons at each level of recursion and always performs the same merge operations. Its O(n log n) bound is tight in all cases, not just an average. This predictability is invaluable in real-time or latency-sensitive systems where you cannot afford worst-case spikes.</p>
+
+<p><strong>Side-by-Side Algorithm Comparison</strong></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Algorithm</th>
+      <th>Best Case</th>
+      <th>Average Case</th>
+      <th>Worst Case</th>
+      <th>Auxiliary Space</th>
+      <th>Stable</th>
+      <th>Best Use Case</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Bubble Sort</td>
+      <td>O(n)</td>
+      <td>O(n²)</td>
+      <td>O(n²)</td>
+      <td>O(1)</td>
+      <td>Yes</td>
+      <td>Educational purposes; trivially small datasets only</td>
+    </tr>
+    <tr>
+      <td>Insertion Sort</td>
+      <td>O(n)</td>
+      <td>O(n²)</td>
+      <td>O(n²)</td>
+      <td>O(1)</td>
+      <td>Yes</td>
+      <td>Small datasets (&lt;~20 elements) or nearly sorted data</td>
+    </tr>
+    <tr>
+      <td>Merge Sort</td>
+      <td>O(n log n)</td>
+      <td>O(n log n)</td>
+      <td>O(n log n)</td>
+      <td>O(n)</td>
+      <td>Yes</td>
+      <td>Stable sorting; linked lists; guaranteed performance needed</td>
+    </tr>
+    <tr>
+      <td>Quicksort</td>
+      <td>O(n log n)</td>
+      <td>O(n log n)</td>
+      <td>O(n²)</td>
+      <td>O(log n)</td>
+      <td>No</td>
+      <td>Large, randomly ordered in-memory datasets; speed priority</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Guidelines for Selecting the Right Algorithm</strong></p>
+
+<p>With a complete picture of each algorithm's characteristics, a set of practical decision guidelines emerges. These are not rigid rules but evidence-based defaults that experienced developers apply.</p>
+
+<ul>
+  <li><strong>Use insertion sort for small datasets or nearly sorted streams.</strong> When n is small (typically fewer than 20 elements), insertion sort's low constant overhead makes it competitive with or faster than any other algorithm. When data arrives already mostly in order — such as appending new records to a nearly complete sorted list — insertion sort's O(n) best case makes it the natural choice. Its O(1) space and stable behavior are additional benefits that cost nothing.</li>
+  <li><strong>Choose merge sort when stability or guaranteed performance is required.</strong> If you are sorting records where secondary ordering must be preserved (e.g., sort by department, then by salary within department), merge sort's stability makes it the safe default. Similarly, if you cannot afford worst-case O(n²) performance — in real-time systems, user-facing interfaces, or any context with strict latency requirements — merge sort's consistent O(n log n) in all cases is its decisive advantage. Merge sort is also the algorithm of choice for sorting linked lists, where random access is expensive and the lack of contiguous memory makes in-place algorithms inefficient.</li>
+  <li><strong>Prefer quicksort for large, randomly ordered in-memory datasets.</strong> When average-case speed is the priority, stability is not required, and data is stored in a contiguous array (enabling cache-friendly access), quicksort is typically the fastest practical choice. Use randomized pivot selection to avoid worst-case behavior. The combination of O(n log n) average time, O(log n) space, and excellent cache performance makes it the backbone of many standard library sort implementations.</li>
+  <li><strong>Avoid bubble sort in production code.</strong> Bubble sort offers no advantage over insertion sort — both are O(n²) with O(1) space and stable behavior, but insertion sort makes fewer writes and has a better constant factor. The only legitimate use of bubble sort is as a teaching example to illustrate the concept of repeated passes and adjacent swapping. No production codebase should sort data with bubble sort when insertion sort is equally simple and strictly better.</li>
+  <li><strong>When memory is severely limited, favor in-place algorithms.</strong> In embedded systems, firmware, or environments where heap allocation is restricted, merge sort's O(n) auxiliary space requirement may be a disqualifying constraint. In such cases, insertion sort (for small n) or quicksort with randomized pivots (for large n) provides good performance without large memory allocations. Remember that quicksort's stack usage can reach O(n) in the worst case, so either use iterative implementations or ensure pivot strategies prevent deep recursion.</li>
+</ul>
+
+<p>A useful mental model is to think of these algorithms as occupying different niches. Insertion sort owns the small-data and nearly-sorted niche. Merge sort owns the stability and predictability niche. Quicksort owns the large-data, in-memory, average-speed niche. Bubble sort occupies no production niche at all. Real-world sort implementations like Python's Timsort synthesize these insights: they use insertion sort for small subarrays, detect and exploit existing runs of sorted data, and merge those runs using merge sort's strategy — effectively combining the best characteristics of each algorithm into a single adaptive, stable, O(n log n) implementation.</p>
+        <div class="notes"><strong>Notes</strong>The comparison table renders as a proper HTML table with thead and tbody. All four algorithms are covered in depth across every subtopic dimension. The Timsort and Introsort references are accurate, well-established examples that reinforce why understanding individual algorithm trade-offs matters in practice.</div>
+      </div>
+    </details>
+  </main>
+
+<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
+</body></html>

@@ -1,0 +1,466 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>4- The Stack: Structure and Use Cases | COP3530 - Data Structures</title>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --color-bg: #f4f6f9;
+      --color-surface: #ffffff;
+      --color-primary: #1a3a5c;
+      --color-primary-light: #2a5282;
+      --color-accent: #2b6cb0;
+      --color-accent-hover: #1e4e8c;
+      --color-secondary-link: #5a7fa8;
+      --color-secondary-link-hover: #2a5282;
+      --color-text: #1a202c;
+      --color-text-muted: #4a5568;
+      --color-border: #d1dce8;
+      --color-tag-bg: #ebf2fa;
+      --color-tag-text: #2a5282;
+      --color-header-bg: #1a3a5c;
+      --color-header-text: #ffffff;
+      --color-badge-bg: #e2ecf8;
+      --color-badge-text: #1a3a5c;
+      --radius: 8px;
+      --shadow: 0 1px 4px rgba(0,0,0,0.08), 0 2px 12px rgba(0,0,0,0.06);
+      --shadow-hover: 0 4px 16px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif;
+      background-color: var(--color-bg);
+      color: var(--color-text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    header {
+      background-color: var(--color-header-bg);
+      color: var(--color-header-text);
+      padding: 2.5rem 1.5rem 2rem;
+    }
+
+    .header-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .course-label {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #90b8d8;
+      margin-bottom: 0.5rem;
+    }
+
+    header h1 {
+      font-size: clamp(1.5rem, 3vw, 2.1rem);
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 0.9rem;
+      color: #ffffff;
+    }
+
+    header p {
+      font-size: 0.97rem;
+      color: #c0d6ea;
+      max-width: 72ch;
+      line-height: 1.65;
+    }
+
+    /* ── Main ── */
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 4rem;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .section-header h2 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--color-primary);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .artifact-count {
+      background: var(--color-badge-bg);
+      color: var(--color-badge-text);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.18rem 0.6rem;
+      border-radius: 20px;
+      letter-spacing: 0.02em;
+    }
+
+    /* ── Card Grid ── */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 1.35rem 1.4rem 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+      transition: box-shadow 0.18s ease, transform 0.18s ease;
+    }
+
+    .card:hover {
+      box-shadow: var(--shadow-hover);
+      transform: translateY(-2px);
+    }
+
+    /* ── Card Top Row: type tags ── */
+    .card-meta-row {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.55rem;
+      border-radius: 4px;
+      background: var(--color-tag-bg);
+      color: var(--color-tag-text);
+      border: 1px solid #c3d9f0;
+    }
+
+    .tag.filetype {
+      background: #f0f4f8;
+      color: #4a5568;
+      border-color: #ccd6e0;
+      font-family: 'Courier New', Courier, monospace;
+    }
+
+    /* ── Card Title ── */
+    .card-title-row {
+      display: flex;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .card-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--color-primary);
+      line-height: 1.35;
+    }
+
+    .card-title a {
+      color: var(--color-accent);
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+
+    .card-title a:hover,
+    .card-title a:focus {
+      color: var(--color-accent-hover);
+      text-decoration: underline;
+    }
+
+    .source-link {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--color-secondary-link);
+      text-decoration: none;
+      white-space: nowrap;
+      border: 1px solid #b8cfe0;
+      border-radius: 4px;
+      padding: 0.15rem 0.45rem;
+      transition: background 0.15s ease, color 0.15s ease;
+      flex-shrink: 0;
+    }
+
+    .source-link:hover,
+    .source-link:focus {
+      background: var(--color-tag-bg);
+      color: var(--color-secondary-link-hover);
+      border-color: var(--color-accent);
+    }
+
+    /* ── Card Description ── */
+    .card-description {
+      font-size: 0.875rem;
+      color: var(--color-text-muted);
+      line-height: 1.65;
+      flex-grow: 1;
+    }
+
+    /* ── Divider line ── */
+    .card-divider {
+      border: none;
+      border-top: 1px solid var(--color-border);
+      margin: 0.1rem 0 0;
+    }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      padding: 1.5rem 1rem;
+      font-size: 0.78rem;
+      color: #8a9ab0;
+      border-top: 1px solid var(--color-border);
+      background: #f0f3f7;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      header {
+        padding: 2rem 1.1rem 1.6rem;
+      }
+
+      main {
+        padding: 1.75rem 1rem 3rem;
+      }
+    }
+
+    /* ── Focus visible ── */
+    a:focus-visible {
+      outline: 2px solid var(--color-accent);
+      outline-offset: 2px;
+      border-radius: 2px;
+    }
+  </style>
+</head>
+<body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ COP3530 - Data Structures</a></div>
+<div style="border:1px solid #c9d4e3;background:#f5f8fc;border-radius:8px;padding:10px 16px;margin:0 0 18px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;font-family:'Segoe UI',Arial,sans-serif"><strong style="color:#1a3c6e">Module outline:</strong><a href="topics-outcomes.html#topics" style="color:#1a3c6e;font-weight:600;text-decoration:none">📋 Module Topics</a><a href="topics-outcomes.html#outcomes" style="color:#137333;font-weight:600;text-decoration:none">🎯 Student Learning Outcomes</a></div>
+
+  <header>
+    <div class="header-inner">
+      <span class="course-label">COP3530 &mdash; Data Structures</span>
+      <h1>4&ndash; The Stack: Structure and Use Cases</h1>
+      <p>
+        This module introduces the stack data structure, covering the Last-In, First-Out (LIFO)
+        principle, core operations, internal implementation strategies, and real-world applications.
+        Work through the readings and activities below to build both conceptual understanding and
+        practical coding skills with stacks in JavaScript.
+      </p>
+    </div>
+  </header>
+
+  <main>
+    <div class="section-header">
+      <h2>Module Artifacts</h2>
+      <span class="artifact-count">9</span>
+    </div>
+
+    <div class="card-grid">
+
+      <!-- 1: Module Topics -->
+      <article class="card">
+        <div class="card-meta-row">
+          <span class="tag">Module Topics</span>
+          <span class="tag filetype">.json</span>
+        </div>
+        <div class="card-title-row">
+          <span class="card-title">
+            <a href="content/module_topics.html">Module Topics</a>
+          </span>
+          <a class="source-link" href="source/hierarchy.json">source file</a>
+        </div>
+        <hr class="card-divider" />
+        <p class="card-description">
+          Covers stack data structure concepts including the LIFO principle, core operations (push, pop),
+          internal implementation details, and hands-on JavaScript class construction, serving as the
+          navigational outline that guides learners through the module&rsquo;s progression of topics.
+        </p>
+      </article>
+
+      <!-- 2: Undo Mechanisms (Text Content) -->
+      <article class="card">
+        <div class="card-meta-row">
+          <span class="tag">Text Content</span>
+          <span class="tag filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <span class="card-title">
+            <a href="content/_interactive.html">Undo Mechanisms and Other Real-World Use Cases</a>
+          </span>
+        </div>
+        <hr class="card-divider" />
+        <p class="card-description">
+          A reading that explores practical, everyday applications of stacks &mdash; including undo
+          functionality in text editors and browser navigation history &mdash; helping learners connect
+          the abstract LIFO concept to real software they already use.
+        </p>
+      </article>
+
+      <!-- 3: Introduction to the Stack Data Structure -->
+      <article class="card">
+        <div class="card-meta-row">
+          <span class="tag">Topic Detail</span>
+          <span class="tag filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <span class="card-title">
+            <a href="content/The_Stack_Structure_interactive_topics_t1.html">Introduction to the Stack Data Structure</a>
+          </span>
+        </div>
+        <hr class="card-divider" />
+        <p class="card-description">
+          An introductory reading that defines the stack data structure, explains its restricted
+          top-only access model, and establishes foundational vocabulary such as push and pop for
+          learners encountering stacks for the first time.
+        </p>
+      </article>
+
+      <!-- 4: The LIFO Principle -->
+      <article class="card">
+        <div class="card-meta-row">
+          <span class="tag">Topic Detail</span>
+          <span class="tag filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <span class="card-title">
+            <a href="content/The_Stack_Structure_interactive_topics_t2.html">The LIFO Principle</a>
+          </span>
+        </div>
+        <hr class="card-divider" />
+        <p class="card-description">
+          A focused reading that explains the Last-In, First-Out (LIFO) principle in depth, clarifying
+          how this governing rule shapes stack behavior and distinguishes stacks from other data structures.
+        </p>
+      </article>
+
+      <!-- 5: Internal Implementation of a Stack -->
+      <article class="card">
+        <div class="card-meta-row">
+          <span class="tag">Topic Detail</span>
+          <span class="tag filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <span class="card-title">
+            <a href="content/The_Stack_Structure_interactive_topics_t3.html">Internal Implementation of a Stack</a>
+          </span>
+        </div>
+        <hr class="card-divider" />
+        <p class="card-description">
+          A reading that covers the internal mechanics of stack implementation, including how memory is
+          organized, how elements are tracked, and the trade-offs between array-based and linked-list-based
+          approaches, giving learners an under-the-hood understanding of the structure.
+        </p>
+      </article>
+
+      <!-- 6: Building a Stack in JavaScript -->
+      <article class="card">
+        <div class="card-meta-row">
+          <span class="tag">Topic Detail</span>
+          <span class="tag filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <span class="card-title">
+            <a href="content/The_Stack_Structure_interactive_topics_t4.html">Building a Stack in JavaScript</a>
+          </span>
+        </div>
+        <hr class="card-divider" />
+        <p class="card-description">
+          A hands-on reading and coding guide that walks learners through implementing a stack class in
+          JavaScript, demonstrating push, pop, and related operations with a practical, language-specific example.
+        </p>
+      </article>
+
+      <!-- 7: Expression Evaluation Using Stacks -->
+      <article class="card">
+        <div class="card-meta-row">
+          <span class="tag">Topic Detail</span>
+          <span class="tag filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <span class="card-title">
+            <a href="content/The_Stack_Structure_interactive_topics_t5.html">Expression Evaluation Using Stacks</a>
+          </span>
+        </div>
+        <hr class="card-divider" />
+        <p class="card-description">
+          A reading that explains how stacks are used to evaluate mathematical expressions and handle
+          nested parentheses, walking learners through the algorithmic process of using stacks to parse
+          and resolve expressions correctly.
+        </p>
+      </article>
+
+      <!-- 8: Undo Mechanisms (Topic Detail) -->
+      <article class="card">
+        <div class="card-meta-row">
+          <span class="tag">Topic Detail</span>
+          <span class="tag filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <span class="card-title">
+            <a href="content/The_Stack_Structure_interactive_topics_t6.html">Undo Mechanisms and Other Real-World Use Cases</a>
+          </span>
+        </div>
+        <hr class="card-divider" />
+        <p class="card-description">
+          A reading that explores practical, everyday applications of stacks &mdash; including undo
+          functionality in text editors and browser navigation history &mdash; helping learners connect
+          the abstract LIFO concept to real software they already use.
+        </p>
+      </article>
+
+      <!-- 9: Cloze Passage -->
+      <article class="card">
+        <div class="card-meta-row">
+          <span class="tag">Interactive Activity</span>
+          <span class="tag filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <span class="card-title">
+            <a href="interactive/cloze-passage-interactive.html">Cloze Passage (Interactive)</a>
+          </span>
+        </div>
+        <hr class="card-divider" />
+        <p class="card-description">
+          A fill-in-the-blank reading activity covering key terminology and concepts of the stack data
+          structure, where learners type missing terms into a passage and receive instant right/wrong
+          feedback to reinforce their understanding of stack vocabulary and principles.
+        </p>
+      </article>
+
+    </div>
+  </main>
+
+  <footer>
+    COP3530 &mdash; Data Structures &nbsp;&bull;&nbsp; Module 4: The Stack: Structure and Use Cases
+  </footer>
+
+
+<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
+<section class="presemaker-extras" style="max-width:1000px;margin:2rem auto;padding:0 1rem;"><h2>Topics &amp; Learning Outcomes</h2><p><a href="topics-outcomes.html">View Topics &amp; Learning Outcomes</a></p></section><script src="embed-inject.js" defer></script></body>
+</html>

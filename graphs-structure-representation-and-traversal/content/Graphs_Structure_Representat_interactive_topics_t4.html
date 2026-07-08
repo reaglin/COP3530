@@ -1,0 +1,340 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Adjacency List Representation</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+  <style>
+    body { padding-left: 1.1rem; padding-right: 1.1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid rgba(128,128,128,.45); padding: .45em .7em; text-align: left; vertical-align: top; }
+    thead th { background: rgba(128,128,128,.18); font-weight: 600; }
+    tbody tr:nth-child(even) { background: rgba(128,128,128,.08); }
+    a.topic-detail-link { text-decoration: underline; }
+  </style>
+  <style>
+    summary.slide-header { list-style: none; }
+    summary.slide-header::-webkit-details-marker { display: none; }
+    details.slide-card[open] > .slide-body { display: block; }
+    details.slide-card[open] .chevron { transform: rotate(90deg); }
+    @media print { details.slide-card > .slide-body { display: block !important; } .chevron { display: none; } }
+  </style>
+</head><body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Graphs: Structure, Representation, and Traversal</a></div>
+  <header>
+    <h1>Adjacency List Representation</h1>
+  </header><main>
+    <details class="slide-card" open>
+      <summary class="slide-header"><span class="slide-num">1</span><h2>Adjacency List Representation</h2><span class="chevron">▶</span></summary>
+      <div class="slide-body">
+        <p>When working with graphs in software, one of the first and most important decisions is choosing how to <em>store</em> the graph in memory. The <strong>adjacency list</strong> is the most widely used graph representation, especially in practical programming contexts, because it scales gracefully to large, sparse graphs and maps naturally onto common data structures like arrays, objects, and hash maps. Understanding it deeply — including its trade-offs against alternatives like the adjacency matrix — is essential before implementing any graph algorithm.</p>
+
+<p>A graph consists of a set of <strong>vertices</strong> (also called nodes) and a set of <strong>edges</strong> (connections between pairs of vertices). The challenge is encoding this relational structure efficiently. An adjacency list solves this by giving every vertex its own <em>list of neighbors</em> — the vertices it is directly connected to — and nothing more. This deceptively simple idea has profound consequences for memory usage and algorithm performance.</p>
+
+<p><strong>What Is an Adjacency List?</strong></p>
+
+<p>At its core, an adjacency list is a collection of lists, one per vertex. Each list contains exactly the vertices that share a direct edge with the vertex that owns the list. No space is reserved for vertex pairs that are <em>not</em> connected, which is what distinguishes this approach from an adjacency matrix.</p>
+
+<p>Consider a small undirected graph with four vertices — A, B, C, and D — and the following edges: A–B, A–C, B–D, and C–D. The adjacency list looks like this:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Vertex</th>
+      <th>Neighbor List</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>A</td>
+      <td>[ B, C ]</td>
+    </tr>
+    <tr>
+      <td>B</td>
+      <td>[ A, D ]</td>
+    </tr>
+    <tr>
+      <td>C</td>
+      <td>[ A, D ]</td>
+    </tr>
+    <tr>
+      <td>D</td>
+      <td>[ B, C ]</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Every row captures only the <em>real</em> connections for that vertex. If you add a fifth isolated vertex E (one with no edges), its row simply holds an empty list — it consumes almost no additional memory.</p>
+
+<p>In JavaScript, this structure is most naturally implemented as a plain <strong>object</strong> (using vertex identifiers as keys and arrays of neighbors as values) or as a <strong>Map</strong> (which supports non-string keys and preserves insertion order). Both choices give O(1) average-case access to any vertex's neighbor list by key lookup.</p>
+
+<pre><code>// Object-based adjacency list for the graph above
+const graph = {
+  A: ['B', 'C'],
+  B: ['A', 'D'],
+  C: ['A', 'D'],
+  D: ['B', 'C']
+};
+
+// Accessing A's neighbors
+console.log(graph['A']); // ['B', 'C']
+</code></pre>
+
+<p>For an <strong>undirected graph</strong>, each edge (u, v) appears in <em>both</em> u's list and v's list, because the relationship is symmetric — if you can travel from u to v, you can also travel from v to u. This means every undirected edge is stored twice in total across the entire structure, but this is intentional and necessary for correct traversal in both directions.</p>
+
+<p><strong>Building an Adjacency List in JavaScript</strong></p>
+
+<p>A clean, reusable implementation wraps the adjacency list in a class with dedicated helper methods. This keeps the construction logic organized and makes it easy to extend the graph incrementally.</p>
+
+<pre><code>class Graph {
+  constructor() {
+    // Each key maps to an array of neighboring vertex identifiers
+    this.adjacencyList = {};
+  }
+
+  // Register a new vertex with an empty neighbor list
+  addVertex(vertex) {
+    if (!this.adjacencyList[vertex]) {
+      this.adjacencyList[vertex] = [];
+    }
+  }
+
+  // Add an undirected edge between two existing vertices
+  addEdge(vertex1, vertex2) {
+    this.adjacencyList[vertex1].push(vertex2);
+    this.adjacencyList[vertex2].push(vertex1);
+  }
+
+  // Remove a specific edge
+  removeEdge(vertex1, vertex2) {
+    this.adjacencyList[vertex1] = this.adjacencyList[vertex1]
+      .filter(v => v !== vertex2);
+    this.adjacencyList[vertex2] = this.adjacencyList[vertex2]
+      .filter(v => v !== vertex1);
+  }
+
+  // Remove a vertex and all edges connected to it
+  removeVertex(vertex) {
+    for (const neighbor of this.adjacencyList[vertex]) {
+      this.adjacencyList[neighbor] = this.adjacencyList[neighbor]
+        .filter(v => v !== vertex);
+    }
+    delete this.adjacencyList[vertex];
+  }
+}
+
+// Usage
+const g = new Graph();
+g.addVertex('A');
+g.addVertex('B');
+g.addVertex('C');
+g.addVertex('D');
+
+g.addEdge('A', 'B');
+g.addEdge('A', 'C');
+g.addEdge('B', 'D');
+g.addEdge('C', 'D');
+
+console.log(g.adjacencyList);
+// { A: ['B','C'], B: ['A','D'], C: ['A','D'], D: ['B','C'] }
+</code></pre>
+
+<p>The pattern is straightforward: <code>addVertex</code> initializes a key in the object with an empty array, and <code>addEdge</code> mutates both arrays for an undirected edge. Because JavaScript arrays are dynamic, there is no need to pre-allocate space. Removal operations use <code>filter</code> to produce new arrays that exclude the target vertex — this is a common, safe pattern that avoids index-based splice errors.</p>
+
+<p>When vertex identifiers are not strings (for example, numeric node IDs or complex objects), using a <strong>Map</strong> is preferable:</p>
+
+<pre><code>class GraphMap {
+  constructor() {
+    this.adjacencyList = new Map();
+  }
+
+  addVertex(vertex) {
+    if (!this.adjacencyList.has(vertex)) {
+      this.adjacencyList.set(vertex, []);
+    }
+  }
+
+  addEdge(v1, v2) {
+    this.adjacencyList.get(v1).push(v2);
+    this.adjacencyList.get(v2).push(v1);
+  }
+}
+</code></pre>
+
+<p><strong>Space Complexity of the Adjacency List</strong></p>
+
+<p>The space complexity of an adjacency list is <strong>O(V + E)</strong>, where V is the number of vertices and E is the number of edges. This breaks down as follows:</p>
+
+<ul>
+  <li>The outer structure (the object or Map) holds V entries — one per vertex.</li>
+  <li>Across all neighbor arrays combined, there are exactly E entries for a directed graph (one per directed edge) or 2E entries for an undirected graph (each edge appears in both endpoints' lists).</li>
+  <li>Together, the total space is proportional to V + E.</li>
+</ul>
+
+<p>This is the <em>minimum possible space</em> to represent a graph, because you cannot store fewer than E edge relationships without losing information. The key insight is that vertices with no or few connections <strong>do not waste space</strong>. A graph with 1,000 vertices and only 50 edges requires space proportional to 1,050 units — not 1,000,000 (which is what an adjacency matrix would require for those same 1,000 vertices).</p>
+
+<p>This efficiency advantage becomes enormous for <strong>sparse graphs</strong> — graphs where the number of edges E is much smaller than V². Real-world networks (social graphs, web link graphs, road networks, dependency trees) are almost always sparse, which is why adjacency lists are the default choice in practice.</p>
+
+<p>As the graph becomes <strong>denser</strong> — as E approaches V² — the space savings diminish. A complete graph (where every pair of vertices is connected) has E = V(V−1)/2, and the adjacency list stores O(V²) entries just like a matrix. At that point, the structural overhead of the list (pointer indirection, array objects) can actually make it <em>less</em> cache-friendly than a flat matrix.</p>
+
+<p><strong>Adjacency List vs. Adjacency Matrix</strong></p>
+
+<p>An <strong>adjacency matrix</strong> is a V×V grid where cell [u][v] is 1 (or the edge weight) if an edge exists between u and v, and 0 otherwise. It is the primary alternative to the adjacency list, and each representation has genuinely different strengths.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Operation</th>
+      <th>Adjacency List</th>
+      <th>Adjacency Matrix</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Space usage</td>
+      <td>O(V + E)</td>
+      <td>O(V²)</td>
+    </tr>
+    <tr>
+      <td>Add a vertex</td>
+      <td>O(1)</td>
+      <td>O(V²) — must resize the matrix</td>
+    </tr>
+    <tr>
+      <td>Add an edge</td>
+      <td>O(1)</td>
+      <td>O(1)</td>
+    </tr>
+    <tr>
+      <td>Remove an edge</td>
+      <td>O(degree of vertex)</td>
+      <td>O(1)</td>
+    </tr>
+    <tr>
+      <td>Check if edge (u,v) exists</td>
+      <td>O(degree of u)</td>
+      <td>O(1)</td>
+    </tr>
+    <tr>
+      <td>Iterate over all neighbors of u</td>
+      <td>O(degree of u)</td>
+      <td>O(V) — must scan entire row</td>
+    </tr>
+    <tr>
+      <td>Iterate over all edges</td>
+      <td>O(V + E)</td>
+      <td>O(V²)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The most significant trade-off is <strong>edge existence queries</strong>. An adjacency matrix delivers O(1) lookup: <code>matrix[u][v]</code> is a direct array index. An adjacency list must scan vertex u's neighbor array to find v, which takes O(degree(u)) time — potentially O(V) in the worst case for a high-degree vertex. If your application constantly asks "does edge (u, v) exist?" across arbitrary pairs, the matrix's O(1) lookup is compelling.</p>
+
+<p>Conversely, <strong>neighbor iteration</strong> strongly favors the adjacency list. To visit all neighbors of vertex u in a matrix, you must read every cell in row u — all V of them — even if u has only three actual connections. In an adjacency list, you visit exactly the neighbors that exist, taking O(degree(u)) time. For traversal-heavy algorithms like BFS and DFS on sparse graphs, this is a decisive advantage.</p>
+
+<p>Here is a concrete illustration. Suppose you have a graph with V = 10,000 vertices (representing cities) and E = 30,000 edges (roads). The average degree is 30,000 × 2 / 10,000 = 6. Checking a single edge in the adjacency list takes at most 6 comparisons on average. Running BFS across the whole graph on the list takes O(10,000 + 30,000) = O(40,000) steps. The same BFS on a matrix requires scanning all 10,000 entries per row visited, resulting in O(V²) = O(100,000,000) steps — a factor of 2,500 slower.</p>
+
+<p><strong>Directed vs. Undirected Graphs in Adjacency Lists</strong></p>
+
+<p>The adjacency list representation handles both directed and undirected graphs cleanly, with just one rule change in <code>addEdge</code>.</p>
+
+<p>In a <strong>directed graph</strong> (digraph), an edge from u to v is a one-way connection. Only u's neighbor list is updated:</p>
+
+<pre><code>// Directed addEdge — only source gets the entry
+addDirectedEdge(source, destination) {
+  this.adjacencyList[source].push(destination);
+  // destination does NOT get source added
+}
+</code></pre>
+
+<p>This means if you add the edge A → B, you can travel from A to B during traversal, but NOT from B to A (unless a separate edge B → A is also added). The total number of entries across all neighbor lists equals exactly E (the number of directed edges).</p>
+
+<p>In an <strong>undirected graph</strong>, every edge is bidirectional. Both endpoints are updated:</p>
+
+<pre><code>// Undirected addEdge — both vertices get each other
+addEdge(vertex1, vertex2) {
+  this.adjacencyList[vertex1].push(vertex2);
+  this.adjacencyList[vertex2].push(vertex1);
+}
+</code></pre>
+
+<p>The total number of entries across all neighbor lists is 2E. This is expected behavior, not redundancy — it allows any traversal algorithm to correctly follow an undirected edge in either direction without special casing.</p>
+
+<p>This distinction matters enormously for algorithms. In a directed graph, BFS from vertex A will only reach vertices reachable by following directed edges forward from A. In-degree and out-degree are separate concepts. Cycle detection, topological sort, and strongly connected component algorithms all depend on the directional nature of the edges being correctly encoded in the list.</p>
+
+<p>A common practical extension is a <strong>weighted graph</strong>, where each neighbor entry stores not just the vertex identifier but also the edge weight. This is typically done by storing objects instead of raw vertex identifiers:</p>
+
+<pre><code>// Weighted adjacency list using objects
+addWeightedEdge(v1, v2, weight) {
+  this.adjacencyList[v1].push({ node: v2, weight });
+  this.adjacencyList[v2].push({ node: v1, weight });
+}
+
+// Example
+g.addWeightedEdge('A', 'B', 4);
+// adjacencyList['A'] = [{ node: 'B', weight: 4 }]
+// adjacencyList['B'] = [{ node: 'A', weight: 4 }]
+</code></pre>
+
+<p>This pattern is used directly in Dijkstra's algorithm and Prim's algorithm, where the weight determines which edge to explore next.</p>
+
+<p><strong>When to Choose an Adjacency List</strong></p>
+
+<p>The adjacency list is the right default choice for the vast majority of graph problems. The decision framework is nuanced, but the following guidelines cover most scenarios:</p>
+
+<ul>
+  <li><strong>Use an adjacency list when the graph is sparse.</strong> If E is much smaller than V², the list will use a fraction of the memory that a matrix would require. Social networks, file system dependency graphs, web crawl graphs, and transportation networks are almost always sparse.</li>
+  <li><strong>Use an adjacency list when you need to traverse neighbors frequently.</strong> BFS and DFS both run in O(V + E) time on an adjacency list, which is theoretically optimal. The same algorithms on a matrix run in O(V²), which is wasteful when edges are sparse.</li>
+  <li><strong>Use an adjacency matrix when constant-time edge queries are critical.</strong> If your algorithm repeatedly checks arbitrary (u, v) pairs for edge existence — as in certain dynamic programming formulations or dense relational computations — the O(1) matrix lookup justifies the O(V²) space cost.</li>
+  <li><strong>Use an adjacency matrix when the graph is dense.</strong> If nearly every pair of vertices is connected, the list offers no meaningful space saving and may add overhead from pointer indirection and array object management.</li>
+  <li><strong>Consider hybrid structures for special cases.</strong> Some applications use an adjacency list for traversal and a hash set per vertex for O(1) edge existence checks. This sacrifices some memory for the best of both worlds.</li>
+</ul>
+
+<p>In competitive programming and production systems alike, the adjacency list's combination of O(V + E) space, O(1) edge addition, and O(degree) neighbor iteration makes it the go-to representation. Mastering its implementation and trade-offs prepares you directly for implementing BFS, DFS, Dijkstra's shortest path, Prim's minimum spanning tree, and virtually every other fundamental graph algorithm.</p>
+        <div class="notes"><strong>Notes</strong>Describes how a graph can be stored as a collection of lists, each mapping a vertex to its neighbors. Contrasts this approach with the adjacency matrix and highlights scenarios where it is more efficient.</div>
+      </div>
+    </details>
+  </main>
+
+<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
+</body></html>

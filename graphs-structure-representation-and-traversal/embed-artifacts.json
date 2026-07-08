@@ -10,6 +10,46 @@
     "type": "Page"
   },
   {
+    "title": "Implementing Graph Traversal in JavaScript",
+    "href": "content/Graphs_Structure_Representat_interactive.html",
+    "type": "Content"
+  },
+  {
+    "title": "Introduction to Graph Data Structures",
+    "href": "content/Graphs_Structure_Representat_interactive_topics_t1.html",
+    "type": "Content"
+  },
+  {
+    "title": "Directed and Undirected Graphs",
+    "href": "content/Graphs_Structure_Representat_interactive_topics_t2.html",
+    "type": "Content"
+  },
+  {
+    "title": "Adjacency Matrix Representation",
+    "href": "content/Graphs_Structure_Representat_interactive_topics_t3.html",
+    "type": "Content"
+  },
+  {
+    "title": "Adjacency List Representation",
+    "href": "content/Graphs_Structure_Representat_interactive_topics_t4.html",
+    "type": "Content"
+  },
+  {
+    "title": "Breadth-First Search (BFS)",
+    "href": "content/Graphs_Structure_Representat_interactive_topics_t5.html",
+    "type": "Content"
+  },
+  {
+    "title": "Depth-First Search (DFS)",
+    "href": "content/Graphs_Structure_Representat_interactive_topics_t6.html",
+    "type": "Content"
+  },
+  {
+    "title": "Implementing Graph Traversal in JavaScript",
+    "href": "content/Graphs_Structure_Representat_interactive_topics_t7.html",
+    "type": "Content"
+  },
+  {
     "title": "Graphs: Structure, Representation, and Traversal \u2014 Module Topics",
     "href": "content/module_topics.html",
     "type": "Content"

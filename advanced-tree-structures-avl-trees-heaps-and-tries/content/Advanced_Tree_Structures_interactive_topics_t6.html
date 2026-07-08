@@ -1,0 +1,274 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trie Structures for String Storage and Retrieval</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+  <style>
+    body { padding-left: 1.1rem; padding-right: 1.1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid rgba(128,128,128,.45); padding: .45em .7em; text-align: left; vertical-align: top; }
+    thead th { background: rgba(128,128,128,.18); font-weight: 600; }
+    tbody tr:nth-child(even) { background: rgba(128,128,128,.08); }
+    a.topic-detail-link { text-decoration: underline; }
+  </style>
+  <style>
+    summary.slide-header { list-style: none; }
+    summary.slide-header::-webkit-details-marker { display: none; }
+    details.slide-card[open] > .slide-body { display: block; }
+    details.slide-card[open] .chevron { transform: rotate(90deg); }
+    @media print { details.slide-card > .slide-body { display: block !important; } .chevron { display: none; } }
+  </style>
+</head><body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Advanced Tree Structures: AVL Trees, Heaps, and Tries</a></div>
+  <header>
+    <h1>Trie Structures for String Storage and Retrieval</h1>
+  </header><main>
+    <details class="slide-card" open>
+      <summary class="slide-header"><span class="slide-num">1</span><h2>Trie Structures for String Storage and Retrieval</h2><span class="chevron">▶</span></summary>
+      <div class="slide-body">
+        <p>A <strong>trie</strong> (pronounced "try," derived from the word <em>retrieval</em>) is a specialized tree data structure designed specifically for storing and searching strings character by character. Unlike general-purpose trees or hash tables, a trie exploits the internal structure of strings themselves — their individual characters — to organize data in a way that makes certain operations, particularly prefix-based searches, extraordinarily efficient. Understanding tries requires shifting your mental model away from comparing whole strings and toward thinking about strings as sequences of characters that share common beginnings.</p>
+
+<p>To appreciate why tries exist, consider the problem of storing a large dictionary of English words and answering queries like "give me every word that starts with <em>pre</em>." A hash table can tell you instantly whether an exact word exists, but it has no practical way to enumerate all words sharing a prefix without scanning the entire table. A balanced binary search tree can support prefix queries, but only by doing comparisons on whole strings and walking a range of sorted entries. A trie, by contrast, makes prefix queries a natural, first-class operation because words that share a prefix literally share the same nodes in the tree.</p>
+
+<p><strong>What Is a Trie?</strong></p>
+
+<p>A trie is a rooted tree in which every edge is labeled with a character, and every path from the root down to a particular node spells out some string — the concatenation of the edge labels along that path. The root node represents the empty string. Its children represent single-character strings, their children represent two-character strings, and so on. Every stored string corresponds to a path from the root to some node that is specially marked as a <em>complete word</em>.</p>
+
+<p>The defining power of a trie comes from <strong>shared prefixes</strong>. If you store the words <em>apple</em>, <em>apply</em>, and <em>application</em>, all three share the prefix <em>appl</em>, so those first four characters correspond to a single chain of nodes in the trie, not three separate chains. The memory and time savings accumulate enormously when storing thousands of words drawn from natural language, because natural language is highly redundant at the prefix level. Words like <em>pre-</em>, <em>un-</em>, <em>inter-</em>, and <em>com-</em> appear as prefixes for hundreds of entries, and all of those entries share the same initial nodes.</p>
+
+<p>A critical detail is the <strong>end-of-word marker</strong>. Consider storing the words <em>car</em> and <em>card</em>. After inserting <em>car</em>, you have a path root → c → a → r. When you later insert <em>card</em>, you extend that path to root → c → a → r → d. Without an end-of-word marker, you would have no way to tell whether <em>car</em> was actually stored or merely exists as a prefix of <em>card</em>. The end-of-word flag on the node for <em>r</em> signals "a complete stored string ends here," while the node for <em>d</em> independently signals "a complete stored string ends here too." This allows the trie to simultaneously represent both strings without ambiguity.</p>
+
+<p><strong>Trie Node Structure</strong></p>
+
+<p>Each node in a trie holds two essential pieces of information: a collection of <strong>child pointers</strong> indexed by character, and a <strong>boolean end-of-word flag</strong>. The child pointers are the mechanism by which traversal happens; the flag is the mechanism by which complete strings are distinguished from mere prefixes.</p>
+
+<p>The most straightforward implementation uses a fixed-size array of child pointers, one slot per character in the alphabet. For lowercase English letters, each node holds an array of 26 pointers. Accessing the child for a given character then becomes a simple array lookup: <code>children[c - 'a']</code>, which is an O(1) operation. A <code>null</code> (or <code>None</code>) pointer in a slot means no stored string passes through this node using that character at this depth.</p>
+
+<p>Here is a typical node structure in Python:</p>
+
+<pre><code>class TrieNode:
+    def __init__(self):
+        self.children = [None] * 26   # one slot per lowercase letter
+        self.is_end_of_word = False
+</code></pre>
+
+<p>And an equivalent in Java:</p>
+
+<pre><code>class TrieNode {
+    TrieNode[] children = new TrieNode[26];
+    boolean isEndOfWord = false;
+}
+</code></pre>
+
+<p>The fixed-array approach is simple and fast, but it does carry a memory cost: every node allocates space for 26 pointers regardless of how many children it actually has. For sparse tries — where nodes typically have only one or two children — this wastes significant memory. An alternative is to use a <strong>hash map</strong> as the children collection, storing only the characters that actually have children:</p>
+
+<pre><code>class TrieNode:
+    def __init__(self):
+        self.children = {}            # maps char -> TrieNode
+        self.is_end_of_word = False
+</code></pre>
+
+<p>The hash-map approach is more memory-efficient for sparse data but adds a small constant-time overhead for each child lookup. For dense data — such as storing all words in a language — the fixed array is often preferable.</p>
+
+<p>The end-of-word flag is conceptually simple but important to get right. It is set to <code>True</code> only on the node corresponding to the <em>last character</em> of a stored word. Intermediate nodes have the flag set to <code>False</code> unless they also happen to be the last character of some other, shorter stored word. This dual role — being an intermediate node for one word and a terminal node for another — is exactly what happens with word pairs like <em>be</em> and <em>bed</em>, or <em>in</em> and <em>inner</em>.</p>
+
+<p><strong>Trie Construction and Insertion</strong></p>
+
+<p>Inserting a string into a trie is a straightforward traversal process. You start at the root and, for each character in the string, attempt to follow the child pointer corresponding to that character. If the pointer exists, you move to that child node and process the next character. If the pointer is <code>null</code>, you create a new node, attach it as a child, and then move into it. After processing every character in the string, you set the end-of-word flag on the node you are currently at.</p>
+
+<p>Here is a complete Python implementation of a trie with insertion:</p>
+
+<pre><code>class Trie:
+    def __init__(self):
+        self.root = TrieNode()
+
+    def insert(self, word: str) -> None:
+        node = self.root
+        for char in word:
+            index = ord(char) - ord('a')
+            if node.children[index] is None:
+                node.children[index] = TrieNode()
+            node = node.children[index]
+        node.is_end_of_word = True
+</code></pre>
+
+<p>To make this concrete, consider inserting the words <em>bat</em>, <em>bad</em>, and <em>ball</em> in sequence into an empty trie.</p>
+
+<ul>
+  <li><strong>Insert "bat":</strong> Starting at the root, <em>b</em> has no child, so create node B. From B, <em>a</em> has no child, so create node A. From A, <em>t</em> has no child, so create node T. Set T's end-of-word flag to <code>True</code>. The trie now contains one path: root → B → A → T*.</li>
+  <li><strong>Insert "bad":</strong> Starting at the root, <em>b</em> already has a child (node B), so follow it. From B, <em>a</em> already has a child (node A), so follow it. From A, <em>d</em> has no child, so create node D. Set D's end-of-word flag to <code>True</code>. Now A has two children: T* and D*.</li>
+  <li><strong>Insert "ball":</strong> Starting at the root, follow B (exists), follow A (exists). From A, <em>l</em> has no child, so create node L1. From L1, <em>l</em> has no child, so create node L2. Set L2's end-of-word flag to <code>True</code>. Now A has three children: T*, D*, and L1.</li>
+</ul>
+
+<p>The key observation is that the nodes B and A are shared across all three words. No duplication occurs for the common prefix <em>ba</em>. The branching only happens at the third character, where the words diverge.</p>
+
+<p>The time complexity of insertion is <strong>O(m)</strong>, where m is the length of the string being inserted. You perform exactly m character lookups and at most m node creations. This is independent of how many strings are already in the trie — you never compare against existing strings, only follow or create edges.</p>
+
+<p><strong>Trie Lookup and Search Operations</strong></p>
+
+<p>Searching for a string in a trie is even simpler than insertion, because you never need to create nodes — you only follow existing child pointers. Starting at the root, for each character in the query string, attempt to follow the corresponding child pointer. If at any point the child pointer is <code>null</code>, the string is not present in the trie and you can immediately return <code>False</code>. If you successfully follow all character pointers and arrive at a final node, you check the end-of-word flag. If it is <code>True</code>, the exact string is stored. If it is <code>False</code>, the string is a prefix of one or more stored strings but is not itself a stored word.</p>
+
+<pre><code>def search(self, word: str) -> bool:
+    node = self.root
+    for char in word:
+        index = ord(char) - ord('a')
+        if node.children[index] is None:
+            return False
+        node = node.children[index]
+    return node.is_end_of_word
+</code></pre>
+
+<p>A closely related operation is <strong>prefix checking</strong> — determining whether any stored string begins with a given prefix. This is identical to the search procedure except that you do not check the end-of-word flag at the end; you only verify that traversal succeeds for all characters of the prefix:</p>
+
+<pre><code>def starts_with(self, prefix: str) -> bool:
+    node = self.root
+    for char in prefix:
+        index = ord(char) - ord('a')
+        if node.children[index] is None:
+            return False
+        node = node.children[index]
+    return True   # traversal succeeded; some stored word has this prefix
+</code></pre>
+
+<p>To illustrate the difference, suppose the trie contains <em>card</em> but not <em>car</em>. A search for <em>car</em> traverses root → C → A → R, finds that R's end-of-word flag is <code>False</code>, and returns <code>False</code>. A prefix-check for <em>car</em> traverses the same path but returns <code>True</code> because the traversal itself succeeded — confirming that some stored string does begin with <em>car</em>.</p>
+
+<p>The time complexity of lookup is <strong>O(m)</strong>, where m is the length of the search string. Crucially, this complexity is completely independent of how many strings are stored in the trie. Whether the trie holds 10 words or 10 million words, searching for a 5-character string requires at most 5 steps. This is a fundamental advantage over structures like balanced binary search trees, whose search time is O(m log n), where the log n factor comes from the number of comparisons needed to locate the right string.</p>
+
+<p><strong>Prefix-Based Searching</strong></p>
+
+<p>One of the most powerful features of a trie is its natural support for <strong>prefix-based retrieval</strong> — collecting all stored strings that begin with a given prefix. This operation is the foundation of autocomplete systems, spell checkers, search engines, and IP routing tables.</p>
+
+<p>The algorithm has two phases. In the first phase, you traverse from the root to the node representing the end of the prefix, following character pointers exactly as in the lookup operation. If traversal fails at any point, no stored string has that prefix and you return an empty list. In the second phase, you perform a <strong>depth-first traversal</strong> starting from the node you reached, collecting the suffix of every path that leads to an end-of-word node, and prepending the prefix to each suffix to form the complete words.</p>
+
+<pre><code>def find_all_with_prefix(self, prefix: str) -> list:
+    node = self.root
+    # Phase 1: navigate to the end of the prefix
+    for char in prefix:
+        index = ord(char) - ord('a')
+        if node.children[index] is None:
+            return []           # prefix not present at all
+        node = node.children[index]
+    # Phase 2: DFS to collect all complete words below this node
+    results = []
+    self._dfs(node, prefix, results)
+    return results
+
+def _dfs(self, node: TrieNode, current: str, results: list) -> None:
+    if node.is_end_of_word:
+        results.append(current)
+    for i in range(26):
+        if node.children[i] is not None:
+            char = chr(i + ord('a'))
+            self._dfs(node.children[i], current + char, results)
+</code></pre>
+
+<p>Consider a trie containing <em>apple</em>, <em>apply</em>, <em>application</em>, <em>apt</em>, and <em>banana</em>. A prefix search for <em>app</em> would navigate root → A → P → P and then perform DFS from that third P node, finding <em>apple</em>, <em>apply</em>, and <em>application</em> but not <em>apt</em> (which branched off at the second character) and not <em>banana</em> (which branched off at the root).</p>
+
+<p>The time complexity of prefix search is <strong>O(m + k)</strong>, where m is the length of the prefix and k is the total number of characters in all the matched strings returned. The m term accounts for the first-phase traversal, and the k term accounts for the DFS that visits every node on every matching path. This is optimal — any algorithm returning k characters of output must take at least O(k) time.</p>
+
+<p>Compare this with a hash table: to perform the same prefix search, you would have to iterate over all stored strings and check whether each one begins with the prefix, resulting in O(n × m) time where n is the number of stored strings. Tries make prefix queries fast precisely because the shared-prefix structure of the tree mirrors the shared-prefix structure of the data.</p>
+
+<p><strong>Performance Trade-offs of Tries</strong></p>
+
+<p>Tries offer compelling time-complexity guarantees, but they are not without costs. Understanding both sides of the trade-off is essential for choosing the right data structure.</p>
+
+<p>On the time side, tries excel across all three primary operations:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Operation</th>
+      <th>Trie</th>
+      <th>Hash Table</th>
+      <th>Balanced BST</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Insert string of length m</td>
+      <td>O(m)</td>
+      <td>O(m) average</td>
+      <td>O(m log n)</td>
+    </tr>
+    <tr>
+      <td>Exact-match lookup</td>
+      <td>O(m)</td>
+      <td>O(m) average</td>
+      <td>O(m log n)</td>
+    </tr>
+    <tr>
+      <td>Prefix search (returning k results)</td>
+      <td>O(m + k)</td>
+      <td>O(n × m)</td>
+      <td>O(m log n + k)</td>
+    </tr>
+    <tr>
+      <td>Lexicographic enumeration</td>
+      <td>O(total chars)</td>
+      <td>Not supported natively</td>
+      <td>O(n × m)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>For exact-match lookups, a hash table may be <em>faster in practice</em> despite having the same asymptotic complexity, because a good hash function computes a single hash value and performs one or two memory accesses, while a trie requires m sequential memory accesses (one per character). Modern CPUs with cache hierarchies can make this gap significant for short strings.</p>
+
+<p>On the space side, the main concern is the <strong>memory footprint per node</strong>. With a fixed 26-pointer array, each node consumes 26 pointer-sized slots. For a trie storing n strings of average length m, the theoretical maximum number of nodes is O(n × m), and the total memory is O(alphabet_size × n × m). For English words with a 26-character alphabet, this is manageable. For Unicode strings with thousands of possible characters, a fixed-array trie becomes impractical, and hash-map children or alternative encodings are required.</p>
+
+<p>Several <strong>compressed trie variants</strong> address the space problem:</p>
+
+<ul>
+  <li><strong>Compressed trie (Patricia trie / radix tree):</strong> Nodes that have only a single child are merged with their child, and the edge is labeled with a string (possibly multiple characters) rather than a single character. For example, if the only word starting with <em>xyz</em> is <em>xylophone</em>, instead of three nodes for x, y, z, you might have a single edge labeled <em>xyz</em> leading directly to the node where branching occurs. This dramatically reduces the number of nodes for sparse tries.</li>
+  <li><strong>Ternary search trie (TST):</strong> Each node stores a single character and has three children: one for characters less than the stored character, one for equal (go deeper), and one for greater. This blends the space efficiency of a BST with some of the prefix-search advantages of a trie.</li>
+  <li><strong>Double-array trie:</strong> A highly space-efficient representation that encodes the trie into two integer arrays, achieving very small memory footprints at the cost of more complex construction logic. Used in production NLP tools like MeCab.</li>
+</ul>
+
+<p>Despite these trade-offs, the standard trie remains one of the most important data structures in string-processing applications. Autocomplete engines in search bars, DNS lookup caches, IP routing tables using longest-prefix matching, and spell-check dictionaries all rely on trie-like structures because the alternative — scanning or sorting string lists — does not scale to the size of real-world data. The trie's fundamental insight — that strings sharing a prefix can share nodes — turns a potentially O(n) prefix-enumeration problem into an O(m + k) one, and that improvement underlies much of the performance of modern text-processing software.</p>
+        <div class="notes"><strong>Notes</strong>Covers all listed subtopics in depth: trie concept and prefix sharing, node structure with fixed-array and hash-map variants, insertion algorithm with step-by-step example, lookup and prefix-check operations with code, prefix-based DFS retrieval with code, and performance trade-offs including a comparison table and compressed trie variants.</div>
+      </div>
+    </details>
+  </main>
+
+<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
+</body></html>

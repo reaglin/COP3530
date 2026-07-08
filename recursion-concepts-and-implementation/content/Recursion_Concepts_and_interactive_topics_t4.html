@@ -1,0 +1,284 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Implementing Factorial with Recursion</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+  <style>
+    body { padding-left: 1.1rem; padding-right: 1.1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid rgba(128,128,128,.45); padding: .45em .7em; text-align: left; vertical-align: top; }
+    thead th { background: rgba(128,128,128,.18); font-weight: 600; }
+    tbody tr:nth-child(even) { background: rgba(128,128,128,.08); }
+    a.topic-detail-link { text-decoration: underline; }
+  </style>
+  <style>
+    summary.slide-header { list-style: none; }
+    summary.slide-header::-webkit-details-marker { display: none; }
+    details.slide-card[open] > .slide-body { display: block; }
+    details.slide-card[open] .chevron { transform: rotate(90deg); }
+    @media print { details.slide-card > .slide-body { display: block !important; } .chevron { display: none; } }
+  </style>
+</head><body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Recursion: Concepts and Implementation</a></div>
+  <header>
+    <h1>Implementing Factorial with Recursion</h1>
+  </header><main>
+    <details class="slide-card" open>
+      <summary class="slide-header"><span class="slide-num">1</span><h2>Implementing Factorial with Recursion</h2><span class="chevron">▶</span></summary>
+      <div class="slide-body">
+        <p>Recursion is one of the most elegant problem-solving techniques in programming, and the factorial function is the classic starting point for understanding it. The reason factorial works so well as an introductory example is that its <em>mathematical definition is itself recursive</em> — the formula for computing factorial already describes the problem in terms of a smaller version of itself. This means the leap from mathematics to code is surprisingly short, and studying it carefully reveals the general pattern you can apply to countless other recursive problems.</p>
+
+<p>Before writing a single line of code, it is worth understanding exactly what factorial means mathematically and why that definition has two distinct parts — because those two parts map directly onto the two essential pieces of every recursive function.</p>
+
+<p><strong>The Mathematical Definition of Factorial</strong></p>
+
+<p>The factorial of a non-negative integer <em>n</em>, written as <em>n!</em>, is the product of every positive integer from 1 up to and including <em>n</em>. For example:</p>
+
+<ul>
+  <li><strong>5!</strong> = 5 × 4 × 3 × 2 × 1 = 120</li>
+  <li><strong>4!</strong> = 4 × 3 × 2 × 1 = 24</li>
+  <li><strong>3!</strong> = 3 × 2 × 1 = 6</li>
+  <li><strong>1!</strong> = 1</li>
+  <li><strong>0!</strong> = 1 (by mathematical convention)</li>
+</ul>
+
+<p>The formal recursive definition has exactly two parts:</p>
+
+<ul>
+  <li><strong>Base case:</strong> 0! = 1</li>
+  <li><strong>Recursive rule:</strong> n! = n × (n − 1)! for all n &gt; 0</li>
+</ul>
+
+<p>Notice what the recursive rule says: to find the factorial of <em>n</em>, you multiply <em>n</em> by the factorial of the number that is one less than <em>n</em>. That means the definition of factorial <em>refers to itself</em>. This is exactly what recursion means in programming — a function that calls itself. The mathematical structure is not just an analogy; it is a blueprint for the code.</p>
+
+<p>To make this concrete, consider how 4! expands step by step using the recursive rule:</p>
+
+<ul>
+  <li>4! = 4 × 3!</li>
+  <li>3! = 3 × 2!</li>
+  <li>2! = 2 × 1!</li>
+  <li>1! = 1 × 0!</li>
+  <li>0! = 1 ← this is the base case; no further expansion needed</li>
+</ul>
+
+<p>Each step reduces the problem to a slightly smaller version of itself, until the problem becomes small enough to answer directly. That smallest, directly-answerable case is the base case.</p>
+
+<p><strong>Identifying the Base Case</strong></p>
+
+<p>The base case is the most critical part of any recursive function. It is the condition under which the function stops calling itself and returns an answer directly. Without a base case, a recursive function would call itself forever, eventually crashing the program with a stack overflow error.</p>
+
+<p>For factorial, the base case is unambiguous: when <em>n</em> equals 0, the answer is 1. This is the smallest subproblem that requires no further decomposition. You do not need to compute anything — you simply return the known value.</p>
+
+<p>In code, the base case becomes an <code>if</code> statement placed at the very top of the function, before any recursive call is made. This placement is important: every time the function is invoked, the very first thing it does is check whether it has reached the base case. If it has, it returns immediately. If it has not, it proceeds to the recursive step. This ordering ensures the function cannot accidentally skip the stopping condition.</p>
+
+<p>A useful way to think about the base case is as a safety net. Every recursive call you make is a step toward this net — each call reduces <em>n</em> by one, getting closer and closer to zero, where the net catches the fall and starts returning values back up.</p>
+
+<p><strong>Writing the Recursive Call</strong></p>
+
+<p>Once the base case is handled, the recursive case encodes the mathematical rule: <em>n! = n × (n − 1)!</em>. In code, this becomes a <code>return</code> statement that multiplies <em>n</em> by the result of calling the function again with <em>n − 1</em>.</p>
+
+<p>Two things happen simultaneously in this one line:</p>
+
+<ul>
+  <li>The problem size is <strong>reduced</strong> by passing <code>n - 1</code> as the argument to the recursive call. This is what guarantees progress toward the base case.</li>
+  <li>The result of that recursive call is <strong>combined</strong> with the current value of <em>n</em> by multiplication. This is what accumulates the final answer across all the calls.</li>
+</ul>
+
+<p>The <code>return</code> keyword is essential here. Each stack frame must pass its computed value back to the frame that called it. If you omit <code>return</code> before the recursive call, the accumulated product is lost and the function returns <code>undefined</code> — a common beginner mistake.</p>
+
+<p><strong>Complete Factorial Function in JavaScript</strong></p>
+
+<p>Bringing these ideas together, the complete recursive factorial function in JavaScript looks like this:</p>
+
+<pre><code>function factorial(n) {
+  if (n === 0) {
+    return 1;
+  }
+  return n * factorial(n - 1);
+}</code></pre>
+
+<p>This function is remarkably concise. Let's examine each part:</p>
+
+<ul>
+  <li><strong>Function signature:</strong> <code>function factorial(n)</code> — accepts a single non-negative integer parameter.</li>
+  <li><strong>Base case:</strong> <code>if (n === 0) { return 1; }</code> — directly returns the known answer when no further computation is needed.</li>
+  <li><strong>Recursive case:</strong> <code>return n * factorial(n - 1);</code> — encodes the mathematical rule, reducing the problem and combining results.</li>
+</ul>
+
+<p>No loops, no counters, no external variables, no accumulated totals. The function is entirely self-contained. The call stack itself serves as the implicit data structure that remembers intermediate values across invocations.</p>
+
+<p>You can test it immediately:</p>
+
+<pre><code>console.log(factorial(5));  // 120
+console.log(factorial(4));  // 24
+console.log(factorial(0));  // 1
+console.log(factorial(1));  // 1</code></pre>
+
+<p><strong>Tracing Execution Through the Call Stack</strong></p>
+
+<p>To truly understand what the function is doing, it helps to trace its execution step by step. Consider calling <code>factorial(4)</code>. Here is what happens in the call stack:</p>
+
+<p><em>Calls descending — frames being pushed onto the stack:</em></p>
+
+<ul>
+  <li><code>factorial(4)</code> is called. <em>n</em> is 4, not 0, so it calls <code>factorial(3)</code> and waits.</li>
+  <li><code>factorial(3)</code> is called. <em>n</em> is 3, not 0, so it calls <code>factorial(2)</code> and waits.</li>
+  <li><code>factorial(2)</code> is called. <em>n</em> is 2, not 0, so it calls <code>factorial(1)</code> and waits.</li>
+  <li><code>factorial(1)</code> is called. <em>n</em> is 1, not 0, so it calls <code>factorial(0)</code> and waits.</li>
+  <li><code>factorial(0)</code> is called. <em>n</em> is 0 — <strong>base case reached</strong>. Returns 1 immediately.</li>
+</ul>
+
+<p><em>Returns ascending — frames being popped off the stack:</em></p>
+
+<ul>
+  <li><code>factorial(1)</code> receives 1 from <code>factorial(0)</code>. Computes 1 × 1 = 1. Returns 1.</li>
+  <li><code>factorial(2)</code> receives 1 from <code>factorial(1)</code>. Computes 2 × 1 = 2. Returns 2.</li>
+  <li><code>factorial(3)</code> receives 2 from <code>factorial(2)</code>. Computes 3 × 2 = 6. Returns 6.</li>
+  <li><code>factorial(4)</code> receives 6 from <code>factorial(3)</code>. Computes 4 × 6 = 24. Returns 24.</li>
+</ul>
+
+<p>The final result, 24, is delivered to whoever called <code>factorial(4)</code> in the first place. The table below summarizes each stack frame and its computed return value:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Stack Frame</th>
+      <th>Value of n</th>
+      <th>Waiting for</th>
+      <th>Receives</th>
+      <th>Computes</th>
+      <th>Returns</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>factorial(4)</td>
+      <td>4</td>
+      <td>factorial(3)</td>
+      <td>6</td>
+      <td>4 × 6</td>
+      <td>24</td>
+    </tr>
+    <tr>
+      <td>factorial(3)</td>
+      <td>3</td>
+      <td>factorial(2)</td>
+      <td>2</td>
+      <td>3 × 2</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <td>factorial(2)</td>
+      <td>2</td>
+      <td>factorial(1)</td>
+      <td>1</td>
+      <td>2 × 1</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>factorial(1)</td>
+      <td>1</td>
+      <td>factorial(0)</td>
+      <td>1</td>
+      <td>1 × 1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>factorial(0)</td>
+      <td>0</td>
+      <td><em>none (base case)</em></td>
+      <td>—</td>
+      <td>—</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Each stack frame is a separate execution context with its own local copy of <em>n</em>. When <code>factorial(3)</code> is executing, it does not interfere with <code>factorial(4)</code>'s value of <em>n</em> — they are completely independent. The JavaScript engine keeps track of all these paused frames automatically. Once the base case returns, each frame resumes exactly where it left off, picks up the return value it was waiting for, completes its multiplication, and returns its own result.</p>
+
+<p>This process of frames accumulating on the way down and resolving on the way back up is the essence of how recursion computes results through the call stack.</p>
+
+<p><strong>Connecting Mathematical Structure to Code Structure</strong></p>
+
+<p>One of the most valuable insights from the factorial example is how directly the mathematical definition translates into code structure. This correspondence is not a coincidence — it is the reason recursion is such a natural tool for problems that are defined recursively in mathematics or that have a naturally hierarchical structure.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Mathematical Definition</th>
+      <th>Code Equivalent</th>
+      <th>Purpose</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0! = 1</td>
+      <td><code>if (n === 0) return 1;</code></td>
+      <td>Stops recursion; provides a direct answer</td>
+    </tr>
+    <tr>
+      <td>n! = n × (n−1)!</td>
+      <td><code>return n * factorial(n - 1);</code></td>
+      <td>Reduces problem size; combines results</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>When you are faced with a new problem and want to know if recursion is a good fit, ask yourself two questions:</p>
+
+<ul>
+  <li><strong>Is there a base case?</strong> That is, is there a version of the problem so small that it can be answered directly, without further reduction?</li>
+  <li><strong>Can the problem be expressed in terms of a smaller version of itself?</strong> That is, does solving the big problem reduce to solving a slightly smaller version of the same problem?</li>
+</ul>
+
+<p>If both answers are yes, you have a candidate for a recursive solution. You identify the base case and write an <code>if</code> statement for it. You identify the recursive rule and write a <code>return</code> statement for it. The factorial function demonstrates both steps with maximum clarity because the mathematical definition already answers both questions explicitly.</p>
+
+<p>This template — check for the base case first, then return a combination of the current value and a recursive call on a smaller input — reappears in recursive solutions to problems like computing Fibonacci numbers, traversing tree structures, implementing binary search, and sorting algorithms like merge sort and quicksort. Mastering it with factorial gives you the foundational intuition needed to recognize and implement recursion in far more complex contexts.</p>
+        <div class="notes"><strong>Notes</strong>Consider encouraging learners to manually trace factorial(3) or factorial(5) with pencil and paper, writing out each stack frame as a box with its local value of n, before running the code. This kinesthetic exercise dramatically solidifies call-stack intuition. Also worth noting: the function as written does not guard against negative inputs or non-integer inputs; in production code you would add input validation, but omitting it here keeps the focus on the recursive structure itself.</div>
+      </div>
+    </details>
+  </main>
+
+<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
+</body></html>

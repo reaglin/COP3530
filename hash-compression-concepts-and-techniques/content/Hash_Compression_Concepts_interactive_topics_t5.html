@@ -1,0 +1,251 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comparing and Selecting Compression Methods</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+  <style>
+    body { padding-left: 1.1rem; padding-right: 1.1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid rgba(128,128,128,.45); padding: .45em .7em; text-align: left; vertical-align: top; }
+    thead th { background: rgba(128,128,128,.18); font-weight: 600; }
+    tbody tr:nth-child(even) { background: rgba(128,128,128,.08); }
+    a.topic-detail-link { text-decoration: underline; }
+  </style>
+  <style>
+    summary.slide-header { list-style: none; }
+    summary.slide-header::-webkit-details-marker { display: none; }
+    details.slide-card[open] > .slide-body { display: block; }
+    details.slide-card[open] .chevron { transform: rotate(90deg); }
+    @media print { details.slide-card > .slide-body { display: block !important; } .chevron { display: none; } }
+  </style>
+</head><body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Hash Compression: Concepts and Techniques</a></div>
+  <header>
+    <h1>Comparing and Selecting Compression Methods</h1>
+  </header><main>
+    <details class="slide-card" open>
+      <summary class="slide-header"><span class="slide-num">1</span><h2>Comparing and Selecting Compression Methods</h2><span class="chevron">▶</span></summary>
+      <div class="slide-body">
+        <p>Choosing the right compression method for a hash table is one of the most consequential decisions in designing a data structure that will perform well under real-world conditions. A compression function takes the output of a hash function — typically a large integer — and maps it into the valid index range of the underlying array. How well it does that mapping determines whether lookups run in near-constant time or degrade into something closer to linear search. To make an informed choice, you need to examine at least six dimensions: how efficiently a method uses available slots, how uniformly it distributes keys, how complex it is to implement and maintain, what trade-offs it forces you to make, whether it fits your specific use case, and how you validate the choice empirically before committing to it.</p>
+
+<p><strong>Understanding Compression Efficiency</strong></p>
+
+<p>Compression efficiency is a measure of how well a method spreads keys across all available indices in the table. An ideal compression function behaves almost like a random mapping: given any key, the resulting index is equally likely to be any slot in the table. When this ideal is approximated, the table's load is balanced and no single bucket accumulates a disproportionate share of the inserted keys.</p>
+
+<p>The <strong>load factor</strong> λ (lambda) is the ratio of the number of stored entries <em>n</em> to the total number of slots <em>m</em>:</p>
+
+<pre><code>λ = n / m</code></pre>
+
+<p>Under the assumption of a perfectly uniform compression function, the expected number of keys landing in any single bucket equals λ. When a compression function is not efficient, the actual distribution deviates from this ideal: some buckets receive many more entries than λ predicts, while others remain empty. Those overloaded buckets are the source of collisions, and each collision forces the system to spend additional time resolving it — either by probing for an empty slot (open addressing) or by traversing a linked list or tree (separate chaining).</p>
+
+<p>Consider a table of size <em>m</em> = 10 and a poor compression function that maps every key to an index in the range 0–3 (perhaps because the hash outputs are always multiples of a number that divides into only a few distinct remainders). Even with only five entries, three of the ten buckets would hold all the data, giving those buckets effective load factors of 1.67 while the other seven sit empty. Lookups in the crowded buckets take much longer than the theoretical O(1), and the wasted empty slots mean memory is squandered.</p>
+
+<p>A high collision rate is therefore the clearest symptom of a compression method that fails the efficiency test. It cascades into more expensive collision resolution, longer probe sequences, and ultimately a hash table whose performance approaches that of a linked list in the worst case.</p>
+
+<p><strong>Evaluating Distribution Uniformity</strong></p>
+
+<p>Uniformity is closely related to efficiency but focuses specifically on whether the mapping produces index values that are spread evenly rather than clustered. Even a function that uses all slots can still cluster: if most keys map to indices 0 through 10 in a table of 100 slots, the function is using all slots in principle but concentrating traffic in a small region in practice.</p>
+
+<p><strong>Clustering</strong> is particularly damaging in open-addressing schemes. When many keys hash to neighboring indices, probe sequences overlap and create long chains of occupied cells that slow every subsequent insertion and lookup nearby — a phenomenon called primary clustering. Separate chaining is less sensitive to spatial clustering but still suffers when many distinct keys share the same bucket.</p>
+
+<p>The choice of <strong>table size</strong> has a direct and often underestimated effect on uniformity. Consider the division method, where the compression function is:</p>
+
+<pre><code>index = hash(key) mod m</code></pre>
+
+<p>If <em>m</em> is a power of two (e.g., 128), then the modulo operation simply keeps the low-order bits of the hash value. Many practical hash functions produce outputs whose low-order bits are less random than their high-order bits — particularly when keys are integers with regular patterns such as even numbers or multiples of eight. The result is that many keys end up in the same small set of buckets. Choosing <em>m</em> to be a <strong>prime number</strong> largely eliminates this structural bias because a prime shares no common factors with typical key patterns, so the remainder after division cycles through indices more uniformly.</p>
+
+<p>For example, with <em>m</em> = 128 = 2⁷, all even integer keys produce even indices, leaving all odd-indexed buckets permanently empty — a catastrophic waste. With <em>m</em> = 127 (prime), even integer keys distribute across a wide range of indices because 127 is odd and shares no common factor with 2.</p>
+
+<p>To move beyond intuition, <strong>statistical testing</strong> can be applied to empirically measure uniformity. The <strong>chi-square (χ²) test</strong> is the most common approach. After inserting a representative sample of keys, you count the number of keys in each bucket and compare the observed distribution to the expected uniform distribution:</p>
+
+<pre><code>χ² = Σ (observed_i - expected_i)² / expected_i
+       for each bucket i</code></pre>
+
+<p>A χ² value close to <em>m</em> − 1 (the degrees of freedom) indicates good uniformity. A value much larger signals that some buckets are receiving significantly more keys than the uniform model predicts. Running this test against your actual key population — not a synthetic random dataset — is critical, because many compression methods perform admirably on random data but break down on structured, real-world keys.</p>
+
+<p><strong>Assessing Implementation Complexity</strong></p>
+
+<p>Performance is not the only criterion. A compression method that a development team cannot implement correctly, test thoroughly, or maintain over time introduces a different class of risk: subtle bugs that corrupt data or silently degrade performance in production.</p>
+
+<p>The <strong>division method</strong> is the simplest compression function in common use:</p>
+
+<pre><code>index = key mod m</code></pre>
+
+<p>It requires a single modulo operation, is trivial to implement in any language, and is easy to reason about. Its main risk is the selection of <em>m</em>: a poor choice (a power of two, a number with many small factors) can severely harm uniformity. But once a suitable prime is chosen, the method is reliable and fast. For most introductory applications and many production systems, this simplicity is a major advantage.</p>
+
+<p>The <strong>multiplication method</strong> offers better uniformity independence from the table size. It multiplies the key by a carefully chosen constant <em>A</em> (where 0 &lt; A &lt; 1), extracts the fractional part, and scales it:</p>
+
+<pre><code>index = floor(m × ((key × A) mod 1))</code></pre>
+
+<p>Knuth suggests A ≈ (√5 − 1) / 2 ≈ 0.6180339887 (the reciprocal of the golden ratio) as a value that produces especially good distribution. This method is somewhat harder to implement correctly in integer arithmetic, though bit-manipulation equivalents exist for fixed-width integers. It is more tolerant of non-prime table sizes, which can simplify memory management in systems where table sizes must be powers of two for alignment reasons.</p>
+
+<p><strong>Folding</strong> is used primarily for keys that are long or that have natural segment structure, such as phone numbers, IP addresses, or multi-word strings. The key is split into equal-sized segments, which are then combined (typically by addition or XOR) before the final compression step:</p>
+
+<pre><code># Example: fold a 12-digit key into three 4-digit parts
+key = 314159265358
+part1 = 3141
+part2 = 5926
+part3 = 5358
+folded = part1 + part2 + part3  # = 14425
+index = folded mod m</code></pre>
+
+<p>Folding ensures that all portions of a long key contribute to the final index, preventing the compression from ignoring significant portions of the key's information. However, it introduces decisions about segment size and combination operator, and it requires that the developer understand why those choices matter — adding both cognitive and maintenance overhead.</p>
+
+<p><strong>Polynomial hashing</strong>, often used for string keys, computes a weighted sum of character values:</p>
+
+<pre><code>hash = s[0]×aⁿ⁻¹ + s[1]×aⁿ⁻² + … + s[n-1]×a⁰  (mod m)</code></pre>
+
+<p>where <em>a</em> is a carefully chosen base (31, 37, and 53 are common for ASCII strings). This method distributes strings of similar characters well because each character's positional weight is distinct. But it requires understanding of modular arithmetic for integer overflow prevention, choosing an appropriate base, and sometimes applying a secondary compression step. It is substantially more complex to tune and debug than the division method.</p>
+
+<p>The team's decision should weigh whether the real-world performance gain from a complex method is worth the added development time, testing burden, and risk that a future maintainer will introduce a subtle error when modifying the compression logic.</p>
+
+<p><strong>Trade-Off Framework for Method Selection</strong></p>
+
+<p>No single compression method is universally optimal. The right choice depends on a structured comparison of what your application needs most. A practical framework proceeds in the following order:</p>
+
+<ul>
+  <li><strong>Identify the primary performance goal.</strong> Is the application latency-sensitive, where every microsecond of lookup time matters? Is memory efficiency the bottleneck, making it important to minimize wasted empty slots? Or is the priority collision minimization to keep worst-case lookups predictable? Naming the primary goal prevents the common mistake of optimizing for a secondary criterion at the expense of the most important one.</li>
+  <li><strong>Characterize the key distribution.</strong> Are keys random integers? Sequential integers? Variable-length strings? Structured data like timestamps or UUIDs? Some compression methods are robust across distributions; others perform well only on random data and degrade sharply when keys have patterns. The division method with a good prime handles most distributions reasonably well, but polynomial hashing with a well-chosen base dramatically outperforms it for string keys.</li>
+  <li><strong>Evaluate complexity vs. benefit.</strong> Construct a simple comparison table of candidate methods scored against your primary goal, implementation complexity, and distribution robustness. This makes the trade-off explicit and helps justify the decision to stakeholders or future maintainers.</li>
+  <li><strong>Document the decision and its rationale.</strong> Record not only what method was chosen but why — what alternatives were considered, what measurements supported the choice, and what assumptions about key distribution or access patterns underlie it. This documentation is invaluable when the system grows and someone must decide whether the original compression strategy still fits.</li>
+</ul>
+
+<table>
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th>Typical Uniformity</th>
+      <th>Implementation Complexity</th>
+      <th>Best Key Types</th>
+      <th>Sensitivity to Table Size</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Division (mod m)</td>
+      <td>Good with prime m</td>
+      <td>Very Low</td>
+      <td>Random integers</td>
+      <td>High — requires prime m</td>
+    </tr>
+    <tr>
+      <td>Multiplication</td>
+      <td>Good</td>
+      <td>Low–Medium</td>
+      <td>Integers, any distribution</td>
+      <td>Low — tolerates power-of-two sizes</td>
+    </tr>
+    <tr>
+      <td>Folding</td>
+      <td>Good for structured keys</td>
+      <td>Medium</td>
+      <td>Long fixed-format keys</td>
+      <td>Low</td>
+    </tr>
+    <tr>
+      <td>Polynomial Hashing</td>
+      <td>Excellent for strings</td>
+      <td>Medium–High</td>
+      <td>Variable-length strings</td>
+      <td>Low with good base choice</td>
+    </tr>
+    <tr>
+      <td>Universal Hashing</td>
+      <td>Excellent (probabilistic guarantee)</td>
+      <td>High</td>
+      <td>Adversarial or unknown distributions</td>
+      <td>Low</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Matching Methods to Use Cases</strong></p>
+
+<p>The abstract framework becomes concrete when applied to specific application profiles.</p>
+
+<p><strong>High-frequency, performance-critical applications</strong> — such as network packet routing tables, in-memory caches, or game engine asset registries — demand the absolute minimum computational overhead per lookup. Every clock cycle saved in the compression step multiplies across millions of operations per second. For these systems, the division method with a prime modulus is typically the right choice. A single modulo instruction executes in a handful of CPU cycles, and with a well-chosen prime the distribution is adequate for most key types. The simplicity also means fewer branch mispredictions and better CPU cache behavior.</p>
+
+<p>For example, a symbol table in a compiler that hashes short identifier strings (typically 1–20 characters) might use:</p>
+
+<pre><code>index = polynomial_hash(identifier) mod 1021  # 1021 is prime</code></pre>
+
+<p>This combines a string-sensitive hash with a fast prime modulus compression, giving both good distribution and minimal runtime cost.</p>
+
+<p><strong>Applications with long or variable-length keys</strong> — such as storing records indexed by full mailing addresses, genomic sequences, or multi-field composite keys — benefit from folding. A mailing address like "742 Evergreen Terrace, Springfield, IL 62701" contains far more information than any single 32-bit integer can capture without loss. Folding the string into overlapping or non-overlapping windows before compression ensures that the ZIP code, street number, and city name all influence the final index, reducing the chance that two superficially different addresses hash to the same bucket.</p>
+
+<p><strong>Applications with unknown or adversarial key distributions</strong> present the hardest problem. If an attacker can observe your hash function and craft keys that all map to the same bucket — a <strong>hash flooding</strong> attack — a simple deterministic compression method becomes a security vulnerability that can turn a web server's request-handling dictionary into an O(n) structure, causing a denial-of-service. In these contexts, <strong>universal hashing</strong> or its practical variant, randomized polynomial hashing (as used in Python's dictionary implementation with a random seed), provides a probabilistic guarantee: no matter what keys an adversary chooses, the expected number of collisions per bucket remains bounded. The added complexity is justified by the security and worst-case performance guarantee.</p>
+
+<p><strong>Iterative Evaluation and Testing</strong></p>
+
+<p>Selecting a compression method analytically is a starting point, not a final answer. The proof of a method's fitness comes from measurement against the actual data and access patterns of the application.</p>
+
+<p>The recommended process is to <strong>prototype multiple candidate methods</strong> and measure three quantities on realistic datasets:</p>
+
+<ul>
+  <li><strong>Collision rate:</strong> the fraction of insertions that land in an already-occupied bucket. A well-performing method should produce a collision rate close to the theoretical expectation λ = n/m.</li>
+  <li><strong>Lookup time:</strong> the average and worst-case time to retrieve a key. Average time reflects the distribution quality; worst-case time reveals whether any buckets have become severely overloaded.</li>
+  <li><strong>Memory usage:</strong> the overhead introduced by the collision resolution strategy (e.g., pointer chains in separate chaining, or wasted probed slots in open addressing) as influenced by the compression method's distribution quality.</li>
+</ul>
+
+<p>These measurements should be repeated across <strong>multiple table sizes</strong>. Some compression methods are highly sensitive to the relationship between the hash output range and the table size. The division method, for instance, can shift from excellent to poor behavior simply by changing <em>m</em> from a prime to a composite number. Testing across sizes also helps you understand how the method scales as the table grows due to rehashing — a critical consideration in dynamic hash tables that double in size when the load factor exceeds a threshold.</p>
+
+<p>A practical testing harness might look like this in pseudocode:</p>
+
+<pre><code>for method in [division, multiplication, folding, polynomial]:
+    for m in [97, 128, 101, 256, 509, 512]:
+        table = HashTable(size=m, compression=method)
+        for key in realistic_key_sample:
+            table.insert(key)
+        report(method, m, collision_rate(table), avg_lookup(table), memory(table))</code></pre>
+
+<p>Running such a harness against your actual key population — not a synthetic uniform random dataset — is essential. It is extremely common for a method to look good in textbook analysis (which assumes uniformly random keys) but to perform poorly on real data that has patterns, correlations, or skewed distributions.</p>
+
+<p>Finally, the compression strategy should be treated as a <strong>revisable decision</strong>. If the application's data changes — for example, a key-value store that initially handled short string keys begins receiving long binary blob identifiers — the original compression choice may no longer be appropriate. Building instrumentation into the hash table to monitor the live collision rate and bucket-length distribution makes it possible to detect degradation early and trigger a review of the compression strategy before performance visibly suffers for users.</p>
+        <div class="notes"><strong>Notes</strong>Provides a framework for evaluating trade-offs among compression strategies based on efficiency, uniformity, and implementation complexity. Guides students in choosing an appropriate method for a given use case.</div>
+      </div>
+    </details>
+  </main>
+
+<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
+</body></html>

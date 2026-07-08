@@ -1,0 +1,301 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AVL Trees and Self-Balancing Mechanisms</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+  <style>
+    body { padding-left: 1.1rem; padding-right: 1.1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid rgba(128,128,128,.45); padding: .45em .7em; text-align: left; vertical-align: top; }
+    thead th { background: rgba(128,128,128,.18); font-weight: 600; }
+    tbody tr:nth-child(even) { background: rgba(128,128,128,.08); }
+    a.topic-detail-link { text-decoration: underline; }
+  </style>
+  <style>
+    summary.slide-header { list-style: none; }
+    summary.slide-header::-webkit-details-marker { display: none; }
+    details.slide-card[open] > .slide-body { display: block; }
+    details.slide-card[open] .chevron { transform: rotate(90deg); }
+    @media print { details.slide-card > .slide-body { display: block !important; } .chevron { display: none; } }
+  </style>
+</head><body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Advanced Tree Structures: AVL Trees, Heaps, and Tries</a></div>
+  <header>
+    <h1>AVL Trees and Self-Balancing Mechanisms</h1>
+  </header><main>
+    <details class="slide-card" open>
+      <summary class="slide-header"><span class="slide-num">1</span><h2>AVL Trees and Self-Balancing Mechanisms</h2><span class="chevron">▶</span></summary>
+      <div class="slide-body">
+        <p>Binary search trees are a foundational data structure in computer science, offering efficient search, insertion, and deletion operations. However, their performance depends critically on the shape of the tree. When elements are inserted in sorted or nearly sorted order, a plain BST degenerates into a structure resembling a linked list, where every operation degrades to O(n) time. To solve this problem, Georgy Adelson-Velsky and Evgenii Landis introduced the first self-balancing binary search tree in 1962 — the AVL tree. Named after its inventors, the AVL tree automatically restructures itself after every modification to guarantee that its height remains proportional to the logarithm of the number of nodes. This ensures that search, insertion, and deletion all run in O(log n) time in the worst case, making AVL trees a robust choice whenever bounded worst-case performance is required.</p>
+
+<p><strong>Motivation for Self-Balancing Trees</strong></p>
+
+<p>To appreciate why self-balancing matters, consider what happens to a plain BST when you insert the sequence 1, 2, 3, 4, 5 in order. Each new node becomes the right child of the previous one, producing a tree with height 4 for just 5 nodes. Searching for the value 5 requires traversing all 5 nodes — no better than a linear scan of an array. In the worst case, a BST of n nodes can have height n − 1.</p>
+
+<p>A <em>perfectly balanced</em> BST, by contrast, distributes nodes as evenly as possible between left and right subtrees at every level. With n nodes, such a tree has height ⌊log₂(n)⌋, ensuring that any search path visits at most log₂(n) + 1 nodes. For a million-node tree, that means at most 20 comparisons instead of a million.</p>
+
+<p>Maintaining perfect balance after every insertion or deletion would be too expensive — rebuilding the entire tree from scratch on each modification is impractical. AVL trees strike a pragmatic compromise: they enforce a <em>near-balance</em> invariant that bounds the height to at most approximately 1.44 × log₂(n). This is slightly worse than perfect balance, but the overhead of enforcing it is only O(log n) per operation, making it entirely practical. Compared to a plain BST in adversarial conditions, the improvement is dramatic.</p>
+
+<p>AVL trees are preferable to plain BSTs whenever the sequence of insertions and deletions cannot be controlled or predicted, and when the cost of an O(n) worst-case operation is unacceptable. Databases, language runtimes, and operating system kernels have all used AVL trees or their descendants for exactly this reason.</p>
+
+<p><strong>AVL Tree Definition and Properties</strong></p>
+
+<p>An AVL tree is a binary search tree with one additional invariant: <em>for every node in the tree, the heights of its left and right subtrees differ by at most 1</em>. This is called the <strong>AVL balance invariant</strong>.</p>
+
+<p>The BST ordering property is preserved in full: for any node with value <em>k</em>, every value in its left subtree is strictly less than <em>k</em>, and every value in its right subtree is strictly greater than <em>k</em>. The AVL invariant adds a structural constraint on top of this ordering constraint.</p>
+
+<p>Crucially, the AVL invariant must hold at <em>every</em> node, not just the root. A tree where the root's subtrees are balanced but some deep internal node has subtrees of height 3 and 0 is <em>not</em> a valid AVL tree, even if it looks roughly balanced from the top. Any violation anywhere in the tree requires correction before the structure can be considered valid.</p>
+
+<p>The consequence of enforcing this invariant everywhere is that the worst-case height of an AVL tree with n nodes is bounded by approximately 1.44 × log₂(n). This bound comes from analyzing the minimum number of nodes in an AVL tree of height h. If we call this N(h), it satisfies the recurrence N(h) = 1 + N(h−1) + N(h−2), with N(0) = 1 and N(−1) = 0. This recurrence is closely related to the Fibonacci sequence, and its solution grows exponentially in h, which means h grows at most logarithmically in n. The constant 1.44 means that even in the worst case, an AVL tree is never more than 44% taller than a perfectly balanced tree — a very tight bound in practice.</p>
+
+<p><strong>Balance Factor</strong></p>
+
+<p>Every node in an AVL tree stores a value called its <strong>balance factor</strong>, defined as:</p>
+
+<p><em>balance_factor(node) = height(right subtree) − height(left subtree)</em></p>
+
+<p>Some textbooks define it the other way (left minus right); both conventions work as long as you are consistent. Using right minus left, the three valid states are:</p>
+
+<ul>
+  <li><strong>Balance factor = 0:</strong> The left and right subtrees have identical heights. The node is perfectly balanced locally.</li>
+  <li><strong>Balance factor = +1:</strong> The right subtree is one level taller than the left subtree. This is acceptable under the AVL invariant.</li>
+  <li><strong>Balance factor = −1:</strong> The left subtree is one level taller than the right subtree. This is also acceptable.</li>
+</ul>
+
+<p>A balance factor of <strong>+2</strong> means the right subtree is two levels taller than the left — a violation requiring a rotation. A balance factor of <strong>−2</strong> means the left subtree is two levels taller — also a violation. No valid AVL tree can have a balance factor with absolute value greater than 1.</p>
+
+<p>Balance factors are maintained dynamically. After every insertion or deletion, the balance factors of all affected ancestor nodes must be recalculated. This recalculation proceeds <em>bottom-up</em>, starting from the newly inserted or deleted node and traveling up toward the root as the recursive call stack unwinds. At each ancestor, the balance factor is recomputed from the updated heights of its children, and if a violation is detected (|bf| = 2), a rotation is performed immediately to restore it. In practice, heights or balance factors can be stored explicitly at each node and updated in O(1) per node visited.</p>
+
+<p>To make this concrete, consider a small example. Suppose we have a tree with root 10, left child 5, and right child 15. The height of each leaf is 0, and the root has balance factor 0. If we insert 20 as the right child of 15, the height of 15 becomes 1 and the balance factor of root 10 becomes (height(right) − height(left)) = (1 − 0) = +1. The tree is still valid. If we now insert 25 as the right child of 20, the height of 20 becomes 1, the height of 15 becomes 2, and the root's balance factor becomes 2 − 0 = +2. This is a violation, and a rotation is needed.</p>
+
+<p><strong>Single Rotations: Left and Right</strong></p>
+
+<p>Rotations are the fundamental repair operations in an AVL tree. A rotation restructures a small portion of the tree — involving three nodes and their associated subtrees — in O(1) time, restoring the AVL balance invariant without disturbing the BST ordering property.</p>
+
+<p>A <strong>right rotation</strong> is applied when a node is left-heavy with balance factor −2, and its left child has balance factor 0 or −1 (meaning the left child is itself left-heavy or balanced). The steps are:</p>
+
+<ul>
+  <li>Let <em>z</em> be the imbalanced node (balance factor −2), and let <em>y</em> be its left child.</li>
+  <li><em>y</em> becomes the new root of this subtree.</li>
+  <li><em>z</em> becomes the right child of <em>y</em>.</li>
+  <li>The former right subtree of <em>y</em> (call it T₂) becomes the left subtree of <em>z</em>. This reassignment is necessary to preserve BST ordering: all values in T₂ are greater than <em>y</em> but less than <em>z</em>, so T₂ correctly belongs as <em>z</em>'s left subtree.</li>
+</ul>
+
+<p>Pictorially, a right rotation on <em>z</em>:</p>
+
+<pre><code>    z                y
+   / \              / \
+  y   T4    →     T1   z
+ / \                  / \
+T1  T2               T2  T4
+</code></pre>
+
+<p>A <strong>left rotation</strong> is the mirror image, applied when a node is right-heavy with balance factor +2 and its right child has balance factor 0 or +1:</p>
+
+<ul>
+  <li>Let <em>z</em> be the imbalanced node (balance factor +2), and let <em>y</em> be its right child.</li>
+  <li><em>y</em> becomes the new root of this subtree.</li>
+  <li><em>z</em> becomes the left child of <em>y</em>.</li>
+  <li>The former left subtree of <em>y</em> (T₂) becomes the right subtree of <em>z</em>, preserving BST order since all values in T₂ are greater than <em>z</em> but less than <em>y</em>.</li>
+</ul>
+
+<pre><code>  z                  y
+ / \                / \
+T1   y      →      z   T4
+    / \            / \
+   T2  T4         T1  T2
+</code></pre>
+
+<p>Both single rotations involve only a constant number of pointer changes (reassigning parent pointers, left/right child pointers, and updating two balance factors), so they execute in O(1) time regardless of tree size. After a single rotation following an insertion, the height of the rotated subtree returns to what it was before the insertion, so no further rotations up the tree are needed.</p>
+
+<p>Returning to the earlier example where we inserted 10, 15, 20 in order and detected a balance factor of +2 at node 10: the right child (15) has balance factor +1. This is the right-right case, calling for a single left rotation on node 10. Node 15 becomes the new root, node 10 becomes its left child, and 15's former left subtree (empty in this case) becomes 10's right child. The result is a balanced tree with 15 at the root, 10 on the left, and 20 on the right.</p>
+
+<p><strong>Double Rotations: Left-Right and Right-Left</strong></p>
+
+<p>Single rotations handle cases where the imbalance is caused by a node inserted in the "outer" position — left child of left subtree (LL case) or right child of right subtree (RR case). When the imbalance is caused by a node inserted in the "inner" position — right child of left subtree (LR case) or left child of right subtree (RL case) — a single rotation is insufficient because the problematic node is on a <em>zigzag</em> path. Double rotations address this by first straightening the zigzag, then correcting the imbalance.</p>
+
+<p>A <strong>left-right (LR) double rotation</strong> handles the case where node <em>z</em> has balance factor −2 and its left child <em>y</em> has balance factor +1 (y is right-heavy). The procedure is:</p>
+
+<ul>
+  <li><strong>Step 1:</strong> Perform a left rotation on <em>y</em> (the left child of <em>z</em>). This transforms the LR case into an LL case.</li>
+  <li><strong>Step 2:</strong> Perform a right rotation on <em>z</em>. This resolves the now-standard LL imbalance.</li>
+</ul>
+
+<pre><code>      z                 z                x
+     / \               / \              / \
+    y   T4   LR(y)    x   T4  RR(z)   y   z
+   / \        →      / \       →     / \ / \
+  T1  x             y  T3          T1 T2 T3 T4
+     / \           / \
+    T2  T3        T1  T2
+</code></pre>
+
+<p>Here, the inner grandchild <em>x</em> (the right child of <em>y</em>) ends up as the new subtree root, with <em>y</em> on its left and <em>z</em> on its right. The four subtrees T1–T4 are distributed to preserve BST order.</p>
+
+<p>A <strong>right-left (RL) double rotation</strong> is the mirror image, handling the case where <em>z</em> has balance factor +2 and its right child <em>y</em> has balance factor −1 (y is left-heavy):</p>
+
+<ul>
+  <li><strong>Step 1:</strong> Perform a right rotation on <em>y</em> (the right child of <em>z</em>). This transforms the RL case into an RR case.</li>
+  <li><strong>Step 2:</strong> Perform a left rotation on <em>z</em>. This resolves the resulting RR imbalance.</li>
+</ul>
+
+<pre><code>    z                   z                 x
+   / \                 / \               / \
+  T1   y    RR(y)     T1   x   LR(z)   z   y
+      / \     →           / \    →    / \ / \
+     x  T4               T2  y      T1 T2 T3 T4
+    / \                      / \
+   T2  T3                   T3  T4
+</code></pre>
+
+<p>Why does a single rotation fail in these zigzag cases? Consider the LR scenario: node <em>z</em> is left-heavy, but <em>y</em> (its left child) is right-heavy. If you apply a right rotation directly on <em>z</em>, node <em>y</em> becomes the new root — but <em>y</em> is still right-heavy, and <em>z</em> becomes its right child, which may still be taller than <em>y</em>'s left. The imbalance has simply moved rather than been resolved. The left rotation on <em>y</em> first "straightens" the path so that the subsequent right rotation on <em>z</em> properly distributes the nodes.</p>
+
+<p>Like single rotations, double rotations involve only a constant number of pointer changes and execute in O(1) time. After a double rotation, the height of the affected subtree is restored to its pre-insertion value, so again no further rotations up the tree are required when this follows an insertion.</p>
+
+<p>To summarize which rotation applies in each case:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Balance factor of z</th>
+      <th>Balance factor of child</th>
+      <th>Case</th>
+      <th>Rotation to apply</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>−2 (left-heavy)</td>
+      <td>−1 or 0 (left child, left-heavy or balanced)</td>
+      <td>LL</td>
+      <td>Single right rotation on z</td>
+    </tr>
+    <tr>
+      <td>−2 (left-heavy)</td>
+      <td>+1 (left child, right-heavy)</td>
+      <td>LR</td>
+      <td>Left rotation on left child, then right rotation on z</td>
+    </tr>
+    <tr>
+      <td>+2 (right-heavy)</td>
+      <td>+1 or 0 (right child, right-heavy or balanced)</td>
+      <td>RR</td>
+      <td>Single left rotation on z</td>
+    </tr>
+    <tr>
+      <td>+2 (right-heavy)</td>
+      <td>−1 (right child, left-heavy)</td>
+      <td>RL</td>
+      <td>Right rotation on right child, then left rotation on z</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Insertion in AVL Trees</strong></p>
+
+<p>Insertion in an AVL tree begins identically to insertion in a plain BST. Starting at the root, compare the new value with each node's value and move left or right accordingly until an empty position is found. Place the new node there as a leaf with a balance factor of 0.</p>
+
+<p>After the node is placed, the algorithm must travel back up the tree — typically as the recursion unwinds or by following stored parent pointers — and update balance factors. For each ancestor, the balance factor is recalculated based on the updated heights of its children. If at any ancestor the balance factor becomes +2 or −2, the appropriate rotation (single or double, as determined by the table above) is applied immediately.</p>
+
+<p>A key property of AVL insertion is that <strong>at most one rotation (single or double) is ever needed</strong>. Once a rotation restores the height of a subtree to what it was before the insertion, all ancestors above it see no change in their children's heights and therefore need no adjustment. This means the upward pass can stop as soon as the first rotation is performed — or after reaching the root if no violation was found.</p>
+
+<p>Let us trace a concrete example. Start with an AVL tree containing values 30, 20, 40, 10, 25. Now insert 5.</p>
+
+<ul>
+  <li>5 is placed as the left child of 10. Node 10's balance factor changes from 0 to −1.</li>
+  <li>Moving up: node 20's left subtree (rooted at 10) has height 1, right subtree (rooted at 25) has height 0. Balance factor of 20 becomes −1. Still valid.</li>
+  <li>Moving up: node 30's left subtree (rooted at 20) now has height 2, right subtree (rooted at 40) has height 1. Balance factor of 30 becomes −1. Still valid.</li>
+  <li>We've reached the root. No rotation needed. The tree remains a valid AVL tree.</li>
+</ul>
+
+<p>Now insert 4 into this updated tree.</p>
+
+<ul>
+  <li>4 is placed as the left child of 5. Node 5's balance factor is −1.</li>
+  <li>Node 10's balance factor becomes −2. Its left child (5) has balance factor −1. This is the LL case.</li>
+  <li>Apply a single right rotation on node 10: node 5 becomes the new subtree root, node 10 becomes 5's right child, and 5's former right child (null) becomes 10's left child.</li>
+  <li>The subtree rooted at 5 now has height 1, same as node 10 had before the insertion of 4. Ancestors above see no change. No further rotations needed.</li>
+</ul>
+
+<p>The total time for insertion is O(log n): the initial traversal down the tree visits O(log n) nodes, and the upward balance-checking pass also visits O(log n) nodes. Each node visited does O(1) work. The overall complexity is therefore O(log n).</p>
+
+<p><strong>Deletion in AVL Trees</strong></p>
+
+<p>Deletion in an AVL tree starts with the standard BST deletion procedure:</p>
+
+<ul>
+  <li>If the node to be deleted is a <strong>leaf</strong>, simply remove it.</li>
+  <li>If the node has <strong>one child</strong>, replace it with that child.</li>
+  <li>If the node has <strong>two children</strong>, find its in-order predecessor (the maximum value in its left subtree) or its in-order successor (the minimum value in its right subtree), copy that value into the node, and then delete the predecessor or successor from its original position. The predecessor/successor always has at most one child, reducing to one of the simpler cases.</li>
+</ul>
+
+<p>After the physical removal, the tree is potentially unbalanced. Balance factors must be updated for all ancestors of the deletion point, traveling upward to the root. At each ancestor where a balance factor of ±2 is encountered, the appropriate rotation is applied.</p>
+
+<p>Deletion differs from insertion in one important way: <strong>a single rotation may not be sufficient</strong>. After a rotation restores balance at one node, the subtree's height may actually decrease by 1 compared to before the deletion. This height decrease propagates upward, potentially causing a balance violation at another ancestor. In the worst case, O(log n) rotations may be required — one at each level of the tree as the height decrease ripples up. In practice this is uncommon, but it can happen, and a correct implementation must continue checking balance factors all the way to the root after every deletion.</p>
+
+<p>Consider a small example. Take an AVL tree with root 15, left child 10, right child 20, and the additional nodes 5 and 12 under 10, and 25 under 20. Now delete 25:</p>
+
+<ul>
+  <li>25 is a leaf; remove it. Node 20's balance factor changes from +1 to 0. Height of 20's subtree decreases by 1.</li>
+  <li>Node 15's left subtree (rooted at 10) has height 2; right subtree (rooted at 20) now has height 1. Balance factor of 15 becomes −2 − wait, let us recount: height(left) = 2, height(right) = 1, so balance factor = 1 − 2 = −1. Still valid.</li>
+</ul>
+
+<p>That example stays balanced. For a case requiring rotation after deletion, start with a tree containing 30 at the root, 20 on the left with children 15 and 25, and 35 on the right with no children. Delete 35:</p>
+
+<ul>
+  <li>35 is removed. Node 30's right subtree is now empty (height −1); left subtree rooted at 20 has height 1. Balance factor of 30 becomes −1 − 1 = −2. Violation.</li>
+  <li>Left child 20 has balance factor 0 (both children are leaves of height 0). LL case with balance factor 0: apply a right rotation on 30.</li>
+  <li>Node 20 becomes the new root, node 30 becomes 20's right child, and 20's former right child (25) becomes 30's left child. The result: root 20, left child 15, right child 30, and 30's left child is 25.</li>
+</ul>
+
+<p>The tree is now balanced. Note that when the child's balance factor is 0 in a single rotation triggered by deletion, the height of the rotated subtree does not decrease — the imbalance is fixed but height is unchanged — so propagation stops. If the child's balance factor had been ±1, the height of the rotated subtree would decrease, and propagation would continue upward.</p>
+
+<p>Like insertion, the overall time complexity for deletion is O(log n). The BST deletion step is O(log n), and the upward pass, even with up to O(log n) rotations, performs O(1) work per node and visits O(log n) nodes. Each rotation is O(1), so the total work is bounded by O(log n). AVL trees thus provide guaranteed O(log n) performance for all three core operations — search, insertion, and deletion — making them one of the most reliable general-purpose dynamic set data structures available.</p>
+        <div class="notes"><strong>Notes</strong>Covers AVL trees comprehensively: motivation, invariant definition, balance factors, all four rotation types with diagrams, insertion algorithm with example trace, and deletion algorithm with rotation propagation discussion.</div>
+      </div>
+    </details>
+  </main>
+
+<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
+</body></html>

@@ -3,296 +3,198 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Recursion: Concepts and Implementation | COP3530 - Data Structures</title>
+  <title>Recursion: Concepts and Implementation — COP3530</title>
   <style>
     /* ── Reset & Base ── */
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    :root {
-      --color-bg:           #f4f6f9;
-      --color-surface:      #ffffff;
-      --color-primary:      #1a4f8a;
-      --color-primary-dark: #133a66;
-      --color-accent:       #2e7d32;
-      --color-accent-light: #e8f5e9;
-      --color-text:         #1e2d3d;
-      --color-text-muted:   #5a6a7a;
-      --color-border:       #d6dde6;
-      --color-tag-bg:       #e8eef6;
-      --color-tag-text:     #1a4f8a;
-      --radius:             8px;
-      --shadow:             0 2px 8px rgba(0, 0, 0, 0.08);
-      --shadow-hover:       0 6px 20px rgba(0, 0, 0, 0.13);
-      --font-sans:          'Segoe UI', system-ui, -apple-system, sans-serif;
-      --font-mono:          'Consolas', 'Courier New', monospace;
-      --max-width:          960px;
-    }
-
-    html {
-      font-size: 16px;
-      scroll-behavior: smooth;
-    }
+    html { font-size: 16px; }
 
     body {
-      font-family: var(--font-sans);
-      background-color: var(--color-bg);
-      color: var(--color-text);
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: #f4f6f9;
+      color: #1e2a38;
       line-height: 1.6;
       min-height: 100vh;
     }
 
-    /* ── Skip Link ── */
-    .skip-link {
-      position: absolute;
-      top: -40px;
-      left: 0;
-      background: var(--color-primary);
+    /* ── Header ── */
+    header {
+      background: linear-gradient(135deg, #1a3a5c 0%, #2563a8 100%);
       color: #fff;
-      padding: 8px 16px;
-      text-decoration: none;
-      border-radius: 0 0 var(--radius) 0;
-      font-size: 0.875rem;
-      z-index: 100;
-    }
-    .skip-link:focus {
-      top: 0;
+      padding: 2.5rem 1.5rem 2rem;
     }
 
-    /* ── Header / Banner ── */
-    .site-header {
-      background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%);
-      color: #ffffff;
-      padding: 48px 24px 40px;
-      text-align: center;
+    .header-inner {
+      max-width: 960px;
+      margin: 0 auto;
     }
 
-    .site-header .course-label {
+    .course-label {
       display: inline-block;
-      font-size: 0.8rem;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      background: rgba(255, 255, 255, 0.18);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      border-radius: 20px;
-      padding: 4px 14px;
-      margin-bottom: 16px;
-    }
-
-    .site-header h1 {
-      font-size: clamp(1.6rem, 4vw, 2.4rem);
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      line-height: 1.25;
-      margin-bottom: 16px;
-    }
-
-    .site-header .intro {
-      font-size: clamp(0.95rem, 2vw, 1.075rem);
-      color: rgba(255, 255, 255, 0.88);
-      max-width: 640px;
-      margin: 0 auto;
-      line-height: 1.7;
-    }
-
-    /* ── Main Container ── */
-    .container {
-      max-width: var(--max-width);
-      margin: 0 auto;
-      padding: 40px 24px 64px;
-    }
-
-    /* ── Section Heading ── */
-    .section-heading {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 24px;
-    }
-
-    .section-heading h2 {
-      font-size: 1.15rem;
-      font-weight: 700;
-      color: var(--color-text);
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-    }
-
-    .section-heading .count-badge {
-      background: var(--color-tag-bg);
-      color: var(--color-tag-text);
       font-size: 0.78rem;
-      font-weight: 700;
-      border-radius: 20px;
-      padding: 2px 10px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.35);
+      border-radius: 4px;
+      padding: 0.2rem 0.6rem;
+      margin-bottom: 0.75rem;
     }
 
-    .section-heading::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: var(--color-border);
+    header h1 {
+      font-size: clamp(1.5rem, 3vw, 2.25rem);
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin-bottom: 0.75rem;
+    }
+
+    header p {
+      font-size: 1rem;
+      max-width: 680px;
+      opacity: 0.9;
+    }
+
+    /* ── Main content ── */
+    main {
+      max-width: 960px;
+      margin: 2.5rem auto 3rem;
+      padding: 0 1.5rem;
+    }
+
+    .section-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #5a7395;
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid #dde3ec;
     }
 
     /* ── Card Grid ── */
     .card-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 20px;
-      list-style: none;
+      gap: 1.25rem;
     }
 
-    /* ── Artifact Card ── */
     .card {
-      background: var(--color-surface);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 24px;
+      background: #fff;
+      border: 1px solid #dde3ec;
+      border-radius: 8px;
+      padding: 1.25rem 1.35rem;
       display: flex;
       flex-direction: column;
-      gap: 12px;
-      transition: box-shadow 0.2s ease, transform 0.2s ease;
+      gap: 0.55rem;
+      transition: box-shadow 0.18s ease, border-color 0.18s ease;
     }
 
     .card:hover {
-      box-shadow: var(--shadow-hover);
-      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(30, 60, 100, 0.1);
+      border-color: #b3c5dc;
     }
 
-    /* Card top row: type tag + file type */
-    .card-meta-top {
+    /* ── Card Header ── */
+    .card-header {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
+      align-items: flex-start;
+      gap: 0.5rem;
       flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .tag-type {
-      font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      background: var(--color-tag-bg);
-      color: var(--color-tag-text);
-      border-radius: 4px;
-      padding: 3px 9px;
-    }
-
-    .tag-filetype {
-      font-family: var(--font-mono);
-      font-size: 0.72rem;
-      color: var(--color-text-muted);
-      background: #f0f2f5;
-      border: 1px solid var(--color-border);
-      border-radius: 4px;
-      padding: 2px 8px;
-    }
-
-    /* Card title row */
-    .card-title-row {
-      display: flex;
-      align-items: baseline;
-      flex-wrap: wrap;
-      gap: 10px;
     }
 
     .card-name {
-      font-size: 1.05rem;
-      font-weight: 700;
-      color: var(--color-text);
-      line-height: 1.3;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #1e2a38;
+      flex: 1 1 auto;
     }
 
     .card-name a {
-      color: var(--color-primary);
+      color: #1a5fa8;
       text-decoration: none;
-      border-bottom: 2px solid transparent;
-      transition: border-color 0.15s ease, color 0.15s ease;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.15s;
     }
 
     .card-name a:hover,
     .card-name a:focus {
-      color: var(--color-primary-dark);
-      border-bottom-color: var(--color-primary-dark);
+      border-bottom-color: #1a5fa8;
       outline: none;
     }
 
-    .card-name a:focus-visible {
-      outline: 3px solid var(--color-primary);
-      outline-offset: 2px;
-      border-radius: 2px;
-    }
-
-    /* Source link */
     .source-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       font-weight: 600;
-      color: var(--color-accent);
-      background: var(--color-accent-light);
-      border: 1px solid #c8e6c9;
-      border-radius: 4px;
-      padding: 2px 8px;
+      color: #fff;
+      background: #5a7395;
+      border-radius: 3px;
+      padding: 0.15rem 0.45rem;
       text-decoration: none;
       white-space: nowrap;
-      transition: background 0.15s ease, color 0.15s ease;
+      align-self: center;
+      transition: background 0.15s;
     }
 
     .source-link:hover,
     .source-link:focus {
-      background: #c8e6c9;
-      color: #1b5e20;
+      background: #3d5572;
       outline: none;
     }
 
-    .source-link:focus-visible {
-      outline: 3px solid var(--color-accent);
-      outline-offset: 2px;
-      border-radius: 4px;
+    /* ── Badges ── */
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      align-items: center;
     }
 
-    .source-link::before {
-      content: '⬇';
-      font-size: 0.65rem;
+    .badge {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      border-radius: 3px;
+      padding: 0.18rem 0.5rem;
+      text-transform: uppercase;
     }
 
-    /* Description */
-    .card-description {
-      font-size: 0.9rem;
-      color: var(--color-text-muted);
-      line-height: 1.65;
-      flex: 1;
+    .badge-type {
+      background: #e8f0fb;
+      color: #1a5fa8;
+      border: 1px solid #c0d4f0;
+    }
+
+    .badge-filetype {
+      background: #eef7f0;
+      color: #2e7d46;
+      border: 1px solid #b6dfc2;
+    }
+
+    /* ── Description ── */
+    .card-desc {
+      font-size: 0.875rem;
+      color: #445566;
+      flex: 1 1 auto;
     }
 
     /* ── Footer ── */
-    .site-footer {
-      background: var(--color-surface);
-      border-top: 1px solid var(--color-border);
+    footer {
       text-align: center;
-      padding: 20px 24px;
       font-size: 0.8rem;
-      color: var(--color-text-muted);
+      color: #8899aa;
+      padding: 1.5rem 1rem 2rem;
+      border-top: 1px solid #dde3ec;
     }
 
-    /* ── Responsive ── */
-    @media (max-width: 500px) {
-      .site-header {
-        padding: 36px 16px 32px;
+    /* ── Responsive tweaks ── */
+    @media (max-width: 480px) {
+      .card-grid {
+        grid-template-columns: 1fr;
       }
-      .container {
-        padding: 28px 16px 48px;
-      }
-      .card {
-        padding: 18px;
-      }
+      header { padding: 2rem 1.1rem 1.75rem; }
     }
   </style>
 </head>
@@ -300,66 +202,193 @@
 <div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ COP3530 - Data Structures</a></div>
 <div style="border:1px solid #c9d4e3;background:#f5f8fc;border-radius:8px;padding:10px 16px;margin:0 0 18px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;font-family:'Segoe UI',Arial,sans-serif"><strong style="color:#1a3c6e">Module outline:</strong><a href="topics-outcomes.html#topics" style="color:#1a3c6e;font-weight:600;text-decoration:none">📋 Module Topics</a><a href="topics-outcomes.html#outcomes" style="color:#137333;font-weight:600;text-decoration:none">🎯 Student Learning Outcomes</a></div>
 
-  <a href="#main-content" class="skip-link">Skip to main content</a>
-
-  <!-- ── Site Header ── -->
-  <header class="site-header" role="banner">
-    <p class="course-label">COP3530 &mdash; Data Structures</p>
-    <h1>Recursion: Concepts and Implementation</h1>
-    <p class="intro">
-      This module explores recursion as a fundamental programming paradigm — covering
-      how recursive functions are structured, how the call stack manages execution,
-      and how classic recursive algorithms such as factorial and Fibonacci are designed
-      and analysed. Use the artifacts below to navigate the module content.
-    </p>
+  <header>
+    <div class="header-inner">
+      <span class="course-label">COP3530 — Data Structures</span>
+      <h1>Recursion: Concepts and Implementation</h1>
+      <p>
+        This module introduces recursion as a fundamental programming technique,
+        covering its definition, structural requirements, runtime mechanics, and
+        classic implementations. Explore the artifacts below to navigate through
+        topics, readings, and interactive content.
+      </p>
+    </div>
   </header>
 
-  <!-- ── Main Content ── -->
-  <main id="main-content">
-    <div class="container">
+  <main>
+    <p class="section-title">Module Artifacts</p>
 
-      <div class="section-heading" aria-label="Module artifacts">
-        <h2>Module Artifacts</h2>
-        <span class="count-badge" aria-label="1 artifact">1</span>
+    <div class="card-grid">
+
+      <!-- Module Topics -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-name">
+            <a href="content/module_topics.html">Module Topics</a>
+          </span>
+          <a class="source-link" href="source/hierarchy.json">source file</a>
+        </div>
+        <div class="badge-row">
+          <span class="badge badge-type">Module Topics</span>
+          <span class="badge badge-filetype">.json</span>
+        </div>
+        <p class="card-desc">
+          A structured outline of the module's core topics — including the definition of recursion,
+          base and recursive cases, call stack mechanics, and classic implementations like factorial
+          and Fibonacci — that serves as a navigational guide for learners and instructors to
+          understand the scope and sequence of the module's content.
+        </p>
       </div>
 
-      <ul class="card-grid" aria-label="List of module artifacts">
+      <!-- What is Recursion? -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-name">
+            <a href="content/Recursion_Concepts_and_interactive_topics_t1.html">What is Recursion?</a>
+          </span>
+        </div>
+        <div class="badge-row">
+          <span class="badge badge-type">Topic Detail</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <p class="card-desc">
+          Introduces recursion as a programming technique in which a function calls itself to break
+          a problem into smaller instances of the same problem, and serves as a conceptual reading
+          for learners beginning the module.
+        </p>
+      </div>
 
-        <!-- ── Artifact: Module Topics ── -->
-        <li class="card">
-          <div class="card-meta-top">
-            <span class="tag-type">Module Topics</span>
-            <span class="tag-filetype" title="File type">.json</span>
-          </div>
+      <!-- Base Cases and Recursive Cases -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-name">
+            <a href="content/Recursion_Concepts_and_interactive_topics_t2.html">Base Cases and Recursive Cases</a>
+          </span>
+        </div>
+        <div class="badge-row">
+          <span class="badge badge-type">Topic Detail</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <p class="card-desc">
+          Explains the two essential components of any recursive function — the base case (stopping
+          condition) and the recursive case (self-referential step) — and is used by learners to
+          understand how to structure correct, non-infinite recursive solutions.
+        </p>
+      </div>
 
-          <div class="card-title-row">
-            <span class="card-name">
-              <a href="content/module_topics.html">Module Topics</a>
-            </span>
-            <a
-              href="source/hierarchy.json"
-              class="source-link"
-              title="Download or view the raw source file"
-              aria-label="Source file for Module Topics"
-            >source file</a>
-          </div>
+      <!-- The Call Stack and Recursion -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-name">
+            <a href="content/Recursion_Concepts_and_interactive_topics_t3.html">The Call Stack and Recursion</a>
+          </span>
+        </div>
+        <div class="badge-row">
+          <span class="badge badge-type">Topic Detail</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <p class="card-desc">
+          Describes how the call stack manages function execution, local data, and return addresses
+          during recursive calls, helping learners understand the runtime mechanics and memory
+          implications of recursion.
+        </p>
+      </div>
 
-          <p class="card-description">
-            A structured outline of the module's core topics — including the definition
-            of recursion, base and recursive cases, call stack mechanics, and classic
-            implementations like factorial and Fibonacci — that serves as a navigational
-            guide for learners and instructors to understand the scope and sequence of
-            the module's content.
-          </p>
-        </li>
+      <!-- Implementing Factorial with Recursion -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-name">
+            <a href="content/Recursion_Concepts_and_interactive_topics_t4.html">Implementing Factorial with Recursion</a>
+          </span>
+        </div>
+        <div class="badge-row">
+          <span class="badge badge-type">Topic Detail</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <p class="card-desc">
+          Walks through implementing the factorial function recursively, using its naturally
+          self-referential mathematical definition to illustrate how to translate a recursive
+          formula directly into working code.
+        </p>
+      </div>
 
-      </ul>
+      <!-- Fibonacci Sequence Using Recursion -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-name">
+            <a href="content/Recursion_Concepts_and_interactive_topics_t5.html">Fibonacci Sequence Using Recursion</a>
+          </span>
+        </div>
+        <div class="badge-row">
+          <span class="badge badge-type">Topic Detail</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <p class="card-desc">
+          Covers the recursive implementation of the Fibonacci sequence, demonstrating how a
+          function can make two recursive calls and highlighting the resulting redundant computation
+          as an entry point for discussing efficiency trade-offs.
+        </p>
+      </div>
+
+      <!-- Recursive List Traversal -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-name">
+            <a href="content/Recursion_Concepts_and_interactive_topics_t6.html">Recursive List Traversal</a>
+          </span>
+        </div>
+        <div class="badge-row">
+          <span class="badge badge-type">Topic Detail</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <p class="card-desc">
+          Demonstrates how to traverse a JavaScript array recursively by splitting it into a head
+          element and a remaining subarray, providing learners with a practical pattern for applying
+          recursion to list-processing problems.
+        </p>
+      </div>
+
+      <!-- When to Use Recursion (Topic Detail) -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-name">
+            <a href="content/Recursion_Concepts_and_interactive_topics_t7.html">When to Use Recursion</a>
+          </span>
+        </div>
+        <div class="badge-row">
+          <span class="badge badge-type">Topic Detail</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <p class="card-desc">
+          Examines the trade-offs between recursion and iterative loops, guiding learners and
+          instructors in identifying problem types — such as tree traversal and divide-and-conquer —
+          where recursion is most appropriate versus where iteration is preferred.
+        </p>
+      </div>
+
+      <!-- When to Use Recursion (Text Content) -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-name">
+            <a href="content/Recursion_Concepts_and_interactive.html">When to Use Recursion</a>
+          </span>
+        </div>
+        <div class="badge-row">
+          <span class="badge badge-type">Text Content</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <p class="card-desc">
+          Examines the trade-offs between recursion and iterative loops, guiding learners and
+          instructors in identifying problem types — such as tree traversal and divide-and-conquer —
+          where recursion is most appropriate versus where iteration is preferred.
+        </p>
+      </div>
+
     </div>
   </main>
 
-  <!-- ── Footer ── -->
-  <footer class="site-footer" role="contentinfo">
-    <p>COP3530 &mdash; Data Structures &nbsp;|&nbsp; Recursion: Concepts and Implementation</p>
+  <footer>
+    COP3530 — Data Structures &nbsp;|&nbsp; Recursion: Concepts and Implementation
   </footer>
 
 

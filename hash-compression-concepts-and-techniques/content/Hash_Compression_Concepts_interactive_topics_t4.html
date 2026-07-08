@@ -1,0 +1,221 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Distribution Properties of Hash Functions</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+  <style>
+    body { padding-left: 1.1rem; padding-right: 1.1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid rgba(128,128,128,.45); padding: .45em .7em; text-align: left; vertical-align: top; }
+    thead th { background: rgba(128,128,128,.18); font-weight: 600; }
+    tbody tr:nth-child(even) { background: rgba(128,128,128,.08); }
+    a.topic-detail-link { text-decoration: underline; }
+  </style>
+  <style>
+    summary.slide-header { list-style: none; }
+    summary.slide-header::-webkit-details-marker { display: none; }
+    details.slide-card[open] > .slide-body { display: block; }
+    details.slide-card[open] .chevron { transform: rotate(90deg); }
+    @media print { details.slide-card > .slide-body { display: block !important; } .chevron { display: none; } }
+  </style>
+</head><body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Hash Compression: Concepts and Techniques</a></div>
+  <header>
+    <h1>Distribution Properties of Hash Functions</h1>
+  </header><main>
+    <details class="slide-card" open>
+      <summary class="slide-header"><span class="slide-num">1</span><h2>Distribution Properties of Hash Functions</h2><span class="chevron">▶</span></summary>
+      <div class="slide-body">
+        <p>A hash function's primary job is not merely to map a key to some index — it is to map keys to indices in a way that spreads them as evenly as possible across the available slots of the hash table. This spreading property, known as <strong>distribution quality</strong>, is arguably the single most important characteristic of a hash function in practice. A hash function with poor distribution can turn an O(1) average-case data structure into something that performs no better than a linked list in the worst case. Understanding what good distribution looks like, what causes it to break down, and how to measure and achieve it is therefore foundational to working with hash tables effectively.</p>
+
+<p>To appreciate why distribution matters so much, consider what a hash table actually does during a lookup. It computes a hash value for the query key, maps that value to an index, and then checks whether the desired key is at that index. If multiple keys have been mapped to the same index — a <strong>collision</strong> — the table must use some collision-resolution strategy (chaining, linear probing, quadratic probing, double hashing, and so forth) to find the right key. Every extra step in that resolution process adds cost. If the hash function distributes keys unevenly, some slots will have many keys while others remain empty, and the cost of resolving collisions in the crowded slots can become very large. Good distribution minimizes the frequency and severity of such crowding.</p>
+
+<p><strong>Uniform Distribution as the Ideal Goal</strong></p>
+
+<p>The theoretical gold standard for hash function behavior is <em>uniform distribution</em>: every index slot in the table receives approximately the same number of keys, regardless of the particular set of keys being inserted. More formally, if the hash table has <em>m</em> slots and <em>n</em> keys are inserted, perfect uniformity would place exactly <em>n/m</em> keys in each slot. In practice, some deviation from this ideal is unavoidable and even statistically expected, but the goal is to keep that deviation small.</p>
+
+<p>Uniform distribution is desirable because it makes the table's performance predictable. Under the <em>Simple Uniform Hashing Assumption</em> (SUHA), a standard theoretical model in algorithm analysis, each key is equally likely to hash to any slot independently of all other keys. Under SUHA, the expected length of any chain in a chaining-based hash table is exactly the load factor λ = n/m, which means average-case lookup cost is O(1 + λ). When distribution is not uniform, this analysis breaks down: some chains become much longer than λ, and the average cost rises accordingly.</p>
+
+<p>A key subtlety is that uniformity must hold <em>regardless of input patterns</em>. Real-world keys are rarely chosen at random — they come from application data that often has structure: sequential integers, timestamps with similar high-order bits, strings sharing a common prefix, and so on. A hash function that distributes uniformly over truly random keys but clusters when keys have regularities is of limited practical value. The best hash functions and compression techniques actively break up regularities in their input rather than preserving or amplifying them.</p>
+
+<p>When keys cluster in a subset of slots, the consequences are twofold. First, the occupied slots carry more than their share of keys, making lookups for those keys expensive. Second, the empty slots represent wasted memory — allocated space that does nothing to improve performance. Both effects make the table less efficient per unit of memory used.</p>
+
+<p><strong>Clustering and Its Impact on Performance</strong></p>
+
+<p>Clustering refers to the phenomenon where many keys are mapped to the same slot, or to a small contiguous region of slots. It is the most common symptom of a distribution problem and has a direct, measurable impact on lookup performance.</p>
+
+<p>In a <em>chained</em> hash table, clustering causes certain chains to grow long. A lookup that lands on a long chain must traverse every element in that chain until the target key is found (or determined to be absent). In the extreme case where every key hashes to the same slot, the hash table degenerates into a single linked list, giving O(n) lookup time.</p>
+
+<p>In <em>open-addressing</em> hash tables (where collisions are resolved by probing other slots rather than chaining), clustering is even more damaging because it has a self-reinforcing character. When several keys hash to nearby slots, probing sequences for those keys overlap, causing them to compete for the same alternative slots. This phenomenon is called <strong>primary clustering</strong> in linear probing, and it causes the average probe length to grow super-linearly as the table fills up. Quadratic probing and double hashing reduce primary clustering but can still suffer from <strong>secondary clustering</strong> if many keys share the same initial hash value.</p>
+
+<p>Poor compression techniques are a leading cause of clustering. Consider using modular compression with a table size <em>m</em> that is a power of 2, say <em>m</em> = 64. If the keys happen to be even integers, then every key ≡ 0 (mod 2), and all keys that are multiples of 64 hash to slot 0, all that are 64k+2 hash to slot 2, and so on. The odd-numbered slots (1, 3, 5, …) receive no keys at all — half the table is wasted and the even slots bear double the expected load. This is a systematic clustering caused by a <em>common factor</em> between the key values and the table size. Choosing a prime table size eliminates this particular failure mode because a prime has no factors other than 1 and itself, making it impossible for regularly spaced keys to systematically avoid any slot.</p>
+
+<p>Beyond the modulus choice, the structure of the keys themselves matters. Keys that are strings sharing long common prefixes (like URLs from the same domain) will produce similar hash values if the hash function weights early characters heavily, causing those keys to cluster near the same index. Recognizing such clustering patterns is the first diagnostic step when a hash table's observed performance is worse than expected.</p>
+
+<p><strong>Load Factor and Table Occupancy</strong></p>
+
+<p>The <strong>load factor</strong> λ (lambda) is defined as:</p>
+
+<pre><code>λ = n / m</code></pre>
+
+<p>where <em>n</em> is the number of key-value pairs currently stored in the table and <em>m</em> is the total number of slots available. The load factor is a dimensionless number between 0 and 1 for open-addressing schemes (since a slot can hold at most one key), and potentially greater than 1 for chaining schemes (since a slot can hold a chain of arbitrary length).</p>
+
+<p>The load factor directly governs collision probability and therefore lookup cost. To see why, consider inserting a new key into a table that already has <em>n</em> keys occupying slots at random. The probability that any specific slot is already occupied is n/m = λ. If the hash function is perfectly uniform, the probability that the new key hashes to an already-occupied slot — triggering a collision — is also λ. As λ approaches 1.0, this probability approaches certainty, meaning nearly every insertion causes a collision and long probe sequences or chains become unavoidable.</p>
+
+<p>The relationship between load factor and performance is non-linear. For a chained hash table under SUHA, average unsuccessful search time is O(1 + λ) and average successful search time is O(1 + λ/2). These grow linearly with λ, which is manageable. For open-addressing with linear probing, however, the expected probe count for a successful search is approximately:</p>
+
+<pre><code>½ × (1 + 1/(1 - λ))</code></pre>
+
+<p>and for an unsuccessful search it is approximately:</p>
+
+<pre><code>½ × (1 + 1/(1 - λ)²)</code></pre>
+
+<p>These expressions diverge rapidly as λ → 1. At λ = 0.5, the expected probes for an unsuccessful search is about 2.5; at λ = 0.9, it rises to about 50.5. This dramatic sensitivity to load factor is why most practical hash table implementations trigger a <strong>rehash</strong> — allocating a larger table and reinserting all existing keys — when λ exceeds a threshold, typically around 0.7 to 0.75 for open-addressing and around 1.0 or higher for chaining.</p>
+
+<p>Keeping the load factor low is one of the simplest and most effective ways to maintain near-constant average lookup time. It does so by ensuring that even if the distribution is not perfectly uniform, there is enough slack in the table that clustering does not cascade into long probe or chain sequences.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Load Factor (λ)</th>
+      <th>Expected Probes (Successful, Linear Probing)</th>
+      <th>Expected Probes (Unsuccessful, Linear Probing)</th>
+      <th>Performance Characterization</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0.25</td>
+      <td>≈ 1.17</td>
+      <td>≈ 1.39</td>
+      <td>Excellent — very few collisions</td>
+    </tr>
+    <tr>
+      <td>0.50</td>
+      <td>≈ 1.50</td>
+      <td>≈ 2.50</td>
+      <td>Good — modest collision rate</td>
+    </tr>
+    <tr>
+      <td>0.75</td>
+      <td>≈ 2.50</td>
+      <td>≈ 8.50</td>
+      <td>Acceptable — approaching degradation</td>
+    </tr>
+    <tr>
+      <td>0.90</td>
+      <td>≈ 5.50</td>
+      <td>≈ 50.50</td>
+      <td>Poor — significant clustering effects</td>
+    </tr>
+    <tr>
+      <td>0.99</td>
+      <td>≈ 50.50</td>
+      <td>≈ 5050.50</td>
+      <td>Unacceptable — near-degenerate behavior</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>How Compression Technique Choice Affects Distribution</strong></p>
+
+<p>A hash function typically consists of two stages: a <em>hash code</em> stage that converts a key into a large integer, and a <em>compression</em> stage that maps that integer into the range [0, m−1]. The compression stage is where the choice of table size and arithmetic operations can make or break distribution quality.</p>
+
+<p>The most common compression technique is <strong>modular compression</strong>: index = hashCode % m. Its distribution quality depends critically on the choice of <em>m</em>. If <em>m</em> shares common factors with many hash codes (e.g., <em>m</em> is even and most hash codes are even), systematic clustering occurs as described above. Choosing <em>m</em> to be a <strong>prime number</strong> is a well-established remedy: since a prime's only divisors are 1 and itself, it cannot share a factor with any key value that is not itself a multiple of <em>m</em>, which drastically reduces systematic bias. Furthermore, for any arithmetic progression of keys (keys spaced <em>d</em> apart), the sequence of hash values modulo a prime <em>p</em> cycles through all <em>p</em> residues before repeating, provided <em>d</em> is not a multiple of <em>p</em>. This full-cycle property ensures arithmetic regularities in the key set do not translate into clustering.</p>
+
+<p><strong>Folding compression</strong> is an alternative that works by splitting a key's bit representation into equal-sized segments and combining them — typically by XOR or addition — to produce a value in the desired range. For example, a 64-bit hash code might be split into four 16-bit segments that are XOR-combined into a 16-bit index. Folding can spread bit-pattern information across the entire index range, which tends to produce more uniform results when the input bits are diverse. However, if the folded segments are correlated — for instance, if the high 32 bits of a hash code are always zero for a particular key type — folding may reduce to operating on fewer effective bits, limiting its ability to distribute keys uniformly. Folding works best when the underlying hash code already has good bit-level diversity.</p>
+
+<p><strong>Multiply-shift compression</strong>, used in several high-performance hash functions, maps a hash code <em>h</em> to an index via: index = (a × h) >> (w − k), where <em>a</em> is an odd constant, <em>w</em> is the word size in bits, and <em>k</em> = log₂(m). This technique is very fast on modern hardware (a single multiply and shift) and, with a well-chosen constant <em>a</em>, can produce excellent distribution by mixing bits thoroughly before truncating.</p>
+
+<p>The fundamental lesson is that no single compression technique is universally optimal. The best choice depends on:</p>
+
+<ul>
+  <li>The <strong>structure of the key set</strong>: sequential integers favor prime modulus; strings with high-order bit diversity may work well with folding; large integer keys with many bit variations suit multiply-shift.</li>
+  <li>The <strong>table size constraints</strong>: if <em>m</em> must be a power of 2 (for efficiency), folding or multiply-shift are better choices than raw modular compression.</li>
+  <li>The <strong>computational cost</strong>: multiply-shift is faster than modular arithmetic on most CPUs, but the distribution advantage of a prime modulus may justify the overhead in collision-sensitive applications.</li>
+</ul>
+
+<p><strong>Measuring Distribution Quality</strong></p>
+
+<p>Theoretical analysis tells us what distribution to expect under ideal assumptions. Empirical measurement tells us what distribution we actually achieve with real data. Both are necessary for confident deployment of a hash table in a production system.</p>
+
+<p>The most direct empirical approach is to insert a representative sample of actual keys into the hash table and then examine the distribution of keys across slots. Concretely, let c<sub>i</sub> be the number of keys that hash to slot <em>i</em>, for i = 0, 1, …, m−1. The <strong>expected occupancy</strong> per slot is the mean: μ = n/m = λ. The <strong>variance</strong> across slots is:</p>
+
+<pre><code>σ² = (1/m) × Σ(cᵢ − μ)²</code></pre>
+
+<p>A low variance (relative to μ²) indicates that occupancy is close to uniform across all slots. A high variance signals clustering: some slots are much more heavily loaded than others. A related summary statistic is the <strong>maximum occupancy</strong> — the largest value among all c<sub>i</sub> — which identifies the worst-case slot and directly bounds the worst-case lookup time for that slot.</p>
+
+<p>Another useful empirical metric is the <strong>collision count</strong>: the total number of times a key hashed to a slot that was already occupied. For a perfectly uniform distribution over <em>m</em> slots with <em>n</em> insertions, the expected number of collisions is approximately n − m × (1 − (1 − 1/m)<sup>n</sup>), which approximates n² / (2m) for n ≪ m. Observing significantly more collisions than this theoretical expectation is a clear indicator of non-uniform distribution.</p>
+
+<p>Chi-squared goodness-of-fit testing provides a more rigorous statistical framework. The chi-squared statistic for hash distribution is:</p>
+
+<pre><code>χ² = Σ (cᵢ − n/m)² / (n/m)</code></pre>
+
+<p>summed over all <em>m</em> slots. Under the null hypothesis of uniform distribution, this statistic follows a chi-squared distribution with m−1 degrees of freedom. A significantly large χ² value (beyond the critical value for the chosen significance level) rejects the hypothesis of uniform distribution and confirms that the hash function is clustering keys.</p>
+
+<p>One critical caveat is that <strong>testing with representative keys</strong> matters enormously. A hash function might perform beautifully on random integers but cluster badly on the actual production keys (e.g., database primary keys that follow a specific sequence, or user-generated strings with cultural patterns). The only way to know for certain is to measure with the real data or a statistically faithful sample of it.</p>
+
+<p><strong>Desirable Properties for Hash Table Performance</strong></p>
+
+<p>Synthesizing the above, a well-designed hash function and compression strategy should exhibit the following properties to deliver reliable hash table performance:</p>
+
+<ul>
+  <li><strong>Minimized expected collisions:</strong> On average across all likely keys, each slot should receive close to λ keys. Minimizing the collision count directly translates to shorter chains and shorter probe sequences, reducing average lookup time.</li>
+  <li><strong>Bounded worst-case occupancy:</strong> Even with real (non-random) keys, no single slot should accumulate a disproportionately large number of keys. A large worst-case chain length can make individual lookups very expensive even if the average is fine. Cryptographic hash functions and <em>universal hashing</em> provide probabilistic guarantees on worst-case behavior that standard hash functions cannot.</li>
+  <li><strong>Consistency across key types:</strong> Many hash tables store keys of mixed or varied types. A good compression technique should produce uniform distribution whether the keys are small integers, large integers, floating-point values, short strings, or long strings. This generality is achieved partly by choosing a hash code function that mixes bits well for all types, and partly by a compression stage that does not amplify type-specific regularities.</li>
+  <li><strong>Sensitivity to all parts of the key:</strong> A hash function should be sensitive to every bit or character of its input. A function that ignores the last byte of a string, for instance, will map all strings differing only in their last character to the same slot. This is a form of hidden clustering that only manifests with specific key patterns but can be devastating in practice.</li>
+  <li><strong>Avalanche effect:</strong> A small change to the input key (flipping a single bit) should produce a completely different hash value, affecting roughly half of the output bits on average. This avalanche property is the bit-level mechanism that prevents regularities in keys from translating into regularities in hash values.</li>
+  <li><strong>Low computational cost:</strong> The hash function is called on every insertion, lookup, and deletion. Even a function that achieves perfect uniformity is impractical if it requires hundreds of arithmetic operations per call. The practical sweet spot balances distribution quality against computational overhead. Many high-performance applications use functions like MurmurHash, xxHash, or FNV that are engineered to achieve near-ideal distribution with just a handful of multiply, shift, and XOR operations.</li>
+</ul>
+
+<p>To make these properties concrete, consider a scenario where a hash table stores 10,000 student ID numbers in a table of 16,384 slots (a power of 2, λ ≈ 0.61). If student IDs are 8-digit decimal numbers allocated sequentially in blocks (e.g., 10000000–10009999), taking the ID modulo 16,384 will produce IDs spaced 1 apart mapping to consecutive slots — actually reasonable in this case. But if IDs are allocated in multiples of 128 (a common database allocation strategy), every ID mod 16,384 will be a multiple of 128, clustering all 10,000 keys into only 128 of the 16,384 available slots, with an average chain length of 78 and a catastrophic λ<sub>effective</sub> ≈ 78. Switching to a prime modulus (say, 16,381) immediately breaks this alignment: consecutive multiples of 128 produce consecutive distinct residues modulo the prime, spreading keys across all slots. This single change transforms worst-case lookup from O(n) back toward O(1).</p>
+
+<p>Understanding distribution properties is therefore not merely academic. It is the practical foundation for diagnosing and fixing real-world hash table performance problems, and for making informed choices among the many hash functions and table configurations available in modern software libraries.</p>
+        <div class="notes"><strong>Notes</strong>The table of load factor vs. expected probe counts uses the standard Knuth formulas for linear probing (&#189;(1 + 1/(1−λ)) for successful and &#189;(1 + 1/(1−λ)&#178;) for unsuccessful searches). Values are rounded to two decimal places for readability. The chi-squared testing description is appropriate for an intermediate/advanced audience and can be omitted or simplified for introductory courses.</div>
+      </div>
+    </details>
+  </main>
+
+<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
+</body></html>

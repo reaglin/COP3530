@@ -10,6 +10,36 @@
     "type": "Page"
   },
   {
+    "title": "Comparing and Selecting Compression Methods",
+    "href": "content/Hash_Compression_Concepts_interactive.html",
+    "type": "Content"
+  },
+  {
+    "title": "Introduction to Hash Compression",
+    "href": "content/Hash_Compression_Concepts_interactive_topics_t1.html",
+    "type": "Content"
+  },
+  {
+    "title": "Modular Arithmetic as a Compression Strategy",
+    "href": "content/Hash_Compression_Concepts_interactive_topics_t2.html",
+    "type": "Content"
+  },
+  {
+    "title": "Folding and Other Compression Techniques",
+    "href": "content/Hash_Compression_Concepts_interactive_topics_t3.html",
+    "type": "Content"
+  },
+  {
+    "title": "Distribution Properties of Hash Functions",
+    "href": "content/Hash_Compression_Concepts_interactive_topics_t4.html",
+    "type": "Content"
+  },
+  {
+    "title": "Comparing and Selecting Compression Methods",
+    "href": "content/Hash_Compression_Concepts_interactive_topics_t5.html",
+    "type": "Content"
+  },
+  {
     "title": "Hash Compression: Concepts and Techniques \u2014 Module Topics",
     "href": "content/module_topics.html",
     "type": "Content"

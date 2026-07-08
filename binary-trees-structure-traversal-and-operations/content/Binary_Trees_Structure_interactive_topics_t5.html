@@ -1,0 +1,308 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Deletion Operations</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+  <style>
+    body { padding-left: 1.1rem; padding-right: 1.1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid rgba(128,128,128,.45); padding: .45em .7em; text-align: left; vertical-align: top; }
+    thead th { background: rgba(128,128,128,.18); font-weight: 600; }
+    tbody tr:nth-child(even) { background: rgba(128,128,128,.08); }
+    a.topic-detail-link { text-decoration: underline; }
+  </style>
+  <style>
+    summary.slide-header { list-style: none; }
+    summary.slide-header::-webkit-details-marker { display: none; }
+    details.slide-card[open] > .slide-body { display: block; }
+    details.slide-card[open] .chevron { transform: rotate(90deg); }
+    @media print { details.slide-card > .slide-body { display: block !important; } .chevron { display: none; } }
+  </style>
+</head><body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Binary Trees: Structure, Traversal, and Operations</a></div>
+  <header>
+    <h1>Deletion Operations</h1>
+  </header><main>
+    <details class="slide-card" open>
+      <summary class="slide-header"><span class="slide-num">1</span><h2>Deletion Operations</h2><span class="chevron">▶</span></summary>
+      <div class="slide-body">
+        <p>Deletion is one of the three fundamental operations on a Binary Search Tree (BST), alongside insertion and search. While insertion and search follow relatively straightforward recursive paths, deletion is more nuanced because removing a node must not break the BST ordering property — the invariant that every node's left subtree contains only values strictly less than that node, and its right subtree contains only values strictly greater. To handle this cleanly, deletion is decomposed into three distinct cases based on the structural role of the node being removed. Understanding which case applies — and why each strategy works — is the key to implementing correct and efficient BST deletion.</p>
+
+<p>Before any pointers are changed, the first step is always to <strong>locate the target node</strong> using a standard BST search: start at the root, go left if the target is smaller than the current node, go right if it is larger, and stop when the target is found (or confirm it is absent). Once found, the node's structure is assessed: does it have zero children, one child, or two children? That assessment determines the entire strategy for removal.</p>
+
+<p><strong>Overview of the Three Cases</strong></p>
+
+<p>At a high level, the three cases are:</p>
+
+<ul>
+  <li><strong>Case 1 — Leaf node:</strong> The target has no children. It can be removed immediately, and the parent simply nullifies the pointer that was pointing to it.</li>
+  <li><strong>Case 2 — One child:</strong> The target has exactly one subtree (left or right). The parent is rewired to point directly to that subtree, bypassing and discarding the target node.</li>
+  <li><strong>Case 3 — Two children:</strong> The target has both a left and a right subtree. It cannot be simply removed without leaving two disconnected subtrees. Instead, its value is replaced with a suitable substitute — the <em>in-order successor</em> or <em>in-order predecessor</em> — and then that substitute node is deleted from its original position, which always reduces to Case 1 or Case 2.</li>
+</ul>
+
+<p>Each case is examined in depth below.</p>
+
+<p><strong>Case 1: Deleting a Leaf Node</strong></p>
+
+<p>A leaf node is one with no left child and no right child. Because it is at the fringe of the tree, its removal has no downstream consequences — there are no subtrees to reconnect. The operation is as simple as it gets: find the parent of the leaf, determine whether the leaf is the parent's left or right child, and set that pointer to <code>null</code>.</p>
+
+<p>Consider this BST:</p>
+
+<pre><code>        50
+       /  \
+     30    70
+    /  \
+  20    40
+</code></pre>
+
+<p>Deleting <strong>20</strong>: Node 20 is a leaf (no children). Its parent is 30, and 20 is 30's left child. The deletion simply sets <code>30.left = null</code>. The result:</p>
+
+<pre><code>        50
+       /  \
+     30    70
+       \
+       40
+</code></pre>
+
+<p>The BST property is trivially maintained because no existing relationships have changed — only a null reference was introduced where there was previously a pointer to a node with no descendants.</p>
+
+<p>In code terms, a recursive deletion function that returns the updated subtree root handles this naturally:</p>
+
+<pre><code>def delete(node, key):
+    if node is None:
+        return None                    # key not found
+    if key &lt; node.value:
+        node.left = delete(node.left, key)
+    elif key &gt; node.value:
+        node.right = delete(node.right, key)
+    else:
+        # Found the node to delete
+        if node.left is None and node.right is None:
+            return None                # Case 1: leaf — remove it
+        # Cases 2 and 3 handled below...
+    return node
+</code></pre>
+
+<p>Returning <code>None</code> effectively detaches the leaf from its parent when the parent assigns the return value back to its child pointer.</p>
+
+<p><strong>Case 2: Deleting a Node with One Child</strong></p>
+
+<p>When the target node has exactly one child (either a left subtree or a right subtree, but not both), the solution is a <em>bypass</em>: the parent of the target is rewired to point directly to the target's single child. The target node itself is discarded.</p>
+
+<p>Why does this preserve the BST property? Because the subtree rooted at the single child was already correctly positioned relative to the target's parent. If the target was the parent's left child, then every node in the target's subtree was already less than the parent (the BST property guaranteed this). Promoting the child one level up does not change any of those relationships.</p>
+
+<p>Using the previous tree, now delete <strong>30</strong> (which has one child — the right child 40):</p>
+
+<pre><code>Before:          After:
+    50               50
+   /  \             /  \
+  30   70          40   70
+    \
+    40
+</code></pre>
+
+<p>The parent (50) previously had <code>50.left = 30</code>. After deletion, <code>50.left = 40</code>. Node 40 steps into the position formerly held by 30, and since 40 was already less than 50 (it lived in 50's left subtree), the BST property is intact.</p>
+
+<p>It makes no difference whether the surviving child is a left child or a right child of the deleted node; the bypass logic is identical in both cases:</p>
+
+<pre><code>    else:
+        if node.left is None:
+            return node.right          # Case 2a: only right child
+        if node.right is None:
+            return node.left           # Case 2b: only left child
+</code></pre>
+
+<p>Returning the surviving child causes the parent's pointer to be updated automatically by the recursive assignment.</p>
+
+<p><strong>Case 3: Deleting a Node with Two Children</strong></p>
+
+<p>This is the most complex case. When the target node has both a left subtree and a right subtree, there is no single child to promote — promoting either subtree root would leave the other subtree stranded. Instead, the strategy is:</p>
+
+<ul>
+  <li>Find a <strong>replacement value</strong> that can legally occupy the target node's position without violating BST order.</li>
+  <li><strong>Copy</strong> that replacement value into the target node (overwriting the value that was there).</li>
+  <li><strong>Delete</strong> the replacement node from its original position in the tree (a recursive call that will resolve to Case 1 or Case 2).</li>
+</ul>
+
+<p>The two valid replacement candidates are the <em>in-order successor</em> and the <em>in-order predecessor</em>. Both are guaranteed to fit legally into the target's position, and both have at most one child, making their own deletion straightforward.</p>
+
+<p>Example — delete <strong>50</strong> from:</p>
+
+<pre><code>        50
+       /  \
+     30    70
+    /  \   / \
+  20   40 60  80
+</code></pre>
+
+<p>Node 50 has two children. Using the in-order successor (60): copy 60 into the target position, then delete 60 from the right subtree. Since 60 is a leaf, that is a Case 1 deletion.</p>
+
+<pre><code>Result:
+        60
+       /  \
+     30    70
+    /  \     \
+  20   40    80
+</code></pre>
+
+<p>Every BST invariant is satisfied: 60's left subtree (30, 20, 40) contains values less than 60; 60's right subtree (70, 80) contains values greater than 60.</p>
+
+<p><strong>The In-Order Successor</strong></p>
+
+<p>The <em>in-order successor</em> of a node is the node with the <strong>smallest value that is still greater</strong> than the target. In a BST, if the target node has a right subtree, the in-order successor is the <strong>leftmost node in that right subtree</strong> — reached by going right once, then following left pointers until the left child is null.</p>
+
+<pre><code>def find_min(node):
+    while node.left is not None:
+        node = node.left
+    return node
+</code></pre>
+
+<p>Why is the in-order successor a legal replacement?</p>
+
+<ul>
+  <li>It is <strong>greater than every value in the target's left subtree</strong> — because it comes from the right subtree, which already contained values greater than the target, and the target was greater than the entire left subtree.</li>
+  <li>It is <strong>less than every other value in the target's right subtree</strong> — because it is the minimum of that right subtree; all other nodes there are larger.</li>
+  <li>It has <strong>at most one child</strong> (a right child only). If it had a left child, that left child would be smaller and would have been the leftmost node instead — a contradiction. So the in-order successor's own deletion is always Case 1 (no children) or Case 2 (only a right child).</li>
+</ul>
+
+<p>The full Case 3 logic using the in-order successor:</p>
+
+<pre><code>    else:
+        # Case 3: two children
+        successor = find_min(node.right)
+        node.value = successor.value          # overwrite with successor's value
+        node.right = delete(node.right, successor.value)  # remove successor
+    return node
+</code></pre>
+
+<p><strong>The In-Order Predecessor</strong></p>
+
+<p>The <em>in-order predecessor</em> is the mirror image: the node with the <strong>largest value that is still less</strong> than the target. It is found by going left once from the target, then following right pointers to the rightmost node.</p>
+
+<pre><code>def find_max(node):
+    while node.right is not None:
+        node = node.right
+    return node
+</code></pre>
+
+<p>Like the successor, the predecessor satisfies the BST property at the target position:</p>
+
+<ul>
+  <li>It is <strong>greater than every other node in the left subtree</strong> — because it is the maximum of that subtree.</li>
+  <li>It is <strong>less than every node in the right subtree</strong> — because it lived in the left subtree, and all left-subtree values are less than the target, which is less than all right-subtree values.</li>
+  <li>It has <strong>at most one child</strong> (a left child only), so its own deletion is Case 1 or Case 2.</li>
+</ul>
+
+<p>Using the in-order predecessor to delete 50 from the same tree:</p>
+
+<pre><code>        50                40
+       /  \              /  \
+     30    70    →     30    70
+    /  \   / \        /     / \
+  20   40 60  80    20    60  80
+</code></pre>
+
+<p>40 (the in-order predecessor of 50) is copied to the root position; then 40 is deleted from its original location — it was a leaf, so Case 1 applies.</p>
+
+<p>Both the in-order successor and in-order predecessor are equally valid replacements. Implementations often default to one convention (commonly the successor), but alternating between them can produce more balanced trees in practice when deletions are frequent.</p>
+
+<p><strong>Comparing the Three Cases Side by Side</strong></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Case</th>
+      <th>Condition</th>
+      <th>Strategy</th>
+      <th>Pointer changes</th>
+      <th>BST property</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Case 1</td>
+      <td>No children (leaf)</td>
+      <td>Remove directly</td>
+      <td>Parent's pointer → null</td>
+      <td>Trivially preserved</td>
+    </tr>
+    <tr>
+      <td>Case 2</td>
+      <td>Exactly one child</td>
+      <td>Bypass the target</td>
+      <td>Parent's pointer → target's child</td>
+      <td>Preserved — subtree was already ordered correctly relative to parent</td>
+    </tr>
+    <tr>
+      <td>Case 3</td>
+      <td>Two children</td>
+      <td>Replace value with in-order successor or predecessor, then delete that node</td>
+      <td>Value overwrite + recursive delete of replacement</td>
+      <td>Preserved — replacement value legally fits in target position</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Preserving BST Integrity After Deletion</strong></p>
+
+<p>The overriding concern throughout every deletion case is maintaining the BST invariant: for any node N, all values in N's left subtree are strictly less than N's value, and all values in N's right subtree are strictly greater. Deletion is the operation most likely to violate this if implemented carelessly — for example, by simply overwriting a two-child node's value with an arbitrary neighbor rather than the strict in-order successor or predecessor.</p>
+
+<p>A few verification strategies are valuable after implementing deletion:</p>
+
+<ul>
+  <li><strong>In-order traversal check:</strong> An in-order traversal of a valid BST always produces values in strictly ascending order. Running this traversal after each deletion confirms the tree's integrity end-to-end.</li>
+  <li><strong>Test all structural positions:</strong> Deleting the root node (always Case 3 if the tree has more than two levels), deleting internal nodes with one or two children, and deleting leaves should all be tested independently, since each exercises different code paths.</li>
+  <li><strong>Edge cases:</strong> Deleting the only node in the tree (the root with no children), deleting a node from a tree with a single left or right spine (degenerate/skewed tree), and attempting to delete a value not present in the tree (should leave the tree unchanged).</li>
+</ul>
+
+<p>The beauty of the in-order successor/predecessor approach is that it avoids any need to restructure or rebalance the tree. The replacement node slots into the target's position naturally, the subtrees remain connected exactly as before (minus the one node that was physically removed), and the BST property is guaranteed to hold globally — not just locally — because of the mathematical relationship between the in-order successor/predecessor and every other node in the tree.</p>
+
+<p>In summary, BST deletion elegantly reduces a seemingly complex problem to three manageable cases. Cases 1 and 2 are simple pointer adjustments. Case 3 leverages the BST's own ordering structure — the in-order successor or predecessor — to reduce itself to Case 1 or 2. Together these cases cover every possible structural configuration of a BST node, ensuring that deletion can always be performed correctly and efficiently in <em>O(h)</em> time, where <em>h</em> is the height of the tree.</p>
+        <div class="notes"><strong>Notes</strong>Covers the three cases of node deletion in a BST: removing a leaf, a node with one child, and a node with two children. Explains how the in-order successor or predecessor is used to preserve BST integrity.</div>
+      </div>
+    </details>
+  </main>
+
+<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
+</body></html>

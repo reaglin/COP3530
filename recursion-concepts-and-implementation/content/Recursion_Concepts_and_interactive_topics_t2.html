@@ -1,0 +1,217 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Base Cases and Recursive Cases</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+  <style>
+    body { padding-left: 1.1rem; padding-right: 1.1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid rgba(128,128,128,.45); padding: .45em .7em; text-align: left; vertical-align: top; }
+    thead th { background: rgba(128,128,128,.18); font-weight: 600; }
+    tbody tr:nth-child(even) { background: rgba(128,128,128,.08); }
+    a.topic-detail-link { text-decoration: underline; }
+  </style>
+  <style>
+    summary.slide-header { list-style: none; }
+    summary.slide-header::-webkit-details-marker { display: none; }
+    details.slide-card[open] > .slide-body { display: block; }
+    details.slide-card[open] .chevron { transform: rotate(90deg); }
+    @media print { details.slide-card > .slide-body { display: block !important; } .chevron { display: none; } }
+  </style>
+</head><body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Recursion: Concepts and Implementation</a></div>
+  <header>
+    <h1>Base Cases and Recursive Cases</h1>
+  </header><main>
+    <details class="slide-card" open>
+      <summary class="slide-header"><span class="slide-num">1</span><h2>Base Cases and Recursive Cases</h2><span class="chevron">▶</span></summary>
+      <div class="slide-body">
+        <p>Recursion is one of the most powerful and elegant techniques in programming, but it rests on a surprisingly simple structural rule: every recursive function must be built from exactly two kinds of logic working together. The first kind tells the function when to <em>stop</em>. The second kind tells the function what to <em>do next</em> when it is not yet ready to stop. These are the <strong>base case</strong> and the <strong>recursive case</strong>, respectively. Understanding what each one does, why each one is necessary, and how to write them correctly is the foundation of writing any recursive algorithm that actually works.</p>
+
+<p>Before examining each component in detail, consider a simple analogy. Imagine you are standing at the top of a staircase and you want to count how many steps there are by walking down them one at a time. You need two rules: a rule that says "keep walking down one step and count it" (the recursive case), and a rule that says "stop when you reach the bottom" (the base case). Without the second rule, you would walk off the bottom of the staircase and keep going forever. Without the first rule, you would never move at all. Recursive functions work in exactly the same way.</p>
+
+<p><strong>What Is a Base Case?</strong></p>
+
+<p>The base case is the condition under which a recursive function stops calling itself and instead returns a direct, known answer. It is the simplest possible version of the problem — the version for which no further decomposition is needed because the answer is already obvious. Every time a recursive function is called, it evaluates the base case condition <em>first</em>. If that condition is satisfied, the function returns a value immediately without making any further recursive calls.</p>
+
+<p>Consider the classic example of computing the factorial of a non-negative integer. The factorial of <em>n</em>, written <em>n!</em>, is defined as <em>n × (n−1) × (n−2) × … × 1</em>, with the special definition that <em>0! = 1</em>. That special definition — <em>0! = 1</em> — is precisely the base case. When the function receives the input <code>0</code>, it already knows the answer is <code>1</code> and can return it without doing anything further.</p>
+
+<pre><code>def factorial(n):
+    # Base case: the answer for 0 is known directly
+    if n == 0:
+        return 1
+    # Recursive case: reduce the problem and call again
+    return n * factorial(n - 1)
+</code></pre>
+
+<p>Without the base case check <code>if n == 0: return 1</code>, the function would call <code>factorial(-1)</code>, then <code>factorial(-2)</code>, and so on, descending infinitely through negative numbers. The base case is the exit door that gives the recursion somewhere concrete to land.</p>
+
+<p>It is also important to understand that the base case must be placed and evaluated <em>before</em> the recursive call, not after it. This ensures that whenever the simplest input arrives, the function returns immediately rather than accidentally making one more unnecessary or invalid recursive call.</p>
+
+<p><strong>What Is a Recursive Case?</strong></p>
+
+<p>The recursive case is the part of the function that handles inputs which are <em>not</em> yet simple enough to answer directly. In the recursive case, the function calls itself — but crucially, it does so with a <em>modified argument</em> that is in some measurable way closer to the base case than the original argument was. Each recursive call is not simply repeating the same work; it is solving a slightly smaller, simpler version of the same problem.</p>
+
+<p>Returning to the factorial example, the recursive case is <code>return n * factorial(n - 1)</code>. Here, the function does not yet know the final answer, but it knows one thing for certain: <em>n!</em> equals <em>n</em> multiplied by <em>(n−1)!</em>. So it delegates the job of computing <em>(n−1)!</em> to another call of the same function, then multiplies that result by <em>n</em> once the answer comes back. The argument passed to the recursive call is <code>n - 1</code>, which is one step closer to the base case of <code>0</code> on every single call.</p>
+
+<p>The requirement that the recursive case <em>converges</em> toward the base case is non-negotiable. A recursive case that calls the function with the same argument, or with an argument that moves away from the base case, will produce infinite recursion just as surely as having no base case at all. The recursive case must make genuine progress.</p>
+
+<p><strong>Why Both Components Are Necessary</strong></p>
+
+<p>The base case and the recursive case are not optional add-ons to a recursive function — they are its two essential organs. Neither works without the other, and the absence of either produces a broken function.</p>
+
+<ul>
+  <li><strong>The base case provides the exit condition.</strong> It is the moment when the chain of recursive calls finally produces a concrete value. Every other call in the chain is waiting for this value so it can complete its own computation. The base case is what makes the entire chain productive rather than endless.</li>
+  <li><strong>The recursive case provides the decomposition mechanism.</strong> It is the logic that says "I cannot answer this directly, but I can express it in terms of a simpler version of itself." Without this, the function could only ever handle the base case input and would be useless for any other input.</li>
+  <li><strong>Together they guarantee termination and correctness.</strong> As long as every possible input either satisfies the base case or is transformed by the recursive case into an input closer to the base case, the function is guaranteed to terminate and produce a correct result for every valid input.</li>
+</ul>
+
+<p>Think of it this way: the recursive case keeps breaking the problem into smaller pieces, and the base case is the final piece that has no further parts. The answers are then assembled back up through the chain of waiting calls. This assembly is often called <em>unwinding the call stack</em>.</p>
+
+<p><strong>Identifying the Base Case in Classic Algorithms</strong></p>
+
+<p>A practical technique for identifying the correct base case is to ask: <em>what is the smallest or simplest input for which the answer is already known without any further computation?</em> The answer to that question is almost always the base case.</p>
+
+<p>For a function that sums all integers from <code>1</code> to <code>n</code>, the simplest input is <code>n = 1</code>, where the answer is <code>1</code> with no addition needed. For a function that searches a list, the simplest input is an empty list, where the answer is immediately "not found." For a function that reverses a string, the simplest input is a string of length zero or one, which is already its own reverse.</p>
+
+<p>Some problems require <strong>multiple base cases</strong>. The Fibonacci sequence is the most well-known example. By definition, <em>fib(0) = 0</em> and <em>fib(1) = 1</em>, and every other Fibonacci number is the sum of the two before it. A recursive implementation needs both of these base cases because the recursive case references <em>two</em> previous results, meaning the recursion would eventually reach both <code>0</code> and <code>1</code> as inputs and both must be handled directly.</p>
+
+<pre><code>def fibonacci(n):
+    # Two base cases are required
+    if n == 0:
+        return 0
+    if n == 1:
+        return 1
+    # Recursive case: sum of the two preceding values
+    return fibonacci(n - 1) + fibonacci(n - 2)
+</code></pre>
+
+<p>If only one base case were provided — say, only <code>if n == 0: return 0</code> — then a call to <code>fibonacci(2)</code> would eventually call <code>fibonacci(1)</code>, which would call <code>fibonacci(0)</code> and <code>fibonacci(-1)</code>. The missing base case for <code>n == 1</code> would cause the function to descend into negative numbers indefinitely.</p>
+
+<p>Defining the base case with precision is equally important in the other direction. Setting the base case too late — for example, writing <code>if n &lt;= 5: return some_value</code> when the natural stopping point is <code>n == 0</code> — may cause the function to stop before it has actually solved the problem correctly, returning an approximate or incorrect answer instead of a precise one.</p>
+
+<p><strong>Ensuring the Recursive Case Converges</strong></p>
+
+<p>Having a valid base case is only half the battle. The recursive case must also be written so that each call genuinely moves the argument toward that base case. Several common strategies accomplish this depending on the type of problem:</p>
+
+<ul>
+  <li><strong>Decrementing a counter:</strong> For problems defined over non-negative integers, passing <code>n - 1</code> to the recursive call reduces the problem size by one on every call. This is used in factorial, counting, and similar problems.</li>
+  <li><strong>Reducing a list or string:</strong> For problems that operate on sequences, passing a slice that removes the first or last element — such as <code>my_list[1:]</code> — shrinks the sequence by one element per call until the empty-sequence base case is reached.</li>
+  <li><strong>Halving a value:</strong> For problems that benefit from dividing the input in half — such as binary search or merge sort — passing <code>n // 2</code> or splitting the list into two halves reduces the problem logarithmically, reaching the base case much faster.</li>
+</ul>
+
+<p>The following table summarizes these convergence strategies alongside typical base cases and example algorithms:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Convergence Strategy</th>
+      <th>Typical Base Case</th>
+      <th>Example Algorithm</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Decrement by 1 (<code>n - 1</code>)</td>
+      <td><code>n == 0</code> or <code>n == 1</code></td>
+      <td>Factorial, countdown</td>
+    </tr>
+    <tr>
+      <td>Remove first element (<code>lst[1:]</code>)</td>
+      <td>Empty list or single-element list</td>
+      <td>List sum, linear search</td>
+    </tr>
+    <tr>
+      <td>Halve the input (<code>n // 2</code>)</td>
+      <td><code>n == 0</code> or <code>n == 1</code></td>
+      <td>Binary search, merge sort</td>
+    </tr>
+    <tr>
+      <td>Remove first/last character (<code>s[1:]</code>)</td>
+      <td>Empty string or single character</td>
+      <td>String reversal, palindrome check</td>
+    </tr>
+    <tr>
+      <td>Move toward known value (<code>n - 1</code> and <code>n - 2</code>)</td>
+      <td><code>n == 0</code> and <code>n == 1</code></td>
+      <td>Fibonacci sequence</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>A useful diagnostic habit when writing recursive functions is to mentally trace through small inputs by hand. If you call <code>factorial(3)</code>, what argument goes into the next call? <code>2</code>. And the next? <code>1</code>. And the next? <code>0</code> — which hits the base case. This kind of manual tracing with small values quickly reveals whether the recursive case is converging correctly.</p>
+
+<p><strong>Infinite Recursion and Stack Overflow</strong></p>
+
+<p>When a recursive function is missing a valid base case, or when the recursive case fails to move toward the base case, the result is <strong>infinite recursion</strong>. The function calls itself over and over, never finding a stopping point. This is not merely a logical error that produces a wrong answer — it is a resource exhaustion error that crashes the program.</p>
+
+<p>The reason it crashes involves how function calls are managed in memory. Every time a function is called, the program allocates a <strong>stack frame</strong> — a block of memory that stores the function's local variables, its current arguments, and the return address that tells the program where to go when the function finishes. These stack frames are stacked on top of one another in a region of memory called the <strong>call stack</strong>. When a function returns, its frame is popped off the stack and the memory is reclaimed.</p>
+
+<p>In infinite recursion, functions are called continuously but never return, so their stack frames are pushed onto the call stack continuously but never popped off. The call stack has a fixed maximum size. Once that limit is exceeded, the program raises a <strong>stack overflow error</strong> — in Python, this appears as a <code>RecursionError: maximum recursion depth exceeded</code>.</p>
+
+<pre><code># Missing base case — this will cause a RecursionError
+def broken_factorial(n):
+    return n * broken_factorial(n - 1)  # Never stops!
+
+# Incorrect convergence — n never reaches 0
+def also_broken(n):
+    return n * also_broken(n + 1)  # Moving away from the base case
+</code></pre>
+
+<p>Debugging infinite recursion typically involves three checks:</p>
+
+<ul>
+  <li><strong>Does the base case condition actually match the inputs being passed?</strong> A base case of <code>if n == 0</code> will fail if the function is called with a floating-point number like <code>0.5</code> that decrements by <code>0.5</code> each time — it will skip right past <code>0</code> to <code>-0.5</code>, <code>-1.0</code>, and so on forever. In such cases, <code>if n &lt;= 0</code> would be more robust.</li>
+  <li><strong>Does the recursive case actually change the argument?</strong> Passing the exact same argument into the recursive call — for example, <code>return factorial(n)</code> instead of <code>return n * factorial(n - 1)</code> — produces immediate infinite recursion because no progress is ever made.</li>
+  <li><strong>Is the base case reachable from every possible valid input?</strong> If there are inputs for which no sequence of applications of the recursive case ever produces the base case input, those inputs will cause infinite recursion no matter how correct the base case itself is.</li>
+</ul>
+
+<p>A well-constructed recursive function avoids all of these pitfalls by ensuring that its base case and recursive case form a coherent pair: the base case handles the simplest known input, and the recursive case reliably transforms every other input into something one step simpler — guaranteed to reach the base case in a finite number of steps.</p>
+        <div class="notes"><strong>Notes</strong>Covers all six bullet-point groups from the topic outline. The factorial and Fibonacci examples are used throughout to illustrate base cases, multiple base cases, recursive cases, and convergence. The call stack and stack overflow explanation ties directly to the &quot;infinite recursion&quot; bullets. The convergence strategies table provides a quick reference for the common patterns listed in the outline.</div>
+      </div>
+    </details>
+  </main>
+
+<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
+</body></html>

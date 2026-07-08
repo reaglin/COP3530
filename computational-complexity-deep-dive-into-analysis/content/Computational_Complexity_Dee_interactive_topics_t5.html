@@ -1,0 +1,198 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comparing Asymptotic Notations</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+  <style>
+    body { padding-left: 1.1rem; padding-right: 1.1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid rgba(128,128,128,.45); padding: .45em .7em; text-align: left; vertical-align: top; }
+    thead th { background: rgba(128,128,128,.18); font-weight: 600; }
+    tbody tr:nth-child(even) { background: rgba(128,128,128,.08); }
+    a.topic-detail-link { text-decoration: underline; }
+  </style>
+  <style>
+    summary.slide-header { list-style: none; }
+    summary.slide-header::-webkit-details-marker { display: none; }
+    details.slide-card[open] > .slide-body { display: block; }
+    details.slide-card[open] .chevron { transform: rotate(90deg); }
+    @media print { details.slide-card > .slide-body { display: block !important; } .chevron { display: none; } }
+  </style>
+</head><body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Computational Complexity: Deep Dive into Analysis</a></div>
+  <header>
+    <h1>Comparing Asymptotic Notations</h1>
+  </header><main>
+    <details class="slide-card" open>
+      <summary class="slide-header"><span class="slide-num">1</span><h2>Comparing Asymptotic Notations</h2><span class="chevron">▶</span></summary>
+      <div class="slide-body">
+        <p>Asymptotic notation is the shared language through which computer scientists and software engineers describe how an algorithm's resource consumption — typically time or space — scales as the input size grows toward infinity. Rather than counting exact operations (which depends on hardware, compiler, and countless low-level details), asymptotic analysis strips away constants and focuses purely on growth rates. The three foundational notations — Big O, Omega, and Theta — each answer a subtly different question about that growth, and together they form a complete toolkit for characterizing algorithm complexity. Understanding not only what each notation means individually, but how they relate to one another and when to reach for each one, is essential for rigorous algorithmic thinking.</p>
+
+<p><strong>Big O Notation: The Upper Bound</strong></p>
+
+<p>Big O notation answers the question: <em>how bad can it get?</em> It establishes an asymptotic ceiling on a function's growth rate. Formally, a function <code>f(n)</code> is said to be <code>O(g(n))</code> if and only if there exist positive constants <code>c</code> and <code>n₀</code> such that:</p>
+
+<pre><code>f(n) ≤ c · g(n)   for all n ≥ n₀</code></pre>
+
+<p>In plain language: beyond some threshold input size <code>n₀</code>, the function <code>f(n)</code> never grows faster than some constant multiple of <code>g(n)</code>. The constant <code>c</code> absorbs differences in machine speed, implementation details, or leading coefficients — none of which matter asymptotically. What matters is the <em>shape</em> of the growth curve.</p>
+
+<p>Consider a concrete example. Suppose an algorithm performs exactly <code>3n² + 7n + 42</code> operations on an input of size <code>n</code>. We can claim this function is <code>O(n²)</code> because, for a suitable choice of <code>c</code> (say <code>c = 4</code>) and a large enough <code>n₀</code>, the inequality <code>3n² + 7n + 42 ≤ 4n²</code> holds. The lower-order terms <code>7n + 42</code> become negligible compared to the <code>3n²</code> term as <code>n</code> grows, and the leading coefficient <code>3</code> is absorbed by multiplying by <code>c = 4</code>. We could also truthfully say this function is <code>O(n³)</code> or even <code>O(2ⁿ)</code> — Big O only requires that <code>g(n)</code> be an upper bound, not the <em>tightest</em> possible one.</p>
+
+<p>This inclusivity is both a strength and a source of potential imprecision. Big O is invaluable for <strong>worst-case planning</strong>: if you can prove your algorithm is <code>O(n log n)</code>, you have a hard guarantee that no input will drive your runtime above that growth rate (up to constants). System designers, product engineers, and SREs rely on Big O guarantees to reason about scalability under adversarial or peak conditions. At the same time, because many functions can inhabit the same Big O class, a statement like "Algorithm A is <code>O(n)</code>" is compatible with an algorithm that takes exactly <code>n</code> steps <em>and</em> one that takes <code>1000n</code> steps — both are linear, but one is dramatically faster in practice.</p>
+
+<p><strong>Omega Notation: The Lower Bound</strong></p>
+
+<p>If Big O is a ceiling, Omega (Ω) is a floor. It answers the question: <em>how well can it possibly do?</em> Formally, <code>f(n)</code> is <code>Ω(g(n))</code> if there exist positive constants <code>c</code> and <code>n₀</code> such that:</p>
+
+<pre><code>f(n) ≥ c · g(n)   for all n ≥ n₀</code></pre>
+
+<p>This means <code>f(n)</code> grows <em>at least as fast</em> as <code>g(n)</code>, asymptotically. The function may grow faster, but it cannot grow slower. For the same example function <code>3n² + 7n + 42</code>, it is clearly <code>Ω(n²)</code> because the <code>3n²</code> term alone satisfies the inequality with <code>c = 3</code>. It is also <code>Ω(n)</code>, <code>Ω(1)</code>, and so on — just as Big O can be loose from above, Omega can be loose from below.</p>
+
+<p>Omega notation is particularly powerful in <strong>theoretical lower-bound proofs</strong>. The canonical example is comparison-based sorting: any algorithm that sorts by comparing elements must make at least <code>Ω(n log n)</code> comparisons in the worst case. This is a statement about the <em>problem itself</em>, not any particular algorithm. The argument comes from information theory — there are <code>n!</code> possible orderings of <code>n</code> elements, and a binary decision tree of comparisons must have at least <code>n!</code> leaves, requiring depth at least <code>log₂(n!) = Ω(n log n)</code> by Stirling's approximation. No algorithm, however clever, can sort by comparison faster than this floor. When you can prove an Omega lower bound for a problem, you've shown that a specific algorithm achieving that bound is optimal — no further improvement in the asymptotic sense is possible.</p>
+
+<p>In the context of a single algorithm, Omega often captures best-case behavior. A linear search through an array is <code>Ω(1)</code> (the target might be the first element) but <code>O(n)</code> (the target might be last or absent). These two bounds don't contradict each other — they describe different scenarios.</p>
+
+<p><strong>Theta Notation: The Tight Bound</strong></p>
+
+<p>Theta (Θ) is the most precise and informative of the three notations. It pins down the <em>exact</em> asymptotic growth rate by simultaneously applying both an upper and a lower bound. Formally, <code>f(n)</code> is <code>Θ(g(n))</code> if and only if:</p>
+
+<pre><code>f(n) is O(g(n))   AND   f(n) is Ω(g(n))</code></pre>
+
+<p>Equivalently, there exist positive constants <code>c₁</code>, <code>c₂</code>, and <code>n₀</code> such that:</p>
+
+<pre><code>c₁ · g(n) ≤ f(n) ≤ c₂ · g(n)   for all n ≥ n₀</code></pre>
+
+<p>The function <code>f(n)</code> is <em>sandwiched</em> between two constant multiples of <code>g(n)</code>. Returning to our example: <code>3n² + 7n + 42</code> is <code>Θ(n²)</code> because it is both <code>O(n²)</code> (it grows no faster than <code>n²</code>) and <code>Ω(n²)</code> (it grows at least as fast as <code>n²</code>). There's no wiggle room — the function is genuinely quadratic in its growth.</p>
+
+<p>Theta notation is appropriate when an algorithm behaves the same way (up to constants) regardless of input structure. Consider merge sort: it always divides the array in half and merges, performing <code>Θ(n log n)</code> work whether the input is already sorted, reverse sorted, or random. Its best case and worst case share the same growth class, making <code>Θ(n log n)</code> a precise and complete description. In contrast, quicksort with a naive pivot strategy is <code>O(n²)</code> in the worst case and <code>Ω(n log n)</code> in the best case — no single Theta bound applies across all inputs, so Theta would be misleading.</p>
+
+<p><strong>Relationships Among the Three Notations</strong></p>
+
+<p>The three notations form a coherent system, and understanding their logical relationships prevents confusion:</p>
+
+<ul>
+  <li><strong>Theta implies both O and Ω:</strong> If <code>f(n) = Θ(g(n))</code>, then automatically <code>f(n) = O(g(n))</code> and <code>f(n) = Ω(g(n))</code>. The tight bound subsumes both one-sided bounds. This means whenever you can establish Theta, you have simultaneously established both the upper and lower bounds — it's the strongest single statement you can make about asymptotic growth.</li>
+  <li><strong>O and Ω together imply Theta:</strong> Conversely, if you can independently prove <code>f(n) = O(g(n))</code> and <code>f(n) = Ω(g(n))</code> for the <em>same</em> <code>g(n)</code>, then <code>f(n) = Θ(g(n))</code> follows directly. This is a common proof strategy: establish a matching upper and lower bound to "close the gap" and achieve a tight characterization.</li>
+  <li><strong>O and Ω alone only tell half the story:</strong> Knowing an algorithm is <code>O(n²)</code> tells you it won't exceed quadratic growth, but not whether it always achieves it. Knowing it's <code>Ω(n)</code> tells you it can't always finish in linear time, but leaves a wide gap. Neither statement alone gives a complete picture; Theta closes that gap when it exists.</li>
+  <li><strong>Cases can differ:</strong> Many algorithms have different notations for different input scenarios. A hashtable lookup is <code>O(n)</code> in the worst case (all keys collide) and <code>Ω(1)</code> in the best case. No global Theta applies. This is not a flaw in the notation — it reflects genuine variation in behavior across inputs.</li>
+</ul>
+
+<p>A useful analogy: imagine measuring the height of water in a tank. Big O is the top of the tank (the water can never exceed that level). Omega is the bottom of the tank (there must be at least some water). Theta is knowing both dimensions — the water level stays within a bounded range relative to some reference function.</p>
+
+<p><strong>Practical Use Cases: Choosing the Right Notation</strong></p>
+
+<p>Selecting the appropriate notation is not merely a formal exercise — it shapes the claims you can make and the decisions you can justify:</p>
+
+<ul>
+  <li><strong>Use Big O</strong> when communicating worst-case performance guarantees to stakeholders, when designing systems that must remain responsive under adversarial inputs, or when you cannot fully characterize best-case behavior. Saying "our search routine is <code>O(log n)</code>" tells a database architect exactly how much work to budget for the absolute worst query. In safety-critical systems, worst-case bounds are often the only ones that matter.</li>
+  <li><strong>Use Omega</strong> when arguing about the inherent difficulty of a problem — that is, when you want to show no algorithm can do better. Proving that any algorithm solving problem X requires at least <code>Ω(n²)</code> time means that even a yet-undiscovered algorithm faces that floor. Omega is also used informally to describe best-case behavior: "in the best case, this sort is <code>Ω(n)</code> because it must at least read every element."</li>
+  <li><strong>Use Theta</strong> when an algorithm's complexity is uniform across all inputs or when you need a precise, two-sided characterization for rigorous academic or engineering analysis. Algorithm textbooks prefer Theta when it applies because it is strictly more informative than either O or Ω alone. If you're comparing two algorithms that are both <code>Θ(n log n)</code>, you know they are asymptotically equivalent and the comparison must be made on constants or practical constants rather than growth class.</li>
+  <li><strong>Avoid misusing Big O as a tight bound.</strong> A very common mistake in informal usage is to say "this algorithm is <code>O(n)</code>" when what is actually meant is "<code>Θ(n)</code>" — that the algorithm is both at most linear <em>and</em> at least linear. Saying only <code>O(n)</code> leaves open the possibility that the algorithm is actually <code>O(1)</code> or <code>O(log n)</code> in all cases, which is almost certainly not what the speaker intends. This imprecision can lead to overly conservative claims, misleading benchmarks, or incorrect algorithm selection.</li>
+</ul>
+
+<p>The following table summarizes the key distinctions:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Notation</th>
+      <th>Bound Type</th>
+      <th>Formal Condition</th>
+      <th>Typical Use</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>O(g(n))</code></td>
+      <td>Upper (ceiling)</td>
+      <td><code>f(n) ≤ c · g(n)</code> for all <code>n ≥ n₀</code></td>
+      <td>Worst-case guarantees, system design</td>
+    </tr>
+    <tr>
+      <td><code>Ω(g(n))</code></td>
+      <td>Lower (floor)</td>
+      <td><code>f(n) ≥ c · g(n)</code> for all <code>n ≥ n₀</code></td>
+      <td>Hardness proofs, best-case descriptions</td>
+    </tr>
+    <tr>
+      <td><code>Θ(g(n))</code></td>
+      <td>Tight (both)</td>
+      <td><code>c₁ · g(n) ≤ f(n) ≤ c₂ · g(n)</code> for all <code>n ≥ n₀</code></td>
+      <td>Precise characterization, rigorous analysis</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Asymptotic Equivalence and Dominance</strong></p>
+
+<p>Beyond the three core notations, two further concepts — <em>asymptotic equivalence</em> and <em>dominance</em> — complete the picture of how functions relate to one another at scale.</p>
+
+<p><strong>Asymptotic equivalence</strong> holds when two functions <code>f(n)</code> and <code>g(n)</code> satisfy:</p>
+
+<pre><code>lim (n → ∞) f(n) / g(n) = L,   where L is a nonzero finite constant</code></pre>
+
+<p>When this limit exists and is finite and nonzero, <code>f</code> and <code>g</code> belong to the same Theta class: <code>f(n) = Θ(g(n))</code>. For example, <code>f(n) = 5n² + 3n</code> and <code>g(n) = 2n²</code> are asymptotically equivalent because their ratio approaches <code>5/2</code> as <code>n → ∞</code>. They grow at exactly the same rate in the asymptotic sense, even though one is consistently 2.5 times larger than the other. Asymptotic equivalence is a powerful concept because it lets you simplify complex runtime expressions to their most characteristic term without loss of asymptotic precision.</p>
+
+<p><strong>Dominance</strong> describes when one function grows strictly faster than another. We say <code>f(n)</code> <em>dominates</em> <code>g(n)</code> if:</p>
+
+<pre><code>g(n) = O(f(n))   but   f(n) ≠ O(g(n))</code></pre>
+
+<p>Equivalently, <code>lim (n → ∞) g(n) / f(n) = 0</code>. In this case, <code>f</code> grows strictly faster than <code>g</code>: no constant multiple of <code>g</code> can eventually exceed <code>f</code>. The standard hierarchy of common complexity classes, from slowest to fastest growth, is:</p>
+
+<pre><code>O(1) ⊂ O(log n) ⊂ O(n) ⊂ O(n log n) ⊂ O(n²) ⊂ O(n³) ⊂ O(2ⁿ) ⊂ O(n!)</code></pre>
+
+<p>Each class strictly dominates all classes to its left. Polynomial functions dominate logarithmic functions; exponential functions dominate all polynomials. This hierarchy directly dictates which term in a complex expression "wins" as input grows large.</p>
+
+<p>The <strong>dominance principle</strong> is used constantly in simplifying runtime expressions. Suppose an algorithm has three sequential phases: a preprocessing step that takes <code>O(n log n)</code>, a main computation that takes <code>O(n²)</code>, and a postprocessing step that takes <code>O(n)</code>. The total runtime is <code>O(n log n + n² + n)</code>. Because <code>n²</code> dominates both <code>n log n</code> and <code>n</code> (both are <code>O(n²)</code> but <code>n²</code> is not <code>O(n log n)</code> nor <code>O(n)</code>), the entire expression simplifies to <code>O(n²)</code>. Lower-order terms are not lost — they simply become irrelevant at the scale of analysis asymptotic notation is designed for.</p>
+
+<p>Recognizing dominance relationships also guards against subtle errors. An algorithm might have a rare but expensive subroutine: if that subroutine runs once and costs <code>O(n²)</code>, while the main loop costs <code>O(n log n)</code> per iteration for <code>n</code> iterations (giving <code>O(n² log n)</code> total), the correct overall bound is <code>O(n² log n)</code>, not <code>O(n²)</code>, because <code>n² log n</code> dominates <code>n²</code>. Missing this distinction leads to an incorrect (too optimistic) bound. In production engineering, such an error could mean deploying a system you believe scales well but that actually degrades faster than expected under realistic load.</p>
+
+<p>Together, Big O, Omega, Theta, asymptotic equivalence, and dominance provide a complete and self-consistent framework for reasoning about algorithm performance. Using them correctly — choosing the right notation for the right claim, and simplifying expressions by identifying dominant terms — is a core competency of algorithmic analysis and one of the clearest indicators of technical rigor in both academic and professional contexts.</p>
+        <div class="notes"><strong>Notes</strong>The topic covers all six subtopic clusters: Big O, Omega, Theta, their relationships, practical use cases, and asymptotic equivalence/dominance. A summary comparison table is included. The dominance hierarchy is shown as a code block for clarity. Examples are concrete and varied (sorting algorithms, hashtable lookup, multi-phase algorithm cost aggregation).</div>
+      </div>
+    </details>
+  </main>
+
+<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
+</body></html>

@@ -1,0 +1,184 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Binary Search Trees (BST) Concepts</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+  <style>
+    body { padding-left: 1.1rem; padding-right: 1.1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid rgba(128,128,128,.45); padding: .45em .7em; text-align: left; vertical-align: top; }
+    thead th { background: rgba(128,128,128,.18); font-weight: 600; }
+    tbody tr:nth-child(even) { background: rgba(128,128,128,.08); }
+    a.topic-detail-link { text-decoration: underline; }
+  </style>
+  <style>
+    summary.slide-header { list-style: none; }
+    summary.slide-header::-webkit-details-marker { display: none; }
+    details.slide-card[open] > .slide-body { display: block; }
+    details.slide-card[open] .chevron { transform: rotate(90deg); }
+    @media print { details.slide-card > .slide-body { display: block !important; } .chevron { display: none; } }
+  </style>
+</head><body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Binary Trees: Structure, Traversal, and Operations</a></div>
+  <header>
+    <h1>Binary Search Trees (BST) Concepts</h1>
+  </header><main>
+    <details class="slide-card" open>
+      <summary class="slide-header"><span class="slide-num">1</span><h2>Binary Search Trees (BST) Concepts</h2><span class="chevron">▶</span></summary>
+      <div class="slide-body">
+        <p>A <strong>Binary Search Tree (BST)</strong> is one of the most fundamental and widely used data structures in computer science. It is a specialization of the general binary tree, meaning that every node has at most two children — conventionally called the <em>left child</em> and the <em>right child</em>. What elevates a BST above a plain binary tree is a strict <strong>ordering property</strong> that governs exactly where values are placed throughout the structure. This property transforms the tree from a passive container into an active search engine: because values are arranged in a predictable, sorted pattern, the tree can locate, insert, or remove data far more efficiently than an unsorted collection. Understanding the BST begins with understanding this ordering guarantee and how every other feature of the data structure flows from it.</p>
+
+<p>The <strong>BST Ordering Property</strong> can be stated plainly: for <em>any</em> node in the tree, every value stored in its <strong>left subtree</strong> must be strictly <strong>less than</strong> the node's own value, and every value stored in its <strong>right subtree</strong> must be strictly <strong>greater than</strong> the node's own value. Critically, this rule does not apply only to a node's immediate children — it applies to <em>all</em> descendants in each subtree. This is the detail that catches many learners off guard. Consider a node with value 10 whose right child has value 15. That right child might itself have a left child. Even though this grandchild sits to the <em>left</em> of 15, it must still be greater than 10 (as well as less than 15) because it lives in the right subtree of 10. The ordering constraint propagates downward through every level of the tree.</p>
+
+<p>To make this concrete, picture a BST built by inserting the values 8, 3, 10, 1, 6, 14, and 4 in that order. The first value inserted, 8, becomes the <strong>root</strong>. When 3 arrives, it is less than 8, so it goes left. When 10 arrives, it is greater than 8, so it goes right. The value 1 is less than 8 and less than 3, landing as 3's left child. The value 6 is less than 8 but greater than 3, so it becomes 3's right child. The value 14 is greater than 8 and greater than 10, becoming 10's right child. Finally, 4 is less than 8, greater than 3, and less than 6, so it settles as 6's left child. The resulting structure satisfies the ordering property at every node.</p>
+
+<p>The question of <strong>duplicate values</strong> requires a consistent policy. Pure BSTs traditionally disallow duplicates because a duplicate would violate the strict less-than / greater-than requirement. In practice, many implementations handle duplicates by adopting a rule such as "duplicates go to the right subtree" (treating them as greater-than-or-equal). Whatever rule is chosen, it must be applied uniformly throughout all insertions; inconsistency will corrupt the ordering property and break search behavior.</p>
+
+<p>Every element in a BST lives inside a <strong>BST Node</strong>. A node is a small record containing three things:</p>
+<ul>
+  <li><strong>Data (key):</strong> The value stored at this node. This value drives every comparison during search and insertion. In many implementations the key is a simple integer or string, but it can be any comparable type.</li>
+  <li><strong>Left pointer:</strong> A reference (or pointer) to the root of the left subtree — the collection of all nodes whose values are smaller than this node's key. If no smaller values have been inserted under this node, the left pointer is <code>null</code>.</li>
+  <li><strong>Right pointer:</strong> A reference to the root of the right subtree — all nodes with values greater than this node's key. If absent, the right pointer is <code>null</code>.</li>
+</ul>
+
+<p>A node whose both pointers are <code>null</code> is called a <strong>leaf node</strong>. It sits at the outermost edge of the tree and has no descendants. The node at the very top, with no parent, is the <strong>root</strong>. In code, a typical BST node definition looks like this:</p>
+
+<pre><code>// Java-style pseudocode
+class BSTNode {
+    int key;
+    BSTNode left;
+    BSTNode right;
+
+    BSTNode(int key) {
+        this.key = key;
+        this.left = null;
+        this.right = null;
+    }
+}</code></pre>
+
+<p>The simplicity of this structure belies its power. Because every comparison at a node immediately eliminates one entire half of the remaining candidates, the BST can search enormous datasets with very few comparisons — provided the tree is reasonably balanced.</p>
+
+<p><strong>How BST Ordering Enables Efficient Search</strong> is the payoff for enforcing the structural rule. Suppose you want to find the value 6 in the tree described earlier. You start at the root, 8. Is 6 equal to 8? No. Is 6 less than 8? Yes — so you move left to 3. Is 6 equal to 3? No. Is 6 greater than 3? Yes — move right to 6. Is 6 equal to 6? Yes — found it. You reached the target in just three comparisons, and at each step you discarded an entire branch of the tree without ever examining it. This is the essence of BST search efficiency.</p>
+
+<p>The algorithm generalizes to three cases at each visited node:</p>
+<ul>
+  <li>If the <strong>target equals</strong> the current node's key, the search is successful — return this node.</li>
+  <li>If the <strong>target is less than</strong> the current node's key, the right subtree is guaranteed not to contain the target (because all values there are greater). Recurse or iterate into the <strong>left subtree</strong>.</li>
+  <li>If the <strong>target is greater than</strong> the current node's key, the left subtree is guaranteed not to contain the target. Recurse or iterate into the <strong>right subtree</strong>.</li>
+  <li>If a <code>null</code> pointer is reached, the value is not present in the tree — return failure.</li>
+</ul>
+
+<p>In a <strong>balanced BST</strong> — one where no branch is dramatically longer than another — the tree has a height of approximately <em>log₂(n)</em> levels for <em>n</em> nodes. Because you traverse at most one path from root to leaf, you make at most <em>log₂(n)</em> comparisons. This gives an <strong>average-case time complexity of O(log n)</strong> for search, which represents an enormous improvement over the O(n) linear scan required for an unsorted array or linked list. For a million nodes, O(log n) means roughly 20 comparisons instead of up to 1,000,000.</p>
+
+<p>To appreciate <strong>BST vs. a General Binary Tree</strong>, it helps to state what a general binary tree is <em>not</em>: it imposes no constraint on where values appear. A parent node may be smaller than both children, or larger, or anywhere in between. Siblings may be in any order. There is no predictable relationship between a node's position and its value. Searching such a tree for a specific value offers no shortcut — in the worst case you must visit every node, resulting in O(n) time regardless of the tree's shape.</p>
+
+<p>The BST's ordering guarantee changes everything. It means you can always answer the question "is the target in the left subtree or the right subtree?" in O(1) time (a single comparison), eliminating half the remaining search space with each step. The table below summarizes the contrast:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>General Binary Tree</th>
+      <th>Binary Search Tree</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Value placement rule</td>
+      <td>None — arbitrary</td>
+      <td>Left &lt; node &lt; Right (at every node)</td>
+    </tr>
+    <tr>
+      <td>Search time complexity</td>
+      <td>O(n) — must visit all nodes</td>
+      <td>O(log n) average; O(n) worst case</td>
+    </tr>
+    <tr>
+      <td>Insertion strategy</td>
+      <td>Any position is valid</td>
+      <td>Must follow ordering property</td>
+    </tr>
+    <tr>
+      <td>In-order traversal result</td>
+      <td>Unsorted sequence</td>
+      <td>Always produces sorted sequence</td>
+    </tr>
+    <tr>
+      <td>Validation requirement</td>
+      <td>Check structural rules only</td>
+      <td>Must verify ordering across entire tree</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>A subtle but important point concerns <strong>validating a BST</strong>. Checking only that each node's left child is smaller and its right child is larger is <em>not sufficient</em>. Consider a node with value 20 in the right subtree of a root with value 10. If that node has a left child with value 5, then 5 &lt; 20 passes the local parent-child check, but 5 is also less than the root 10 — violating the global ordering property. Correct BST validation requires tracking the valid range of values allowed at each position, typically by propagating a <em>minimum</em> and <em>maximum</em> bound down through recursive calls.</p>
+
+<p>Finally, <strong>BST Height and Performance</strong> reveals a vulnerability in the data structure. The efficiency of O(log n) operations rests entirely on the assumption that the tree is roughly balanced — that it is wide and short rather than narrow and tall. The height of a BST is not fixed; it depends entirely on the <strong>order in which values are inserted</strong>.</p>
+
+<p>Consider inserting the values 1, 2, 3, 4, 5 in sorted order into a BST. Each new value is greater than all previous values, so it always goes to the right of the last inserted node. The resulting tree is not a branching structure at all — it is a straight chain leaning entirely to the right, essentially a <strong>linked list</strong>. Its height is <em>n − 1</em>, and searching it requires up to <em>n</em> comparisons, degrading to <strong>O(n)</strong> time — no better than a linear scan.</p>
+
+<pre><code>// Degenerate BST from inserting 1, 2, 3, 4, 5 in order:
+1
+ \
+  2
+   \
+    3
+     \
+      4
+       \
+        5
+// Height = 4, equivalent to a linked list</code></pre>
+
+<p>Contrast this with inserting 3, 1, 5, 2, 4, which produces a balanced tree of height 2 with the same five values. The key insight is that a <strong>balanced BST</strong> achieves O(log n) by ensuring no path from root to leaf is more than a small constant times longer than any other path. When this balance is not maintained, performance degrades proportionally to how skewed the tree becomes.</p>
+
+<p>The relationship between insertion order and tree shape is why more advanced tree variants — such as <strong>AVL trees</strong> and <strong>Red-Black trees</strong> — were invented. These self-balancing BSTs perform extra restructuring work (called <em>rotations</em>) during insertions and deletions to keep the tree height bounded at O(log n) regardless of insertion order. The plain BST remains foundational, both as a building block for these structures and as a practical tool when data arrives in random order (where severe skewing is statistically unlikely).</p>
+
+<p>In summary, the Binary Search Tree achieves its power through a single, elegantly enforced rule: smaller values always go left, larger values always go right, at every node throughout the entire tree. This ordering property enables binary elimination during search — discarding half the remaining candidates at each step — and produces a sorted sequence when the tree is traversed in order. The structure's performance is directly tied to its balance, making insertion order a design concern that becomes central to understanding both the strengths and the limitations of BSTs in real-world applications.</p>
+        <div class="notes"><strong>Notes</strong>The in-order traversal producing a sorted sequence is mentioned in the comparison table as a valuable implicit property of BSTs — worth emphasizing if students have covered tree traversals. The degenerate/skewed tree example using sorted-order insertion is a classic illustration worth demonstrating interactively if possible. Validation using min/max bounds is a common interview topic and extends naturally from the discussion of the ordering property applying globally, not just locally.</div>
+      </div>
+    </details>
+  </main>
+
+<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
+</body></html>

@@ -13,5 +13,40 @@
     "title": "The Queue: Structure and Use Cases \u2014 Module Topics",
     "href": "content/module_topics.html",
     "type": "Content"
+  },
+  {
+    "title": "Introduction to the Queue Data Structure",
+    "href": "content/The_Queue_Structure_interactive_topics_t1.html",
+    "type": "Content"
+  },
+  {
+    "title": "The FIFO Principle",
+    "href": "content/The_Queue_Structure_interactive_topics_t2.html",
+    "type": "Content"
+  },
+  {
+    "title": "Queue Operations",
+    "href": "content/The_Queue_Structure_interactive_topics_t3.html",
+    "type": "Content"
+  },
+  {
+    "title": "Implementing a Queue",
+    "href": "content/The_Queue_Structure_interactive_topics_t4.html",
+    "type": "Content"
+  },
+  {
+    "title": "Real-World Applications of Queues",
+    "href": "content/The_Queue_Structure_interactive_topics_t5.html",
+    "type": "Content"
+  },
+  {
+    "title": "Queues vs. Stacks: A Comparison",
+    "href": "content/The_Queue_Structure_interactive_topics_t6.html",
+    "type": "Content"
+  },
+  {
+    "title": "Queues vs. Stacks: A Comparison",
+    "href": "content/_interactive.html",
+    "type": "Content"
   }
 ]

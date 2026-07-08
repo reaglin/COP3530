@@ -1,0 +1,198 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Digital Currency Systems</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+  <style>
+    body { padding-left: 1.1rem; padding-right: 1.1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid rgba(128,128,128,.45); padding: .45em .7em; text-align: left; vertical-align: top; }
+    thead th { background: rgba(128,128,128,.18); font-weight: 600; }
+    tbody tr:nth-child(even) { background: rgba(128,128,128,.08); }
+    a.topic-detail-link { text-decoration: underline; }
+  </style>
+  <style>
+    summary.slide-header { list-style: none; }
+    summary.slide-header::-webkit-details-marker { display: none; }
+    details.slide-card[open] > .slide-body { display: block; }
+    details.slide-card[open] .chevron { transform: rotate(90deg); }
+    @media print { details.slide-card > .slide-body { display: block !important; } .chevron { display: none; } }
+  </style>
+</head><body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Applied Data Structures: Blockchain, Digital Currency, and Beyond</a></div>
+  <header>
+    <h1>Digital Currency Systems</h1>
+  </header><main>
+    <details class="slide-card" open>
+      <summary class="slide-header"><span class="slide-num">1</span><h2>Digital Currency Systems</h2><span class="chevron">▶</span></summary>
+      <div class="slide-body">
+        <p>Digital currency systems represent one of the most ambitious applications of computer science and cryptography in modern history. Unlike traditional financial systems that rely on centralized institutions — banks, clearinghouses, and governments — digital currencies such as Bitcoin and Ethereum achieve trustworthy, tamper-resistant record-keeping through carefully chosen data structures and mathematical protocols. Every component of a blockchain-based currency, from the way a wallet stores your credentials to the way thousands of nodes across the globe agree on the same transaction history, is rooted in specific algorithmic choices with deliberate trade-offs in speed, memory, and security. Understanding these systems means understanding how hash tables, linked lists, trees, heaps, and consensus algorithms combine into something greater than the sum of their parts.</p>
+
+<p><strong>Wallets and Key-Value Storage</strong></p>
+
+<p>A cryptocurrency wallet does not hold coins in the way a physical wallet holds banknotes. Instead, it holds <em>cryptographic keys</em> — specifically a matched pair consisting of a private key and a public key — that grant their owner the exclusive ability to authorize transactions. This key pair is generated using asymmetric cryptographic algorithms. Bitcoin, for example, uses the Elliptic Curve Digital Signature Algorithm (ECDSA) with the secp256k1 curve. The mathematics of elliptic curves ensures that given a private key <em>k</em>, the corresponding public key <em>K</em> can be computed efficiently, but the reverse computation — deriving <em>k</em> from <em>K</em> — is computationally infeasible with current technology.</p>
+
+<p>Once generated, these keys are stored as key-value entries. The public key (or more commonly, a hashed and encoded form of it called an address) acts as the key, and associated metadata such as the derived balance or transaction history acts as the value. Hash tables are the natural data structure for this purpose because they offer <strong>O(1) average-time lookup</strong>. When a user or a node needs to check the balance associated with a particular address, the hash table computes a hash of the address, jumps directly to the corresponding bucket, and retrieves the value without scanning through millions of other records. This speed is essential in a system processing thousands of transactions per second.</p>
+
+<p>The roles of the two keys are asymmetric and strictly defined. The <strong>public key</strong> functions as an address: anyone on the network can send funds to it, and it can be shared openly without risk. The <strong>private key</strong> is a secret that authorizes the spending of funds associated with the corresponding address. When you initiate a transaction, your wallet software uses the private key to produce a digital signature over the transaction data. Any node on the network can verify this signature using the public key, confirming that the transaction was authorized by the rightful owner — without ever seeing the private key itself.</p>
+
+<p>The consequence of this design is both elegant and unforgiving: <strong>losing the private key means losing access to the associated funds permanently.</strong> There is no central authority, no customer service desk, and no password-reset mechanism. The security model places full responsibility on the key holder. This is why hardware wallets, seed phrases, and cold storage solutions exist — to protect private keys from loss, theft, or destruction.</p>
+
+<p><strong>Transaction Data and the UTXO Model</strong></p>
+
+<p>Bitcoin and several other cryptocurrencies track ownership through a model called <strong>Unspent Transaction Outputs</strong>, or UTXOs. To understand UTXOs, consider that a "balance" in this system is not a single number stored somewhere; it is the <em>sum of all unspent outputs</em> that have been sent to your address across the entire history of the blockchain.</p>
+
+<p>Every transaction consumes one or more UTXOs as <strong>inputs</strong> and produces one or more new UTXOs as <strong>outputs</strong>. Suppose Alice has two UTXOs: one worth 0.5 BTC and another worth 0.3 BTC. She wants to send 0.7 BTC to Bob. Her wallet constructs a transaction that uses both UTXOs as inputs (totaling 0.8 BTC) and creates two outputs: one worth 0.7 BTC sent to Bob's address, and one worth 0.1 BTC returned to Alice as <em>change</em>. This change output is a brand-new UTXO in Alice's name, analogous to handing a cashier a ten-dollar bill for a seven-dollar item and receiving three dollars back. The original two UTXOs are now <em>spent</em> and cannot be used again.</p>
+
+<p>The full set of all currently unspent outputs — the <strong>UTXO set</strong> — is maintained in a hash table by every full node on the network. When a new transaction arrives, the node checks the hash table to verify that each input references a real, unspent output. If an output has already been consumed by a prior transaction, it will have been removed from the UTXO set, and the new transaction will be rejected immediately. This design <strong>naturally prevents double-spending</strong>: because each UTXO can appear as an input exactly once, the same funds cannot be sent to two different recipients simultaneously. The hash table's O(1) average lookup time makes these checks fast enough to keep up with the transaction volume of a live network.</p>
+
+<p>The UTXO model also has privacy implications. Because change can be returned to a new address each time, a careful user can make their transaction graph harder to trace. Each transaction creates a chain of ownership that is publicly visible on the blockchain but requires analysis to connect back to real-world identities.</p>
+
+<p><strong>The Mempool: Queuing Pending Transactions</strong></p>
+
+<p>Between the moment a transaction is broadcast to the network and the moment it is confirmed inside a block, it lives in the <strong>mempool</strong> (memory pool). Every node maintains its own local mempool — an in-memory collection of valid but as-yet-unconfirmed transactions. The mempool is local and not synchronized across nodes in the way the blockchain itself is, so different nodes may hold slightly different sets of pending transactions at any given instant, depending on network propagation delays and individual node policies.</p>
+
+<p>When a miner or validator is ready to assemble the next block, they select transactions from their mempool. Because block space is limited (Bitcoin imposes a roughly 1–4 MB block weight limit), not all mempool transactions can be included at once. Miners are economically incentivized to include the transactions that pay the highest <strong>fee per unit of block space</strong> (measured in satoshis per virtual byte in Bitcoin). A <strong>priority queue</strong> or <strong>max-heap</strong> is the appropriate data structure here: it supports efficient insertion of new transactions and efficient extraction of the highest-priority element. A binary max-heap provides O(log n) insertion and O(log n) extraction of the maximum, making it well-suited for dynamically managing a pool of thousands of pending transactions.</p>
+
+<p>During periods of network congestion — when many users are competing for limited block space — the mempool can grow very large and fees spike dramatically. Conversely, transactions that offer fees too low to be competitive may sit unconfirmed for hours or days. Most node implementations enforce a maximum mempool size in memory; when this limit is reached, low-fee transactions are evicted to free space for higher-paying ones. A transaction that is evicted is not lost forever — it can be rebroadcast — but it offers no guarantee of confirmation until conditions improve or the fee is increased.</p>
+
+<p><strong>Merkle Trees and Transaction Verification</strong></p>
+
+<p>Once a miner has selected a set of transactions for a block, they must commit to those transactions in a compact, verifiable way. This is accomplished using a <strong>Merkle tree</strong>, a binary tree of cryptographic hashes named after Ralph Merkle, who patented the concept in 1979.</p>
+
+<p>Construction proceeds bottom-up. Each transaction is hashed individually using a cryptographic hash function (Bitcoin uses SHA-256 applied twice, denoted SHA256d). These hashes become the <strong>leaf nodes</strong> of the tree. Then, adjacent pairs of leaf hashes are concatenated and hashed together to produce <strong>parent nodes</strong>. This process repeats level by level until a single hash remains at the top: the <strong>Merkle root</strong>. If the number of transactions is odd, the last hash is duplicated to make the count even before hashing.</p>
+
+<pre><code>Transactions: T1, T2, T3, T4
+
+Leaf hashes:   H1 = hash(T1)   H2 = hash(T2)   H3 = hash(T3)   H4 = hash(T4)
+
+Level 2:       H12 = hash(H1 + H2)              H34 = hash(H3 + H4)
+
+Merkle root:   Root = hash(H12 + H34)
+</code></pre>
+
+<p>The Merkle root is stored in the <strong>block header</strong>. Because the hash function is deterministic and collision-resistant, the Merkle root is a unique fingerprint for that exact set of transactions in that exact order. Altering even a single bit in any transaction changes its leaf hash, which changes the parent hash, which cascades all the way up to a different Merkle root, which invalidates the block header. This tamper-evidence property is a cornerstone of blockchain integrity.</p>
+
+<p>Merkle trees also enable a powerful feature called a <strong>Merkle proof</strong> (or Merkle path). Suppose a lightweight node (one that does not store the full blockchain) wants to confirm that transaction T3 is included in a particular block. A full node can provide the sibling hashes along the path from T3's leaf to the root — in the example above, that would be H4 and H12. The lightweight node hashes T3 to get H3, then hashes H3 with H4 to get H34, then hashes H34 with H12 to get the root. If this computed root matches the root in the block header (which the lightweight node already has), the transaction's inclusion is proven. Crucially, this verification requires only <strong>O(log n) hashes</strong> where n is the number of transactions, rather than downloading all n transactions. For a block containing 2,000 transactions, only about 11 hashes are needed — a dramatic reduction in data.</p>
+
+<p><strong>Consensus Mechanisms and Distributed Agreement</strong></p>
+
+<p>The most philosophically challenging problem in a decentralized currency is achieving agreement among thousands of anonymous, mutually distrustful nodes on a single canonical transaction history. This is a variant of the classical Byzantine Generals Problem in distributed computing. Blockchain systems solve it through <strong>consensus mechanisms</strong>.</p>
+
+<p><strong>Proof of Work (PoW)</strong>, the mechanism used by Bitcoin, requires miners to find a nonce — a 32-bit integer included in the block header — such that when the entire header is hashed, the result falls below a network-specified target value (equivalently, the hash must begin with a certain number of leading zeros). Because SHA-256 is a pseudo-random function, there is no shortcut: miners must perform billions of hash computations, on average, before finding a valid nonce. This work is <em>expensive</em> in electricity and hardware. The economic implication is profound: to rewrite a historical block, an attacker would need to redo the proof of work for that block <em>and</em> every subsequent block, faster than the honest network extends the chain. With Bitcoin's hash rate in the hundreds of exahashes per second, this is effectively impossible for any realistic attacker. PoW's security is rooted in thermodynamic cost — real-world energy expenditure.</p>
+
+<p><strong>Proof of Stake (PoS)</strong>, used by Ethereum since its 2022 "Merge" and by many other blockchains, replaces computational work with economic collateral. Validators lock up (stake) a quantity of the native currency as a security deposit. The protocol pseudorandomly selects validators to propose and attest to blocks, weighted by their stake. A validator who behaves dishonestly — for example, by signing two conflicting blocks — has their stake <em>slashed</em> (partially or fully destroyed). This replaces the energy cost of PoW with a financial cost, achieving similar Byzantine fault tolerance with orders-of-magnitude less energy consumption. The security guarantee shifts from "attacking is thermodynamically expensive" to "attacking destroys your own capital."</p>
+
+<p>Both mechanisms must handle <strong>forks</strong> — situations where two valid blocks are found nearly simultaneously, creating two competing chain branches. The <strong>longest-chain rule</strong> (in PoW, also called Nakamoto consensus) resolves this: nodes always extend the chain with the most accumulated proof of work, eventually causing the network to converge on one branch and abandon the other as an <strong>orphan block</strong>. In PoS systems, similar "heaviest chain" or finality-based rules apply. The mathematical guarantee is that as long as a majority of the hash rate (in PoW) or staked value (in PoS) is controlled by honest participants, the honest chain will always outpace any adversarial branch over time, maintaining a consistent and accurate global ledger.</p>
+
+<p><strong>Blockchain as a Linked List of Blocks</strong></p>
+
+<p>At the structural level, a blockchain is a <strong>singly-linked list of blocks</strong> where each node points backward to its predecessor via a cryptographic hash. Each block consists of a header and a body. The body contains the list of transactions. The header contains several critical fields:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Header Field</th>
+      <th>Purpose</th>
+      <th>Size (Bitcoin)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Previous Block Hash</td>
+      <td>Links this block to its parent, forming the chain</td>
+      <td>32 bytes</td>
+    </tr>
+    <tr>
+      <td>Merkle Root</td>
+      <td>Commitment to all transactions in this block</td>
+      <td>32 bytes</td>
+    </tr>
+    <tr>
+      <td>Timestamp</td>
+      <td>Approximate time the block was mined</td>
+      <td>4 bytes</td>
+    </tr>
+    <tr>
+      <td>Difficulty Target</td>
+      <td>Encodes the required leading zeros for PoW</td>
+      <td>4 bytes</td>
+    </tr>
+    <tr>
+      <td>Nonce</td>
+      <td>The value miners vary to find a valid PoW hash</td>
+      <td>4 bytes</td>
+    </tr>
+    <tr>
+      <td>Version</td>
+      <td>Block format version for protocol upgrades</td>
+      <td>4 bytes</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Because each block header contains the hash of the previous block's header, the chain is <em>retrospectively immutable</em>. Changing the data in block 500,000 would change that block's header hash, breaking block 500,001's "previous hash" field, which would then require recalculating block 500,001's PoW, which would break block 500,002, and so on in a cascade all the way to the current tip. An attacker would have to redo all of that work faster than the honest network produces new blocks — a combinatorially infeasible task at scale.</p>
+
+<p>The <strong>genesis block</strong> is the hardcoded first block of the chain, with its "previous hash" field set to all zeros (indicating no predecessor). It is compiled into the node software and acts as the immutable anchor of the entire structure. Bitcoin's genesis block was mined by Satoshi Nakamoto on January 3, 2009, and its coinbase transaction famously contains the text "The Times 03/Jan/2009 Chancellor on brink of second bailout for banks" — both a timestamp and a commentary.</p>
+
+<p>When two miners find valid blocks at nearly the same height simultaneously, a <strong>fork</strong> occurs and the blockchain briefly has two competing tips. Nodes that heard about block A first extend A; nodes that heard about B first extend B. The network resolves this naturally as soon as the next block is found — whichever branch it extends becomes longer, and nodes on the shorter branch reorganize to follow the longer one. The abandoned block is called an <strong>orphan block</strong> (or stale block). Its transactions are not lost; they return to the mempool and will likely be included in a subsequent block.</p>
+
+<p><strong>Scalability Challenges and Data Structure Trade-Offs</strong></p>
+
+<p>The security and decentralization of a blockchain come at a cost: <strong>scalability is fundamentally constrained</strong> by the requirement that every full node store and verify everything. The full Bitcoin blockchain as of 2025 exceeds 500 gigabytes and grows by roughly 50–80 GB per year. Running a full node requires significant disk space, bandwidth, and time to sync from scratch. This creates a tension: the more participation required of nodes, the fewer nodes will run, reducing decentralization; but relaxing requirements to scale up throughput risks centralizing the system.</p>
+
+<p>Ethereum's account-based model, which replaces UTXOs with a global state of account balances stored in a Merkle-Patricia trie (a combination of a Merkle tree and a Patricia trie optimized for key-value storage), faces a distinct problem called <strong>state bloat</strong>. Every new smart contract, every new token, and every new account adds an entry to the global state. As the state grows into the hundreds of gigabytes, the hash table and trie structures that nodes must hold in memory or on fast storage become increasingly burdensome. Proposals like state expiry (automatically pruning dormant accounts) and statelessness (allowing nodes to verify blocks without storing all state by using cryptographic witnesses) attempt to address this.</p>
+
+<p><strong>Sharding</strong> is a horizontal scaling approach borrowed from distributed databases. Instead of requiring every node to process every transaction, the network is divided into multiple <strong>shards</strong> — subsets of nodes that each handle a portion of the total transaction volume and state. A transaction between addresses on different shards requires a cross-shard communication protocol, which introduces coordination complexity. Sharding can dramatically increase throughput (Ethereum's long-term roadmap targets tens of thousands of transactions per second across shards) but introduces new security assumptions: an attacker who can concentrate their resources on a single small shard may be able to corrupt it more easily than they could corrupt the full network.</p>
+
+<p><strong>Pruning</strong> offers a more conservative optimization. A pruned node downloads and validates the full blockchain history but discards spent transaction data once it has confirmed that those outputs are no longer in the UTXO set. Bitcoin Core's pruning mode can reduce disk usage from 500+ GB to as little as 2–10 GB, retaining only recent blocks and the current UTXO set. The node loses the ability to serve historical block data to peers but retains full validation capability for new transactions. This represents a direct trade-off in the linked-list structure: the node keeps the "current state" (the UTXO hash table) and a window of recent blocks, but discards the deep historical chain of block bodies.</p>
+
+<p>These scalability solutions illustrate a recurring theme in systems design: every data structure choice carries trade-offs. The linked list of blocks gives immutability but grows forever. The hash table gives fast lookup but consumes memory. The Merkle tree gives compact proofs but adds construction overhead. A working digital currency system is an ongoing negotiation between these trade-offs, shaped by the specific security, decentralization, and throughput goals of its designers.</p>
+        <div class="notes"><strong>Notes</strong>Covers all seven subtopic groups in depth: wallets and key-value storage, the UTXO model, the mempool, Merkle trees, consensus mechanisms (PoW and PoS), blockchain as a linked list, and scalability challenges including state bloat, sharding, and pruning. Includes a concrete ASCII-style Merkle tree diagram in a code block and an HTML table for block header fields to aid comprehension. Accurate current figures cited (500+ GB chain size, Bitcoin&#39;s secp256k1/ECDSA, Ethereum&#39;s 2022 Merge).</div>
+      </div>
+    </details>
+  </main>
+
+<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
+</body></html>

@@ -1,0 +1,255 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Introduction to Binary Trees</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+  <style>
+    body { padding-left: 1.1rem; padding-right: 1.1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid rgba(128,128,128,.45); padding: .45em .7em; text-align: left; vertical-align: top; }
+    thead th { background: rgba(128,128,128,.18); font-weight: 600; }
+    tbody tr:nth-child(even) { background: rgba(128,128,128,.08); }
+    a.topic-detail-link { text-decoration: underline; }
+  </style>
+  <style>
+    summary.slide-header { list-style: none; }
+    summary.slide-header::-webkit-details-marker { display: none; }
+    details.slide-card[open] > .slide-body { display: block; }
+    details.slide-card[open] .chevron { transform: rotate(90deg); }
+    @media print { details.slide-card > .slide-body { display: block !important; } .chevron { display: none; } }
+  </style>
+</head><body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Binary Trees: Structure, Traversal, and Operations</a></div>
+  <header>
+    <h1>Introduction to Binary Trees</h1>
+  </header><main>
+    <details class="slide-card" open>
+      <summary class="slide-header"><span class="slide-num">1</span><h2>Introduction to Binary Trees</h2><span class="chevron">▶</span></summary>
+      <div class="slide-body">
+        <p>A <strong>binary tree</strong> is one of the most fundamental and widely studied data structures in computer science. Before diving into algorithms, balancing strategies, or specialized variants like binary search trees or heaps, it is essential to build a solid conceptual foundation: what a binary tree actually is, what its components are called, and what structural rules govern it. This topic establishes that foundation thoroughly.</p>
+
+<p>Unlike <strong>linear data structures</strong> such as arrays, linked lists, stacks, or queues — where each element has at most one predecessor and one successor, forming a straight chain — a binary tree organizes data in a <em>branching, hierarchical</em> manner. Each element in the tree can be connected to <em>two</em> subsequent elements, allowing the structure to fan outward as it grows deeper. This branching quality is what makes trees so powerful: rather than scanning through every element one by one, algorithms can make a binary decision at each step and navigate directly toward a target, dramatically reducing the number of comparisons needed.</p>
+
+<p>The word <strong>binary</strong> in the name is the key distinguishing constraint. In a <em>general tree</em>, a node may have any number of children — zero, one, five, or fifty. In a binary tree, that number is strictly capped at two. Each node may have a <strong>left child</strong>, a <strong>right child</strong>, both, or neither. This bounded branching factor of two gives binary trees predictable and mathematically tractable structural properties. A perfectly balanced binary tree with <em>n</em> nodes has a height of approximately log₂(n), which directly underlies the O(log n) time complexity of operations on balanced binary trees. This is in sharp contrast to a linked list, which effectively has a branching factor of one and degrades all search operations to O(n).</p>
+
+<p><strong>Nodes and Edges</strong></p>
+
+<p>The two physical building blocks of any binary tree are <strong>nodes</strong> and <strong>edges</strong>.</p>
+
+<p>A <strong>node</strong> is a single unit of storage in the tree. Every node contains three conceptual components:</p>
+<ul>
+  <li><strong>A payload</strong> — the actual data being stored (an integer, a string, a record, a pointer to an object, etc.).</li>
+  <li><strong>A left pointer</strong> — a reference (pointer, link, or index) to the node's left child, or <code>null</code> / <code>None</code> if no left child exists.</li>
+  <li><strong>A right pointer</strong> — a reference to the node's right child, or <code>null</code> / <code>None</code> if no right child exists.</li>
+</ul>
+
+<p>In most programming languages this is expressed directly as a class or struct. For example, in Python:</p>
+
+<pre><code>class Node:
+    def __init__(self, data):
+        self.data  = data   # the payload
+        self.left  = None   # pointer to left child
+        self.right = None   # pointer to right child
+</code></pre>
+
+<p>And in C, a node is typically declared as a struct:</p>
+
+<pre><code>typedef struct Node {
+    int data;
+    struct Node* left;
+    struct Node* right;
+} Node;
+</code></pre>
+
+<p>An <strong>edge</strong> represents a single directed connection from a parent node down to one of its children. Edges are the relationships between nodes; they are not stored explicitly as separate objects — they are implied by the non-null pointer values held inside each node. A critically important property of trees (including binary trees) is that in a tree containing <strong>N nodes</strong> there are always exactly <strong>N − 1 edges</strong>. This follows logically: every node except the root has exactly one parent, meaning exactly one incoming edge. Since the root has no parent, it contributes zero incoming edges, giving a total of N − 1. This also means that a binary tree has no cycles — you can never travel from a node back to itself by following edges, which distinguishes trees from more general graph structures.</p>
+
+<p>Edges are <strong>directional</strong>, flowing from parent down to child. This directionality enforces the hierarchy: you navigate <em>down</em> a tree, from ancestor to descendant, never sideways or upward (unless the implementation explicitly stores parent pointers as an optional augmentation).</p>
+
+<p><strong>The Root Node</strong></p>
+
+<p>The <strong>root</strong> is the single topmost node of the tree — the node from which every other node is reachable by following edges downward. It has several defining characteristics:</p>
+
+<ul>
+  <li>The root has <strong>no parent</strong>. It is the only node in the tree with an <em>in-degree of zero</em> (zero incoming edges). Every other node has exactly one incoming edge from its parent.</li>
+  <li><strong>Every node in the tree is a descendant of the root</strong> (or is the root itself). This makes the root the single entry point for all tree traversals and searches.</li>
+  <li>The root sits at <strong>depth 0</strong> (in zero-indexed conventions) or <strong>level 1</strong> (in one-indexed conventions). Both conventions appear in literature; the key is consistency within a given context. All measurements of tree height begin from the root.</li>
+</ul>
+
+<p>In implementation, a binary tree data structure typically stores only a single reference — a pointer to the root node. The entire tree is accessible from there. If the root pointer is <code>null</code>, the tree is empty. Consider a simple example: a tree whose root stores the value 10, with a left child storing 5 and a right child storing 15. In Python:</p>
+
+<pre><code>root       = Node(10)
+root.left  = Node(5)
+root.right = Node(15)
+</code></pre>
+
+<p>The tree now has three nodes and two edges: one from 10 to 5, and one from 10 to 15. The root (10) is the single point of entry.</p>
+
+<p><strong>Leaf Nodes</strong></p>
+
+<p>At the opposite end of the tree from the root are the <strong>leaf nodes</strong> (also called <em>external nodes</em> or <em>terminal nodes</em>). A leaf is any node that has <strong>no children</strong> — both its left and right pointers are null. In graph theory terms, a leaf has an <em>out-degree of zero</em>.</p>
+
+<ul>
+  <li>Leaves reside at the bottom of the tree. They are the endpoints of every downward path from the root.</li>
+  <li>A special case: a tree consisting of a <strong>single root node with no children</strong> means the root is simultaneously the root <em>and</em> a leaf. This is the minimal non-empty binary tree.</li>
+  <li>The <strong>number and distribution of leaf nodes</strong> has meaningful implications for tree balance. In a perfectly balanced binary tree of height <em>h</em>, there are up to 2<sup>h</sup> leaves. An extremely unbalanced tree (effectively a linked list) has exactly one leaf — the last node in the chain. This contrast illustrates why balance matters for performance.</li>
+</ul>
+
+<p>Non-leaf nodes (nodes that have at least one child) are called <strong>internal nodes</strong>. The root is an internal node in any tree with more than one node.</p>
+
+<p><strong>Parent-Child Relationships</strong></p>
+
+<p>The <strong>parent-child relationship</strong> is the atomic unit of structure in a binary tree, and all higher-level structural concepts are built upon it.</p>
+
+<ul>
+  <li>A <strong>parent node</strong> directly connects to its children via its left and/or right pointers. In a standard implementation, the child node stores <em>no explicit reference back</em> to its parent. Navigation is strictly top-down. If upward traversal is needed (for example, in certain deletion algorithms), parent pointers must be added explicitly to the node definition, at the cost of additional memory and maintenance overhead.</li>
+  <li><strong>Sibling nodes</strong> are nodes that share the same parent. In a binary tree, because each parent has at most two children, a node can have <strong>at most one sibling</strong>. This is another consequence of the binary constraint — in a general tree, a node might have dozens of siblings.</li>
+  <li>The parent-child relationship generalizes into broader ancestral terminology. A node <em>A</em> is an <strong>ancestor</strong> of node <em>B</em> if you can reach <em>B</em> from <em>A</em> by following edges downward. Conversely, <em>B</em> is a <strong>descendant</strong> of <em>A</em>. The set of a node and all its descendants forms a <strong>subtree</strong> rooted at that node — itself a valid binary tree.</li>
+</ul>
+
+<p>To make these relationships concrete, consider the following tree:</p>
+
+<pre><code>        50
+       /  \
+      30    70
+     /  \     \
+    20   40    80
+</code></pre>
+
+<p>In this tree:</p>
+<ul>
+  <li>50 is the root. Its left child is 30, its right child is 70.</li>
+  <li>30 is the parent of 20 and 40. 20 and 40 are siblings.</li>
+  <li>70 is the parent of 80. 70 has only a right child; its left child pointer is null.</li>
+  <li>20, 40, and 80 are all leaf nodes (no children).</li>
+  <li>The subtree rooted at 30 consists of nodes 30, 20, and 40 — a valid binary tree in its own right.</li>
+  <li>50 is an ancestor of every other node. 80 is a descendant of both 70 and 50.</li>
+</ul>
+
+<p><strong>The Binary Constraint: Structural Rules in Depth</strong></p>
+
+<p>The rule that each node may have <strong>at most two children</strong>, designated specifically as <em>left</em> and <em>right</em>, is not merely a bookkeeping convention. It carries deep structural and algorithmic significance.</p>
+
+<ul>
+  <li>The <strong>left/right designation is positional and meaningful</strong>, not arbitrary labeling. Algorithms — especially those for binary search trees — make decisions based on <em>which side</em> a child is on. A value might be stored as the left child of a node precisely because it is less than the parent. If you swapped the child to the right without changing anything else, the BST invariant would be violated. Positional identity matters.</li>
+  <li>A node with <strong>only one child</strong> is perfectly valid in a binary tree. However, that single child must be explicitly declared as either the left child or the right child — not just "a child." The distinction is critical. Consider a node with value 10 and a single child with value 15. If 15 is the <em>right</em> child, the left pointer is null. If 15 is the <em>left</em> child, the right pointer is null. These are structurally different trees and will behave differently under traversal or search algorithms.</li>
+  <li><strong>Bounding the branching factor to two</strong> gives binary trees their celebrated efficiency. In a tree of <em>n</em> nodes where every level is fully filled (a <em>perfect</em> binary tree), the height is ⌊log₂(n)⌋. This means a balanced binary tree with one million nodes has a height of only about 20. Any algorithm that eliminates one subtree at each node — such as binary search tree lookup — needs at most 20 comparisons to find any element among a million. This O(log n) behavior is the payoff for the binary constraint.</li>
+</ul>
+
+<p>The following table summarizes the key terminology introduced in this topic for quick reference:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Term</th>
+      <th>Definition</th>
+      <th>Key Property</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Node</td>
+      <td>A single element in the tree storing data and child pointers</td>
+      <td>Has at most two children (left and right)</td>
+    </tr>
+    <tr>
+      <td>Edge</td>
+      <td>A directed connection from a parent node to a child node</td>
+      <td>A tree with N nodes has exactly N−1 edges</td>
+    </tr>
+    <tr>
+      <td>Root</td>
+      <td>The single topmost node with no parent</td>
+      <td>In-degree of zero; unique entry point to the tree</td>
+    </tr>
+    <tr>
+      <td>Leaf</td>
+      <td>A node with no children</td>
+      <td>Both left and right pointers are null; out-degree of zero</td>
+    </tr>
+    <tr>
+      <td>Internal Node</td>
+      <td>Any non-leaf node (has at least one child)</td>
+      <td>Includes the root (when tree has more than one node)</td>
+    </tr>
+    <tr>
+      <td>Parent</td>
+      <td>A node that has one or two children</td>
+      <td>Holds pointers to its children; children do not point back</td>
+    </tr>
+    <tr>
+      <td>Child</td>
+      <td>A node directly connected below a parent</td>
+      <td>Has exactly one parent; designated as left or right</td>
+    </tr>
+    <tr>
+      <td>Sibling</td>
+      <td>Nodes that share the same parent</td>
+      <td>At most one sibling per node in a binary tree</td>
+    </tr>
+    <tr>
+      <td>Ancestor</td>
+      <td>Any node on the path from the root down to a given node</td>
+      <td>Root is an ancestor of every node</td>
+    </tr>
+    <tr>
+      <td>Descendant</td>
+      <td>Any node reachable by following edges down from a given node</td>
+      <td>All nodes in a subtree are descendants of its root</td>
+    </tr>
+    <tr>
+      <td>Subtree</td>
+      <td>A node and all of its descendants</td>
+      <td>Is itself a valid binary tree</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Understanding these foundational concepts — what nodes and edges are, how root and leaf nodes differ, how parent-child relationships work, and why the binary constraint is structurally significant — is the prerequisite for every more advanced binary tree topic: tree traversals, height and depth calculations, balancing strategies, and specialized variants like binary search trees, AVL trees, red-black trees, and heaps. Every one of those topics builds directly on the vocabulary and structural rules established here.</p>
+        <div class="notes"><strong>Notes</strong>The table at the end consolidates all key terms introduced in the topic for learner reference. The Python and C code snippets ground the abstract definitions in concrete implementation. The ASCII-art tree diagram illustrates parent-child, sibling, leaf, and subtree relationships simultaneously without requiring any external media.</div>
+      </div>
+    </details>
+  </main>
+
+<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
+</body></html>

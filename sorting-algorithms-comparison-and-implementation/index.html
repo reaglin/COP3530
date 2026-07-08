@@ -1,275 +1,201 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sorting Algorithms: Comparison and Implementation — COP3530</title>
   <style>
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    :root {
-      --color-bg: #f4f6f9;
-      --color-surface: #ffffff;
-      --color-primary: #1a3a5c;
-      --color-primary-light: #2560a0;
-      --color-accent: #2e7d32;
-      --color-accent-light: #43a047;
-      --color-border: #d0d8e4;
-      --color-text: #1e2a38;
-      --color-text-muted: #5a6a7e;
-      --color-badge-bg: #e8eef6;
-      --color-badge-text: #1a3a5c;
-      --color-filetype-bg: #fef3e2;
-      --color-filetype-text: #7a4d00;
-      --radius: 8px;
-      --shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-      --shadow-hover: 0 6px 20px rgba(0, 0, 0, 0.13);
-      --font-main: 'Segoe UI', system-ui, -apple-system, sans-serif;
-      --font-mono: 'Consolas', 'Courier New', monospace;
-    }
+    /* ── Reset & base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: var(--font-main);
-      background-color: var(--color-bg);
-      color: var(--color-text);
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: #f4f6f9;
+      color: #1e2535;
       line-height: 1.6;
       min-height: 100vh;
     }
 
-    /* ── Header ── */
+    /* ── Top banner ── */
     header {
-      background: linear-gradient(135deg, var(--color-primary) 0%, #25507a 100%);
-      color: #ffffff;
-      padding: 48px 24px 40px;
+      background: linear-gradient(135deg, #1a3a5c 0%, #25567e 60%, #1e7a8c 100%);
+      color: #fff;
+      padding: 2.8rem 1.5rem 2.2rem;
       text-align: center;
     }
 
     header .course-label {
       display: inline-block;
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       font-weight: 600;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      background: rgba(255, 255, 255, 0.18);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      color: #d6e8ff;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
       border-radius: 20px;
-      padding: 4px 14px;
-      margin-bottom: 18px;
+      padding: 0.25rem 0.85rem;
+      margin-bottom: 1rem;
+      color: #cde8f5;
     }
 
     header h1 {
-      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-size: clamp(1.55rem, 3.5vw, 2.4rem);
       font-weight: 700;
-      letter-spacing: -0.02em;
-      margin-bottom: 16px;
+      letter-spacing: -0.01em;
+      margin-bottom: 1rem;
       line-height: 1.25;
     }
 
-    header p.intro {
+    header p {
       max-width: 680px;
       margin: 0 auto;
       font-size: 1rem;
-      color: #c5daf5;
-      line-height: 1.7;
+      color: rgba(255,255,255,0.88);
     }
 
-    /* ── Main container ── */
+    /* ── Main content wrapper ── */
     main {
-      max-width: 960px;
-      margin: 40px auto;
-      padding: 0 24px 60px;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2.5rem 1.25rem 4rem;
     }
 
-    .section-title {
-      font-size: 0.75rem;
+    /* ── Section heading ── */
+    .section-heading {
+      font-size: 0.72rem;
       font-weight: 700;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: var(--color-text-muted);
-      margin-bottom: 16px;
-      padding-bottom: 8px;
-      border-bottom: 1px solid var(--color-border);
+      color: #5a7190;
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid #dce4ee;
     }
 
-    /* ── Artifact grid ── */
-    .artifact-grid {
+    /* ── Card grid ── */
+    .card-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.25rem;
     }
 
-    .artifact-card {
-      background: var(--color-surface);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius);
-      padding: 24px;
-      box-shadow: var(--shadow);
+    /* ── Card ── */
+    .card {
+      background: #ffffff;
+      border: 1px solid #dce4ee;
+      border-radius: 10px;
+      padding: 1.35rem 1.4rem 1.2rem;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 0.65rem;
       transition: box-shadow 0.2s ease, transform 0.2s ease;
     }
 
-    .artifact-card:hover {
-      box-shadow: var(--shadow-hover);
+    .card:hover {
+      box-shadow: 0 6px 22px rgba(30, 60, 100, 0.11);
       transform: translateY(-2px);
     }
 
-    /* ── Card header row ── */
-    .card-header {
+    /* ── Card top row: badges ── */
+    .card-meta {
       display: flex;
-      align-items: flex-start;
-      gap: 10px;
       flex-wrap: wrap;
-    }
-
-    .card-icon {
-      flex-shrink: 0;
-      width: 38px;
-      height: 38px;
-      background: var(--color-badge-bg);
-      border-radius: 6px;
-      display: flex;
+      gap: 0.45rem;
       align-items: center;
-      justify-content: center;
     }
 
-    .card-icon svg {
-      width: 20px;
-      height: 20px;
-      fill: var(--color-primary-light);
-    }
-
-    .card-title-group {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .artifact-name {
-      font-size: 1rem;
+    .badge {
+      font-size: 0.68rem;
       font-weight: 600;
-      color: var(--color-text);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      border-radius: 4px;
+      padding: 0.18rem 0.55rem;
+    }
+
+    .badge-type {
+      background: #e8f0fb;
+      color: #2d5fa6;
+      border: 1px solid #c5d8f7;
+    }
+
+    .badge-filetype {
+      background: #edf7f0;
+      color: #2a7a4b;
+      border: 1px solid #b8e5c8;
+    }
+
+    /* ── Card title row ── */
+    .card-title-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 0.55rem;
+    }
+
+    .card-name {
+      font-size: 1.02rem;
+      font-weight: 700;
+      color: #1e2535;
       line-height: 1.3;
-      display: block;
     }
 
-    .artifact-name a {
-      color: var(--color-primary-light);
+    .card-name a {
+      color: #1a5ea8;
       text-decoration: none;
-      transition: color 0.15s;
+      border-bottom: 1.5px solid transparent;
+      transition: border-color 0.18s, color 0.18s;
     }
 
-    .artifact-name a:hover,
-    .artifact-name a:focus {
-      color: var(--color-primary);
-      text-decoration: underline;
+    .card-name a:hover,
+    .card-name a:focus {
+      color: #0d3f78;
+      border-bottom-color: #0d3f78;
+      outline: none;
     }
 
-    .artifact-name a:focus {
-      outline: 2px solid var(--color-primary-light);
-      outline-offset: 2px;
-      border-radius: 2px;
-    }
-
-    /* ── Source file link ── */
     .source-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      margin-top: 4px;
-      font-size: 0.75rem;
-      color: var(--color-accent);
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #5a7190;
       text-decoration: none;
-      font-weight: 500;
-      letter-spacing: 0.01em;
-      transition: color 0.15s;
+      background: #f0f4f9;
+      border: 1px solid #c8d5e5;
+      border-radius: 4px;
+      padding: 0.15rem 0.5rem;
+      white-space: nowrap;
+      transition: background 0.18s, color 0.18s;
     }
 
     .source-link:hover,
     .source-link:focus {
-      color: var(--color-accent-light);
-      text-decoration: underline;
+      background: #dde6f3;
+      color: #1a3a5c;
+      outline: none;
     }
 
-    .source-link:focus {
-      outline: 2px solid var(--color-accent);
-      outline-offset: 2px;
-      border-radius: 2px;
-    }
-
-    .source-link svg {
-      width: 12px;
-      height: 12px;
-      fill: currentColor;
-      flex-shrink: 0;
-    }
-
-    /* ── Badges ── */
-    .card-badges {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
-
-    .badge {
-      display: inline-block;
-      font-size: 0.7rem;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      border-radius: 4px;
-      padding: 2px 8px;
-    }
-
-    .badge-type {
-      background: var(--color-badge-bg);
-      color: var(--color-badge-text);
-      border: 1px solid #b8cde0;
-    }
-
-    .badge-filetype {
-      background: var(--color-filetype-bg);
-      color: var(--color-filetype-text);
-      border: 1px solid #f0d090;
-      font-family: var(--font-mono);
-    }
-
-    /* ── Description ── */
-    .artifact-description {
-      font-size: 0.875rem;
-      color: var(--color-text-muted);
-      line-height: 1.65;
-      flex: 1;
+    /* ── Card description ── */
+    .card-description {
+      font-size: 0.88rem;
+      color: #4a5568;
+      line-height: 1.6;
+      flex-grow: 1;
     }
 
     /* ── Footer ── */
     footer {
       text-align: center;
-      padding: 20px 24px;
+      padding: 1.4rem 1rem;
       font-size: 0.78rem;
-      color: var(--color-text-muted);
-      border-top: 1px solid var(--color-border);
-      background: var(--color-surface);
+      color: #8a9ab5;
+      border-top: 1px solid #dce4ee;
+      background: #fff;
     }
 
-    /* ── Responsive ── */
+    /* ── Responsive tweaks ── */
     @media (max-width: 480px) {
-      header {
-        padding: 36px 16px 32px;
-      }
-
-      main {
-        padding: 0 16px 48px;
-        margin-top: 28px;
-      }
-
-      .artifact-grid {
-        grid-template-columns: 1fr;
-      }
+      header { padding: 2rem 1rem 1.6rem; }
+      .card-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -280,54 +206,169 @@
   <header>
     <div class="course-label">COP3530 — Data Structures</div>
     <h1>Sorting Algorithms: Comparison and Implementation</h1>
-    <p class="intro">
-      Explore foundational sorting algorithms through conceptual explanations,
-      step-by-step logic, and hands-on JavaScript implementations. This module
-      covers Bubble Sort, Insertion Sort, and Merge Sort — equipping you with
-      the knowledge to compare their performance characteristics and apply them
-      effectively in real-world scenarios.
+    <p>
+      Explore the foundational sorting algorithms used in computer science — from simple
+      quadratic methods to efficient divide-and-conquer strategies. This module covers
+      conceptual explanations, step-by-step logic, complexity analysis, and practical
+      comparisons to help you choose the right algorithm for any scenario.
     </p>
   </header>
 
   <main>
-    <p class="section-title">Module Artifacts</p>
+    <p class="section-heading">Module Artifacts &nbsp;·&nbsp; 8 items</p>
 
-    <div class="artifact-grid" role="list">
+    <div class="card-grid">
 
-        <article class="artifact-card" role="listitem">
-          <div class="card-header">
-            <div class="card-icon" aria-hidden="true">
-              <!-- Document icon -->
-              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0
-                         2-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM6 20V4h5v7h7v9H6z"/>
-              </svg>
-            </div>
-            <div class="card-title-group">
-              <span class="artifact-name">
-                  <a href="content/module_topics.html">Module Topics</a>
-              </span>
-                <a class="source-link" href="source/hierarchy.json">
-                  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1
-                             15h-2v-6h2zm0-8h-2V7h2z"/>
-                  </svg>
-                  source file
-                </a>
-            </div>
-          </div>
+      <!-- Card 1: Module Topics -->
+      <div class="card">
+        <div class="card-meta">
+          <span class="badge badge-type">Module Topics</span>
+          <span class="badge badge-filetype">.json</span>
+        </div>
+        <div class="card-title-row">
+          <span class="card-name">
+            <a href="content/module_topics.html">Module Topics</a>
+          </span>
+          <a class="source-link" href="source/hierarchy.json">source file</a>
+        </div>
+        <p class="card-description">
+          A structured outline of the module's topics covering sorting algorithm fundamentals
+          (definitions, terminology), and the concepts, step-by-step logic, and JavaScript
+          implementations of Bubble Sort, Insertion Sort, and Merge Sort, used by learners
+          and instructors to navigate the module's content and sequence.
+        </p>
+      </div>
 
-          <div class="card-badges">
-            <span class="badge badge-type">Module Topics</span>
-            <span class="badge badge-filetype">.json</span>
-          </div>
+      <!-- Card 2: Introduction to Sorting Algorithms -->
+      <div class="card">
+        <div class="card-meta">
+          <span class="badge badge-type">Topic Detail</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <span class="card-name">
+            <a href="content/Sorting_Algorithms_Compariso_interactive_topics_t1.html">Introduction to Sorting Algorithms</a>
+          </span>
+        </div>
+        <p class="card-description">
+          A narrative introduction to sorting algorithms covering why sorting matters, its
+          connection to core algorithm design concepts such as complexity analysis and memory
+          management, and how learners should approach the module as a foundation for the
+          specific algorithms that follow.
+        </p>
+      </div>
 
-          <p class="artifact-description">
-            A structured outline of the module's topics covering sorting algorithm fundamentals (definitions, terminology), and the concepts, step-by-step logic, and JavaScript implementations of Bubble Sort, Insertion Sort, and Merge Sort, used by learners and instructors to navigate the module's content and sequence.
-          </p>
-        </article>
+      <!-- Card 3: Bubble Sort -->
+      <div class="card">
+        <div class="card-meta">
+          <span class="badge badge-type">Topic Detail</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <span class="card-name">
+            <a href="content/Sorting_Algorithms_Compariso_interactive_topics_t2.html">Bubble Sort</a>
+          </span>
+        </div>
+        <p class="card-description">
+          An explanation of how bubble sort works — repeatedly comparing and swapping adjacent
+          elements — including its step-by-step logic, best- and worst-case time complexity,
+          and why it is used as a teaching example despite being impractical for production code.
+        </p>
+      </div>
 
-    </div>
+      <!-- Card 4: Insertion Sort -->
+      <div class="card">
+        <div class="card-meta">
+          <span class="badge badge-type">Topic Detail</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <span class="card-name">
+            <a href="content/Sorting_Algorithms_Compariso_interactive_topics_t3.html">Insertion Sort</a>
+          </span>
+        </div>
+        <p class="card-description">
+          A walkthrough of insertion sort using the playing-card analogy, describing how the
+          algorithm maintains a growing sorted region by shifting elements rightward to insert
+          each new item in its correct position, along with its time complexity and practical
+          use cases.
+        </p>
+      </div>
+
+      <!-- Card 5: Merge Sort -->
+      <div class="card">
+        <div class="card-meta">
+          <span class="badge badge-type">Topic Detail</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <span class="card-name">
+            <a href="content/Sorting_Algorithms_Compariso_interactive_topics_t4.html">Merge Sort</a>
+          </span>
+        </div>
+        <p class="card-description">
+          A detailed explanation of merge sort's divide-and-conquer strategy — recursively
+          splitting an array into halves, sorting each half independently, and merging the
+          results — covering its time and space complexity and why it is considered reliable
+          for large datasets.
+        </p>
+      </div>
+
+      <!-- Card 6: Quicksort -->
+      <div class="card">
+        <div class="card-meta">
+          <span class="badge badge-type">Topic Detail</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <span class="card-name">
+            <a href="content/Sorting_Algorithms_Compariso_interactive_topics_t5.html">Quicksort</a>
+          </span>
+        </div>
+        <p class="card-description">
+          A coverage of quicksort's pivot-based divide-and-conquer approach introduced by
+          Tony Hoare, explaining the partitioning process, pivot selection strategies,
+          recursive structure, and average versus worst-case time complexity.
+        </p>
+      </div>
+
+      <!-- Card 7: Comparing Sorting Algorithms (Topic Detail) -->
+      <div class="card">
+        <div class="card-meta">
+          <span class="badge badge-type">Topic Detail</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <span class="card-name">
+            <a href="content/Sorting_Algorithms_Compariso_interactive_topics_t6.html">Comparing Sorting Algorithms</a>
+          </span>
+        </div>
+        <p class="card-description">
+          A comparative analysis of bubble sort, insertion sort, merge sort, and quicksort
+          across time complexity, space usage, and stability, intended to help learners and
+          instructors evaluate which algorithm is most appropriate for a given scenario.
+        </p>
+      </div>
+
+      <!-- Card 8: Comparing Sorting Algorithms (Text Content) -->
+      <div class="card">
+        <div class="card-meta">
+          <span class="badge badge-type">Text Content</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <span class="card-name">
+            <a href="content/Sorting_Algorithms_Compariso_interactive.html">Comparing Sorting Algorithms</a>
+          </span>
+        </div>
+        <p class="card-description">
+          A comparative analysis of bubble sort, insertion sort, merge sort, and quicksort
+          across time complexity, space usage, and stability, intended to help learners and
+          instructors evaluate which algorithm is most appropriate for a given scenario.
+        </p>
+      </div>
+
+    </div><!-- /.card-grid -->
   </main>
 
   <footer>

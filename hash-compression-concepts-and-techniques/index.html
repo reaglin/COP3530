@@ -1,185 +1,185 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hash Compression: Concepts and Techniques — COP3530</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hash Compression: Concepts and Techniques | COP3530</title>
   <style>
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    :root {
-      --color-bg: #f4f6f9;
-      --color-surface: #ffffff;
-      --color-primary: #1a3a5c;
-      --color-primary-light: #2a5298;
-      --color-accent: #3a7bd5;
-      --color-accent-hover: #2a5faa;
-      --color-secondary-link: #5a7a9a;
-      --color-secondary-link-hover: #3a5a7a;
-      --color-text: #2c3e50;
-      --color-text-muted: #5a6a7a;
-      --color-border: #dce3ea;
-      --color-tag-bg: #eaf1fb;
-      --color-tag-text: #1a3a5c;
-      --color-badge-bg: #e8f4e8;
-      --color-badge-text: #2a6a2a;
-      --radius: 8px;
-      --shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-      --shadow-hover: 0 6px 20px rgba(0, 0, 0, 0.13);
-      --font-sans: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
+    /* ── Reset & Base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: var(--font-sans);
-      background-color: var(--color-bg);
-      color: var(--color-text);
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: #f4f6f9;
+      color: #1e2a38;
       line-height: 1.6;
       min-height: 100vh;
     }
 
-    /* ── Header ── */
+    /* ── Header / Hero ── */
     header {
-      background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+      background: linear-gradient(135deg, #1a3a5c 0%, #24577a 60%, #2e7da6 100%);
       color: #ffffff;
-      padding: 48px 24px 40px;
+      padding: 3rem 2rem 2.5rem;
       text-align: center;
     }
 
     header .course-label {
       display: inline-block;
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       font-weight: 600;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      background: rgba(255, 255, 255, 0.18);
+      background: rgba(255, 255, 255, 0.15);
       border: 1px solid rgba(255, 255, 255, 0.3);
       border-radius: 20px;
-      padding: 4px 14px;
-      margin-bottom: 16px;
-      color: #d8e8ff;
+      padding: 0.25rem 0.85rem;
+      margin-bottom: 1rem;
     }
 
     header h1 {
       font-size: clamp(1.6rem, 4vw, 2.4rem);
       font-weight: 700;
       letter-spacing: -0.01em;
-      margin-bottom: 16px;
-      line-height: 1.25;
+      margin-bottom: 1rem;
     }
 
     header p {
-      font-size: clamp(0.95rem, 2vw, 1.08rem);
       max-width: 680px;
       margin: 0 auto;
-      color: rgba(255, 255, 255, 0.85);
-      line-height: 1.7;
+      font-size: 1rem;
+      color: rgba(255, 255, 255, 0.88);
     }
 
     /* ── Main Content ── */
     main {
-      max-width: 1080px;
-      margin: 0 auto;
-      padding: 40px 24px 60px;
+      max-width: 1100px;
+      margin: 2.5rem auto;
+      padding: 0 1.5rem 3rem;
     }
 
-    .section-label {
-      font-size: 0.75rem;
+    .section-heading {
+      font-size: 0.72rem;
       font-weight: 700;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.13em;
       text-transform: uppercase;
-      color: var(--color-text-muted);
-      margin-bottom: 20px;
-      padding-bottom: 10px;
-      border-bottom: 2px solid var(--color-border);
+      color: #5a7a99;
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid #dde4ed;
     }
 
     /* ── Card Grid ── */
     .card-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 24px;
+      gap: 1.25rem;
     }
 
     .card {
-      background: var(--color-surface);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 24px;
+      background: #ffffff;
+      border: 1px solid #dde4ed;
+      border-radius: 10px;
+      padding: 1.4rem 1.5rem;
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 0.65rem;
       transition: box-shadow 0.2s ease, transform 0.2s ease;
+      position: relative;
     }
 
     .card:hover {
-      box-shadow: var(--shadow-hover);
+      box-shadow: 0 6px 24px rgba(30, 60, 100, 0.10);
       transform: translateY(-2px);
     }
 
-    /* ── Card Header ── */
-    .card-header {
+    /* ── Card Meta Badges ── */
+    .card-meta {
       display: flex;
-      flex-direction: column;
-      gap: 8px;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
     }
 
-    .card-name {
-      font-size: 1.1rem;
+    .badge {
+      font-size: 0.69rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      border-radius: 4px;
+      padding: 0.18rem 0.55rem;
+    }
+
+    .badge-type {
+      background: #e8f0fa;
+      color: #2a5a9e;
+      border: 1px solid #c3d5f0;
+    }
+
+    .badge-filetype {
+      background: #edf7ee;
+      color: #2a7a3a;
+      border: 1px solid #b8e0bc;
+      font-family: 'Courier New', monospace;
+    }
+
+    /* ── Card Title Row ── */
+    .card-title-row {
+      display: flex;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+    }
+
+    .card-title {
+      font-size: 1.02rem;
       font-weight: 700;
-      color: var(--color-text);
-      line-height: 1.3;
+      color: #1a3a5c;
+      line-height: 1.35;
     }
 
-    .card-name a {
-      color: var(--color-accent);
+    .card-title a {
+      color: #1a5fa8;
       text-decoration: none;
-      transition: color 0.15s ease;
+      border-bottom: 2px solid transparent;
+      transition: border-color 0.15s ease, color 0.15s ease;
     }
 
-    .card-name a:hover,
-    .card-name a:focus {
-      color: var(--color-accent-hover);
-      text-decoration: underline;
-      text-underline-offset: 3px;
+    .card-title a:hover {
+      color: #0e3f7a;
+      border-bottom-color: #0e3f7a;
     }
 
-    .card-name a:focus {
-      outline: 2px solid var(--color-accent);
+    .card-title a:focus-visible {
+      outline: 3px solid #4a9ede;
       outline-offset: 2px;
       border-radius: 2px;
     }
 
+    /* ── Source Link ── */
     .source-link {
       display: inline-flex;
       align-items: center;
-      gap: 4px;
-      font-size: 0.78rem;
-      font-weight: 500;
-      color: var(--color-secondary-link);
+      gap: 0.28rem;
+      font-size: 0.74rem;
+      font-weight: 600;
+      color: #5a7a99;
       text-decoration: none;
-      border: 1px solid var(--color-border);
+      background: #f0f4f9;
+      border: 1px solid #c8d6e8;
       border-radius: 4px;
-      padding: 3px 8px;
-      margin-left: 8px;
-      transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
-      vertical-align: middle;
+      padding: 0.15rem 0.5rem;
       white-space: nowrap;
+      transition: background 0.15s ease, color 0.15s ease;
     }
 
-    .source-link:hover,
-    .source-link:focus {
-      color: var(--color-secondary-link-hover);
-      background-color: #f0f5fb;
-      border-color: var(--color-secondary-link);
+    .source-link:hover {
+      background: #dde8f5;
+      color: #1a3a5c;
     }
 
-    .source-link:focus {
-      outline: 2px solid var(--color-accent);
+    .source-link:focus-visible {
+      outline: 3px solid #4a9ede;
       outline-offset: 2px;
     }
 
@@ -187,71 +187,28 @@
       flex-shrink: 0;
     }
 
-    /* ── Card Meta Tags ── */
-    .card-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      align-items: center;
-    }
-
-    .tag {
-      display: inline-block;
-      font-size: 0.73rem;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      padding: 3px 10px;
-      border-radius: 20px;
-    }
-
-    .tag-type {
-      background-color: var(--color-tag-bg);
-      color: var(--color-tag-text);
-      border: 1px solid #bcd0ee;
-    }
-
-    .tag-filetype {
-      background-color: var(--color-badge-bg);
-      color: var(--color-badge-text);
-      border: 1px solid #b0d4b0;
-      font-family: 'Courier New', Courier, monospace;
-    }
-
     /* ── Card Description ── */
     .card-description {
-      font-size: 0.9rem;
-      color: var(--color-text-muted);
-      line-height: 1.65;
-      flex-grow: 1;
+      font-size: 0.88rem;
+      color: #4a5f74;
+      line-height: 1.6;
     }
 
     /* ── Footer ── */
     footer {
       text-align: center;
-      padding: 24px;
-      font-size: 0.82rem;
-      color: var(--color-text-muted);
-      border-top: 1px solid var(--color-border);
-      background: var(--color-surface);
+      padding: 1.5rem;
+      font-size: 0.78rem;
+      color: #8a9bae;
+      border-top: 1px solid #dde4ed;
+      background: #f4f6f9;
     }
 
     /* ── Responsive ── */
     @media (max-width: 480px) {
-      header {
-        padding: 36px 16px 32px;
-      }
-
-      main {
-        padding: 28px 16px 48px;
-      }
-
-      .card {
-        padding: 20px;
-      }
-
-      .card-name {
-        font-size: 1rem;
-      }
+      header { padding: 2rem 1rem 1.75rem; }
+      main { padding: 0 1rem 2rem; }
+      .card { padding: 1.15rem 1.2rem; }
     }
   </style>
 </head>
@@ -260,52 +217,160 @@
 <div style="border:1px solid #c9d4e3;background:#f5f8fc;border-radius:8px;padding:10px 16px;margin:0 0 18px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;font-family:'Segoe UI',Arial,sans-serif"><strong style="color:#1a3c6e">Module outline:</strong><a href="topics-outcomes.html#topics" style="color:#1a3c6e;font-weight:600;text-decoration:none">📋 Module Topics</a><a href="topics-outcomes.html#outcomes" style="color:#137333;font-weight:600;text-decoration:none">🎯 Student Learning Outcomes</a></div>
 
   <header>
-    <div class="course-label">COP3530 — Data Structures</div>
+    <div class="course-label">COP3530 &mdash; Data Structures</div>
     <h1>Hash Compression: Concepts and Techniques</h1>
     <p>
-      Explore the foundational methods used to compress hash codes into valid table indices,
-      including modular arithmetic, prime-based table sizing, and folding techniques such as
-      shift folding and boundary folding. Use the artifacts below to navigate the module content.
+      Explore the foundational methods behind hash compression, from modular arithmetic
+      and folding strategies to distribution analysis and compression method selection.
+      Use the resources below to navigate the module's topics and readings.
     </p>
   </header>
 
   <main>
-    <div class="section-label">Module Artifacts</div>
+    <p class="section-heading">Module Artifacts &mdash; 6 items</p>
 
     <div class="card-grid">
 
-        <article class="card">
-          <div class="card-header">
-            <div class="card-name">
-                <a href="content/module_topics.html">Module Topics</a>
-                  <a
-                    class="source-link"
-                    href="source/hierarchy.json"
-                    aria-label="Source file for Module Topics"
-                  >
-                    <svg width="11" height="11" viewBox="0 0 16 16" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M13.5 10.5v3a1 1 0 0 1-1 1h-9a1 1 0 0 1-1-1v-3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-                      <polyline points="10.5 5.5 8 3 5.5 5.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-                      <line x1="8" y1="3" x2="8" y2="10.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-                    </svg>
-                    source file
-                  </a>
-            </div>
-            <div class="card-meta">
-              <span class="tag tag-type">Module Topics</span>
-              <span class="tag tag-filetype">.json</span>
-            </div>
-          </div>
-          <p class="card-description">
-            Covers hash compression concepts including modular arithmetic, prime number table sizing, and folding techniques (shift and boundary), serving as the navigational outline that guides learners through the sequence of topics in the module.
-          </p>
-        </article>
+      <!-- Artifact 1: Module Topics -->
+      <article class="card">
+        <div class="card-meta">
+          <span class="badge badge-type">Module Topics</span>
+          <span class="badge badge-filetype">.json</span>
+        </div>
+        <div class="card-title-row">
+          <span class="card-title">
+            <a href="content/module_topics.html">Module Topics</a>
+          </span>
+          <a class="source-link" href="source/hierarchy.json" title="View source file">
+            <!-- document icon -->
+            <svg width="11" height="13" viewBox="0 0 11 13" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+              <path d="M1.5 1H7l2.5 2.5V12H1.5V1Z" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/>
+              <path d="M7 1v2.5H9.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M3.5 6.5h4M3.5 8.5h4M3.5 4.5H6" stroke="currentColor" stroke-width="1" stroke-linecap="round"/>
+            </svg>
+            source file
+          </a>
+        </div>
+        <p class="card-description">
+          Covers hash compression concepts including modular arithmetic, prime number table sizing,
+          and folding techniques (shift and boundary), serving as the navigational outline that guides
+          learners through the sequence of topics in the module.
+        </p>
+      </article>
+
+      <!-- Artifact 2: Introduction to Hash Compression -->
+      <article class="card">
+        <div class="card-meta">
+          <span class="badge badge-type">Topic Detail</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <span class="card-title">
+            <a href="content/Hash_Compression_Concepts_interactive_topics_t1.html">Introduction to Hash Compression</a>
+          </span>
+        </div>
+        <p class="card-description">
+          This reading introduces hash functions and hash compression, explaining how keys are converted
+          into numeric table indices and why this process is fundamental to data structures like hash tables
+          used in everyday applications such as phone contacts and compilers.
+        </p>
+      </article>
+
+      <!-- Artifact 3: Modular Arithmetic as a Compression Strategy -->
+      <article class="card">
+        <div class="card-meta">
+          <span class="badge badge-type">Topic Detail</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <span class="card-title">
+            <a href="content/Hash_Compression_Concepts_interactive_topics_t2.html">Modular Arithmetic as a Compression Strategy</a>
+          </span>
+        </div>
+        <p class="card-description">
+          This reading explains how modular arithmetic (the division method) is used as a compression
+          strategy to map arbitrary keys into valid hash table indices, covering its mechanics, advantages,
+          and practical considerations for achieving efficient average-case performance.
+        </p>
+      </article>
+
+      <!-- Artifact 4: Folding and Other Compression Techniques -->
+      <article class="card">
+        <div class="card-meta">
+          <span class="badge badge-type">Topic Detail</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <span class="card-title">
+            <a href="content/Hash_Compression_Concepts_interactive_topics_t3.html">Folding and Other Compression Techniques</a>
+          </span>
+        </div>
+        <p class="card-description">
+          This reading covers folding and other compression techniques&mdash;such as digit folding and
+          shift folding&mdash;that break large keys like social security numbers or product codes into
+          smaller parts and combine them to produce a hash table index within a manageable range.
+        </p>
+      </article>
+
+      <!-- Artifact 5: Distribution Properties of Hash Functions -->
+      <article class="card">
+        <div class="card-meta">
+          <span class="badge badge-type">Topic Detail</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <span class="card-title">
+            <a href="content/Hash_Compression_Concepts_interactive_topics_t4.html">Distribution Properties of Hash Functions</a>
+          </span>
+        </div>
+        <p class="card-description">
+          This reading examines the distribution properties of hash functions, explaining what uniform
+          distribution means, why it matters for minimizing collisions, and how to evaluate whether a
+          hash function spreads keys evenly across a table's available slots.
+        </p>
+      </article>
+
+      <!-- Artifact 6: Comparing and Selecting Compression Methods (Topic Detail) -->
+      <article class="card">
+        <div class="card-meta">
+          <span class="badge badge-type">Topic Detail</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <span class="card-title">
+            <a href="content/Hash_Compression_Concepts_interactive_topics_t5.html">Comparing and Selecting Compression Methods</a>
+          </span>
+        </div>
+        <p class="card-description">
+          This reading compares multiple hash compression methods&mdash;such as modular, MAD, and
+          bit-masking approaches&mdash;discussing their trade-offs in terms of distribution quality,
+          computational cost, and suitability for different data types to guide method selection.
+        </p>
+      </article>
+
+      <!-- Artifact 7: Comparing and Selecting Compression Methods (Text Content) -->
+      <article class="card">
+        <div class="card-meta">
+          <span class="badge badge-type">Text Content</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <span class="card-title">
+            <a href="content/Hash_Compression_Concepts_interactive.html">Comparing and Selecting Compression Methods</a>
+          </span>
+        </div>
+        <p class="card-description">
+          This reading compares multiple hash compression methods&mdash;such as modular, MAD, and
+          bit-masking approaches&mdash;discussing their trade-offs in terms of distribution quality,
+          computational cost, and suitability for different data types to guide method selection.
+        </p>
+      </article>
 
     </div>
   </main>
 
   <footer>
-    COP3530 — Data Structures &nbsp;|&nbsp; Hash Compression: Concepts and Techniques
+    COP3530 &mdash; Data Structures &nbsp;&bull;&nbsp; Hash Compression: Concepts and Techniques
   </footer>
 
 

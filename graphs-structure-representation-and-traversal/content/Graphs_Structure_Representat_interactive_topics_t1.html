@@ -1,0 +1,178 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Introduction to Graph Data Structures</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+  <style>
+    body { padding-left: 1.1rem; padding-right: 1.1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid rgba(128,128,128,.45); padding: .45em .7em; text-align: left; vertical-align: top; }
+    thead th { background: rgba(128,128,128,.18); font-weight: 600; }
+    tbody tr:nth-child(even) { background: rgba(128,128,128,.08); }
+    a.topic-detail-link { text-decoration: underline; }
+  </style>
+  <style>
+    summary.slide-header { list-style: none; }
+    summary.slide-header::-webkit-details-marker { display: none; }
+    details.slide-card[open] > .slide-body { display: block; }
+    details.slide-card[open] .chevron { transform: rotate(90deg); }
+    @media print { details.slide-card > .slide-body { display: block !important; } .chevron { display: none; } }
+  </style>
+</head><body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Graphs: Structure, Representation, and Traversal</a></div>
+  <header>
+    <h1>Introduction to Graph Data Structures</h1>
+  </header><main>
+    <details class="slide-card" open>
+      <summary class="slide-header"><span class="slide-num">1</span><h2>Introduction to Graph Data Structures</h2><span class="chevron">▶</span></summary>
+      <div class="slide-body">
+        <p>Graph data structures are among the most versatile and expressive tools in all of computer science. Where simpler structures like arrays or linked lists organize data in a linear sequence, and trees impose a strict hierarchical parent-child relationship, graphs impose almost no such constraints. This freedom allows graphs to model an extraordinary range of real-world systems — from the social connections between billions of people, to the routing tables that guide packets across the internet, to the dependency chains that a package manager must resolve before installing software. To work effectively with graphs, you need to understand their fundamental components and the vocabulary used to describe them precisely.</p>
+
+<p>At its core, <strong>a graph is a mathematical structure consisting of two things: a set of vertices and a set of edges</strong>. Vertices (also called nodes) represent the individual entities in the system being modeled. Edges represent the relationships or connections between those entities. That's it — and yet from this deceptively simple definition emerges a data structure capable of capturing almost any network of relationships imaginable.</p>
+
+<p>Formally, a graph is written as <strong>G = (V, E)</strong>, where <em>V</em> is the set of all vertices and <em>E</em> is the set of all edges. For example, if you had a small graph of three cities — say, Austin, Dallas, and Houston — your vertex set would be <em>V = {Austin, Dallas, Houston}</em>. If Austin is connected to Dallas and Dallas is connected to Houston, your edge set would be <em>E = {(Austin, Dallas), (Dallas, Houston)}</em>. This notation is precise and universal, allowing computer scientists and mathematicians to reason about graphs regardless of what domain they come from.</p>
+
+<p><strong>Vertices (Nodes)</strong> are the fundamental units of a graph. A graph can contain any number of vertices. A graph with zero vertices is called an <em>empty graph</em> — a valid but trivial case. In practice, real-world graphs range from a handful of nodes to hundreds of millions. Each vertex typically stores data relevant to the entity it represents. In a social network, a vertex might store a user's name, profile ID, and location. In a road network, a vertex might represent an intersection and store its GPS coordinates. In a dependency graph for software packages, each vertex represents a package and stores its version number and metadata.</p>
+
+<p>The collection of all vertices is denoted <strong>V</strong>, and the total count of vertices is written <strong>|V|</strong> (read as "the cardinality of V"). This notation becomes important when analyzing the time and space complexity of graph algorithms, where performance is often expressed in terms of <em>|V|</em> and <em>|E|</em>.</p>
+
+<p><strong>Edges (Connections)</strong> are what give graphs their power. An edge connects exactly two vertices, which are called its <em>endpoints</em>. The set of all edges is denoted <strong>E</strong>, and each edge can be thought of as a pair of vertices. Edges are not required to carry any additional information — a plain edge simply indicates that a relationship exists between two vertices. However, edges can optionally carry <em>weights</em>, <em>labels</em>, or other metadata. A weighted edge between two cities might store the driving distance in miles. A weighted edge in a financial network might store the transaction volume between two institutions. This additional information enables a whole class of algorithms — such as Dijkstra's shortest path algorithm — that depend on edge weights to find optimal routes or costs.</p>
+
+<p>A graph with no edges at all is called an <strong>edgeless graph</strong> or <strong>null graph</strong>. In this case, every vertex exists in complete isolation — no relationships connect any of them. This is another valid but trivial case, useful as a base case in recursive or inductive reasoning about graphs.</p>
+
+<p>One of the most important distinctions in graph theory is between <strong>directed and undirected graphs</strong>. In an <strong>undirected graph</strong>, every edge is bidirectional. If there is an edge between vertex A and vertex B, it implies that you can travel from A to B <em>and</em> from B to A. The edge has no inherent direction — it simply states that A and B are connected. Friendships on Facebook are a classic example: if Alice is friends with Bob, then Bob is also friends with Alice. The relationship is symmetric.</p>
+
+<p>In a <strong>directed graph</strong> (often called a <strong>digraph</strong>), every edge has a specific direction. A directed edge from vertex A to vertex B means you can travel from A to B, but not necessarily from B to A. Directed edges are typically drawn with arrows to make the direction explicit. Twitter's "follow" relationship is a perfect real-world example: Alice can follow Bob without Bob following Alice. The relationship is asymmetric. Other examples include web hyperlinks (a page can link to another page without being linked back), dependency graphs (package A depends on package B, but not vice versa), and circuit diagrams (current flows in a specific direction).</p>
+
+<p>Understanding the distinction between directed and undirected graphs is critical because many algorithms behave differently depending on which type of graph they operate on. A cycle-detection algorithm, for instance, must account for the fact that in an undirected graph, an edge between A and B could be mistakenly interpreted as A pointing back to itself.</p>
+
+<p>With the basic components defined, it is worth carefully reviewing the <strong>key vocabulary</strong> used throughout graph theory, since these terms appear constantly in algorithm descriptions and technical discussions:</p>
+
+<ul>
+  <li><strong>Degree:</strong> The degree of a vertex is the number of edges connected to it. A vertex with degree 0 is called an <em>isolated vertex</em> — it has no connections. In an undirected graph, every edge contributes 1 to the degree of each of its two endpoints. In a <em>directed</em> graph, the degree concept is split into two: the <strong>in-degree</strong> of a vertex is the number of edges arriving at it (incoming edges), and the <strong>out-degree</strong> is the number of edges leaving it (outgoing edges). For example, in a Twitter graph, a celebrity with millions of followers has a very high in-degree but might follow very few accounts themselves, giving a low out-degree.</li>
+  <li><strong>Path:</strong> A path is a sequence of vertices in which each consecutive pair is connected by an edge, and no vertex is repeated. For example, in a graph of cities, the sequence Austin → Dallas → Oklahoma City → Kansas City could be a valid path if each of those consecutive connections exists as an edge. The <em>length</em> of a path is typically the number of edges traversed (or, in a weighted graph, the sum of the edge weights along the path).</li>
+  <li><strong>Cycle:</strong> A cycle is a path that starts and ends at the same vertex, forming a closed loop. For instance, if edges exist between A→B, B→C, and C→A, then A→B→C→A is a cycle. Cycles are critically important in many algorithms. Graphs with no cycles are called <em>acyclic</em>; a directed acyclic graph (DAG) is one of the most useful graph variants in computer science, underpinning topological sorting and many scheduling algorithms.</li>
+  <li><strong>Adjacent vertices (Neighbors):</strong> Two vertices are called <em>adjacent</em> or <em>neighbors</em> if they are directly connected by an edge. In the graph of cities above, Austin and Dallas are adjacent if there is a direct edge between them. The set of all neighbors of a vertex <em>v</em> is called its <em>adjacency list</em>, a concept central to how graphs are stored in memory.</li>
+  <li><strong>Connected graph:</strong> An undirected graph is called <em>connected</em> if there exists at least one path between every pair of vertices. Intuitively, a connected graph is "all in one piece" — you can get from any node to any other node by following edges. If a graph is <em>not</em> connected, it is called <em>disconnected</em>, and it consists of two or more separate <em>connected components</em>, each of which is itself a connected subgraph. In a directed graph, the analogous concepts are <em>strongly connected</em> (there is a directed path from every vertex to every other vertex) and <em>weakly connected</em> (the underlying undirected version of the graph is connected).</li>
+</ul>
+
+<p>To make these terms concrete, consider a small example graph with five vertices and six edges:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Edge</th>
+      <th>Endpoints</th>
+      <th>Weight</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>e1</td>
+      <td>A — B</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <td>e2</td>
+      <td>A — C</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>e3</td>
+      <td>B — C</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <td>e4</td>
+      <td>B — D</td>
+      <td>10</td>
+    </tr>
+    <tr>
+      <td>e5</td>
+      <td>C — D</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>e6</td>
+      <td>D — E</td>
+      <td>7</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>In this undirected weighted graph: vertex A has degree 2 (connected to B and C); vertex B has degree 3 (connected to A, C, and D); vertex D has degree 3 (connected to B, C, and E); vertex E has degree 1 (connected only to D, making it a <em>leaf</em>). The sequence A → C → D → E is a valid path of length 3 (or total weight 2+3+7=12 if we count weights). The sequence A → B → C → A is a cycle. The entire graph is connected because you can reach any vertex from any other vertex.</p>
+
+<p>In code, a graph is often represented in one of two fundamental ways. An <strong>adjacency matrix</strong> uses a 2D array where position <code>[i][j]</code> stores 1 (or the edge weight) if an edge exists between vertex <em>i</em> and vertex <em>j</em>, and 0 otherwise. An <strong>adjacency list</strong> uses an array of lists, where each index corresponds to a vertex, and the list at that index contains all of its neighbors. Here is a simple adjacency list representation in Python for the undirected graph above:</p>
+
+<pre><code>graph = {
+    'A': ['B', 'C'],
+    'B': ['A', 'C', 'D'],
+    'C': ['A', 'B', 'D'],
+    'D': ['B', 'C', 'E'],
+    'E': ['D']
+}
+</code></pre>
+
+<p>This concise representation already encodes all the connectivity information of the graph and is the starting point for algorithms like breadth-first search (BFS) and depth-first search (DFS), which systematically explore the graph by following edges from vertex to vertex.</p>
+
+<p>The <strong>real-world applications of graphs</strong> are vast and span nearly every field of computer science and beyond:</p>
+
+<ul>
+  <li><strong>Social networks:</strong> Platforms like Facebook, LinkedIn, and Twitter model their users as vertices. Friendships, connections, or follows are edges. Graph algorithms power features like friend recommendations ("people you may know"), community detection, and influence analysis. With billions of users, these are among the largest graphs ever constructed.</li>
+  <li><strong>The World Wide Web:</strong> Every web page is a vertex, and every hyperlink from one page to another is a directed edge. Google's foundational PageRank algorithm treats the web as a directed graph and ranks pages by analyzing the structure of incoming links — a page linked to by many other high-authority pages is itself considered authoritative.</li>
+  <li><strong>Navigation and mapping:</strong> Road networks are undirected (or sometimes directed, for one-way streets) weighted graphs. Intersections are vertices, roads are edges, and weights represent distances or travel times. Algorithms like Dijkstra's and A* find the shortest path between two locations, powering GPS navigation systems.</li>
+  <li><strong>Dependency resolution:</strong> Package managers (like npm, pip, or apt) must install software packages in an order that respects dependencies — if package A depends on package B, then B must be installed first. This problem is modeled as a directed acyclic graph and solved using topological sort.</li>
+  <li><strong>Network routing:</strong> The internet's routers use graph algorithms to determine the best path for data packets to travel from source to destination, minimizing latency and avoiding congested or failed links.</li>
+  <li><strong>Biology and chemistry:</strong> Molecular structures are modeled as graphs where atoms are vertices and chemical bonds are edges. Protein interaction networks, gene regulatory networks, and metabolic pathways are all studied using graph-theoretic tools.</li>
+  <li><strong>Scheduling:</strong> Scheduling problems, such as assigning time slots to university courses so that no student has a conflict, can be modeled as graph coloring problems — assign a "color" (time slot) to each vertex (course) such that no two adjacent vertices (courses with shared students) share a color.</li>
+</ul>
+
+<p>Understanding the graph as a data structure — its components, its vocabulary, and the distinction between directed and undirected variants — is the essential prerequisite for everything that follows in graph theory and algorithm design. Once you are fluent in this vocabulary, the logic behind traversal algorithms like BFS and DFS, shortest-path algorithms, cycle detection, and minimum spanning trees becomes far more approachable. Every one of those algorithms is ultimately just a strategy for navigating and extracting meaning from the vertices and edges that make up a graph.</p>
+        <div class="notes"><strong>Notes</strong>The adjacency list code example uses Python-style dictionary syntax for clarity and accessibility. Instructors may wish to supplement with adjacency matrix representation if the course covers graph storage in depth. The PageRank mention under web applications can serve as a motivating hook for students interested in search engines and link analysis.</div>
+      </div>
+    </details>
+  </main>
+
+<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
+</body></html>

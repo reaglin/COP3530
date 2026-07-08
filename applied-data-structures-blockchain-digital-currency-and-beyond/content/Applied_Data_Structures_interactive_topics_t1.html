@@ -1,0 +1,240 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Foundations of Data Structures in Real-World Systems</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+  <style>
+    body { padding-left: 1.1rem; padding-right: 1.1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid rgba(128,128,128,.45); padding: .45em .7em; text-align: left; vertical-align: top; }
+    thead th { background: rgba(128,128,128,.18); font-weight: 600; }
+    tbody tr:nth-child(even) { background: rgba(128,128,128,.08); }
+    a.topic-detail-link { text-decoration: underline; }
+  </style>
+  <style>
+    summary.slide-header { list-style: none; }
+    summary.slide-header::-webkit-details-marker { display: none; }
+    details.slide-card[open] > .slide-body { display: block; }
+    details.slide-card[open] .chevron { transform: rotate(90deg); }
+    @media print { details.slide-card > .slide-body { display: block !important; } .chevron { display: none; } }
+  </style>
+</head><body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Applied Data Structures: Blockchain, Digital Currency, and Beyond</a></div>
+  <header>
+    <h1>Foundations of Data Structures in Real-World Systems</h1>
+  </header><main>
+    <details class="slide-card" open>
+      <summary class="slide-header"><span class="slide-num">1</span><h2>Foundations of Data Structures in Real-World Systems</h2><span class="chevron">▶</span></summary>
+      <div class="slide-body">
+        <p>Every sophisticated computing system, whether it powers a social network, a financial ledger, a file system, or a distributed blockchain, is ultimately built from a surprisingly small set of foundational ideas. At the heart of all of them lie <strong>data structures</strong>: the carefully chosen arrangements of data and the rules that govern how that data is accessed, modified, and related to other data. Understanding these structures not as isolated textbook abstractions but as composable, interacting building blocks is the first step toward analyzing and designing real-world systems with clarity and confidence.</p>
+
+<p>This topic establishes that analytical foundation. We will examine three cornerstone structures — <strong>hash tables</strong>, <strong>trees</strong>, and <strong>graphs</strong> — exploring not only how each one works internally but also why each one exists, what problems it solves uniquely well, and how engineers combine them in practice. We will then develop a repeatable conceptual framework that lets you decompose any system into the data it stores, the relationships it models, and the operations it must support, and then map those requirements directly onto structure choices.</p>
+
+<p><strong>Hash Tables as Lookup Foundations</strong></p>
+
+<p>The central challenge in information retrieval is speed. Given a collection of millions of records, how do you find the one you want without scanning everything? A <strong>hash table</strong> solves this with an elegant insight: transform the key itself into the memory address where its value lives, so that retrieval requires no searching at all.</p>
+
+<p>A <strong>hash function</strong> is the mechanism that performs this transformation. It accepts a key of arbitrary type — a string username, an integer ID, a URL — and deterministically produces an integer index into a backing array. A good hash function distributes keys uniformly across the array, minimizing the chance that two distinct keys map to the same slot. When the array has <em>m</em> slots and the hash function distributes uniformly, each slot holds roughly <em>n/m</em> keys (where <em>n</em> is the total number of stored items). As long as the <strong>load factor</strong> <em>n/m</em> is kept below a threshold (commonly 0.75), the average number of elements per slot remains close to 1, yielding <strong>O(1) average-case</strong> insertion, deletion, and lookup. This is asymptotically faster than the O(log n) of a balanced tree and vastly faster than the O(n) of a linked list.</p>
+
+<p>Consider a concrete example. Suppose you are building a session store for a web application. Each user session is identified by a 128-bit token (a long random string), and the server must retrieve the corresponding session object within a few milliseconds on every HTTP request. A hash table keyed on the session token delivers exactly this: the token is hashed to an index, and the session object is fetched directly. No comparisons, no traversal.</p>
+
+<p>The complication arises from <strong>collisions</strong> — the inevitable situation where two different keys hash to the same index. No hash function, however well-designed, can eliminate collisions entirely (the pigeonhole principle guarantees this when the key space is larger than the array). Two dominant strategies address collisions:</p>
+
+<ul>
+  <li><strong>Chaining:</strong> Each array slot holds not a single value but a pointer to a linked list (or another dynamic structure) of all key-value pairs that hashed to that slot. Lookup follows the hash to the correct slot and then performs a short linear scan of the chain. In the average case with a low load factor, chains are very short, preserving O(1) performance. In the worst case — a pathological hash function that maps every key to the same slot — lookup degrades to O(n).</li>
+  <li><strong>Open addressing:</strong> All key-value pairs are stored directly in the array. When a collision occurs, a <em>probing sequence</em> (linear probing, quadratic probing, or double hashing) searches for the next available slot. Lookup follows the same probing sequence until it finds the key or an empty slot. Open addressing can exhibit better cache performance than chaining because data stays in a contiguous memory region, but it is sensitive to clustering and requires careful resizing to maintain performance.</li>
+</ul>
+
+<p>Beyond collision resolution, hash tables in production systems must handle <strong>resizing</strong>. When the load factor crosses a threshold, the backing array is reallocated at a larger size (typically double), and all existing entries are rehashed. This operation is O(n) in the moment it occurs, but amortized over all insertions, it contributes only O(1) per operation. Some systems (like Java's <code>HashMap</code> or Python's <code>dict</code>) handle this transparently. Others, where latency predictability is critical, use incremental rehashing to spread the cost across many operations rather than paying it all at once.</p>
+
+<p>The most important practical caveat about hash tables is the phrase <em>average case</em>. Hash tables provide O(1) <strong>on average</strong>, not in the worst case. This distinction matters in adversarial environments. If an attacker can observe your hash function and craft inputs that all collide, they can degrade your hash table to O(n) behavior — a <em>hash-flooding denial-of-service attack</em>. Modern runtimes address this with <strong>hash randomization</strong>: a secret random seed is mixed into the hash computation at startup, so an attacker cannot predict collisions without knowing the seed. Python has done this since version 3.3 (via <code>PYTHONHASHSEED</code>), and most production languages follow suit.</p>
+
+<p>Finally, and crucially for the compositional view we are building: hash tables are almost never used in isolation in complex systems. They serve as <em>lookup layers</em> that accelerate access to nodes or records managed by other structures. A graph system might store all vertex objects in a hash table keyed by vertex ID, so that the graph's adjacency list can reference vertices by ID and the hash table resolves those IDs to objects in O(1). A file system might use a hash table to cache recently accessed directory entries while the underlying directory structure is a tree. This pattern — using a hash table as a fast front-end to another structure — recurs throughout system design.</p>
+
+<p><strong>Trees as Hierarchical Organizers</strong></p>
+
+<p>Many of the relationships in the real world are naturally hierarchical: a corporation has departments, which have teams, which have employees; a file system has directories containing subdirectories containing files; an XML document has nested elements. A <strong>tree</strong> is the data structure that captures this kind of relationship directly. Formally, a tree is a connected, acyclic graph in which one node is designated the <strong>root</strong>, every other node has exactly one parent, and nodes with no children are called <strong>leaves</strong>. The <em>depth</em> of a node is its distance from the root; the <em>height</em> of the tree is the maximum depth of any node.</p>
+
+<p>The performance story of trees hinges on height. In a <strong>binary search tree (BST)</strong>, each node stores a key, and the <em>BST property</em> guarantees that all keys in a node's left subtree are smaller and all keys in its right subtree are larger. Search, insertion, and deletion all work by walking from the root toward a leaf, making one comparison per level. The number of comparisons is therefore proportional to the height. In the best case (a perfectly balanced tree of <em>n</em> nodes), height is ⌊log₂ n⌋, giving <strong>O(log n)</strong> operations. In the worst case (a tree built by inserting already-sorted data, producing a linear chain), height is n − 1, giving O(n) operations — no better than a linked list.</p>
+
+<p>This worst-case fragility motivates <strong>self-balancing trees</strong>, which automatically restructure themselves during insertions and deletions to keep height at O(log n). The two most widely deployed are:</p>
+
+<ul>
+  <li><strong>AVL trees:</strong> Every node stores a <em>balance factor</em> (the difference between the heights of its left and right subtrees), constrained to {−1, 0, 1}. When an insertion or deletion causes a balance factor to fall outside this range, a <em>rotation</em> (or double-rotation) restores balance. AVL trees maintain strict height balance, making them optimal for read-heavy workloads where lookup speed is paramount.</li>
+  <li><strong>Red-black trees:</strong> Nodes are colored red or black, and a set of coloring rules (e.g., no two consecutive red nodes, equal black-node count on all root-to-leaf paths) ensures the longest path is at most twice the shortest. The balance is slightly less strict than AVL, resulting in slightly faster insertions and deletions while still guaranteeing O(log n). Red-black trees underpin the standard library map and set implementations in C++ (<code>std::map</code>), Java (<code>TreeMap</code>), and many other languages.</li>
+</ul>
+
+<p>In practice, <strong>B-trees</strong> and their variant the <strong>B+ tree</strong> dominate in database and file-system contexts. A B-tree generalizes the binary tree by allowing each node to hold many keys (up to some order <em>d</em>) and many children. This dramatically reduces tree height for large datasets, which is critical when each node access corresponds to a slow disk read. A B-tree of order 1000 storing a billion records has height at most ⌈log₁₀₀₀ 10⁹⌉ = 3, meaning at most three disk reads to find any record. This is why virtually every relational database (PostgreSQL, MySQL, Oracle, SQLite) uses B+ trees as the primary index structure.</p>
+
+<p>Trees also appear in contexts far removed from sorting and searching. <strong>Heaps</strong> are complete binary trees satisfying the heap property (parent ≥ children in a max-heap), supporting O(log n) insertion and O(log n) extraction of the maximum element — the backbone of priority queues and heap sort. <strong>Tries</strong> (prefix trees) represent strings as paths from root to leaf, with each edge labeled by a character, enabling O(k) lookup and prefix search where k is the key length — foundational in autocomplete systems, IP routing tables, and spell checkers.</p>
+
+<p>One of the most consequential tree specializations for modern distributed systems is the <strong>Merkle tree</strong>. In a Merkle tree, every leaf node stores the cryptographic hash of a data block, and every internal node stores the hash of the concatenation of its children's hashes. The root hash — often called the <em>Merkle root</em> — is a single fingerprint that commits to the entire dataset: changing any data block changes its leaf hash, which propagates up through every ancestor to change the root. This structure enables a powerful capability: <strong>Merkle proofs</strong>. To prove that a particular data block is part of a dataset whose Merkle root is publicly known, you need only provide the hashes of the sibling nodes along the path from that leaf to the root — O(log n) hashes, not the entire dataset. The verifier recomputes the path and checks that it produces the known root. Bitcoin uses a Merkle tree to commit all transactions in a block, allowing lightweight clients to verify individual transactions without downloading every transaction. This bridges tree theory directly into blockchain architecture and will be examined in depth later in the module.</p>
+
+<p><strong>Graphs as Relationship Networks</strong></p>
+
+<p>When relationships are not hierarchical — when any entity can be connected to any other entity, and connections can be bidirectional or carry weights — trees are insufficient. <strong>Graphs</strong> are the general model. A graph G = (V, E) consists of a set of <strong>vertices</strong> V (also called nodes) and a set of <strong>edges</strong> E, where each edge connects two vertices. Graphs come in several important flavors:</p>
+
+<ul>
+  <li><strong>Undirected vs. directed:</strong> In an undirected graph, the edge (u, v) and the edge (v, u) are the same — the relationship is symmetric. In a directed graph (digraph), edges have a specific direction: an edge from u to v does not imply an edge from v to u. Social networks like Facebook model mutual friendships as undirected edges; Twitter's follow relationship is directed (you can follow someone who does not follow you back).</li>
+  <li><strong>Weighted vs. unweighted:</strong> Edges can carry numeric weights representing costs, distances, capacities, or probabilities. Road networks are weighted directed graphs where edge weights represent travel time or distance. Unweighted graphs are the special case where all weights are implicitly equal.</li>
+  <li><strong>Sparse vs. dense:</strong> A graph is sparse when |E| ≪ |V|² (few edges relative to the maximum possible) and dense when |E| ≈ |V|². This distinction drives the choice of representation.</li>
+</ul>
+
+<p>The two primary graph representations are:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Representation</th>
+      <th>Space</th>
+      <th>Check edge (u,v)?</th>
+      <th>Enumerate neighbors of u?</th>
+      <th>Best for</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Adjacency Matrix</td>
+      <td>O(V²)</td>
+      <td>O(1)</td>
+      <td>O(V)</td>
+      <td>Dense graphs, fast edge queries</td>
+    </tr>
+    <tr>
+      <td>Adjacency List</td>
+      <td>O(V + E)</td>
+      <td>O(degree(u))</td>
+      <td>O(degree(u))</td>
+      <td>Sparse graphs, traversal-heavy workloads</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>In practice, most real-world graphs (social networks, the web, road networks, knowledge graphs) are sparse, so the <strong>adjacency list</strong> representation dominates. Each vertex stores a list of its neighbors; in code, this is often a hash map from vertex IDs to lists of neighbor IDs, which as we noted earlier layers a hash table on top of the graph structure for O(1) vertex access.</p>
+
+<p>The two fundamental graph traversal algorithms are <strong>Breadth-First Search (BFS)</strong> and <strong>Depth-First Search (DFS)</strong>, and mastering them unlocks a wide family of graph problems.</p>
+
+<p><strong>BFS</strong> explores the graph level by level, visiting all neighbors of the start vertex before moving to their neighbors. It uses a queue and marks visited vertices to avoid cycles. BFS has time complexity O(V + E) and is the correct tool when you want the <em>shortest path</em> (in terms of number of edges) between two vertices. Applications include finding the shortest connection between two users in a social network, computing network diameter, and the "six degrees of separation" calculation. BFS also underlies <strong>peer discovery</strong> in distributed systems, where a new node contacts known peers and discovers new ones level by level.</p>
+
+<p><strong>DFS</strong> explores as far as possible along a branch before backtracking. It uses a stack (or implicit recursion) and is the natural tool for problems requiring exhaustive exploration: detecting cycles, topological sorting of directed acyclic graphs (DAGs), finding strongly connected components (Tarjan's or Kosaraju's algorithm), and solving maze or puzzle problems. DFS also has O(V + E) time complexity.</p>
+
+<p>Beyond basic traversal, graphs serve as the substrate for critical system-level algorithms:</p>
+
+<ul>
+  <li><strong>Shortest path algorithms:</strong> Dijkstra's algorithm (O((V + E) log V) with a priority queue) finds shortest paths in non-negatively weighted graphs. Bellman-Ford handles negative weights. These power GPS navigation, network routing protocols (OSPF), and latency optimization.</li>
+  <li><strong>Minimum spanning trees:</strong> Kruskal's and Prim's algorithms find the minimum-weight set of edges that connects all vertices, used in network design and clustering.</li>
+  <li><strong>Topological sort:</strong> Produces a linear ordering of vertices in a DAG such that every edge goes from an earlier vertex to a later one. Compilers use this to determine build order; package managers use it to resolve dependencies.</li>
+  <li><strong>Maximum flow:</strong> Ford-Fulkerson and its variants compute how much material can flow through a network from a source to a sink, with applications in traffic engineering, supply chain optimization, and bipartite matching.</li>
+</ul>
+
+<p>A key architectural pattern in real-world systems is combining a graph's structural representation with a hash table's fast lookup. Consider a social network backend: the friendship graph might be stored as an adjacency list where each node in the list is a user ID. A companion hash table maps each user ID to the full user object (profile, settings, metadata). Graph traversal algorithms operate on the compact ID-based adjacency list, and whenever the system needs to actually display or process a user's data, it resolves the ID through the hash table in O(1). Neither structure alone would suffice — the graph captures the relationship topology; the hash table provides fast access to node data.</p>
+
+<p><strong>Composition of Structures in Practice</strong></p>
+
+<p>In production systems, data structures are rarely used in the pure textbook form. They are composed, layered, and specialized. Understanding these compositions requires reasoning carefully about the <strong>time and space complexity trade-offs</strong> each structure brings to the table and how those trade-offs interact when structures are combined.</p>
+
+<p>Consider a few canonical compositions:</p>
+
+<ul>
+  <li><strong>Graph + Hash Table (adjacency map):</strong> As discussed, vertices are stored in a hash map for O(1) access; the graph structure captures relationships. This is the backbone of social graphs, knowledge graphs, and dependency resolvers.</li>
+  <li><strong>Tree + Hash Table (indexed tree):</strong> A B+ tree stores records sorted by one key (e.g., timestamp) while a hash index provides O(1) lookup by a different key (e.g., user ID). Databases maintain multiple indexes on the same table by maintaining separate data structures on the same underlying data — writes must update all indexes, but reads can choose the most efficient path.</li>
+  <li><strong>Heap + Hash Table (indexed priority queue):</strong> A standard heap supports O(log n) extract-min and O(log n) insert, but does not support O(1) lookup of an arbitrary element's position (needed to update its priority). Adding a hash map from element IDs to heap positions enables O(log n) priority updates — critical for Dijkstra's algorithm on dynamic graphs where edge weights change.</li>
+  <li><strong>Trie + Hash Table:</strong> A trie provides prefix-based search, but pure trie nodes can consume excessive memory for sparse alphabets. Hashing child pointers (storing only the children that exist, keyed by character) compresses the trie dramatically — used in production autocomplete and router table implementations.</li>
+</ul>
+
+<p>When designing compositions, the key interface discipline is ensuring that operations on one structure do not silently violate the performance guarantees of another. For example, if your system design calls for O(1) amortized insertions overall, and you layer a hash table in front of a B-tree, you must ensure the hash table's occasional O(n) resize does not cause latency spikes that violate application SLAs. This might require incremental resizing, pre-allocation, or choosing a different front-end structure. The performance contract of the composition is the <em>intersection</em> of the contracts of its parts, and every interface between components must be analyzed.</p>
+
+<p>Recognizing <strong>compositional patterns</strong> in existing systems is one of the most valuable skills an engineer can develop. When you read about Redis storing sorted sets as a combination of a skip list and a hash table, or about how Git represents its history as a directed acyclic graph with Merkle-tree semantics, you are seeing these patterns in action. Once you internalize the patterns, you can recognize when a new problem has the same structure as a solved one, and adapt the proven design rather than inventing from scratch.</p>
+
+<p><strong>Conceptual Framework for System Analysis</strong></p>
+
+<p>With hash tables, trees, and graphs examined as both isolated structures and composable building blocks, we can now articulate a general-purpose analytical framework for understanding any data-intensive system. The framework rests on three questions:</p>
+
+<ul>
+  <li><strong>What data does the system store?</strong> What are the fundamental records — their size, their cardinality, their key types, their mutability? The answers constrain storage and access patterns.</li>
+  <li><strong>What relationships does the system model?</strong> Are relationships hierarchical (suggesting a tree)? Arbitrary (suggesting a graph)? Are there no structural relationships at all — just isolated records that need fast lookup (suggesting a hash table)? Are relationships ordered (suggesting a sorted tree or B-tree)?</li>
+  <li><strong>What operations must the system support efficiently?</strong> Exact-match lookup? Prefix search? Range queries? Shortest path? Priority ordering? Each operation has a natural home in the taxonomy of data structures, and identifying the critical operations immediately narrows the design space.</li>
+</ul>
+
+<p>This three-part decomposition is not merely academic. It is the same reasoning process that experienced engineers apply when they encounter a new system, whether they are reading documentation, reviewing a design proposal, or debugging a performance problem. The process is repeatable and domain-agnostic: it applies equally to a blockchain ledger, a DNS resolver, a ride-sharing dispatch system, or an airline seat reservation service.</p>
+
+<p>To illustrate, consider mapping this framework onto a simplified version of the Bitcoin system:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Question</th>
+      <th>Bitcoin Answer</th>
+      <th>Structure Implicated</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>What data is stored?</td>
+      <td>Transactions grouped into blocks; each block references the previous</td>
+      <td>Linked list of blocks (the "chain")</td>
+    </tr>
+    <tr>
+      <td>What relationships are modeled?</td>
+      <td>Transactions within a block commit to each other for tamper evidence; blocks chain sequentially</td>
+      <td>Merkle tree (within-block integrity); hash pointer chain (between-block integrity)</td>
+    </tr>
+    <tr>
+      <td>What operations must be efficient?</td>
+      <td>Verify a transaction is in a block; verify the full chain; look up unspent outputs (UTXOs)</td>
+      <td>Merkle proof (O(log n) membership proof); hash table / database for UTXO set</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Even this high-level mapping reveals that Bitcoin's architecture is not a single clever invention but a deliberate composition of well-understood structures: a hash table for O(1) unspent output lookup, a Merkle tree for O(log n) transaction verification, and a hash-pointer linked list for O(1) block integrity chaining. Each structure was chosen because it best satisfies the specific operation requirements of its role. This is the analytical lens we will carry forward throughout the module as we examine blockchain and other real-world systems in increasing depth.</p>
+
+<p>The power of this framework is that it makes the unfamiliar familiar. No matter how novel a system appears on the surface, its data structures will be drawn from a small, well-characterized vocabulary. Learning to see those structures within the system — to decompose complexity into recognizable components — is the foundational skill that distinguishes engineers who can analyze and build systems from those who can only operate them.</p>
+        <div class="notes"><strong>Notes</strong>When discussing Merkle trees, consider previewing that a dedicated later topic will perform a full worked example of a Merkle proof — here the goal is to establish the concept as a tree variant. The Bitcoin framework table is illustrative; instructors may wish to revisit it after learners have studied blockchain architecture in depth to demonstrate how the analysis deepens with domain knowledge. The indexed priority queue composition (heap + hash map) is a subtle but important example — it bridges abstract CS concepts directly to practical algorithm implementation and is worth spending extra time on if the audience has a CS background.</div>
+      </div>
+    </details>
+  </main>
+
+<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
+</body></html>
