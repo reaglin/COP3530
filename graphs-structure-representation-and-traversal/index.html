@@ -8,402 +8,462 @@
     /* ── Reset & Base ── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    :root {
+      --brand-dark:   #1a2f4e;
+      --brand-mid:    #2b5282;
+      --brand-light:  #ebf4ff;
+      --accent:       #2b6cb0;
+      --accent-hover: #1a4a8a;
+      --text-primary: #1a202c;
+      --text-secondary: #4a5568;
+      --text-muted:   #718096;
+      --border:       #d2dcea;
+      --card-bg:      #ffffff;
+      --page-bg:      #f4f7fb;
+      --badge-topic-bg:   #ebf8ff;
+      --badge-topic-txt:  #2b6cb0;
+      --badge-text-bg:    #f0fff4;
+      --badge-text-txt:   #276749;
+      --badge-video-bg:   #fff5f5;
+      --badge-video-txt:  #c53030;
+      --badge-module-bg:  #faf5ff;
+      --badge-module-txt: #6b46c1;
+      --badge-default-bg: #f7fafc;
+      --badge-default-txt:#4a5568;
+      --radius: 8px;
+      --shadow: 0 1px 4px rgba(0,0,0,0.08), 0 2px 12px rgba(0,0,0,0.06);
+    }
+
     body {
-      font-family: "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
-      font-size: 1rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: var(--page-bg);
+      color: var(--text-primary);
       line-height: 1.6;
-      background: #f4f6f9;
-      color: #1e2530;
-    }
-
-    /* ── Page Shell ── */
-    .page-wrapper {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 2rem 1.25rem 4rem;
-    }
-
-    /* ── Course Label ── */
-    .course-label {
-      display: inline-block;
-      font-size: 0.78rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: #4a6fa5;
-      background: #e8eef7;
-      border: 1px solid #c5d3e8;
-      border-radius: 4px;
-      padding: 0.25rem 0.65rem;
-      margin-bottom: 0.75rem;
+      min-height: 100vh;
     }
 
     /* ── Header ── */
-    .module-header {
-      border-left: 5px solid #4a6fa5;
-      padding-left: 1.1rem;
-      margin-bottom: 2.25rem;
+    .site-header {
+      background: linear-gradient(135deg, var(--brand-dark) 0%, var(--brand-mid) 100%);
+      color: #fff;
+      padding: 2.5rem 1.5rem 2rem;
     }
 
-    .module-header h1 {
-      font-size: clamp(1.45rem, 3vw, 2rem);
-      font-weight: 700;
-      color: #13213a;
-      line-height: 1.25;
-      margin-bottom: 0.55rem;
+    .header-inner {
+      max-width: 1100px;
+      margin: 0 auto;
     }
 
-    .module-header p {
-      font-size: 0.97rem;
-      color: #4a5568;
-      max-width: 72ch;
-    }
-
-    /* ── Section Title ── */
-    .section-title {
-      font-size: 0.8rem;
+    .course-label {
+      display: inline-block;
+      font-size: 0.75rem;
       font-weight: 700;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: #6b7a99;
+      color: #90cdf4;
+      margin-bottom: 0.6rem;
+    }
+
+    .site-header h1 {
+      font-size: clamp(1.4rem, 3vw, 2.1rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+      margin-bottom: 0.9rem;
+    }
+
+    .site-header p {
+      font-size: 0.97rem;
+      color: #bee3f8;
+      max-width: 720px;
+      line-height: 1.7;
+    }
+
+    /* ── Main ── */
+    main {
+      max-width: 1100px;
+      margin: 2rem auto 3rem;
+      padding: 0 1.5rem;
+    }
+
+    .section-heading {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
       margin-bottom: 1rem;
-      padding-bottom: 0.4rem;
-      border-bottom: 1px solid #dde3ed;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
     }
 
     /* ── Card Grid ── */
     .card-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
       gap: 1.1rem;
     }
 
-    /* ── Card ── */
     .card {
-      background: #ffffff;
-      border: 1px solid #dde3ed;
-      border-radius: 8px;
-      padding: 1.2rem 1.3rem 1.1rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 1.25rem 1.35rem 1.15rem;
       display: flex;
       flex-direction: column;
-      gap: 0.55rem;
+      gap: 0.6rem;
       transition: box-shadow 0.18s ease, border-color 0.18s ease;
     }
 
     .card:hover {
-      box-shadow: 0 4px 16px rgba(74, 111, 165, 0.13);
-      border-color: #b0c2de;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.11);
+      border-color: #b0c8e8;
     }
 
-    /* ── Card Top Row: badges ── */
-    .card-meta {
+    /* ── Card Header Row ── */
+    .card-header {
       display: flex;
-      align-items: center;
-      gap: 0.45rem;
+      align-items: flex-start;
+      gap: 0.55rem;
       flex-wrap: wrap;
     }
 
-    .badge {
+    .card-title {
+      font-size: 0.97rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      flex: 1 1 auto;
+      min-width: 0;
+      word-break: break-word;
+    }
+
+    .card-title a {
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: color 0.15s, border-color 0.15s;
+    }
+
+    .card-title a:hover,
+    .card-title a:focus {
+      color: var(--accent-hover);
+      border-bottom-color: var(--accent-hover);
+      outline: none;
+    }
+
+    /* ── Source Link ── */
+    .source-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
       font-size: 0.7rem;
       font-weight: 600;
-      letter-spacing: 0.04em;
-      border-radius: 3px;
-      padding: 0.18rem 0.5rem;
-      white-space: nowrap;
-    }
-
-    .badge-type {
-      background: #eef2fa;
-      color: #3a5a9b;
-      border: 1px solid #c7d5ef;
-    }
-
-    .badge-filetype {
-      background: #f1f8f1;
-      color: #2d7a3a;
-      border: 1px solid #b8debb;
-      font-family: "Courier New", Courier, monospace;
-    }
-
-    /* ── Card Title Row ── */
-    .card-title-row {
-      display: flex;
-      align-items: baseline;
-      flex-wrap: wrap;
-      gap: 0.55rem;
-    }
-
-    .card-name {
-      font-size: 0.98rem;
-      font-weight: 700;
-      color: #13213a;
-      line-height: 1.3;
-    }
-
-    .card-name a {
-      color: #2a56a6;
-      text-decoration: none;
-    }
-
-    .card-name a:hover {
-      text-decoration: underline;
-      color: #1a3d82;
-    }
-
-    .source-link {
-      font-size: 0.73rem;
-      font-weight: 500;
-      color: #6b7a99;
+      color: var(--text-muted);
+      background: #f0f4f8;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 0.18rem 0.45rem;
       text-decoration: none;
       white-space: nowrap;
-      border: 1px solid #c8cfdf;
-      border-radius: 3px;
-      padding: 0.1rem 0.42rem;
-      background: #f7f8fb;
+      flex-shrink: 0;
       transition: background 0.15s, color 0.15s;
     }
 
-    .source-link:hover {
-      background: #e8eef7;
-      color: #2a56a6;
-      border-color: #a0b4d6;
+    .source-link:hover,
+    .source-link:focus {
+      background: #dce6f2;
+      color: var(--brand-dark);
+      outline: none;
     }
 
-    .source-link::before {
-      content: "⬡ ";
-      font-size: 0.65rem;
+    .source-link svg {
+      flex-shrink: 0;
     }
 
-    /* ── Card Description ── */
-    .card-description {
-      font-size: 0.875rem;
-      color: #4a5568;
-      line-height: 1.55;
+    /* ── Meta Row ── */
+    .card-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      align-items: center;
+    }
+
+    /* ── Badges ── */
+    .badge {
+      font-size: 0.67rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+
+    .badge-type-topic   { background: var(--badge-topic-bg);   color: var(--badge-topic-txt); }
+    .badge-type-text    { background: var(--badge-text-bg);    color: var(--badge-text-txt); }
+    .badge-type-video   { background: var(--badge-video-bg);   color: var(--badge-video-txt); }
+    .badge-type-module  { background: var(--badge-module-bg);  color: var(--badge-module-txt); }
+    .badge-type-default { background: var(--badge-default-bg); color: var(--badge-default-txt); }
+
+    .badge-filetype {
+      background: #f7fafc;
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      font-size: 0.67rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      padding: 0.2rem 0.45rem;
+      border-radius: 4px;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    }
+
+    /* ── Description ── */
+    .card-desc {
+      font-size: 0.855rem;
+      color: var(--text-secondary);
+      line-height: 1.65;
       flex: 1;
     }
 
     /* ── Footer ── */
-    .page-footer {
-      margin-top: 3rem;
-      padding-top: 1.1rem;
-      border-top: 1px solid #dde3ed;
-      font-size: 0.78rem;
-      color: #8a95aa;
+    .site-footer {
       text-align: center;
+      padding: 1.5rem 1rem;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border);
+      background: #fff;
     }
 
-    /* ── Responsive tweaks ── */
-    @media (max-width: 520px) {
-      .card-grid {
-        grid-template-columns: 1fr;
-      }
+    /* ── Responsive ── */
+    @media (max-width: 500px) {
+      .card-grid { grid-template-columns: 1fr; }
+      .site-header { padding: 1.75rem 1rem 1.5rem; }
+      main { padding: 0 1rem; }
     }
   </style>
 </head>
 <body>
 <div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ COP3530 - Data Structures</a></div>
 <div style="border:1px solid #c9d4e3;background:#f5f8fc;border-radius:8px;padding:10px 16px;margin:0 0 18px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;font-family:'Segoe UI',Arial,sans-serif"><strong style="color:#1a3c6e">Module outline:</strong><a href="topics-outcomes.html#topics" style="color:#1a3c6e;font-weight:600;text-decoration:none">📋 Module Topics</a><a href="topics-outcomes.html#outcomes" style="color:#137333;font-weight:600;text-decoration:none">🎯 Student Learning Outcomes</a></div>
-  <div class="page-wrapper">
 
-    <!-- Header -->
-    <header>
+  <!-- ══════════════ HEADER ══════════════ -->
+  <header class="site-header">
+    <div class="header-inner">
       <span class="course-label">COP3530 — Data Structures</span>
-      <div class="module-header">
-        <h1>Graphs: Structure, Representation, and Traversal</h1>
-        <p>
-          This module introduces graph data structures — one of the most versatile
-          abstractions in computer science. You will explore how graphs are defined,
-          how they can be stored efficiently using adjacency matrices and adjacency
-          lists, and how to traverse them using Breadth-First Search (BFS) and
-          Depth-First Search (DFS), culminating in a hands-on JavaScript implementation.
+      <h1>Graphs: Structure, Representation, and Traversal</h1>
+      <p>
+        This module explores graph data structures from the ground up — covering fundamental definitions,
+        directed and undirected graphs, adjacency matrix and list representations, and core traversal
+        algorithms including Breadth-First Search and Depth-First Search. Use the resources below to
+        build both conceptual understanding and practical implementation skills.
+      </p>
+    </div>
+  </header>
+
+  <!-- ══════════════ MAIN ══════════════ -->
+  <main>
+    <p class="section-heading">Module Artifacts &nbsp;·&nbsp; 10 items</p>
+
+    <div class="card-grid">
+
+      <!-- Card 1: Module Topics -->
+      <article class="card">
+        <div class="card-header">
+          <span class="card-title">
+            <a href="content/module_topics.html">Module Topics</a>
+          </span>
+          <a class="source-link" href="source/hierarchy.json" title="View source file">
+            <svg width="11" height="11" viewBox="0 0 16 16" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+              <path d="M13.5 9.5v3a1 1 0 01-1 1h-9a1 1 0 01-1-1v-9a1 1 0 011-1h3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+              <path d="M9 2.5h4.5V7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M7.5 8.5L13 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+            source file
+          </a>
+        </div>
+        <div class="card-meta">
+          <span class="badge badge-type-module">Module Topics</span>
+          <span class="badge-filetype">.json</span>
+        </div>
+        <p class="card-desc">
+          This module outline covers the core concepts of graph data structures — including definitions of vertices
+          and edges, directed vs. undirected graphs, adjacency matrix and adjacency list representations, and graph
+          traversal algorithms — serving as a navigational guide for learners and instructors to see the full scope
+          of topics in the module.
         </p>
-      </div>
-    </header>
+      </article>
 
-    <!-- Artifact Grid -->
-    <main>
-      <p class="section-title">Module Artifacts &mdash; 9 items</p>
-      <div class="card-grid">
+      <!-- Card 2: Introduction to Graph Data Structures -->
+      <article class="card">
+        <div class="card-header">
+          <span class="card-title">
+            <a href="content/Graphs_Structure_Representat_interactive_topics_t1.html">Introduction to Graph Data Structures</a>
+          </span>
+        </div>
+        <div class="card-meta">
+          <span class="badge badge-type-topic">Topic Detail</span>
+          <span class="badge-filetype">.html</span>
+        </div>
+        <p class="card-desc">
+          A foundational reading that introduces graph data structures by explaining what graphs are, why they are
+          more flexible than arrays, linked lists, and trees, and where they appear in real-world computing; learners
+          read it to build conceptual context before studying specific graph topics.
+        </p>
+      </article>
 
-        <!-- Card 1: Module Topics -->
-        <article class="card">
-          <div class="card-meta">
-            <span class="badge badge-type">Module Topics</span>
-            <span class="badge badge-filetype">.json</span>
-          </div>
-          <div class="card-title-row">
-            <span class="card-name">
-              <a href="content/module_topics.html">Module Topics</a>
-            </span>
-            <a class="source-link" href="source/hierarchy.json">source file</a>
-          </div>
-          <p class="card-description">
-            This module outline covers the core concepts of graph data structures — including
-            definitions of vertices and edges, directed vs. undirected graphs, adjacency matrix
-            and adjacency list representations, and graph traversal algorithms — serving as a
-            navigational guide for learners and instructors to see the full scope of topics
-            in the module.
-          </p>
-        </article>
+      <!-- Card 3: Directed and Undirected Graphs -->
+      <article class="card">
+        <div class="card-header">
+          <span class="card-title">
+            <a href="content/Graphs_Structure_Representat_interactive_topics_t2.html">Directed and Undirected Graphs</a>
+          </span>
+        </div>
+        <div class="card-meta">
+          <span class="badge badge-type-topic">Topic Detail</span>
+          <span class="badge-filetype">.html</span>
+        </div>
+        <p class="card-desc">
+          A reading that distinguishes directed graphs (edges with a one-way direction) from undirected graphs
+          (symmetric edges), covering related terminology such as degree, paths, and cycles, so learners can
+          correctly classify and reason about graph relationships.
+        </p>
+      </article>
 
-        <!-- Card 2: Introduction to Graph Data Structures -->
-        <article class="card">
-          <div class="card-meta">
-            <span class="badge badge-type">Topic Detail</span>
-            <span class="badge badge-filetype">.html</span>
-          </div>
-          <div class="card-title-row">
-            <span class="card-name">
-              <a href="content/Graphs_Structure_Representat_interactive_topics_t1.html">Introduction to Graph Data Structures</a>
-            </span>
-          </div>
-          <p class="card-description">
-            A foundational reading that introduces graph data structures by explaining what graphs
-            are, why they are more flexible than arrays, linked lists, and trees, and where they
-            appear in real-world computing; learners read it to build conceptual context before
-            studying specific graph topics.
-          </p>
-        </article>
+      <!-- Card 4: Adjacency Matrix Representation -->
+      <article class="card">
+        <div class="card-header">
+          <span class="card-title">
+            <a href="content/Graphs_Structure_Representat_interactive_topics_t3.html">Adjacency Matrix Representation</a>
+          </span>
+        </div>
+        <div class="card-meta">
+          <span class="badge badge-type-topic">Topic Detail</span>
+          <span class="badge-filetype">.html</span>
+        </div>
+        <p class="card-desc">
+          A reading that explains the adjacency matrix storage format for graphs, covering how to build and interpret
+          the matrix, its memory cost, and the time complexity of common operations, so learners can evaluate when
+          this representation is appropriate.
+        </p>
+      </article>
 
-        <!-- Card 3: Directed and Undirected Graphs -->
-        <article class="card">
-          <div class="card-meta">
-            <span class="badge badge-type">Topic Detail</span>
-            <span class="badge badge-filetype">.html</span>
-          </div>
-          <div class="card-title-row">
-            <span class="card-name">
-              <a href="content/Graphs_Structure_Representat_interactive_topics_t2.html">Directed and Undirected Graphs</a>
-            </span>
-          </div>
-          <p class="card-description">
-            A reading that distinguishes directed graphs (edges with a one-way direction) from
-            undirected graphs (symmetric edges), covering related terminology such as degree,
-            paths, and cycles, so learners can correctly classify and reason about graph
-            relationships.
-          </p>
-        </article>
+      <!-- Card 5: Adjacency List Representation -->
+      <article class="card">
+        <div class="card-header">
+          <span class="card-title">
+            <a href="content/Graphs_Structure_Representat_interactive_topics_t4.html">Adjacency List Representation</a>
+          </span>
+        </div>
+        <div class="card-meta">
+          <span class="badge badge-type-topic">Topic Detail</span>
+          <span class="badge-filetype">.html</span>
+        </div>
+        <p class="card-desc">
+          A reading that explains the adjacency list storage format for graphs, covering how lists of neighbors are
+          stored, their memory and time-complexity trade-offs compared with adjacency matrices, and how to implement
+          them, so learners can choose and apply the most practical representation for sparse graphs.
+        </p>
+      </article>
 
-        <!-- Card 4: Adjacency Matrix Representation -->
-        <article class="card">
-          <div class="card-meta">
-            <span class="badge badge-type">Topic Detail</span>
-            <span class="badge badge-filetype">.html</span>
-          </div>
-          <div class="card-title-row">
-            <span class="card-name">
-              <a href="content/Graphs_Structure_Representat_interactive_topics_t3.html">Adjacency Matrix Representation</a>
-            </span>
-          </div>
-          <p class="card-description">
-            A reading that explains the adjacency matrix storage format for graphs, covering how
-            to build and interpret the matrix, its memory cost, and the time complexity of common
-            operations, so learners can evaluate when this representation is appropriate.
-          </p>
-        </article>
+      <!-- Card 6: BFS -->
+      <article class="card">
+        <div class="card-header">
+          <span class="card-title">
+            <a href="content/Graphs_Structure_Representat_interactive_topics_t5.html">Breadth-First Search (BFS)</a>
+          </span>
+        </div>
+        <div class="card-meta">
+          <span class="badge badge-type-topic">Topic Detail</span>
+          <span class="badge-filetype">.html</span>
+        </div>
+        <p class="card-desc">
+          A reading that explains the Breadth-First Search algorithm, covering its layer-by-layer traversal logic,
+          queue-based implementation, visited tracking, and use cases such as shortest-path finding in unweighted
+          graphs, so learners understand how to explore graphs level by level.
+        </p>
+      </article>
 
-        <!-- Card 5: Adjacency List Representation -->
-        <article class="card">
-          <div class="card-meta">
-            <span class="badge badge-type">Topic Detail</span>
-            <span class="badge badge-filetype">.html</span>
-          </div>
-          <div class="card-title-row">
-            <span class="card-name">
-              <a href="content/Graphs_Structure_Representat_interactive_topics_t4.html">Adjacency List Representation</a>
-            </span>
-          </div>
-          <p class="card-description">
-            A reading that explains the adjacency list storage format for graphs, covering how
-            lists of neighbors are stored, their memory and time-complexity trade-offs compared
-            with adjacency matrices, and how to implement them, so learners can choose and apply
-            the most practical representation for sparse graphs.
-          </p>
-        </article>
+      <!-- Card 7: DFS -->
+      <article class="card">
+        <div class="card-header">
+          <span class="card-title">
+            <a href="content/Graphs_Structure_Representat_interactive_topics_t6.html">Depth-First Search (DFS)</a>
+          </span>
+        </div>
+        <div class="card-meta">
+          <span class="badge badge-type-topic">Topic Detail</span>
+          <span class="badge-filetype">.html</span>
+        </div>
+        <p class="card-desc">
+          A reading that explains the Depth-First Search algorithm, covering its recursive and stack-based
+          implementations, backtracking behavior, visited tracking, and applications such as cycle detection and
+          topological sorting, so learners understand how to explore graphs along deep paths before backtracking.
+        </p>
+      </article>
 
-        <!-- Card 6: BFS -->
-        <article class="card">
-          <div class="card-meta">
-            <span class="badge badge-type">Topic Detail</span>
-            <span class="badge badge-filetype">.html</span>
-          </div>
-          <div class="card-title-row">
-            <span class="card-name">
-              <a href="content/Graphs_Structure_Representat_interactive_topics_t5.html">Breadth-First Search (BFS)</a>
-            </span>
-          </div>
-          <p class="card-description">
-            A reading that explains the Breadth-First Search algorithm, covering its
-            layer-by-layer traversal logic, queue-based implementation, visited tracking, and
-            use cases such as shortest-path finding in unweighted graphs, so learners understand
-            how to explore graphs level by level.
-          </p>
-        </article>
+      <!-- Card 8: Implementing Graph Traversal (Topic Detail) -->
+      <article class="card">
+        <div class="card-header">
+          <span class="card-title">
+            <a href="content/Graphs_Structure_Representat_interactive_topics_t7.html">Implementing Graph Traversal in JavaScript</a>
+          </span>
+        </div>
+        <div class="card-meta">
+          <span class="badge badge-type-topic">Topic Detail</span>
+          <span class="badge-filetype">.html</span>
+        </div>
+        <p class="card-desc">
+          A hands-on coding reading that walks learners through building a JavaScript Graph class from scratch, then
+          adding BFS and DFS methods step by step, so they can translate traversal concepts into working, runnable code.
+        </p>
+      </article>
 
-        <!-- Card 7: DFS -->
-        <article class="card">
-          <div class="card-meta">
-            <span class="badge badge-type">Topic Detail</span>
-            <span class="badge badge-filetype">.html</span>
-          </div>
-          <div class="card-title-row">
-            <span class="card-name">
-              <a href="content/Graphs_Structure_Representat_interactive_topics_t6.html">Depth-First Search (DFS)</a>
-            </span>
-          </div>
-          <p class="card-description">
-            A reading that explains the Depth-First Search algorithm, covering its recursive and
-            stack-based implementations, backtracking behavior, visited tracking, and applications
-            such as cycle detection and topological sorting, so learners understand how to explore
-            graphs along deep paths before backtracking.
-          </p>
-        </article>
+      <!-- Card 9: Implementing Graph Traversal (Text Content) -->
+      <article class="card">
+        <div class="card-header">
+          <span class="card-title">
+            <a href="content/Graphs_Structure_Representat_interactive.html">Implementing Graph Traversal in JavaScript</a>
+          </span>
+        </div>
+        <div class="card-meta">
+          <span class="badge badge-type-text">Text Content</span>
+          <span class="badge-filetype">.html</span>
+        </div>
+        <p class="card-desc">
+          A hands-on coding reading that walks learners through building a JavaScript Graph class from scratch, then
+          adding BFS and DFS methods step by step, so they can translate traversal concepts into working, runnable code.
+        </p>
+      </article>
 
-        <!-- Card 8: Implementing Graph Traversal — Topic Detail -->
-        <article class="card">
-          <div class="card-meta">
-            <span class="badge badge-type">Topic Detail</span>
-            <span class="badge badge-filetype">.html</span>
-          </div>
-          <div class="card-title-row">
-            <span class="card-name">
-              <a href="content/Graphs_Structure_Representat_interactive_topics_t7.html">Implementing Graph Traversal in JavaScript</a>
-            </span>
-          </div>
-          <p class="card-description">
-            A hands-on coding reading that walks learners through building a JavaScript Graph
-            class from scratch, then adding BFS and DFS methods step by step, so they can
-            translate traversal concepts into working, runnable code.
-          </p>
-        </article>
+      <!-- Card 10: Google Maps Video -->
+      <article class="card">
+        <div class="card-header">
+          <span class="card-title">
+            <a href="content/ext_f7ebc594.html">Google Maps is unreasonably fast. Let me explain</a>
+          </span>
+        </div>
+        <div class="card-meta">
+          <span class="badge badge-type-video">Video</span>
+          <span class="badge-filetype">.html</span>
+        </div>
+        <p class="card-desc">
+          This Veritasium video explores the mathematical and algorithmic principles behind how Google Maps computes
+          routes so efficiently. It examines the graph-based representation of road networks and the optimization
+          strategies that make real-time pathfinding feasible at massive scale. The video connects foundational graph
+          theory to a widely recognized, high-impact real-world application.
+        </p>
+      </article>
 
-        <!-- Card 9: Implementing Graph Traversal — Text Content -->
-        <article class="card">
-          <div class="card-meta">
-            <span class="badge badge-type">Text Content</span>
-            <span class="badge badge-filetype">.html</span>
-          </div>
-          <div class="card-title-row">
-            <span class="card-name">
-              <a href="content/Graphs_Structure_Representat_interactive.html">Implementing Graph Traversal in JavaScript</a>
-            </span>
-          </div>
-          <p class="card-description">
-            A hands-on coding reading that walks learners through building a JavaScript Graph
-            class from scratch, then adding BFS and DFS methods step by step, so they can
-            translate traversal concepts into working, runnable code.
-          </p>
-        </article>
+    </div><!-- /.card-grid -->
+  </main>
 
-      </div>
-    </main>
+  <!-- ══════════════ FOOTER ══════════════ -->
+  <footer class="site-footer">
+    COP3530 — Data Structures &nbsp;·&nbsp; Graphs: Structure, Representation, and Traversal
+  </footer>
 
-    <!-- Footer -->
-    <footer class="page-footer">
-      COP3530 — Data Structures &nbsp;|&nbsp; Graphs: Structure, Representation, and Traversal
-    </footer>
-
-  </div>
 
 <footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
 <section class="presemaker-extras" style="max-width:1000px;margin:2rem auto;padding:0 1rem;"><h2>Topics &amp; Learning Outcomes</h2><p><a href="topics-outcomes.html">View Topics &amp; Learning Outcomes</a></p></section><script src="embed-inject.js" defer></script></body>
