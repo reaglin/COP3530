@@ -1,284 +1,410 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Advanced Tree Structures: AVL Trees, Heaps, and Tries | COP3530</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Advanced Tree Structures: AVL Trees, Heaps, and Tries — COP3530</title>
   <style>
     /* ── Reset & Base ── */
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html {
-      font-size: 16px;
-      scroll-behavior: smooth;
-    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-      background-color: #f4f6f9;
-      color: #1e2a3a;
-      line-height: 1.65;
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      background: #f4f6f9;
+      color: #1e2533;
+      line-height: 1.6;
       min-height: 100vh;
     }
 
     /* ── Header / Hero ── */
     header {
-      background: linear-gradient(135deg, #1a3a5c 0%, #24527a 60%, #2e6e9e 100%);
-      color: #ffffff;
-      padding: 3rem 2rem 2.5rem;
-      border-bottom: 4px solid #4a9fd4;
+      background: linear-gradient(135deg, #1a3a5c 0%, #2b6196 100%);
+      color: #fff;
+      padding: 2.75rem 1.5rem 2.25rem;
+      text-align: center;
     }
 
-    .header-inner {
-      max-width: 960px;
-      margin: 0 auto;
-    }
-
-    .course-label {
+    header .course-label {
       display: inline-block;
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.35);
+      border-radius: 20px;
       font-size: 0.78rem;
-      font-weight: 700;
-      letter-spacing: 0.12em;
+      font-weight: 600;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
-      background-color: rgba(255, 255, 255, 0.15);
-      color: #cce6f7;
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      border-radius: 4px;
-      padding: 0.25rem 0.65rem;
+      padding: 0.25rem 0.85rem;
       margin-bottom: 1rem;
     }
 
     header h1 {
-      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-size: clamp(1.5rem, 3.5vw, 2.4rem);
       font-weight: 700;
+      letter-spacing: -0.01em;
       line-height: 1.25;
       margin-bottom: 1rem;
-      letter-spacing: -0.02em;
     }
 
     header p {
-      font-size: 1.05rem;
-      color: #cce6f7;
-      max-width: 720px;
-      line-height: 1.7;
+      max-width: 680px;
+      margin: 0 auto;
+      font-size: 1rem;
+      color: rgba(255,255,255,0.88);
     }
 
     /* ── Main Content ── */
     main {
-      max-width: 960px;
-      margin: 2.5rem auto;
-      padding: 0 1.5rem 4rem;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2.5rem 1.25rem 3.5rem;
     }
 
     .section-heading {
       font-size: 0.72rem;
       font-weight: 700;
-      letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: #5a7a9a;
+      letter-spacing: 0.12em;
+      color: #5a6a82;
       margin-bottom: 1.25rem;
       padding-bottom: 0.5rem;
-      border-bottom: 2px solid #dce5ef;
+      border-bottom: 2px solid #dde3ed;
     }
 
     /* ── Card Grid ── */
     .card-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
       gap: 1.25rem;
     }
 
+    /* ── Card ── */
     .card {
       background: #ffffff;
-      border: 1px solid #d6e2ee;
+      border: 1px solid #dde3ed;
       border-radius: 10px;
-      padding: 1.5rem 1.5rem 1.35rem;
+      padding: 1.35rem 1.4rem 1.25rem;
       display: flex;
       flex-direction: column;
       gap: 0.6rem;
-      box-shadow: 0 2px 8px rgba(30, 60, 100, 0.06);
-      transition: box-shadow 0.2s ease, transform 0.2s ease;
+      transition: box-shadow 0.18s ease, transform 0.18s ease;
     }
 
     .card:hover {
-      box-shadow: 0 6px 20px rgba(30, 60, 100, 0.12);
+      box-shadow: 0 6px 22px rgba(30, 37, 51, 0.1);
       transform: translateY(-2px);
     }
 
-    /* ── Card: Name row ── */
-    .card-name-row {
+    /* ── Card Meta Row ── */
+    .card-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      padding: 0.18rem 0.6rem;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+
+    .badge-type {
+      background: #e8f0fb;
+      color: #2056a0;
+    }
+
+    .badge-filetype {
+      background: #eef7ee;
+      color: #2a7a2a;
+      font-family: "Courier New", monospace;
+    }
+
+    /* ── Card Title Row ── */
+    .card-title-row {
       display: flex;
       align-items: baseline;
       flex-wrap: wrap;
       gap: 0.55rem;
     }
 
-    .card-name {
-      font-size: 1.05rem;
+    .card-title {
+      font-size: 0.985rem;
       font-weight: 700;
-      color: #1a3a5c;
-      line-height: 1.3;
+      color: #1e2533;
+      line-height: 1.35;
     }
 
-    .card-name a {
-      color: #1a5fa8;
+    .card-title a {
+      color: #1a5ca8;
       text-decoration: none;
-      border-bottom: 2px solid transparent;
-      transition: border-color 0.18s ease, color 0.18s ease;
     }
 
-    .card-name a:hover,
-    .card-name a:focus {
-      color: #0d3e78;
-      border-bottom-color: #1a5fa8;
-      outline: none;
+    .card-title a:hover,
+    .card-title a:focus {
+      text-decoration: underline;
+      color: #0e3f7a;
+      outline: 2px solid #1a5ca8;
+      outline-offset: 2px;
+      border-radius: 2px;
     }
 
     .source-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
       font-size: 0.72rem;
       font-weight: 600;
-      color: #5a8abf;
+      color: #5a6a82;
       text-decoration: none;
-      background: #eaf3fb;
-      border: 1px solid #b8d6ef;
+      background: #f2f4f8;
+      border: 1px solid #ccd3e0;
       border-radius: 4px;
-      padding: 0.15rem 0.5rem;
+      padding: 0.15rem 0.48rem;
       white-space: nowrap;
-      transition: background 0.18s ease, color 0.18s ease;
+      transition: background 0.15s, color 0.15s;
     }
 
     .source-link:hover,
     .source-link:focus {
-      background: #c9e2f5;
-      color: #0d3e78;
-      outline: none;
+      background: #e2e8f4;
+      color: #1a3a5c;
+      outline: 2px solid #5a6a82;
+      outline-offset: 2px;
     }
 
-    /* ── Card: Meta badges ── */
-    .card-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.45rem;
-      align-items: center;
+    .source-link::before {
+      content: "⬇";
+      font-size: 0.65rem;
     }
 
-    .badge {
-      font-size: 0.68rem;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      border-radius: 4px;
-      padding: 0.2rem 0.55rem;
-      line-height: 1.4;
-    }
-
-    .badge-type {
-      background: #e8f0fb;
-      color: #2a5fa8;
-      border: 1px solid #bdd0f0;
-    }
-
-    .badge-filetype {
-      background: #f0f5f0;
-      color: #2e6b3e;
-      border: 1px solid #b2d4bc;
-      font-family: 'Courier New', Courier, monospace;
-      font-size: 0.66rem;
-    }
-
-    /* ── Card: Description ── */
+    /* ── Card Description ── */
     .card-description {
-      font-size: 0.9rem;
-      color: #3d546b;
-      line-height: 1.65;
+      font-size: 0.875rem;
+      color: #4a5568;
+      line-height: 1.55;
       flex: 1;
     }
 
     /* ── Footer ── */
     footer {
       text-align: center;
-      font-size: 0.8rem;
-      color: #8a9fb5;
-      padding: 1.5rem 1rem 2rem;
-      border-top: 1px solid #d6e2ee;
+      padding: 1.5rem 1rem;
+      font-size: 0.78rem;
+      color: #8a95a8;
+      border-top: 1px solid #dde3ed;
+      background: #fff;
     }
 
     /* ── Responsive tweaks ── */
     @media (max-width: 480px) {
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
       header {
-        padding: 2rem 1.25rem 2rem;
-      }
-
-      .card {
-        padding: 1.25rem;
-      }
-
-      .card-name {
-        font-size: 1rem;
+        padding: 2rem 1rem 1.75rem;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- ═══════════════════════════════════════════ HEADER -->
   <header>
-    <div class="header-inner">
-      <span class="course-label">COP3530 &mdash; Data Structures</span>
-      <h1>Advanced Tree Structures:<br>AVL Trees, Heaps, and Tries</h1>
-      <p>
-        This module explores self-balancing and specialized tree structures that underpin
-        high-performance algorithms. Beginning with the limitations of unbalanced binary
-        search trees, you will master AVL tree properties and rotations, analyze heap
-        operations and priority-queue design, and discover how tries enable efficient
-        string-based retrieval. Use the artifacts below to navigate lessons, examples,
-        and reference materials.
-      </p>
-    </div>
+    <div class="course-label">COP3530 — Data Structures</div>
+    <h1>Advanced Tree Structures:<br />AVL Trees, Heaps, and Tries</h1>
+    <p>
+      Explore self-balancing binary search trees, heap-based priority queues, and trie structures
+      for efficient string storage. This module builds on BST fundamentals to develop a deeper
+      understanding of guaranteed-performance tree operations and their real-world applications.
+    </p>
   </header>
 
-  <!-- ═══════════════════════════════════════════ MAIN -->
   <main>
-    <p class="section-heading">Module Artifacts &mdash; 1 item</p>
+    <p class="section-heading">Module Artifacts &mdash; 9 items</p>
 
     <div class="card-grid">
 
-      <!-- ── Artifact: Module Topics ── -->
+      <!-- Card 1: Module Topics -->
       <article class="card">
-        <div class="card-name-row">
-          <span class="card-name">
-            <a href="module_topics.html">Module Topics</a>
-          </span>
-          <a
-            class="source-link"
-            href="../hierarchy.json"
-            aria-label="Source file for Module Topics"
-          >source file</a>
-        </div>
-
         <div class="card-meta">
           <span class="badge badge-type">Module Topics</span>
           <span class="badge badge-filetype">.json</span>
         </div>
-
+        <div class="card-title-row">
+          <span class="card-title">
+            <a href="module_topics.html">Module Topics</a>
+          </span>
+          <a class="source-link" href="../hierarchy.json">source file</a>
+        </div>
         <p class="card-description">
-          Outlines the module's topics progressing from BST fundamentals and imbalance
-          problems through AVL tree properties, balance factors, and performance analysis,
-          serving as a navigational overview for learners and instructors to understand
-          the scope and sequence of the module.
+          Outlines the module's topics progressing from BST fundamentals and imbalance problems
+          through AVL tree properties, balance factors, and performance analysis, serving as a
+          navigational overview for learners and instructors to understand the scope and sequence
+          of the module.
         </p>
       </article>
 
-    </div><!-- /.card-grid -->
+      <!-- Card 2: Review of Binary Search Trees -->
+      <article class="card">
+        <div class="card-meta">
+          <span class="badge badge-type">Topic Detail</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <span class="card-title">
+            <a href="Advanced_Tree_Structures_interactive_topics_t1.html">Review of Binary Search Trees and Their Limitations</a>
+          </span>
+        </div>
+        <p class="card-description">
+          Covers how binary search trees work, their average and worst-case time complexities for
+          search, insertion, and deletion, and the core limitation that an unbalanced BST can
+          degrade to O(n) performance — serving as prerequisite reading before learners study
+          self-balancing trees.
+        </p>
+      </article>
+
+      <!-- Card 3: AVL Trees and Self-Balancing Mechanisms -->
+      <article class="card">
+        <div class="card-meta">
+          <span class="badge badge-type">Topic Detail</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <span class="card-title">
+            <a href="Advanced_Tree_Structures_interactive_topics_t2.html">AVL Trees and Self-Balancing Mechanisms</a>
+          </span>
+        </div>
+        <p class="card-description">
+          Explains why plain BSTs degrade on sorted input, then details how AVL trees maintain
+          balance through height tracking, balance factors, and the four rotation cases (left,
+          right, left-right, right-left), giving learners the conceptual foundation to understand
+          and implement self-balancing insertions and deletions.
+        </p>
+      </article>
+
+      <!-- Card 4: AVL Tree Performance and Use Cases -->
+      <article class="card">
+        <div class="card-meta">
+          <span class="badge badge-type">Topic Detail</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <span class="card-title">
+            <a href="Advanced_Tree_Structures_interactive_topics_t3.html">AVL Tree Performance and Use Cases</a>
+          </span>
+        </div>
+        <p class="card-description">
+          Analyzes the guaranteed O(log n) performance of AVL trees for search, insertion, and
+          deletion, discusses the constant overhead of rotations, compares AVL trees to other
+          balanced BST variants, and identifies real-world scenarios — such as in-memory sorted
+          dictionaries — where AVL trees are the appropriate choice.
+        </p>
+      </article>
+
+      <!-- Card 5: Heap Trees and Priority Queues -->
+      <article class="card">
+        <div class="card-meta">
+          <span class="badge badge-type">Topic Detail</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <span class="card-title">
+            <a href="Advanced_Tree_Structures_interactive_topics_t4.html">Heap Trees and Priority Queues</a>
+          </span>
+        </div>
+        <p class="card-description">
+          Introduces heap trees by defining the shape property (complete binary tree) and the
+          ordering property (min-heap or max-heap), explains how heaps are efficiently stored in
+          arrays, and connects the structure to its primary application as a priority queue,
+          giving learners a conceptual grounding before studying heap operations.
+        </p>
+      </article>
+
+      <!-- Card 6: Heap Operations and Performance Trade-offs -->
+      <article class="card">
+        <div class="card-meta">
+          <span class="badge badge-type">Topic Detail</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <span class="card-title">
+            <a href="Advanced_Tree_Structures_interactive_topics_t5.html">Heap Operations and Performance Trade-offs</a>
+          </span>
+        </div>
+        <p class="card-description">
+          Details the core heap operations — insert (sift-up), extract-min/max (sift-down), and
+          heapify — analyzes their O(log n) time complexities, discusses trade-offs between
+          min-heaps and max-heaps, and covers practical performance considerations such as heap
+          sort and use in graph algorithms like Dijkstra's.
+        </p>
+      </article>
+
+      <!-- Card 7: Trie Structures -->
+      <article class="card">
+        <div class="card-meta">
+          <span class="badge badge-type">Topic Detail</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <span class="card-title">
+            <a href="Advanced_Tree_Structures_interactive_topics_t6.html">Trie Structures for String Storage and Retrieval</a>
+          </span>
+        </div>
+        <p class="card-description">
+          Describes how tries store strings character by character in a tree of nodes, explains
+          insertion, search, and prefix-matching operations with their O(m) time complexity
+          relative to string length, and highlights use cases such as autocomplete and spell
+          checking where tries outperform hash tables and BSTs.
+        </p>
+      </article>
+
+      <!-- Card 8: Comparing Advanced Tree Structures (Topic Detail) -->
+      <article class="card">
+        <div class="card-meta">
+          <span class="badge badge-type">Topic Detail</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <span class="card-title">
+            <a href="Advanced_Tree_Structures_interactive_topics_t7.html">Comparing Advanced Tree Structures: Use Cases and Trade-offs</a>
+          </span>
+        </div>
+        <p class="card-description">
+          Compares AVL trees, heaps, and tries side by side across dimensions of time complexity,
+          memory usage, and implementation complexity, and provides guidance on selecting the
+          appropriate structure based on the problem type — ordered lookups, priority access, or
+          string retrieval — helping learners and instructors use it as a decision-making reference.
+        </p>
+      </article>
+
+      <!-- Card 9: Comparing Advanced Tree Structures (Text Content) -->
+      <article class="card">
+        <div class="card-meta">
+          <span class="badge badge-type">Text Content</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <span class="card-title">
+            <a href="Advanced_Tree_Structures_interactive.html">Comparing Advanced Tree Structures: Use Cases and Trade-offs</a>
+          </span>
+        </div>
+        <p class="card-description">
+          Compares AVL trees, heaps, and tries side by side across dimensions of time complexity,
+          memory usage, and implementation complexity, and provides guidance on selecting the
+          appropriate structure based on the problem type — ordered lookups, priority access, or
+          string retrieval — helping learners and instructors use it as a decision-making reference.
+        </p>
+      </article>
+
+    </div>
   </main>
 
-  <!-- ═══════════════════════════════════════════ FOOTER -->
   <footer>
-    <p>COP3530 &mdash; Data Structures &nbsp;&bull;&nbsp; Advanced Tree Structures Module</p>
+    COP3530 &mdash; Data Structures &nbsp;|&nbsp; Advanced Tree Structures: AVL Trees, Heaps, and Tries
   </footer>
 
 

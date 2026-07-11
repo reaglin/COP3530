@@ -1,0 +1,351 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Implementing Graph Traversal in JavaScript</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+  <style>
+    body { padding-left: 1.1rem; padding-right: 1.1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid rgba(128,128,128,.45); padding: .45em .7em; text-align: left; vertical-align: top; }
+    thead th { background: rgba(128,128,128,.18); font-weight: 600; }
+    tbody tr:nth-child(even) { background: rgba(128,128,128,.08); }
+    a.topic-detail-link { text-decoration: underline; }
+  </style>
+  <style>
+    summary.slide-header { list-style: none; }
+    summary.slide-header::-webkit-details-marker { display: none; }
+    details.slide-card[open] > .slide-body { display: block; }
+    details.slide-card[open] .chevron { transform: rotate(90deg); }
+    @media print { details.slide-card > .slide-body { display: block !important; } .chevron { display: none; } }
+  </style>
+</head><body>
+  <header>
+    <h1>Implementing Graph Traversal in JavaScript</h1>
+  </header><main>
+    <details class="slide-card" open>
+      <summary class="slide-header"><span class="slide-num">1</span><h2>Implementing Graph Traversal in JavaScript</h2><span class="chevron">▶</span></summary>
+      <div class="slide-body">
+        <p>Graph traversal is one of the most fundamental skills in computer science, and implementing it from scratch in JavaScript gives you deep insight into how algorithms like shortest-path finders, social network analyzers, and web crawlers actually work under the hood. In this topic, you will build a <code>Graph</code> class step by step, add the ability to connect vertices with edges, and then implement both Breadth-First Search (BFS) and Depth-First Search (DFS) — the two cornerstone traversal strategies — in multiple styles. By the end, you will understand not just <em>how</em> to write these algorithms, but <em>why</em> each design decision is made and <em>when</em> to reach for one approach over another.</p>
+
+<p>A graph is a collection of <strong>vertices</strong> (also called nodes) connected by <strong>edges</strong>. Unlike trees, graphs can have cycles, disconnected components, and edges that point in both directions. The most practical way to represent a graph in JavaScript is through an <strong>adjacency list</strong> — a data structure where each vertex maps to an array (or set) of its neighbors. Adjacency lists are memory-efficient for sparse graphs (graphs where most pairs of vertices are <em>not</em> connected), which describes the vast majority of real-world graphs.</p>
+
+<p><strong>Setting Up the Graph Class in JavaScript</strong></p>
+
+<p>The first step is defining a <code>Graph</code> class with a constructor that establishes an empty adjacency list. You can use a plain JavaScript object or a <code>Map</code>; a plain object is idiomatic and slightly simpler for string-keyed vertices, while a <code>Map</code> supports non-string keys and has cleaner semantics. The examples below use a plain object, but the concepts transfer directly to <code>Map</code>.</p>
+
+<pre><code>class Graph {
+  constructor() {
+    // The adjacency list stores each vertex as a key
+    // and an array of its neighbors as the value.
+    this.adjacencyList = {};
+  }
+}</code></pre>
+
+<p>Next, add an <code>addVertex</code> method. This method accepts a vertex name and creates a new entry in the adjacency list with an empty array. A critical detail is the <strong>duplicate guard</strong>: if you add the same vertex twice without checking, you will silently overwrite its existing neighbor array and lose all recorded edges. Always check whether the vertex already exists first.</p>
+
+<pre><code>addVertex(vertex) {
+  // Guard: only add the vertex if it does not already exist.
+  if (!this.adjacencyList[vertex]) {
+    this.adjacencyList[vertex] = [];
+  }
+}</code></pre>
+
+<p>With this guard in place, calling <code>addVertex("A")</code> twice is safe — the second call is simply a no-op. Here is a concrete setup for a small graph representing cities connected by roads:</p>
+
+<pre><code>const graph = new Graph();
+graph.addVertex("Tokyo");
+graph.addVertex("Seoul");
+graph.addVertex("Beijing");
+graph.addVertex("Shanghai");
+
+// adjacencyList is now:
+// { Tokyo: [], Seoul: [], Beijing: [], Shanghai: [] }</code></pre>
+
+<p><strong>Adding Edges to the Graph</strong></p>
+
+<p>An <code>addEdge(v1, v2)</code> method connects two vertices. For an <strong>undirected</strong> graph (where a connection goes both ways, like a two-lane road), you push each vertex into the other's neighbor array. For a <strong>directed</strong> graph (a one-way street), you only push <code>v2</code> into <code>v1</code>'s list.</p>
+
+<pre><code>addEdge(v1, v2) {
+  // Validate that both vertices exist before modifying the list.
+  if (!this.adjacencyList[v1] || !this.adjacencyList[v2]) {
+    console.error("One or both vertices do not exist.");
+    return;
+  }
+  // For an undirected graph, add both directions.
+  this.adjacencyList[v1].push(v2);
+  this.adjacencyList[v2].push(v1);
+}</code></pre>
+
+<p>Validation is essential. Without it, a typo like <code>addEdge("Tokyo", "Tokyoo")</code> would silently create a dangling edge pointing to <code>undefined</code>, corrupting traversal results.</p>
+
+<pre><code>graph.addEdge("Tokyo", "Seoul");
+graph.addEdge("Tokyo", "Beijing");
+graph.addEdge("Seoul", "Shanghai");
+graph.addEdge("Beijing", "Shanghai");
+
+// adjacencyList is now:
+// {
+//   Tokyo:    ["Seoul", "Beijing"],
+//   Seoul:    ["Tokyo", "Shanghai"],
+//   Beijing:  ["Tokyo", "Shanghai"],
+//   Shanghai: ["Seoul", "Beijing"]
+// }</code></pre>
+
+<p>Removing an edge is equally important for maintaining list integrity. A <code>removeEdge</code> method filters out the target vertex from each side of the connection using <code>Array.prototype.filter</code>, which returns a new array containing only the elements that pass the test — leaving out the vertex you want to remove.</p>
+
+<pre><code>removeEdge(v1, v2) {
+  if (!this.adjacencyList[v1] || !this.adjacencyList[v2]) return;
+  // Replace each neighbor array with a filtered version.
+  this.adjacencyList[v1] = this.adjacencyList[v1].filter(v => v !== v2);
+  this.adjacencyList[v2] = this.adjacencyList[v2].filter(v => v !== v1);
+}</code></pre>
+
+<p>After <code>graph.removeEdge("Tokyo", "Seoul")</code>, Tokyo's list becomes <code>["Beijing"]</code> and Seoul's list becomes <code>["Shanghai"]</code>. The connection is cleanly severed on both sides.</p>
+
+<p><strong>Implementing Breadth-First Search (BFS)</strong></p>
+
+<p>BFS explores a graph <em>level by level</em>, visiting all vertices one edge away from the start before visiting vertices two edges away, and so on. This layered expansion makes BFS the natural choice for finding the <strong>shortest path</strong> between two vertices in an unweighted graph — the first time BFS reaches a target vertex, it has done so via the fewest possible edges.</p>
+
+<p>The core data structure for BFS is a <strong>queue</strong> (first-in, first-out). JavaScript arrays can simulate a queue using <code>push</code> to enqueue and <code>shift</code> to dequeue (though for performance-critical code a dedicated queue class is preferable because <code>shift</code> is O(n)). A <strong>visited set</strong> prevents revisiting vertices in cyclic graphs.</p>
+
+<pre><code>bfs(start) {
+  // 1. Validate the starting vertex.
+  if (!this.adjacencyList[start]) return [];
+
+  const queue   = [start];   // Initialize queue with the start vertex.
+  const visited = new Set([start]); // Mark start as visited immediately.
+  const results = [];
+
+  while (queue.length > 0) {
+    // 2. Dequeue the front vertex.
+    const vertex = queue.shift();
+    results.push(vertex); // Record it in the traversal order.
+
+    // 3. Examine each neighbor of this vertex.
+    for (const neighbor of this.adjacencyList[vertex]) {
+      if (!visited.has(neighbor)) {
+        visited.add(neighbor);   // Mark as visited before enqueuing
+        queue.push(neighbor);    // to avoid duplicates in the queue.
+      }
+    }
+  }
+
+  return results; // BFS traversal order
+}</code></pre>
+
+<p>A subtle but important detail: mark a neighbor as visited <em>when you enqueue it</em>, not when you dequeue it. Marking on dequeue allows the same vertex to be enqueued multiple times by different neighbors, wasting work and potentially corrupting the traversal order in certain graph shapes.</p>
+
+<p>Running BFS on the city graph from the start vertex "Tokyo":</p>
+
+<pre><code>graph.bfs("Tokyo");
+// Returns: ["Tokyo", "Seoul", "Beijing", "Shanghai"]
+// Level 0: Tokyo
+// Level 1: Seoul, Beijing  (both one edge from Tokyo)
+// Level 2: Shanghai        (two edges from Tokyo)</code></pre>
+
+<p><strong>Implementing Depth-First Search — Recursive Approach</strong></p>
+
+<p>DFS explores as far as possible along one branch before backtracking. The recursive approach expresses this beautifully because the call stack itself acts as the mechanism for backtracking — when a function call returns, execution automatically resumes at the previous vertex.</p>
+
+<pre><code>dfsRecursive(start) {
+  if (!this.adjacencyList[start]) return [];
+
+  const visited = new Set();
+  const results = [];
+  const adjacencyList = this.adjacencyList; // Capture for use in helper
+
+  function dfsHelper(vertex) {
+    // Mark this vertex visited and record it.
+    visited.add(vertex);
+    results.push(vertex);
+
+    // Recurse on each unvisited neighbor.
+    for (const neighbor of adjacencyList[vertex]) {
+      if (!visited.has(neighbor)) {
+        dfsHelper(neighbor); // Go as deep as possible before backtracking.
+      }
+    }
+    // Base case is implicit: if all neighbors are visited, the loop
+    // does nothing and this call simply returns to its caller.
+  }
+
+  dfsHelper(start);
+  return results;
+}</code></pre>
+
+<p>The base case does not need an explicit <code>if</code> check because the <code>for</code> loop simply does nothing when every neighbor has already been visited, and the function returns naturally. This is an example of a <em>self-limiting recursion</em> driven by the data rather than a hard-coded stopping condition.</p>
+
+<pre><code>graph.dfsRecursive("Tokyo");
+// Possible output: ["Tokyo", "Seoul", "Shanghai", "Beijing"]
+// The traversal dives from Tokyo → Seoul → Shanghai → Beijing
+// before backtracking, visiting siblings only after exhausting a branch.</code></pre>
+
+<p><strong>Implementing Depth-First Search — Iterative Approach</strong></p>
+
+<p>The iterative DFS replaces the implicit call stack with an explicit <strong>stack</strong> data structure (last-in, first-out). JavaScript arrays function well as stacks via <code>push</code> and <code>pop</code>. This version is important because deep recursive DFS on large graphs can exceed JavaScript's call stack limit (typically around 10,000–15,000 frames depending on the environment), causing a <code>RangeError: Maximum call stack size exceeded</code>. The iterative approach has no such limitation.</p>
+
+<pre><code>dfsIterative(start) {
+  if (!this.adjacencyList[start]) return [];
+
+  const stack   = [start]; // Initialize stack with start vertex.
+  const visited = new Set();
+  const results = [];
+
+  while (stack.length > 0) {
+    // Pop from the top of the stack.
+    const vertex = stack.pop();
+
+    // Only process this vertex if it has not been visited yet.
+    // (It may have been pushed multiple times by different neighbors.)
+    if (!visited.has(vertex)) {
+      visited.add(vertex);
+      results.push(vertex);
+
+      // Push all unvisited neighbors onto the stack.
+      // They will be processed in reverse order compared to the
+      // recursive version because of LIFO behavior.
+      for (const neighbor of this.adjacencyList[vertex]) {
+        if (!visited.has(neighbor)) {
+          stack.push(neighbor);
+        }
+      }
+    }
+  }
+
+  return results;
+}</code></pre>
+
+<p>Notice that in the iterative version, the <code>visited</code> check occurs <em>on pop</em>, not on push. This is because a vertex can be pushed onto the stack multiple times by different neighbors before it is ever processed. Checking on pop ensures correctness even when duplicates exist in the stack. This contrasts with BFS, where marking on enqueue is cleaner and more efficient.</p>
+
+<pre><code>graph.dfsIterative("Tokyo");
+// Possible output: ["Tokyo", "Beijing", "Shanghai", "Seoul"]
+// Note: The specific order may differ from recursive DFS because
+// LIFO processing reverses the neighbor visitation order.</code></pre>
+
+<p><strong>Comparing BFS and DFS Outputs in Practice</strong></p>
+
+<p>Running both algorithms on the same graph illuminates their different priorities. Consider a slightly larger graph to make the contrast vivid:</p>
+
+<pre><code>const g = new Graph();
+["A","B","C","D","E","F"].forEach(v => g.addVertex(v));
+g.addEdge("A","B"); g.addEdge("A","C");
+g.addEdge("B","D"); g.addEdge("C","E");
+g.addEdge("D","F");
+
+//  Graph structure:
+//       A
+//      / \
+//     B   C
+//     |   |
+//     D   E
+//     |
+//     F
+
+console.log(g.bfs("A"));
+// ["A", "B", "C", "D", "E", "F"]
+// Visits all vertices at distance 1 (B, C) before distance 2 (D, E),
+// then distance 3 (F). Ideal for asking: "What is the shortest path from A to E?"
+
+console.log(g.dfsRecursive("A"));
+// ["A", "B", "D", "F", "C", "E"]
+// Dives A → B → D → F before backtracking to explore C → E.
+// Ideal for asking: "Does a path exist from A to F?" or "Is this graph cyclic?"</code></pre>
+
+<p>The table below summarizes the key characteristics and use cases for each algorithm:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Characteristic</th>
+      <th>BFS</th>
+      <th>DFS (Recursive)</th>
+      <th>DFS (Iterative)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Data structure used</td>
+      <td>Queue (FIFO)</td>
+      <td>Call stack (implicit)</td>
+      <td>Stack (explicit, LIFO)</td>
+    </tr>
+    <tr>
+      <td>Exploration order</td>
+      <td>Level by level (breadth-first)</td>
+      <td>Branch by branch (depth-first)</td>
+      <td>Branch by branch (depth-first)</td>
+    </tr>
+    <tr>
+      <td>Shortest path (unweighted)</td>
+      <td><strong>Yes</strong> — guaranteed</td>
+      <td>No</td>
+      <td>No</td>
+    </tr>
+    <tr>
+      <td>Memory usage</td>
+      <td>Higher for wide graphs (large queue)</td>
+      <td>Higher for deep graphs (deep call stack)</td>
+      <td>Higher for deep graphs (large explicit stack)</td>
+    </tr>
+    <tr>
+      <td>Call stack overflow risk</td>
+      <td>None</td>
+      <td>Yes — on very deep graphs</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <td>Typical use cases</td>
+      <td>Shortest path, level-order traversal, web crawlers</td>
+      <td>Cycle detection, topological sort, maze solving</td>
+      <td>Same as recursive DFS, but safe for large graphs</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>A practical rule of thumb: reach for <strong>BFS</strong> when proximity or the minimum number of steps matters (GPS routing on an unweighted road network, degrees of separation in a social graph). Reach for <strong>DFS</strong> when you need to exhaustively explore paths, detect cycles, or determine reachability (dependency resolution, topological ordering of tasks, puzzle solving). Testing both traversals on the same <code>Graph</code> instance and comparing their outputs side by side is one of the most effective ways to build an intuitive, lasting understanding of these algorithms.</p>
+        <div class="notes"><strong>Notes</strong>Students should be encouraged to manually trace the queue/stack state at each iteration on paper for a small 5–6 vertex graph before running the code. Visual tracing dramatically accelerates intuition. A common misconception to address: DFS iterative output order is not guaranteed to match recursive DFS because LIFO reverses neighbor processing order — this is expected behavior, not a bug.</div>
+      </div>
+    </details>
+  </main>
+</body></html>

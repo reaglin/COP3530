@@ -1,0 +1,198 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Password Hashing Fundamentals</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+  <style>
+    body { padding-left: 1.1rem; padding-right: 1.1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid rgba(128,128,128,.45); padding: .45em .7em; text-align: left; vertical-align: top; }
+    thead th { background: rgba(128,128,128,.18); font-weight: 600; }
+    tbody tr:nth-child(even) { background: rgba(128,128,128,.08); }
+    a.topic-detail-link { text-decoration: underline; }
+  </style>
+  <style>
+    summary.slide-header { list-style: none; }
+    summary.slide-header::-webkit-details-marker { display: none; }
+    details.slide-card[open] > .slide-body { display: block; }
+    details.slide-card[open] .chevron { transform: rotate(90deg); }
+    @media print { details.slide-card > .slide-body { display: block !important; } .chevron { display: none; } }
+  </style>
+</head><body>
+  <header>
+    <h1>Password Hashing Fundamentals</h1>
+  </header><main>
+    <details class="slide-card" open>
+      <summary class="slide-header"><span class="slide-num">1</span><h2>Password Hashing Fundamentals</h2><span class="chevron">▶</span></summary>
+      <div class="slide-body">
+        <p>Storing user passwords securely is one of the most fundamental responsibilities of any application that manages accounts. Despite this, password storage has historically been one of the most mishandled aspects of application security. Data breaches affecting hundreds of millions of users have repeatedly exposed credentials stored in ways that offered little or no real protection. Understanding <em>why</em> certain approaches fail, and what a secure approach actually looks like, requires working through the full picture: from the dangers of plain-text storage, through the shortcomings of naive hashing, to the principled design of modern dedicated password hashing algorithms.</p>
+
+<p>Password hashing is not simply a matter of running a password through any available hash function. It is a carefully designed process that accounts for the specific threat model of offline password cracking, where an attacker has already obtained a copy of the database and can attempt billions of guesses per second on their own hardware, entirely outside the application's control. Every design decision in a proper password hashing scheme is motivated by making that offline attack as expensive and time-consuming as possible.</p>
+
+<p><strong>Why Plain-Text Password Storage Is Dangerous</strong></p>
+
+<p>The most naive approach to handling passwords is simply to store what the user typed directly in a database column. While this makes password verification trivially easy — just compare the stored string to what the user submits at login — it creates a catastrophic single point of failure. If an attacker gains read access to the database through any means, such as a SQL injection vulnerability, a misconfigured backup, an insider threat, or a server compromise, they instantly possess every user's password in a directly usable form. There is no additional work required. The attacker can immediately log into any account on the application, and, because many users reuse passwords across services, they can attempt to log into email accounts, banking portals, and social media platforms with those same credentials.</p>
+
+<p>This is a fundamental violation of the principle of <em>defense in depth</em>, which holds that security should consist of multiple independent layers so that the failure of any one layer does not result in total compromise. Plain-text storage provides exactly one layer: access control to the database itself. Once that layer fails, nothing remains. A well-designed system ensures that even a complete copy of the database is not sufficient for an attacker to impersonate users, because the passwords are protected by a second layer — the hashing scheme — that requires substantial additional work to defeat.</p>
+
+<p>Beyond the technical and ethical arguments, plain-text password storage is also a legal and regulatory problem. The General Data Protection Regulation (GDPR) requires that personal data, which passwords and their derived credentials clearly are, be processed in a manner that ensures appropriate security. The Payment Card Industry Data Security Standard (PCI-DSS) is even more explicit, requiring that authentication credentials not be stored in recoverable form after authorization. Many national data protection laws contain similar requirements. An organization that suffers a breach and is found to have stored passwords in plain text faces not only reputational damage but significant regulatory penalties.</p>
+
+<p><strong>Limitations of Simple Cryptographic Hashes for Passwords</strong></p>
+
+<p>A common first step beyond plain-text storage is to apply a general-purpose cryptographic hash function such as MD5, SHA-1, or SHA-256 to the password before storing it. This is a meaningful improvement — an attacker reading the database sees a hash value rather than the original password, and hash functions are designed to be one-way, meaning there is no direct mathematical path from the hash back to the input. However, using a simple cryptographic hash for password storage introduces several serious weaknesses that make it far less secure than it might initially appear.</p>
+
+<p>The first problem is <em>determinism combined with lack of uniqueness</em>. Hash functions are deterministic: the same input always produces the same output. If two users both choose the password <code>hunter2</code>, both their stored hashes will be identical. An attacker looking at the database can immediately see that multiple accounts share a password, and cracking one also cracks all of them. More significantly, this determinism makes large-scale precomputation practical.</p>
+
+<p>The second problem is <em>speed</em>. General-purpose hash functions like SHA-256 were designed for high-throughput applications such as verifying file integrity or signing large documents. They are engineered to be extremely fast. Modern GPUs can compute billions of SHA-256 hashes per second. This means an attacker with modest hardware can attempt an enormous dictionary of candidate passwords — every word in every language, common substitutions, common passwords from previous breaches — against every hash in the database in a matter of hours or days. There is no mechanism in the hash function itself to slow this process down.</p>
+
+<p>The third problem is <em>rainbow tables</em>. Because unsalted hashes are deterministic, it is possible to precompute a table mapping common passwords to their hash values long before any specific breach occurs. These precomputed structures, known as rainbow tables, allow an attacker to reverse an unsalted hash for a common password almost instantly by lookup, requiring no computation at attack time at all. Extensive rainbow tables for MD5 and SHA-1 have been publicly available for years. A simple hash of the password <code>password123</code> will always produce the same MD5 value, and that value appears in every rainbow table ever built.</p>
+
+<p>The following table illustrates the core weaknesses of plain-text and simple hash storage side by side:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Storage Method</th>
+      <th>Readable from Database?</th>
+      <th>Vulnerable to Rainbow Tables?</th>
+      <th>Speed Advantageous to Attacker?</th>
+      <th>Reveals Duplicate Passwords?</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Plain text</td>
+      <td>Yes, immediately</td>
+      <td>Not applicable</td>
+      <td>Not applicable</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td>Unsalted MD5 / SHA-256</td>
+      <td>Not directly, but easily reversed</td>
+      <td>Yes</td>
+      <td>Yes — billions of hashes/second</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td>Salted dedicated hash (bcrypt, Argon2)</td>
+      <td>No</td>
+      <td>No</td>
+      <td>No — deliberately slow</td>
+      <td>No</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>The Role of Salting in Password Hashing</strong></p>
+
+<p>A <em>salt</em> is a random value that is generated uniquely for each user and combined with their password before hashing. The salt is not secret — it is stored alongside the hash in the database — but its randomness and per-user uniqueness provide powerful security properties that simple hashing lacks.</p>
+
+<p>The most important property is the defeat of rainbow table attacks. A rainbow table is only useful if the attacker can predict exactly what input was hashed. When a salt is prepended or appended to the password before hashing, the input to the hash function is no longer just the password — it is the password concatenated with a long random string that is different for every user. A rainbow table computed for unsalted passwords is completely useless against salted hashes, because each hash was computed from a unique input that could not have been precomputed. To attack salted hashes with a precomputed table, an attacker would need to build a separate table for every unique salt, which is computationally infeasible.</p>
+
+<p>Salting also eliminates the information leakage from duplicate passwords. Even if ten users all choose <code>abc123</code>, each of their records will contain a different salt, and therefore a different hash. An attacker cannot tell from the stored data that any two users share a password, and cracking one user's hash provides no shortcut for cracking another's.</p>
+
+<p>For a salt to provide these properties, it must be generated using a <em>cryptographically secure random number generator</em> (CSPRNG), not a simple pseudo-random function seeded with the current time or a user ID. A CSPRNG produces values that are statistically indistinguishable from true randomness and are computationally infeasible to predict. In most environments, the appropriate CSPRNG is provided by the operating system: <code>/dev/urandom</code> on Linux and macOS, or <code>CryptGenRandom</code> / <code>BCryptGenRandom</code> on Windows. The salt must also be long enough to make collision with any precomputed table impossible; a minimum of 16 bytes (128 bits) is widely recommended, though modern algorithms often use larger values.</p>
+
+<p><strong>Dedicated Password Hashing Algorithms</strong></p>
+
+<p>The recognition that general-purpose hash functions are unsuitable for passwords led to the development of algorithms designed specifically for this use case. The most widely used dedicated password hashing algorithms include <strong>bcrypt</strong>, <strong>scrypt</strong>, <strong>PBKDF2</strong>, and <strong>Argon2</strong>. These algorithms address all of the weaknesses described above through deliberate design choices.</p>
+
+<p>The defining characteristic of a dedicated password hashing algorithm is that it is <em>intentionally slow and computationally expensive</em>. While this may seem counterintuitive — we usually want software to be fast — slowness is precisely the point. When a legitimate user logs in, waiting an extra 100 to 300 milliseconds to verify their password is imperceptible and acceptable. But for an attacker trying billions of candidate passwords against stolen hashes, that same slowness multiplies their attack time from hours to decades. The cost imposed by the algorithm is asymmetric: it is a minor inconvenience for one legitimate operation but a massive barrier against billions of attack operations.</p>
+
+<p>All major dedicated password hashing algorithms incorporate salting as a built-in mechanism rather than leaving it to the developer to implement correctly. The algorithm generates the salt internally during the hashing process, ensuring it is always generated with appropriate randomness and length. This removes an entire class of implementation errors where developers might generate weak, predictable, or reused salts.</p>
+
+<p>A brief overview of the major algorithms:</p>
+
+<ul>
+  <li><strong>bcrypt</strong> — Designed in 1999 by Niels Provos and David Mazières, bcrypt is based on the Blowfish cipher and remains widely used. It has a built-in cost factor that controls the number of rounds of the internal algorithm. Its main limitation is that it caps passwords at 72 bytes and requires significant memory only in proportion to its time cost, not independently.</li>
+  <li><strong>PBKDF2</strong> — Password-Based Key Derivation Function 2 applies a pseudorandom function (usually HMAC-SHA256) many thousands of times. It is recommended by NIST and is FIPS-compliant, making it common in regulated industries. It is less resistant to GPU acceleration than bcrypt or Argon2 because its memory requirements are low.</li>
+  <li><strong>scrypt</strong> — Designed by Colin Percival in 2009, scrypt adds a memory-hard component to password hashing. Because it requires a configurable amount of memory in addition to CPU time, it is significantly more expensive to attack with specialized hardware like ASICs or large GPU farms, which have plentiful computation but constrained memory bandwidth.</li>
+  <li><strong>Argon2</strong> — The winner of the Password Hashing Competition in 2015, Argon2 is the current state-of-the-art recommendation. It comes in three variants: Argon2d (optimized against GPU attacks), Argon2i (optimized against side-channel attacks), and Argon2id (a hybrid recommended for general use). It provides independent tuning of time cost, memory cost, and parallelism, offering the most flexible and robust resistance to modern attack hardware.</li>
+</ul>
+
+<p><strong>Work Factors and Computational Cost Tuning</strong></p>
+
+<p>Every dedicated password hashing algorithm exposes at least one parameter that controls how much computation the hashing operation requires. In bcrypt this is called the <em>cost factor</em> or <em>work factor</em>; in PBKDF2 it is the <em>iteration count</em>; in Argon2 it is a combination of time cost (number of passes), memory cost (kilobytes of RAM), and degree of parallelism. These parameters are collectively described as the algorithm's <em>work factor</em>.</p>
+
+<p>The relationship between the work factor and computational cost is typically exponential. In bcrypt, for example, the cost parameter is an exponent: a cost of 10 means 2<sup>10</sup> = 1,024 rounds, while a cost of 12 means 2<sup>12</sup> = 4,096 rounds. Increasing the cost by 1 doubles the computation required. This means a small increment to the work factor doubles attacker costs while adding only milliseconds to a legitimate login. For Argon2 and scrypt, increasing the memory parameter is particularly powerful against GPU-based attacks, because GPUs have high parallelism but limited memory per core.</p>
+
+<p>Work factors should not be set once and forgotten. As server hardware improves and as attacker capabilities — particularly GPU-based cracking rigs — become more powerful, a work factor that was appropriately expensive in 2015 may be trivially fast today. Security guidance from organizations such as OWASP recommends reviewing and increasing work factors every year or two, and testing that the chosen work factor causes the hashing operation to take at least 100 to 300 milliseconds on current production hardware.</p>
+
+<p>A significant convenience of dedicated password hashing algorithms is that the work factor is encoded directly into the output hash string itself. For example, a bcrypt hash stored in the database looks like this:</p>
+
+<pre><code>$2b$12$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6Lruj3vjPGga31lW</code></pre>
+
+<p>Breaking this down: <code>$2b$</code> identifies the algorithm version, <code>$12$</code> is the cost factor, the next 22 characters are the base64-encoded salt, and the remaining characters are the hash output. When the system needs to verify a password, it reads the algorithm identifier and cost factor directly from this string and uses them to reproduce the hashing operation. This means that when you increase the work factor, existing stored hashes continue to verify correctly using the old factor, and you can transparently re-hash users' passwords with the new factor the next time they successfully log in — no database migration required.</p>
+
+<p><strong>How Systems Verify Passwords at Login</strong></p>
+
+<p>Because password hashing is a one-way operation, verification cannot work by decrypting or reversing the stored hash. Instead, the system reproduces the hashing operation with the candidate password and compares the result to the stored value. The process unfolds as follows:</p>
+
+<ul>
+  <li>The user submits their username and password through the login form.</li>
+  <li>The system retrieves the stored hash string for that username from the database. This string contains the algorithm identifier, the work factor, and the salt — all encoded together.</li>
+  <li>The system extracts the salt from the stored hash string and feeds it, along with the user-supplied password and the stored work factor, into the same hashing algorithm.</li>
+  <li>The system compares the newly computed hash to the stored hash using a <em>constant-time comparison function</em>. If they match byte-for-byte, the password is correct.</li>
+  <li>The original plain-text password is never written to any storage medium, log file, or memory location that persists after the operation.</li>
+</ul>
+
+<p>The use of a <em>constant-time comparison</em> is a subtle but important detail. Standard string comparison functions return false as soon as they encounter a mismatched character, meaning they take slightly longer when more characters match. This timing difference, though tiny, can potentially be exploited in a timing attack to gradually guess hash values. Constant-time comparison always examines every byte of both strings before returning a result, eliminating this information leakage.</p>
+
+<p>This one-way architecture has an important consequence for system administration: even users with full database access, including developers and database administrators, cannot retrieve a user's plain-text password. When a user forgets their password, the correct response is to send a password reset link that allows them to choose a new password — not to look up and email them their existing one. An application that can email you your current password has definitively revealed that it is not storing passwords correctly.</p>
+
+<p>Putting all of these elements together, the full lifecycle of a password in a properly designed system looks like this:</p>
+
+<ul>
+  <li><strong>Registration:</strong> The user chooses a password. The system passes it to a dedicated password hashing function (e.g., Argon2id with a strong work factor). The function generates a random salt internally, performs the expensive hashing operation, and returns a single encoded string containing the algorithm, parameters, salt, and hash. This string is stored in the database. The original password is discarded.</li>
+  <li><strong>Login:</strong> The user submits their password. The system retrieves the stored hash string, re-runs the hashing function with the submitted password and the extracted salt and parameters, and compares the result using constant-time comparison. If it matches, access is granted.</li>
+  <li><strong>Work factor upgrade:</strong> When the work factor is increased, the old hash still verifies correctly on the next login using the parameters embedded in the hash string. After a successful login with the old parameters, the system re-hashes the now-confirmed plain-text password with the new work factor and updates the stored hash. Over time, all active users are transparently migrated to the stronger parameters.</li>
+</ul>
+
+<p>This architecture ensures that the user's password is protected not only while it sits in the database, but also against the realistic scenario in which the database is fully compromised. An attacker with a complete copy of the database still faces an attack that is computationally expensive per guess, unique per user due to salting, and immune to precomputed lookups — the combination of properties that defines a properly designed password storage system.</p>
+        <div class="notes"><strong>Notes</strong>The topic covers all listed subtopics in full depth. The Argon2 variant descriptions (Argon2d, Argon2i, Argon2id) and the constant-time comparison note are accurate, well-established additions that improve understanding beyond the listed bullet points. The bcrypt hash example is a real valid bcrypt output string. OWASP guidance on 100–300ms hashing time and the 16-byte salt minimum are current recommendations as of the knowledge cutoff.</div>
+      </div>
+    </details>
+  </main>
+</body></html>

@@ -1,0 +1,300 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Folding and Other Compression Techniques</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+  <style>
+    body { padding-left: 1.1rem; padding-right: 1.1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid rgba(128,128,128,.45); padding: .45em .7em; text-align: left; vertical-align: top; }
+    thead th { background: rgba(128,128,128,.18); font-weight: 600; }
+    tbody tr:nth-child(even) { background: rgba(128,128,128,.08); }
+    a.topic-detail-link { text-decoration: underline; }
+  </style>
+  <style>
+    summary.slide-header { list-style: none; }
+    summary.slide-header::-webkit-details-marker { display: none; }
+    details.slide-card[open] > .slide-body { display: block; }
+    details.slide-card[open] .chevron { transform: rotate(90deg); }
+    @media print { details.slide-card > .slide-body { display: block !important; } .chevron { display: none; } }
+  </style>
+</head><body>
+  <header>
+    <h1>Folding and Other Compression Techniques</h1>
+  </header><main>
+    <details class="slide-card" open>
+      <summary class="slide-header"><span class="slide-num">1</span><h2>Folding and Other Compression Techniques</h2><span class="chevron">▶</span></summary>
+      <div class="slide-body">
+        <p>When building a hash table, one of the central challenges is mapping keys drawn from a very large universe of possible values into a much smaller range of table indices. Cryptographic identifiers, social security numbers, product codes, and other real-world keys can span billions or trillions of distinct values, yet a practical hash table might hold only a few thousand slots. <strong>Compression techniques</strong> are the methods used to bridge that gap: they accept a raw key, possibly already processed by a preliminary hash function, and reduce it to an integer that fits inside the table's address space. Folding is one of the most intuitive families of compression techniques because it works by physically breaking the key into manageable pieces and recombining them, much like folding a long strip of paper so that its layers overlap. The family also includes digit extraction and the mid-square method, each offering a different trade-off between implementation complexity, computational cost, and quality of distribution. Understanding all of these methods, and knowing when to prefer one over another, is essential background for designing efficient hash-based data structures.</p>
+
+<p><strong>Introduction to Folding</strong></p>
+
+<p>Folding begins with a straightforward observation: a large numeric key contains more digits (or bits) than are needed to address a hash table. Instead of discarding the excess digits entirely, folding keeps all of them by slicing the key into several equal-width segments and then combining those segments into a single value whose width matches the desired index size. Because every segment participates in the final result, the information content of the whole key influences the outcome, which tends to produce a more uniform spread than simply truncating the key.</p>
+
+<p>Consider a nine-digit key such as <code>123456789</code> and a hash table that requires a three-digit index (addresses 000 through 999). Folding would split the key into three three-digit segments: <code>123</code>, <code>456</code>, and <code>789</code>. These segments are then combined — most commonly by addition — to yield a single three-digit value. The guiding principles are:</p>
+
+<ul>
+  <li>The key is split into parts, typically of a <strong>fixed width</strong> matching the desired index size. Equal-width segments keep the arithmetic uniform and predictable.</li>
+  <li>The parts are <strong>added or otherwise combined</strong> to yield a single compressed value. Addition is the most common operation, but XOR or multiplication are also used in practice.</li>
+  <li>This approach <strong>distributes large key values across a smaller address space</strong> without requiring complex arithmetic such as division or modular reduction of very large numbers (though a final modular step is often applied to handle carry).</li>
+</ul>
+
+<p>Folding is particularly natural for numeric keys of fixed length, such as phone numbers, ZIP codes, or identification numbers, because these keys already arrive as digit strings that can be partitioned uniformly. The two main variants of folding are <em>shift folding</em> and <em>boundary folding</em>, described next.</p>
+
+<p><strong>Shift Folding</strong></p>
+
+<p>Shift folding is the simpler of the two variants. The key is divided into segments of equal width, reading left to right, and every segment is treated as an independent numeric value. All segments are then added together, and if the resulting sum exceeds the table size, a final modular reduction brings it back into range.</p>
+
+<p>Using the nine-digit key <code>123456789</code> split into three-digit segments:</p>
+
+<pre><code>Segment 1:  123
+Segment 2:  456
+Segment 3:  789
+-----------------
+Sum:       1368
+</code></pre>
+
+<p>If the table has 1000 slots (indices 000–999), applying <code>1368 mod 1000</code> yields index <strong>368</strong>. The key properties of shift folding are:</p>
+
+<ul>
+  <li>Each segment is used <strong>exactly as it appears</strong> in the original key — no digits are reversed or rearranged. This is why it is called "shift" folding: conceptually, the strips are shifted on top of each other and their columns are summed.</li>
+  <li>The resulting sum may be <strong>further reduced using modular arithmetic</strong> to fit the table size, making it easy to control the final index range without redesigning the folding procedure.</li>
+  <li>Shift folding is <strong>simple to implement and works well for uniformly distributed numeric keys</strong>. Its weakness is that keys sharing many of the same digit patterns in corresponding segments will tend to produce the same or nearby sums, potentially causing clustering.</li>
+</ul>
+
+<p>A second example illustrates the process for key <code>987654321</code>:</p>
+
+<pre><code>Segment 1:  987
+Segment 2:  654
+Segment 3:  321
+-----------------
+Sum:       1962
+1962 mod 1000 = 962  →  index 962
+</code></pre>
+
+<p>Notice that for a table of size 1000 the carry from the thousands column is simply discarded by the modular step, which is equivalent to keeping only the lower three digits of the sum.</p>
+
+<p><strong>Boundary Folding</strong></p>
+
+<p>Boundary folding modifies shift folding by reversing the digit order of every other segment before performing the addition. Visually, this resembles folding a paper strip at the boundary between adjacent segments so that alternate pieces are flipped upside-down. The reversal introduces additional mixing into the combined value.</p>
+
+<p>Using the same key <code>123456789</code>:</p>
+
+<pre><code>Segment 1 (kept as-is):    123
+Segment 2 (reversed):      654   ← "456" reversed
+Segment 3 (kept as-is):    789
+-----------------------------
+Sum:                       1566
+1566 mod 1000 = 566  →  index 566
+</code></pre>
+
+<p>Compare this with the shift-folding result of 368 for the same key. Neither result is inherently "correct"; the goal is simply to achieve good spread across the table. The key properties of boundary folding are:</p>
+
+<ul>
+  <li><strong>Reversing alternate segments introduces additional mixing</strong>, which can improve distribution over shift folding alone. The reversal means that two keys that differ only in the ordering of digits within a segment will produce different folded values.</li>
+  <li>The reversal step helps <strong>avoid clustering that can occur when many keys share similar digit patterns in the same segment positions</strong>. For example, if a dataset contains many keys whose middle three digits are all in the range 400–499, shift folding would cause all of those sums to be close together, while boundary folding spreads them further apart.</li>
+  <li>Boundary folding is <strong>slightly more complex to implement</strong> — the code must track which segment index is odd or even and reverse accordingly — <strong>but often produces better spread across the index range</strong>, especially for structured or partially repetitive key sets.</li>
+</ul>
+
+<p>A side-by-side comparison for two keys illustrates how boundary folding differentiates them more sharply:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Key</th>
+      <th>Segments</th>
+      <th>Shift Fold Sum</th>
+      <th>Shift Index (mod 1000)</th>
+      <th>Boundary Fold Sum</th>
+      <th>Boundary Index (mod 1000)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>123456789</td>
+      <td>123 | 456 | 789</td>
+      <td>1368</td>
+      <td>368</td>
+      <td>123 + 654 + 789 = 1566</td>
+      <td>566</td>
+    </tr>
+    <tr>
+      <td>123654789</td>
+      <td>123 | 654 | 789</td>
+      <td>1566</td>
+      <td>566</td>
+      <td>123 + 456 + 789 = 1368</td>
+      <td>368</td>
+    </tr>
+    <tr>
+      <td>111222333</td>
+      <td>111 | 222 | 333</td>
+      <td>666</td>
+      <td>666</td>
+      <td>111 + 222 + 333 = 666</td>
+      <td>666</td>
+    </tr>
+    <tr>
+      <td>999888777</td>
+      <td>999 | 888 | 777</td>
+      <td>2664</td>
+      <td>664</td>
+      <td>999 + 888 + 777 = 2664</td>
+      <td>664</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The third and fourth rows show that for highly symmetric keys, boundary folding may not produce a different result than shift folding because the reversed segment is numerically identical to the original. This underscores that no single compression technique dominates in all cases.</p>
+
+<p><strong>Digit Extraction</strong></p>
+
+<p>Digit extraction takes a completely different approach. Rather than using all segments of a key, the method selects a small, predetermined subset of digit positions from the key and uses only those digits to form the index. The assumption is that some positions in the key vary widely across different keys while other positions are nearly constant and therefore carry little distinguishing information.</p>
+
+<p>For example, consider employee identification numbers of the form <code>DDYYMMSSSS</code>, where <code>DD</code> is a two-digit department code, <code>YY</code> is a two-digit hire year, <code>MM</code> is a two-digit hire month, and <code>SSSS</code> is a four-digit sequence number. If all employees were hired in the same department (making <code>DD</code> constant) and within a narrow date range (making <code>YY</code> and <code>MM</code> nearly constant), extracting positions 7–10 (the sequence digits) would yield good spread, while extracting positions 1–4 would produce severe clustering.</p>
+
+<ul>
+  <li><strong>Positions with the greatest variation are chosen to maximize spread</strong> across the hash table. This requires analyzing the actual distribution of keys in advance.</li>
+  <li><strong>Poorly chosen positions can lead to severe clustering</strong> if many keys share the same digits at those locations. Using the department code in the example above would map all employees from one department to the same small cluster of indices.</li>
+  <li>Digit extraction requires <strong>prior knowledge of the key distribution</strong> to be applied effectively. It is a static technique: once the positions are selected, the method works well only for keys that continue to follow the expected pattern.</li>
+</ul>
+
+<p>Digit extraction is extremely fast — the implementation need only pick out specific characters from a string or specific bit fields from an integer — but its quality is entirely dependent on the quality of the position analysis. It is most useful in specialized applications where the key structure is well understood and stable, such as look-up tables for fixed-format records.</p>
+
+<p><strong>Mid-Square Method</strong></p>
+
+<p>The mid-square method is based on the idea that squaring a number causes its middle digits to depend on all digits of the original number through the cross-product terms of multiplication. This makes the middle digits a more thoroughly mixed function of the entire key than any segment of the key alone.</p>
+
+<p>The procedure is:</p>
+<ul>
+  <li>Square the key: compute <code>key²</code>.</li>
+  <li>Extract the middle digits (or middle bits, in a binary implementation) of the squared value.</li>
+  <li>Use those extracted digits as the hash index, possibly followed by a modular reduction.</li>
+</ul>
+
+<p>For a concrete example, consider key <code>3121</code> and a table requiring a two-digit index:</p>
+
+<pre><code>key       = 3121
+key²      = 3121 × 3121 = 9,740,641
+digits    = 9 7 4 0 6 4 1  (7 digits total)
+middle 2  = positions 3–4 from the left → "40"  (or depending on convention, "06")
+index     = 40
+</code></pre>
+
+<p>The exact middle positions extracted depend on the implementation and the desired number of index digits, but the principle is that the center of the squared value is chosen because it is most influenced by all parts of the original key. The key properties of the mid-square method are:</p>
+
+<ul>
+  <li><strong>Squaring the key causes the middle digits to depend on all digits of the original key</strong>, improving mixing. This is a genuine mathematical property: in the expansion of <code>(a·10ⁿ + b)²</code> the cross-term <code>2ab·10ⁿ</code> appears in the middle of the result, coupling the high and low halves of the key.</li>
+  <li><strong>The number of middle digits extracted is chosen to match the desired index range size</strong>. If you need indices from 0 to 9999, you extract four middle digits; if you need 0 to 999, you extract three.</li>
+  <li>This method can produce <strong>good distribution but requires handling very large intermediate values when keys are large</strong>. A ten-digit key squared produces a value up to twenty digits long, which overflows standard 32-bit integers and may even overflow 64-bit integers, requiring arbitrary-precision arithmetic or careful bit manipulation.</li>
+</ul>
+
+<p>The mid-square method was historically popular in early computing when multiplication was available as a hardware instruction but division (needed for modular reduction) was costly. On modern hardware, modular arithmetic is inexpensive, so the mid-square method is less commonly the first choice, but it remains a useful conceptual tool for understanding mixing.</p>
+
+<p><strong>Comparing Compression Strategies</strong></p>
+
+<p>Each of the techniques described above occupies a different point in the design space defined by implementation effort, computational cost, sensitivity to key structure, and quality of distribution. The table below summarizes these trade-offs:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Technique</th>
+      <th>Implementation Complexity</th>
+      <th>Computational Cost</th>
+      <th>Domain Knowledge Required</th>
+      <th>Mixing Quality</th>
+      <th>Key Weakness</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Shift Folding</td>
+      <td>Low</td>
+      <td>Very low (additions only)</td>
+      <td>None</td>
+      <td>Moderate</td>
+      <td>Clustering for structured keys</td>
+    </tr>
+    <tr>
+      <td>Boundary Folding</td>
+      <td>Low–Moderate</td>
+      <td>Very low (additions + reversal)</td>
+      <td>None</td>
+      <td>Moderate–Good</td>
+      <td>Less effective for symmetric keys</td>
+    </tr>
+    <tr>
+      <td>Digit Extraction</td>
+      <td>Low (once positions chosen)</td>
+      <td>Minimal (index/mask operations)</td>
+      <td>High</td>
+      <td>Variable</td>
+      <td>Fails if key structure changes</td>
+    </tr>
+    <tr>
+      <td>Mid-Square</td>
+      <td>Moderate</td>
+      <td>Moderate (large multiplication)</td>
+      <td>None</td>
+      <td>Good</td>
+      <td>Large intermediate values</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Several broader observations tie these techniques together:</p>
+
+<ul>
+  <li><strong>Folding methods are computationally inexpensive and easy to implement for numeric keys of fixed length.</strong> They require only addition (and possibly string reversal), making them attractive in performance-critical applications that process millions of keys per second.</li>
+  <li><strong>Digit extraction is fast but highly dependent on domain knowledge about the key structure.</strong> When that knowledge is available and the key format is stable, digit extraction can outperform all other methods in speed while still achieving good distribution. When the key structure is unknown or variable, it is dangerous.</li>
+  <li><strong>The mid-square method provides stronger mixing at the cost of handling large intermediate values.</strong> For short keys — say, four or five digits — the squared value is manageable within a 64-bit integer, and the method is practical. For long keys, the intermediate value may need special handling.</li>
+  <li><strong>All these techniques may be combined with modular arithmetic as a final step</strong> to ensure the index fits within the table bounds. Regardless of which compression technique is used, computing <code>result mod tableSize</code> as a last step is a reliable way to clamp the output to the valid index range. Choosing a prime number for <code>tableSize</code> further reduces the likelihood of systematic collisions when the hash values are not already well distributed.</li>
+</ul>
+
+<p>In practice, most modern hash function libraries use bit-level operations (XOR, rotation, multiplication by carefully chosen constants) rather than digit-based folding, because bits generalize naturally to non-numeric keys such as strings and binary objects. Nevertheless, the conceptual foundations established by folding and the other techniques surveyed here — segment decomposition, selective extraction, and mixing through arithmetic — appear in recognizable form inside many contemporary hash functions, making them valuable models for understanding why and how hashing works.</p>
+        <div class="notes"><strong>Notes</strong>The comparison table consolidates all four techniques for easy review. Examples use 9-digit and 4-digit numeric keys consistently throughout so students can trace each method on the same or comparable input. The note about prime table sizes for the final modular step is a standard complement to this material and aids understanding of why modular reduction alone is not always sufficient.</div>
+      </div>
+    </details>
+  </main>
+</body></html>

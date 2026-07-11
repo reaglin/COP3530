@@ -1,0 +1,224 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Complexity Analysis of Known Algorithms</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+  <style>
+    body { padding-left: 1.1rem; padding-right: 1.1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid rgba(128,128,128,.45); padding: .45em .7em; text-align: left; vertical-align: top; }
+    thead th { background: rgba(128,128,128,.18); font-weight: 600; }
+    tbody tr:nth-child(even) { background: rgba(128,128,128,.08); }
+    a.topic-detail-link { text-decoration: underline; }
+  </style>
+  <style>
+    summary.slide-header { list-style: none; }
+    summary.slide-header::-webkit-details-marker { display: none; }
+    details.slide-card[open] > .slide-body { display: block; }
+    details.slide-card[open] .chevron { transform: rotate(90deg); }
+    @media print { details.slide-card > .slide-body { display: block !important; } .chevron { display: none; } }
+  </style>
+</head><body>
+  <header>
+    <h1>Complexity Analysis of Known Algorithms</h1>
+  </header><main>
+    <details class="slide-card" open>
+      <summary class="slide-header"><span class="slide-num">1</span><h2>Complexity Analysis of Known Algorithms</h2><span class="chevron">▶</span></summary>
+      <div class="slide-body">
+        <p>Complexity analysis is the discipline of measuring how an algorithm's resource consumption — most commonly time, but also space — scales as its input grows. Rather than measuring raw execution time in seconds (which depends on hardware, compiler, and load), we count the number of times a <em>basic operation</em> executes as a function of input size <em>n</em>, then classify that count using asymptotic notation. The three pillars of this analysis are <strong>Big O</strong> (an upper bound on growth), <strong>Omega Ω</strong> (a lower bound), and <strong>Theta Θ</strong> (a tight bound valid when upper and lower match within constant factors). Applying these tools to algorithms you already know — linear search, binary search, bubble sort, merge sort, and selection sort — both deepens understanding of those algorithms and builds the analytical muscle needed for any new algorithm you encounter. Each example below follows the same methodology: identify the basic operation, count it across best, worst, and average cases, and justify the resulting notation.</p>
+
+<p><strong>Complexity Analysis of Linear Search</strong></p>
+
+<p>Linear search examines elements of an array one by one, from the first position to the last, until it either finds the target value or exhausts the array. The basic operation is the <em>comparison</em> between the current element and the target. Because comparisons are what determine how long the algorithm runs, we count them.</p>
+
+<ul>
+  <li><strong>Best case — Ω(1):</strong> The target element sits at index 0. On the very first comparison the algorithm succeeds and returns. The number of comparisons is exactly 1, regardless of how large <em>n</em> is. This gives a lower bound of Ω(1) for the best-case scenario. For example, searching for 7 in <code>[7, 3, 14, 9, 2]</code> terminates after a single comparison.</li>
+  <li><strong>Worst case — O(n):</strong> The target is either at the last index or is not in the array at all. The algorithm must perform all <em>n</em> comparisons before concluding. The count grows linearly with <em>n</em>, yielding O(n). Searching for 99 in <code>[7, 3, 14, 9, 2]</code> requires five comparisons and ultimately fails.</li>
+  <li><strong>Average case — Θ(n):</strong> If we assume the target is equally likely to be at any of the <em>n</em> positions, the expected position is (<em>n</em> + 1) / 2, so on average roughly <em>n</em> / 2 comparisons are made. Since <em>n</em> / 2 differs from <em>n</em> only by a constant factor of 1/2, and asymptotic notation absorbs constant factors, the average case is Θ(n).</li>
+</ul>
+
+<p>A critical observation is that the best case (Ω(1)) and the worst case (O(n)) are <em>different</em>, so there is no single Θ bound that applies to <em>all</em> inputs of linear search. We can say the worst-case complexity is Θ(n) and the best-case complexity is Θ(1), but these describe different input families. This distinction matters whenever you need to make guarantees: if you cannot predict where the target will be, you must plan for the O(n) worst case.</p>
+
+<p><strong>Complexity Analysis of Binary Search</strong></p>
+
+<p>Binary search requires a <em>sorted</em> array. It works by comparing the target against the middle element, then discarding the half of the array that cannot contain the target, repeating until the element is found or the search space collapses to zero. The basic operation is again the comparison, but now each comparison eliminates roughly half the remaining candidates.</p>
+
+<ul>
+  <li><strong>Best case — Ω(1):</strong> The target happens to be exactly the middle element of the array on the first probe. Only one comparison is needed. Searching for 8 in the sorted array <code>[1, 3, 5, 8, 11, 14, 19]</code> (middle index 3, value 8) terminates immediately.</li>
+  <li><strong>Worst case — O(log n):</strong> After each comparison the search space is halved. Starting from <em>n</em> elements, after one step we have ⌊<em>n</em>/2⌋, after two steps ⌊<em>n</em>/4⌋, and so on. The maximum number of steps before the space reaches size 1 is ⌊log₂ <em>n</em>⌋ + 1, which is O(log n). Searching for 1 in <code>[1, 3, 5, 8, 11, 14, 19]</code> requires three comparisons (probing 8, then 3, then 1).</li>
+  <li><strong>Average case — Θ(log n):</strong> For uniformly distributed queries over a sorted array of size <em>n</em>, the expected number of comparisons is also Θ(log n). The exact expected value is approximately log₂ <em>n</em> − 1, still logarithmic.</li>
+</ul>
+
+<p>Because best and worst differ here too (Ω(1) vs. O(log n)), we cannot write a single Θ across all inputs, but the worst and average cases both converge to Θ(log n), which is the figure most commonly cited. An important practical caveat: binary search's O(log n) advantage over linear search assumes the array is already sorted. If sorting is required first, you pay at minimum O(n log n) for that step. In an application that performs many searches on a fixed dataset, the one-time sort cost is easily amortised; for a single search on unsorted data, linear search may actually be cheaper overall.</p>
+
+<p><strong>Complexity Analysis of Bubble Sort</strong></p>
+
+<p>Bubble sort repeatedly steps through the array, compares adjacent elements, and swaps them if they are in the wrong order. After each full pass, the largest unsorted element has "bubbled" to its correct position at the end. The basic operation is the <em>comparison</em> of adjacent elements; swaps are secondary and happen at most as often as comparisons.</p>
+
+<p>The classic nested-loop structure makes the quadratic behavior transparent:</p>
+
+<pre><code>for i from 0 to n-2:          // outer loop: n-1 passes
+    for j from 0 to n-2-i:    // inner loop: shrinks each pass
+        if A[j] > A[j+1]:
+            swap(A[j], A[j+1])
+</code></pre>
+
+<p>The total number of comparisons is (n−1) + (n−2) + … + 1 = n(n−1)/2, which is Θ(n²) in all cases <em>without</em> an early-exit flag. With an optimized version that tracks whether any swap occurred during a pass and exits early if none did:</p>
+
+<ul>
+  <li><strong>Best case (optimized) — Ω(n):</strong> If the array is already sorted, the first pass makes <em>n</em>−1 comparisons, finds no swaps, and the flag causes immediate termination. Total comparisons: <em>n</em>−1, which is Ω(n). Example: <code>[1, 2, 3, 4, 5]</code> triggers zero swaps on the first pass and exits.</li>
+  <li><strong>Worst case — O(n²):</strong> A reverse-sorted array (e.g., <code>[5, 4, 3, 2, 1]</code>) requires all <em>n</em>(<em>n</em>−1)/2 comparisons and the same number of swaps. Every pass must run to completion, and no early exit is possible. This is O(n²).</li>
+  <li><strong>Average case — Θ(n²):</strong> For randomly ordered input, approximately half of all possible adjacent pairs are in the wrong order on average. The expected number of comparisons is still proportional to <em>n</em>², giving Θ(n²).</li>
+</ul>
+
+<p>The nested loop structure is the direct cause of quadratic behavior: the outer loop iterates O(n) times, and for each outer iteration the inner loop iterates O(n) times (less a shrinking offset, but still proportional to <em>n</em>). Multiplying these gives O(n²). This reasoning — multiply the loop bounds — is a standard technique for quickly estimating complexity from code structure.</p>
+
+<p><strong>Complexity Analysis of Merge Sort</strong></p>
+
+<p>Merge sort is a divide-and-conquer algorithm. It recursively splits the array in half until each sub-array has one element (which is trivially sorted), then merges pairs of sorted sub-arrays back together. The basic operation during merging is the comparison used to decide which element from the two sub-arrays goes next into the output.</p>
+
+<ul>
+  <li><strong>Best case — Ω(n log n):</strong> Even when the input is already perfectly sorted, merge sort does not skip any work. It still performs all ⌈log₂ n⌉ levels of recursion, and at each level the total merging work across all sub-arrays at that level is O(n). The best case is therefore Ω(n log n) — there is no shortcut analogous to bubble sort's early-exit flag.</li>
+  <li><strong>Worst case — O(n log n):</strong> The divide phase always produces log₂ n levels. At each level, all merging steps together examine every element once, costing O(n) comparisons per level. Total: O(n log n). A reverse-sorted or adversarially constructed input does not push merge sort past this bound.</li>
+  <li><strong>Average case — Θ(n log n):</strong> Since best and worst are both Θ(n log n), the average case must also be Θ(n log n). This <em>tight bound across all input distributions</em> is one of merge sort's most valuable properties: its performance is predictable, unlike algorithms whose best and worst cases diverge dramatically.</li>
+</ul>
+
+<p>The recurrence relation captures the structure formally. If T(n) is the number of comparisons for an array of size <em>n</em>:</p>
+
+<pre><code>T(n) = 2·T(n/2) + O(n)      // two recursive calls + linear merge
+T(1) = O(1)                  // base case
+</code></pre>
+
+<p>By the Master Theorem (case 2, where the work at each level matches the recursion branching factor), this solves to T(n) = Θ(n log n). One important trade-off: the merge step requires allocating a temporary array to hold the merged output, so merge sort uses O(n) <em>auxiliary space</em>. For memory-constrained environments this cost must be weighed against the algorithm's guaranteed time efficiency.</p>
+
+<p><strong>Complexity Analysis of Selection Sort</strong></p>
+
+<p>Selection sort divides the array into a sorted prefix (initially empty) and an unsorted suffix. On each pass it scans the entire unsorted suffix to find its minimum element, then swaps that minimum to the front of the suffix, extending the sorted prefix by one. The basic operation is the comparison used during the scan.</p>
+
+<pre><code>for i from 0 to n-2:           // n-1 passes
+    minIndex = i
+    for j from i+1 to n-1:     // scan the unsorted suffix
+        if A[j] < A[minIndex]:
+            minIndex = j
+    swap(A[i], A[minIndex])
+</code></pre>
+
+<p>On pass <em>i</em> (0-indexed), the inner loop runs <em>n</em> − <em>i</em> − 1 times. Summing across all passes: (n−1) + (n−2) + … + 1 = n(n−1)/2 comparisons — regardless of the input order.</p>
+
+<ul>
+  <li><strong>Best, worst, and average case — all Θ(n²):</strong> Because the inner loop always scans the full remaining suffix to guarantee it finds the minimum (even if the minimum happens to already be in the right place), the comparison count is always n(n−1)/2. There is no early exit and no input arrangement that reduces the work. This makes selection sort's complexity uniform: Θ(n²) in every scenario.</li>
+  <li><strong>Swaps — O(n):</strong> Despite the quadratic comparison cost, selection sort performs at most <em>n</em>−1 swaps (one per pass). This contrasts favorably with bubble sort, which can perform O(n²) swaps in the worst case. If swap operations are costly (e.g., writing to flash memory), selection sort's low swap count can be an advantage.</li>
+</ul>
+
+<p>Selection sort illustrates a scenario where a <em>single Θ bound covers all cases</em>. To formally justify Θ(n²), we must show two things: first, that the comparison count is at most c·n² for some constant c (establishing O(n²)); and second, that it is at least c′·n² for some constant c′ (establishing Ω(n²)). Since the count is exactly n(n−1)/2 = n²/2 − n/2, both bounds hold with c = 1 and c′ = 1/4 (for sufficiently large n), confirming the tight Θ(n²) classification.</p>
+
+<p><strong>Deriving and Justifying Complexity Classifications: A Systematic Method</strong></p>
+
+<p>The analyses above all follow the same disciplined procedure. Internalizing these steps lets you tackle any new algorithm with confidence.</p>
+
+<ul>
+  <li><strong>Step 1 — Identify the basic operation.</strong> Choose the single operation that executes most frequently and whose count best characterizes the algorithm's runtime. For search algorithms this is typically a comparison against the target; for sorting algorithms it is a comparison between array elements (and sometimes a swap). The basic operation should be something whose cost per execution is constant (O(1)).</li>
+  <li><strong>Step 2 — Count executions as a function of n.</strong> Trace through the algorithm's control flow — loops, recursion, branching — and express the number of times the basic operation executes as a precise mathematical formula in terms of input size <em>n</em>. For nested loops, multiply the bounds. For recursion, set up a recurrence relation. Example: bubble sort's inner loop gives a sum that evaluates to n(n−1)/2.</li>
+  <li><strong>Step 3 — Apply asymptotic notation.</strong> Drop lower-order terms and constant coefficients from the formula. Confirm that the result fits within the constant-factor bounds of the intended complexity class. For n(n−1)/2: drop the lower-order −n/2 term, drop the coefficient 1/2, and the result is Θ(n²).</li>
+  <li><strong>Step 4 — Perform case analysis.</strong> Determine whether the count derived in steps 2–3 applies to all inputs (enabling a single Θ bound) or varies by input structure (requiring separate O and Ω for different cases). Selection sort's count is input-independent → single Θ. Linear search's count varies from 1 to n → separate bounds for best and worst cases.</li>
+  <li><strong>Step 5 — Validate with concrete examples.</strong> Trace the algorithm manually on small inputs (n = 4 or n = 5 is usually sufficient) and count the actual basic operation executions. Confirm this count matches your formula. If it does not, revisit steps 1–2.</li>
+</ul>
+
+<p>The following table summarises the complexity classifications derived above for quick reference:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Algorithm</th>
+      <th>Best Case</th>
+      <th>Average Case</th>
+      <th>Worst Case</th>
+      <th>Space</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Linear Search</td>
+      <td>Ω(1)</td>
+      <td>Θ(n)</td>
+      <td>O(n)</td>
+      <td>O(1)</td>
+    </tr>
+    <tr>
+      <td>Binary Search</td>
+      <td>Ω(1)</td>
+      <td>Θ(log n)</td>
+      <td>O(log n)</td>
+      <td>O(1) iterative</td>
+    </tr>
+    <tr>
+      <td>Bubble Sort (optimized)</td>
+      <td>Ω(n)</td>
+      <td>Θ(n²)</td>
+      <td>O(n²)</td>
+      <td>O(1)</td>
+    </tr>
+    <tr>
+      <td>Merge Sort</td>
+      <td>Ω(n log n)</td>
+      <td>Θ(n log n)</td>
+      <td>O(n log n)</td>
+      <td>O(n)</td>
+    </tr>
+    <tr>
+      <td>Selection Sort</td>
+      <td>Θ(n²)</td>
+      <td>Θ(n²)</td>
+      <td>Θ(n²)</td>
+      <td>O(1)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Two broader lessons emerge from studying these five algorithms together. First, the <em>same</em> asymptotic complexity class can hide very different practical behaviors: bubble sort and selection sort are both Θ(n²), but selection sort makes far fewer writes. Second, a guaranteed tight bound across all inputs (as in merge sort and selection sort) is often more valuable in practice than an algorithm that is fast in the best case but slow in the worst, because real-world workloads rarely look like best cases. Complexity analysis gives you the vocabulary and the tools to make these comparisons rigorously rather than by intuition alone.</p>
+        <div class="notes"><strong>Notes</strong>The table consolidates all five algorithms for easy comparison. Instructors may wish to emphasise that Binary Search&#39;s O(1) space assumes an iterative implementation; the recursive version uses O(log n) stack space. The validation step (Step 5) is especially useful for students who are not yet comfortable with algebraic manipulation — counting on a concrete array of size 4 or 5 and matching it to the formula builds confidence in the abstract derivation.</div>
+      </div>
+    </details>
+  </main>
+</body></html>

@@ -1,0 +1,198 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ensuring Data Integrity with Hashing</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+  <style>
+    body { padding-left: 1.1rem; padding-right: 1.1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid rgba(128,128,128,.45); padding: .45em .7em; text-align: left; vertical-align: top; }
+    thead th { background: rgba(128,128,128,.18); font-weight: 600; }
+    tbody tr:nth-child(even) { background: rgba(128,128,128,.08); }
+    a.topic-detail-link { text-decoration: underline; }
+  </style>
+  <style>
+    summary.slide-header { list-style: none; }
+    summary.slide-header::-webkit-details-marker { display: none; }
+    details.slide-card[open] > .slide-body { display: block; }
+    details.slide-card[open] .chevron { transform: rotate(90deg); }
+    @media print { details.slide-card > .slide-body { display: block !important; } .chevron { display: none; } }
+  </style>
+</head><body>
+  <header>
+    <h1>Ensuring Data Integrity with Hashing</h1>
+  </header><main>
+    <details class="slide-card" open>
+      <summary class="slide-header"><span class="slide-num">1</span><h2>Ensuring Data Integrity with Hashing</h2><span class="chevron">▶</span></summary>
+      <div class="slide-body">
+        <p>Hash functions occupy a central role in modern data security, and while many people first encounter them in the context of storing passwords, their most pervasive use is ensuring that data has not been corrupted or tampered with. Every time you download a Linux ISO, install a software package, or receive a signed document, hash functions are quietly working in the background to guarantee that what you received is exactly what was sent. Understanding how and why this works requires looking carefully at the mathematical properties of hash functions and then tracing those properties through several distinct real-world mechanisms.</p>
+
+<p>A <strong>hash function</strong> accepts an input of any length — a single byte, a ten-gigabyte video file, or anything in between — and produces a fixed-length output commonly called a <em>digest</em> or <em>fingerprint</em>. SHA-256, for example, always produces exactly 256 bits (32 bytes) of output regardless of how large or small the input is. This fixed-size property is what makes hashes practical as integrity tokens: instead of comparing two enormous files byte by byte, you compare two short digests. If the digests match, the underlying data is almost certainly identical. If they differ by even a single bit, the digests will differ dramatically — a property known as the <em>avalanche effect</em>.</p>
+
+<p>For integrity checking to be trustworthy, the hash function must satisfy at least two critical properties. <strong>Pre-image resistance</strong> means that given a digest, it is computationally infeasible to reconstruct the original input. <strong>Collision resistance</strong> means it is computationally infeasible to find two different inputs that produce the same digest. If either property fails, an attacker could craft malicious data that passes a hash check. MD5 and SHA-1 have both been broken in terms of collision resistance, which is why modern systems prefer SHA-256 or SHA-3 variants. These properties underpin every integrity mechanism discussed in this topic.</p>
+
+<p><strong>Integrity verification applies in two distinct situations.</strong> Data <em>at rest</em> — files sitting on disk, database records, archived backups — can be silently corrupted by hardware failures, bit rot, or malicious insider modification. Data <em>in transit</em> — packets traversing a network — can be altered by faulty routers, man-in-the-middle attackers, or simple transmission errors. Hash-based checks address both scenarios by establishing a known-good digest at the point of origin and re-computing it at the point of verification.</p>
+
+<p>The simplest application of this idea is the <strong>checksum</strong>. A publisher computes the hash of a file before distributing it and makes that hash value publicly available — typically posted on an official download page or embedded in a release manifest. A user who downloads the file runs the same hash algorithm locally and compares the result against the published value. The comparison is straightforward: either they are identical or they are not.</p>
+
+<p>Consider a concrete example. A Linux distribution publishes the following on its download page:</p>
+
+<pre><code>SHA-256 (ubuntu-24.04-desktop-amd64.iso) =
+  a435f6f393dda581172490ead4e9881a8e905b8b  ...  (full 64-character hex string)
+</code></pre>
+
+<p>A user downloads the ISO and runs:</p>
+
+<pre><code>sha256sum ubuntu-24.04-desktop-amd64.iso
+</code></pre>
+
+<p>If the terminal output matches the published string character for character, the file is intact. If even one character differs, something went wrong — the download could have been interrupted and partially written, the file could have been corrupted in transit by a flawed CDN node, or in a worst case, the server could have been compromised and the ISO replaced with a backdoored version. The checksum catches all of these scenarios identically: the hashes will not match.</p>
+
+<p>A <strong>mismatch signals one of three things</strong>: accidental corruption (the most common cause), an incomplete download, or deliberate tampering. The checksum itself cannot tell you which — that determination requires additional context such as whether the published hash was obtained over a secure channel. This limitation is important. A plain checksum posted over HTTP on a compromised server is worthless, because an attacker who replaced the file can just as easily replace the posted hash. Checksums only provide meaningful protection when the hash itself is obtained through a trustworthy, separate channel.</p>
+
+<p>Checksum verification is standard practice in the distribution of operating system images, software installers, firmware updates, and large scientific datasets. Package managers such as <code>apt</code>, <code>dnf</code>, and <code>pacman</code> perform this check automatically and transparently: when you run <code>apt install nginx</code>, the package manager downloads the <code>.deb</code> file, computes its hash, and compares it against a signed repository index before installation begins. If verification fails, installation is aborted and an error is reported. Users rarely see this process, but it is running every time.</p>
+
+<p><strong>Verifying software distribution integrity</strong> goes further than simple user-side checksum comparison. In a professional software supply chain, developers sign release artifacts with a private key and publish both the hash and the corresponding signature. This combination lets recipients verify two things independently: first, that the file was not corrupted; second, that it genuinely came from the claimed author. The practical workflow looks like this:</p>
+
+<ul>
+  <li>The developer builds the release artifact (a binary, archive, or installer).</li>
+  <li>A hash of the artifact is computed using a strong algorithm such as SHA-256.</li>
+  <li>The hash (or the artifact itself) is signed with the developer's private key, producing a signature file.</li>
+  <li>The artifact, the hash, and the signature are all published together.</li>
+  <li>A user downloads all three, verifies the signature using the developer's public key, and confirms that the embedded hash matches the locally computed hash of the downloaded file.</li>
+</ul>
+
+<p>Failing to implement or enforce these checks has caused serious real-world damage. The SolarWinds supply chain attack of 2020 involved attackers inserting malicious code into legitimate software build processes. Because downstream consumers were not rigorously verifying the provenance of software updates, the tampered builds were installed by thousands of organizations, including multiple US government agencies. Similarly, the event-stream npm package incident in 2018 saw a malicious dependency injected into a widely used JavaScript library, affecting downstream applications that had no hash or signature verification in place. These incidents demonstrate that checksum and signature verification are not optional hygiene steps — they are a critical security control.</p>
+
+<p>While checksums confirm that data arrived intact, they say nothing about <em>who</em> sent it or whether a third party altered it in transit. <strong>Hash-Based Message Authentication Codes</strong>, universally abbreviated as <strong>HMACs</strong>, address this gap by incorporating a shared secret key into the digest computation.</p>
+
+<p>The HMAC construction is defined formally in RFC 2104 and takes the following form:</p>
+
+<pre><code>HMAC(K, m) = H((K' XOR opad) || H((K' XOR ipad) || m))
+</code></pre>
+
+<p>Where <code>H</code> is the underlying hash function, <code>K'</code> is the key padded to the hash function's block size, <code>opad</code> is a fixed outer padding constant (0x5c repeated), <code>ipad</code> is a fixed inner padding constant (0x36 repeated), and <code>||</code> denotes concatenation. In plain terms: the key is mixed into the hash computation in a structured, cryptographically secure way. The result is a digest that can only be produced and verified by parties who possess the secret key.</p>
+
+<p>This has a profound practical consequence. Suppose a web API server sends a response and includes an HMAC of the response body using a key shared with the client. Even if an attacker intercepts the message and modifies the body, they cannot compute the correct HMAC for the modified body without knowing the secret key. The client, upon receiving the response, recomputes the HMAC locally and compares it with the one attached to the message. A mismatch immediately reveals tampering. Critically, the attacker learns nothing useful from observing the HMAC — without the key, they cannot forge a valid one.</p>
+
+<p>Common HMAC variants pair the construction with specific underlying hash functions. <strong>HMAC-SHA256</strong> uses SHA-256 as its underlying function and produces a 256-bit authentication tag, offering a very strong security margin for most applications. <strong>HMAC-SHA512</strong> uses SHA-512 and produces a 512-bit tag, preferred in high-security contexts. <strong>HMAC-SHA1</strong> still appears in legacy systems but is generally being phased out in favor of SHA-2 family variants.</p>
+
+<p>HMACs are used extensively in real systems. JSON Web Tokens (JWTs) using the <code>HS256</code> algorithm are signed with HMAC-SHA256. AWS request signing uses HMAC-SHA256 to authenticate API calls. Session cookies in many web frameworks are protected with HMACs to prevent users from forging or tampering with cookie values. The shared-key requirement means HMACs are most natural in scenarios where two parties have already established a secret — which is exactly the case in client-server relationships where a shared session key has been negotiated.</p>
+
+<p>A limitation of HMACs is that they require both parties to share the same secret. This creates a key distribution problem: how do the two parties securely agree on the key in the first place? In many contexts this is handled by a prior secure session (TLS, for instance, establishes a session key during its handshake), but in scenarios where you need to prove to a third party that data came from a specific individual — without that third party having pre-shared a key with the sender — HMACs are insufficient. This is where <strong>digital signatures</strong> enter.</p>
+
+<p>A <strong>digital signature</strong> combines asymmetric cryptography with hash functions to provide integrity, authenticity, and crucially, <em>non-repudiation</em>. The process works as follows:</p>
+
+<ul>
+  <li>The sender computes a hash of the message using a strong algorithm such as SHA-256.</li>
+  <li>The sender encrypts that hash digest using their <strong>private key</strong>. The result is the digital signature.</li>
+  <li>The sender transmits the original message alongside the signature.</li>
+  <li>The recipient decrypts the signature using the sender's <strong>public key</strong>, recovering the original digest.</li>
+  <li>The recipient independently computes the hash of the received message.</li>
+  <li>The recipient compares the two digests. If they match, integrity and authenticity are confirmed.</li>
+</ul>
+
+<p>The reason this works is rooted in asymmetric key properties: only the holder of the private key could have produced a signature that decrypts correctly with the corresponding public key. Because hash functions are pre-image resistant, an attacker cannot construct a different message that produces the same digest and therefore the same valid signature. Because they are collision resistant, an attacker cannot find two messages with the same hash and substitute one for the other.</p>
+
+<p>Digital signatures are foundational across a wide range of security infrastructure. <strong>Code signing</strong> — used by Microsoft for Windows drivers, Apple for macOS applications, and Android for APK packages — relies on digital signatures so that operating systems can verify that software comes from a trusted publisher and has not been modified. <strong>SSL/TLS certificates</strong> are digitally signed by certificate authorities; when your browser connects to a website, it verifies the server's certificate signature to confirm it is dealing with a legitimate entity. <strong>PDF document signing</strong> uses standards such as PKCS#7 (CAdES) or PAdES to embed a digital signature inside the PDF file, enabling recipients to verify the document has not been altered since it was signed — a legally significant property in many jurisdictions.</p>
+
+<p>The security of a digital signature scheme depends on two things together: the strength of the asymmetric algorithm (RSA, ECDSA, EdDSA) and the strength of the underlying hash function. A weak hash function undermines even a mathematically strong asymmetric scheme. This is precisely why SHA-1-based certificate signatures were deprecated across all major browsers and operating systems: researchers demonstrated practical collision attacks against SHA-1, meaning an attacker could in theory craft a malicious certificate that bore the same hash as a legitimate one. Migration to SHA-256 closed that vulnerability.</p>
+
+<p>With checksums, HMACs, and digital signatures all serving integrity-related purposes, it is worth comparing them systematically to understand when each is appropriate.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Mechanism</th>
+      <th>Key Required</th>
+      <th>Protects Against Accidental Corruption</th>
+      <th>Protects Against Deliberate Forgery</th>
+      <th>Provides Authentication</th>
+      <th>Provides Non-Repudiation</th>
+      <th>Typical Use Cases</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Plain Checksum</td>
+      <td>None</td>
+      <td><strong>Yes</strong></td>
+      <td><em>No</em></td>
+      <td><em>No</em></td>
+      <td><em>No</em></td>
+      <td>File download verification, data archival integrity</td>
+    </tr>
+    <tr>
+      <td>HMAC</td>
+      <td>Shared secret</td>
+      <td><strong>Yes</strong></td>
+      <td><strong>Yes</strong></td>
+      <td><strong>Yes (shared parties)</strong></td>
+      <td><em>No</em></td>
+      <td>API authentication, session tokens, JWTs, message integrity in transit</td>
+    </tr>
+    <tr>
+      <td>Digital Signature</td>
+      <td>Asymmetric key pair</td>
+      <td><strong>Yes</strong></td>
+      <td><strong>Yes</strong></td>
+      <td><strong>Yes (any verifier)</strong></td>
+      <td><strong>Yes</strong></td>
+      <td>Code signing, TLS certificates, document authentication, software releases</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>A <strong>plain checksum</strong> is the lightest-weight option. It requires no keys and no cryptographic infrastructure beyond the hash function itself. It reliably detects accidental corruption — flipped bits from hardware errors, truncated downloads, and similar benign failures. However, because the hash algorithm is public and no secret is involved, any adversary who can modify the data can simply recompute the hash and replace the published checksum. This is why checksums are only meaningful when the hash value itself is delivered through a trusted, independent channel — for instance, retrieved over HTTPS from an authoritative domain that the attacker cannot control.</p>
+
+<p>An <strong>HMAC</strong> adds a secret key to the computation, which means even if an attacker can see both the data and the HMAC tag, they cannot produce a valid tag for modified data. This makes HMACs appropriate wherever two parties have established a shared secret and need to guarantee message authenticity and integrity in their communications. However, HMACs do not provide non-repudiation: because both the sender and receiver share the same key, either party could have generated the HMAC. In a dispute, the receiver cannot prove to a neutral third party that the sender produced a given HMAC — both parties had the capability to do so.</p>
+
+<p>A <strong>digital signature</strong> solves the non-repudiation problem because only the private key holder can produce the signature, while anyone with the public key can verify it. The signer cannot later deny having signed the data — they are the only entity that could have produced a signature verifiable by their public key. This property is essential for legally binding digital contracts, regulatory compliance contexts (such as electronic prescriptions in healthcare or signed audit logs in finance), and software publication where end users must be able to verify that a binary genuinely came from the stated vendor without needing to share a secret with them in advance.</p>
+
+<p>All three mechanisms are ultimately grounded in the same underlying guarantee: the <strong>collision resistance</strong> and <strong>pre-image resistance</strong> of the hash function. If these properties fail — as they have for MD5 and SHA-1 — the security of every mechanism built on top collapses. A collision-vulnerable hash function used in a digital signature scheme allows an attacker to present two documents with identical hashes, get one signed, and then substitute the other. A pre-image-vulnerable hash function used in an HMAC could allow an attacker to reconstruct the input from the tag. Choosing a cryptographically strong, modern hash function (SHA-256, SHA-3, BLAKE2) is therefore not merely a performance consideration — it is the foundation upon which all of these integrity mechanisms rest.</p>
+        <div class="notes"><strong>Notes</strong>Instructors may wish to have students perform a live demonstration of SHA-256 checksum verification using platform tools (sha256sum on Linux/macOS, Get-FileHash on Windows PowerShell) to make the abstract process concrete. The comparison table is a useful reference artifact for exam preparation. The supply-chain attack examples (SolarWinds, event-stream) are well-documented and suitable for further case-study reading assignments.</div>
+      </div>
+    </details>
+  </main>
+</body></html>

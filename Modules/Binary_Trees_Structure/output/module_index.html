@@ -6,174 +6,101 @@
   <title>Binary Trees: Structure, Traversal, and Operations — COP3530</title>
   <style>
     /* ── Reset & Base ── */
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html {
-      font-size: 16px;
-    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
-      background-color: #f4f6f9;
-      color: #1e2530;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: #f4f6f9;
+      color: #1e2430;
       line-height: 1.65;
       min-height: 100vh;
     }
 
-    /* ── Header / Hero ── */
+    /* ── Header Banner ── */
     header {
-      background: linear-gradient(135deg, #1a3a5c 0%, #25527e 60%, #1e6fa8 100%);
+      background: linear-gradient(135deg, #1a3a5c 0%, #2563a8 100%);
       color: #ffffff;
-      padding: 3rem 2rem 2.5rem;
-      text-align: center;
+      padding: 2.75rem 2rem 2.25rem;
+      border-bottom: 4px solid #f0a500;
     }
 
-    header .course-label {
+    .header-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .course-label {
       display: inline-block;
       font-size: 0.78rem;
       font-weight: 600;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: #a8d4f5;
-      margin-bottom: 0.65rem;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 4px;
+      padding: 0.25rem 0.65rem;
+      margin-bottom: 0.85rem;
+      color: #d6e8ff;
     }
 
     header h1 {
-      font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+      font-size: clamp(1.45rem, 3.5vw, 2.15rem);
       font-weight: 700;
-      line-height: 1.25;
-      margin-bottom: 1rem;
       letter-spacing: -0.01em;
+      margin-bottom: 0.85rem;
+      line-height: 1.25;
     }
 
-    header p.intro {
-      max-width: 680px;
-      margin: 0 auto;
+    header p {
       font-size: 1rem;
-      color: #d0e8f7;
-      line-height: 1.7;
+      color: #c8ddf5;
+      max-width: 720px;
     }
 
     /* ── Main Content ── */
     main {
       max-width: 1100px;
-      margin: 0 auto;
-      padding: 2.5rem 1.5rem 4rem;
+      margin: 2.5rem auto 3rem;
+      padding: 0 1.5rem;
     }
 
-    /* ── Section Heading ── */
-    .section-heading {
-      font-size: 1.05rem;
+    .section-label {
+      font-size: 0.72rem;
       font-weight: 700;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: #4a5568;
-      border-bottom: 2px solid #d1dce9;
+      color: #5a6a82;
+      margin-bottom: 1.25rem;
+      border-bottom: 2px solid #dce3ed;
       padding-bottom: 0.5rem;
-      margin-bottom: 1.75rem;
     }
 
     /* ── Card Grid ── */
     .card-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 1.5rem;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.25rem;
     }
 
-    /* ── Card ── */
     .card {
       background: #ffffff;
-      border: 1px solid #dce5ef;
+      border: 1px solid #dce3ed;
       border-radius: 10px;
-      padding: 1.5rem 1.6rem 1.4rem;
+      padding: 1.4rem 1.5rem;
       display: flex;
       flex-direction: column;
-      gap: 0.75rem;
-      box-shadow: 0 2px 8px rgba(30, 50, 80, 0.06);
-      transition: box-shadow 0.2s ease, transform 0.2s ease;
+      gap: 0.6rem;
+      transition: box-shadow 0.18s ease, transform 0.18s ease;
+      position: relative;
     }
 
     .card:hover {
-      box-shadow: 0 6px 20px rgba(30, 50, 80, 0.12);
+      box-shadow: 0 6px 22px rgba(30, 60, 110, 0.11);
       transform: translateY(-2px);
     }
 
-    /* ── Card Header Row ── */
-    .card-header {
-      display: flex;
-      flex-direction: column;
-      gap: 0.4rem;
-    }
-
-    .card-name {
-      font-size: 1.05rem;
-      font-weight: 700;
-      color: #1a3a5c;
-      line-height: 1.3;
-    }
-
-    .card-name a {
-      color: #1a5fa8;
-      text-decoration: none;
-      border-bottom: 2px solid transparent;
-      transition: border-color 0.15s ease, color 0.15s ease;
-    }
-
-    .card-name a:hover,
-    .card-name a:focus {
-      color: #0d3d72;
-      border-bottom-color: #1a5fa8;
-      outline: none;
-    }
-
-    .card-name a:focus-visible {
-      outline: 3px solid #4a9de0;
-      outline-offset: 2px;
-      border-radius: 2px;
-    }
-
-    /* ── Source File Link ── */
-    .source-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.3rem;
-      font-size: 0.75rem;
-      font-weight: 600;
-      color: #4a7fa8;
-      text-decoration: none;
-      background: #eaf3fb;
-      border: 1px solid #bcd9ef;
-      border-radius: 4px;
-      padding: 0.18rem 0.55rem;
-      margin-left: 0.5rem;
-      white-space: nowrap;
-      transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
-      vertical-align: middle;
-    }
-
-    .source-link:hover,
-    .source-link:focus {
-      background: #cce3f5;
-      color: #0d3d72;
-      border-color: #7ab4d8;
-      outline: none;
-    }
-
-    .source-link:focus-visible {
-      outline: 3px solid #4a9de0;
-      outline-offset: 2px;
-    }
-
-    .source-link svg {
-      flex-shrink: 0;
-    }
-
-    /* ── Badges Row ── */
-    .card-badges {
+    /* ── Card Metadata Badges ── */
+    .card-meta {
       display: flex;
       flex-wrap: wrap;
       gap: 0.45rem;
@@ -181,144 +108,323 @@
     }
 
     .badge {
-      display: inline-block;
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       font-weight: 600;
-      letter-spacing: 0.04em;
-      border-radius: 20px;
-      padding: 0.2rem 0.65rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      border-radius: 4px;
+      padding: 0.22rem 0.55rem;
       white-space: nowrap;
     }
 
     .badge-type {
-      background: #e8edf5;
-      color: #2c4a6e;
-      border: 1px solid #c5d3e3;
+      background: #e8effd;
+      color: #2455a4;
+      border: 1px solid #c3d4f5;
     }
 
     .badge-filetype {
-      background: #eaf5ee;
-      color: #276245;
-      border: 1px solid #b5d9c2;
-      font-family: "Courier New", Courier, monospace;
+      background: #f0f4f8;
+      color: #5a6a82;
+      border: 1px solid #d0d9e6;
+      font-family: 'Courier New', monospace;
+    }
+
+    /* ── Card Title Row ── */
+    .card-title-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 0.55rem;
+    }
+
+    .card-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #1a3a5c;
+      line-height: 1.3;
+    }
+
+    .card-title a {
+      color: #1a5bb8;
+      text-decoration: none;
+      border-bottom: 2px solid transparent;
+      transition: border-color 0.15s ease, color 0.15s ease;
+    }
+
+    .card-title a:hover,
+    .card-title a:focus {
+      color: #0e3d82;
+      border-bottom-color: #f0a500;
+      outline: none;
+    }
+
+    .card-title a:focus-visible {
+      outline: 3px solid #f0a500;
+      outline-offset: 2px;
+      border-radius: 2px;
+    }
+
+    /* ── Source Link ── */
+    .source-link {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #5a6a82;
+      text-decoration: none;
+      background: #f0f4f8;
+      border: 1px solid #d0d9e6;
+      border-radius: 4px;
+      padding: 0.18rem 0.5rem;
+      white-space: nowrap;
+      transition: background 0.14s ease, color 0.14s ease;
+      align-self: flex-start;
+    }
+
+    .source-link::before {
+      content: '↓ ';
+    }
+
+    .source-link:hover,
+    .source-link:focus {
+      background: #e2e9f3;
+      color: #1a3a5c;
+      outline: none;
+    }
+
+    .source-link:focus-visible {
+      outline: 3px solid #f0a500;
+      outline-offset: 2px;
+      border-radius: 3px;
     }
 
     /* ── Card Description ── */
-    .card-description {
-      font-size: 0.88rem;
-      color: #4a5568;
-      line-height: 1.65;
+    .card-desc {
+      font-size: 0.875rem;
+      color: #3d4d62;
+      line-height: 1.6;
       flex: 1;
+    }
+
+    /* ── Accent stripe by type ── */
+    .card[data-type="Module Topics"] {
+      border-left: 4px solid #f0a500;
+    }
+
+    .card[data-type="Topic Detail"] {
+      border-left: 4px solid #2563a8;
+    }
+
+    .card[data-type="Text Content"] {
+      border-left: 4px solid #27a865;
     }
 
     /* ── Footer ── */
     footer {
       text-align: center;
-      font-size: 0.8rem;
-      color: #8a9bb0;
+      font-size: 0.78rem;
+      color: #8898ae;
       padding: 1.5rem 1rem 2rem;
-      border-top: 1px solid #dce5ef;
+      border-top: 1px solid #dce3ed;
+      background: #f4f6f9;
     }
 
-    /* ── Responsive tweaks ── */
-    @media (max-width: 480px) {
-      header {
-        padding: 2rem 1.25rem 2rem;
-      }
-
-      .card {
-        padding: 1.25rem 1.25rem 1.2rem;
-      }
-
-      .card-name {
-        font-size: 1rem;
-      }
+    /* ── Responsive ── */
+    @media (max-width: 520px) {
+      header { padding: 2rem 1.25rem 1.75rem; }
+      main { padding: 0 1rem; margin-top: 1.75rem; }
+      .card-grid { grid-template-columns: 1fr; }
+      .card { padding: 1.15rem 1.2rem; }
     }
   </style>
 </head>
 <body>
 
-  <!-- ══════════════════════════════════════════
-       HEADER
-  ══════════════════════════════════════════ -->
   <header>
-    <span class="course-label">COP3530 &mdash; Data Structures</span>
-    <h1>Binary Trees: Structure, Traversal, and Operations</h1>
-    <p class="intro">
-      This module introduces binary trees as a foundational data structure — exploring
-      tree anatomy, binary search tree ordering, node insertion and search algorithms,
-      and the major traversal strategies. Use the artifacts below to navigate
-      learning materials, review curriculum coverage, and access underlying source files.
-    </p>
+    <div class="header-inner">
+      <span class="course-label">COP3530 — Data Structures</span>
+      <h1>Binary Trees: Structure, Traversal, and Operations</h1>
+      <p>
+        This module explores the foundations of binary trees and binary search trees (BSTs),
+        from core terminology and node anatomy to insertion, deletion, and traversal algorithms.
+        Learners will build conceptual understanding alongside hands-on JavaScript implementation skills.
+      </p>
+    </div>
   </header>
 
-  <!-- ══════════════════════════════════════════
-       MAIN
-  ══════════════════════════════════════════ -->
   <main>
-    <h2 class="section-heading">Module Artifacts</h2>
+    <p class="section-label">Module Artifacts — 9 items</p>
 
     <div class="card-grid">
 
-      <!-- ── Artifact: Module Topics ── -->
-      <article class="card" aria-label="Artifact: Module Topics">
-        <div class="card-header">
-          <div class="card-name">
-            <!-- viewHref is non-empty → link -->
-            <a href="module_topics.html">Module Topics</a><!-- sourceHref is non-empty → secondary link -->
-            <a
-              class="source-link"
-              href="../hierarchy.json"
-              title="Open raw source file"
-              aria-label="Source file for Module Topics"
-            >
-              <!-- small document icon -->
-              <svg
-                aria-hidden="true"
-                focusable="false"
-                xmlns="http://www.w3.org/2000/svg"
-                width="12"
-                height="12"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2.2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                <polyline points="14 2 14 8 20 8"/>
-                <line x1="16" y1="13" x2="8" y2="13"/>
-                <line x1="16" y1="17" x2="8" y2="17"/>
-                <polyline points="10 9 9 9 8 9"/>
-              </svg>
-              source file
-            </a>
-          </div>
-        </div>
-
-        <div class="card-badges">
+      <!-- Card 1: Module Topics -->
+      <article class="card" data-type="Module Topics">
+        <div class="card-meta">
           <span class="badge badge-type">Module Topics</span>
           <span class="badge badge-filetype">.json</span>
         </div>
-
-        <p class="card-description">
-          A structured outline of the module's core topics — covering binary tree
-          fundamentals (nodes, edges, root), tree anatomy, BST ordering and node
-          structure, insertion and search logic with JavaScript implementation, and
-          tree traversal methods — used by learners to preview what will be taught
-          and by instructors to verify full curriculum coverage.
+        <div class="card-title-row">
+          <span class="card-title">
+            <a href="module_topics.html">Module Topics</a>
+          </span>
+          <a class="source-link" href="../hierarchy.json">source file</a>
+        </div>
+        <p class="card-desc">
+          A structured outline of the module's core topics — covering binary tree fundamentals
+          (nodes, edges, root), tree anatomy, BST ordering and node structure, insertion and search
+          logic with JavaScript implementation, and tree traversal methods — used by learners to
+          preview what will be taught and by instructors to verify full curriculum coverage.
         </p>
       </article>
 
-    </div><!-- /.card-grid -->
+      <!-- Card 2: Introduction to Binary Trees -->
+      <article class="card" data-type="Topic Detail">
+        <div class="card-meta">
+          <span class="badge badge-type">Topic Detail</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <span class="card-title">
+            <a href="Binary_Trees_Structure_interactive_topics_t1.html">Introduction to Binary Trees</a>
+          </span>
+        </div>
+        <p class="card-desc">
+          This reading introduces the definition, terminology (root, parent, child, leaf), and
+          structural rules of binary trees, giving learners the conceptual foundation needed before
+          studying algorithms or specialized tree variants.
+        </p>
+      </article>
+
+      <!-- Card 3: Node Structure and Tree Anatomy -->
+      <article class="card" data-type="Topic Detail">
+        <div class="card-meta">
+          <span class="badge badge-type">Topic Detail</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <span class="card-title">
+            <a href="Binary_Trees_Structure_interactive_topics_t2.html">Node Structure and Tree Anatomy</a>
+          </span>
+        </div>
+        <p class="card-desc">
+          This reading explains the anatomy of a binary tree at the node level — covering pointer
+          structure, left/right child relationships, and how nodes link together — so learners can
+          reason precisely about tree construction and manipulation.
+        </p>
+      </article>
+
+      <!-- Card 4: Binary Search Trees (BST) Concepts -->
+      <article class="card" data-type="Topic Detail">
+        <div class="card-meta">
+          <span class="badge badge-type">Topic Detail</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <span class="card-title">
+            <a href="Binary_Trees_Structure_interactive_topics_t3.html">Binary Search Trees (BST) Concepts</a>
+          </span>
+        </div>
+        <p class="card-desc">
+          This reading defines the Binary Search Tree ordering property (left subtree holds smaller
+          values, right holds larger), distinguishing BSTs from general binary trees, so learners
+          understand the invariant that makes BST operations efficient.
+        </p>
+      </article>
+
+      <!-- Card 5: Insertion and Search Operations -->
+      <article class="card" data-type="Topic Detail">
+        <div class="card-meta">
+          <span class="badge badge-type">Topic Detail</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <span class="card-title">
+            <a href="Binary_Trees_Structure_interactive_topics_t4.html">Insertion and Search Operations</a>
+          </span>
+        </div>
+        <p class="card-desc">
+          This reading walks through how insertion and search operations work in a BST by following
+          the ordering invariant at each node, helping learners understand the recursive logic and
+          efficiency of these two core operations.
+        </p>
+      </article>
+
+      <!-- Card 6: Deletion Operations -->
+      <article class="card" data-type="Topic Detail">
+        <div class="card-meta">
+          <span class="badge badge-type">Topic Detail</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <span class="card-title">
+            <a href="Binary_Trees_Structure_interactive_topics_t5.html">Deletion Operations</a>
+          </span>
+        </div>
+        <p class="card-desc">
+          This reading covers the three cases of BST node deletion — leaf node, one-child node, and
+          two-child node (using in-order successor/predecessor) — so learners understand how to
+          remove nodes without violating the BST ordering property.
+        </p>
+      </article>
+
+      <!-- Card 7: Tree Traversal Strategies -->
+      <article class="card" data-type="Topic Detail">
+        <div class="card-meta">
+          <span class="badge badge-type">Topic Detail</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <span class="card-title">
+            <a href="Binary_Trees_Structure_interactive_topics_t6.html">Tree Traversal Strategies</a>
+          </span>
+        </div>
+        <p class="card-desc">
+          This reading surveys tree traversal strategies — including in-order, pre-order, post-order,
+          and level-order — explaining the visit sequence each produces and when each strategy is
+          appropriate for a given task.
+        </p>
+      </article>
+
+      <!-- Card 8: Implementing a BST in JavaScript (Topic Detail) -->
+      <article class="card" data-type="Topic Detail">
+        <div class="card-meta">
+          <span class="badge badge-type">Topic Detail</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <span class="card-title">
+            <a href="Binary_Trees_Structure_interactive_topics_t7.html">Implementing a BST in JavaScript</a>
+          </span>
+        </div>
+        <p class="card-desc">
+          This reading guides learners through a complete from-scratch JavaScript implementation of a
+          BST, including class and node structure and recursive algorithms, so they can translate
+          conceptual BST knowledge into working code.
+        </p>
+      </article>
+
+      <!-- Card 9: Implementing a BST in JavaScript (Text Content) -->
+      <article class="card" data-type="Text Content">
+        <div class="card-meta">
+          <span class="badge badge-type">Text Content</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <div class="card-title-row">
+          <span class="card-title">
+            <a href="Binary_Trees_Structure_interactive.html">Implementing a BST in JavaScript</a>
+          </span>
+        </div>
+        <p class="card-desc">
+          This reading guides learners through a complete from-scratch JavaScript implementation of a
+          BST, including class and node structure and recursive algorithms, so they can translate
+          conceptual BST knowledge into working code.
+        </p>
+      </article>
+
+    </div>
   </main>
 
-  <!-- ══════════════════════════════════════════
-       FOOTER
-  ══════════════════════════════════════════ -->
   <footer>
-    <p>COP3530 &mdash; Data Structures &nbsp;&bull;&nbsp; Binary Trees: Structure, Traversal, and Operations</p>
+    <p>COP3530 — Data Structures &nbsp;|&nbsp; Module: Binary Trees: Structure, Traversal, and Operations</p>
   </footer>
 
 

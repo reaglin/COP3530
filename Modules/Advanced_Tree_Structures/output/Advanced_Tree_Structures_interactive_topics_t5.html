@@ -1,0 +1,282 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Heap Operations and Performance Trade-offs</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+  <style>
+    body { padding-left: 1.1rem; padding-right: 1.1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid rgba(128,128,128,.45); padding: .45em .7em; text-align: left; vertical-align: top; }
+    thead th { background: rgba(128,128,128,.18); font-weight: 600; }
+    tbody tr:nth-child(even) { background: rgba(128,128,128,.08); }
+    a.topic-detail-link { text-decoration: underline; }
+  </style>
+  <style>
+    summary.slide-header { list-style: none; }
+    summary.slide-header::-webkit-details-marker { display: none; }
+    details.slide-card[open] > .slide-body { display: block; }
+    details.slide-card[open] .chevron { transform: rotate(90deg); }
+    @media print { details.slide-card > .slide-body { display: block !important; } .chevron { display: none; } }
+  </style>
+</head><body>
+  <header>
+    <h1>Heap Operations and Performance Trade-offs</h1>
+  </header><main>
+    <details class="slide-card" open>
+      <summary class="slide-header"><span class="slide-num">1</span><h2>Heap Operations and Performance Trade-offs</h2><span class="chevron">▶</span></summary>
+      <div class="slide-body">
+        <p>A <strong>heap</strong> is a specialized tree-based data structure that satisfies the <em>heap property</em>: in a <strong>min-heap</strong>, every parent node holds a value less than or equal to its children, so the smallest element always sits at the root; in a <strong>max-heap</strong>, every parent is greater than or equal to its children, placing the largest element at the root. Heaps are almost universally implemented as <strong>complete binary trees</strong>, meaning every level is fully filled except possibly the last, which is filled left to right. This structural constraint is what makes the efficient array representation possible and what bounds the height of the tree to <em>O(log n)</em>, directly controlling the cost of every major operation. Understanding how heaps work in detail — and where they shine or fall short compared to other data structures — is essential for anyone working on priority queues, scheduling algorithms, graph shortest-path problems, or in-place sorting.</p>
+
+<p>Before examining individual operations, it helps to appreciate why the complete binary tree shape matters so much. Because the tree is always filled left to right, its height is always <em>⌊log₂ n⌋</em>. There are no degenerate cases where the tree becomes a long chain, as can happen with a naïve binary search tree. This height guarantee is the foundation on which every O(log n) bound rests.</p>
+
+<p><strong>The Heapify Operation</strong></p>
+
+<p>Heapify is the core repair mechanism of a heap. It comes in two directional forms — <em>heapify-up</em> (also called sift-up or bubble-up) and <em>heapify-down</em> (also called sift-down or bubble-down) — each used in different contexts to restore the heap property after it has been locally violated.</p>
+
+<p><strong>Heapify-up</strong> is used when a new element has been added at the bottom of the heap and may be smaller (min-heap) or larger (max-heap) than its parent, violating the heap property on the path from that node up to the root. The algorithm compares the newly placed node with its parent. If the parent violates the property relative to the child — for instance, the parent is larger than the child in a min-heap — the two nodes are swapped. The process repeats one level higher, now comparing the displaced element (now at the parent's original position) with its own parent. This continues until either the heap property is satisfied at the current level or the node has reached the root. Because it follows a single path from a leaf upward to the root, and the height of the tree is O(log n), heapify-up performs at most O(log n) comparisons and O(log n) swaps in the worst case.</p>
+
+<p>Consider a min-heap stored as an array <code>[1, 3, 5, 7, 9, 11]</code>. If we insert the value <code>2</code>, it is placed at index 6 (the next available position). Its parent is at index <code>(6-1)/2 = 2</code>, which holds value <code>5</code>. Since <code>2 &lt; 5</code>, we swap: the array becomes <code>[1, 3, 2, 7, 9, 11, 5]</code>. Now <code>2</code> is at index 2; its parent is at index <code>(2-1)/2 = 0</code>, holding value <code>1</code>. Since <code>2 &gt; 1</code>, the heap property is satisfied and heapify-up stops. The tree is restored.</p>
+
+<p><strong>Heapify-down</strong> is used when the root has been removed and replaced by the last element in the heap, which is almost certainly out of place. It is also the operation used in building a heap from scratch. Starting at a given node, heapify-down compares that node with both of its children. In a min-heap, if either child is smaller than the current node, the node is swapped with the <em>smallest</em> of the two children (to ensure the new parent is smaller than both remaining children after the swap). In a max-heap, the node is swapped with the <em>largest</em> child. The process then continues from the position the node was swapped into, repeating until no child is smaller (or larger) than the current node or the node has reached a leaf. Again, this traverses a single root-to-leaf path, giving O(log n) worst-case cost.</p>
+
+<p>Critically, both heapify variants touch only a <strong>single path</strong> through the tree. The rest of the heap is completely unaffected. This is what makes heap operations so efficient: a violation at one point in the tree propagates corrections only along one vertical line, never branching.</p>
+
+<p><strong>Floyd's Algorithm</strong> (also called the bottom-up heap construction or heapify-all algorithm) exploits heapify-down to build an entire heap from an unsorted array in <strong>O(n)</strong> time, which is significantly better than the O(n log n) cost of inserting n elements one at a time. The insight is that leaf nodes — roughly the bottom half of the tree — trivially satisfy the heap property on their own (they have no children). So Floyd's algorithm starts at the last internal node (at index <code>⌊n/2⌋ - 1</code> in a zero-indexed array) and calls heapify-down on each node, moving backward toward the root. Nodes near the bottom of the tree have small subtrees and do very little work; nodes near the top have taller subtrees but there are very few of them. The mathematical sum of work done at each level yields a total cost of O(n), not O(n log n). This is a non-obvious but important result used in heapsort and in initializing priority queues from existing data.</p>
+
+<p><strong>Insert Operation</strong></p>
+
+<p>Inserting a new element into a heap is a two-step process designed to maintain both structural integrity (the complete binary tree shape) and the heap property.</p>
+
+<p>First, the new element is placed at the <strong>next available position</strong> at the bottom level of the tree — specifically the leftmost open slot, which in the array representation is simply the next index after the current last element. This guarantees the tree remains a complete binary tree regardless of what value is being inserted.</p>
+
+<p>Second, <strong>heapify-up</strong> is applied from the newly inserted position. The element bubbles upward, swapping with parents as needed, until the heap property is restored. The total cost is O(log n) in the worst case, corresponding to an element that must travel all the way from a leaf to the root.</p>
+
+<p>However, on average, most inserted elements do not need to travel far. Statistically, roughly half of all insertions require zero swaps (the new element is already larger than its parent in a min-heap), and many more require only one or two. This is why some analyses describe insertion as having an <strong>amortized O(1)</strong> cost in certain heap variants. In a standard binary heap, the average number of comparisons during insertion has been shown to be approximately 1.6, far below the log n worst case. This practical efficiency is one reason heaps are favored over theoretically comparable structures for high-throughput priority queues.</p>
+
+<p>Because heapify-up only walks a single path from the inserted position to the root, the vast majority of the heap's nodes — specifically all nodes that are not ancestors of the insertion point — are never touched. The heap property for the rest of the tree remains valid throughout the entire operation.</p>
+
+<p><strong>Extract-Min and Extract-Max Operations</strong></p>
+
+<p>Extracting the minimum (from a min-heap) or maximum (from a max-heap) is the most important heap operation for priority queue applications. It always removes the <strong>root element</strong>, which by the heap property is guaranteed to be the highest-priority item.</p>
+
+<p>The steps are as follows:</p>
+<ul>
+  <li>Save the root's value to be returned to the caller.</li>
+  <li>Move the <strong>last element</strong> in the array (the rightmost node at the deepest level) to the root position, and reduce the heap size by one. This preserves the complete binary tree structure — removing any other node would leave a gap that breaks the shape invariant.</li>
+  <li>Apply <strong>heapify-down</strong> from the root. The newly placed element is likely much larger (in a min-heap) than its children, so it sinks downward, swapping with the appropriate child at each level, until it reaches a position where the heap property is satisfied or it reaches a leaf.</li>
+</ul>
+
+<p>The overall cost is O(log n) in the worst case, because heapify-down traverses at most the full height of the tree. Each level of traversal requires exactly two comparisons (comparing the node against each of its two children to find the smaller/larger one, then deciding whether to swap). In the worst case on a heap of n elements, this means roughly 2 × log₂ n comparisons.</p>
+
+<p>After the operation, the heap's array representation is updated: the logical size is decremented, so the space previously occupied by the last element is simply ignored (no memory needs to be freed in a fixed-size array; in a dynamic array, periodic shrinking may occur). The heap is once again a valid complete binary tree satisfying the heap property throughout.</p>
+
+<p>Extract-min and extract-max are the defining operations for <strong>priority queues</strong>. In task scheduling, event simulation, Dijkstra's algorithm, Huffman coding, and A* search, the ability to retrieve the highest-priority item in O(log n) time — with no need to scan the whole structure — is precisely the guarantee that makes heaps so widely used. The O(log n) bound is tight: any comparison-based priority queue must take Ω(log n) time for extraction in the worst case, so heaps are asymptotically optimal for this operation.</p>
+
+<p><strong>Array-Based Heap Representation</strong></p>
+
+<p>While a heap could in principle be stored as a linked binary tree with explicit left-child, right-child, and parent pointers, the <strong>array representation</strong> is almost universally preferred and is what makes heaps so practical. The complete binary tree structure maps perfectly onto a contiguous array with no wasted slots and no pointers needed.</p>
+
+<p>Using <strong>zero-based indexing</strong>, the mapping rules are:</p>
+<ul>
+  <li>The root is at index <code>0</code>.</li>
+  <li>For a node at index <code>i</code>, its <strong>left child</strong> is at index <code>2i + 1</code>.</li>
+  <li>For a node at index <code>i</code>, its <strong>right child</strong> is at index <code>2i + 2</code>.</li>
+  <li>For a node at index <code>i</code> (where <code>i &gt; 0</code>), its <strong>parent</strong> is at index <code>⌊(i - 1) / 2⌋</code>.</li>
+</ul>
+
+<p>These are simple arithmetic operations — no pointer dereferencing, no dynamic memory allocation per node. Accessing a parent or child is a constant-time computation followed by a single array lookup, giving <strong>O(1) navigation</strong> in all directions. This is a significant advantage over linked representations where pointer traversal may involve cache misses.</p>
+
+<p>The <strong>cache performance</strong> benefit of the array representation is substantial in practice. Heapify traversals access elements at indices that, while not perfectly sequential, are still confined to a contiguous block of memory. Compared to pointer-based trees where parent and child nodes may be scattered across the heap (in the memory allocator sense), the array layout dramatically reduces cache misses during sift operations. For large heaps processed at high rates — such as in real-time systems or graph algorithms on massive graphs — this constant-factor improvement is the difference between acceptable and unacceptable performance.</p>
+
+<p>The array can be <strong>dynamically resized</strong> as the heap grows, using the same doubling strategy used by dynamic arrays (e.g., Python lists or Java ArrayLists). When the array is full and a new element must be inserted, a new array of double the current capacity is allocated, the existing elements are copied over (O(n) cost), and the old array is freed. Amortized over many insertions, this resizing cost is O(1) per insertion. Conversely, when the heap shrinks significantly, the array can be halved to reclaim memory. These resizing events are infrequent and their cost is absorbed into the amortized analysis.</p>
+
+<p>The compactness of the array representation also means that a heap of n elements uses exactly n array slots plus a small constant amount of overhead (the size variable and capacity variable). There is no per-node pointer storage. A pointer-based binary tree of n nodes requires 2n or 3n pointers (left child, right child, optionally parent), each typically 8 bytes on a 64-bit system. For a million-node heap, this is 16–24 MB of pointer storage avoided — a meaningful saving in memory-constrained environments.</p>
+
+<p><strong>Time Complexity Summary of Heap Operations</strong></p>
+
+<p>The following table summarizes the time complexity of core heap operations:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Operation</th>
+      <th>Worst-Case Time</th>
+      <th>Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Insert</td>
+      <td>O(log n)</td>
+      <td>Heapify-up traverses at most the full height of the tree. Amortized O(1) in practice.</td>
+    </tr>
+    <tr>
+      <td>Extract-Min / Extract-Max</td>
+      <td>O(log n)</td>
+      <td>Heapify-down traverses at most the full height of the tree. Tight bound; unavoidable by comparison-based argument.</td>
+    </tr>
+    <tr>
+      <td>Peek (find min or max)</td>
+      <td>O(1)</td>
+      <td>Root is always index 0; no traversal needed.</td>
+    </tr>
+    <tr>
+      <td>Build Heap (Floyd's algorithm)</td>
+      <td>O(n)</td>
+      <td>Bottom-up heapify-down from the last internal node to the root. Faster than n individual insertions.</td>
+    </tr>
+    <tr>
+      <td>Arbitrary Search</td>
+      <td>O(n)</td>
+      <td>No ordering beyond the heap property; must scan all elements in the worst case.</td>
+    </tr>
+    <tr>
+      <td>Delete Arbitrary Element</td>
+      <td>O(n)</td>
+      <td>O(n) to find the element, then O(log n) to remove and repair. If index is known, O(log n) total.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The O(1) peek is one of the most practically valuable guarantees: whenever you only need to know what the highest-priority item is without removing it (a common requirement in monitoring systems, game AI, and simulation engines), heaps answer in constant time. No other comparison-based structure provides O(1) peek, O(log n) insert, and O(log n) extract simultaneously with such low constant factors and no extra memory.</p>
+
+<p>The O(n) heap construction is worth emphasizing. If you have n elements available upfront and want to build a priority queue, Floyd's algorithm processes them in O(n) time. If instead you insert them one by one, each insertion takes O(log n) and the total cost is O(n log n). For n = 10 million elements, this difference is roughly 10 million operations versus 230 million — a factor of 23 difference in real computation, not just asymptotic notation.</p>
+
+<p><strong>Performance Trade-offs Versus Other Data Structures</strong></p>
+
+<p>No data structure is universally optimal. Understanding where heaps excel and where they are outperformed by alternatives is essential for making good engineering decisions.</p>
+
+<p><strong>Heap vs. Sorted Array</strong></p>
+
+<p>A sorted array supports O(1) peek at the minimum or maximum (first or last element) and O(log n) extraction (after extracting, all elements shift one position, making it O(n)) — actually, extraction from a sorted array in the strict sense costs O(n) for the shift. Insertion into a sorted array requires finding the correct position in O(log n) using binary search but then shifting elements to make room, costing O(n) total. A heap beats a sorted array on insertion: O(log n) versus O(n). Heaps match or slightly beat sorted arrays on extraction. However, if the dataset is entirely static (no insertions after initial construction) and you only need repeated minimum extraction, a sorted array processed from one end is equally effective and may be simpler. For dynamic workloads with interleaved insertions and extractions — the typical priority queue scenario — heaps are clearly superior.</p>
+
+<p><strong>Heap vs. Balanced BST (e.g., AVL Tree, Red-Black Tree)</strong></p>
+
+<p>A balanced BST supports O(log n) insert, O(log n) delete-min or delete-max, O(log n) arbitrary search, and O(n) in-order traversal giving all elements in sorted order. A heap supports O(log n) insert and O(log n) extract-min/max, but O(n) arbitrary search and does not support sorted traversal without destroying the heap. For <em>pure priority queue</em> tasks, heaps outperform balanced BSTs in practice due to <strong>lower constant factors</strong> (simpler comparisons, no rotation logic, no color-balancing) and <strong>better cache performance</strong> (array layout vs. pointer-linked nodes). A well-implemented binary heap is typically 2–5× faster than a balanced BST for pure insert/extract workloads in benchmarks. However, if the application also requires arbitrary search (find element by key), range queries, or in-order iteration, a BST is necessary since heaps simply do not support these efficiently.</p>
+
+<p><strong>Heap vs. Unsorted Array or Linked List</strong></p>
+
+<p>An unsorted array or linked list supports O(1) insertion (append to end) but O(n) extraction (must scan all elements to find the minimum or maximum). For small n or workloads dominated by insertions with rare extractions, this can be competitive. For large n or balanced insert/extract workloads, the O(n) extraction cost is prohibitive and heaps are far superior.</p>
+
+<p><strong>Arbitrary Deletion Limitation</strong></p>
+
+<p>One notable weakness of binary heaps is the cost of <strong>deleting or updating an arbitrary element</strong> that is not the root. Because heaps provide no efficient search — you cannot binary-search a heap — finding a particular element requires scanning all n elements in O(n) time. Once found (or if you maintain an external index mapping elements to their heap positions), you can remove it by replacing it with the last element and running either heapify-up or heapify-down as appropriate in O(log n) time. If the index is not known, the total cost is O(n). This limitation is significant for applications like Dijkstra's algorithm where you need to <em>decrease the priority</em> of already-inserted elements. The standard workaround is lazy deletion (mark the element as deleted and ignore it when it surfaces during extraction) or maintaining a position map alongside the heap.</p>
+
+<p><strong>Heap vs. Fibonacci Heap</strong></p>
+
+<p>The <strong>Fibonacci heap</strong> is a theoretically superior heap variant that achieves <em>amortized O(1)</em> for insert and <em>amortized O(1)</em> for decrease-key (reducing the priority of an existing element), with O(log n) amortized for extract-min. These bounds are what make Fibonacci heaps asymptotically optimal for Dijkstra's shortest-path algorithm on dense graphs (reducing the total complexity from O((V + E) log V) to O(E + V log V)). However, Fibonacci heaps have a notoriously complex implementation involving doubly-linked circular lists, degree tables, and a cascading cut mechanism. Their constant factors are large enough that in practice, for all but the largest and most edge-dense graphs, a simple binary heap or even a <em>d</em>-ary heap (with branching factor d = 4 or d = 8 for better cache behavior) outperforms a Fibonacci heap in wall-clock time. Fibonacci heaps are primarily of theoretical importance and are rarely used in production systems.</p>
+
+<p><strong>Heapsort</strong></p>
+
+<p>One of the most elegant applications of heap operations is <strong>heapsort</strong>: build a max-heap from the unsorted array using Floyd's algorithm in O(n) time, then repeatedly extract the maximum (which is placed at the end of the array) in O(log n) time per extraction, for a total of n extractions costing O(n log n). The result is a fully sorted array. Critically, heapsort is <strong>in-place</strong> — it requires only O(1) additional memory beyond the input array — and has a guaranteed O(n log n) worst-case performance with no dependency on input order. This makes heapsort preferable over quicksort in contexts where worst-case guarantees matter (quicksort degrades to O(n²) on adversarial inputs without randomization). However, quicksort is typically faster in practice due to better cache behavior (sequential access patterns vs. the somewhat irregular access of heapify), so heapsort is more of a theoretical and worst-case tool than an everyday sorting choice.</p>
+
+<p>The following table consolidates the trade-off comparison across data structures for priority queue operations:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Data Structure</th>
+      <th>Insert</th>
+      <th>Extract-Min/Max</th>
+      <th>Peek</th>
+      <th>Arbitrary Search</th>
+      <th>Decrease-Key</th>
+      <th>Sorted Traversal</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Binary Heap (array)</td>
+      <td>O(log n)</td>
+      <td>O(log n)</td>
+      <td>O(1)</td>
+      <td>O(n)</td>
+      <td>O(log n) if index known</td>
+      <td>O(n log n)</td>
+    </tr>
+    <tr>
+      <td>Sorted Array</td>
+      <td>O(n)</td>
+      <td>O(n) (shift) or O(1) (pop end)</td>
+      <td>O(1)</td>
+      <td>O(log n)</td>
+      <td>O(n)</td>
+      <td>O(1) already sorted</td>
+    </tr>
+    <tr>
+      <td>Unsorted Array / List</td>
+      <td>O(1)</td>
+      <td>O(n)</td>
+      <td>O(n)</td>
+      <td>O(n)</td>
+      <td>O(n)</td>
+      <td>O(n log n)</td>
+    </tr>
+    <tr>
+      <td>Balanced BST (AVL/RB)</td>
+      <td>O(log n)</td>
+      <td>O(log n)</td>
+      <td>O(log n)</td>
+      <td>O(log n)</td>
+      <td>O(log n)</td>
+      <td>O(n)</td>
+    </tr>
+    <tr>
+      <td>Fibonacci Heap</td>
+      <td>O(1) amortized</td>
+      <td>O(log n) amortized</td>
+      <td>O(1)</td>
+      <td>O(n)</td>
+      <td>O(1) amortized</td>
+      <td>O(n log n)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>In summary, the binary heap's combination of O(log n) insert, O(log n) extract, O(1) peek, O(n) construction from unsorted data, and a compact array layout with excellent cache behavior makes it the default choice for priority queue implementations in almost all practical contexts. Its limitations — no efficient arbitrary search, no sorted traversal, complex decrease-key — are real but manageable with appropriate design choices such as position maps, lazy deletion, or hybrid structures. Understanding the full trade-off space allows engineers to deploy heaps where they are optimal and recognize the specific scenarios where alternatives are warranted.</p>
+        <div class="notes"><strong>Notes</strong>For additional depth, instructors may want to demonstrate Floyd&#39;s algorithm step-by-step on a small array (e.g., 7 elements) and show the O(n) cost derivation using the sum of heights of nodes at each level. The comparison between heapsort and quicksort in practice (cache locality, branch prediction) is a rich discussion point. The position-map technique for supporting efficient decrease-key in a binary heap (used in optimized Dijkstra implementations) is worth covering separately if graph algorithms are a module focus.</div>
+      </div>
+    </details>
+  </main>
+</body></html>

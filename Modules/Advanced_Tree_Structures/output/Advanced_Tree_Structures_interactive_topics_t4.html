@@ -1,0 +1,251 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Heap Trees and Priority Queues</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+  <style>
+    body { padding-left: 1.1rem; padding-right: 1.1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid rgba(128,128,128,.45); padding: .45em .7em; text-align: left; vertical-align: top; }
+    thead th { background: rgba(128,128,128,.18); font-weight: 600; }
+    tbody tr:nth-child(even) { background: rgba(128,128,128,.08); }
+    a.topic-detail-link { text-decoration: underline; }
+  </style>
+  <style>
+    summary.slide-header { list-style: none; }
+    summary.slide-header::-webkit-details-marker { display: none; }
+    details.slide-card[open] > .slide-body { display: block; }
+    details.slide-card[open] .chevron { transform: rotate(90deg); }
+    @media print { details.slide-card > .slide-body { display: block !important; } .chevron { display: none; } }
+  </style>
+</head><body>
+  <header>
+    <h1>Heap Trees and Priority Queues</h1>
+  </header><main>
+    <details class="slide-card" open>
+      <summary class="slide-header"><span class="slide-num">1</span><h2>Heap Trees and Priority Queues</h2><span class="chevron">▶</span></summary>
+      <div class="slide-body">
+        <p>A <strong>heap tree</strong> is a specialized binary tree data structure that satisfies two fundamental constraints: a strict <em>shape property</em> and an <em>ordering property</em>. Together these constraints make heaps among the most practically useful data structures in computer science, powering everything from operating system schedulers to graph algorithms like Dijkstra's shortest path. Understanding heaps requires first grasping the shape they must maintain, then the rules governing how values are arranged within that shape, and finally the procedures that keep both properties intact as elements are inserted and removed.</p>
+
+<p>The <strong>complete binary tree property</strong> is the shape constraint every heap must satisfy. A complete binary tree is one in which every level except possibly the last is fully filled, and on the last level all nodes are packed as far to the left as possible. This seemingly simple rule has a profound consequence: a complete binary tree with <em>n</em> nodes always has a height of exactly <strong>⌊log₂ n⌋</strong>, which is O(log n). Because the height is logarithmically bounded by the number of elements, any operation that travels from root to leaf or leaf to root is guaranteed to touch at most O(log n) nodes. This is the geometric foundation that gives heaps their efficiency guarantees.</p>
+
+<p>The complete binary tree shape also enables a remarkably efficient <strong>array-based representation</strong> that eliminates the need for pointer fields entirely. If the root is stored at index 0, then for any node stored at index <em>i</em>:</p>
+
+<ul>
+  <li>Its <strong>left child</strong> is at index <code>2i + 1</code></li>
+  <li>Its <strong>right child</strong> is at index <code>2i + 2</code></li>
+  <li>Its <strong>parent</strong> is at index <code>⌊(i − 1) / 2⌋</code></li>
+</ul>
+
+<p>These three formulas replace the left-pointer, right-pointer, and parent-pointer fields that a linked node representation would require. Because all nodes are packed into a contiguous block of memory, iteration and traversal benefit from <strong>cache locality</strong> — the processor can prefetch array elements efficiently, which is a significant real-world performance advantage over pointer-chasing through scattered heap-allocated nodes.</p>
+
+<p>To make this concrete, consider a seven-element min-heap containing the values 3, 5, 8, 10, 12, 15, 20. The array representation and the logical tree look like this:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Array Index</th>
+      <th>Value</th>
+      <th>Left Child Index</th>
+      <th>Right Child Index</th>
+      <th>Parent Index</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>0</td><td>3</td><td>1</td><td>2</td><td>— (root)</td></tr>
+    <tr><td>1</td><td>5</td><td>3</td><td>4</td><td>0</td></tr>
+    <tr><td>2</td><td>8</td><td>5</td><td>6</td><td>0</td></tr>
+    <tr><td>3</td><td>10</td><td>7 (none)</td><td>8 (none)</td><td>1</td></tr>
+    <tr><td>4</td><td>12</td><td>9 (none)</td><td>10 (none)</td><td>1</td></tr>
+    <tr><td>5</td><td>15</td><td>11 (none)</td><td>12 (none)</td><td>2</td></tr>
+    <tr><td>6</td><td>20</td><td>13 (none)</td><td>14 (none)</td><td>2</td></tr>
+  </tbody>
+</table>
+
+<p>The tree is balanced by construction — no pointer bookkeeping needed, no rebalancing rotations as in AVL or red-black trees. The shape is enforced automatically by always adding or removing from the end of the array.</p>
+
+<p>The <strong>ordering property</strong> determines how values are arranged among parent and child nodes, and it comes in two flavors. In a <strong>min-heap</strong>, every parent node holds a value <em>less than or equal to</em> both of its children. This means the <strong>minimum element in the entire collection is always at the root</strong> (index 0), available in O(1) time. In a <strong>max-heap</strong>, every parent holds a value <em>greater than or equal to</em> both of its children, placing the <strong>maximum element at the root</strong>.</p>
+
+<p>A critical subtlety: the heap property is a <em>local</em> constraint between each parent–child pair. It says nothing about the relationship between siblings or between cousins. In the min-heap example above, the values 5 and 8 are siblings, and 5 happens to be less than 8, but that ordering is incidental — nothing in the heap property requires it. This partial ordering is intentional and is what allows the heap to be built and maintained so efficiently compared to a fully sorted structure.</p>
+
+<p>The choice between a min-heap and a max-heap depends entirely on the application's needs. If you need rapid access to the <em>smallest</em> item — such as finding the task with the earliest deadline — a min-heap is the natural choice. If you need rapid access to the <em>largest</em> item — such as finding the highest-priority job in a job scheduler where higher numbers mean higher priority — a max-heap is appropriate. Any min-heap can be converted to a max-heap simply by negating all stored values, a common trick in languages or libraries that provide only one variant.</p>
+
+<p><strong>Insertion</strong> into a heap follows a two-phase process. First, the new element is appended to the end of the underlying array, which corresponds to placing it at the leftmost available position on the bottom level of the tree. This preserves the complete binary tree shape immediately. Second, the <strong>bubble-up</strong> (also called <em>sift-up</em>) procedure restores the ordering property.</p>
+
+<p>Bubble-up works by repeatedly comparing the newly placed element with its parent. If the heap property is violated — for a min-heap, if the new element is smaller than its parent — the two are swapped. This process repeats, moving the element one level upward with each swap, until either the element reaches the root or its parent no longer violates the property. Because the tree height is O(log n), bubble-up performs at most O(log n) comparisons and swaps, giving insertion an <strong>O(log n) time complexity</strong>.</p>
+
+<p>Here is a step-by-step example of inserting the value <strong>4</strong> into the seven-element min-heap from earlier:</p>
+
+<ul>
+  <li><strong>Step 1:</strong> Append 4 at index 7. Its parent is at index ⌊(7−1)/2⌋ = 3, which holds value 10. Since 4 &lt; 10, swap them. Array: [3, 5, 8, 4, 12, 15, 20, 10]</li>
+  <li><strong>Step 2:</strong> Now 4 is at index 3. Its parent is at index ⌊(3−1)/2⌋ = 1, which holds value 5. Since 4 &lt; 5, swap them. Array: [3, 4, 8, 5, 12, 15, 20, 10]</li>
+  <li><strong>Step 3:</strong> Now 4 is at index 1. Its parent is at index 0, which holds value 3. Since 4 &gt; 3, no swap is needed. Bubble-up terminates.</li>
+</ul>
+
+<p>The final array [3, 4, 8, 5, 12, 15, 20, 10] represents a valid min-heap. Notice that 4 bubbled up two levels in two comparisons, and the minimum (3) correctly remains at the root.</p>
+
+<p>A clean Python-style pseudocode for insertion and bubble-up illustrates the logic:</p>
+
+<pre><code>def insert(heap, value):
+    heap.append(value)          # Place at end (shape preserved)
+    i = len(heap) - 1           # Index of new element
+    while i > 0:
+        parent = (i - 1) // 2
+        if heap[i] < heap[parent]:   # Min-heap: child < parent → swap
+            heap[i], heap[parent] = heap[parent], heap[i]
+            i = parent
+        else:
+            break                    # Heap property satisfied
+</code></pre>
+
+<p><strong>Removal</strong> from a heap almost always means removing the <em>root</em> — the element with the highest priority. This is the operation the heap is specifically designed to make efficient. Direct removal of the root would leave a gap that is hard to fill while preserving the complete binary tree structure. The standard solution is elegant: replace the root's value with the value of the <em>last element</em> in the array, then shrink the array by one. The complete tree shape is now preserved again. However, the ordering property is almost certainly violated — the value that was at the bottom of the tree is unlikely to be the smallest (or largest) in the heap. The <strong>bubble-down</strong> (also called <em>sift-down</em> or <em>heapify-down</em>) procedure then restores order.</p>
+
+<p>Sift-down works as follows: starting from the root, compare the displaced element with its children. For a <strong>min-heap</strong>, swap it with the <em>smaller</em> of its two children if that child is smaller than the element itself. For a <strong>max-heap</strong>, swap it with the <em>larger</em> child if that child is larger. Repeat this process, moving downward, until the element is in a position where both children are at least as large (min-heap) or at most as large (max-heap) as it is, or until it reaches a leaf. Again bounded by the tree height, sift-down runs in <strong>O(log n) time</strong>.</p>
+
+<p>Continuing the earlier example, remove the root (3) from [3, 4, 8, 5, 12, 15, 20, 10]:</p>
+
+<ul>
+  <li><strong>Step 1:</strong> Move last element (10) to root. Array becomes [10, 4, 8, 5, 12, 15, 20]. Size is now 7.</li>
+  <li><strong>Step 2:</strong> 10 is at index 0. Children are at index 1 (value 4) and index 2 (value 8). Smaller child is 4. Since 10 &gt; 4, swap. Array: [4, 10, 8, 5, 12, 15, 20].</li>
+  <li><strong>Step 3:</strong> 10 is now at index 1. Children are at index 3 (value 5) and index 4 (value 12). Smaller child is 5. Since 10 &gt; 5, swap. Array: [4, 5, 8, 10, 12, 15, 20].</li>
+  <li><strong>Step 4:</strong> 10 is now at index 3. Its children would be at indices 7 and 8, which are beyond the array bounds — it is a leaf. Sift-down terminates.</li>
+</ul>
+
+<p>The resulting array [4, 5, 8, 10, 12, 15, 20] is a valid min-heap with the original minimum (3) removed. The new minimum (4) is correctly at the root.</p>
+
+<pre><code>def remove_min(heap):
+    if len(heap) == 0:
+        return None
+    min_val = heap[0]
+    heap[0] = heap[-1]      # Move last element to root
+    heap.pop()              # Remove last position
+    sift_down(heap, 0)
+    return min_val
+
+def sift_down(heap, i):
+    n = len(heap)
+    while True:
+        left  = 2 * i + 1
+        right = 2 * i + 2
+        smallest = i
+        if left < n and heap[left] < heap[smallest]:
+            smallest = left
+        if right < n and heap[right] < heap[smallest]:
+            smallest = right
+        if smallest == i:
+            break           # Heap property satisfied
+        heap[i], heap[smallest] = heap[smallest], heap[i]
+        i = smallest
+</code></pre>
+
+<p>A <strong>priority queue</strong> is an abstract data type that generalizes the concept of a queue by associating each element with a <em>priority</em> and always serving the element with the highest priority first, regardless of insertion order. Priority queues appear in a wide range of applications: CPU scheduling (always run the highest-priority process), network packet routing, event-driven simulation (process the soonest event next), Huffman coding (always merge the two lowest-frequency nodes), and graph algorithms like Dijkstra's and Prim's.</p>
+
+<p>The heap is the standard, most efficient general-purpose implementation of a priority queue. The table below compares the time complexities of priority queue operations across three common implementation strategies:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Implementation</th>
+      <th>Insert</th>
+      <th>Remove Min/Max</th>
+      <th>Peek Min/Max</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Unsorted array</td>
+      <td>O(1)</td>
+      <td>O(n)</td>
+      <td>O(n)</td>
+    </tr>
+    <tr>
+      <td>Sorted array</td>
+      <td>O(n)</td>
+      <td>O(1)</td>
+      <td>O(1)</td>
+    </tr>
+    <tr>
+      <td>Binary heap</td>
+      <td>O(log n)</td>
+      <td>O(log n)</td>
+      <td>O(1)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The heap delivers O(1) peek (the highest-priority element is always the root), O(log n) insertion via bubble-up, and O(log n) removal via sift-down. No other simple data structure achieves this balance. An unsorted array is fast to insert into but requires a full scan to find the minimum; a sorted array keeps the minimum at one end but requires shifting elements for each insertion. The heap's logarithmic guarantee for both critical operations makes it the right choice for workloads where both insertions and removals are frequent.</p>
+
+<p>A <strong>min-heap</strong> naturally implements a <em>min-priority queue</em>, where smaller values represent higher priority (such as a task with an earlier deadline being more urgent). A <strong>max-heap</strong> naturally implements a <em>max-priority queue</em>, where larger values represent higher priority (such as a process with a higher priority number getting the CPU first). If a language's standard library provides only one type (Python's <code>heapq</code> module provides only a min-heap, for example), a max-heap can be simulated by negating all values before insertion and negating again after extraction.</p>
+
+<p>The final major heap operation to understand is <strong>heapify</strong> — the process of converting an arbitrary, unordered array into a valid heap <em>in-place</em>. The naive approach would be to insert each of the <em>n</em> elements one by one using the standard insert operation, costing O(n log n) total. Heapify does the job in <strong>O(n)</strong> — a surprising and important result.</p>
+
+<p>The insight behind heapify is that leaf nodes — roughly the bottom half of a complete binary tree — already trivially satisfy the heap property because they have no children. There is no need to process them. Heapify therefore starts at the <strong>last internal (non-leaf) node</strong>, which is at index <code>⌊(n/2) − 1⌋</code> in a zero-indexed array, and applies sift-down to every node from that index down to index 0 (the root).</p>
+
+<pre><code>def heapify(array):
+    n = len(array)
+    # Start from last non-leaf node, work up to root
+    for i in range(n // 2 - 1, -1, -1):
+        sift_down(array, i)
+</code></pre>
+
+<p>Why is this O(n) and not O(n log n)? The key is that nodes at greater depth (closer to the leaves) do far less work during sift-down. A node one level above the leaves can sift down at most 1 level; a node two levels above can sift down at most 2 levels; and so on. Summing the total work across all nodes — accounting for how many nodes exist at each depth and how many levels each can sift down — yields a geometric series that converges to O(n). The formal proof uses the fact that roughly n/2 nodes are leaves (0 work each), n/4 nodes are one level above leaves (at most 1 swap each), n/8 nodes are two levels above (at most 2 swaps each), and the total is bounded by 2n.</p>
+
+<p>To see heapify in action, start with the unordered array [20, 15, 3, 10, 5, 8, 12]. With n = 7, the last non-leaf is at index ⌊7/2⌋ − 1 = 2.</p>
+
+<ul>
+  <li><strong>i = 2 (value 3):</strong> Children are index 5 (8) and index 6 (12). 3 is already smaller than both — no swap needed.</li>
+  <li><strong>i = 1 (value 15):</strong> Children are index 3 (10) and index 4 (5). Smaller child is 5 at index 4. Since 15 &gt; 5, swap. Array: [20, 5, 3, 10, 15, 8, 12]. Now 15 is at index 4, which is a leaf — stop.</li>
+  <li><strong>i = 0 (value 20):</strong> Children are index 1 (5) and index 2 (3). Smaller child is 3 at index 2. Since 20 &gt; 3, swap. Array: [3, 5, 20, 10, 15, 8, 12]. Now 20 is at index 2. Its children are index 5 (8) and index 6 (12). Smaller child is 8. Since 20 &gt; 8, swap. Array: [3, 5, 8, 10, 15, 20, 12]. Now 20 is at index 5, a leaf — stop.</li>
+</ul>
+
+<p>The final array [3, 5, 8, 10, 15, 20, 12] is a valid min-heap built from a random array in O(n) time. Verify: every parent is less than its children (3 &lt; 5 and 8; 5 &lt; 10 and 15; 8 &lt; 20 and 12).</p>
+
+<p>Heapify is the foundational first step in <strong>Heap Sort</strong>, one of the classic O(n log n) comparison-based sorting algorithms. Heap Sort heapifies the input array in O(n), then repeatedly extracts the maximum (using a max-heap) and places it at the end of the array, shrinking the heap by one each time. After n extractions, the array is sorted in ascending order entirely in-place. The complete algorithm runs in O(n log n) worst-case time with O(1) auxiliary space — matching Merge Sort's time complexity while matching Quick Sort's space efficiency, though in practice it is often slower than both due to poorer cache behavior during the repeated sift-down operations.</p>
+
+<p>Taken together, the complete binary tree shape, the parent–child ordering property, bubble-up for insertion, sift-down for removal, and the linear-time heapify procedure form a cohesive and elegant system. Heaps expose only O(1) access to the most important element and O(log n) cost for all modifications — a carefully balanced tradeoff that makes them the backbone of priority queues and a critical building block across algorithms and systems.</p>
+        <div class="notes"><strong>Notes</strong>Covers all listed subtopics in depth: complete binary tree shape and array indexing, min-heap vs. max-heap ordering and sibling relationships, bubble-up insertion with worked example and pseudocode, sift-down removal with worked example and pseudocode, priority queue ADT with comparative complexity table, and heapify with worked example, O(n) justification, and connection to Heap Sort. No headings used; all tabular data rendered as HTML tables.</div>
+      </div>
+    </details>
+  </main>
+</body></html>

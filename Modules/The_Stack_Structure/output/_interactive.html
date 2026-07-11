@@ -1,0 +1,449 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Undo Mechanisms and Other Real-World Use Cases</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+  <style>
+    body { padding-left: 1.1rem; padding-right: 1.1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid rgba(128,128,128,.45); padding: .45em .7em; text-align: left; vertical-align: top; }
+    thead th { background: rgba(128,128,128,.18); font-weight: 600; }
+    tbody tr:nth-child(even) { background: rgba(128,128,128,.08); }
+  </style>
+  <style>
+    summary.slide-header { list-style: none; }
+    summary.slide-header::-webkit-details-marker { display: none; }
+    details.slide-card[open] > .slide-body { display: block; }
+    details.slide-card[open] .chevron { transform: rotate(90deg); }
+    @media print { details.slide-card > .slide-body { display: block !important; } .chevron { display: none; } }
+  </style>
+</head><body>
+  <header>
+    <h1>Undo Mechanisms and Other Real-World Use Cases</h1>
+  </header><main>
+    <details class="slide-card" open>
+      <summary class="slide-header"><span class="slide-num">1</span><h2>Undo Mechanisms and Other Real-World Use Cases</h2><span class="chevron">▶</span></summary>
+      <div class="slide-body">
+        <p>Stacks are among the most elegantly practical data structures in computer science. At first glance, the concept of a last-in, first-out collection might seem abstract, but once you start looking for stacks in the software you use every day, they appear everywhere. From the undo button in a text editor to the way your web browser remembers where you have been, from the invisible machinery that makes function calls work to the algorithms that solve mazes, stacks are the silent engine powering an enormous range of familiar features. Understanding these real-world applications does more than satisfy curiosity — it gives developers a mental model for reasoning about performance, anticipating edge cases, and implementing or debugging features with confidence.</p>
+
+<p>The single defining property of a stack — <strong>Last In, First Out (LIFO)</strong> — is precisely what makes it the right tool for all of these scenarios. In each case, the most recent thing that happened is the first thing that needs to be addressed. That insight is the thread connecting every application discussed below.</p>
+
+<p><strong>The Undo Operation: A Classic Stack Use Case</strong></p>
+
+<p>The undo feature is the textbook example of a stack in action, and for good reason: it maps almost perfectly onto the LIFO principle. Every time a user performs an action in an application — typing a character, deleting a word, changing a font, moving an object — a record of that action is created and <em>pushed</em> onto an <strong>action stack</strong>. The stack grows with each action, preserving the full ordered history of what the user has done.</p>
+
+<p>When the user presses Ctrl+Z (or Cmd+Z on macOS), the application <em>pops</em> the top item from the action stack and reverses it. Because the stack is LIFO, the most recently performed action is always on top and is therefore always the first one undone. This guarantees that actions are reversed in the exact reverse order they were performed — which is exactly what users expect. If you typed "Hello", then bolded it, then changed the font size, pressing undo three times will reverse the font size change first, then remove the bold, then remove the typed text. Any other order would feel broken.</p>
+
+<p>Consider a simplified representation of that sequence:</p>
+
+<pre><code>Action Stack after three operations:
+┌─────────────────────────────┐
+│  [TOP] Change font size     │  ← popped first on undo
+│        Apply bold           │  ← popped second on undo
+│        Type "Hello"         │  ← popped third on undo
+└─────────────────────────────┘
+</code></pre>
+
+<p>A well-designed undo system also supports <strong>redo</strong>. When an action is popped off the action stack during an undo, it is not simply discarded — it is <em>pushed</em> onto a separate <strong>redo stack</strong>. This means the user can reapply an action that was just undone. Pressing Ctrl+Y (or Ctrl+Shift+Z) pops from the redo stack and pushes back onto the action stack, moving the application forward again.</p>
+
+<p>There is one important nuance: if the user performs a <em>new</em> action after undoing some steps, the redo stack is typically cleared. This makes sense — the user has branched off in a new direction, so the previously undone future is no longer reachable. This behavior is a direct consequence of treating history as a linear stack rather than a tree of possibilities.</p>
+
+<p>In code, a basic undo/redo manager might look like this:</p>
+
+<pre><code>class UndoManager:
+    def __init__(self):
+        self.action_stack = []   # Stores performed actions
+        self.redo_stack = []     # Stores undone actions
+
+    def perform(self, action):
+        action.execute()
+        self.action_stack.append(action)  # Push onto action stack
+        self.redo_stack.clear()           # New action clears redo history
+
+    def undo(self):
+        if self.action_stack:
+            action = self.action_stack.pop()   # Pop last action
+            action.reverse()
+            self.redo_stack.append(action)     # Push onto redo stack
+
+    def redo(self):
+        if self.redo_stack:
+            action = self.redo_stack.pop()     # Pop from redo stack
+            action.execute()
+            self.action_stack.append(action)   # Push back onto action stack
+</code></pre>
+
+<p>Each <code>action</code> object knows how to execute itself and how to reverse itself. The two stacks work in concert to give the user full control over their history. This pattern is sometimes formalized as the <strong>Command design pattern</strong> in object-oriented programming, where each user operation is encapsulated as an object — but the stack mechanism underneath remains the same.</p>
+
+<p><strong>Browser History and Navigation</strong></p>
+
+<p>Web browsers provide another beautifully intuitive example of stack behavior. As you navigate from page to page, each new URL you visit is <em>pushed</em> onto a <strong>history stack</strong>. The stack at any given moment represents the sequence of pages you have visited, with the most recently visited page sitting on top.</p>
+
+<p>When you click the <strong>Back</strong> button, the browser <em>pops</em> the current page off the stack and navigates to the page that is now on top — the one you visited immediately before. This is pure LIFO behavior. Clicking Back repeatedly continues popping pages in reverse order, retracing your navigation path exactly.</p>
+
+<p>Many browsers implement this with <em>two</em> stacks, very much like the undo/redo pattern:</p>
+
+<ul>
+  <li><strong>Back stack:</strong> Holds the history of pages visited, with the current page on top.</li>
+  <li><strong>Forward stack:</strong> Holds pages that were visited but then navigated away from using the Back button.</li>
+</ul>
+
+<p>When you press Back, the current page is popped from the back stack and pushed onto the forward stack. When you press Forward, the top of the forward stack is popped and pushed back onto the back stack. This is exactly analogous to the undo/redo stacks described above.</p>
+
+<p>The critical moment that confirms the stack semantics is what happens when you navigate to a <em>brand-new page</em> after having pressed Back. The forward stack is cleared entirely. Just as with undo history, branching off in a new direction invalidates the previously accessible future. You cannot go forward to pages that are no longer part of your current navigation path.</p>
+
+<pre><code>Example navigation sequence:
+
+Visit A → Visit B → Visit C
+Back stack: [A, B, C]  (C is current, on top)
+Forward stack: []
+
+Press Back:
+Back stack: [A, B]     (B is now current)
+Forward stack: [C]
+
+Press Back again:
+Back stack: [A]        (A is now current)
+Forward stack: [C, B]
+
+Now visit NEW page D:
+Back stack: [A, D]     (D is now current)
+Forward stack: []      ← forward history is wiped
+</code></pre>
+
+<p>Modern browsers also expose this stack behavior programmatically through the <strong>History API</strong> in JavaScript, allowing single-page applications to push and replace entries on the history stack without full page reloads:</p>
+
+<pre><code>// Push a new state onto the history stack
+history.pushState({ page: 'profile' }, 'Profile', '/profile');
+
+// Replace the current top of the stack without adding a new entry
+history.replaceState({ page: 'home' }, 'Home', '/');
+
+// Navigate programmatically
+history.back();    // equivalent to pressing Back
+history.forward(); // equivalent to pressing Forward
+history.go(-2);    // go back two entries
+</code></pre>
+
+<p><strong>The Call Stack in Program Execution</strong></p>
+
+<p>Perhaps the most fundamental and universal use of a stack in computing is the <strong>call stack</strong>, also known as the execution stack or runtime stack. Every time a program calls a function, the runtime must keep track of where to return when that function finishes. The call stack is the mechanism that makes this possible.</p>
+
+<p>When a function is invoked, a <strong>stack frame</strong> (also called an activation record) is <em>pushed</em> onto the call stack. This frame contains:</p>
+
+<ul>
+  <li>The function's <strong>local variables</strong></li>
+  <li>The function's <strong>parameters</strong></li>
+  <li>The <strong>return address</strong> — the location in the calling function's code where execution should resume after this function returns</li>
+  <li>Sometimes a reference to the calling frame (for debugging and stack unwinding)</li>
+</ul>
+
+<p>When the function finishes executing, its frame is <em>popped</em> off the stack, and execution resumes at the return address stored in that frame — which puts control back in the function that made the call. This process repeats for every function call, no matter how deeply nested.</p>
+
+<p>Consider this simple chain of function calls:</p>
+
+<pre><code>def main():
+    result = add(3, 4)
+    print(result)
+
+def add(a, b):
+    return multiply(a) + multiply(b)
+
+def multiply(x):
+    return x * 2
+
+main()
+</code></pre>
+
+<p>The call stack evolves like this:</p>
+
+<pre><code>1. main() is called:
+   Stack: [main]
+
+2. main calls add(3, 4):
+   Stack: [main, add]
+
+3. add calls multiply(3):
+   Stack: [main, add, multiply]
+
+4. multiply(3) returns 6, frame popped:
+   Stack: [main, add]
+
+5. add calls multiply(4):
+   Stack: [main, add, multiply]
+
+6. multiply(4) returns 8, frame popped:
+   Stack: [main, add]
+
+7. add returns 14, frame popped:
+   Stack: [main]
+
+8. main finishes, frame popped:
+   Stack: []
+</code></pre>
+
+<p>This is also why <strong>recursive functions</strong> can be dangerous if the recursion is too deep. Each recursive call adds a new frame to the stack. If the base case is never reached, or if the input is enormous, the stack eventually runs out of memory. This produces the infamous <strong>stack overflow error</strong> — a name that literally describes the stack overflowing its allocated memory space. The popular programming Q&A website Stack Overflow is named after this very phenomenon.</p>
+
+<pre><code>def infinite_recursion():
+    return infinite_recursion()  # Each call pushes a frame, none are popped
+
+infinite_recursion()
+# RecursionError: maximum recursion depth exceeded
+</code></pre>
+
+<p>Understanding the call stack also helps explain concepts like <strong>stack traces</strong> in error messages. When an exception is raised, the runtime prints the current contents of the call stack — the sequence of function calls that led to the error — giving developers a precise map of how execution arrived at the problem.</p>
+
+<p><strong>Expression Evaluation and Syntax Parsing</strong></p>
+
+<p>Stacks are indispensable tools in the parsing and evaluation of expressions, appearing in tasks ranging from simple bracket matching to full arithmetic evaluation.</p>
+
+<p><em>Bracket Matching</em></p>
+
+<p>A very common programming interview problem — and a very real compiler task — is determining whether a string of brackets is properly balanced. The stack solution is elegant: scan the string from left to right, and whenever you encounter an <strong>opening bracket</strong> (<code>(</code>, <code>[</code>, or <code>{</code>), push it onto the stack. Whenever you encounter a <strong>closing bracket</strong>, pop the top of the stack and check whether it matches the closing bracket's corresponding opener.</p>
+
+<ul>
+  <li>If the stack is <strong>empty</strong> when a closing bracket appears, there is no matching opener — the expression is invalid.</li>
+  <li>If the popped opener <strong>does not match</strong> the closing bracket (e.g., you find <code>)</code> but the top of the stack was <code>[</code>), the expression is invalid.</li>
+  <li>If after scanning the entire string the stack is <strong>not empty</strong>, there are unmatched openers — the expression is invalid.</li>
+  <li>Only if all closing brackets were matched and the stack is empty at the end is the expression valid.</li>
+</ul>
+
+<pre><code>def is_balanced(expression):
+    stack = []
+    matching = {')': '(', ']': '[', '}': '{'}
+    openers = set(matching.values())
+
+    for char in expression:
+        if char in openers:
+            stack.append(char)          # Push opening bracket
+        elif char in matching:
+            if not stack or stack[-1] != matching[char]:
+                return False            # Empty stack or mismatch
+            stack.pop()                 # Pop matching opener
+
+    return len(stack) == 0             # True only if all matched
+
+print(is_balanced("({[]})"))   # True
+print(is_balanced("({[})"))    # False — mismatch
+print(is_balanced("((()"))     # False — unclosed openers remain
+</code></pre>
+
+<p><em>Operator Precedence and the Shunting Yard Algorithm</em></p>
+
+<p>Evaluating arithmetic expressions like <code>3 + 4 * 2</code> correctly requires respecting operator precedence (multiplication before addition). The <strong>Shunting Yard Algorithm</strong>, devised by Edsger Dijkstra, uses a stack to hold operators while reordering an infix expression (the way humans write it) into postfix notation (also called Reverse Polish Notation), which is easier for computers to evaluate.</p>
+
+<p>In the process, operators are pushed onto and popped from the stack according to their precedence. A higher-precedence operator that is already on the stack gets applied before a new lower-precedence operator is pushed. This ensures that <code>*</code> is applied before <code>+</code>, even though <code>+</code> appeared first in the expression.</p>
+
+<p>The following table summarizes the stack state at each step for the expression <code>3 + 4 * 2</code>:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Token Read</th>
+      <th>Action</th>
+      <th>Operator Stack</th>
+      <th>Output Queue</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>3</td>
+      <td>Output number directly</td>
+      <td>[]</td>
+      <td>[3]</td>
+    </tr>
+    <tr>
+      <td>+</td>
+      <td>Push operator</td>
+      <td>[+]</td>
+      <td>[3]</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>Output number directly</td>
+      <td>[+]</td>
+      <td>[3, 4]</td>
+    </tr>
+    <tr>
+      <td>*</td>
+      <td>Push operator (* &gt; +)</td>
+      <td>[+, *]</td>
+      <td>[3, 4]</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Output number directly</td>
+      <td>[+, *]</td>
+      <td>[3, 4, 2]</td>
+    </tr>
+    <tr>
+      <td>(end)</td>
+      <td>Pop all remaining operators</td>
+      <td>[]</td>
+      <td>[3, 4, 2, *, +]</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The output <code>3 4 2 * +</code> is postfix notation. Evaluating it with another stack yields <code>(4 * 2) + 3 = 11</code>, the correct result. Compilers and interpreters use variations of this technique to parse and evaluate source code expressions.</p>
+
+<p><strong>Backtracking Algorithms</strong></p>
+
+<p>Backtracking is a problem-solving strategy used when you need to explore multiple possible paths and retreat when a path proves unfruitful. Stacks are the natural mechanism for implementing backtracking, because they let you save your current state before exploring a new direction and restore it exactly if that direction fails.</p>
+
+<p>The general pattern is:</p>
+
+<ul>
+  <li>At each <strong>decision point</strong>, push the current state (position, partial solution, remaining choices) onto the stack.</li>
+  <li>Explore one possible next step.</li>
+  <li>If that step leads to a dead end, <em>pop</em> the last saved state from the stack and try a different option — this is the "backtrack" step.</li>
+  <li>Continue until a solution is found or all possibilities are exhausted.</li>
+</ul>
+
+<p>A <strong>maze solver</strong> is the classic illustration. Imagine navigating a grid where some cells are walls and others are open paths. Starting from the entrance, at each open cell you may be able to go in multiple directions. You pick one, move, and save your position. If you hit a dead end — a cell with no unvisited neighbors — you pop the stack to return to the last junction and try a different direction.</p>
+
+<pre><code>def solve_maze(maze, start, end):
+    stack = [start]         # Begin with starting position
+    visited = set()
+    visited.add(start)
+    parent = {start: None}  # Track path for reconstruction
+
+    while stack:
+        current = stack.pop()   # Pop current position
+
+        if current == end:
+            return reconstruct_path(parent, end)
+
+        row, col = current
+        for dr, dc in [(-1,0),(1,0),(0,-1),(0,1)]:  # Four directions
+            neighbor = (row + dr, col + dc)
+            if is_valid(maze, neighbor) and neighbor not in visited:
+                visited.add(neighbor)
+                parent[neighbor] = current
+                stack.append(neighbor)  # Push new position to explore
+
+    return None  # No path found
+</code></pre>
+
+<p>This iterative approach using an explicit stack is equivalent to the recursive depth-first search, where the call stack itself serves as the implicit backtracking mechanism. In fact, any recursive backtracking algorithm can be rewritten using an explicit stack, and understanding this equivalence is a powerful insight.</p>
+
+<p>Beyond maze solving, backtracking with a stack powers a wide variety of algorithms:</p>
+
+<ul>
+  <li><strong>Puzzle solvers:</strong> Sudoku, the N-Queens problem, and crossword generation all use backtracking to explore candidate placements and retreat when a contradiction is found.</li>
+  <li><strong>Constraint satisfaction problems (CSPs):</strong> Scheduling problems, graph coloring, and logic puzzles are solved by assigning values, detecting violations, and backtracking to try different assignments.</li>
+  <li><strong>Game tree search:</strong> Simple game AIs explore possible moves using a stack-based depth-first search, backtracking when a branch is evaluated or pruned.</li>
+  <li><strong>File system traversal:</strong> Walking a directory tree depth-first uses a stack to push subdirectories and pop them when their contents have been processed.</li>
+</ul>
+
+<p><strong>Connecting Abstract Concepts to Familiar Tools</strong></p>
+
+<p>A crucial insight for any developer is that abstract data structures are not theoretical curiosities invented for computer science textbooks — they are the hidden infrastructure behind the software features that billions of people use every day. The undo button in a word processor, the Back button in a browser, the error trace that appears when a program crashes, the way a compiler checks that your parentheses are balanced: all of these are stacks in disguise.</p>
+
+<p>Recognizing a stack when you encounter one in a real application has several practical benefits:</p>
+
+<ul>
+  <li><strong>Reasoning about performance:</strong> Stack operations (push and pop) are O(1) — constant time — which means undo and redo operations are extremely fast regardless of how long the undo history is. Knowing this helps you set appropriate expectations and spot potential bottlenecks elsewhere (such as the storage cost of maintaining a very long history).</li>
+  <li><strong>Understanding limitations:</strong> A stack-based undo system is inherently linear — it does not support branching history. If you want a "version tree" where multiple alternative futures can coexist, you need a more complex data structure. Knowing the stack model's limitations tells you when to reach for something else.</li>
+  <li><strong>Implementing features correctly:</strong> If you are building an application that needs undo functionality, knowing the stack pattern means you can implement it systematically and correctly from the start, rather than reinventing it ad hoc.</li>
+  <li><strong>Debugging more effectively:</strong> When a call stack trace appears in an error message, understanding that it represents a stack of function frames lets you read it correctly — from the most recent call (top) back to the original entry point (bottom).</li>
+</ul>
+
+<p>The following table summarizes the real-world applications covered and maps each to the corresponding stack operations:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Application</th>
+      <th>Push Operation</th>
+      <th>Pop Operation</th>
+      <th>Stack Overflow / Edge Case</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Undo / Redo</td>
+      <td>User performs an action</td>
+      <td>User triggers undo</td>
+      <td>New action clears redo stack</td>
+    </tr>
+    <tr>
+      <td>Browser History</td>
+      <td>User visits a new URL</td>
+      <td>User clicks Back</td>
+      <td>New navigation clears forward stack</td>
+    </tr>
+    <tr>
+      <td>Call Stack</td>
+      <td>Function is called</td>
+      <td>Function returns</td>
+      <td>Infinite recursion causes stack overflow</td>
+    </tr>
+    <tr>
+      <td>Bracket Matching</td>
+      <td>Opening bracket encountered</td>
+      <td>Closing bracket encountered</td>
+      <td>Empty stack on close = unmatched bracket</td>
+    </tr>
+    <tr>
+      <td>Expression Evaluation</td>
+      <td>Operator pushed (Shunting Yard)</td>
+      <td>Operator applied to operands</td>
+      <td>Mismatched parentheses = parse error</td>
+    </tr>
+    <tr>
+      <td>Backtracking / Maze Solving</td>
+      <td>Decision point state is saved</td>
+      <td>Dead end reached — restore state</td>
+      <td>Empty stack = no solution exists</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The power of truly understanding a data structure is that you stop seeing it only as an abstract concept and start recognizing it as a tool with a specific shape — one that fits certain problems perfectly and fits others poorly. Stacks are the right shape for any problem where the most recent thing is the most important thing, where you need to reverse a sequence, or where you need to remember where you came from in order to find your way back. Once that shape becomes familiar, you will spot opportunities to use it — and opportunities to avoid misusing it — throughout your career as a developer.</p>
+        <div class="notes"><strong>Notes</strong>The undo/redo dual-stack pattern is directly analogous to browser back/forward navigation — students who draw this comparison explicitly tend to retain both concepts better. Consider asking students to sketch the state of both stacks after a sequence of actions as a quick comprehension exercise. The call stack discussion pairs naturally with any upcoming content on recursion and recursion depth limits.</div>
+      </div>
+    </details>
+  </main>
+</body></html>

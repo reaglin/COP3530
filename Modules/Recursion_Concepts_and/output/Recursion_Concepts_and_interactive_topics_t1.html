@@ -1,0 +1,226 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>What is Recursion?</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+  <style>
+    body { padding-left: 1.1rem; padding-right: 1.1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid rgba(128,128,128,.45); padding: .45em .7em; text-align: left; vertical-align: top; }
+    thead th { background: rgba(128,128,128,.18); font-weight: 600; }
+    tbody tr:nth-child(even) { background: rgba(128,128,128,.08); }
+    a.topic-detail-link { text-decoration: underline; }
+  </style>
+  <style>
+    summary.slide-header { list-style: none; }
+    summary.slide-header::-webkit-details-marker { display: none; }
+    details.slide-card[open] > .slide-body { display: block; }
+    details.slide-card[open] .chevron { transform: rotate(90deg); }
+    @media print { details.slide-card > .slide-body { display: block !important; } .chevron { display: none; } }
+  </style>
+</head><body>
+  <header>
+    <h1>What is Recursion?</h1>
+  </header><main>
+    <details class="slide-card" open>
+      <summary class="slide-header"><span class="slide-num">1</span><h2>What is Recursion?</h2><span class="chevron">▶</span></summary>
+      <div class="slide-body">
+        <p>Recursion is one of the most elegant and powerful ideas in all of computer science. At its core, recursion is a programming technique where a function solves a problem by calling itself as part of its own definition. Rather than relying on an external loop to repeat an operation, a recursive function breaks a problem into a smaller version of the same problem and delegates that smaller version to a fresh call of itself. This continues until the problem becomes so small and simple that it can be answered directly, without any further self-calls. That direct answer then propagates back through all the waiting calls, assembling the final solution piece by piece.</p>
+
+<p>To understand why this is valuable, consider how many real-world problems are <em>naturally self-similar</em>: a family tree is made of a person connected to smaller family trees; a folder on your computer contains files and other folders, each of which may contain more files and folders; the rules of many games can be described in terms of the game's own sub-states. Recursion gives programmers a direct and readable way to express solutions for problems that share this character.</p>
+
+<p><strong>Defining Recursion</strong></p>
+
+<p>A recursive function is formally defined as a function that invokes itself — either <em>directly</em>, by including its own name in a call within its body, or <em>indirectly</em>, where function A calls function B, which in turn calls function A again. The direct form is far more common and is the focus of most introductory treatments.</p>
+
+<p>The critical idea is that each self-call must be working on a <em>simpler or smaller</em> version of the original problem. If every call reduces the problem in some meaningful way, the function is making genuine progress. If no reduction happens, the function will loop forever (or until the system runs out of memory for tracking calls), which is a common and important mistake to avoid.</p>
+
+<p>Here is the simplest possible illustration — computing the factorial of a non-negative integer. The factorial of <em>n</em> (written <em>n!</em>) is defined as <em>n × (n−1) × (n−2) × … × 1</em>, with the special case that <em>0! = 1</em>. Notice that <em>n! = n × (n−1)!</em>. That relationship — factorial expressed in terms of a smaller factorial — is what makes a recursive solution natural:</p>
+
+<pre><code>def factorial(n):
+    if n == 0:          # base case: the problem is small enough to answer directly
+        return 1
+    return n * factorial(n - 1)   # recursive case: delegate to a smaller problem
+
+print(factorial(5))   # Output: 120
+</code></pre>
+
+<p>When <code>factorial(5)</code> runs, it needs <code>factorial(4)</code>. That call needs <code>factorial(3)</code>, and so on, until <code>factorial(0)</code> returns <code>1</code> immediately. The chain of waiting multiplications then resolves back up: <code>1 × 1 = 1</code>, then <code>2 × 1 = 2</code>, then <code>3 × 2 = 6</code>, then <code>4 × 6 = 24</code>, then <code>5 × 24 = 120</code>. Recursion is happening, but it does not feel mysterious once you trace it step by step.</p>
+
+<p><strong>The Self-Referential Nature of Recursive Thinking</strong></p>
+
+<p>Writing recursive code is really a secondary skill. The primary skill is <em>recursive thinking</em> — the ability to look at a problem and ask: "Does this problem contain a smaller copy of itself?" If the answer is yes, you have identified the self-similar structure that makes recursion applicable.</p>
+
+<p>Consider the problem of summing a list of numbers. You could think of it iteratively: go through each element one by one and add it to a running total. Or you could think recursively: the sum of a list is the <em>first element</em> plus the sum of <em>the rest of the list</em>. That "rest of the list" is a smaller list — a smaller instance of the same problem. Once you see that, the recursive solution almost writes itself:</p>
+
+<pre><code>def list_sum(numbers):
+    if len(numbers) == 0:    # base case: empty list sums to zero
+        return 0
+    return numbers[0] + list_sum(numbers[1:])   # first element + sum of the rest
+
+print(list_sum([3, 7, 2, 8]))   # Output: 20
+</code></pre>
+
+<p>Recognizing this pattern — that the solution to the whole can be built from the solution to a part — is the essential first step before writing a single line of recursive code. Experienced programmers often describe this as "trusting the recursion": you assume the function already works for the smaller case and simply define how to combine its result with the current step.</p>
+
+<p><strong>Recursion vs. Iteration</strong></p>
+
+<p>Iteration and recursion are two fundamentally different strategies for achieving repetition. Neither is universally superior; each has strengths that make it the better choice in particular contexts.</p>
+
+<p><strong>Iteration</strong> uses explicit loop constructs — <code>for</code> loops, <code>while</code> loops — to repeat a block of code. The programmer explicitly manages a counter or pointer that advances with each iteration, and the loop continues as long as some condition holds. Iterative solutions tend to be very efficient because they avoid the overhead of making many function calls, and they are generally easy to reason about for straightforward sequential tasks.</p>
+
+<p><strong>Recursion</strong> achieves repetition by having the function call itself. There is no explicit loop variable; instead, the "state" of the computation is carried implicitly in the chain of function calls. Each call represents one level of the problem. The function advances toward a stopping point not by incrementing a counter, but by passing a progressively simpler argument to the next call.</p>
+
+<p>The following table contrasts the two approaches for computing a factorial, side by side:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Aspect</th>
+      <th>Iterative Factorial</th>
+      <th>Recursive Factorial</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Mechanism</td>
+      <td>A <code>for</code> loop multiplies a running product</td>
+      <td>The function calls itself with <code>n - 1</code></td>
+    </tr>
+    <tr>
+      <td>State management</td>
+      <td>Explicit variable (<code>result</code>) updated each iteration</td>
+      <td>State is implicit in the call stack</td>
+    </tr>
+    <tr>
+      <td>Stopping condition</td>
+      <td>Loop range ends at 1</td>
+      <td>Base case returns 1 when <code>n == 0</code></td>
+    </tr>
+    <tr>
+      <td>Code readability</td>
+      <td>Clear and familiar to most programmers</td>
+      <td>Mirrors the mathematical definition directly</td>
+    </tr>
+    <tr>
+      <td>Risk</td>
+      <td>Off-by-one errors in loop boundaries</td>
+      <td>Infinite recursion if base case is missing</td>
+    </tr>
+  </tbody>
+</table>
+
+<pre><code># Iterative version
+def factorial_iterative(n):
+    result = 1
+    for i in range(2, n + 1):
+        result *= i
+    return result
+
+# Recursive version
+def factorial_recursive(n):
+    if n == 0:
+        return 1
+    return n * factorial_recursive(n - 1)
+</code></pre>
+
+<p>Recursion is generally preferred when the problem structure is <em>naturally hierarchical or self-similar</em> — when thinking iteratively would require you to manually simulate the call stack with your own data structure (a stack, a queue, etc.). Tree traversal is a classic example: visiting every node in a tree is straightforward recursively but noticeably more complex with an explicit loop and a manually managed stack.</p>
+
+<p><strong>Why Recursion Matters as a Strategy</strong></p>
+
+<p>Recursion is not just an academic curiosity. It appears at the heart of some of the most important algorithms and data structures in computing. Grasping recursion as a <em>strategy</em> — a deliberate, systematic way of thinking about problems — opens the door to a wide range of solutions that would be difficult or unnatural to express any other way.</p>
+
+<ul>
+  <li><strong>Classic mathematical algorithms:</strong> Factorial, Fibonacci numbers, computing the greatest common divisor (GCD) via Euclid's algorithm, and exponentiation by repeated squaring are all naturally expressed recursively. Their recursive definitions are often identical to their mathematical definitions, making the code self-documenting.</li>
+  <li><strong>Divide-and-conquer algorithms:</strong> Merge sort and quicksort — two of the most widely used sorting algorithms — are fundamentally recursive. They divide an array into halves, sort each half recursively, and combine the results. The recursive structure is essential to both their logic and their efficiency.</li>
+  <li><strong>Tree and graph traversal:</strong> Binary search trees, file system hierarchies, HTML document trees (the DOM), and abstract syntax trees in compilers are all recursive data structures. The most natural way to visit every node or search for a value in such structures is with a recursive function that applies the same logic at every level.</li>
+  <li><strong>Backtracking and search problems:</strong> Solving mazes, generating all permutations of a set, solving Sudoku puzzles, and the classic N-Queens problem all rely on recursive backtracking — a strategy where you make a choice, recurse into the consequences of that choice, and "undo" the choice if it leads to a dead end.</li>
+</ul>
+
+<p>Understanding recursion as a strategy, rather than as a syntax trick, is what allows a programmer to look at an unfamiliar problem, recognize its self-similar structure, and design a solution systematically.</p>
+
+<p><strong>The Conceptual Building Blocks of a Recursive Function</strong></p>
+
+<p>Every correct recursive function is built from exactly two conceptual components. They are distinct in purpose, and keeping them clearly separated in your thinking is the key to writing recursion that works correctly.</p>
+
+<p>The <strong>base case</strong> (also called the stopping condition or termination condition) is the version of the problem that is simple enough to be answered directly, without any further self-calls. It is the foundation on which the entire recursive structure rests. Without a base case, a recursive function would call itself without end — each call generating another, until the program crashes with a <em>stack overflow</em> error (the system runs out of space to track all the pending calls).</p>
+
+<p>The <strong>recursive case</strong> (also called the inductive step or general case) is where the function calls itself. Critically, this self-call must be made with an argument (or arguments) that represent a <em>strictly smaller or simpler</em> version of the problem. Each recursive call must move the function closer to the base case. If it does not — if every call passes the same argument, or an argument that grows rather than shrinks — the function will again recurse infinitely.</p>
+
+<p>These two building blocks work in harmony: the recursive case breaks the problem down, and the base case catches it when it has been broken down far enough. Consider a function that counts down from a number to zero:</p>
+
+<pre><code>def countdown(n):
+    if n < 0:           # base case: nothing left to count
+        return
+    print(n)
+    countdown(n - 1)    # recursive case: smaller problem (n reduced by 1)
+
+countdown(5)
+# Output:
+# 5
+# 4
+# 3
+# 2
+# 1
+# 0
+</code></pre>
+
+<p>Here, the base case is <code>n &lt; 0</code> — when we reach that point, we stop. The recursive case passes <code>n - 1</code>, so each call is provably one step closer to the base case. The two roles are distinct and clear. In contrast, look at what happens when the base case is missing:</p>
+
+<pre><code># BROKEN: no base case
+def infinite_countdown(n):
+    print(n)
+    infinite_countdown(n - 1)   # keeps going forever
+</code></pre>
+
+<p>This function will print decreasing numbers until Python raises a <code>RecursionError: maximum recursion depth exceeded</code>. Python (and most languages) enforce a maximum call depth precisely to protect against this kind of runaway recursion.</p>
+
+<p>A useful mental model is to think of a recursive function as making a <em>promise</em> to a problem: "I can solve you if you tell me the solution to this slightly smaller version of yourself." The base case is the one problem that needs no such promise — it can be solved outright, and from that foundation, every larger problem can be solved by collecting on the promises made along the way.</p>
+
+<p>In summary, recursion is a legitimate, widely used, and often beautiful alternative to iteration. It is grounded in the observation that many problems contain smaller instances of themselves. A recursive function captures this self-similarity directly in code, using a base case to stop and a recursive case to make progress. Mastering the <em>thinking</em> behind recursion — identifying self-similar structure and trusting the mechanism — is what separates a programmer who uses it reluctantly from one who uses it naturally and effectively.</p>
+        <div class="notes"><strong>Notes</strong>This topic establishes the conceptual and strategic foundation for recursion. All code examples are in Python for consistency and readability. The factorial example is used both for the definition section and the iteration-vs-recursion comparison to allow direct side-by-side contrast. The broken infinite recursion example is included deliberately to reinforce why the base case is non-negotiable. Instructors may wish to have students trace the factorial(5) call stack on paper before moving to more complex examples.</div>
+      </div>
+    </details>
+  </main>
+</body></html>

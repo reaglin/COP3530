@@ -1,0 +1,280 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cryptographic Hash Functions</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+  <style>
+    body { padding-left: 1.1rem; padding-right: 1.1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid rgba(128,128,128,.45); padding: .45em .7em; text-align: left; vertical-align: top; }
+    thead th { background: rgba(128,128,128,.18); font-weight: 600; }
+    tbody tr:nth-child(even) { background: rgba(128,128,128,.08); }
+    a.topic-detail-link { text-decoration: underline; }
+  </style>
+  <style>
+    summary.slide-header { list-style: none; }
+    summary.slide-header::-webkit-details-marker { display: none; }
+    details.slide-card[open] > .slide-body { display: block; }
+    details.slide-card[open] .chevron { transform: rotate(90deg); }
+    @media print { details.slide-card > .slide-body { display: block !important; } .chevron { display: none; } }
+  </style>
+</head><body>
+  <header>
+    <h1>Cryptographic Hash Functions</h1>
+  </header><main>
+    <details class="slide-card" open>
+      <summary class="slide-header"><span class="slide-num">1</span><h2>Cryptographic Hash Functions</h2><span class="chevron">▶</span></summary>
+      <div class="slide-body">
+        <p>Cryptographic hash functions are among the most fundamental building blocks of modern information security. At their core, they are mathematical algorithms that take an input of arbitrary length — a single character, a multi-gigabyte file, or anything in between — and produce a fixed-length output commonly called a <strong>digest</strong> or <strong>hash</strong>. This output is a compact fingerprint of the original data. However, what separates a <em>cryptographic</em> hash function from a general-purpose one (like those used in hash tables or checksums) is a carefully defined set of security properties that make the function suitable for protecting sensitive systems. Understanding these properties — and the specific algorithms that embody them — is essential for anyone working in security engineering, software development, or systems administration.</p>
+
+<p>To appreciate why these properties matter, consider the broad range of tasks that depend on cryptographic hashing: verifying that a downloaded file has not been tampered with, storing user passwords securely, enabling digital signatures on legal documents, and authenticating messages across untrusted networks. Each of these use cases depends on guarantees that ordinary hash functions simply cannot provide.</p>
+
+<p><strong>What Makes a Hash Function Cryptographic</strong></p>
+
+<p>The first distinguishing characteristic of a cryptographic hash function is that it always produces a <strong>fixed-length output</strong> regardless of input size. Whether you hash the single word "hello" or the complete text of an encyclopedia, the resulting digest is always the same number of bits. For SHA-256, for example, every output is exactly 256 bits (32 bytes), represented as a 64-character hexadecimal string. This predictability of output length is critical because downstream systems — signature algorithms, certificate formats, protocol fields — must know exactly how much space to allocate for a hash value.</p>
+
+<p>Second, cryptographic hash functions are <strong>deterministic</strong>: the same input always produces the same output. This is what makes them useful for verification. If you hash a file today and record the digest, then hash the same file tomorrow, you must get the same result if nothing changed. Without determinism, integrity checking would be impossible.</p>
+
+<p>Third, they must be <strong>computationally efficient in the forward direction</strong>. Computing <code>hash(m)</code> for any message <code>m</code> should be fast — taking milliseconds even for large inputs on modern hardware. This efficiency is necessary because hashing is performed constantly in production systems: every HTTPS connection, every code repository commit, every password authentication event involves at least one hash computation. However, this efficiency must coexist with the requirement that the reverse operation — recovering <code>m</code> from <code>hash(m)</code> — is <em>practically infeasible</em>. This one-way nature is not enforced by law or policy; it is a mathematical property baked into the design of the function through carefully constructed compression operations and non-linear transformations.</p>
+
+<p>The contrast with non-cryptographic hash functions is stark. A hash function used inside a hash table (like those in Python's <code>dict</code> or Java's <code>HashMap</code>) is designed purely for speed and even distribution of keys across buckets. It carries no security guarantees whatsoever. An attacker who knows the hash function can craft inputs that all map to the same bucket, causing a denial-of-service through hash flooding. Cryptographic hash functions, by contrast, are hardened against deliberate adversarial manipulation — that is their entire purpose.</p>
+
+<p><strong>Preimage Resistance</strong></p>
+
+<p>Preimage resistance comes in two forms, and both are essential to the security of systems that rely on hashing.</p>
+
+<p><strong>First preimage resistance</strong> means that given a hash output <code>h</code>, it is computationally infeasible to find <em>any</em> input <code>m</code> such that <code>hash(m) = h</code>. This is what we usually mean when we say a hash function is "one-way." The attacker knows the digest but cannot work backward to discover what produced it. For a 256-bit hash, the brute-force approach would require trying on the order of 2<sup>256</sup> inputs — a number so astronomically large that even all the computers on Earth operating in parallel for the age of the universe could not complete the search.</p>
+
+<p><strong>Second preimage resistance</strong> is a subtly different guarantee. Here, the attacker is given a <em>specific</em> input <code>m1</code> and must find a <em>different</em> input <code>m2</code> (where <code>m2 ≠ m1</code>) such that <code>hash(m1) = hash(m2)</code>. This is harder than it might seem, because the attacker cannot choose their starting point freely — they must produce a collision specifically with the given message. This property is essential in contexts like software distribution: if a vendor publishes a hash of their installer, an attacker who wants to swap in a malicious version must find another file that hashes to exactly the same value as the original, which second preimage resistance makes infeasible.</p>
+
+<p>Both properties are vital for password security. When a system stores passwords as hashes, a breach of the password database exposes only the digests. First preimage resistance ensures that an attacker cannot compute the original password from its hash alone. In practice, this means attackers resort to brute-force dictionary attacks — hashing candidate passwords and comparing — rather than true inversion. This is why the computational speed of the hash function matters greatly for password storage, a point revisited below.</p>
+
+<p><strong>Collision Resistance</strong></p>
+
+<p>A <strong>collision</strong> occurs when two distinct inputs <code>m1</code> and <code>m2</code> (where <code>m1 ≠ m2</code>) produce the same hash output: <code>hash(m1) = hash(m2)</code>. Because a hash function maps an infinite input space to a finite output space (e.g., 2<sup>256</sup> possible digests for SHA-256), collisions must theoretically exist — by the pigeonhole principle. The security requirement is not that collisions are impossible but that they are <em>computationally infeasible to find</em>.</p>
+
+<p>The <strong>birthday paradox</strong> explains why this is harder than it first appears, but also why longer hashes matter. In a group of just 23 people, there is already a 50% probability that two share a birthday — despite 365 possible birthdays. Analogously, the expected number of hash computations needed to find <em>any</em> collision (not a specific one) is approximately 2<sup>n/2</sup>, where <em>n</em> is the number of output bits. For MD5 with 128 bits, this is only 2<sup>64</sup> operations — a number that was within reach of well-resourced attackers even in the early 2000s, and trivially achievable today. For SHA-256 with 256 bits, the birthday bound is 2<sup>128</sup>, which remains computationally infeasible for any adversary in the foreseeable future.</p>
+
+<p>Collision resistance is especially critical for <strong>digital signatures</strong>. When you sign a document, your signing software does not sign the raw document (which might be megabytes long) — it signs the hash of the document. If an attacker can find two documents with the same hash, they can get a legitimate party to sign one document (say, a harmless contract) and then claim that signature applies to the other document (say, a deed transferring property). This is not hypothetical: in 2008, researchers demonstrated a rogue certificate authority attack exploiting MD5 collisions, crafting a fraudulent SSL certificate that appeared to bear a legitimate CA's signature. This single attack effectively ended MD5's use in certificate chains globally.</p>
+
+<p>The table below summarizes the collision resistance landscape for common algorithms:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Algorithm</th>
+      <th>Output Size (bits)</th>
+      <th>Birthday Bound (operations)</th>
+      <th>Practical Collision Attacks Known?</th>
+      <th>Security Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>MD5</td>
+      <td>128</td>
+      <td>2<sup>64</sup></td>
+      <td>Yes — demonstrated in seconds on modern hardware</td>
+      <td>Broken / Deprecated</td>
+    </tr>
+    <tr>
+      <td>SHA-1</td>
+      <td>160</td>
+      <td>2<sup>80</sup></td>
+      <td>Yes — SHAttered attack (2017)</td>
+      <td>Deprecated</td>
+    </tr>
+    <tr>
+      <td>SHA-256</td>
+      <td>256</td>
+      <td>2<sup>128</sup></td>
+      <td>No</td>
+      <td>Secure / Recommended</td>
+    </tr>
+    <tr>
+      <td>SHA-3 (256)</td>
+      <td>256</td>
+      <td>2<sup>128</sup></td>
+      <td>No</td>
+      <td>Secure / Recommended</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>The Avalanche Effect</strong></p>
+
+<p>A property called the <strong>avalanche effect</strong> describes how a small change to the input produces a dramatically different output. Specifically, flipping a single bit in the input should cause approximately 50% of the output bits to change — a completely unpredictable, large-scale transformation. The name comes from the image of a single pebble triggering an avalanche: a tiny disturbance causes a catastrophic cascade.</p>
+
+<p>Consider a concrete example with SHA-256:</p>
+
+<pre><code>Input:  "The quick brown fox"
+Hash:   9ecbe6d4f8e2f05e09f5c0bc7b7af9dc9c2a8c04aef33aa9ccca8cd1254a4b4e
+
+Input:  "The quick brown fox." (one period added)
+Hash:   f7bc83f430538424b13298e6aa6fb143ef4d59a14946175997479dbc2d1a3cd8</code></pre>
+
+<p>These two hashes share almost no bits in common despite the inputs differing by only one character. This behavior is not accidental — it results from deliberate design choices in the hash function's internal structure, including bitwise XOR operations, modular addition, and non-linear substitution functions that amplify small differences through multiple rounds of transformation.</p>
+
+<p>The avalanche effect provides an important security guarantee: an attacker who knows a hash output and wants to guess the input cannot use "closeness" as a guide. If you hash "password123" and then "password124", the resulting hashes look completely unrelated — there is no gradient an attacker can follow to home in on the correct input. This prevents <em>hill-climbing</em> attacks and protects against certain inference attacks where an adversary might try to reason about input properties from observed hash differences.</p>
+
+<p><strong>MD5: Capabilities and Known Weaknesses</strong></p>
+
+<p>MD5 (Message Digest Algorithm 5), designed by Ron Rivest in 1991, was once the dominant cryptographic hash function and remains widely recognized. It produces a 128-bit (16-byte) digest, typically represented as a 32-character hexadecimal string. It is extremely fast to compute — modern hardware can compute hundreds of millions of MD5 hashes per second, and GPU-accelerated tools can achieve billions per second.</p>
+
+<p>That speed was its original selling point and has become its fatal flaw. The combination of a short output (128 bits, birthday bound 2<sup>64</sup>) and practical collision attacks has completely undermined MD5's security. Researchers Hans Dobbertin, Antoine Joux, and others progressively weakened confidence in MD5 throughout the 1990s and 2000s. By 2004, Xiaoyun Wang and colleagues demonstrated full collision attacks against MD5 in hours. By 2007, the Identical Prefix Collision attack made it possible to craft two PDF documents with the same MD5 hash in minutes. Tools like <code>fastcoll</code> can now find MD5 collisions in under a second on a laptop.</p>
+
+<p>Here is what an MD5 hash looks like in practice:</p>
+
+<pre><code>$ echo -n "hello" | md5sum
+5d41402abc4b2a76b9719d911017c592
+
+$ echo -n "hello" | md5sum
+5d41402abc4b2a76b9719d911017c592   # Determinism: same input, same output</code></pre>
+
+<p>Despite its complete unsuitability for security applications, MD5 persists in legacy systems, file integrity tools on untrusted platforms, and in some developers' code due to inertia and misunderstanding. It should <em>never</em> be used for:</p>
+
+<ul>
+  <li><strong>Password storage</strong> — its speed enables billions of guesses per second via GPU attacks.</li>
+  <li><strong>Digital signatures</strong> — known collision attacks allow document substitution.</li>
+  <li><strong>Certificate integrity</strong> — the 2008 rogue CA attack demonstrated a real-world exploitation.</li>
+  <li><strong>Any context where an adversary might craft inputs</strong> — collision resistance is broken.</li>
+</ul>
+
+<p>MD5 might still be acceptable for non-security purposes such as detecting accidental corruption (not malicious tampering) in low-risk internal systems, or as a quick checksum in a context where an attacker has no motivation or opportunity to craft collisions. But this is a narrow exception, and even then, SHA-256 adds negligible overhead and eliminates the risk entirely.</p>
+
+<p><strong>SHA-256 and the SHA-2 Family</strong></p>
+
+<p>SHA-256 is a member of the SHA-2 (Secure Hash Algorithm 2) family, standardized by NIST in 2001. It produces a 256-bit (32-byte) digest and is built on a Merkle–Damgård construction with a Davies–Meyer compression function. The family includes SHA-224, SHA-256, SHA-384, SHA-512, SHA-512/224, and SHA-512/256 — offering a range of output sizes for different security and performance requirements. SHA-256 is by far the most widely deployed.</p>
+
+<pre><code>$ echo -n "hello" | sha256sum
+2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824</code></pre>
+
+<p>SHA-256's 256-bit output places its birthday collision bound at 2<sup>128</sup> operations. No practical collision attack has ever been demonstrated against SHA-256. Its security rests on decades of cryptanalytic scrutiny by the global research community, and it underpins some of the most security-critical infrastructure on the internet: TLS/HTTPS certificates, code signing, Bitcoin's proof-of-work algorithm, and the S/MIME email encryption standard, among many others.</p>
+
+<p>The internal structure of SHA-256 processes input in 512-bit blocks through 64 rounds of operations involving:</p>
+
+<ul>
+  <li><strong>Bitwise logical functions</strong> (AND, OR, XOR, NOT) that create non-linear mixing.</li>
+  <li><strong>Modular addition</strong> (addition modulo 2<sup>32</sup>) that introduces arithmetic non-linearity.</li>
+  <li><strong>Bit rotation and shifting</strong> operations that spread bit influence across the word.</li>
+  <li><strong>A message schedule</strong> that expands the 512-bit input block into 64 32-bit words, ensuring every input bit influences many rounds.</li>
+</ul>
+
+<p>The result of all these operations is a hash function where the avalanche effect is extremely strong and no known shortcut to computing preimages or collisions exists.</p>
+
+<p>One important caveat applies to password hashing specifically. SHA-256, despite its strength, is <em>not</em> appropriate as a standalone password hashing mechanism. The same property that makes it good for performance — its speed — works against it in the password context. An attacker with a GPU can compute billions of SHA-256 hashes per second, making dictionary attacks and brute-force attacks against hashed passwords devastatingly effective. The correct tools for password hashing are purpose-built slow functions like <strong>bcrypt</strong>, <strong>scrypt</strong>, or <strong>Argon2</strong>, which are deliberately tuned to be expensive to compute. These are used in conjunction with <strong>salting</strong> — appending a random value unique to each user to their password before hashing — to prevent precomputed rainbow table attacks. SHA-256 (and SHA-2 generally) remains excellent for all other cryptographic purposes.</p>
+
+<p><strong>The Role of Cryptographic Hash Functions in Security Systems</strong></p>
+
+<p>Cryptographic hash functions appear throughout the security stack, often invisibly, underpinning mechanisms that users and even many developers take for granted.</p>
+
+<p><strong>Data integrity verification</strong> is one of the most direct applications. When software is distributed — an operating system ISO, a compiled binary, a Python package — the publisher typically also releases the SHA-256 hash of each file. After downloading, the user computes the hash of their local copy and compares it to the published value. Any tampering, whether by a malicious intermediate server or simple corruption during download, will produce a completely different hash. This is the basis of package manager integrity checks (e.g., <code>pip</code>, <code>apt</code>, <code>npm</code> all verify hashes of downloaded packages).</p>
+
+<p><strong>Digital signatures</strong> rely on hashing as a critical preprocessing step. A naive approach to signing a document would be to encrypt the entire document with the signer's private key. This is computationally impractical for large documents and creates other problems. Instead, signature schemes like RSA-PKCS1 and ECDSA hash the message first — producing a fixed-size digest — and then sign only the digest. This is why collision resistance is so critical: if an attacker can find two messages with the same hash, they can obtain a valid signature on a benign message and present it as a signature on a malicious one.</p>
+
+<p><strong>Password storage</strong> represents another cornerstone application. When a user sets a password, the system stores <code>hash(password)</code> rather than the password itself. During authentication, the system hashes the submitted password and compares it to the stored hash. If a database is breached, attackers obtain only hashes, not plaintext passwords. First preimage resistance ensures they cannot directly reverse the hashes. However, as noted above, the speed of general-purpose hash functions like SHA-256 makes them unsuitable for this purpose without additional protections.</p>
+
+<p><strong>HMACs (Hash-based Message Authentication Codes)</strong> extend hash functions to provide both integrity and authentication. An HMAC combines the message with a secret key in a specific construction:</p>
+
+<pre><code>HMAC(key, message) = hash((key XOR opad) || hash((key XOR ipad) || message))</code></pre>
+
+<p>where <code>opad</code> and <code>ipad</code> are specific padding constants. The result is a MAC — a tag that proves the message was produced by someone holding the secret key and has not been altered in transit. HMACs are used extensively in API authentication, JWT tokens, TLS record authentication, and many other protocols. The security of HMAC depends directly on the underlying hash function's resistance to length-extension attacks, which is one reason HMAC with SHA-256 (HMAC-SHA256) is a standard recommendation.</p>
+
+<p>The following table summarizes the primary use cases and the hash properties they depend upon:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Use Case</th>
+      <th>Primary Hash Property Required</th>
+      <th>Recommended Algorithm</th>
+      <th>Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>File / data integrity verification</td>
+      <td>Second preimage resistance</td>
+      <td>SHA-256 or SHA-3</td>
+      <td>Hash published separately from data</td>
+    </tr>
+    <tr>
+      <td>Digital signatures</td>
+      <td>Collision resistance, second preimage resistance</td>
+      <td>SHA-256 or SHA-384</td>
+      <td>Hash is signed, not raw message</td>
+    </tr>
+    <tr>
+      <td>Password storage</td>
+      <td>First preimage resistance + slowness</td>
+      <td>Argon2, bcrypt, scrypt</td>
+      <td>SHA-256 alone is insufficient here</td>
+    </tr>
+    <tr>
+      <td>Message authentication (HMAC)</td>
+      <td>Pseudorandomness, collision resistance</td>
+      <td>HMAC-SHA256</td>
+      <td>Requires shared secret key</td>
+    </tr>
+    <tr>
+      <td>Certificate integrity (TLS/PKI)</td>
+      <td>Collision resistance</td>
+      <td>SHA-256 or SHA-384</td>
+      <td>MD5 and SHA-1 are deprecated in certs</td>
+    </tr>
+    <tr>
+      <td>Blockchain / proof-of-work</td>
+      <td>Preimage resistance, avalanche effect</td>
+      <td>SHA-256 (Bitcoin), Ethash (Ethereum)</td>
+      <td>Speed matters for throughput</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>In summary, cryptographic hash functions occupy a unique position in security engineering: they are conceptually simple (input in, fixed-size output out), yet their internal properties — preimage resistance, collision resistance, and the avalanche effect — provide security guarantees that underpin much of the digital world. Understanding which algorithms are strong (SHA-256, SHA-3), which are broken (MD5, SHA-1), and which use cases require additional mechanisms beyond raw hashing (password storage) is fundamental knowledge for anyone building or auditing secure systems.</p>
+        <div class="notes"><strong>Notes</strong>Students should be encouraged to experiment with hash functions hands-on using command-line tools (sha256sum, md5sum) or Python&#39;s hashlib library to observe determinism and the avalanche effect directly. The distinction between hashing for general integrity and hashing for passwords is a common source of real-world vulnerabilities and deserves particular emphasis. The 2008 rogue CA/MD5 attack is an excellent case study for collision resistance.</div>
+      </div>
+    </details>
+  </main>
+</body></html>

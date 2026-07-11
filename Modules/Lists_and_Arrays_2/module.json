@@ -1,9 +1,9 @@
 {
   "Id": "d129b9db-8fec-400e-8eef-27bd647c19fe",
-  "Name": "Lists and Arrays: Algorithms and Operations",
+  "Name": "3- Lists and Arrays: Algorithms and Operations",
   "Description": "This lesson explores common algorithms applied to lists and arrays, including insertion, deletion, searching, and traversal. Students will implement these operations in JavaScript and analyze their time and space complexity.",
   "CreatedBy": "Ron Eaglin",
   "CreatedDate": "2026-06-26T11:23:12.6593657-04:00",
-  "LastModifiedDate": "2026-06-26T11:23:12.6602283-04:00",
+  "LastModifiedDate": "2026-07-01T15:39:16.3282199-04:00",
   "Actions": []
 }

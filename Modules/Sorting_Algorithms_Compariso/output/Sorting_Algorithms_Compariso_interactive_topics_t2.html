@@ -1,0 +1,250 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bubble Sort</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+  <style>
+    body { padding-left: 1.1rem; padding-right: 1.1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid rgba(128,128,128,.45); padding: .45em .7em; text-align: left; vertical-align: top; }
+    thead th { background: rgba(128,128,128,.18); font-weight: 600; }
+    tbody tr:nth-child(even) { background: rgba(128,128,128,.08); }
+    a.topic-detail-link { text-decoration: underline; }
+  </style>
+  <style>
+    summary.slide-header { list-style: none; }
+    summary.slide-header::-webkit-details-marker { display: none; }
+    details.slide-card[open] > .slide-body { display: block; }
+    details.slide-card[open] .chevron { transform: rotate(90deg); }
+    @media print { details.slide-card > .slide-body { display: block !important; } .chevron { display: none; } }
+  </style>
+</head><body>
+  <header>
+    <h1>Bubble Sort</h1>
+  </header><main>
+    <details class="slide-card" open>
+      <summary class="slide-header"><span class="slide-num">1</span><h2>Bubble Sort</h2><span class="chevron">▶</span></summary>
+      <div class="slide-body">
+        <p>Bubble sort is one of the oldest and most widely taught sorting algorithms in computer science. Despite rarely being the best choice for production code, it serves as an ideal teaching tool because its logic is transparent and easy to reason about. The algorithm works by repeatedly stepping through an array, comparing neighboring elements, and swapping them when they are in the wrong order. This process causes larger values to "bubble up" toward the end of the array with each pass — hence the name. Understanding bubble sort deeply means understanding not just <em>what</em> it does, but <em>why</em> it works, what its costs are, and when (if ever) it makes sense to reach for it.</p>
+
+<p>At its core, bubble sort relies on a simple observation: after one complete pass through an array of <em>n</em> elements, the largest unsorted element is guaranteed to have settled into its correct final position at the end of the unsorted region. This happens because every time the algorithm encounters a pair of adjacent elements where the left is greater than the right, it swaps them. The largest value, no matter where it starts, will be nudged one position to the right on every comparison it participates in, and it will participate in every comparison from its starting position to the end of the array during that pass. So by the time the pass is complete, the maximum value has been carried all the way to the rightmost unsorted slot. On the next pass, the algorithm can safely ignore that last position, because it is already correct. With each subsequent pass, one more element is placed correctly, and the unsorted region shrinks by one.</p>
+
+<p>Because the algorithm operates entirely within the original array — swapping elements in place rather than copying data into a second structure — bubble sort is classified as an <strong>in-place algorithm</strong>. Its space complexity is O(1) auxiliary space, which means the memory footprint stays constant regardless of how large the input array is. This is a genuine advantage in memory-constrained environments, and it is one reason the algorithm still appears in embedded and low-level programming contexts.</p>
+
+<p>The process continues pass by pass until one of two stopping conditions is met: either the algorithm has completed <em>n − 1</em> passes (the theoretical maximum needed to sort any array of length <em>n</em>), or an entire pass completes without a single swap occurring. That second condition — detecting a swap-free pass — is the basis of the <strong>early-exit optimization</strong>. If no swap was needed during a pass, every adjacent pair is already in the correct order, so the array must be fully sorted. Terminating at that point avoids redundant work and transforms the best-case performance from O(n²) down to O(n).</p>
+
+<p><strong>Step-by-Step Logic of Bubble Sort</strong></p>
+
+<p>To make the logic concrete, consider a small array: <code>[5, 3, 8, 4, 2]</code>. Walking through the first pass illustrates every key idea.</p>
+
+<ul>
+  <li><strong>Compare index 0 and index 1:</strong> 5 &gt; 3, so swap. Array becomes <code>[3, 5, 8, 4, 2]</code>.</li>
+  <li><strong>Compare index 1 and index 2:</strong> 5 &lt; 8, no swap. Array stays <code>[3, 5, 8, 4, 2]</code>.</li>
+  <li><strong>Compare index 2 and index 3:</strong> 8 &gt; 4, so swap. Array becomes <code>[3, 5, 4, 8, 2]</code>.</li>
+  <li><strong>Compare index 3 and index 4:</strong> 8 &gt; 2, so swap. Array becomes <code>[3, 5, 4, 2, 8]</code>.</li>
+</ul>
+
+<p>After pass one, 8 — the largest element — sits at index 4, its correct final position. The algorithm now repeats for indices 0 through 3.</p>
+
+<ul>
+  <li><strong>Pass 2:</strong> Compare <code>[3, 5, 4, 2]</code>. Result: <code>[3, 4, 2, 5, 8]</code>. Now 5 is correctly placed at index 3.</li>
+  <li><strong>Pass 3:</strong> Compare <code>[3, 4, 2]</code>. Result: <code>[3, 2, 4, 5, 8]</code>. Now 4 is correctly placed at index 2.</li>
+  <li><strong>Pass 4:</strong> Compare <code>[3, 2]</code>. Result: <code>[2, 3, 4, 5, 8]</code>. Array is now fully sorted.</li>
+</ul>
+
+<p>The table below summarizes the state of the array after each complete pass:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Pass</th>
+      <th>Array State After Pass</th>
+      <th>Element Placed Correctly</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Pass 1</td>
+      <td>[3, 5, 4, 2, <strong>8</strong>]</td>
+      <td>8 at index 4</td>
+    </tr>
+    <tr>
+      <td>Pass 2</td>
+      <td>[3, 4, 2, <strong>5</strong>, 8]</td>
+      <td>5 at index 3</td>
+    </tr>
+    <tr>
+      <td>Pass 3</td>
+      <td>[3, 2, <strong>4</strong>, 5, 8]</td>
+      <td>4 at index 2</td>
+    </tr>
+    <tr>
+      <td>Pass 4</td>
+      <td>[<strong>2</strong>, <strong>3</strong>, 4, 5, 8]</td>
+      <td>3 and 2 finalized</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Two rules govern the inner loop's range. First, it starts at index 0 on every pass — the comparison always begins at the leftmost element of the unsorted region. Second, its upper bound shrinks by one after each outer iteration, because the rightmost element of the current unsorted region has already been bubbled into its final position. If the outer loop variable is <code>i</code> (counting passes from 0 to <em>n − 2</em>), then the inner loop runs from index 0 up to index <em>n − 2 − i</em>, comparing elements at positions <code>j</code> and <code>j + 1</code>.</p>
+
+<p><strong>JavaScript Implementation</strong></p>
+
+<p>The following JavaScript function implements bubble sort with the early-exit optimization. Comments explain each structural decision:</p>
+
+<pre><code>function bubbleSort(arr) {
+  const n = arr.length;
+
+  // Outer loop: controls the number of passes.
+  // A maximum of n - 1 passes is ever needed.
+  for (let i = 0; i &lt; n - 1; i++) {
+
+    // Early-exit flag: assume the array is already sorted
+    // at the start of each pass. If no swap occurs,
+    // this flag remains false and we break out early.
+    let swapped = false;
+
+    // Inner loop: compare adjacent elements within the
+    // unsorted portion. The upper bound shrinks by i
+    // because the last i elements are already sorted.
+    for (let j = 0; j &lt; n - 1 - i; j++) {
+
+      if (arr[j] &gt; arr[j + 1]) {
+        // Swap using a temporary variable.
+        let temp = arr[j];
+        arr[j] = arr[j + 1];
+        arr[j + 1] = temp;
+
+        swapped = true; // A swap occurred; array may not be sorted yet.
+      }
+    }
+
+    // If no swap happened during this pass, the array is sorted.
+    if (!swapped) break;
+  }
+
+  return arr;
+}
+
+// Example usage:
+console.log(bubbleSort([5, 3, 8, 4, 2])); // [2, 3, 4, 5, 8]
+console.log(bubbleSort([1, 2, 3, 4, 5])); // [1, 2, 3, 4, 5] — exits after one pass
+</code></pre>
+
+<p>Several implementation details deserve close attention:</p>
+
+<ul>
+  <li><strong>The outer loop bound is <code>n - 1</code>:</strong> With <em>n</em> elements, at most <em>n − 1</em> passes are needed to guarantee a sorted array. After <em>n − 1</em> passes, the smallest element must already be in position 0 by elimination, so the final element never needs a dedicated pass of its own.</li>
+  <li><strong>The inner loop bound is <code>n - 1 - i</code>:</strong> During pass <code>i</code> (zero-indexed), the last <code>i</code> positions are already holding their final sorted values. Reducing the inner loop's upper bound by <code>i</code> prevents unnecessary comparisons with those already-sorted elements.</li>
+  <li><strong>The temporary variable for swapping:</strong> JavaScript does support destructuring assignment for swaps (<code>[arr[j], arr[j+1]] = [arr[j+1], arr[j]]</code>), but the explicit temporary variable makes the mechanics clearer and avoids any ambiguity about evaluation order.</li>
+  <li><strong>The <code>swapped</code> flag:</strong> This is reset to <code>false</code> at the top of each outer iteration, not once at the beginning of the function. It must reflect only whether a swap occurred during the <em>current</em> pass, not any previous pass.</li>
+</ul>
+
+<p><strong>Time Complexity of Bubble Sort</strong></p>
+
+<p>Time complexity analysis for bubble sort reveals a clear picture of why it struggles with large inputs. The number of comparisons performed by the algorithm can be counted precisely by looking at the inner loop.</p>
+
+<p>On pass 1, the inner loop runs <em>n − 1</em> times. On pass 2, it runs <em>n − 2</em> times. This continues down to pass <em>n − 1</em>, which runs just 1 time. The total number of comparisons in the worst case is therefore:</p>
+
+<pre><code>(n − 1) + (n − 2) + ... + 2 + 1 = n(n − 1) / 2
+</code></pre>
+
+<p>This expression grows quadratically with <em>n</em>, which is why bubble sort's worst-case and average-case time complexity is expressed as <strong>O(n²)</strong>. The worst case occurs when the array is sorted in reverse order, because every comparison during every pass results in a swap — the algorithm can never exit early. A randomly arranged array also produces O(n²) behavior on average, because the early-exit condition rarely triggers before the algorithm has performed most of its scheduled passes.</p>
+
+<p>The <strong>best case</strong>, achieved only with the early-exit optimization in place, is <strong>O(n)</strong>. When the input array is already sorted, the very first pass finds no swaps, sets <code>swapped</code> to false, and the function exits immediately after completing just that single pass of <em>n − 1</em> comparisons. Without the early-exit flag, even a perfectly sorted array would trigger all <em>n − 1</em> passes, making the best case O(n²) — an important reason to always include that optimization.</p>
+
+<p>The table below consolidates the time complexity across scenarios:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Case</th>
+      <th>Input Condition</th>
+      <th>Time Complexity</th>
+      <th>Early-Exit Required?</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Best Case</td>
+      <td>Array already sorted</td>
+      <td>O(n)</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td>Average Case</td>
+      <td>Randomly arranged elements</td>
+      <td>O(n²)</td>
+      <td>No effect</td>
+    </tr>
+    <tr>
+      <td>Worst Case</td>
+      <td>Array sorted in reverse order</td>
+      <td>O(n²)</td>
+      <td>No effect</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>To appreciate what quadratic growth means in practice, consider the difference in comparisons between an array of 100 elements and one of 10,000. For 100 elements, the worst-case count is approximately 4,950 comparisons. For 10,000 elements, that number jumps to roughly 49,995,000 comparisons — ten thousand times more comparisons for only one hundred times more data. This is the defining characteristic of O(n²) algorithms: they do not scale gracefully.</p>
+
+<p><strong>Practical Use Cases and Limitations</strong></p>
+
+<p>Given its poor scalability, bubble sort is almost never the right choice in professional software when dealing with arrays of meaningful size. However, dismissing it entirely misses some genuine use cases.</p>
+
+<ul>
+  <li><strong>Very small arrays:</strong> When an array contains only a handful of elements — say, five or fewer — the theoretical performance difference between O(n²) and O(n log n) is negligible in absolute terms. More complex algorithms like merge sort or quicksort carry overhead from recursive function calls, additional memory allocation, and more intricate code paths. For tiny arrays, that overhead can actually make them slower in wall-clock time than bubble sort. Many real-world sorting implementations switch to a simple algorithm like insertion sort (which is closely related to bubble sort) for small sub-arrays, precisely for this reason.</li>
+  <li><strong>Nearly-sorted data:</strong> When the input is almost sorted — perhaps one or two elements are out of place — bubble sort with the early-exit flag can finish in very close to O(n) time. It detects the sorted state almost immediately and terminates. Algorithms like quicksort offer no analogous shortcut and will still perform their full O(n log n) or worse work on the same input without special-case handling.</li>
+  <li><strong>Educational and explanatory contexts:</strong> Bubble sort's mechanics are visually intuitive and easy to animate or trace on paper. It is almost universally used as the introductory example when teaching the concept of a sorting algorithm, comparison-based sorting, and algorithmic complexity analysis.</li>
+  <li><strong>Constrained or embedded environments:</strong> In some embedded systems, firmware, or other resource-constrained environments, the priority is code simplicity and minimal memory footprint rather than raw speed. Bubble sort requires no auxiliary memory beyond a single temporary variable and can be implemented in very few lines of code, making it attractive when the dataset is small and flash storage or RAM is extremely limited.</li>
+</ul>
+
+<p>The limitations, however, are severe for general use. An array of one million randomly ordered elements would require roughly half a trillion comparisons in the worst case with bubble sort. A well-implemented quicksort would handle the same array in approximately twenty million comparisons — a difference of several orders of magnitude. Merge sort provides a stable O(n log n) guarantee regardless of input order, making it a safe default. Timsort — the algorithm used internally by JavaScript's <code>Array.prototype.sort()</code> in most modern engines — is specifically engineered to exploit partial ordering in real-world data, combining merge sort and insertion sort in a way that outperforms bubble sort in every realistic scenario.</p>
+
+<p>The takeaway is that bubble sort occupies a very narrow but real niche: tiny arrays, nearly-sorted data, and situations where simplicity of implementation is more valuable than performance. Outside that niche, the quadratic time complexity makes it impractical, and understanding <em>why</em> it is impractical — by working through its logic and complexity — is the most valuable lesson it has to offer.</p>
+        <div class="notes"><strong>Notes</strong>Examination of the bubble sort algorithm, including its step-by-step logic and JavaScript implementation. Covers its time complexity and scenarios where it may or may not be practical.</div>
+      </div>
+    </details>
+  </main>
+</body></html>

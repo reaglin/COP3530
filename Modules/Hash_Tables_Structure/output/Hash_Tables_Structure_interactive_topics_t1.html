@@ -1,0 +1,207 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Introduction to Hash Tables</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+  <style>
+    body { padding-left: 1.1rem; padding-right: 1.1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid rgba(128,128,128,.45); padding: .45em .7em; text-align: left; vertical-align: top; }
+    thead th { background: rgba(128,128,128,.18); font-weight: 600; }
+    tbody tr:nth-child(even) { background: rgba(128,128,128,.08); }
+    a.topic-detail-link { text-decoration: underline; }
+  </style>
+  <style>
+    summary.slide-header { list-style: none; }
+    summary.slide-header::-webkit-details-marker { display: none; }
+    details.slide-card[open] > .slide-body { display: block; }
+    details.slide-card[open] .chevron { transform: rotate(90deg); }
+    @media print { details.slide-card > .slide-body { display: block !important; } .chevron { display: none; } }
+  </style>
+</head><body>
+  <header>
+    <h1>Introduction to Hash Tables</h1>
+  </header><main>
+    <details class="slide-card" open>
+      <summary class="slide-header"><span class="slide-num">1</span><h2>Introduction to Hash Tables</h2><span class="chevron">▶</span></summary>
+      <div class="slide-body">
+        <p>A <strong>hash table</strong> is one of the most important and widely used data structures in computer science. At its heart, it solves a deceptively simple problem: given a collection of data, how can you store and retrieve any individual piece of it as fast as possible, regardless of how large the collection grows? Hash tables answer that question with remarkable elegance, combining a mathematical technique called <em>hashing</em> with the raw speed of array-based storage to achieve average-case constant-time performance for insertions, deletions, and lookups.</p>
+
+<p>To understand why that matters, consider the alternative. If you stored one thousand records in a plain array and needed to find the one belonging to a particular user, you might have to inspect every element until you found the right one — a process that grows linearly with the size of the data set. A hash table sidesteps that scanning entirely. Given the same key you used to store the record, it can calculate <em>exactly</em> where in memory that record lives and go straight there. That directness is what makes hash tables a default tool across virtually every area of software development.</p>
+
+<p><strong>What Is a Hash Table?</strong></p>
+
+<p>A hash table is a data structure that stores data as a collection of <strong>key-value pairs</strong>. Every entry consists of two parts: a <em>key</em>, which is a unique identifier, and a <em>value</em>, which is the data associated with that key. The analogy to a physical dictionary is instructive — the word you look up is the key, and its definition is the value. Just as every word in a dictionary is distinct, every key in a hash table must be unique. If you store a new value under a key that already exists, the new value replaces the old one.</p>
+
+<p>Keys can be almost any type of data — strings, integers, objects — as long as the language or implementation can apply a hash function to them. Values, on the other hand, are unconstrained; they can be numbers, strings, arrays, other hash tables, or any object the program needs to associate with that key.</p>
+
+<p>Internally, a hash table is built on top of a plain <strong>array</strong>. Arrays provide O(1) access to any element as long as you know its index, and the entire strategy of a hash table is to convert a key into a valid array index so that every read and write benefits from that constant-time access. Without the underlying array, the speed guarantees of a hash table would not be possible.</p>
+
+<p>A small conceptual example helps make this concrete. Imagine you are building a system to store the ages of users by username:</p>
+
+<pre><code>key: "alice"  →  value: 31
+key: "bob"    →  value: 24
+key: "carol"  →  value: 29
+</code></pre>
+
+<p>You want to be able to ask "what is alice's age?" and receive the answer 31 instantly, without examining bob's or carol's records. A hash table makes that possible.</p>
+
+<p><strong>The Concept of Hashing</strong></p>
+
+<p>The bridge between a key and an array index is a <strong>hash function</strong>. A hash function accepts a key as its input and returns an integer — called a <em>hash value</em> or <em>hash code</em> — that can be transformed into a valid array index. The process of applying this function is called <em>hashing</em>.</p>
+
+<p>A critical property of any hash function is that it must be <strong>deterministic</strong>: the same key must always produce the same hash value, every single time, without exception. If "alice" hashes to 7 the first time you call the function, it must hash to 7 on every subsequent call as well. Without this guarantee, you could store a value under a key but then be unable to find it again because the retrieval step would calculate a different index.</p>
+
+<p>A second important property is <strong>uniform distribution</strong>. A good hash function spreads keys as evenly as possible across the available array positions. If many keys cluster around the same few indices, those positions become bottlenecks — a problem called a <em>collision</em> — and the performance benefits of the hash table begin to erode. Consider two contrasting hash functions for string keys:</p>
+
+<ul>
+  <li><strong>Poor hash function:</strong> Return the length of the string. The keys "cat", "dog", and "rat" all hash to 3, causing immediate collisions for a very common case.</li>
+  <li><strong>Better hash function:</strong> Combine the numeric values of each character in the string using multiplication and addition (a technique used in practice by algorithms such as <em>djb2</em> or the polynomial rolling hash). This spreads strings much more evenly because small differences in the characters produce very different hash values.</li>
+</ul>
+
+<p>Here is a simplified illustration of how a basic string hash function might work:</p>
+
+<pre><code>function simpleHash(key, arraySize):
+    total = 0
+    for each character ch in key:
+        total = total + numericValue(ch)
+    return total % arraySize
+</code></pre>
+
+<p>Even this naive approach illustrates the two-step structure: accumulate a number from the key, then use the modulo operator to bring it within the bounds of the array. A production-quality function would mix the values more aggressively to reduce collisions.</p>
+
+<p><strong>Key-Value Store as the Core Purpose</strong></p>
+
+<p>The fundamental contract of a hash table is straightforward: to <strong>store</strong> a value, you provide a key alongside it; to <strong>retrieve</strong> that value later, you supply the same key. The hash table uses the key — not a position, not a sequential scan — as the sole means of locating the data.</p>
+
+<p>This design has a profound implication: lookups do not require examining other records. In a sorted array, a binary search still takes O(log n) time because it must repeatedly narrow a range. In a linked list, a search takes O(n) time in the worst case because it follows one link at a time. In a hash table, the lookup computes the target index arithmetically and accesses it directly — a process whose duration does not depend on how many other entries are stored.</p>
+
+<p>Consider a concrete scenario: a web server caches the results of expensive database queries. The query string serves as the key, and the result set serves as the value. When the same query arrives again, the server hashes the query string, jumps to that index in the cache, and returns the stored result — no database round-trip required. This pattern is used extensively in real-world systems precisely because key-value semantics map naturally onto the problem of fast association and retrieval.</p>
+
+<p>Other everyday examples of key-value storage include:</p>
+
+<ul>
+  <li><strong>Symbol tables in compilers:</strong> variable names (keys) mapped to their types and memory addresses (values).</li>
+  <li><strong>DNS caches:</strong> domain names (keys) mapped to IP addresses (values).</li>
+  <li><strong>Session stores in web applications:</strong> session tokens (keys) mapped to user session data (values).</li>
+  <li><strong>Word frequency counters:</strong> words (keys) mapped to their occurrence counts (values).</li>
+</ul>
+
+<p><strong>Why Hash Tables Are Widely Used</strong></p>
+
+<p>The appeal of hash tables comes down to their <strong>time complexity profile</strong>. Under average conditions — meaning the hash function distributes keys well and the array is not excessively full — all three fundamental operations perform in O(1) time:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Operation</th>
+      <th>Average Case</th>
+      <th>Worst Case</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Insert</td>
+      <td>O(1)</td>
+      <td>O(n)</td>
+    </tr>
+    <tr>
+      <td>Lookup</td>
+      <td>O(1)</td>
+      <td>O(n)</td>
+    </tr>
+    <tr>
+      <td>Delete</td>
+      <td>O(1)</td>
+      <td>O(n)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The worst case of O(n) arises when every key hashes to the same index — a degenerate scenario that a well-chosen hash function makes extremely unlikely in practice. For the vast majority of real workloads, O(1) performance holds, and crucially, it holds <em>regardless of the size of the data set</em>. A hash table storing ten million entries retrieves any one of them in essentially the same time as a hash table storing ten entries. This scalability is what makes hash tables indispensable.</p>
+
+<p>Hash tables are present in the internals of nearly every modern programming language and platform. Python's <code>dict</code>, JavaScript's plain objects and <code>Map</code>, Java's <code>HashMap</code>, and C++'s <code>unordered_map</code> are all hash table implementations. Beyond language runtimes, hash tables appear in database indexing, network routing tables, caching layers, cryptographic applications, and distributed systems. When a problem requires fast association between two pieces of data, a hash table is almost always among the first solutions considered.</p>
+
+<p><strong>The Role of the Underlying Array</strong></p>
+
+<p>Because a hash table stores its data in a plain array, it inherits the array's defining characteristic: <strong>O(1) positional access</strong>. When the runtime of a program accesses an array element by index, it performs a single arithmetic calculation — base address plus index times element size — and reads directly from that memory address. No traversal, no comparison, no searching. The hash table exploits this by ensuring that every key maps to a specific index.</p>
+
+<p>The mapping is accomplished with the <strong>modulo operator</strong>:</p>
+
+<pre><code>index = hash(key) % arraySize
+</code></pre>
+
+<p>The hash function may return any non-negative integer — potentially a very large one. The modulo operation wraps that integer into the range <code>[0, arraySize - 1]</code>, guaranteeing it is a legal index. For example, if the hash function returns 2,847 and the array has 100 slots, the entry is stored at index 47.</p>
+
+<p>The choice of <strong>array size</strong> involves a deliberate trade-off:</p>
+
+<ul>
+  <li><strong>Too small:</strong> Many keys will hash to the same index, causing frequent collisions. Performance degrades as the system must handle those collisions, and in extreme cases approaches O(n) per operation.</li>
+  <li><strong>Too large:</strong> Most array slots remain empty. Memory is consumed without purpose, and the data structure becomes wasteful.</li>
+  <li><strong>Well-chosen:</strong> The array is large enough that the average number of entries per slot — known as the <em>load factor</em> — stays low. A common target load factor is around 0.7 (70% of slots occupied). Many implementations automatically <em>resize</em> the array when the load factor is exceeded, allocating a new larger array and rehashing all existing entries into it.</li>
+</ul>
+
+<p>Using a <strong>prime number</strong> as the array size is a common practical recommendation. Because prime numbers have no factors other than 1 and themselves, they reduce the chance that the modulo operation will systematically map many different hash values to the same small set of indices — a subtle but real source of clustering with certain hash functions and non-prime sizes.</p>
+
+<p>Putting all these ideas together, the lifecycle of a hash table operation looks like this:</p>
+
+<pre><code>-- Storing the key "alice" with value 31 in an array of size 11 --
+
+1. Compute hash("alice")       → e.g., 5765169
+2. Compute 5765169 % 11        → 4
+3. Store value 31 at array[4]
+
+-- Retrieving the value for key "alice" --
+
+1. Compute hash("alice")       → 5765169  (same function, same key, same result)
+2. Compute 5765169 % 11        → 4
+3. Read array[4]               → 31
+</code></pre>
+
+<p>The entire retrieval process involves two arithmetic operations and one array access. It does not matter whether the table holds 5 entries or 5 million — the steps are identical and the time is constant. This is the foundational insight that makes hash tables so powerful: by converting a key into an index through deterministic computation, they transform an associative lookup problem into a direct-access problem, inheriting the speed of arrays while offering the flexibility of arbitrary keys.</p>
+        <div class="notes"><strong>Notes</strong>This topic establishes all foundational concepts for the module. Subsequent topics on collision handling, load factor, and resizing can build directly on the array-size trade-off discussion introduced here.</div>
+      </div>
+    </details>
+  </main>
+</body></html>

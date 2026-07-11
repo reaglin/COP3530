@@ -1,0 +1,239 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Internal Array-Based Design</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+  <style>
+    body { padding-left: 1.1rem; padding-right: 1.1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid rgba(128,128,128,.45); padding: .45em .7em; text-align: left; vertical-align: top; }
+    thead th { background: rgba(128,128,128,.18); font-weight: 600; }
+    tbody tr:nth-child(even) { background: rgba(128,128,128,.08); }
+    a.topic-detail-link { text-decoration: underline; }
+  </style>
+  <style>
+    summary.slide-header { list-style: none; }
+    summary.slide-header::-webkit-details-marker { display: none; }
+    details.slide-card[open] > .slide-body { display: block; }
+    details.slide-card[open] .chevron { transform: rotate(90deg); }
+    @media print { details.slide-card > .slide-body { display: block !important; } .chevron { display: none; } }
+  </style>
+</head><body>
+  <header>
+    <h1>Internal Array-Based Design</h1>
+  </header><main>
+    <details class="slide-card" open>
+      <summary class="slide-header"><span class="slide-num">1</span><h2>Internal Array-Based Design</h2><span class="chevron">▶</span></summary>
+      <div class="slide-body">
+        <p>A hash table is one of the most powerful and widely used data structures in computer science, capable of delivering near-constant-time performance for insertions, lookups, and deletions. Yet underneath all of this apparent magic lies a remarkably simple foundation: a plain, contiguous array. Understanding how a hash table is constructed on top of an internal array — and how a hash function bridges the gap between arbitrary keys and array indices — is essential for understanding why hash tables behave the way they do, both in their best and worst cases.</p>
+
+<p>To appreciate the design, it helps to first recognize the core problem being solved. Suppose you need to store a collection of key-value pairs — usernames mapped to account records, words mapped to their frequencies, or product IDs mapped to prices. A naive solution might be to store everything in a list and search through it linearly, but that gives you O(n) lookup time. What if, instead, you could compute exactly <em>where</em> a value should live and jump straight to it? That is precisely what the internal array-based design of a hash table achieves.</p>
+
+<p><strong>Arrays as the Foundation of Hash Tables</strong></p>
+
+<p>At the heart of every hash table is a fixed-size (or dynamically resized) array, sometimes called a <em>bucket array</em> or <em>slot array</em>. When you create a hash table, one of the first things that happens internally is the allocation of this array, initialized with empty or null slots. Every value you later insert will ultimately be stored at a specific index position within this array.</p>
+
+<p>The reason arrays form such an ideal foundation comes down to their most fundamental property: <strong>O(1) random access by index</strong>. Given an array and an integer index, the computer can calculate the exact memory address of that element in a single arithmetic operation — typically <code>base_address + (index × element_size)</code>. There is no looping, no comparison, no traversal. You jump directly to the memory location and either read or write the value there. Hash tables inherit this performance characteristic entirely. When a hash table can be reduced to an array index lookup, the retrieval cost is effectively constant regardless of how many elements are stored.</p>
+
+<p>Consider a simple conceptual example. Suppose we allocate an internal array of size 8:</p>
+
+<pre><code>Index:  [ 0 ] [ 1 ] [ 2 ] [ 3 ] [ 4 ] [ 5 ] [ 6 ] [ 7 ]
+Value:  null  null  null  null  null  null  null  null
+</code></pre>
+
+<p>Every slot starts empty. As keys are inserted, their associated values will be placed at computed index positions. The entire efficiency of the hash table depends on how well we can determine those positions.</p>
+
+<p>The size of the internal array is a meaningful design decision. A larger array reduces the chance that two keys end up competing for the same slot (a situation called a <em>collision</em>), but it also uses more memory, some of which may go to waste. A smaller array is more memory-efficient but increases collision probability. In practice, hash table implementations choose an initial size and then <em>resize</em> — typically doubling the array — when the ratio of stored elements to array slots (called the <em>load factor</em>) exceeds a threshold, commonly around 0.70 to 0.75.</p>
+
+<p><strong>The Role of Hash Functions</strong></p>
+
+<p>The hash function is the engine that makes the array-based design work. It accepts a key as its input — which might be a string, an integer, an object, or any other type — and produces an integer output. That integer is then used (usually after a further step) to identify which array slot the corresponding value belongs in.</p>
+
+<p>A well-designed hash function has two critical properties. First, it must be <strong>deterministic</strong>: given the same key, it must always return the same integer, every single time, without exception. Second, it should produce <strong>uniform distribution</strong>: the integers it generates should spread as evenly as possible across the range of valid array indices, so that no single slot becomes overloaded while others stay empty.</p>
+
+<p>To understand why uniform distribution matters, imagine a hash function so poorly designed that it maps every key to index 0. All values pile up at slot 0, and what was supposed to be a hash table degrades into a linked list. Every lookup now requires scanning all the stored items sequentially — exactly the O(n) performance that the hash table was designed to avoid. A good hash function prevents clustering, ensuring the array's capacity is used evenly.</p>
+
+<p>Here is a simple illustrative hash function for strings, which sums the ASCII (or Unicode) code point values of each character:</p>
+
+<pre><code>def naive_string_hash(key):
+    total = 0
+    for character in key:
+        total += ord(character)
+    return total
+</code></pre>
+
+<p>For the key <code>"cat"</code>: <code>ord('c') + ord('a') + ord('t') = 99 + 97 + 116 = 312</code>. For <code>"act"</code>: the same three characters produce the same sum, 312. This reveals a weakness — anagrams hash identically. Real-world hash functions incorporate positional weighting to avoid this. A classic approach used in many languages multiplies a running total by a prime number at each step:</p>
+
+<pre><code>def polynomial_hash(key, prime=31):
+    total = 0
+    for i, character in enumerate(key):
+        total += ord(character) * (prime ** i)
+    return total
+</code></pre>
+
+<p>Now <code>"cat"</code> and <code>"act"</code> produce different hash values because each character's contribution is scaled by its position. Primes are preferred multipliers because they reduce mathematical patterns that can cause clustering when the modulo step is applied.</p>
+
+<p><strong>Mapping Keys to Indices</strong></p>
+
+<p>A hash function often produces very large integers — far larger than the size of the internal array. The standard solution is to apply the <strong>modulo operator</strong>. If the internal array has <code>n</code> slots, the final array index is computed as:</p>
+
+<pre><code>index = hash_function(key) % n
+</code></pre>
+
+<p>The modulo operation constrains any integer output to the range <code>[0, n-1]</code>, which is always a valid index for an array of size <code>n</code>. For example, if the hash of <code>"cat"</code> is 312 and the array size is 8, the index is <code>312 % 8 = 0</code>. If the array size were 10, the index would be <code>312 % 10 = 2</code>.</p>
+
+<p>This means the array size itself influences index distribution. If the array size shares common factors with many hash values, certain indices will be hit much more often than others. This is one reason hash table implementations frequently prefer <strong>prime numbers</strong> as array sizes — a prime size has fewer common factors with hash outputs, leading to more even distribution after the modulo step.</p>
+
+<p>Different key types require different strategies for producing the initial integer hash value:</p>
+
+<ul>
+  <li><strong>Integers:</strong> The key itself can often be used directly as the hash value, sometimes after mixing bits to avoid trivial patterns. For example, <code>hash(42) = 42</code>, then <code>42 % array_size</code>.</li>
+  <li><strong>Strings:</strong> Each character is converted to its numeric code point, then combined using positional polynomial arithmetic (as shown above) to produce a single integer.</li>
+  <li><strong>Floating-point numbers:</strong> The raw bit representation is typically reinterpreted as an integer, then hashed.</li>
+  <li><strong>Composite objects / tuples:</strong> Each field or element is hashed individually, and the results are combined — often using XOR operations, polynomial combination, or the approach Python uses with <code>hash(tuple)</code>.</li>
+  <li><strong>Custom objects:</strong> The programmer must define a custom hash function based on the object's meaningful fields, and critically, any two objects that compare as equal must produce the same hash value.</li>
+</ul>
+
+<p>The quality of this key-to-index mapping is the single biggest factor in hash table performance. A mapping that clusters keys into a few slots causes many collisions and degrades performance. An even mapping keeps collisions rare and maintains near-O(1) behavior across the board.</p>
+
+<p><strong>Storage and Retrieval Efficiency</strong></p>
+
+<p>The insertion and retrieval processes in an array-based hash table are elegant in their symmetry:</p>
+
+<p>During <strong>insertion</strong>, the process is:</p>
+<ul>
+  <li>Accept a key-value pair.</li>
+  <li>Call the hash function on the key to produce an integer.</li>
+  <li>Apply modulo with the array size to get a valid index.</li>
+  <li>Store the value at that index in the internal array.</li>
+</ul>
+
+<p>During <strong>retrieval</strong>, the process is:</p>
+<ul>
+  <li>Accept a key.</li>
+  <li>Call the <em>same</em> hash function on the key to produce the <em>same</em> integer.</li>
+  <li>Apply modulo with the array size to get the <em>same</em> index.</li>
+  <li>Read and return the value at that index in the internal array.</li>
+</ul>
+
+<p>The crucial insight is that <strong>no searching is required</strong>. The hash function directly computes where the value was stored. This is called <em>direct addressing</em>, and it is what separates hash tables from linear search structures. Compare the two approaches:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Operation</th>
+      <th>Linear Search (Array/List)</th>
+      <th>Hash Table</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Insert</td>
+      <td>O(n) to check for duplicates</td>
+      <td>O(1) average</td>
+    </tr>
+    <tr>
+      <td>Lookup</td>
+      <td>O(n) — must scan from start</td>
+      <td>O(1) average</td>
+    </tr>
+    <tr>
+      <td>Delete</td>
+      <td>O(n) — must find element first</td>
+      <td>O(1) average</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>For lookup-heavy workloads — counting word frequencies in a document, checking membership in a large set, caching computed results — this difference is transformative. A linear search through a million elements takes up to a million comparisons. A hash table lookup takes a fixed, tiny number of operations regardless of table size.</p>
+
+<p>Here is a minimal Python-style pseudocode illustration of the complete insertion and retrieval cycle:</p>
+
+<pre><code>class SimpleHashTable:
+    def __init__(self, size=8):
+        self.size = size
+        self.array = [None] * self.size   # internal array
+
+    def _hash(self, key):
+        total = 0
+        for i, ch in enumerate(str(key)):
+            total += ord(ch) * (31 ** i)
+        return total % self.size           # always a valid index
+
+    def insert(self, key, value):
+        index = self._hash(key)
+        self.array[index] = value          # direct write
+
+    def retrieve(self, key):
+        index = self._hash(key)
+        return self.array[index]           # direct read
+</code></pre>
+
+<p>Calling <code>insert("name", "Alice")</code> computes an index and writes <code>"Alice"</code> there. A subsequent call to <code>retrieve("name")</code> computes the <em>identical</em> index and returns <code>"Alice"</code> instantly, without scanning any other slots.</p>
+
+<p><strong>Determinism and Consistency Requirements</strong></p>
+
+<p>The entire design described above collapses completely if the hash function is not deterministic. Determinism means that for any given key, the hash function returns the <em>same integer every time it is called</em>, regardless of when it is called, how many times, or in what order relative to other operations.</p>
+
+<p>Why is this so critical? Because the index used during retrieval must match the index used during insertion. If the hash function could return different values for the same key on different calls, you would store a value at index 3 during insertion, but then compute index 7 during retrieval and find nothing — even though the value is safely sitting at index 3. The hash table would appear to lose data that it has actually stored.</p>
+
+<p>A hash function must <strong>never</strong> incorporate any of the following sources of variability:</p>
+
+<ul>
+  <li><strong>Random numbers:</strong> Calling <code>random()</code> inside a hash function would produce a different integer each time, destroying determinism entirely.</li>
+  <li><strong>Timestamps or system clocks:</strong> The time at which the hash is computed is irrelevant to the key's identity and must not influence the result.</li>
+  <li><strong>Memory addresses:</strong> Some languages allow using an object's memory address as its hash. This is fragile — if a garbage collector moves the object in memory, its address changes and its hash changes, making stored entries unretrievable. Python, for example, explicitly forbids this for mutable objects, which is why <code>list</code> objects are not hashable.</li>
+  <li><strong>External mutable state:</strong> Global counters, database reads, or any other value that changes over the lifetime of the program must not influence a hash function.</li>
+</ul>
+
+<p>A related consistency requirement is that <strong>if two keys are considered equal, they must produce the same hash</strong>. This is sometimes called the <em>hash-equality contract</em>. If <code>key_a == key_b</code> is true, then <code>hash(key_a) == hash(key_b)</code> must also be true. Violating this contract means two keys that compare as equal would map to different array slots, making it impossible to reliably retrieve values using logically equivalent keys.</p>
+
+<p>Interestingly, the reverse does not need to hold: two keys with the same hash value do not need to be equal. When two different keys produce the same index, it is a <em>collision</em>, and hash tables have well-defined strategies (chaining and open addressing) to handle it. But two equal keys must never produce different indices — that is an unrecoverable logical error in the hash function's design.</p>
+
+<p>The complete picture of the internal array-based design can be summarized as a pipeline: a key enters the system, the hash function converts it into an integer, the modulo operation constrains that integer to a valid array index, and the underlying array provides O(1) access to that slot. The determinism of the hash function ensures this pipeline produces the same result every time the same key is used, making the entire structure reliable, predictable, and efficient.</p>
+        <div class="notes"><strong>Notes</strong>The simplified hash table pseudocode intentionally omits collision handling to keep the focus on the core array-and-hash-function design. Instructors may wish to note that a production implementation would need to handle the case where two keys map to the same index.</div>
+      </div>
+    </details>
+  </main>
+</body></html>

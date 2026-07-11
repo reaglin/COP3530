@@ -1,0 +1,324 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Merge Sort</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+  <style>
+    body { padding-left: 1.1rem; padding-right: 1.1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid rgba(128,128,128,.45); padding: .45em .7em; text-align: left; vertical-align: top; }
+    thead th { background: rgba(128,128,128,.18); font-weight: 600; }
+    tbody tr:nth-child(even) { background: rgba(128,128,128,.08); }
+    a.topic-detail-link { text-decoration: underline; }
+  </style>
+  <style>
+    summary.slide-header { list-style: none; }
+    summary.slide-header::-webkit-details-marker { display: none; }
+    details.slide-card[open] > .slide-body { display: block; }
+    details.slide-card[open] .chevron { transform: rotate(90deg); }
+    @media print { details.slide-card > .slide-body { display: block !important; } .chevron { display: none; } }
+  </style>
+</head><body>
+  <header>
+    <h1>Merge Sort</h1>
+  </header><main>
+    <details class="slide-card" open>
+      <summary class="slide-header"><span class="slide-num">1</span><h2>Merge Sort</h2><span class="chevron">▶</span></summary>
+      <div class="slide-body">
+        <p>Merge sort is one of the most elegant and reliable sorting algorithms ever devised. It belongs to a family of algorithms that solve problems by breaking them into smaller, more manageable pieces, solving each piece independently, and then combining the results. This general strategy — called <strong>divide and conquer</strong> — is the conceptual backbone of merge sort, and understanding it deeply unlocks not just this algorithm but an entire class of powerful computational techniques.</p>
+
+<p>At its core, merge sort answers a deceptively simple question: if you already have two <em>sorted</em> lists, how quickly can you combine them into one sorted list? The answer turns out to be very fast — linear time. Merge sort exploits this by recursively reducing any unsorted list down to trivially sorted pieces (single elements), then building back up through repeated merging. The result is a guaranteed <strong>O(n log n)</strong> time complexity that never degrades, no matter what the input looks like.</p>
+
+<p><strong>Divide-and-Conquer Strategy</strong></p>
+
+<p>The divide-and-conquer paradigm has three phases: <em>divide</em>, <em>conquer</em>, and <em>combine</em>. Merge sort maps cleanly onto all three. In the divide phase, the algorithm splits the input array in half. In the conquer phase, it recursively sorts each half. In the combine phase, it merges the two sorted halves back together. This structure repeats at every level until the base case is reached.</p>
+
+<p>The key insight is what constitutes the <strong>base case</strong>. An array containing zero or one element requires no sorting — it is already sorted by definition. A single number cannot be out of order with itself. This trivial fact is precisely what terminates the recursion and makes the whole process work. Every array, no matter how large or chaotically ordered, can be reduced to a collection of single-element arrays by repeated halving. Once you have that collection, you only need to merge them back together in the correct order.</p>
+
+<p>To visualize this, consider the array <code>[38, 27, 43, 3, 9, 82, 10]</code>. The divide phase unfolds like a tree branching downward:</p>
+
+<pre><code>[38, 27, 43, 3, 9, 82, 10]
+         /              \
+  [38, 27, 43]       [3, 9, 82, 10]
+    /      \            /        \
+[38, 27]  [43]      [3, 9]    [82, 10]
+  /    \              /   \      /    \
+[38]  [27]          [3]   [9] [82]  [10]
+</code></pre>
+
+<p>At the bottom of that tree, every subarray is a single element. The algorithm then works its way back up, merging at each level. Merging <code>[38]</code> and <code>[27]</code> produces <code>[27, 38]</code>. That result merges with <code>[43]</code> to produce <code>[27, 38, 43]</code>. The right side undergoes the same process. Finally, <code>[27, 38, 43]</code> and <code>[3, 9, 10, 82]</code> are merged to produce the fully sorted array <code>[3, 9, 10, 27, 38, 43, 82]</code>.</p>
+
+<p><strong>Recursive Structure of Merge Sort</strong></p>
+
+<p>The recursive structure of merge sort is what makes the divide-and-conquer strategy concrete and executable. The main <code>mergeSort</code> function does three things: it checks for the base case, it splits the array, and it recursively processes each half before delegating the actual combination work to a helper function.</p>
+
+<p>The function accepts an array as its argument. If the array has a length of 0 or 1, the recursion has bottomed out — the subarray is already sorted, so the function simply returns it unchanged. This is critical: without a proper base case, the recursion would never terminate.</p>
+
+<p>When the array has two or more elements, the function calculates the midpoint and uses <code>Array.prototype.slice</code> to divide the array into a left half and a right half. Both halves are then passed back into <code>mergeSort</code> recursively. Each recursive call goes through the same process — splitting, recursing, merging — until every branch of the call tree has resolved its base case. Only once both recursive calls return sorted arrays does the current call proceed to combine them.</p>
+
+<p>This pattern — where a function calls itself on strictly smaller inputs and combines those results — is the hallmark of divide-and-conquer recursion. The call stack grows as the algorithm descends into smaller and smaller subarrays, and it unwinds as the merges propagate back upward. The depth of this call stack is logarithmic in the size of the input, because each split halves the problem size.</p>
+
+<p><strong>The Merge Helper Function</strong></p>
+
+<p>The merge helper is where the real sorting work happens. It receives two already-sorted arrays and produces a single sorted array containing all elements from both. The algorithm is elegant: it uses two pointers, one for each input array, each starting at index zero.</p>
+
+<p>At every step, the merge function compares the current element from the left array against the current element from the right array. The smaller of the two is appended to the result array, and that pointer is advanced by one. This comparison-and-advance continues as long as both pointers are within bounds — that is, as long as neither input array has been fully consumed.</p>
+
+<p>Once one array is exhausted, no more comparisons are needed. The remaining elements of the other array are guaranteed to be sorted and guaranteed to be larger than everything already added to the result (because both inputs were sorted to begin with). Those remaining elements are therefore appended to the result directly, in one operation, without any further comparisons.</p>
+
+<p>Consider merging <code>[27, 38, 43]</code> and <code>[3, 9, 10, 82]</code>:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Step</th>
+      <th>Left pointer</th>
+      <th>Right pointer</th>
+      <th>Comparison</th>
+      <th>Element added</th>
+      <th>Result so far</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>27</td>
+      <td>3</td>
+      <td>27 &gt; 3</td>
+      <td>3</td>
+      <td>[3]</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>27</td>
+      <td>9</td>
+      <td>27 &gt; 9</td>
+      <td>9</td>
+      <td>[3, 9]</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>27</td>
+      <td>10</td>
+      <td>27 &gt; 10</td>
+      <td>10</td>
+      <td>[3, 9, 10]</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>27</td>
+      <td>82</td>
+      <td>27 &lt; 82</td>
+      <td>27</td>
+      <td>[3, 9, 10, 27]</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>38</td>
+      <td>82</td>
+      <td>38 &lt; 82</td>
+      <td>38</td>
+      <td>[3, 9, 10, 27, 38]</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>43</td>
+      <td>82</td>
+      <td>43 &lt; 82</td>
+      <td>43</td>
+      <td>[3, 9, 10, 27, 38, 43]</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>(exhausted)</td>
+      <td>82</td>
+      <td>—</td>
+      <td>82 (appended directly)</td>
+      <td>[3, 9, 10, 27, 38, 43, 82]</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Because each element from both arrays is visited at most once, the merge function runs in <strong>O(n) time</strong>, where n is the total number of elements across both input arrays. This linear cost is what makes the overall algorithm so efficient when combined with the logarithmic depth of the recursion tree.</p>
+
+<p><strong>JavaScript Implementation</strong></p>
+
+<p>Below is a clean, complete JavaScript implementation of merge sort, separating the merge helper from the main recursive function for clarity.</p>
+
+<pre><code>// Merge helper: combines two sorted arrays into one sorted array
+function merge(left, right) {
+  const results = [];
+  let i = 0; // pointer for left array
+  let j = 0; // pointer for right array
+
+  // Compare elements from both arrays and push the smaller one
+  while (i < left.length && j < right.length) {
+    if (left[i] <= right[j]) {
+      results.push(left[i]);
+      i++;
+    } else {
+      results.push(right[j]);
+      j++;
+    }
+  }
+
+  // Append any remaining elements from either array
+  while (i < left.length) {
+    results.push(left[i]);
+    i++;
+  }
+  while (j < right.length) {
+    results.push(right[j]);
+    j++;
+  }
+
+  return results;
+}
+
+// Main merge sort function
+function mergeSort(arr) {
+  // Base case: arrays of length 0 or 1 are already sorted
+  if (arr.length <= 1) return arr;
+
+  // Find the midpoint and split the array
+  const mid = Math.floor(arr.length / 2);
+  const left = mergeSort(arr.slice(0, mid));
+  const right = mergeSort(arr.slice(mid));
+
+  // Merge the two sorted halves and return the result
+  return merge(left, right);
+}
+
+// Example usage
+console.log(mergeSort([38, 27, 43, 3, 9, 82, 10]));
+// Output: [3, 9, 10, 27, 38, 43, 82]
+</code></pre>
+
+<p>Walk through what happens when <code>mergeSort([38, 27, 43, 3])</code> is called:</p>
+
+<ul>
+  <li>The midpoint is <code>Math.floor(4 / 2) = 2</code>, so <code>left = [38, 27]</code> and <code>right = [43, 3]</code>.</li>
+  <li><code>mergeSort([38, 27])</code> is called. Midpoint is 1. Left is <code>[38]</code>, right is <code>[27]</code>. Both return immediately (base case). <code>merge([38], [27])</code> returns <code>[27, 38]</code>.</li>
+  <li><code>mergeSort([43, 3])</code> is called. Midpoint is 1. Left is <code>[43]</code>, right is <code>[3]</code>. Both return immediately. <code>merge([43], [3])</code> returns <code>[3, 43]</code>.</li>
+  <li>Back at the top level, <code>merge([27, 38], [3, 43])</code> is called and returns <code>[3, 27, 38, 43]</code>.</li>
+</ul>
+
+<p>Notice the use of <code><=</code> rather than <code><</code> in the comparison inside <code>merge</code>. When two elements are equal, preferring the left array element preserves <strong>stability</strong> — elements with equal keys maintain their original relative order from the input. This is an important property in many real-world sorting scenarios, such as sorting records by a secondary key while preserving a primary key's ordering.</p>
+
+<p><strong>Time Complexity: O(n log n)</strong></p>
+
+<p>Merge sort's time complexity can be understood by examining the recursion tree. At the top level, there is one array of size n. It splits into two arrays of size n/2. Each of those splits into two arrays of size n/4. This halving continues until all arrays reach size 1. The number of levels in this tree is <strong>log₂(n)</strong>, because you can only halve n a logarithmic number of times before reaching 1.</p>
+
+<p>At each level of the recursion tree, the merge operations collectively process every element exactly once. At the top level, one merge touches all n elements. At the second level, two merges each touch n/2 elements — still n total. At the third level, four merges each touch n/4 elements — still n total. This pattern holds at every level: the total work per level is always O(n).</p>
+
+<p>Since there are O(log n) levels and each level does O(n) work, the total time complexity is <strong>O(n log n)</strong>.</p>
+
+<p>This is a crucial distinction from algorithms like insertion sort or bubble sort, which are O(n²) in the worst case, or even quicksort, which is O(n log n) on average but degrades to O(n²) when the pivot selection is consistently poor (e.g., always choosing the smallest or largest element on an already-sorted or reverse-sorted array). Merge sort has <strong>no such worst case</strong>. Whether the input is sorted, reverse-sorted, or entirely random, merge sort always performs exactly the same number of operations. This predictability is invaluable in systems where performance guarantees matter.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Algorithm</th>
+      <th>Best Case</th>
+      <th>Average Case</th>
+      <th>Worst Case</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Bubble Sort</td>
+      <td>O(n)</td>
+      <td>O(n²)</td>
+      <td>O(n²)</td>
+    </tr>
+    <tr>
+      <td>Insertion Sort</td>
+      <td>O(n)</td>
+      <td>O(n²)</td>
+      <td>O(n²)</td>
+    </tr>
+    <tr>
+      <td>Quicksort</td>
+      <td>O(n log n)</td>
+      <td>O(n log n)</td>
+      <td>O(n²)</td>
+    </tr>
+    <tr>
+      <td>Merge Sort</td>
+      <td>O(n log n)</td>
+      <td>O(n log n)</td>
+      <td>O(n log n)</td>
+    </tr>
+    <tr>
+      <td>Heapsort</td>
+      <td>O(n log n)</td>
+      <td>O(n log n)</td>
+      <td>O(n log n)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Space Complexity and Trade-offs</strong></p>
+
+<p>Merge sort's primary drawback is its memory usage. Because the merge step combines two subarrays into a brand-new array rather than rearranging elements in place, it requires <strong>O(n) auxiliary space</strong> in addition to the space occupied by the original input. At any given moment during the algorithm, newly created subarrays from the merge operations are held in memory. The largest of these is at the final merge, which creates an array of size n. Across the entire recursion tree, the peak memory usage is O(n).</p>
+
+<p>Additionally, because merge sort is recursive, each active function call occupies a frame on the call stack. The maximum depth of the recursion is log₂(n) (the height of the recursion tree), so the call stack contributes an additional <strong>O(log n)</strong> space. For most practical purposes, this is negligible compared to the O(n) heap allocation, but it is worth noting — particularly in environments with limited stack depth.</p>
+
+<p>Contrast this with <strong>insertion sort</strong>, which sorts in place using only a constant amount of extra memory (O(1) space), or <strong>heapsort</strong>, which also sorts in place in O(n log n) time. For memory-constrained environments, those algorithms may be preferable despite other trade-offs.</p>
+
+<p>However, merge sort's memory usage is often entirely acceptable, and in some contexts it is the <em>only</em> sensible choice:</p>
+
+<ul>
+  <li><strong>Linked lists:</strong> Merge sort is the natural choice for sorting linked lists because splitting a linked list at its midpoint and merging two linked lists are both efficient operations requiring no extra memory. Quicksort, by contrast, struggles with linked lists because random access (needed for efficient pivot selection and partitioning) is O(n) rather than O(1).</li>
+  <li><strong>External sorting:</strong> When data is too large to fit in RAM and must be sorted across disk files or tape drives, merge sort's sequential access pattern is ideal. Data is read and written in large sequential chunks rather than accessed randomly, which matches the performance characteristics of disk I/O. Database systems and file-sorting utilities frequently use variants of external merge sort for exactly this reason.</li>
+  <li><strong>Stable sorting requirements:</strong> As noted earlier, merge sort is naturally stable. When the relative order of equal elements must be preserved — as in multi-column spreadsheet sorting or database query results — merge sort is an excellent choice.</li>
+  <li><strong>Parallelism:</strong> The independent nature of the two recursive halves makes merge sort highly amenable to parallel execution. Both halves can be sorted simultaneously on different processors, and the merge step can also be parallelized. This makes merge sort the foundation of many parallel and distributed sorting algorithms.</li>
+</ul>
+
+<p>In summary, merge sort is a foundational algorithm that every serious programmer should understand deeply. Its consistent O(n log n) performance, its stability, its suitability for linked lists and external data, and its clean recursive structure make it not just a classroom exercise but a genuinely practical and widely deployed tool. The trade-off in auxiliary memory is real, but in the vast majority of applications it is a trade-off well worth making.</p>
+        <div class="notes"><strong>Notes</strong>The JavaScript implementation uses separate while loops to drain remaining elements from either array after one is exhausted, which is clearer for learners than a single concatenation. Instructors may wish to demonstrate the spread-operator shorthand (e.g., `...left.slice(i)`) as an alternative but should note that the explicit loop version makes the logic most transparent.</div>
+      </div>
+    </details>
+  </main>
+</body></html>

@@ -1,0 +1,28 @@
+{
+  "activities": [
+    {
+      "id": "1ec1ee46-f260-4892-8013-ca0b89bfe4e7",
+      "title": "Drag-and-Drop Match",
+      "fileName": "drag-and-drop-match.html",
+      "templateName": "Drag-and-Drop Match",
+      "objective": "Create an interactive activity for students to practise \u0022Introduction to Lists and Arrays\u0022 at the Analyze level.",
+      "moduleStudentOutcomeIds": [],
+      "currentVersion": 1,
+      "totalVersions": 1,
+      "createdDate": "2026-07-01T13:19:20.7422055-04:00",
+      "modifiedDate": "2026-07-01T13:19:20.7422408-04:00"
+    },
+    {
+      "id": "861b2c15-270f-4836-ad2e-55dc40e791e0",
+      "title": "Drag-and-Drop Match",
+      "fileName": "drag-and-drop-match_20260701152850.html",
+      "templateName": "Drag-and-Drop Match",
+      "objective": "Create an interactive activity for students to practise \u0022Applying Big O to List and Array Operations\u0022 at the Analyze level.",
+      "moduleStudentOutcomeIds": [],
+      "currentVersion": 1,
+      "totalVersions": 1,
+      "createdDate": "2026-07-01T15:28:50.297351-04:00",
+      "modifiedDate": "2026-07-01T15:28:50.2973884-04:00"
+    }
+  ]
+}

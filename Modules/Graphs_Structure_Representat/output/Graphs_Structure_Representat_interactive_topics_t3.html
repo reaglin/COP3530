@@ -1,0 +1,328 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Adjacency Matrix Representation</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+  <style>
+    body { padding-left: 1.1rem; padding-right: 1.1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid rgba(128,128,128,.45); padding: .45em .7em; text-align: left; vertical-align: top; }
+    thead th { background: rgba(128,128,128,.18); font-weight: 600; }
+    tbody tr:nth-child(even) { background: rgba(128,128,128,.08); }
+    a.topic-detail-link { text-decoration: underline; }
+  </style>
+  <style>
+    summary.slide-header { list-style: none; }
+    summary.slide-header::-webkit-details-marker { display: none; }
+    details.slide-card[open] > .slide-body { display: block; }
+    details.slide-card[open] .chevron { transform: rotate(90deg); }
+    @media print { details.slide-card > .slide-body { display: block !important; } .chevron { display: none; } }
+  </style>
+</head><body>
+  <header>
+    <h1>Adjacency Matrix Representation</h1>
+  </header><main>
+    <details class="slide-card" open>
+      <summary class="slide-header"><span class="slide-num">1</span><h2>Adjacency Matrix Representation</h2><span class="chevron">▶</span></summary>
+      <div class="slide-body">
+        <p>A graph is one of the most versatile data structures in computer science, capable of modelling everything from social networks and road maps to compiler dependency trees and neural connections. To work with graphs algorithmically, we first need a concrete way to store them in memory. One of the oldest and most intuitive representations is the <strong>adjacency matrix</strong> — a two-dimensional grid that encodes every possible relationship between every pair of vertices in a single, uniform structure. Understanding the adjacency matrix deeply means understanding not just how it is built, but why it behaves the way it does, when it excels, and when it falls short.</p>
+
+<p>An <strong>adjacency matrix</strong> for a graph with <em>V</em> vertices is a square matrix of dimensions <em>V × V</em>. Each row and each column correspond to a specific vertex. The cell at row <em>i</em> and column <em>j</em> — written <code>matrix[i][j]</code> — records whether an edge exists from vertex <em>i</em> to vertex <em>j</em>. In the simplest case, the value is a boolean: <code>1</code> (or <code>true</code>) if the edge exists, and <code>0</code> (or <code>false</code>) if it does not. Because rows and columns are indexed directly by vertex identifiers, finding out whether two specific vertices are connected requires nothing more than a single array lookup — no searching, no traversal.</p>
+
+<p>Consider a small unweighted graph with four vertices labelled 0, 1, 2, and 3, and the following edges: (0→1), (0→2), (1→3), (2→3). Its adjacency matrix looks like this:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th></th>
+      <th>0</th>
+      <th>1</th>
+      <th>2</th>
+      <th>3</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>0</strong></td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td><strong>1</strong></td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td><strong>2</strong></td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td><strong>3</strong></td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Reading row 0 immediately reveals that vertex 0 has outgoing edges to vertices 1 and 2. Reading column 3 reveals that vertices 1 and 2 have incoming edges to vertex 3. The entire connectivity picture of the graph is contained in this flat, rectangular structure.</p>
+
+<p>For <strong>weighted graphs</strong>, the binary 0/1 convention is replaced by the actual edge weight. <code>matrix[i][j]</code> stores the weight of the edge from <em>i</em> to <em>j</em>, and a sentinel value — commonly <code>0</code>, <code>-1</code>, <code>∞</code>, or <code>None</code> depending on the context — is used to indicate the absence of an edge. For example, in a road network where edge weights represent distances in kilometres, the matrix might look like:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th></th>
+      <th>A</th>
+      <th>B</th>
+      <th>C</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>A</strong></td>
+      <td>0</td>
+      <td>5</td>
+      <td>∞</td>
+    </tr>
+    <tr>
+      <td><strong>B</strong></td>
+      <td>∞</td>
+      <td>0</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td><strong>C</strong></td>
+      <td>2</td>
+      <td>∞</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Here, a road of length 5 km connects A to B, a road of 3 km connects B to C, and a road of 2 km connects C back to A. The ∞ entries signal no direct road. Algorithms such as Floyd-Warshall, which finds shortest paths between all pairs of vertices, operate directly on this form of the adjacency matrix without any transformation.</p>
+
+<p><strong>Directed versus Undirected Graphs</strong> produce matrices with a critical structural difference. In a <em>directed graph</em> (digraph), an edge from vertex <em>i</em> to vertex <em>j</em> does not imply an edge from <em>j</em> to <em>i</em>. Therefore <code>matrix[i][j]</code> and <code>matrix[j][i]</code> can differ. The example above is directed: there is a road from C to A (weight 2) but no road from A to C (∞).</p>
+
+<p>In an <em>undirected graph</em>, every edge is bidirectional. Adding edge (i, j) automatically implies edge (j, i). As a result, the matrix is always <strong>symmetric across its main diagonal</strong>: <code>matrix[i][j] == matrix[j][i]</code> for all <em>i</em> and <em>j</em>. Consider an undirected version of the four-vertex graph from earlier, where we add the reverse of every directed edge:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th></th>
+      <th>0</th>
+      <th>1</th>
+      <th>2</th>
+      <th>3</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>0</strong></td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td><strong>1</strong></td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td><strong>2</strong></td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td><strong>3</strong></td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Notice that this matrix is a perfect mirror image of itself across the diagonal. This symmetry is not merely a nice property — it is an opportunity for optimisation. Because the upper triangle and the lower triangle contain identical information, only one of them strictly needs to be stored. Techniques such as a <em>triangular matrix</em> or a packed flat array can halve the memory requirement for undirected graphs, though this comes at the cost of slightly more complex index arithmetic.</p>
+
+<p><strong>Space Complexity</strong> is the most defining characteristic — and the most significant limitation — of the adjacency matrix. For a graph with <em>V</em> vertices, the matrix always allocates exactly <em>V × V</em> cells, regardless of how many edges actually exist. This gives a space complexity of <strong>O(V²)</strong>.</p>
+
+<p>When is this acceptable? For a <em>dense graph</em>, one in which the number of edges <em>E</em> is close to <em>V²</em>, almost every cell in the matrix holds meaningful data. The memory overhead per edge is low because there are so many edges sharing the total allocation. The complete graph K₁₀ has 10 vertices and 45 undirected edges; its 10×10 matrix stores 100 cells but 45 of them carry real edge data — an efficiency of 45%. For K₁₀₀, the ratio climbs even higher.</p>
+
+<p>For a <em>sparse graph</em>, however, the picture reverses dramatically. Consider a graph modelling the hyperlinks between web pages: billions of vertices, yet each page links to only tens or hundreds of others. The number of edges <em>E</em> is tiny relative to <em>V²</em>. Storing a billion-by-billion matrix to represent a handful of edges per vertex is completely impractical. In such scenarios, the adjacency matrix wastes enormous memory holding zeroes that carry no information.</p>
+
+<p><strong>Time Complexity for Common Operations</strong> directly follows from the matrix structure:</p>
+
+<ul>
+  <li><strong>Edge existence check — O(1):</strong> To determine whether an edge exists between vertex <em>i</em> and vertex <em>j</em>, access <code>matrix[i][j]</code>. Array indexing in a two-dimensional structure is a constant-time operation. This is the single greatest strength of the adjacency matrix. No other standard graph representation achieves O(1) edge lookup without additional bookkeeping.</li>
+  <li><strong>Finding all neighbours of a vertex — O(V):</strong> To enumerate every vertex adjacent to vertex <em>i</em>, scan the entire row <em>i</em> and collect all positions <em>j</em> where <code>matrix[i][j] ≠ 0</code>. Even if vertex <em>i</em> has only two neighbours, you must examine all <em>V</em> entries in the row to be sure. This is O(V) regardless of the actual degree of the vertex.</li>
+  <li><strong>Adding or removing an edge — O(1):</strong> Inserting edge (i, j) means setting <code>matrix[i][j] = 1</code> (or the edge weight). For an undirected graph, also set <code>matrix[j][i] = 1</code>. Either way, it is a constant number of assignment operations. Removing an edge is equally simple: set the relevant cell or cells back to 0.</li>
+  <li><strong>Adding a new vertex — O(V²):</strong> This is the most expensive structural change. A new vertex increases <em>V</em> to <em>V+1</em>, meaning the matrix must grow from <em>V×V</em> to <em>(V+1)×(V+1)</em>. In most implementations this requires allocating a new, larger array and copying all existing data into it — an O(V²) operation. Frequently resizing a large adjacency matrix is therefore very costly.</li>
+</ul>
+
+<p>A concrete implementation of an adjacency matrix in Python illustrates how straightforward the structure is to build and query:</p>
+
+<pre><code>class AdjacencyMatrix:
+    def __init__(self, num_vertices):
+        self.V = num_vertices
+        # Initialise a V×V matrix filled with zeros
+        self.matrix = [[0] * num_vertices for _ in range(num_vertices)]
+
+    def add_edge(self, u, v, weight=1, directed=False):
+        self.matrix[u][v] = weight
+        if not directed:
+            self.matrix[v][u] = weight   # Symmetry for undirected graphs
+
+    def remove_edge(self, u, v, directed=False):
+        self.matrix[u][v] = 0
+        if not directed:
+            self.matrix[v][u] = 0
+
+    def has_edge(self, u, v):
+        return self.matrix[u][v] != 0   # O(1) lookup
+
+    def neighbours(self, u):
+        # O(V) — must scan the entire row
+        return [v for v in range(self.V) if self.matrix[u][v] != 0]
+
+# Example usage
+g = AdjacencyMatrix(4)
+g.add_edge(0, 1)
+g.add_edge(0, 2)
+g.add_edge(1, 3)
+g.add_edge(2, 3)
+
+print(g.has_edge(0, 1))   # True
+print(g.has_edge(0, 3))   # False
+print(g.neighbours(0))    # [1, 2]
+</code></pre>
+
+<p>The <code>has_edge</code> method is a single list index operation — it cannot be faster. The <code>neighbours</code> method must iterate all <em>V</em> columns in the row; for a vertex with only two neighbours in a graph of 10,000 vertices, it still performs 10,000 comparisons.</p>
+
+<p><strong>Advantages of the Adjacency Matrix</strong> are most pronounced in specific, well-defined use cases:</p>
+
+<ul>
+  <li><strong>Constant-time edge queries</strong> make the adjacency matrix the right choice whenever an algorithm repeatedly asks "does edge (u, v) exist?" rather than "give me all neighbours of u." The Floyd-Warshall all-pairs shortest-path algorithm and certain matrix-based graph algorithms (including those using matrix exponentiation to count paths of length <em>k</em>) rely directly on this property.</li>
+  <li><strong>Simplicity of implementation</strong> is a meaningful practical advantage. Two-dimensional arrays are native to virtually every programming language. There are no linked lists, no hash maps, no auxiliary structures to manage. For teaching, prototyping, or small competitive programming problems, this simplicity is valuable.</li>
+  <li><strong>Dense graphs justify the memory cost.</strong> In graph colouring problems, clique detection, or dense network analysis where nearly all vertex pairs are connected, the adjacency matrix is not only efficient but natural. The proportion of wasted space approaches zero as the graph approaches completeness.</li>
+  <li><strong>Matrix operations apply directly.</strong> The adjacency matrix integrates naturally with linear algebra. Squaring the matrix <em>A²</em> gives, at entry (i, j), the number of distinct paths of length exactly 2 from vertex <em>i</em> to vertex <em>j</em>. More generally, <em>Aᵏ</em>[i][j] counts paths of length <em>k</em>. This connection between graph theory and matrix algebra enables efficient algorithms for reachability and counting problems.</li>
+</ul>
+
+<p><strong>Trade-offs and Limitations</strong> are equally important to understand, because choosing the wrong representation can make an otherwise correct algorithm impractically slow or memory-hungry:</p>
+
+<ul>
+  <li><strong>Quadratic memory growth</strong> is the dominant limitation. Doubling the number of vertices quadruples the memory consumption. A graph with 10,000 vertices requires a 10,000 × 10,000 matrix — 100 million cells. At 4 bytes per integer, that is 400 MB just for the matrix. For graphs with hundreds of thousands or millions of vertices, an adjacency matrix becomes completely infeasible.</li>
+  <li><strong>Traversal algorithms are penalised.</strong> Breadth-first search (BFS) and depth-first search (DFS) both need to enumerate the neighbours of a vertex at each step. With an adjacency matrix, this costs O(V) per vertex, making the full traversal O(V²). With an adjacency list, enumerating neighbours costs O(degree of vertex), and the full traversal costs O(V + E). For sparse graphs where E ≪ V², this difference is enormous — an algorithm that runs in seconds with an adjacency list may take hours with an adjacency matrix on the same graph.</li>
+  <li><strong>Dynamic graphs are expensive to manage.</strong> If the graph changes frequently — vertices are added or removed at runtime — the matrix must be resized. Each resize involves copying O(V²) data. Algorithms that construct graphs incrementally, such as certain online or streaming algorithms, should strongly prefer adjacency lists or other dynamic structures.</li>
+  <li><strong>Sparse graphs waste memory proportionally to their sparsity.</strong> If a graph has <em>V</em> vertices and only O(V) edges (common in trees, grids, and real-world networks), the adjacency matrix is <em>V²/V = V</em> times more memory-intensive than the data would justify. An adjacency list stores each edge exactly once (or twice for undirected graphs), giving O(V + E) space — a decisive advantage for sparse graphs.</li>
+</ul>
+
+<p>The following table summarises the time and space complexities of the adjacency matrix alongside the adjacency list for direct comparison:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Operation</th>
+      <th>Adjacency Matrix</th>
+      <th>Adjacency List</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Space</td>
+      <td>O(V²)</td>
+      <td>O(V + E)</td>
+    </tr>
+    <tr>
+      <td>Edge existence check</td>
+      <td>O(1)</td>
+      <td>O(degree) or O(V)</td>
+    </tr>
+    <tr>
+      <td>Find all neighbours of vertex</td>
+      <td>O(V)</td>
+      <td>O(degree)</td>
+    </tr>
+    <tr>
+      <td>Add edge</td>
+      <td>O(1)</td>
+      <td>O(1)</td>
+    </tr>
+    <tr>
+      <td>Remove edge</td>
+      <td>O(1)</td>
+      <td>O(degree)</td>
+    </tr>
+    <tr>
+      <td>Add vertex</td>
+      <td>O(V²)</td>
+      <td>O(1)</td>
+    </tr>
+    <tr>
+      <td>BFS / DFS traversal</td>
+      <td>O(V²)</td>
+      <td>O(V + E)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The choice between an adjacency matrix and alternative representations ultimately comes down to the characteristics of the specific graph and the operations that will be performed most frequently. When the graph is dense, static, and edge-existence queries dominate, the adjacency matrix is excellent. When the graph is sparse, dynamic, or traversal-heavy, the adjacency list's O(V + E) space and neighbour-enumeration costs make it the better tool. A practitioner who thoroughly understands both representations — and the trade-offs summarised above — can make that choice confidently and justify it rigorously.</p>
+        <div class="notes"><strong>Notes</strong>The Floyd-Warshall example and matrix exponentiation extension enrich understanding of where adjacency matrices are genuinely preferred over adjacency lists. The comparison table should reinforce the trade-off discussion and make the space/time differences concrete at a glance.</div>
+      </div>
+    </details>
+  </main>
+</body></html>

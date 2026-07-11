@@ -1,286 +1,407 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Hash Tables: Structure and Collision Resolution — COP3530</title>
   <style>
-    /* ── Reset & Base ── */
     *, *::before, *::after {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
 
-    html {
-      font-size: 16px;
-      scroll-behavior: smooth;
+    :root {
+      --color-bg: #f4f6f9;
+      --color-surface: #ffffff;
+      --color-border: #dde2ea;
+      --color-primary: #1a4f8a;
+      --color-primary-dark: #133a66;
+      --color-accent: #2e7d52;
+      --color-accent-hover: #225e3e;
+      --color-text: #1e2430;
+      --color-muted: #5a6478;
+      --color-tag-bg: #e8edf5;
+      --color-tag-text: #2c4a75;
+      --color-tag-type-bg: #eef6f1;
+      --color-tag-type-text: #1e5c3a;
+      --color-source-bg: #f5f0e8;
+      --color-source-text: #7a5c1e;
+      --color-source-hover: #5a4010;
+      --radius: 8px;
+      --shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+      --shadow-hover: 0 6px 18px rgba(0, 0, 0, 0.12);
+      --font-sans: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      --font-mono: 'Consolas', 'Courier New', monospace;
     }
 
     body {
-      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-      background-color: #f4f6f9;
-      color: #1e2a3a;
-      line-height: 1.65;
+      font-family: var(--font-sans);
+      background-color: var(--color-bg);
+      color: var(--color-text);
+      line-height: 1.6;
       min-height: 100vh;
     }
 
-    /* ── Layout Wrapper ── */
-    .page-wrapper {
-      max-width: 1080px;
-      margin: 0 auto;
-      padding: 2.5rem 1.5rem 4rem;
+    /* ── Header ── */
+    header {
+      background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+      color: #ffffff;
+      padding: 2.5rem 1.5rem 2rem;
+      border-bottom: 4px solid #0e2a4a;
     }
 
-    /* ── Course Label ── */
+    .header-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+    }
+
     .course-label {
       display: inline-block;
-      font-size: 0.78rem;
+      font-size: 0.75rem;
       font-weight: 600;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      color: #ffffff;
-      background-color: #1a5fa8;
-      padding: 0.3rem 0.75rem;
+      background: rgba(255, 255, 255, 0.15);
+      color: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.25);
       border-radius: 4px;
-      margin-bottom: 1rem;
+      padding: 0.2rem 0.6rem;
+      margin-bottom: 0.75rem;
     }
 
-    /* ── Header ── */
-    .module-header {
-      border-bottom: 3px solid #1a5fa8;
-      padding-bottom: 1.5rem;
-      margin-bottom: 2rem;
-    }
-
-    .module-header h1 {
-      font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+    header h1 {
+      font-size: clamp(1.5rem, 3.5vw, 2.2rem);
       font-weight: 700;
-      color: #0f1e30;
       line-height: 1.25;
       margin-bottom: 0.85rem;
+      letter-spacing: -0.01em;
     }
 
-    .module-header p {
+    .intro {
       font-size: 1rem;
-      color: #3d4f63;
-      max-width: 72ch;
+      color: rgba(255, 255, 255, 0.85);
+      max-width: 720px;
+      line-height: 1.7;
     }
 
-    /* ── Section Title ── */
-    .section-title {
-      font-size: 1.05rem;
+    /* ── Main ── */
+    main {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 3rem;
+    }
+
+    .section-label {
+      font-size: 0.72rem;
       font-weight: 700;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: #1a5fa8;
+      color: var(--color-muted);
       margin-bottom: 1.1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--color-border);
     }
 
     /* ── Card Grid ── */
     .card-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(min(100%, 460px), 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
       gap: 1.25rem;
     }
 
-    /* ── Artifact Card ── */
-    .artifact-card {
-      background: #ffffff;
-      border: 1px solid #dce3ed;
-      border-radius: 10px;
-      padding: 1.4rem 1.5rem;
+    .card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+      padding: 1.35rem 1.4rem 1.25rem;
+      box-shadow: var(--shadow);
       display: flex;
       flex-direction: column;
       gap: 0.65rem;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
       transition: box-shadow 0.2s ease, transform 0.2s ease;
     }
 
-    .artifact-card:hover {
-      box-shadow: 0 6px 18px rgba(26, 95, 168, 0.12);
+    .card:hover {
+      box-shadow: var(--shadow-hover);
       transform: translateY(-2px);
     }
 
-    /* ── Card Header Row ── */
+    /* ── Card Header ── */
     .card-header {
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+
+    .card-name {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--color-text);
+      line-height: 1.35;
       display: flex;
       flex-wrap: wrap;
       align-items: baseline;
-      gap: 0.5rem 0.75rem;
+      gap: 0.5rem;
     }
 
-    .artifact-name {
-      font-size: 1.08rem;
-      font-weight: 700;
-      color: #0f1e30;
-      line-height: 1.3;
-    }
-
-    .artifact-name a {
-      color: #1a5fa8;
+    .card-name a.name-link {
+      color: var(--color-primary);
       text-decoration: none;
-      border-bottom: 2px solid transparent;
-      transition: border-color 0.18s ease, color 0.18s ease;
+      border-bottom: 1.5px solid transparent;
+      transition: border-color 0.15s, color 0.15s;
     }
 
-    .artifact-name a:hover,
-    .artifact-name a:focus {
-      color: #0d3f74;
-      border-bottom-color: #0d3f74;
-      outline: none;
+    .card-name a.name-link:hover {
+      color: var(--color-primary-dark);
+      border-bottom-color: var(--color-primary-dark);
     }
 
-    .artifact-name a:focus-visible {
-      outline: 3px solid #4a9eff;
-      outline-offset: 2px;
-      border-radius: 2px;
+    .card-name span.name-plain {
+      color: var(--color-text);
     }
 
-    /* ── Source File Link ── */
     .source-link {
-      font-size: 0.78rem;
-      font-weight: 500;
-      color: #5a7a9e;
-      text-decoration: none;
-      border: 1px solid #b3c6da;
-      border-radius: 20px;
-      padding: 0.15rem 0.55rem;
-      white-space: nowrap;
-      transition: background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease;
-    }
-
-    .source-link:hover,
-    .source-link:focus {
-      background-color: #e8f0fb;
-      color: #1a5fa8;
-      border-color: #1a5fa8;
-      outline: none;
-    }
-
-    .source-link:focus-visible {
-      outline: 3px solid #4a9eff;
-      outline-offset: 2px;
-      border-radius: 20px;
-    }
-
-    /* ── Badges Row ── */
-    .badge-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.45rem;
-      align-items: center;
-    }
-
-    .badge {
       display: inline-flex;
       align-items: center;
       gap: 0.25rem;
-      font-size: 0.73rem;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--color-source-text);
+      background: var(--color-source-bg);
+      border: 1px solid #e0d0b0;
+      border-radius: 4px;
+      padding: 0.15rem 0.45rem;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .source-link:hover {
+      background: #ecdec0;
+      color: var(--color-source-hover);
+    }
+
+    .source-link::before {
+      content: "⬇";
+      font-size: 0.65rem;
+    }
+
+    /* ── Tags Row ── */
+    .tags-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      align-items: center;
+    }
+
+    .tag {
+      font-size: 0.7rem;
       font-weight: 600;
       letter-spacing: 0.03em;
-      text-transform: uppercase;
-      padding: 0.22rem 0.55rem;
-      border-radius: 5px;
+      border-radius: 4px;
+      padding: 0.2rem 0.5rem;
+      white-space: nowrap;
     }
 
-    .badge-type {
-      background-color: #eaf1fb;
-      color: #1a5fa8;
+    .tag-type {
+      background: var(--color-tag-type-bg);
+      color: var(--color-tag-type-text);
+      border: 1px solid #c0dece;
     }
 
-    .badge-filetype {
-      background-color: #f0f4f0;
-      color: #2e6b3e;
-      border: 1px solid #c3d9c7;
+    .tag-filetype {
+      background: var(--color-tag-bg);
+      color: var(--color-tag-text);
+      border: 1px solid #c8d5e8;
+      font-family: var(--font-mono);
     }
 
     /* ── Description ── */
-    .artifact-description {
-      font-size: 0.9rem;
-      color: #3d4f63;
-      line-height: 1.6;
+    .card-description {
+      font-size: 0.875rem;
+      color: var(--color-muted);
+      line-height: 1.65;
+      flex-grow: 1;
     }
 
     /* ── Footer ── */
-    .page-footer {
-      margin-top: 3.5rem;
-      padding-top: 1.25rem;
-      border-top: 1px solid #dce3ed;
+    footer {
       text-align: center;
-      font-size: 0.8rem;
-      color: #7a8fa3;
+      font-size: 0.78rem;
+      color: var(--color-muted);
+      padding: 1.5rem 1rem 2rem;
+      border-top: 1px solid var(--color-border);
+      background: var(--color-surface);
     }
 
     /* ── Responsive ── */
-    @media (max-width: 540px) {
-      .page-wrapper {
-        padding: 1.75rem 1rem 3rem;
+    @media (max-width: 600px) {
+      header {
+        padding: 2rem 1rem 1.75rem;
       }
 
-      .artifact-card {
-        padding: 1.1rem 1.15rem;
+      main {
+        padding: 1.5rem 1rem 2.5rem;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
       }
     }
   </style>
 </head>
 <body>
-  <div class="page-wrapper">
 
-    <!-- ── Header ── -->
-    <header class="module-header">
+  <header>
+    <div class="header-inner">
       <span class="course-label">COP3530 — Data Structures</span>
       <h1>Hash Tables: Structure and Collision Resolution</h1>
-      <p>
-        This module introduces hash tables as a foundational data structure, examining their
-        array-based design and key-value storage model. Learners will explore the properties of
-        effective hash functions — including determinism, uniform distribution, and computational
-        speed — and then work through the primary strategies for handling collisions: chaining and
-        open addressing.
+      <p class="intro">
+        This module covers the fundamentals of hash tables — from their internal array-based design and hash function properties to collision resolution strategies including chaining and open addressing. Work through the topics below to build a solid conceptual and practical understanding of one of the most widely used data structures in software engineering.
       </p>
-    </header>
+    </div>
+  </header>
 
-    <!-- ── Artifacts ── -->
-    <section aria-labelledby="artifacts-heading">
-      <h2 class="section-title" id="artifacts-heading">Module Artifacts</h2>
-      <div class="card-grid">
+  <main>
+    <p class="section-label">Module Artifacts &mdash; 9 items</p>
 
-        <!-- Artifact: Module Topics -->
-        <article class="artifact-card" aria-label="Module Topics artifact">
-          <div class="card-header">
-            <span class="artifact-name">
-              <a href="module_topics.html">Module Topics</a>
-            </span>
-            <a
-              class="source-link"
-              href="../hierarchy.json"
-              aria-label="Source file for Module Topics"
-            >source file</a>
+    <div class="card-grid">
+
+      <!-- Artifact 1: Module Topics -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-name">
+            <a class="name-link" href="module_topics.html">Module Topics</a>
+            <a class="source-link" href="../hierarchy.json">source file</a>
           </div>
-
-          <div class="badge-row">
-            <span class="badge badge-type" aria-label="Type: Module Topics">Module Topics</span>
-            <span class="badge badge-filetype" aria-label="File type: .json">.json</span>
+          <div class="tags-row">
+            <span class="tag tag-type">Module Topics</span>
+            <span class="tag tag-filetype">.json</span>
           </div>
-
-          <p class="artifact-description">
-            Outlines the module's learning topics spanning hash table fundamentals (structure,
-            key-value purpose, array-based design), hash function properties (determinism, uniform
-            distribution, speed), and collision resolution strategies (chaining and open
-            addressing), serving as a navigational overview for learners and instructors to
-            understand the scope and sequence of the module.
-          </p>
-        </article>
-
+        </div>
+        <p class="card-description">Outlines the module's learning topics spanning hash table fundamentals (structure, key-value purpose, array-based design), hash function properties (determinism, uniform distribution, speed), and collision resolution strategies (chaining and open addressing), serving as a navigational overview for learners and instructors to understand the scope and sequence of the module.</p>
       </div>
-    </section>
 
-    <!-- ── Footer ── -->
-    <footer class="page-footer">
-      <p>COP3530 — Data Structures &nbsp;·&nbsp; Hash Tables: Structure and Collision Resolution</p>
-    </footer>
+      <!-- Artifact 2: Introduction to Hash Tables -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-name">
+            <a class="name-link" href="Hash_Tables_Structure_interactive_topics_t1.html">Introduction to Hash Tables</a>
+          </div>
+          <div class="tags-row">
+            <span class="tag tag-type">Topic Detail</span>
+            <span class="tag tag-filetype">.html</span>
+          </div>
+        </div>
+        <p class="card-description">Introduces hash tables conceptually — explaining what they are, why they matter, and how they achieve fast storage and retrieval regardless of collection size — serving as a starting-point reading for learners new to the data structure.</p>
+      </div>
 
-  </div>
+      <!-- Artifact 3: Internal Array-Based Design -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-name">
+            <a class="name-link" href="Hash_Tables_Structure_interactive_topics_t2.html">Internal Array-Based Design</a>
+          </div>
+          <div class="tags-row">
+            <span class="tag tag-type">Topic Detail</span>
+            <span class="tag tag-filetype">.html</span>
+          </div>
+        </div>
+        <p class="card-description">Explains how a hash table is built on top of a contiguous internal array — covering how buckets are indexed and how the array forms the foundation for O(1) operations — helping learners understand the underlying memory structure before exploring higher-level behavior.</p>
+      </div>
+
+      <!-- Artifact 4: Hash Function Design and Properties -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-name">
+            <a class="name-link" href="Hash_Tables_Structure_interactive_topics_t3.html">Hash Function Design and Properties</a>
+          </div>
+          <div class="tags-row">
+            <span class="tag tag-type">Topic Detail</span>
+            <span class="tag tag-filetype">.html</span>
+          </div>
+        </div>
+        <p class="card-description">Covers the design principles and required properties of hash functions — including how keys of various types are converted to array indices and what makes a hash function high-quality — so learners can evaluate and write effective hash functions for their implementations.</p>
+      </div>
+
+      <!-- Artifact 5: Collision Resolution: Chaining -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-name">
+            <a class="name-link" href="Hash_Tables_Structure_interactive_topics_t4.html">Collision Resolution: Chaining</a>
+          </div>
+          <div class="tags-row">
+            <span class="tag tag-type">Topic Detail</span>
+            <span class="tag tag-filetype">.html</span>
+          </div>
+        </div>
+        <p class="card-description">Explains the chaining collision-resolution strategy — where colliding keys are stored together at the same bucket using a linked structure — so learners understand how to implement and reason about one of the most common approaches to handling hash collisions.</p>
+      </div>
+
+      <!-- Artifact 6: Collision Resolution: Open Addressing -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-name">
+            <a class="name-link" href="Hash_Tables_Structure_interactive_topics_t5.html">Collision Resolution: Open Addressing</a>
+          </div>
+          <div class="tags-row">
+            <span class="tag tag-type">Topic Detail</span>
+            <span class="tag tag-filetype">.html</span>
+          </div>
+        </div>
+        <p class="card-description">Explains open addressing as a collision-resolution strategy — covering probing techniques such as linear, quadratic, and double hashing that find alternative slots within the array when a collision occurs — so learners can compare it with chaining and understand its trade-offs.</p>
+      </div>
+
+      <!-- Artifact 7: Performance Analysis of Hash Tables -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-name">
+            <a class="name-link" href="Hash_Tables_Structure_interactive_topics_t6.html">Performance Analysis of Hash Tables</a>
+          </div>
+          <div class="tags-row">
+            <span class="tag tag-type">Topic Detail</span>
+            <span class="tag tag-filetype">.html</span>
+          </div>
+        </div>
+        <p class="card-description">Analyzes hash table time complexity — examining average-case and worst-case performance for insertion, deletion, and lookup, the role of load factor, and conditions that degrade efficiency — equipping learners and instructors with the tools to evaluate and tune hash table performance.</p>
+      </div>
+
+      <!-- Artifact 8: Implementing a Hash Table in JavaScript (Topic Detail) -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-name">
+            <a class="name-link" href="Hash_Tables_Structure_interactive_topics_t7.html">Implementing a Hash Table in JavaScript</a>
+          </div>
+          <div class="tags-row">
+            <span class="tag tag-type">Topic Detail</span>
+            <span class="tag tag-filetype">.html</span>
+          </div>
+        </div>
+        <p class="card-description">Walks learners through building a hash table from scratch in JavaScript using chaining or open addressing — demonstrating how insert, lookup, and delete operations are coded — serving as a hands-on coding reference that bridges conceptual understanding and practical implementation.</p>
+      </div>
+
+      <!-- Artifact 9: Implementing a Hash Table in JavaScript (Text Content) -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-name">
+            <a class="name-link" href="Hash_Tables_Structure_interactive.html">Implementing a Hash Table in JavaScript</a>
+          </div>
+          <div class="tags-row">
+            <span class="tag tag-type">Text Content</span>
+            <span class="tag tag-filetype">.html</span>
+          </div>
+        </div>
+        <p class="card-description">Walks learners through building a hash table from scratch in JavaScript using chaining or open addressing — demonstrating how insert, lookup, and delete operations are coded — serving as a hands-on coding reference that bridges conceptual understanding and practical implementation.</p>
+      </div>
+
+    </div>
+  </main>
+
+  <footer>
+    <p>COP3530 &mdash; Data Structures &nbsp;|&nbsp; Module: Hash Tables: Structure and Collision Resolution</p>
+  </footer>
+
 
 <footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
 </body>

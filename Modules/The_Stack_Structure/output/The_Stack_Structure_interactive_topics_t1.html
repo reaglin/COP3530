@@ -1,0 +1,173 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Introduction to the Stack Data Structure</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+  <style>
+    body { padding-left: 1.1rem; padding-right: 1.1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid rgba(128,128,128,.45); padding: .45em .7em; text-align: left; vertical-align: top; }
+    thead th { background: rgba(128,128,128,.18); font-weight: 600; }
+    tbody tr:nth-child(even) { background: rgba(128,128,128,.08); }
+  </style>
+  <style>
+    summary.slide-header { list-style: none; }
+    summary.slide-header::-webkit-details-marker { display: none; }
+    details.slide-card[open] > .slide-body { display: block; }
+    details.slide-card[open] .chevron { transform: rotate(90deg); }
+    @media print { details.slide-card > .slide-body { display: block !important; } .chevron { display: none; } }
+  </style>
+</head><body>
+  <header>
+    <h1>Introduction to the Stack Data Structure</h1>
+  </header><main>
+    <details class="slide-card" open>
+      <summary class="slide-header"><span class="slide-num">1</span><h2>Introduction to the Stack Data Structure</h2><span class="chevron">▶</span></summary>
+      <div class="slide-body">
+        <p>Among the most elegant and widely used structures in all of computer science, the stack earns its place not through complexity but through disciplined simplicity. A stack is a linear collection of elements in which access is intentionally restricted to a single end. That restricted end is called the <strong>top</strong>, and it is the only point through which data enters or leaves. This constraint transforms what might otherwise be an ordinary list into a powerful, predictable tool whose behavior can be reasoned about with complete certainty. Before writing a single line of code, understanding the stack at a conceptual level is essential — because every implementation decision, every use case, and every bug you will ever encounter with this structure flows directly from that single foundational rule.</p>
+
+<p>Think of a stack of dinner plates. You can place a new plate on top, and you can take the top plate off, but you cannot pull a plate from the middle without disturbing everything above it. The physical analogy is almost perfect: the structure enforces an order of access, and that order is not arbitrary — it is precisely what makes the structure useful. The same mental model applies whether you are managing function calls inside a JavaScript engine, evaluating a mathematical expression, or navigating the undo history of a text editor.</p>
+
+<p><strong>What exactly is a stack?</strong> A stack holds its elements arranged sequentially — one after another in a defined order — but it exposes only one end of that sequence to the outside world. Elements are both added and removed from this same single end. There is no notion of inserting an element at position three, or retrieving the element at position seven. The interface is deliberately narrow. This narrowness is not a flaw or an oversight. It is an architectural decision. By hiding everything except the top, a stack makes a strong behavioral guarantee: the element you will get next is always the one that was added most recently. That guarantee is extraordinarily useful in a wide range of problems, and its usefulness depends entirely on that constraint being enforced consistently.</p>
+
+<p>Because elements enter and leave from the same end, the order in which elements come out is the exact reverse of the order in which they went in. If you push the values <code>10</code>, then <code>20</code>, then <code>30</code> onto a stack, the first value you will pop back out is <code>30</code>, then <code>20</code>, and finally <code>10</code>. This is the <strong>LIFO principle</strong> — Last In, First Out — and it is the single most important concept associated with stacks.</p>
+
+<p>LIFO means that the last element pushed onto the stack is the first element to be popped off. This is not merely a quirky property of the structure; it is the defining characteristic that separates a stack from other data structures. A queue, by contrast, follows FIFO (First In, First Out), where the oldest element is served first. A stack inverts that: the newest element is always served first. This reversal of chronological order is what makes stacks so naturally suited to problems involving backtracking, nesting, and deferred processing.</p>
+
+<p>Consider what LIFO means in practice. When you push elements onto a stack, you are building a history. The most recent action sits at the top, closest to you. When you start popping, you are unwinding that history in reverse — the most recent action is undone first, then the one before it, and so on, until you reach the beginning. This pattern appears everywhere in computing: an undo system in a word processor unwinds edits in reverse order, a recursive algorithm unwinds its call frames in reverse order, a browser's back button returns you through visited pages in reverse order. Each of these is LIFO in action, and each one could be implemented with or modeled by a stack.</p>
+
+<p>Understanding LIFO deeply — not just as a definition but as an intuition — is essential before implementing or applying a stack. Every design decision in a stack implementation is driven by this principle. If you are ever unsure whether a stack is the right tool for a problem, ask yourself: does the solution require processing items in reverse order of arrival, or resolving the most recent context before returning to earlier ones? If the answer is yes, a stack is almost certainly the right structure.</p>
+
+<p>A stack exposes only a small, well-defined set of operations. These <strong>core operations</strong> form the complete public interface of the structure, and knowing them precisely is the starting point for both implementation and use.</p>
+
+<ul>
+  <li><strong>Push</strong> — Adds a new element to the top of the stack. After a push, the newly added element becomes the new top, and the element that was previously at the top is now one position below it. Push is the sole mechanism for inserting data into a stack. There is no "insert at position" or "append to bottom" — only push.</li>
+  <li><strong>Pop</strong> — Removes and returns the element currently at the top of the stack. After a pop, the element that was directly beneath the removed one becomes the new top. If the stack is empty when pop is called, the behavior depends on the implementation — some throw an error, some return a sentinel value like <code>null</code> or <code>undefined</code>. This is why checking for emptiness before popping is important.</li>
+  <li><strong>Peek</strong> (also called <strong>top</strong> in some implementations) — Allows you to inspect the element currently at the top of the stack without removing it. Peek is a read-only operation. It answers the question "what is the next element I would get if I popped?" without actually performing the pop. This is useful when you need to make a decision based on the top element before committing to removing it.</li>
+  <li><strong>isEmpty</strong> — Returns a boolean indicating whether the stack contains any elements. This operation is critical for safe usage. Calling pop or peek on an empty stack is an error condition. A well-written algorithm will always check isEmpty before attempting either of those operations. isEmpty also appears frequently in loop conditions: "keep processing while the stack is not empty."</li>
+</ul>
+
+<p>Some implementations add a <strong>size</strong> operation that returns the number of elements currently in the stack, and a <strong>clear</strong> operation that removes all elements at once. These are conveniences rather than fundamental requirements. The four operations above — push, pop, peek, and isEmpty — constitute the minimal complete interface of a stack as it is understood across computer science.</p>
+
+<p>To make these operations concrete, here is a simple trace of a stack through a sequence of operations:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Operation</th>
+      <th>Stack State (bottom → top)</th>
+      <th>Return Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>push(5)</code></td>
+      <td>[5]</td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td><code>push(12)</code></td>
+      <td>[5, 12]</td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td><code>push(7)</code></td>
+      <td>[5, 12, 7]</td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td><code>peek()</code></td>
+      <td>[5, 12, 7]</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <td><code>pop()</code></td>
+      <td>[5, 12]</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <td><code>pop()</code></td>
+      <td>[5]</td>
+      <td>12</td>
+    </tr>
+    <tr>
+      <td><code>isEmpty()</code></td>
+      <td>[5]</td>
+      <td>false</td>
+    </tr>
+    <tr>
+      <td><code>pop()</code></td>
+      <td>[]</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <td><code>isEmpty()</code></td>
+      <td>[]</td>
+      <td>true</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Notice that the values come off in the reverse order they were put on — 7, then 12, then 5 — confirming the LIFO principle in action. Notice also that peek on the third step returned 7 without changing the stack state at all.</p>
+
+<p>Stacks are not merely an academic curiosity or a textbook exercise. They are genuinely <strong>fundamental to how computer systems operate at a deep level</strong>. The most pervasive example is the <em>call stack</em>, the mechanism that every programming language runtime uses to manage function invocations. When a function is called, a new frame is pushed onto the call stack. That frame holds the function's local variables, its parameters, and the return address — the location in the code to jump back to when the function finishes. When the function returns, its frame is popped off the call stack, and execution resumes at the return address stored in the frame below. This is LIFO in one of its most critical real-world forms: the most recently called function must finish before the one that called it can continue.</p>
+
+<p>This is why stack overflow errors occur. If a function calls itself recursively without a proper base case, new frames keep getting pushed onto the call stack without any being popped off. Eventually the stack exhausts the memory allocated to it, and the runtime signals an overflow. Understanding stacks helps you understand why this happens and how to reason about recursion depth.</p>
+
+<p>Beyond the call stack, stacks appear in expression evaluation (converting infix expressions like <code>3 + 4 * 2</code> to a form a computer can process), in syntax parsing (matching opening and closing brackets, braces, and parentheses), in depth-first graph traversal algorithms, in undo/redo systems, and in the back-button functionality of web browsers. Wherever a system must remember a sequence of states or actions and then unwind them in reverse, a stack provides the natural, efficient, and conceptually clean solution.</p>
+
+<p>The reason stacks can be trusted in these critical roles — managing the actual execution of programs — is precisely their simplicity. A structure with fewer operations is easier to reason about, easier to implement correctly, and easier to verify. When a call stack pushes a frame, you know with certainty that the next pop will return exactly that frame. There is no ambiguity, no special cases, no ordering exceptions. Predictability at this level is not just convenient — it is essential when correctness is non-negotiable.</p>
+
+<p>To fully appreciate what a stack is, it helps to understand it as an <strong>Abstract Data Type</strong>, or ADT. An ADT is a mathematical model of a data structure that defines what operations are available and what those operations guarantee, without specifying how they are carried out internally. The ADT for a stack says: there is a push operation that adds an element to the top; there is a pop operation that removes and returns the top element; there is a peek operation that reads the top element; and there is an isEmpty operation that reports whether the stack is empty. It says nothing about whether the stack is built using an array, a linked list, a tree, or any other concrete structure. Those are implementation details, and they are deliberately excluded from the ADT definition.</p>
+
+<p>This separation between <em>what</em> a structure does and <em>how</em> it does it is one of the most important ideas in software engineering. When you think of a stack as an ADT, you can write code that uses a stack without caring at all about its internal mechanics. Later, if you decide to change the underlying implementation — say, switching from an array-based stack to a linked-list-based stack for performance reasons — the code that uses the stack does not need to change at all, because the external interface (the ADT) remains the same. This is the principle of abstraction, and the stack is one of the cleanest illustrations of it in practice.</p>
+
+<p>Starting with the ADT also establishes the right mental model for learning. Before worrying about how to implement a stack in JavaScript — before thinking about arrays or nodes or pointers — the right question to ask is: what does a stack <em>do</em>? What does it promise? What rules govern its behavior? Once those questions are answered clearly, the implementation becomes a matter of fulfilling those promises using whatever tools the language provides. The stack's behavior is fixed by its definition as an ADT; the implementation is just a means to that end.</p>
+
+<p>In summary, a stack is a sequential collection accessible only at one end, governed by the LIFO principle, exposing four core operations (push, pop, peek, isEmpty), foundational to the operation of programming language runtimes and many other systems, and best understood first as an Abstract Data Type that separates behavioral guarantees from implementation mechanics. This conceptual foundation — not the code, not the syntax — is the essential starting point for everything that follows.</p>
+        <div class="notes"><strong>Notes</strong>The call stack example is particularly effective for grounding the abstract concept in something learners have already encountered (stack overflow errors, recursion). The operations trace table provides a concrete, step-by-step visualization of LIFO that complements the prose explanations. The ADT discussion sets up the natural progression toward implementation topics in subsequent modules.</div>
+      </div>
+    </details>
+  </main>
+</body></html>

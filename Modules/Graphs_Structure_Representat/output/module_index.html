@@ -6,298 +6,402 @@
   <title>Graphs: Structure, Representation, and Traversal — COP3530</title>
   <style>
     /* ── Reset & Base ── */
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-      background-color: #f4f6f9;
-      color: #2c3e50;
-      line-height: 1.6;
-      min-height: 100vh;
-    }
-
-    /* ── Header / Hero ── */
-    header {
-      background: linear-gradient(135deg, #1a3a5c 0%, #2e6da4 100%);
-      color: #ffffff;
-      padding: 3rem 2rem 2.5rem;
-      text-align: center;
-    }
-
-    header .course-label {
-      display: inline-block;
-      font-size: 0.8rem;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      background-color: rgba(255, 255, 255, 0.18);
-      border: 1px solid rgba(255, 255, 255, 0.35);
-      border-radius: 20px;
-      padding: 0.25rem 0.85rem;
-      margin-bottom: 1rem;
-    }
-
-    header h1 {
-      font-size: clamp(1.6rem, 4vw, 2.6rem);
-      font-weight: 700;
-      letter-spacing: -0.01em;
-      margin-bottom: 1rem;
-      line-height: 1.2;
-    }
-
-    header p {
-      max-width: 680px;
-      margin: 0 auto;
+      font-family: "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
       font-size: 1rem;
-      color: rgba(255, 255, 255, 0.88);
+      line-height: 1.6;
+      background: #f4f6f9;
+      color: #1e2530;
     }
 
-    /* ── Main Content ── */
-    main {
-      max-width: 960px;
+    /* ── Page Shell ── */
+    .page-wrapper {
+      max-width: 1100px;
       margin: 0 auto;
-      padding: 2.5rem 1.5rem 4rem;
+      padding: 2rem 1.25rem 4rem;
     }
 
-    .section-label {
-      font-size: 0.75rem;
+    /* ── Course Label ── */
+    .course-label {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #4a6fa5;
+      background: #e8eef7;
+      border: 1px solid #c5d3e8;
+      border-radius: 4px;
+      padding: 0.25rem 0.65rem;
+      margin-bottom: 0.75rem;
+    }
+
+    /* ── Header ── */
+    .module-header {
+      border-left: 5px solid #4a6fa5;
+      padding-left: 1.1rem;
+      margin-bottom: 2.25rem;
+    }
+
+    .module-header h1 {
+      font-size: clamp(1.45rem, 3vw, 2rem);
+      font-weight: 700;
+      color: #13213a;
+      line-height: 1.25;
+      margin-bottom: 0.55rem;
+    }
+
+    .module-header p {
+      font-size: 0.97rem;
+      color: #4a5568;
+      max-width: 72ch;
+    }
+
+    /* ── Section Title ── */
+    .section-title {
+      font-size: 0.8rem;
       font-weight: 700;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: #6b7c93;
-      margin-bottom: 1.2rem;
-      padding-bottom: 0.5rem;
-      border-bottom: 2px solid #dde3eb;
+      color: #6b7a99;
+      margin-bottom: 1rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid #dde3ed;
     }
 
     /* ── Card Grid ── */
     .card-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 1.25rem;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.1rem;
     }
 
+    /* ── Card ── */
     .card {
       background: #ffffff;
-      border: 1px solid #dde3eb;
-      border-radius: 10px;
-      padding: 1.4rem 1.5rem;
+      border: 1px solid #dde3ed;
+      border-radius: 8px;
+      padding: 1.2rem 1.3rem 1.1rem;
       display: flex;
       flex-direction: column;
-      gap: 0.65rem;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-      transition: box-shadow 0.2s ease, transform 0.2s ease;
+      gap: 0.55rem;
+      transition: box-shadow 0.18s ease, border-color 0.18s ease;
     }
 
     .card:hover {
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
-      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(74, 111, 165, 0.13);
+      border-color: #b0c2de;
     }
 
-    /* ── Card Header Row ── */
-    .card-header {
+    /* ── Card Top Row: badges ── */
+    .card-meta {
       display: flex;
-      align-items: flex-start;
-      gap: 0.6rem;
-      flex-wrap: wrap;
-    }
-
-    .card-name {
-      font-size: 1.05rem;
-      font-weight: 700;
-      color: #1a3a5c;
-      flex: 1 1 auto;
-    }
-
-    .card-name a {
-      color: #1a3a5c;
-      text-decoration: none;
-      border-bottom: 2px solid #2e6da4;
-      padding-bottom: 1px;
-      transition: color 0.15s ease, border-color 0.15s ease;
-    }
-
-    .card-name a:hover,
-    .card-name a:focus {
-      color: #2e6da4;
-      border-color: #5b9fd4;
-      outline: none;
-    }
-
-    /* ── Source File Link ── */
-    .source-link {
-      display: inline-flex;
       align-items: center;
-      gap: 0.28rem;
-      font-size: 0.72rem;
-      font-weight: 600;
-      color: #5a7fa8;
-      text-decoration: none;
-      background-color: #eaf2fb;
-      border: 1px solid #c0d9ef;
-      border-radius: 4px;
-      padding: 0.2rem 0.5rem;
-      white-space: nowrap;
-      align-self: flex-start;
-      margin-top: 0.15rem;
-      transition: background-color 0.15s ease, color 0.15s ease;
-    }
-
-    .source-link:hover,
-    .source-link:focus {
-      background-color: #d0e7f8;
-      color: #1a5a8f;
-      outline: none;
-    }
-
-    .source-link svg {
-      flex-shrink: 0;
-    }
-
-    /* ── Badges ── */
-    .badge-row {
-      display: flex;
+      gap: 0.45rem;
       flex-wrap: wrap;
-      gap: 0.4rem;
     }
 
     .badge {
       font-size: 0.7rem;
       font-weight: 600;
       letter-spacing: 0.04em;
-      border-radius: 4px;
-      padding: 0.18rem 0.55rem;
-      text-transform: uppercase;
+      border-radius: 3px;
+      padding: 0.18rem 0.5rem;
+      white-space: nowrap;
     }
 
     .badge-type {
-      background-color: #eef0f5;
-      color: #4a5568;
-      border: 1px solid #d0d5e0;
+      background: #eef2fa;
+      color: #3a5a9b;
+      border: 1px solid #c7d5ef;
     }
 
     .badge-filetype {
-      background-color: #fff4e5;
-      color: #7d5000;
-      border: 1px solid #f5d9a0;
+      background: #f1f8f1;
+      color: #2d7a3a;
+      border: 1px solid #b8debb;
+      font-family: "Courier New", Courier, monospace;
     }
 
-    /* ── Description ── */
+    /* ── Card Title Row ── */
+    .card-title-row {
+      display: flex;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+    }
+
+    .card-name {
+      font-size: 0.98rem;
+      font-weight: 700;
+      color: #13213a;
+      line-height: 1.3;
+    }
+
+    .card-name a {
+      color: #2a56a6;
+      text-decoration: none;
+    }
+
+    .card-name a:hover {
+      text-decoration: underline;
+      color: #1a3d82;
+    }
+
+    .source-link {
+      font-size: 0.73rem;
+      font-weight: 500;
+      color: #6b7a99;
+      text-decoration: none;
+      white-space: nowrap;
+      border: 1px solid #c8cfdf;
+      border-radius: 3px;
+      padding: 0.1rem 0.42rem;
+      background: #f7f8fb;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .source-link:hover {
+      background: #e8eef7;
+      color: #2a56a6;
+      border-color: #a0b4d6;
+    }
+
+    .source-link::before {
+      content: "⬡ ";
+      font-size: 0.65rem;
+    }
+
+    /* ── Card Description ── */
     .card-description {
-      font-size: 0.88rem;
+      font-size: 0.875rem;
       color: #4a5568;
-      line-height: 1.6;
+      line-height: 1.55;
       flex: 1;
     }
 
     /* ── Footer ── */
-    footer {
+    .page-footer {
+      margin-top: 3rem;
+      padding-top: 1.1rem;
+      border-top: 1px solid #dde3ed;
+      font-size: 0.78rem;
+      color: #8a95aa;
       text-align: center;
-      padding: 1.5rem;
-      font-size: 0.8rem;
-      color: #8a97a8;
-      border-top: 1px solid #dde3eb;
-      background-color: #f4f6f9;
     }
 
-    /* ── Focus Visible Accessibility ── */
-    a:focus-visible {
-      outline: 3px solid #2e6da4;
-      outline-offset: 2px;
-      border-radius: 3px;
-    }
-
-    /* ── Responsive ── */
-    @media (max-width: 480px) {
-      header {
-        padding: 2rem 1.25rem 1.75rem;
-      }
-
-      main {
-        padding: 2rem 1rem 3rem;
-      }
-
-      .card {
-        padding: 1.2rem 1.25rem;
+    /* ── Responsive tweaks ── */
+    @media (max-width: 520px) {
+      .card-grid {
+        grid-template-columns: 1fr;
       }
     }
   </style>
 </head>
 <body>
+  <div class="page-wrapper">
 
-  <header>
-    <div class="course-label">COP3530 &mdash; Data Structures</div>
-    <h1>Graphs: Structure, Representation, and Traversal</h1>
-    <p>
-      Explore the foundational concepts of graph data structures, from vertices and
-      edges to adjacency representations and traversal algorithms. Use the resources
-      below to guide your study through this module.
-    </p>
-  </header>
-
-  <main>
-    <p class="section-label">Module Artifacts</p>
-
-    <div class="card-grid">
-
-      <!-- ── Artifact: Module Topics ── -->
-      <div class="card">
-        <div class="card-header">
-          <span class="card-name">
-            <a href="module_topics.html">Module Topics</a>
-          </span>
-          <a
-            class="source-link"
-            href="../hierarchy.json"
-            title="View raw source file"
-          >
-            <!-- small document icon -->
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="11"
-              height="11"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              aria-hidden="true"
-            >
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-              <polyline points="14 2 14 8 20 8"/>
-              <line x1="9" y1="13" x2="15" y2="13"/>
-              <line x1="9" y1="17" x2="13" y2="17"/>
-            </svg>
-            source file
-          </a>
-        </div>
-
-        <div class="badge-row">
-          <span class="badge badge-type">Module Topics</span>
-          <span class="badge badge-filetype">.json</span>
-        </div>
-
-        <p class="card-description">
-          This module outline covers the core concepts of graph data structures—including
-          definitions of vertices and edges, directed vs. undirected graphs, adjacency
-          matrix and adjacency list representations, and graph traversal algorithms—serving
-          as a navigational guide for learners and instructors to see the full scope of
-          topics in the module.
+    <!-- Header -->
+    <header>
+      <span class="course-label">COP3530 — Data Structures</span>
+      <div class="module-header">
+        <h1>Graphs: Structure, Representation, and Traversal</h1>
+        <p>
+          This module introduces graph data structures — one of the most versatile
+          abstractions in computer science. You will explore how graphs are defined,
+          how they can be stored efficiently using adjacency matrices and adjacency
+          lists, and how to traverse them using Breadth-First Search (BFS) and
+          Depth-First Search (DFS), culminating in a hands-on JavaScript implementation.
         </p>
       </div>
+    </header>
 
-    </div>
-  </main>
+    <!-- Artifact Grid -->
+    <main>
+      <p class="section-title">Module Artifacts &mdash; 9 items</p>
+      <div class="card-grid">
 
-  <footer>
-    COP3530 &mdash; Data Structures &nbsp;&bull;&nbsp; Graphs: Structure, Representation, and Traversal
-  </footer>
+        <!-- Card 1: Module Topics -->
+        <article class="card">
+          <div class="card-meta">
+            <span class="badge badge-type">Module Topics</span>
+            <span class="badge badge-filetype">.json</span>
+          </div>
+          <div class="card-title-row">
+            <span class="card-name">
+              <a href="module_topics.html">Module Topics</a>
+            </span>
+            <a class="source-link" href="../hierarchy.json">source file</a>
+          </div>
+          <p class="card-description">
+            This module outline covers the core concepts of graph data structures — including
+            definitions of vertices and edges, directed vs. undirected graphs, adjacency matrix
+            and adjacency list representations, and graph traversal algorithms — serving as a
+            navigational guide for learners and instructors to see the full scope of topics
+            in the module.
+          </p>
+        </article>
 
+        <!-- Card 2: Introduction to Graph Data Structures -->
+        <article class="card">
+          <div class="card-meta">
+            <span class="badge badge-type">Topic Detail</span>
+            <span class="badge badge-filetype">.html</span>
+          </div>
+          <div class="card-title-row">
+            <span class="card-name">
+              <a href="Graphs_Structure_Representat_interactive_topics_t1.html">Introduction to Graph Data Structures</a>
+            </span>
+          </div>
+          <p class="card-description">
+            A foundational reading that introduces graph data structures by explaining what graphs
+            are, why they are more flexible than arrays, linked lists, and trees, and where they
+            appear in real-world computing; learners read it to build conceptual context before
+            studying specific graph topics.
+          </p>
+        </article>
+
+        <!-- Card 3: Directed and Undirected Graphs -->
+        <article class="card">
+          <div class="card-meta">
+            <span class="badge badge-type">Topic Detail</span>
+            <span class="badge badge-filetype">.html</span>
+          </div>
+          <div class="card-title-row">
+            <span class="card-name">
+              <a href="Graphs_Structure_Representat_interactive_topics_t2.html">Directed and Undirected Graphs</a>
+            </span>
+          </div>
+          <p class="card-description">
+            A reading that distinguishes directed graphs (edges with a one-way direction) from
+            undirected graphs (symmetric edges), covering related terminology such as degree,
+            paths, and cycles, so learners can correctly classify and reason about graph
+            relationships.
+          </p>
+        </article>
+
+        <!-- Card 4: Adjacency Matrix Representation -->
+        <article class="card">
+          <div class="card-meta">
+            <span class="badge badge-type">Topic Detail</span>
+            <span class="badge badge-filetype">.html</span>
+          </div>
+          <div class="card-title-row">
+            <span class="card-name">
+              <a href="Graphs_Structure_Representat_interactive_topics_t3.html">Adjacency Matrix Representation</a>
+            </span>
+          </div>
+          <p class="card-description">
+            A reading that explains the adjacency matrix storage format for graphs, covering how
+            to build and interpret the matrix, its memory cost, and the time complexity of common
+            operations, so learners can evaluate when this representation is appropriate.
+          </p>
+        </article>
+
+        <!-- Card 5: Adjacency List Representation -->
+        <article class="card">
+          <div class="card-meta">
+            <span class="badge badge-type">Topic Detail</span>
+            <span class="badge badge-filetype">.html</span>
+          </div>
+          <div class="card-title-row">
+            <span class="card-name">
+              <a href="Graphs_Structure_Representat_interactive_topics_t4.html">Adjacency List Representation</a>
+            </span>
+          </div>
+          <p class="card-description">
+            A reading that explains the adjacency list storage format for graphs, covering how
+            lists of neighbors are stored, their memory and time-complexity trade-offs compared
+            with adjacency matrices, and how to implement them, so learners can choose and apply
+            the most practical representation for sparse graphs.
+          </p>
+        </article>
+
+        <!-- Card 6: BFS -->
+        <article class="card">
+          <div class="card-meta">
+            <span class="badge badge-type">Topic Detail</span>
+            <span class="badge badge-filetype">.html</span>
+          </div>
+          <div class="card-title-row">
+            <span class="card-name">
+              <a href="Graphs_Structure_Representat_interactive_topics_t5.html">Breadth-First Search (BFS)</a>
+            </span>
+          </div>
+          <p class="card-description">
+            A reading that explains the Breadth-First Search algorithm, covering its
+            layer-by-layer traversal logic, queue-based implementation, visited tracking, and
+            use cases such as shortest-path finding in unweighted graphs, so learners understand
+            how to explore graphs level by level.
+          </p>
+        </article>
+
+        <!-- Card 7: DFS -->
+        <article class="card">
+          <div class="card-meta">
+            <span class="badge badge-type">Topic Detail</span>
+            <span class="badge badge-filetype">.html</span>
+          </div>
+          <div class="card-title-row">
+            <span class="card-name">
+              <a href="Graphs_Structure_Representat_interactive_topics_t6.html">Depth-First Search (DFS)</a>
+            </span>
+          </div>
+          <p class="card-description">
+            A reading that explains the Depth-First Search algorithm, covering its recursive and
+            stack-based implementations, backtracking behavior, visited tracking, and applications
+            such as cycle detection and topological sorting, so learners understand how to explore
+            graphs along deep paths before backtracking.
+          </p>
+        </article>
+
+        <!-- Card 8: Implementing Graph Traversal — Topic Detail -->
+        <article class="card">
+          <div class="card-meta">
+            <span class="badge badge-type">Topic Detail</span>
+            <span class="badge badge-filetype">.html</span>
+          </div>
+          <div class="card-title-row">
+            <span class="card-name">
+              <a href="Graphs_Structure_Representat_interactive_topics_t7.html">Implementing Graph Traversal in JavaScript</a>
+            </span>
+          </div>
+          <p class="card-description">
+            A hands-on coding reading that walks learners through building a JavaScript Graph
+            class from scratch, then adding BFS and DFS methods step by step, so they can
+            translate traversal concepts into working, runnable code.
+          </p>
+        </article>
+
+        <!-- Card 9: Implementing Graph Traversal — Text Content -->
+        <article class="card">
+          <div class="card-meta">
+            <span class="badge badge-type">Text Content</span>
+            <span class="badge badge-filetype">.html</span>
+          </div>
+          <div class="card-title-row">
+            <span class="card-name">
+              <a href="Graphs_Structure_Representat_interactive.html">Implementing Graph Traversal in JavaScript</a>
+            </span>
+          </div>
+          <p class="card-description">
+            A hands-on coding reading that walks learners through building a JavaScript Graph
+            class from scratch, then adding BFS and DFS methods step by step, so they can
+            translate traversal concepts into working, runnable code.
+          </p>
+        </article>
+
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="page-footer">
+      COP3530 — Data Structures &nbsp;|&nbsp; Graphs: Structure, Representation, and Traversal
+    </footer>
+
+  </div>
 
 <footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
 </body>

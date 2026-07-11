@@ -1,0 +1,249 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Performance Analysis of Hash Tables</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+  <style>
+    body { padding-left: 1.1rem; padding-right: 1.1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid rgba(128,128,128,.45); padding: .45em .7em; text-align: left; vertical-align: top; }
+    thead th { background: rgba(128,128,128,.18); font-weight: 600; }
+    tbody tr:nth-child(even) { background: rgba(128,128,128,.08); }
+    a.topic-detail-link { text-decoration: underline; }
+  </style>
+  <style>
+    summary.slide-header { list-style: none; }
+    summary.slide-header::-webkit-details-marker { display: none; }
+    details.slide-card[open] > .slide-body { display: block; }
+    details.slide-card[open] .chevron { transform: rotate(90deg); }
+    @media print { details.slide-card > .slide-body { display: block !important; } .chevron { display: none; } }
+  </style>
+</head><body>
+  <header>
+    <h1>Performance Analysis of Hash Tables</h1>
+  </header><main>
+    <details class="slide-card" open>
+      <summary class="slide-header"><span class="slide-num">1</span><h2>Performance Analysis of Hash Tables</h2><span class="chevron">▶</span></summary>
+      <div class="slide-body">
+        <p>Hash tables are among the most widely used data structures in computer science precisely because they promise near-instant access to stored data regardless of how many elements they contain. Understanding <em>why</em> they are fast on average, <em>when</em> they slow down, and <em>how</em> to keep them operating efficiently requires a careful look at their time complexity, the mathematics of load factor, the mechanics of collisions, and the costs of memory management. This analysis covers all of those dimensions in depth, building from the simplest operation timings to the subtler interactions between hash function quality, table size, and real-world performance.</p>
+
+<p><strong>Time Complexity of Core Operations</strong></p>
+
+<p>Every core operation on a hash table—lookup, insertion, and deletion—follows the same fundamental sequence: apply the hash function to the key to compute a bucket index, then interact with whatever is stored at that index. Because the hash function runs in constant time (assuming fixed-size keys) and array indexing is O(1), the <em>ideal</em> case for all three operations is O(1). This is the defining appeal of the hash table: the time to find or store a value does not grow as the table fills up with more elements, provided conditions remain favorable.</p>
+
+<p>The worst case tells a very different story. If every key in the table happens to hash to the same bucket, the hash table degenerates into a linear data structure—effectively a linked list or a sequential array segment. A lookup must now scan through all <em>n</em> stored elements before it can confirm a hit or a miss, giving O(n) worst-case performance. The same degradation affects insertion (which must first check for duplicates) and deletion (which must locate the target element).</p>
+
+<p>This contrast between average and worst-case behavior is one of the sharpest in all of data structures. Compare hash tables to balanced binary search trees such as AVL trees or red-black trees: a balanced BST guarantees O(log n) for all three operations in both the average and the worst case. The hash table beats that average easily—O(1) is better than O(log n)—but gives up the worst-case guarantee entirely. Choosing between the two depends on whether the application can tolerate occasional worst-case spikes and whether key comparison or hash computation is the bottleneck.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Data Structure</th>
+      <th>Average Lookup</th>
+      <th>Worst-Case Lookup</th>
+      <th>Average Insert</th>
+      <th>Worst-Case Insert</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Hash Table</td>
+      <td>O(1)</td>
+      <td>O(n)</td>
+      <td>O(1)</td>
+      <td>O(n)</td>
+    </tr>
+    <tr>
+      <td>Balanced BST (AVL / Red-Black)</td>
+      <td>O(log n)</td>
+      <td>O(log n)</td>
+      <td>O(log n)</td>
+      <td>O(log n)</td>
+    </tr>
+    <tr>
+      <td>Unsorted Array</td>
+      <td>O(n)</td>
+      <td>O(n)</td>
+      <td>O(1) (append)</td>
+      <td>O(1) (append)</td>
+    </tr>
+    <tr>
+      <td>Sorted Array</td>
+      <td>O(log n)</td>
+      <td>O(log n)</td>
+      <td>O(n)</td>
+      <td>O(n)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Understanding Load Factor</strong></p>
+
+<p>The load factor is the single most important quantity for predicting hash table performance at runtime. It is defined as:</p>
+
+<pre><code>λ = n / m</code></pre>
+
+<p>where <em>n</em> is the number of key-value pairs currently stored in the table and <em>m</em> is the number of buckets (slots) in the underlying array. Intuitively, the load factor measures how "full" the table is. A load factor of 0.5 means the table is half full; a load factor of 1.0 means there is, on average, one element per bucket; a load factor of 2.0 (possible only with chaining) means there are, on average, two elements per bucket.</p>
+
+<p>As the load factor rises, two things happen simultaneously. First, the probability that any new insertion lands in an already-occupied bucket increases, producing more collisions. Second, the average cost of resolving each collision rises because the chains are longer or the probe sequences extend further. The relationship is not linear—performance degrades faster than the load factor itself grows, especially in open addressing schemes. For this reason, every practical hash table implementation monitors the load factor and triggers a resize before it crosses a predetermined threshold.</p>
+
+<p>Common threshold choices are:</p>
+<ul>
+  <li><strong>0.7–0.75</strong> for open addressing schemes (Java's <code>HashMap</code> defaults to 0.75; Python's <code>dict</code> resizes around 0.67).</li>
+  <li><strong>1.0 or higher</strong> for chaining-based tables, where a load factor above 1 is mathematically permissible—though performance still benefits from keeping it moderate.</li>
+</ul>
+
+<p>Consider a concrete example. Suppose a table has <em>m</em> = 100 buckets and currently holds <em>n</em> = 70 elements, giving λ = 0.70. Each of the next 30 insertions increases the probability of a collision. If instead the table had been doubled to <em>m</em> = 200 buckets at that point (with all 70 elements rehashed), the new load factor would drop to 0.35, dramatically reducing collision frequency for the next batch of insertions.</p>
+
+<p><strong>Impact of Collisions on Performance</strong></p>
+
+<p>A collision occurs whenever two different keys hash to the same bucket index. Collisions are not errors—they are an inevitable consequence of mapping a large key space into a small array of buckets (a fact formalized by the Pigeonhole Principle). What matters is how frequently they occur and how efficiently they are resolved.</p>
+
+<p>When collisions are rare, each bucket holds at most one element (or very few), and lookup, insertion, and deletion all proceed in constant time: one hash computation, one array access, one comparison. When collisions are frequent, the table must do extra work. In a chaining implementation, extra work means traversing a linked list. In open addressing, extra work means probing additional slots until an empty one is found (for insertion) or the target key is located (for lookup).</p>
+
+<p>The primary tool against excessive collisions is a high-quality hash function. A well-designed hash function distributes keys as uniformly as possible across all buckets, making each bucket equally likely to be chosen regardless of the input. Poor hash functions—for example, one that only considers the first character of a string key—tend to cluster many keys into a small subset of buckets, causing those buckets to become heavily loaded while most of the array sits empty. This uneven distribution produces collision rates far worse than theory predicts for a uniform distribution.</p>
+
+<p>A simple illustration: suppose keys are lowercase English words and the hash function returns the ASCII value of the first letter modulo 26. All words beginning with 'a' map to bucket 0, all words beginning with 'b' map to bucket 1, and so on. The distribution of English words by first letter is highly non-uniform (many more words start with 's' or 'p' than 'x' or 'z'), so some buckets become long while others stay empty. A stronger hash function—such as a polynomial rolling hash that incorporates every character—produces a far more uniform distribution.</p>
+
+<p><strong>Average-Case Performance with Chaining</strong></p>
+
+<p>Chaining resolves collisions by maintaining a linked list (or similar dynamic structure) at each bucket. To analyze its average-case performance, we invoke the <em>Simple Uniform Hashing Assumption</em> (SUHA): every key is equally likely to hash to any of the <em>m</em> buckets, independently of all other keys. Under SUHA, each bucket is expected to hold λ = n/m elements.</p>
+
+<p>A <strong>successful search</strong> for a key that exists in the table proceeds as follows: compute the hash, go to the bucket, and scan the chain until the key is found. On average, the key is about halfway through its chain, so the expected scan length is approximately λ/2. Adding the constant for the hash computation and the initial array access gives an expected successful search time of O(1 + λ/2) = <strong>O(1 + λ)</strong>.</p>
+
+<p>An <strong>unsuccessful search</strong> for a key not in the table must scan the entire chain at the computed bucket before concluding absence. The expected chain length is λ, so unsuccessful search time is O(1 + λ)—the same asymptotic bound, but with a larger constant. In practice, this means failed lookups are somewhat more expensive than successful ones at the same load factor.</p>
+
+<p>When the load factor is kept at a constant—say, λ ≤ 0.75—by resizing the table whenever the threshold is crossed, both O(1 + λ) expressions reduce to O(1 + 0.75) = O(1). That is, chaining with a bounded load factor delivers <em>true</em> constant-time average performance for all three core operations.</p>
+
+<p>An important practical note is that the constant factor hidden in the O(1) notation matters. Linked list traversal is cache-unfriendly on modern hardware because consecutive nodes are typically allocated at scattered memory addresses, causing cache misses. Some implementations replace per-bucket linked lists with small open-addressed arrays or sorted arrays to improve cache locality, accepting slightly worse asymptotic constants for better hardware performance.</p>
+
+<p><strong>Average-Case Performance with Open Addressing</strong></p>
+
+<p>In open addressing, all elements are stored directly in the bucket array itself—there are no external linked lists. When a collision occurs, the implementation follows a <em>probe sequence</em> to find the next candidate slot. The three main probe sequence strategies are linear probing, quadratic probing, and double hashing.</p>
+
+<p>The expected number of probes for an <strong>unsuccessful search</strong> under uniform hashing is:</p>
+
+<pre><code>E[probes for unsuccessful search] ≈ 1 / (1 - λ)</code></pre>
+
+<p>For a <strong>successful search</strong>, the approximation is:</p>
+
+<pre><code>E[probes for successful search] ≈ (1/λ) * ln(1 / (1 - λ))</code></pre>
+
+<p>These formulas reveal how steeply performance degrades as λ approaches 1. At λ = 0.5, an unsuccessful search expects about 2 probes—still very fast. At λ = 0.9, the expected probe count jumps to 10. At λ = 0.99, it reaches 100. The table below shows this progression:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Load Factor (λ)</th>
+      <th>Expected Probes (Unsuccessful)</th>
+      <th>Expected Probes (Successful)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0.25</td>
+      <td>≈ 1.33</td>
+      <td>≈ 1.15</td>
+    </tr>
+    <tr>
+      <td>0.50</td>
+      <td>≈ 2.00</td>
+      <td>≈ 1.39</td>
+    </tr>
+    <tr>
+      <td>0.70</td>
+      <td>≈ 3.33</td>
+      <td>≈ 1.72</td>
+    </tr>
+    <tr>
+      <td>0.90</td>
+      <td>≈ 10.00</td>
+      <td>≈ 2.56</td>
+    </tr>
+    <tr>
+      <td>0.99</td>
+      <td>≈ 100.00</td>
+      <td>≈ 4.65</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Primary clustering</strong>, which afflicts linear probing, occurs when a run of consecutive occupied slots forms. Once a cluster exists, any new key that hashes anywhere into or adjacent to the cluster extends it, making the cluster grow faster than isolated collisions would. This positive feedback loop causes linear probing to perform noticeably worse than the theoretical formulas above predict under uniform hashing. Empirically, linear probing can still be competitive in practice due to excellent cache performance (probes access consecutive memory addresses), but its clustering behavior is a genuine performance liability at higher load factors.</p>
+
+<p><strong>Secondary clustering</strong> is a milder problem associated with quadratic probing. Two keys that hash to the same initial bucket follow the same probe sequence (since the offsets depend only on the step count, not on the key itself), so they always compete for the same set of candidate slots. This is less damaging than primary clustering but still degrades performance relative to fully independent probe sequences.</p>
+
+<p><strong>Double hashing</strong> avoids both forms of clustering by computing the probe step size from a second, independent hash function. Two keys that collide at the same initial bucket will follow different probe sequences as long as their second hash values differ, which happens with high probability for a good second hash function. Empirically, double hashing produces probe counts closest to the theoretical uniform hashing ideal among all open addressing schemes, at the cost of computing two hash functions per operation.</p>
+
+<p><strong>Worst-Case Performance and Pathological Inputs</strong></p>
+
+<p>The worst case for a hash table—O(n) for all operations—arises when every stored key maps to the same bucket. A lookup or deletion must then scan all <em>n</em> elements sequentially, and an insertion must traverse the entire collision chain before placing the new element. While this scenario might seem unlikely, it is a genuine threat in practice.</p>
+
+<p>With a deterministic hash function (one whose output for a given key never changes), an adversary who knows the hash function can construct an input set in which every key deliberately collides. This is not merely a theoretical concern: hash table denial-of-service attacks—where an attacker sends HTTP request parameters or JSON keys carefully chosen to cause maximal collisions—have been demonstrated against web application frameworks in several languages. The Perl, Python, Java, and Ruby communities all issued security advisories for exactly this vulnerability in the early 2010s.</p>
+
+<p>The primary defense is <strong>randomized hashing</strong>, specifically <em>universal hashing</em>. A universal hash family is a collection of hash functions such that for any two distinct keys <em>x</em> and <em>y</em>, the probability (over a random choice of function from the family) that they collide is at most 1/<em>m</em>. By selecting a random member of the family at table initialization time—and keeping the choice secret from adversaries—the table gains a probabilistic worst-case guarantee: the expected number of collisions for any fixed input set is bounded, regardless of how the input was chosen.</p>
+
+<p>A concrete universal hash family for integer keys modulo a prime <em>p</em> is:</p>
+
+<pre><code>h_{a,b}(k) = ((a * k + b) mod p) mod m</code></pre>
+
+<p>where <em>a</em> and <em>b</em> are chosen uniformly at random from {0, 1, ..., p−1} with <em>a</em> ≠ 0. This family is proven universal: for any two distinct keys, the collision probability is exactly 1/<em>m</em>. Modern implementations like Python's <code>dict</code> incorporate hash randomization (enabled by default since Python 3.3) using a per-process random seed injected into the hash function, achieving a similar effect.</p>
+
+<p><strong>Space Complexity and Resizing Costs</strong></p>
+
+<p>A hash table's space usage has two components. First, the stored elements themselves occupy O(n) space—unavoidable for any data structure. Second, the bucket array occupies O(m) space, and since <em>m</em> is chosen to be a constant multiple of <em>n</em> (typically 1/λ_threshold times n), this is also O(n). The total space complexity is therefore <strong>O(n)</strong>, the same as a linked list or array of the same elements, but with a larger constant factor due to the empty buckets.</p>
+
+<p>There is a direct time-space tradeoff. A table with more buckets (larger <em>m</em>, lower λ) wastes more memory but achieves fewer collisions and faster operations. A table with fewer buckets (smaller <em>m</em>, higher λ) is more memory-efficient but slower. Production implementations balance this by choosing a threshold load factor—typically 0.7–0.75—that keeps performance near-constant while not wasting excessive memory.</p>
+
+<p>When the number of inserted elements causes the load factor to exceed the threshold, the table must be <strong>resized</strong>. The standard strategy is <em>table doubling</em>: allocate a new bucket array of size 2<em>m</em>, then rehash every existing element into the new array. Rehashing is expensive—it is an O(n) operation—but it happens infrequently. Specifically, table doubling is triggered only after every <em>m</em> insertions (since the table must fill before it doubles). Spreading the O(n) rehash cost across the <em>n</em> insertions that preceded it gives an <em>amortized</em> cost of O(n)/n = O(1) per insertion.</p>
+
+<p>Amortized analysis with the potential method formalizes this argument. Assign each element a "credit" of 2 at the time of its insertion. When a resize doubles the table from size <em>m</em> to 2<em>m</em>, there are at least <em>m</em>/2 elements that were inserted since the last resize (because the table was half full after the previous resize and is now full). Each of those elements contributed 2 credits, totaling at least <em>m</em> credits—exactly enough to pay for rehashing all <em>m</em> elements (at cost 1 per element). No operation ever goes into credit debt, so every insertion has an amortized cost of O(1).</p>
+
+<p>Some implementations also <strong>shrink</strong> the table when the load factor falls below a lower threshold (e.g., 0.25 after many deletions), freeing memory. Shrinking is handled symmetrically—halving the table size—and carries the same amortized O(1) cost per deletion when analyzed carefully. To avoid rapid oscillation between growing and shrinking (a pathological scenario where every other operation triggers a resize), implementations typically use asymmetric thresholds: grow at λ = 0.75, shrink at λ = 0.10 or 0.25.</p>
+
+<p>A final consideration is the cost of the resize itself in a latency-sensitive system. A single resize operation takes O(n) time and can introduce a noticeable pause. Incremental or "lazy" resizing strategies address this by spreading the rehashing work across multiple subsequent insertions rather than doing it all at once, ensuring that no single operation ever takes more than O(1) time—at the cost of maintaining two active tables simultaneously during the transition period.</p>
+        <div class="notes"><strong>Notes</strong>The amortized O(1) insertion cost via table doubling is a key exam topic. Emphasize the asymmetry between the theoretical uniform-hashing formulas and real-world clustering effects (primary vs. secondary clustering) when open addressing is discussed. The universal hashing section connects directly to algorithm security and adversarial input scenarios, which are increasingly relevant in applied settings.</div>
+      </div>
+    </details>
+  </main>
+</body></html>

@@ -1,0 +1,279 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modular Arithmetic as a Compression Strategy</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+  <style>
+    body { padding-left: 1.1rem; padding-right: 1.1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid rgba(128,128,128,.45); padding: .45em .7em; text-align: left; vertical-align: top; }
+    thead th { background: rgba(128,128,128,.18); font-weight: 600; }
+    tbody tr:nth-child(even) { background: rgba(128,128,128,.08); }
+    a.topic-detail-link { text-decoration: underline; }
+  </style>
+  <style>
+    summary.slide-header { list-style: none; }
+    summary.slide-header::-webkit-details-marker { display: none; }
+    details.slide-card[open] > .slide-body { display: block; }
+    details.slide-card[open] .chevron { transform: rotate(90deg); }
+    @media print { details.slide-card > .slide-body { display: block !important; } .chevron { display: none; } }
+  </style>
+</head><body>
+  <header>
+    <h1>Modular Arithmetic as a Compression Strategy</h1>
+  </header><main>
+    <details class="slide-card" open>
+      <summary class="slide-header"><span class="slide-num">1</span><h2>Modular Arithmetic as a Compression Strategy</h2><span class="chevron">▶</span></summary>
+      <div class="slide-body">
+        <p>Hash tables are among the most powerful data structures in computer science, offering average-case constant-time insertion, deletion, and lookup. At the heart of every hash table lies a deceptively simple question: given a key that could be almost anything — a string, an integer, a complex object — how do you convert it into a valid array index? The answer involves two distinct phases. First, a hash function transforms the key into some integer, often a large one. Second, a <strong>compression function</strong> maps that potentially enormous integer down into the narrow range of valid array indices. Modular arithmetic is by far the most commonly used compression strategy, and understanding it deeply — including its strengths, its subtle failure modes, and the design decisions that surround it — is essential for anyone building or analyzing hash-based data structures.</p>
+
+<p>The compression formula at the center of this discussion is straightforward: given a hash value <em>h</em> produced by a hash function applied to key <em>k</em>, and a hash table with <em>m</em> slots, the index is computed as:</p>
+
+<pre><code>index = h(k) mod m</code></pre>
+
+<p>The modulo operation returns the remainder after integer division of <em>h(k)</em> by <em>m</em>. Because the remainder of dividing any integer by <em>m</em> always falls in the range <strong>[0, m−1]</strong>, this single operation guarantees that whatever the hash function produces — whether it is 7, 7,000, or 7,000,000,000 — the result is a valid index into the table. This is the core promise of modular compression: it is a universal "size reducer" that works regardless of the magnitude of the hash value.</p>
+
+<p>To make this concrete, suppose a hash function produces the value 1,047 for some key, and the table has 13 slots. Then:</p>
+
+<pre><code>1047 mod 13 = 1047 - (80 * 13) = 1047 - 1040 = 7</code></pre>
+
+<p>The key maps to slot 7. Now suppose another key produces hash value 20. Then <code>20 mod 13 = 7</code> as well. Both keys map to the same slot — this is a <strong>collision</strong>, an expected and manageable event in hash table design, handled by strategies such as chaining or open addressing. The modulo operation does not prevent collisions; it simply ensures every computed index is in bounds.</p>
+
+<p><strong>How the Modulo Operation Reduces Key Space</strong></p>
+
+<p>To appreciate why compression is necessary, consider what would happen without it. A typical hash function for strings might produce 32-bit or 64-bit integers. A 32-bit hash can produce values ranging from 0 to 4,294,967,295 — over four billion possible outputs. A 64-bit hash reaches approximately 18.4 quintillion. Allocating an array with one slot per possible hash value is entirely impractical; the memory requirement would dwarf the available RAM on any real machine, and almost all of those slots would remain permanently empty.</p>
+
+<p>The modulo operation solves this by <strong>folding</strong> the entire integer number line into a circle of circumference <em>m</em>. Every integer finds its place somewhere on this circle based on where it lands after wrapping around. The effect is that the enormous hash value space is compressed — uniformly, in the ideal case — into exactly <em>m</em> buckets. If the hash function distributes its outputs uniformly across integers, then after applying mod <em>m</em>, the resulting indices should also be roughly uniformly distributed across [0, m−1].</p>
+
+<p>A critical implication is that keys which differ enormously in magnitude can still share an index. Consider hash values 3, 16, 29, and 42 with <em>m = 13</em>: all of these satisfy <code>h mod 13 = 3</code>. This is not a flaw — it is precisely what compression is supposed to do. The challenge is ensuring that the compression does not introduce <em>artificial</em> clustering beyond what probability alone would predict.</p>
+
+<p><strong>Selecting Table Size: Prime Numbers and Distribution Quality</strong></p>
+
+<p>The single most impactful decision in modular compression is the choice of <em>m</em>, the table size. This choice profoundly affects how well the compression function distributes keys, and the wrong choice can cause catastrophic clustering even when the hash function itself behaves well.</p>
+
+<p>The central recommendation, backed by both mathematical reasoning and empirical observation, is to choose <em>m</em> to be a <strong>prime number</strong>. To understand why, consider what happens when <em>m</em> is not prime. Suppose <em>m = 12</em> and the keys being hashed are all multiples of 4 (a situation that arises, for example, when hashing memory addresses in a system with 4-byte alignment). The hash values might be 4, 8, 12, 16, 20, 24, .... Applying mod 12:</p>
+
+<pre><code>4  mod 12 = 4
+8  mod 12 = 8
+12 mod 12 = 0
+16 mod 12 = 4
+20 mod 12 = 8
+24 mod 12 = 0</code></pre>
+
+<p>Every key maps to one of only three slots: 0, 4, or 8. Twelve slots exist, but only three are ever used. The load on those three slots is four times higher than expected, while nine slots sit completely empty. This severe clustering occurs because 4 and 12 share a common factor of 4, meaning the sequence of remainders cycles with period 3 rather than period 12.</p>
+
+<p>Now apply the same keys with <em>m = 13</em> (a prime):</p>
+
+<pre><code>4  mod 13 = 4
+8  mod 13 = 8
+12 mod 13 = 12
+16 mod 13 = 3
+20 mod 13 = 7
+24 mod 13 = 11
+28 mod 13 = 2
+32 mod 13 = 6
+36 mod 13 = 10
+40 mod 13 = 1
+...
+</code></pre>
+
+<p>The remainders cycle through all 13 possible values before repeating. This happens because when <em>m</em> is prime, the only divisors of <em>m</em> are 1 and <em>m</em> itself. No stride in the key set can share a common factor with <em>m</em> (unless the stride is a multiple of <em>m</em>, which is rarely an issue in practice), so the cycling period through indices is always the full <em>m</em>. This is the mathematical core of why prime table sizes distribute keys more evenly.</p>
+
+<p>An additional refinement: the chosen prime should ideally be <strong>far from any power of 2 or power of 10</strong>. If <em>m</em> is close to a power of 2, say <em>m = 1024</em> (which is 2¹⁰ — and not prime, but illustrative), then for hash functions computed using binary arithmetic, the mod operation may effectively discard the high-order bits of the hash value and retain only the low-order bits. If the hash function's low-order bits carry less entropy than its high-order bits, this leads to poor distribution. A prime like 1019 or 1031, being far from 1024, avoids this specific hazard. Similarly, primes far from powers of 10 avoid artifacts that arise when keys are derived from decimal-formatted data.</p>
+
+<p>The following table illustrates how different table sizes handle a set of keys with stride 6, showing the number of distinct slots actually used:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Table Size (m)</th>
+      <th>Prime?</th>
+      <th>GCD(6, m)</th>
+      <th>Distinct Slots Used (of m)</th>
+      <th>Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>12</td>
+      <td>No</td>
+      <td>6</td>
+      <td>2</td>
+      <td>Severe clustering; only slots 0 and 6 used</td>
+    </tr>
+    <tr>
+      <td>18</td>
+      <td>No</td>
+      <td>6</td>
+      <td>3</td>
+      <td>Only slots 0, 6, 12 used</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>No</td>
+      <td>2</td>
+      <td>5</td>
+      <td>Moderate clustering</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td>Yes</td>
+      <td>1</td>
+      <td>11</td>
+      <td>All slots reachable; full cycle</td>
+    </tr>
+    <tr>
+      <td>13</td>
+      <td>Yes</td>
+      <td>1</td>
+      <td>13</td>
+      <td>All slots reachable; full cycle</td>
+    </tr>
+    <tr>
+      <td>17</td>
+      <td>Yes</td>
+      <td>1</td>
+      <td>17</td>
+      <td>All slots reachable; full cycle</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Uniformity of Distribution and Its Importance</strong></p>
+
+<p>The ideal behavior of a hash table's compression function is <strong>uniform distribution</strong>: each of the <em>m</em> slots should receive approximately <em>n/m</em> keys on average, where <em>n</em> is the total number of keys stored. When distribution is uniform, the load is balanced, chains remain short (in chaining implementations), and probe sequences are brief (in open addressing). Performance degrades gracefully as <em>n</em> grows, and the average-case time complexity remains O(1).</p>
+
+<p>Skewed distribution — where some slots receive far more keys than others — is the primary performance killer in hash tables. A slot that receives <em>k</em> times its expected share of keys takes <em>k</em> times as long to search. In the worst case, if all <em>n</em> keys hash to the same slot, the hash table degenerates into a linked list with O(n) lookup time.</p>
+
+<p>Evaluating distribution quality can be done empirically by measuring the <strong>variance in slot occupancy</strong>. If every slot has exactly <em>n/m</em> keys, variance is zero. High variance signals clustering. A related metric is the <strong>load factor per bucket</strong> in chaining implementations — the length of each chain relative to the expected length <em>λ = n/m</em>. Statistical tools like the chi-squared test can be applied to the slot occupancy distribution to formally assess whether it differs significantly from uniform.</p>
+
+<p>For example, suppose a table has <em>m = 10</em> slots and <em>n = 100</em> keys. Perfect uniformity would place 10 keys per slot. If the actual distribution is [45, 0, 0, 0, 0, 0, 0, 0, 0, 55], the variance is catastrophic and performance is terrible. A distribution of [9, 11, 10, 10, 9, 11, 10, 10, 10, 10] has low variance and near-perfect performance.</p>
+
+<p><strong>Limitations and Failure Cases of Simple Modular Compression</strong></p>
+
+<p>Despite its simplicity and wide use, modular compression by itself is not a panacea. Several well-understood failure modes can cause poor performance even with a prime table size.</p>
+
+<p>The most fundamental issue is that <code>h(k) mod m</code> only distributes keys well if <em>h(k)</em> itself is well-distributed. If the hash function produces values that cluster — for instance, if it always outputs even numbers, or numbers in a narrow range — the modulo operation cannot fix this. Garbage in, garbage out: modular compression preserves the structure of its input. It <em>maps</em> a distribution; it does not <em>improve</em> one.</p>
+
+<p>A more subtle failure mode arises with <strong>arithmetic progressions</strong> in key values. If the raw keys (before hashing) form an arithmetic sequence with common difference <em>d</em>, and the hash function is simply the identity (mapping a key to itself, as is sometimes done for integer keys), then the hash values also form an arithmetic sequence. If <em>d</em> and <em>m</em> share a common factor <em>g > 1</em>, only <em>m/g</em> of the <em>m</em> slots will ever be populated.</p>
+
+<p>For instance, keys = {0, 100, 200, 300, ...} with <em>m = 200</em> and identity hash: GCD(100, 200) = 100, so only 200/100 = 2 slots (slot 0 and slot 100) will ever be used. Even though 200 is large enough to hold the data, half the table is wasted and the occupied half is overloaded.</p>
+
+<p>The standard remedy is to use a <strong>strong preliminary hash function</strong> before applying the modulo. A well-designed hash function such as MurmurHash, FNV, or xxHash scrambles the bit patterns of its input aggressively, ensuring that regular patterns in the keys produce irregular, pseudo-random distributions in the hash values. After this scrambling step, the modulo operation is applied to a distribution that is already close to uniform, and the compression works as intended.</p>
+
+<p>Consider the pipeline:</p>
+
+<pre><code>key  →  [strong hash function]  →  large pseudo-random integer  →  mod m  →  index</code></pre>
+
+<p>Each stage has a role. The hash function breaks up structural regularities. The modulo operation folds the result into the valid index range. Neither step alone is sufficient for robust performance across all input types; together, they form a compression pipeline that is both safe and efficient.</p>
+
+<p><strong>Relationship Between Load Factor and Table Size Choice</strong></p>
+
+<p>The <strong>load factor</strong> <em>λ</em> is defined as:</p>
+
+<pre><code>λ = n / m</code></pre>
+
+<p>where <em>n</em> is the number of keys currently stored and <em>m</em> is the number of slots in the table. The load factor is arguably the single most important operational parameter of a hash table, as it directly governs the probability of collisions and therefore average-case performance.</p>
+
+<p>Under the <em>Simple Uniform Hashing Assumption</em> (SUHA) — which assumes each key is equally likely to hash to any slot, independently of all others — the expected number of keys in any given slot is exactly <em>λ</em>. For chaining implementations, this means the expected length of the chain at any slot is <em>λ</em>, and the expected search time is O(1 + λ). As long as <em>λ</em> remains bounded by a constant, search time is O(1).</p>
+
+<p>For open addressing, the situation is more sensitive. The expected number of probes for a successful search is approximately <code>1/λ * ln(1/(1-λ))</code>, and for an unsuccessful search approximately <code>1/(1-λ)</code>. As <em>λ</em> approaches 1, these values grow rapidly — the table fills up and probe sequences become very long. Open-addressed tables are therefore typically kept at load factors below 0.7 or 0.75.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Load Factor (λ)</th>
+      <th>Expected Chain Length (Chaining)</th>
+      <th>Expected Probes, Unsuccessful (Open Addressing)</th>
+      <th>Memory Efficiency</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0.25</td>
+      <td>0.25</td>
+      <td>~1.33</td>
+      <td>Low (75% of table empty)</td>
+    </tr>
+    <tr>
+      <td>0.50</td>
+      <td>0.50</td>
+      <td>~2.00</td>
+      <td>Moderate</td>
+    </tr>
+    <tr>
+      <td>0.75</td>
+      <td>0.75</td>
+      <td>~4.00</td>
+      <td>Good</td>
+    </tr>
+    <tr>
+      <td>0.90</td>
+      <td>0.90</td>
+      <td>~10.00</td>
+      <td>High, but performance degrades significantly</td>
+    </tr>
+    <tr>
+      <td>1.00</td>
+      <td>1.00</td>
+      <td>Undefined (table full)</td>
+      <td>Maximum, but table is unusable for open addressing</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The choice of <em>m</em> is therefore a memory-versus-performance tradeoff. A larger <em>m</em> reduces <em>λ</em>, which reduces collision probability and search time, but wastes memory on empty slots. A smaller <em>m</em> is memory-efficient but causes more collisions and slower operations. Most practical implementations settle on a target load factor — commonly 0.5 to 0.75 — and choose <em>m</em> as the smallest prime larger than <em>n / target_λ</em>.</p>
+
+<p>When <em>n</em> grows beyond the threshold (i.e., when inserting a new key would push <em>λ</em> above the target), the table undergoes <strong>rehashing</strong>. A new, larger table (typically with roughly double the number of slots, rounded up to the next prime) is allocated, and every existing key is re-hashed and re-inserted into the new table. Rehashing is an O(n) operation, but because it occurs infrequently — only when the table doubles — its amortized cost per insertion is O(1). The new table size resets the load factor to approximately half the target threshold, giving the table room to grow again before the next rehash.</p>
+
+<p>For example, a table might start with <em>m = 11</em> and a rehash threshold of <em>λ = 0.75</em>. Rehashing is triggered when <em>n</em> exceeds 8 (since 8/11 ≈ 0.73). The new table size is chosen as the next prime above 22 (double the old size), which is 23. After rehashing, all <em>n</em> keys are reinserted using the new compression formula <code>h(k) mod 23</code>, and the new load factor is approximately 8/23 ≈ 0.35 — well below the threshold, leaving ample room for further insertions.</p>
+
+<p>It is worth noting that rehashing changes the index of every key in the table. A key that mapped to slot 5 in the old table might map to slot 17 in the new one. This is not a problem as long as all keys are rehashed together atomically (or with appropriate synchronization in concurrent settings). It does, however, make hash tables unsuitable for use cases where the stored index must remain stable over time — a consideration that points toward alternative data structures when persistence of location is required.</p>
+
+<p>In summary, modular arithmetic serves as the essential bridge between the unbounded world of hash values and the bounded world of array indices. Its effectiveness depends critically on the choice of table size — particularly the use of prime numbers — on the quality of the hash function feeding into it, and on maintaining an appropriate load factor through timely resizing. Each of these elements reinforces the others: a prime table size amplifies the distributional quality of a good hash function, and a well-chosen load factor ensures that the mathematical guarantees of uniform distribution translate into practical, observable performance.</p>
+        <div class="notes"><strong>Notes</strong>The table comparing load factor to expected chain length and probe counts uses standard results from hash table analysis under the Simple Uniform Hashing Assumption. The open addressing probe count formula 1/(1−λ) is for linear probing unsuccessful search; other probing strategies have slightly different constants but similar asymptotic behavior. Instructors may wish to derive these formulas explicitly if the course covers probabilistic analysis.</div>
+      </div>
+    </details>
+  </main>
+</body></html>

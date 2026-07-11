@@ -1,0 +1,386 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Building a Stack in JavaScript</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+  <style>
+    body { padding-left: 1.1rem; padding-right: 1.1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid rgba(128,128,128,.45); padding: .45em .7em; text-align: left; vertical-align: top; }
+    thead th { background: rgba(128,128,128,.18); font-weight: 600; }
+    tbody tr:nth-child(even) { background: rgba(128,128,128,.08); }
+  </style>
+  <style>
+    summary.slide-header { list-style: none; }
+    summary.slide-header::-webkit-details-marker { display: none; }
+    details.slide-card[open] > .slide-body { display: block; }
+    details.slide-card[open] .chevron { transform: rotate(90deg); }
+    @media print { details.slide-card > .slide-body { display: block !important; } .chevron { display: none; } }
+  </style>
+</head><body>
+  <header>
+    <h1>Building a Stack in JavaScript</h1>
+  </header><main>
+    <details class="slide-card" open>
+      <summary class="slide-header"><span class="slide-num">1</span><h2>Building a Stack in JavaScript</h2><span class="chevron">▶</span></summary>
+      <div class="slide-body">
+        <p>A <strong>stack</strong> is one of the most fundamental data structures in computer science. It operates on a simple but powerful principle: <em>Last In, First Out</em> (LIFO). The last element you put onto the stack is the first one you get back. Think of a stack of dinner plates — you add a plate to the top, and when you need one, you take it from the top. You never reach into the middle or pull from the bottom. In JavaScript, we can model this behavior elegantly using a class that wraps a native array and exposes only the operations that make sense for a stack. This walkthrough covers every step of that implementation, from setting up the class to testing edge cases.</p>
+
+<p><strong>Setting Up the Stack Class</strong></p>
+
+<p>The foundation of the implementation is a JavaScript class named <code>Stack</code>. Inside its constructor we initialize a single instance property — an empty array — that will serve as the internal storage for all stack elements.</p>
+
+<pre><code>class Stack {
+  constructor() {
+    this.items = [];
+  }
+}</code></pre>
+
+<p>Why an array? JavaScript arrays already provide efficient <code>push</code> and <code>pop</code> operations at their tail end (the highest index), which maps perfectly onto stack semantics: the <em>end</em> of the array will represent the <em>top</em> of the stack. The beginning of the array (index 0) holds the bottom-most element — the first one ever pushed.</p>
+
+<p>The critical design principle here is <strong>encapsulation</strong>. Consumers of the <code>Stack</code> class should interact with it only through its defined methods, not by reaching directly into <code>this.items</code> and splicing, sorting, or otherwise manipulating it. Keeping all access to the array channeled through push, pop, and peek preserves the LIFO contract. In production-quality code you might enforce this more strictly by using a JavaScript private field (prefixed with <code>#</code>), like <code>#items = []</code>, but for clarity in learning, a conventional public property named <code>items</code> works well — just treat it as private by convention.</p>
+
+<p><strong>Implementing the Push Method</strong></p>
+
+<p>The <code>push(element)</code> method adds a new value to the top of the stack. Because the top of the stack corresponds to the end of the internal array, we simply call the native <code>Array.prototype.push</code> method on <code>this.items</code>.</p>
+
+<pre><code>class Stack {
+  constructor() {
+    this.items = [];
+  }
+
+  push(element) {
+    this.items.push(element);
+  }
+}</code></pre>
+
+<p>Each call to <code>push</code> increases the length of <code>this.items</code> by one. The newly added element sits at the highest index and is therefore considered the <em>top</em> of the stack. Because <code>element</code> is typed as a plain JavaScript parameter with no type annotation, the method accepts any valid JavaScript value — numbers, strings, objects, arrays, even other stacks. This flexibility makes the class reusable across many different problems.</p>
+
+<p>For example:</p>
+
+<pre><code>const stack = new Stack();
+stack.push(10);    // items: [10]
+stack.push(20);    // items: [10, 20]
+stack.push(30);    // items: [10, 20, 30]  &lt;-- 30 is now the top</code></pre>
+
+<p><strong>Implementing the Pop Method</strong></p>
+
+<p>The <code>pop()</code> method removes the element at the top of the stack and returns it to the caller. Again, since the top is the last element of the array, the native <code>Array.prototype.pop</code> does exactly what we need.</p>
+
+<pre><code>pop() {
+  if (this.isEmpty()) {
+    return "Stack is empty — nothing to pop.";
+  }
+  return this.items.pop();
+}</code></pre>
+
+<p>The <strong>empty-stack check</strong> is essential. Calling <code>Array.prototype.pop</code> on an empty array returns <code>undefined</code> rather than throwing an error, which can hide bugs in the calling code. By explicitly checking emptiness first, we return a descriptive message (or, in stricter designs, throw a custom <code>Error</code>). This makes it immediately obvious when consuming code calls <code>pop</code> incorrectly.</p>
+
+<p>After a pop, the element that was <em>second from the top</em> becomes the new top. Consider the example above — if we pop from <code>[10, 20, 30]</code>, we get <code>30</code> back and the array becomes <code>[10, 20]</code>, making <code>20</code> the new top.</p>
+
+<pre><code>console.log(stack.pop()); // 30  →  items: [10, 20]
+console.log(stack.pop()); // 20  →  items: [10]
+console.log(stack.pop()); // 10  →  items: []
+console.log(stack.pop()); // "Stack is empty — nothing to pop."</code></pre>
+
+<p><strong>Implementing the Peek Method</strong></p>
+
+<p>The <code>peek()</code> method lets you look at the top element <em>without removing it</em>. It accesses the last index of the internal array by calculating <code>this.items.length - 1</code>.</p>
+
+<pre><code>peek() {
+  if (this.isEmpty()) {
+    return "Stack is empty — nothing to peek at.";
+  }
+  return this.items[this.items.length - 1];
+}</code></pre>
+
+<p>The crucial distinction between <code>peek</code> and <code>pop</code> is that <strong>peek has no side effects</strong>. The array is not modified, the length does not change, and the element remains at the top. This makes <code>peek</code> safe to call freely in conditionals, loops, and any situation where you need to inspect the top before deciding what to do next. A common real-world scenario is checking whether a closing parenthesis on a stack matches an opening one — you peek first, and only pop if they match.</p>
+
+<pre><code>const stack = new Stack();
+stack.push("a");
+stack.push("b");
+stack.push("c");
+
+console.log(stack.peek()); // "c"  →  items still: ["a", "b", "c"]
+console.log(stack.peek()); // "c"  →  unchanged
+stack.pop();
+console.log(stack.peek()); // "b"</code></pre>
+
+<p><strong>Implementing isEmpty and size Helper Methods</strong></p>
+
+<p>Two small helper methods dramatically improve the usability of the stack and help prevent bugs in consuming code.</p>
+
+<pre><code>isEmpty() {
+  return this.items.length === 0;
+}
+
+size() {
+  return this.items.length;
+}</code></pre>
+
+<p><code>isEmpty()</code> returns a boolean — <code>true</code> when the stack contains no elements, <code>false</code> otherwise. It is used internally inside <code>pop</code> and <code>peek</code> and can also be used externally in loops: <em>"keep popping while the stack is not empty."</em></p>
+
+<p><code>size()</code> returns the exact count of elements currently in the stack. This is valuable when you need to allocate resources, iterate a fixed number of times, or simply report the depth of the stack to the user. Using <code>size()</code> rather than accessing <code>this.items.length</code> directly outside the class respects encapsulation — if you ever change the internal storage (say, from an array to a linked list), the public interface stays the same.</p>
+
+<pre><code>const stack = new Stack();
+console.log(stack.isEmpty()); // true
+console.log(stack.size());    // 0
+
+stack.push(42);
+stack.push(99);
+console.log(stack.isEmpty()); // false
+console.log(stack.size());    // 2</code></pre>
+
+<p><strong>Implementing a Print or toString Method</strong></p>
+
+<p>During development and debugging it is invaluable to see the entire contents of the stack at a glance. A <code>print()</code> method (or an equivalent <code>toString()</code> override) provides that view.</p>
+
+<pre><code>print() {
+  console.log(this.items.toString());
+}
+
+// Alternatively, return a formatted string:
+toString() {
+  return `Stack (bottom → top): [${this.items.join(", ")}]`;
+}</code></pre>
+
+<p>When you call <code>print()</code> on a stack containing <code>[10, 20, 30]</code>, you see <code>10,20,30</code> in the console. Remember the convention: <strong>the rightmost element is the top</strong>. If you use <code>toString()</code> with a descriptive label, the output becomes self-documenting:</p>
+
+<pre><code>const stack = new Stack();
+stack.push(10);
+stack.push(20);
+stack.push(30);
+console.log(stack.toString());
+// Stack (bottom → top): [10, 20, 30]</code></pre>
+
+<p>This visual confirmation is especially useful when verifying that a series of pushes and pops produced the expected ordering.</p>
+
+<p><strong>The Complete Stack Class</strong></p>
+
+<p>Putting all the methods together gives us a clean, fully functional stack implementation:</p>
+
+<pre><code>class Stack {
+  constructor() {
+    this.items = [];
+  }
+
+  push(element) {
+    this.items.push(element);
+  }
+
+  pop() {
+    if (this.isEmpty()) {
+      return "Stack is empty — nothing to pop.";
+    }
+    return this.items.pop();
+  }
+
+  peek() {
+    if (this.isEmpty()) {
+      return "Stack is empty — nothing to peek at.";
+    }
+    return this.items[this.items.length - 1];
+  }
+
+  isEmpty() {
+    return this.items.length === 0;
+  }
+
+  size() {
+    return this.items.length;
+  }
+
+  print() {
+    console.log(this.items.toString());
+  }
+
+  toString() {
+    return `Stack (bottom → top): [${this.items.join(", ")}]`;
+  }
+}</code></pre>
+
+<p><strong>Testing the Stack Implementation</strong></p>
+
+<p>Testing should cover both the <em>happy path</em> (normal operations) and <em>edge cases</em> (operations on an empty stack). The table below maps each test scenario to the expected output and the method being verified.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Step</th>
+      <th>Operation</th>
+      <th>State of Internal Array</th>
+      <th>Return Value / Output</th>
+      <th>Method Verified</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td><code>new Stack()</code></td>
+      <td><code>[]</code></td>
+      <td>—</td>
+      <td>constructor</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td><code>isEmpty()</code></td>
+      <td><code>[]</code></td>
+      <td><code>true</code></td>
+      <td>isEmpty</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td><code>push(5)</code></td>
+      <td><code>[5]</code></td>
+      <td>—</td>
+      <td>push</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td><code>push(10)</code></td>
+      <td><code>[5, 10]</code></td>
+      <td>—</td>
+      <td>push</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td><code>push(15)</code></td>
+      <td><code>[5, 10, 15]</code></td>
+      <td>—</td>
+      <td>push</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td><code>size()</code></td>
+      <td><code>[5, 10, 15]</code></td>
+      <td><code>3</code></td>
+      <td>size</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td><code>peek()</code></td>
+      <td><code>[5, 10, 15]</code></td>
+      <td><code>15</code></td>
+      <td>peek</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td><code>pop()</code></td>
+      <td><code>[5, 10]</code></td>
+      <td><code>15</code></td>
+      <td>pop</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td><code>pop()</code></td>
+      <td><code>[5]</code></td>
+      <td><code>10</code></td>
+      <td>pop</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td><code>pop()</code></td>
+      <td><code>[]</code></td>
+      <td><code>5</code></td>
+      <td>pop</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td><code>pop()</code> (empty)</td>
+      <td><code>[]</code></td>
+      <td><em>"Stack is empty — nothing to pop."</em></td>
+      <td>pop (edge case)</td>
+    </tr>
+    <tr>
+      <td>12</td>
+      <td><code>peek()</code> (empty)</td>
+      <td><code>[]</code></td>
+      <td><em>"Stack is empty — nothing to peek at."</em></td>
+      <td>peek (edge case)</td>
+    </tr>
+    <tr>
+      <td>13</td>
+      <td><code>isEmpty()</code></td>
+      <td><code>[]</code></td>
+      <td><code>true</code></td>
+      <td>isEmpty</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Here is the complete test script you can run in any JavaScript environment:</p>
+
+<pre><code>const stack = new Stack();
+
+// isEmpty on a brand-new stack
+console.log(stack.isEmpty()); // true
+
+// Push three values
+stack.push(5);
+stack.push(10);
+stack.push(15);
+
+// Inspect size and top
+console.log(stack.size());    // 3
+console.log(stack.peek());    // 15
+console.log(stack.toString()); // Stack (bottom → top): [5, 10, 15]
+
+// Pop each element — verify LIFO order
+console.log(stack.pop()); // 15
+console.log(stack.pop()); // 10
+console.log(stack.pop()); // 5
+
+// Edge cases
+console.log(stack.pop());  // "Stack is empty — nothing to pop."
+console.log(stack.peek()); // "Stack is empty — nothing to peek at."
+console.log(stack.isEmpty()); // true</code></pre>
+
+<p>Notice that elements come back in reverse order of insertion: <code>15</code>, then <code>10</code>, then <code>5</code>. This is LIFO in action — the last item pushed (<code>15</code>) is the first item popped. By comparing each logged value against the expected output in the table above, you build concrete confidence that every method works as intended. Edge-case testing — calling <code>pop</code> and <code>peek</code> on an empty stack — confirms that the guard clauses are functioning and that the implementation fails gracefully rather than silently returning <code>undefined</code>.</p>
+
+<p>With all six methods in place and tested, the <code>Stack</code> class is ready to serve as a building block for more advanced algorithms: evaluating mathematical expressions, implementing undo/redo functionality, traversing trees iteratively, or solving puzzles like the Tower of Hanoi. Every one of those applications rests on the same simple contract you just implemented and verified.</p>
+        <div class="notes"><strong>Notes</strong>Students should be encouraged to run the complete test script in a browser console or Node.js REPL to see the output live. A natural extension exercise is to rewrite the class using a private field (&lt;code&gt;#items = []&lt;/code&gt;) to enforce true encapsulation, and to explore how the stack could be used to reverse a string or check for balanced parentheses.</div>
+      </div>
+    </details>
+  </main>
+</body></html>

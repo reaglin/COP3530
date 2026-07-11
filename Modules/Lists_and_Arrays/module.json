@@ -1,9 +1,9 @@
 {
   "Id": "31611f32-ca14-42a2-ba58-49dc4cde84bd",
-  "Name": "Lists and Arrays: Structure and Introduction to Big O Notation",
+  "Name": "2 - Lists and Arrays: Structure and Introduction to Big O Notation",
   "Description": "This lesson covers the fundamental structure of lists and arrays as core data types, alongside an introductory look at computational complexity and Big O notation. Students will learn how to measure and reason about the efficiency of basic data operations.",
   "CreatedBy": "Ron Eaglin",
   "CreatedDate": "2026-06-26T11:23:12.6487045-04:00",
-  "LastModifiedDate": "2026-06-26T11:23:12.6492218-04:00",
+  "LastModifiedDate": "2026-07-01T10:03:20.7582138-04:00",
   "Actions": []
 }

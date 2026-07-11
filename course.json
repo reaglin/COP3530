@@ -4,7 +4,7 @@
   "Description": "This course introduces fundamentals of data structures. Topics include: programming strategies, data structures, searching, complexity, queues, sorting, and algorithms. Extensive programming is required.",
   "CreatedBy": "",
   "CreatedDate": "2026-06-26T11:23:12.6190802-04:00",
-  "LastModifiedDate": "2026-06-26T17:13:12.8522408-04:00",
+  "LastModifiedDate": "2026-07-01T19:03:35.7386849-04:00",
   "Modules": [
     {
       "ModuleName": "1. Getting Started: JavaScript and JSFiddle Environment",
@@ -12,17 +12,17 @@
       "Order": 1
     },
     {
-      "ModuleName": "Lists and Arrays: Structure and Introduction to Big O Notation",
+      "ModuleName": "2 - Lists and Arrays: Structure and Introduction to Big O Notation",
       "FolderName": "Lists_and_Arrays",
       "Order": 2
     },
     {
-      "ModuleName": "Lists and Arrays: Algorithms and Operations",
+      "ModuleName": "3- Lists and Arrays: Algorithms and Operations",
       "FolderName": "Lists_and_Arrays_2",
       "Order": 3
     },
     {
-      "ModuleName": "The Stack: Structure and Use Cases",
+      "ModuleName": "4- The Stack: Structure and Use Cases",
       "FolderName": "The_Stack_Structure",
       "Order": 4
     },

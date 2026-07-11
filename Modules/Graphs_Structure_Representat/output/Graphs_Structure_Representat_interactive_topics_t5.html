@@ -1,0 +1,269 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Breadth-First Search (BFS)</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+  <style>
+    body { padding-left: 1.1rem; padding-right: 1.1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid rgba(128,128,128,.45); padding: .45em .7em; text-align: left; vertical-align: top; }
+    thead th { background: rgba(128,128,128,.18); font-weight: 600; }
+    tbody tr:nth-child(even) { background: rgba(128,128,128,.08); }
+    a.topic-detail-link { text-decoration: underline; }
+  </style>
+  <style>
+    summary.slide-header { list-style: none; }
+    summary.slide-header::-webkit-details-marker { display: none; }
+    details.slide-card[open] > .slide-body { display: block; }
+    details.slide-card[open] .chevron { transform: rotate(90deg); }
+    @media print { details.slide-card > .slide-body { display: block !important; } .chevron { display: none; } }
+  </style>
+</head><body>
+  <header>
+    <h1>Breadth-First Search (BFS)</h1>
+  </header><main>
+    <details class="slide-card" open>
+      <summary class="slide-header"><span class="slide-num">1</span><h2>Breadth-First Search (BFS)</h2><span class="chevron">▶</span></summary>
+      <div class="slide-body">
+        <p>Breadth-First Search (BFS) is one of the most fundamental graph traversal algorithms in computer science. At its core, BFS answers a deceptively simple question: starting from a given node, in what order should we visit every other reachable node if we want to always explore <em>closer</em> nodes before <em>farther</em> ones? The answer is a systematic, layer-by-layer expansion outward from the source — much like the ripples that spread across a pond when a stone is dropped in. BFS is applicable to both <strong>directed</strong> graphs (where edges have a direction, like one-way streets) and <strong>undirected</strong> graphs (where edges go both ways, like hallways in a building), making it an extremely versatile tool.</p>
+
+<p>To understand why BFS behaves the way it does, it helps to think of the graph as a series of concentric "shells" centered on the starting node. The source node itself forms shell zero. All nodes directly connected to the source form shell one (distance 1). All nodes reachable in exactly two hops — but not reachable in one — form shell two (distance 2), and so on. BFS visits every node in shell one before touching any node in shell two, visits every node in shell two before touching shell three, and continues in this fashion until no more reachable nodes remain. This guarantee is not just a nice property — it is the mathematical foundation for BFS's ability to find shortest paths.</p>
+
+<p><strong>The Queue Data Structure in BFS</strong></p>
+
+<p>The key to BFS's level-by-level behavior is its use of a <strong>queue</strong> — a First-In, First-Out (FIFO) data structure. A queue is analogous to a line of people waiting: the person who joined first is the first to be served, and new arrivals join at the back. In BFS, nodes play the role of people in the line.</p>
+
+<ul>
+  <li><strong>Enqueuing (adding to the back):</strong> When a node is first discovered — meaning we see it as a neighbor of the current node and it has not been visited before — it is immediately marked as visited and placed at the back of the queue. Marking it as visited <em>at the moment of enqueuing</em> (rather than at the moment of processing) is crucial: it prevents the same node from being added to the queue multiple times if it appears as a neighbor of several already-processed nodes.</li>
+  <li><strong>Dequeuing (removing from the front):</strong> At each step of the algorithm, the node at the front of the queue is removed and processed. Because earlier-discovered nodes sit closer to the front, they are always processed before later-discovered nodes. This is precisely what enforces the level-by-level order.</li>
+  <li><strong>The visited set:</strong> Alongside the queue, BFS maintains a <strong>visited set</strong> (or a boolean array indexed by node identifier). Before enqueuing any neighbor, the algorithm checks whether that neighbor is already in the visited set. If it is, the neighbor is skipped entirely. This prevents infinite loops in graphs with cycles and keeps the time complexity manageable.</li>
+</ul>
+
+<p>Consider a small example to see the queue in action. Suppose we have the following undirected graph:</p>
+
+<pre><code>    A
+   / \
+  B   C
+ / \   \
+D   E   F
+</code></pre>
+
+<p>If we start BFS at node <strong>A</strong>, the queue and visited set evolve as follows:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Step</th>
+      <th>Action</th>
+      <th>Queue (front → back)</th>
+      <th>Visited</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>Initialize: mark A visited, enqueue A</td>
+      <td>[A]</td>
+      <td>{A}</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>Dequeue A; enqueue unvisited neighbors B, C</td>
+      <td>[B, C]</td>
+      <td>{A, B, C}</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Dequeue B; enqueue unvisited neighbors D, E</td>
+      <td>[C, D, E]</td>
+      <td>{A, B, C, D, E}</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Dequeue C; enqueue unvisited neighbor F</td>
+      <td>[D, E, F]</td>
+      <td>{A, B, C, D, E, F}</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>Dequeue D; no unvisited neighbors</td>
+      <td>[E, F]</td>
+      <td>{A, B, C, D, E, F}</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>Dequeue E; no unvisited neighbors</td>
+      <td>[F]</td>
+      <td>{A, B, C, D, E, F}</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>Dequeue F; no unvisited neighbors. Queue empty — done.</td>
+      <td>[]</td>
+      <td>{A, B, C, D, E, F}</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The traversal order is <strong>A → B → C → D → E → F</strong>, which perfectly mirrors the layer structure: A (distance 0), then B and C (distance 1), then D, E, and F (distance 2).</p>
+
+<p><strong>BFS Algorithm Logic Step by Step</strong></p>
+
+<p>The BFS algorithm can be stated precisely in four steps that repeat until completion:</p>
+
+<ul>
+  <li><strong>Step 1 — Initialization:</strong> Mark the source node as visited and add it to the queue. This bootstraps the process. At this point the queue contains exactly one element.</li>
+  <li><strong>Step 2 — Dequeue and examine:</strong> Remove the node at the front of the queue. This node is the current node being "processed." Examine each of its neighbors one by one.</li>
+  <li><strong>Step 3 — Discover new neighbors:</strong> For each neighbor of the current node, check whether it has already been visited. If it has <em>not</em> been visited, mark it as visited immediately and enqueue it at the back of the queue. If it has already been visited, skip it.</li>
+  <li><strong>Step 4 — Repeat or terminate:</strong> Return to Step 2. If the queue is empty at the start of Step 2, the algorithm terminates. At this point, every node reachable from the source has been visited exactly once.</li>
+</ul>
+
+<p>Here is a concrete Python-style pseudocode implementation of BFS:</p>
+
+<pre><code>from collections import deque
+
+def bfs(graph, source):
+    visited = set()
+    queue = deque()
+
+    # Step 1: Initialize
+    visited.add(source)
+    queue.append(source)
+
+    while queue:                         # Step 4: repeat until queue is empty
+        node = queue.popleft()           # Step 2: dequeue front node
+        print(node)                      # process the node (e.g., print it)
+
+        for neighbor in graph[node]:     # Step 3: examine each neighbor
+            if neighbor not in visited:
+                visited.add(neighbor)    # mark visited before enqueuing
+                queue.append(neighbor)  # enqueue for later processing
+</code></pre>
+
+<p>In terms of time complexity, BFS visits every node once and examines every edge once (or twice in an undirected graph, once from each endpoint). This gives a time complexity of <strong>O(V + E)</strong>, where V is the number of vertices and E is the number of edges. Space complexity is also <strong>O(V)</strong> in the worst case, because the queue and visited set together can hold at most all vertices.</p>
+
+<p><strong>BFS Traversal Order</strong></p>
+
+<p>One of BFS's most important properties is the <em>order</em> in which it visits nodes. Because the queue enforces FIFO processing, all nodes at distance <em>k</em> from the source are fully dequeued and processed before any node at distance <em>k + 1</em> is dequeued. This means:</p>
+
+<ul>
+  <li>All nodes at distance 1 (the direct neighbors of the source) are visited before any node at distance 2. All nodes at distance 2 are visited before any node at distance 3, and so on.</li>
+  <li>The sequence in which BFS visits nodes is a record of the <strong>shortest hop count</strong> from the source. If you track the order of first visits, you can reconstruct the shortest path (in terms of edge count) from the source to any reachable node.</li>
+  <li>Among nodes at the <em>same distance</em> from the source, the relative order of visitation is determined by the order in which their "parent" nodes were enqueued and by the order neighbors appear in the adjacency list. This detail matters for reproducibility and for problems that require a specific tie-breaking rule, but it does not affect the correctness of the shortest-path guarantee.</li>
+</ul>
+
+<p>To illustrate the distance guarantee, consider recording the distance of each node from the source by extending BFS slightly:</p>
+
+<pre><code>def bfs_with_distances(graph, source):
+    visited = set()
+    queue = deque()
+    distance = {}
+
+    visited.add(source)
+    queue.append(source)
+    distance[source] = 0
+
+    while queue:
+        node = queue.popleft()
+        for neighbor in graph[node]:
+            if neighbor not in visited:
+                visited.add(neighbor)
+                distance[neighbor] = distance[node] + 1
+                queue.append(neighbor)
+
+    return distance
+</code></pre>
+
+<p>After this runs, <code>distance[v]</code> holds the minimum number of edges needed to reach node <code>v</code> from the source. No other traversal method guarantees this without additional bookkeeping — notably, Depth-First Search (DFS) does <em>not</em> provide this guarantee.</p>
+
+<p><strong>Handling Disconnected Graphs in BFS</strong></p>
+
+<p>A <strong>disconnected graph</strong> is one where not every pair of nodes is linked by a path. For example, a social network might have isolated clusters of friends who have no mutual connections with other clusters. When BFS is started from a single source node, it can only reach nodes that are in the <em>same connected component</em> as the source. Nodes in other components will never be enqueued, so they remain unvisited when the queue empties.</p>
+
+<p>To perform a <strong>complete traversal</strong> of a disconnected graph — visiting every node in every component — the standard technique is to wrap BFS in an outer loop that iterates over all nodes:</p>
+
+<pre><code>def bfs_all_components(graph):
+    visited = set()
+
+    for start_node in graph:
+        if start_node not in visited:
+            # start_node is in a previously unseen component
+            bfs_component(graph, start_node, visited)
+
+def bfs_component(graph, source, visited):
+    queue = deque()
+    visited.add(source)
+    queue.append(source)
+
+    while queue:
+        node = queue.popleft()
+        print(node)
+        for neighbor in graph[node]:
+            if neighbor not in visited:
+                visited.add(neighbor)
+                queue.append(neighbor)
+</code></pre>
+
+<p>Each time the outer loop finds a node that has not yet been visited, it knows that node belongs to a new, previously undiscovered component, and it launches a fresh BFS from there. The <code>visited</code> set is shared across all BFS calls so that nodes already explored in earlier component traversals are not re-processed. This approach discovers <em>all</em> connected components of the graph and visits every node exactly once overall, preserving the O(V + E) total complexity.</p>
+
+<p><strong>Practical Applications of BFS</strong></p>
+
+<p>BFS is far more than a textbook exercise. Its level-by-level exploration and shortest-path guarantee make it the algorithm of choice for a wide range of real-world problems:</p>
+
+<ul>
+  <li><strong>Shortest path in unweighted graphs:</strong> This is BFS's signature application. In any graph where all edges have equal (or no) weight, BFS from a source node computes the minimum number of hops to every other reachable node. Navigation apps, for example, model a city's street network as a graph and use variants of BFS to find routes with the fewest turns or stops.</li>
+  <li><strong>Degrees of separation in social networks:</strong> Platforms like LinkedIn and Facebook model users as nodes and friendships or connections as edges. BFS can answer questions like "How many connections separate person A from person B?" — the famous "six degrees of separation" concept. The algorithm discovers all of A's direct connections first (1st degree), then their connections (2nd degree), and so on, stopping when it finds B.</li>
+  <li><strong>Web crawlers:</strong> A web crawler starts from a seed URL (the source node) and explores the web by following hyperlinks (edges). BFS-based crawlers process all links on the current page before following links on newly discovered pages, which keeps the crawl geographically and topically close to the seed in early stages. This is useful for building localized search indexes.</li>
+  <li><strong>Peer-to-peer networks:</strong> In peer-to-peer file-sharing systems (like BitTorrent trackers or distributed hash tables), BFS is used to discover nearby peers in the network topology, minimizing latency by preferring nodes that are fewer hops away.</li>
+  <li><strong>GPS and mapping navigation:</strong> Road networks, transit maps, and flight path graphs can all be traversed with BFS to find routes with the minimum number of segments or transfers, even before considering travel time or distance (which would require weighted shortest-path algorithms like Dijkstra's).</li>
+  <li><strong>Puzzle solving:</strong> BFS is the natural choice for puzzles that ask for the <em>minimum number of moves</em> to reach a goal state. A classic example is the sliding-tile (15-puzzle): each puzzle configuration is a node, and each valid tile slide is an edge. BFS finds the solution with the fewest moves because it explores all 1-move solutions before any 2-move solution, all 2-move solutions before any 3-move solution, and so forth. The same principle applies to Rubik's Cube solvers (for small subproblems), word-ladder puzzles, and many others.</li>
+  <li><strong>Cycle detection and bipartiteness testing:</strong> BFS can determine whether an undirected graph is <em>bipartite</em> (can be 2-colored such that no two adjacent nodes share the same color) by attempting to color nodes in alternating layers. If a conflict is found, the graph is not bipartite and contains an odd-length cycle.</li>
+</ul>
+
+<p>In summary, Breadth-First Search is a powerful, elegant algorithm whose correctness rests on a single structural insight: a queue processes nodes in the order they are discovered, and nodes closer to the source are always discovered first. This simple guarantee enables BFS to solve a remarkable variety of problems efficiently, making it an indispensable tool in any programmer's or computer scientist's toolkit.</p>
+        <div class="notes"><strong>Notes</strong>The Python pseudocode uses &lt;code&gt;collections.deque&lt;/code&gt; for O(1) popleft operations; emphasize to students that using a regular list with &lt;code&gt;pop(0)&lt;/code&gt; degrades performance to O(V&#178;) due to linear-time removal from the front. The bipartiteness-testing application is a natural extension exercise after students are comfortable with the core algorithm.</div>
+      </div>
+    </details>
+  </main>
+</body></html>

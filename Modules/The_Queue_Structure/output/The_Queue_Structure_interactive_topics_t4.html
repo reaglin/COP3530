@@ -1,0 +1,381 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Implementing a Queue</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+  <style>
+    body { padding-left: 1.1rem; padding-right: 1.1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid rgba(128,128,128,.45); padding: .45em .7em; text-align: left; vertical-align: top; }
+    thead th { background: rgba(128,128,128,.18); font-weight: 600; }
+    tbody tr:nth-child(even) { background: rgba(128,128,128,.08); }
+  </style>
+  <style>
+    summary.slide-header { list-style: none; }
+    summary.slide-header::-webkit-details-marker { display: none; }
+    details.slide-card[open] > .slide-body { display: block; }
+    details.slide-card[open] .chevron { transform: rotate(90deg); }
+    @media print { details.slide-card > .slide-body { display: block !important; } .chevron { display: none; } }
+  </style>
+</head><body>
+  <header>
+    <h1>Implementing a Queue</h1>
+  </header><main>
+    <details class="slide-card" open>
+      <summary class="slide-header"><span class="slide-num">1</span><h2>Implementing a Queue</h2><span class="chevron">▶</span></summary>
+      <div class="slide-body">
+        <p>A queue is a linear data structure that enforces a <strong>First-In, First-Out (FIFO)</strong> ordering: the element that has waited the longest is always the first one to be removed. Queues appear everywhere in computing — from scheduling processes in an operating system and buffering network packets, to managing print jobs and implementing breadth-first graph traversal. Understanding how to <em>implement</em> a queue well means understanding the two dominant strategies — arrays and linked lists — and knowing when each is the right tool. This topic walks through both approaches in depth, examines every core operation with real code, analyzes the subtle edge cases that trip up real implementations, and compares time and space complexity so you can make informed design decisions.</p>
+
+<p><strong>Array-Based Queue Implementation</strong></p>
+
+<p>The most intuitive way to build a queue is to back it with an array. You maintain two integer indices — <em>front</em> (pointing to the oldest element) and <em>rear</em> (pointing to where the next element will be written) — and the FIFO rule is enforced simply by always reading from <em>front</em> and always writing to <em>rear</em>.</p>
+
+<p>A naive approach moves <em>rear</em> forward on every enqueue and <em>front</em> forward on every dequeue. The problem is that, after enough operations, <em>rear</em> reaches the end of the array even though there may be plenty of free slots at the beginning (vacated by earlier dequeues). The solution is a <strong>circular array</strong>: both indices wrap around using modulo arithmetic so that the array is treated as a ring. The key formulas are:</p>
+
+<pre><code>rear  = (rear  + 1) % capacity   // after writing the new element
+front = (front + 1) % capacity   // after reading the front element
+</code></pre>
+
+<p>Below is a complete, self-contained Python implementation of a fixed-capacity circular array queue:</p>
+
+<pre><code>class ArrayQueue:
+    def __init__(self, capacity=8):
+        self._data     = [None] * capacity
+        self._capacity = capacity
+        self._front    = 0          # index of the oldest element
+        self._size     = 0          # number of live elements
+
+    # --- core operations ---
+
+    def enqueue(self, value):
+        if self._size == self._capacity:
+            raise OverflowError("Queue is full")
+        rear = (self._front + self._size) % self._capacity
+        self._data[rear] = value
+        self._size += 1
+
+    def dequeue(self):
+        if self._size == 0:
+            raise IndexError("Dequeue from empty queue")
+        value = self._data[self._front]
+        self._data[self._front] = None          # release reference (GC-friendly)
+        self._front = (self._front + 1) % self._capacity
+        self._size -= 1
+        return value
+
+    def peek(self):
+        if self._size == 0:
+            raise IndexError("Peek at empty queue")
+        return self._data[self._front]
+
+    # --- auxiliary operations ---
+
+    def is_empty(self): return self._size == 0
+    def size(self):     return self._size
+
+    def __repr__(self):
+        items = [(self._data[(self._front + i) % self._capacity])
+                 for i in range(self._size)]
+        return f"ArrayQueue({items})"
+</code></pre>
+
+<p>Notice that <em>rear</em> is not stored as a separate field; it is computed on demand as <code>(front + size) % capacity</code>. Tracking <em>size</em> independently is the cleanest way to distinguish a completely full queue from a completely empty one — two states that would otherwise look identical if you only compared <em>front</em> and <em>rear</em> pointers.</p>
+
+<p>A <strong>fixed-size array</strong> like the one above has a hard upper bound; when it is full, you must either reject new elements (raising an error, as above), drop the oldest element to make room (a "ring buffer" variant common in audio/streaming systems), or resize. A <strong>dynamic array</strong> — such as Python's built-in list or Java's <code>ArrayList</code> — sidesteps the hard limit by doubling its internal storage whenever it runs out of room. Doubling keeps the <em>amortized</em> cost of a single enqueue at O(1), but individual resize events cost O(n) and can cause latency spikes in real-time systems.</p>
+
+<p>Array-based queues have excellent <strong>cache locality</strong>: all elements live in a single contiguous block of memory, so iterating through the queue touches cache lines that are already warm. For workloads dominated by sequential access this is a significant practical advantage over pointer-linked structures.</p>
+
+<p><strong>Linked List-Based Queue Implementation</strong></p>
+
+<p>The alternative is to use a singly linked list. Each node holds a value and a pointer to the next node. The queue keeps two sentinel references: <em>head</em> (the front, dequeued first) and <em>tail</em> (the rear, where new nodes are appended). Both operations are O(1) and require no index arithmetic:</p>
+
+<pre><code>class _Node:
+    __slots__ = ("value", "next")   # saves memory vs. a plain dict-backed object
+    def __init__(self, value):
+        self.value = value
+        self.next  = None
+
+class LinkedQueue:
+    def __init__(self):
+        self._head = None   # front of queue
+        self._tail = None   # rear of queue
+        self._size = 0
+
+    # --- core operations ---
+
+    def enqueue(self, value):
+        node = _Node(value)
+        if self._tail is None:          # queue was empty
+            self._head = node
+            self._tail = node
+        else:
+            self._tail.next = node
+            self._tail = node
+        self._size += 1
+
+    def dequeue(self):
+        if self._head is None:
+            raise IndexError("Dequeue from empty queue")
+        value = self._head.value
+        self._head = self._head.next
+        if self._head is None:          # queue is now empty
+            self._tail = None           # avoid dangling tail reference
+        self._size -= 1
+        return value
+
+    def peek(self):
+        if self._head is None:
+            raise IndexError("Peek at empty queue")
+        return self._head.value
+
+    # --- auxiliary operations ---
+
+    def is_empty(self): return self._size == 0
+    def size(self):     return self._size
+
+    def __repr__(self):
+        items, cur = [], self._head
+        while cur:
+            items.append(cur.value)
+            cur = cur.next
+        return f"LinkedQueue({items})"
+</code></pre>
+
+<p>Because every enqueue allocates a brand-new node, the linked list never needs to be resized. It can grow to whatever size heap memory allows, making it naturally suited to workloads where the maximum queue depth is unknown or highly variable. The cost, however, is that each node carries an extra pointer field (8 bytes on a 64-bit system) beyond the payload, and — more importantly — successive nodes may be scattered across heap memory, causing <strong>cache misses</strong> when the processor has to fetch each node's data from a different cache line. For a queue with millions of elements this can be measurably slower in practice than a circular array queue, even though both are O(1) per operation.</p>
+
+<p><strong>Core Queue Operations in Code</strong></p>
+
+<p>Regardless of the underlying storage, every queue exposes the same logical interface. The table below maps the standard operation names used in different languages and contexts:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Logical Operation</th>
+      <th>Common Aliases</th>
+      <th>Description</th>
+      <th>Error on Empty/Full?</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Enqueue</td>
+      <td>push, offer, add, put</td>
+      <td>Insert an element at the rear</td>
+      <td>Error / false if full (fixed array)</td>
+    </tr>
+    <tr>
+      <td>Dequeue</td>
+      <td>poll, remove, pop, take</td>
+      <td>Remove and return the front element</td>
+      <td>Error / null/sentinel if empty</td>
+    </tr>
+    <tr>
+      <td>Peek</td>
+      <td>front, element, head</td>
+      <td>Return front element without removing it</td>
+      <td>Error / null if empty</td>
+    </tr>
+    <tr>
+      <td>isEmpty</td>
+      <td>empty</td>
+      <td>Return true if the queue has no elements</td>
+      <td>Always safe</td>
+    </tr>
+    <tr>
+      <td>size</td>
+      <td>length, count</td>
+      <td>Return the number of elements</td>
+      <td>Always safe</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Enqueue</strong> is the producer-side operation. In the circular array it writes the value at the computed rear index and increments size. In the linked list it allocates a node and links it after the current tail. Either way the caller should always check for a full condition (array) or out-of-memory condition (linked list) in production code.</p>
+
+<p><strong>Dequeue</strong> is the consumer-side operation. It is the one most likely to fail — if a consumer tries to dequeue from an empty queue, the implementation must not silently return garbage. Good designs either raise an exception (<code>IndexError</code>, <code>NoSuchElementException</code>) or return a special sentinel value (<code>None</code>, <code>-1</code>, a wrapped <code>Optional</code>) that the caller is expected to check. Returning <code>None</code> silently can hide bugs; raising an exception is generally safer during development.</p>
+
+<p><strong>Peek</strong> is a non-destructive read. A common use is in simulation or scheduling code where you want to examine the next task's priority or timestamp <em>before</em> committing to removing it. Because peek does not modify the queue, it is idempotent and safe to call repeatedly.</p>
+
+<p><strong>isEmpty</strong> and <strong>size</strong> are guard operations. Best practice is to call <code>is_empty()</code> before every dequeue or peek rather than catching exceptions after the fact, especially in tight loops where exception handling has overhead.</p>
+
+<p><strong>Trade-Offs: Arrays vs. Linked Lists</strong></p>
+
+<p>Choosing between an array-backed and a linked-list-backed queue is a design decision that depends on your runtime constraints. The following comparison captures the most important dimensions:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Circular Array Queue</th>
+      <th>Linked List Queue</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Memory layout</td>
+      <td>Contiguous — one block</td>
+      <td>Scattered — one allocation per node</td>
+    </tr>
+    <tr>
+      <td>Cache performance</td>
+      <td>Excellent (spatial locality)</td>
+      <td>Poor under random allocation patterns</td>
+    </tr>
+    <tr>
+      <td>Memory overhead</td>
+      <td>Low — just the array + 2–3 integers</td>
+      <td>High — a pointer per node (e.g. +8 bytes)</td>
+    </tr>
+    <tr>
+      <td>Max capacity</td>
+      <td>Fixed (or amortized dynamic)</td>
+      <td>Limited only by heap memory</td>
+    </tr>
+    <tr>
+      <td>Worst-case enqueue</td>
+      <td>O(n) on resize; O(1) fixed-size</td>
+      <td>O(1) always</td>
+    </tr>
+    <tr>
+      <td>Amortized enqueue</td>
+      <td>O(1)</td>
+      <td>O(1)</td>
+    </tr>
+    <tr>
+      <td>Dequeue</td>
+      <td>O(1)</td>
+      <td>O(1)</td>
+    </tr>
+    <tr>
+      <td>Best use case</td>
+      <td>Known max size, high throughput</td>
+      <td>Unknown size, latency-sensitive (no resize)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>When the maximum queue depth is known in advance — for example, a bounded task queue with at most 1,024 jobs — a fixed circular array is almost always preferable. It avoids per-element allocation overhead, keeps data in cache, and its capacity limit is a built-in safety valve against runaway growth. When the queue size is highly variable and worst-case latency matters more than average throughput — for example, a real-time message broker — a linked list avoids the sudden O(n) pause that comes with array resizing.</p>
+
+<p><strong>Handling Edge Cases in Implementation</strong></p>
+
+<p>Robust queue implementations must anticipate and explicitly handle several boundary conditions that arise in real use.</p>
+
+<p><em>Empty-queue dequeue and peek.</em> Both operations are undefined on an empty queue. The safest practice is to check <code>is_empty()</code> first and raise a descriptive exception if the queue is empty. Returning a default value such as <code>None</code> or <code>-1</code> can work, but only if the caller always checks the return value — an easy contract to break. In Java's <code>Queue</code> interface, <code>remove()</code> throws <code>NoSuchElementException</code> while <code>poll()</code> returns <code>null</code>, giving callers the choice.</p>
+
+<p><em>Enqueue into a full array.</em> A fixed-size circular array becomes full when <code>size == capacity</code>. There are three principled responses:</p>
+<ul>
+  <li><strong>Reject</strong>: raise an <code>OverflowError</code>. The caller must decide what to do. This is the safest default.</li>
+  <li><strong>Resize</strong>: allocate a new, larger array, copy elements in logical order (front → rear), and update <em>front</em> to 0. This makes the queue "dynamic" at the cost of an occasional O(n) operation.</li>
+  <li><strong>Overwrite</strong>: advance <em>front</em> by one (discarding the oldest element) before writing the new one. This "ring buffer" strategy is common in audio processing and logging, where losing old data is acceptable but blocking is not.</li>
+</ul>
+
+<p><em>Distinguishing full from empty in a circular array.</em> If you only track <em>front</em> and <em>rear</em> without a separate <em>size</em> field, both an empty and a full queue satisfy <code>front == rear</code>. Two classical fixes exist: (1) keep a separate <em>size</em> counter (the approach used in the code above — cleanest and unambiguous); (2) leave one slot permanently unused so a full queue satisfies <code>(rear + 1) % capacity == front</code> while an empty queue satisfies <code>front == rear</code>. The unused-slot approach wastes one array position but avoids the extra integer field.</p>
+
+<p><em>Resetting tail after the last dequeue.</em> In the linked list implementation, after removing the last node, <code>head</code> becomes <code>None</code>. If <em>tail</em> is not also reset to <code>None</code>, it continues pointing to the now-garbage-collected (or dangling) old node. The next enqueue would then link a new node to a dead object. Every correct linked list dequeue must include:</p>
+
+<pre><code>if self._head is None:
+    self._tail = None   # critical — prevents dangling tail reference
+</code></pre>
+
+<p>Missing this single line is one of the most common bugs in student queue implementations.</p>
+
+<p><em>Thread safety.</em> Neither implementation above is thread-safe. If multiple threads enqueue and dequeue concurrently, the <em>size</em> field (or the <em>front</em>/<em>rear</em> pointers) can be corrupted by race conditions. Production concurrent queues require atomic operations or locks — e.g., Python's <code>queue.Queue</code>, Java's <code>ConcurrentLinkedQueue</code>, or a mutex-protected wrapper.</p>
+
+<p><strong>Time and Space Complexity Analysis</strong></p>
+
+<p>The formal complexity of both implementations is summarized below:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Operation</th>
+      <th>Array Queue (fixed)</th>
+      <th>Array Queue (dynamic)</th>
+      <th>Linked List Queue</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Enqueue</td>
+      <td>O(1) worst-case</td>
+      <td>O(n) worst-case, O(1) amortized</td>
+      <td>O(1) worst-case</td>
+    </tr>
+    <tr>
+      <td>Dequeue</td>
+      <td>O(1)</td>
+      <td>O(1)</td>
+      <td>O(1)</td>
+    </tr>
+    <tr>
+      <td>Peek</td>
+      <td>O(1)</td>
+      <td>O(1)</td>
+      <td>O(1)</td>
+    </tr>
+    <tr>
+      <td>isEmpty / size</td>
+      <td>O(1)</td>
+      <td>O(1)</td>
+      <td>O(1)</td>
+    </tr>
+    <tr>
+      <td>Space (n elements)</td>
+      <td>O(n) — no pointer overhead</td>
+      <td>O(n) — up to ~2n slots during resize</td>
+      <td>O(n) — plus one pointer per node</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The <strong>amortized O(1) enqueue</strong> for dynamic arrays deserves a brief proof sketch. Suppose the array doubles in capacity each time it fills. The i-th resize copies i elements. Starting from capacity 1 and performing n insertions, the total copy work is 1 + 2 + 4 + … + n ≈ 2n. Dividing by n insertions gives an amortized cost of 2 — i.e., O(1) — per enqueue. The key insight is that the expensive resize events are rare enough that their cost, spread across many cheap enqueues, becomes negligible.</p>
+
+<p>Regarding <strong>space</strong>: a circular array of capacity <em>c</em> always occupies exactly <em>c</em> slots regardless of how many are in use — potentially wasteful if the queue is usually small but occasionally spikes. A dynamic array wastes up to a factor of 2× due to pre-allocated spare capacity after a resize. A linked list uses exactly as many allocations as there are live elements, but each allocation is larger than a pure array slot by the size of a pointer (and usually by alignment padding too). In memory-constrained environments — embedded systems, kernels, microcontrollers — this per-node overhead can be decisive.</p>
+
+<p>In summary: both array and linked list queues achieve the same asymptotic complexity, but they differ substantially in constant factors, memory layout, and behavioral guarantees under stress. The best queue implementation is the one that matches your known constraints on size, latency, and memory budget.</p>
+        <div class="notes"><strong>Notes</strong>Code examples use Python for readability but the concepts map directly to Java, C++, or any other language. Instructors may wish to have students re-implement both classes in a statically typed language to reinforce pointer/reference management. The thread-safety caveat is mentioned briefly; a concurrent-queues module would extend this topic further.</div>
+      </div>
+    </details>
+  </main>
+</body></html>

@@ -1,0 +1,403 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Node Structure and Tree Anatomy</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+  <style>
+    body { padding-left: 1.1rem; padding-right: 1.1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid rgba(128,128,128,.45); padding: .45em .7em; text-align: left; vertical-align: top; }
+    thead th { background: rgba(128,128,128,.18); font-weight: 600; }
+    tbody tr:nth-child(even) { background: rgba(128,128,128,.08); }
+    a.topic-detail-link { text-decoration: underline; }
+  </style>
+  <style>
+    summary.slide-header { list-style: none; }
+    summary.slide-header::-webkit-details-marker { display: none; }
+    details.slide-card[open] > .slide-body { display: block; }
+    details.slide-card[open] .chevron { transform: rotate(90deg); }
+    @media print { details.slide-card > .slide-body { display: block !important; } .chevron { display: none; } }
+  </style>
+</head><body>
+  <header>
+    <h1>Node Structure and Tree Anatomy</h1>
+  </header><main>
+    <details class="slide-card" open>
+      <summary class="slide-header"><span class="slide-num">1</span><h2>Node Structure and Tree Anatomy</h2><span class="chevron">▶</span></summary>
+      <div class="slide-body">
+        <p>A binary tree is one of the most fundamental data structures in computer science, and understanding it deeply begins not at the level of the whole tree, but at the level of its smallest building block: the individual node. Every binary tree, no matter how large or complex, is composed entirely of these nodes linked together through pointers. To reason clearly about tree algorithms — whether you are searching for a value, inserting a new element, or computing a height — you must first have a precise mental model of what a node contains, how nodes relate to one another, and what properties emerge from those relationships across the full structure.</p>
+
+<p>Before examining specific properties, it helps to see exactly how a binary tree node is typically represented in code. In most languages the definition is concise but carries significant implications:</p>
+
+<pre><code>// JavaScript representation
+class TreeNode {
+    constructor(value) {
+        this.data  = value;   // the payload stored in this node
+        this.left  = null;    // reference to left child, or null
+        this.right = null;    // reference to right child, or null
+    }
+}
+</code></pre>
+
+<pre><code># Python representation
+class TreeNode:
+    def __init__(self, value):
+        self.data  = value   # the payload stored in this node
+        self.left  = None    # reference to left child, or None
+        self.right = None    # reference to right child, or None
+</code></pre>
+
+<p>Three fields. That is the entirety of a binary tree node. Yet from this simple structure, arbitrarily rich hierarchical relationships can be expressed.</p>
+
+<p><strong>Anatomy of a Binary Tree Node</strong></p>
+
+<p>Every node in a binary tree holds exactly three things: a <strong>data value</strong>, a <strong>left pointer</strong>, and a <strong>right pointer</strong>.</p>
+
+<p>The <strong>data value</strong> is the payload — the information the node exists to store. It can be any type: an integer, a floating-point number, a string, a reference to a complex object, or anything else the application requires. The tree structure itself is indifferent to what the data is; it only needs to be comparable in trees where ordering matters (such as binary search trees), but even that constraint does not apply to binary trees in general.</p>
+
+<p>The <strong>left pointer</strong> is a reference to another TreeNode — specifically the root of the current node's left subtree. If no left child exists, this pointer holds the value <code>null</code> (or <code>None</code> in Python, <code>nullptr</code> in C++, etc.). The pointer does not store the child node itself; it stores the <em>address</em> of the child node in memory. This indirection is what makes trees dynamic and allows them to grow or shrink without copying data.</p>
+
+<p>The <strong>right pointer</strong> works identically, referencing the root of the right subtree or holding <code>null</code> when no right child exists.</p>
+
+<p>A node whose both left and right pointers are <code>null</code> is called a <strong>leaf node</strong>. Leaf nodes occupy the outermost fringe of the tree — they have no children and therefore no subtrees beneath them. Recognising leaf nodes is important for many recursive algorithms because they form the natural base case: there is nowhere further to recurse.</p>
+
+<p>Consider a small example tree built from these nodes:</p>
+
+<pre><code>        10
+       /  \
+      5    15
+     / \     \
+    3   7    20
+</code></pre>
+
+<p>Node <code>10</code> has <code>data = 10</code>, <code>left → node(5)</code>, <code>right → node(15)</code>.<br>
+Node <code>5</code> has <code>data = 5</code>, <code>left → node(3)</code>, <code>right → node(7)</code>.<br>
+Node <code>3</code> has <code>data = 3</code>, <code>left = null</code>, <code>right = null</code> — a leaf node.<br>
+Node <code>7</code> has <code>data = 7</code>, <code>left = null</code>, <code>right = null</code> — a leaf node.<br>
+Node <code>15</code> has <code>data = 15</code>, <code>left = null</code>, <code>right → node(20)</code>.<br>
+Node <code>20</code> has <code>data = 20</code>, <code>left = null</code>, <code>right = null</code> — a leaf node.</p>
+
+<p><strong>Root, Parent, and Child Relationships</strong></p>
+
+<p>Nodes in a binary tree do not exist in isolation — they are arranged in a strict hierarchy defined by the parent-child relationship encoded in the left and right pointers.</p>
+
+<p>The <strong>root</strong> is the single topmost node in the tree. It is the unique entry point: every traversal of the tree begins here, every search starts here, and every insertion eventually traces a path from here. The root has no parent — it is the ancestor of every other node. In the example above, node <code>10</code> is the root. When you hold a reference to a binary tree, what you actually hold is a reference to its root node; from that one pointer you can reach the entire structure by following left and right pointers.</p>
+
+<p>A <strong>parent node</strong> is any node that has at least one child connected below it via its left or right pointer. In the example, nodes <code>10</code>, <code>5</code>, and <code>15</code> are all parent nodes. Note that a node can be both a parent (to nodes below it) and a child (of the node above it) simultaneously — most nodes occupy both roles at once.</p>
+
+<p>A <strong>child node</strong> is any node that is directly referenced by another node's left or right pointer. In the example, <code>5</code> and <code>15</code> are children of <code>10</code>; <code>3</code> and <code>7</code> are children of <code>5</code>; <code>20</code> is a child of <code>15</code>. Each child node has exactly one parent (with the exception of the root, which has none).</p>
+
+<p>The defining characteristic of a <em>binary</em> tree is precisely the constraint on the number of children: <strong>each node may have at most two children</strong>. This distinguishes binary trees from general trees, where a node could have any number of children. The two-child limit gives binary trees predictable structure that enables efficient algorithms and clean recursive definitions.</p>
+
+<p>Two nodes that share the same parent are called <strong>sibling nodes</strong>. In the example, <code>5</code> and <code>15</code> are siblings (both children of <code>10</code>); <code>3</code> and <code>7</code> are siblings (both children of <code>5</code>). Sibling nodes occupy the same level of the tree (more on levels shortly).</p>
+
+<p><strong>Node Depth</strong></p>
+
+<p>The <strong>depth</strong> of a node is the number of edges on the unique path from the root down to that node. Because there is exactly one path from the root to any node in a tree, depth is well-defined and unambiguous.</p>
+
+<p>The root node has depth <strong>0</strong> — there are zero edges between the root and itself. Its children have depth <strong>1</strong> — one edge separates them from the root. Their children have depth <strong>2</strong>, and so on. Each step away from the root increases depth by exactly one.</p>
+
+<p>Using the earlier example:</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>Node</th>
+            <th>Path from Root</th>
+            <th>Number of Edges</th>
+            <th>Depth</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>10</td>
+            <td>10</td>
+            <td>0</td>
+            <td>0</td>
+        </tr>
+        <tr>
+            <td>5</td>
+            <td>10 → 5</td>
+            <td>1</td>
+            <td>1</td>
+        </tr>
+        <tr>
+            <td>15</td>
+            <td>10 → 15</td>
+            <td>1</td>
+            <td>1</td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>10 → 5 → 3</td>
+            <td>2</td>
+            <td>2</td>
+        </tr>
+        <tr>
+            <td>7</td>
+            <td>10 → 5 → 7</td>
+            <td>2</td>
+            <td>2</td>
+        </tr>
+        <tr>
+            <td>20</td>
+            <td>10 → 15 → 20</td>
+            <td>2</td>
+            <td>2</td>
+        </tr>
+    </tbody>
+</table>
+
+<p>Depth is a property of a specific node relative to the root of the tree it belongs to. If you were to consider a subtree rooted at node <code>5</code> in isolation, then within that subtree node <code>5</code> would have depth 0 — but within the full tree its depth remains 1. Context matters when calculating depth.</p>
+
+<p>Depth is useful for several purposes: it tells you how many comparisons a search must make to reach a node, it determines which level a node occupies in a level-order (breadth-first) traversal, and it is used in algorithms that must distinguish nodes by their distance from the root.</p>
+
+<p><strong>Tree Height</strong></p>
+
+<p>While depth is measured <em>downward from the root to a specific node</em>, height is measured <em>upward from a node toward the root</em> — or more precisely, <em>downward from a node to the farthest leaf beneath it</em>. The <strong>height of a node</strong> is the number of edges on the longest downward path from that node to any leaf in its subtree.</p>
+
+<p>A leaf node has height <strong>0</strong> — there are zero edges from it to itself. The height of an internal node is one more than the maximum of the heights of its children. A common edge case worth noting: an empty tree (null root) is often defined to have height <strong>−1</strong>, which makes the recursive formula work cleanly.</p>
+
+<p>The <strong>height of the tree</strong> is defined as the height of its root node — equivalently, the length of the longest root-to-leaf path in the entire tree.</p>
+
+<p>Using the same example tree:</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>Node</th>
+            <th>Left Child Height</th>
+            <th>Right Child Height</th>
+            <th>Node Height</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>3 (leaf)</td>
+            <td>−1 (null)</td>
+            <td>−1 (null)</td>
+            <td>0</td>
+        </tr>
+        <tr>
+            <td>7 (leaf)</td>
+            <td>−1 (null)</td>
+            <td>−1 (null)</td>
+            <td>0</td>
+        </tr>
+        <tr>
+            <td>20 (leaf)</td>
+            <td>−1 (null)</td>
+            <td>−1 (null)</td>
+            <td>0</td>
+        </tr>
+        <tr>
+            <td>5</td>
+            <td>0 (node 3)</td>
+            <td>0 (node 7)</td>
+            <td>1</td>
+        </tr>
+        <tr>
+            <td>15</td>
+            <td>−1 (null)</td>
+            <td>0 (node 20)</td>
+            <td>1</td>
+        </tr>
+        <tr>
+            <td>10 (root)</td>
+            <td>1 (node 5)</td>
+            <td>1 (node 15)</td>
+            <td>2</td>
+        </tr>
+    </tbody>
+</table>
+
+<p>The tree's height is therefore 2. A recursive implementation of height in code makes the definition vivid:</p>
+
+<pre><code>def height(node):
+    if node is None:
+        return -1                          # empty subtree convention
+    left_height  = height(node.left)
+    right_height = height(node.right)
+    return 1 + max(left_height, right_height)
+</code></pre>
+
+<p>Height is arguably the single most important structural property of a binary tree from an algorithmic perspective. Most fundamental tree operations — search, insert, delete — require time proportional to <strong>O(h)</strong>, where <em>h</em> is the height. In the best case (a perfectly balanced tree with <em>n</em> nodes), <em>h</em> ≈ log₂(<em>n</em>), giving logarithmic performance. In the worst case (a tree that has degenerated into a linked list), <em>h</em> = <em>n</em> − 1, giving linear performance. This is why height management — through balancing — is so central to advanced tree structures.</p>
+
+<p><strong>Subtrees and Tree Levels</strong></p>
+
+<p>One of the most elegant properties of binary trees is their <strong>recursive structure</strong>: every node is simultaneously the root of its own smaller binary tree, called a <strong>subtree</strong>. A subtree rooted at node <em>X</em> consists of <em>X</em> itself together with all of its descendants. This subtree is itself a fully valid binary tree — it has a root (node <em>X</em>), parent-child relationships, leaves, a height, and so on.</p>
+
+<p>This recursive definition is not merely a mathematical curiosity; it directly motivates why recursive algorithms are so natural for trees. When you write a function that processes a tree by processing the root and then recursively processing the left subtree and right subtree, you are exploiting this self-similar structure. The left child of any node is the root of the left subtree, and the right child is the root of the right subtree — and those subtrees can be processed with the exact same logic as the full tree.</p>
+
+<p>In the example tree, the subtree rooted at node <code>5</code> consists of nodes <code>5</code>, <code>3</code>, and <code>7</code>. The subtree rooted at node <code>15</code> consists of nodes <code>15</code> and <code>20</code>. The subtree rooted at a leaf like node <code>3</code> contains only node <code>3</code> itself.</p>
+
+<p>A <strong>tree level</strong> (sometimes called a tier or row) is the collection of all nodes at the same depth. Level 0 contains only the root. Level 1 contains the root's children. Level 2 contains the root's grandchildren. And so forth. Grouping nodes by level is the basis for breadth-first (level-order) traversal.</p>
+
+<p>A key observation about levels: because each node can have at most two children, the number of nodes at each successive level can at most double. Level 0 has at most 1 node, level 1 has at most 2, level 2 has at most 4, level <em>k</em> has at most 2<sup><em>k</em></sup> nodes. A <strong>perfect binary tree</strong> of height <em>h</em> achieves exactly this maximum at every level, containing a total of 2<sup><em>h</em>+1</sup> − 1 nodes altogether. This exponential growth of capacity with depth is the fundamental reason why balanced binary trees offer logarithmic performance: a tree of height 20 can hold over a million nodes.</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>Level</th>
+            <th>Maximum Nodes at This Level</th>
+            <th>Cumulative Max Nodes (Perfect Tree)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>0</td>
+            <td>1</td>
+            <td>1</td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>2</td>
+            <td>3</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>4</td>
+            <td>7</td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>8</td>
+            <td>15</td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>16</td>
+            <td>31</td>
+        </tr>
+        <tr>
+            <td>h</td>
+            <td>2<sup>h</sup></td>
+            <td>2<sup>h+1</sup> − 1</td>
+        </tr>
+    </tbody>
+</table>
+
+<p><strong>Tree Balance</strong></p>
+
+<p>Not all binary trees are created equal in terms of performance. The same set of values can be arranged into trees of very different shapes, and those shapes can lead to dramatically different algorithm runtimes. The concept of <strong>balance</strong> captures the degree to which a tree's nodes are evenly distributed across its structure.</p>
+
+<p>A binary tree is called <strong>height-balanced</strong> (or simply <em>balanced</em>) if, for every node in the tree, the heights of its left subtree and right subtree differ by at most one. This definition, used by AVL trees, ensures that no part of the tree becomes disproportionately deep relative to another part.</p>
+
+<p>Consider two trees containing the same five values, <code>1, 2, 3, 4, 5</code>, but arranged differently:</p>
+
+<pre><code>Balanced arrangement:          Unbalanced arrangement:
+        3                      1
+       / \                      \
+      2   4                      2
+     /     \                      \
+    1       5                      3
+                                    \
+                                     4
+                                      \
+                                       5
+</code></pre>
+
+<p>The balanced tree has height 2. Any search, insertion, or deletion takes at most 2 comparisons after the root. The unbalanced tree (a right-skewed chain, effectively a linked list) has height 4. Operations take up to 4 comparisons. With a million nodes, a perfectly balanced tree has height about 20, while a completely unbalanced tree has height 999,999. The difference between O(log n) and O(n) is the difference between a fast algorithm and an unusable one.</p>
+
+<p>The mathematical reason balance keeps height at O(log₂ n) is exactly the level-doubling property discussed above. If each level is allowed to fill to (roughly) half capacity before adding a new level, then the number of levels grows only as fast as the logarithm of the total node count.</p>
+
+<p>Maintaining balance automatically as insertions and deletions occur is the purpose of <strong>self-balancing tree structures</strong>. The two most widely studied are:</p>
+
+<ul>
+    <li><strong>AVL trees</strong> — maintain the strict height-balance property (subtree heights differ by at most 1) at every node, using rotations to restore balance after each insertion or deletion. They guarantee O(log n) height at all times but may require frequent rotations.</li>
+    <li><strong>Red-Black trees</strong> — use a coloring scheme (each node is colored red or black) with rules about how colors may be arranged to guarantee that the longest root-to-leaf path is no more than twice the shortest. This gives a slightly looser balance guarantee than AVL trees but requires fewer rotations on average, making them preferred in many practical implementations (for example, Java's <code>TreeMap</code> and C++'s <code>std::map</code> are typically Red-Black trees).</li>
+</ul>
+
+<p>Both structures preserve the O(log n) height guarantee while supporting O(log n) insertion, deletion, and search — the practical payoff of understanding and enforcing tree balance.</p>
+
+<p>To summarise the key structural metrics of a binary tree node and the tree as a whole:</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>Concept</th>
+            <th>Definition</th>
+            <th>Measured From</th>
+            <th>Root Value</th>
+            <th>Leaf Value</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Depth</td>
+            <td>Edges from root to the node</td>
+            <td>Root downward</td>
+            <td>0</td>
+            <td>Varies (equals tree height for deepest leaf)</td>
+        </tr>
+        <tr>
+            <td>Height (of a node)</td>
+            <td>Edges on longest path from node to a leaf below it</td>
+            <td>Node downward</td>
+            <td>= tree height</td>
+            <td>0</td>
+        </tr>
+        <tr>
+            <td>Height (of tree)</td>
+            <td>Height of the root node</td>
+            <td>Root downward</td>
+            <td>—</td>
+            <td>—</td>
+        </tr>
+        <tr>
+            <td>Level</td>
+            <td>Set of all nodes at the same depth</td>
+            <td>Root outward</td>
+            <td>Level 0</td>
+            <td>Level = height of tree (for deepest leaves)</td>
+        </tr>
+    </tbody>
+</table>
+
+<p>Mastering these definitions — node anatomy, relational vocabulary, depth, height, subtrees, levels, and balance — provides the conceptual foundation on which every subsequent binary tree topic is built. Every algorithm, from a simple recursive traversal to the rotation logic of a self-balancing tree, reasons directly in terms of these properties.</p>
+        <div class="notes"><strong>Notes</strong>Covers all listed subtopics in depth. Code examples given in both JavaScript and Python for node anatomy. Tables used for depth, height calculations, level capacity, and summary of concepts. The distinction between depth (top-down) and height (bottom-up) is explicitly reinforced with a worked table and code. Balance section connects structural definitions to practical performance consequences and names AVL and Red-Black trees as examples of self-balancing structures.</div>
+      </div>
+    </details>
+  </main>
+</body></html>

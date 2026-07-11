@@ -1,0 +1,291 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Depth-First Search (DFS)</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+  <style>
+    body { padding-left: 1.1rem; padding-right: 1.1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid rgba(128,128,128,.45); padding: .45em .7em; text-align: left; vertical-align: top; }
+    thead th { background: rgba(128,128,128,.18); font-weight: 600; }
+    tbody tr:nth-child(even) { background: rgba(128,128,128,.08); }
+    a.topic-detail-link { text-decoration: underline; }
+  </style>
+  <style>
+    summary.slide-header { list-style: none; }
+    summary.slide-header::-webkit-details-marker { display: none; }
+    details.slide-card[open] > .slide-body { display: block; }
+    details.slide-card[open] .chevron { transform: rotate(90deg); }
+    @media print { details.slide-card > .slide-body { display: block !important; } .chevron { display: none; } }
+  </style>
+</head><body>
+  <header>
+    <h1>Depth-First Search (DFS)</h1>
+  </header><main>
+    <details class="slide-card" open>
+      <summary class="slide-header"><span class="slide-num">1</span><h2>Depth-First Search (DFS)</h2><span class="chevron">▶</span></summary>
+      <div class="slide-body">
+        <p>Depth-First Search (DFS) is one of the most fundamental graph traversal algorithms in computer science. The central idea is elegantly simple: starting from a chosen source node, explore as far as possible along each branch of the graph before <em>backtracking</em> to try alternative paths. Imagine navigating a maze by always following the left-hand wall — you commit fully to one direction, going deeper and deeper, and only retreat when you hit a dead end before trying the next corridor. This "go deep first" philosophy gives the algorithm both its name and its distinctive behavior, and it is the root cause of nearly every important property DFS possesses — from cycle detection to topological ordering to connectivity analysis.</p>
+
+<p>DFS applies equally well to trees, directed graphs, and undirected graphs. On a tree there are no cycles to worry about, so DFS simplifies to a familiar recursive traversal. On a general graph, cycles can cause the search to loop forever, so a mechanism for remembering which nodes have already been seen becomes essential. Understanding how that bookkeeping interacts with the traversal order is the key to mastering DFS.</p>
+
+<p><strong>DFS Core Concept and Strategy</strong></p>
+
+<p>At its heart, DFS relies on a <em>last-in, first-out</em> (LIFO) structure to decide which node to visit next. This can be the program's own call stack when DFS is written recursively, or an explicit <code>stack</code> data structure when written iteratively. Either way, the effect is the same: the most recently discovered unvisited neighbor is always the next to be explored, naturally pushing the traversal deeper before it goes wider.</p>
+
+<p>The second pillar of DFS is the <strong>visited set</strong> (sometimes a boolean array indexed by node id, sometimes a hash set). Before exploring a node, the algorithm checks whether it has already been seen. If it has, processing stops for that branch. If it has not, the node is marked visited and its neighbors are queued for exploration. Without this guard, any cycle in the graph — even a simple edge from node B back to node A — would send the algorithm into an infinite loop.</p>
+
+<p>The precise traversal order produced by DFS depends on the order in which a node's neighbors are stored. Consider a node with neighbors listed as <code>[C, B, D]</code>. DFS will first go toward C, exhausting all of C's descendants, before it ever looks at B or D. If the adjacency list instead stored them as <code>[D, B, C]</code>, the traversal would unfold in a completely different sequence even though the graph is identical. This sensitivity to neighbor ordering is worth keeping in mind whenever DFS results are compared between implementations.</p>
+
+<p><strong>Recursive DFS Implementation</strong></p>
+
+<p>The recursive implementation is the most natural expression of the DFS idea. Each function call represents visiting one node; the call stack itself acts as the LIFO structure that tracks the traversal path. The code is compact and mirrors the algorithm's description almost word for word.</p>
+
+<pre><code>def dfs_recursive(graph, node, visited):
+    # Base case: if already visited, do nothing
+    if node in visited:
+        return
+    # Mark the node visited and process it
+    visited.add(node)
+    print(node)   # or append to a result list
+    # Recurse on each unvisited neighbor
+    for neighbor in graph[node]:
+        dfs_recursive(graph, neighbor, visited)
+</code></pre>
+
+<p>The <strong>base case</strong> is the visited check. When the algorithm reaches a node it has already processed — which happens when the graph contains a cycle or when multiple paths lead to the same node — the function returns immediately without duplicating work. This single guard is responsible for the guarantee that each node is processed exactly once, giving DFS an overall time complexity of <em>O(V + E)</em> where V is the number of vertices and E is the number of edges.</p>
+
+<p>The recursive call <code>dfs_recursive(graph, neighbor, visited)</code> processes one neighbor at a time. Crucially, the loop does not advance to the next neighbor until the recursive call for the current neighbor has returned completely — meaning the entire subtree rooted at that neighbor has been explored first. This is exactly the "go deep before going wide" behavior that defines DFS.</p>
+
+<p>The primary limitation of recursive DFS is <strong>stack overflow</strong>. Every active function call occupies a frame on the program's call stack, and most language runtimes cap the call stack at a few thousand frames. On a long linear chain of 100,000 nodes, the recursion depth reaches 100,000 — far beyond the default limit in Python (around 1,000) or Java (roughly 500–1,000 depending on frame size). For small to medium graphs this is rarely a concern, but production systems operating on large or user-supplied graphs usually prefer the iterative version.</p>
+
+<p><strong>Iterative DFS Implementation</strong></p>
+
+<p>The iterative approach replaces the implicit call stack with an explicit one. The logic closely mirrors the recursive version but avoids call-stack limitations and gives the programmer full control over the stack's contents.</p>
+
+<pre><code>def dfs_iterative(graph, start):
+    visited = set()
+    stack = [start]
+    while stack:
+        node = stack.pop()          # LIFO: most recently pushed node
+        if node in visited:
+            continue
+        visited.add(node)
+        print(node)
+        for neighbor in graph[node]:
+            if neighbor not in visited:
+                stack.append(neighbor)
+    return visited
+</code></pre>
+
+<p>Execution proceeds as follows. The start node is pushed onto the stack. The main loop pops the top element, checks whether it was already visited (which can happen because the same node may be pushed multiple times before being popped), marks it visited, processes it, and then pushes all unvisited neighbors. Because the stack is LIFO, the <em>last</em> neighbor pushed will be the <em>first</em> one explored.</p>
+
+<p>There is a subtle but important difference between recursive and iterative DFS regarding traversal order. Consider a node with neighbors <code>[A, B, C]</code>. The recursive version iterates the list in order and recurses on A first, so A is explored entirely before B or C are touched. The iterative version pushes A, B, C onto the stack in that order; when they are popped, C comes off first (LIFO), then B, then A. To make iterative DFS visit neighbors in the same left-to-right order as recursive DFS, push neighbors in <em>reverse</em> order:</p>
+
+<pre><code>for neighbor in reversed(graph[node]):
+    if neighbor not in visited:
+        stack.append(neighbor)
+</code></pre>
+
+<p>This is a common source of confusion in interview settings — knowing that the orders can diverge, and why, demonstrates a deep understanding of the algorithm.</p>
+
+<p><strong>DFS Traversal Order and Visited Tracking</strong></p>
+
+<p>The moment a node is marked visited is a design choice with real consequences. In most implementations, nodes are marked as soon as they are <em>first encountered</em> (either at the point of pushing onto the stack or at the start of the recursive call). This ensures no node is processed more than once.</p>
+
+<p>DFS naturally produces two important orderings that are widely used in practice:</p>
+
+<ul>
+  <li><strong>Pre-order</strong>: A node is recorded <em>before</em> any of its descendants are explored. This is what the code examples above do — <code>print(node)</code> happens right after marking it visited. Pre-order is useful for creating a copy of a graph or tree, or for simply listing nodes in discovery order.</li>
+  <li><strong>Post-order</strong>: A node is recorded <em>after all of its descendants</em> have been fully explored. In the recursive version this means placing the recording step after the loop over neighbors. Post-order is the foundation of topological sort — because a node is recorded only after everything reachable from it is recorded, reversing the post-order list gives a valid topological ordering for a DAG.</li>
+</ul>
+
+<pre><code>def dfs_postorder(graph, node, visited, result):
+    if node in visited:
+        return
+    visited.add(node)
+    for neighbor in graph[node]:
+        dfs_postorder(graph, neighbor, visited, result)
+    result.append(node)   # recorded AFTER all descendants
+</code></pre>
+
+<p>The collection of edges actually traversed by DFS forms a <strong>DFS tree</strong> (or a <strong>DFS forest</strong> if the graph is disconnected). Edges in the original graph that are <em>not</em> part of this tree are classified as back edges (pointing to an ancestor in the DFS tree), forward edges (pointing to a descendant), or cross edges (pointing to nodes in a different branch or component). These edge classifications carry algorithmic significance: for example, the presence of any back edge in a directed graph is both necessary and sufficient to conclude the graph contains a cycle.</p>
+
+<p><strong>Handling Disconnected Graphs</strong></p>
+
+<p>A single DFS call from one start node only ever reaches nodes that are reachable from that node — i.e., it explores exactly one <em>connected component</em>. If the graph has isolated nodes or multiple disconnected subgraphs, some nodes will never be reached unless the outer loop restarts DFS from each unvisited node.</p>
+
+<pre><code>def dfs_full(graph):
+    visited = set()
+    components = []
+    for node in graph:
+        if node not in visited:
+            component = []
+            dfs_postorder(graph, node, visited, component)
+            components.append(component)
+    return components
+</code></pre>
+
+<p>Every time the outer <code>for</code> loop finds an unvisited node, it means a brand-new connected component has been discovered. The number of times DFS is restarted from an unvisited node is therefore exactly equal to the number of connected components in the graph. This makes the pattern above the standard way to count or enumerate components — a simple, elegant consequence of the visited-set bookkeeping.</p>
+
+<p>Consider the following example graph with three disconnected components:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Node</th>
+      <th>Neighbors</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>1, 2</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>(none)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>DFS starts at node 0, visits 0 → 1 → 2, and returns. Node 3 has not been visited, so DFS restarts there and visits 3 → 4. Node 5 has not been visited, so DFS restarts there and immediately finishes. Three restarts, three components: <code>{0,1,2}</code>, <code>{3,4}</code>, and <code>{5}</code>.</p>
+
+<p><strong>Common Use Cases of DFS</strong></p>
+
+<p>DFS is not merely an academic exercise — it is the engine behind a surprisingly wide variety of graph algorithms. Below are the most important applications:</p>
+
+<ul>
+  <li><strong>Cycle detection in undirected graphs</strong>: During DFS, if a neighbor of the current node has already been visited and is <em>not</em> the parent through which we arrived, a cycle exists. The parent check is necessary because an undirected edge (u, v) is traversed in both directions; without it, every edge would falsely appear to create a cycle.</li>
+  <li><strong>Cycle detection in directed graphs</strong>: Maintain a <em>recursion stack</em> (separate from the visited set) tracking all nodes on the current DFS path. If a neighbor is found that is already on the recursion stack, a back edge — and therefore a cycle — has been found. A node is removed from the recursion stack when the DFS call for it returns.</li>
+  <li><strong>Topological sorting</strong>: On a Directed Acyclic Graph (DAG), run DFS over all nodes and append each node to a result list in post-order. Reversing this list yields a valid topological ordering. This works because a node appears in the result only after all nodes reachable from it (its "dependencies") have already been appended.</li>
+  <li><strong>Pathfinding and maze solving</strong>: DFS will always find <em>a</em> path between two nodes if one exists, though not necessarily the shortest one. It is the classic algorithm used to solve mazes modeled as grids.</li>
+  <li><strong>Strongly Connected Components (SCCs)</strong>: Algorithms such as Kosaraju's and Tarjan's use one or two DFS passes to decompose a directed graph into its SCCs — maximal subgraphs in which every node is reachable from every other node.</li>
+  <li><strong>Graph connectivity and bipartiteness checking</strong>: DFS can be used to verify whether a graph is connected (one DFS visits all nodes) and to check for bipartiteness (attempt a two-coloring during DFS; a conflict signals an odd cycle, ruling out bipartiteness).</li>
+</ul>
+
+<p>To concretely illustrate topological sort, consider building a course prerequisite system. Node A must be taken before B, B before C, and A before D:</p>
+
+<pre><code>graph = {
+    'A': ['B', 'D'],
+    'B': ['C'],
+    'C': [],
+    'D': [],
+}
+visited = set()
+result = []
+for node in graph:
+    dfs_postorder(graph, node, visited, result)
+print(result[::-1])   # reversed post-order
+# Possible output: ['A', 'B', 'D', 'C']  or  ['A', 'D', 'B', 'C']
+</code></pre>
+
+<p>Both outputs are valid topological orderings: A always appears before B, and B before C. The key guarantee is that every prerequisite appears before the course that depends on it — a direct consequence of the post-order recording rule in DFS.</p>
+
+<p>The table below summarizes the key behavioral differences between recursive and iterative DFS:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Recursive DFS</th>
+      <th>Iterative DFS</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Stack used</td>
+      <td>Implicit call stack</td>
+      <td>Explicit stack data structure</td>
+    </tr>
+    <tr>
+      <td>Code conciseness</td>
+      <td>Very concise and readable</td>
+      <td>Slightly more verbose</td>
+    </tr>
+    <tr>
+      <td>Risk of stack overflow</td>
+      <td>Yes, on very deep graphs</td>
+      <td>No (heap memory only)</td>
+    </tr>
+    <tr>
+      <td>Traversal order vs. adjacency list</td>
+      <td>Visits first neighbor first</td>
+      <td>Visits last-pushed neighbor first (reverse neighbors to match)</td>
+    </tr>
+    <tr>
+      <td>Post-order capture</td>
+      <td>Natural — add after loop</td>
+      <td>Requires extra bookkeeping (e.g., two-pass or sentinel values)</td>
+    </tr>
+    <tr>
+      <td>Suitability for large graphs</td>
+      <td>Limited by recursion depth</td>
+      <td>Suitable for graphs of any depth</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Taken together, DFS is a remarkably versatile tool. Its O(V + E) time complexity, intuitive recursive formulation, and deep connections to properties like reachability, ordering, and cycle structure make it one of the first algorithms to reach for when analyzing or processing graph-structured data.</p>
+        <div class="notes"><strong>Notes</strong>Both recursive and iterative Python implementations are included with inline commentary. The topological sort example is concrete and runnable. The comparison table clarifies the key practical differences between the two implementations. Instructors may wish to draw the DFS tree and edge-classification diagram (tree/back/forward/cross edges) on a whiteboard to complement the text.</div>
+      </div>
+    </details>
+  </main>
+</body></html>

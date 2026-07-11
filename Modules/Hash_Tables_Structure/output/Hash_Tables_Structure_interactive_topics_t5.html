@@ -1,0 +1,418 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Collision Resolution: Open Addressing</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+  <style>
+    body { padding-left: 1.1rem; padding-right: 1.1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid rgba(128,128,128,.45); padding: .45em .7em; text-align: left; vertical-align: top; }
+    thead th { background: rgba(128,128,128,.18); font-weight: 600; }
+    tbody tr:nth-child(even) { background: rgba(128,128,128,.08); }
+    a.topic-detail-link { text-decoration: underline; }
+  </style>
+  <style>
+    summary.slide-header { list-style: none; }
+    summary.slide-header::-webkit-details-marker { display: none; }
+    details.slide-card[open] > .slide-body { display: block; }
+    details.slide-card[open] .chevron { transform: rotate(90deg); }
+    @media print { details.slide-card > .slide-body { display: block !important; } .chevron { display: none; } }
+  </style>
+</head><body>
+  <header>
+    <h1>Collision Resolution: Open Addressing</h1>
+  </header><main>
+    <details class="slide-card" open>
+      <summary class="slide-header"><span class="slide-num">1</span><h2>Collision Resolution: Open Addressing</h2><span class="chevron">▶</span></summary>
+      <div class="slide-body">
+        <p>Hash tables are among the most powerful data structures in computer science, offering average-case O(1) performance for insertions, deletions, and lookups. But their efficiency depends entirely on how collisions are handled. A <strong>collision</strong> occurs when two distinct keys produce the same index after the hash function is applied. One major family of collision resolution strategies is called <strong>open addressing</strong>, which keeps all data within a single flat array and resolves collisions by probing — that is, systematically searching for an alternative empty slot inside the same array. This is in contrast to <em>chaining</em>, where each array slot holds a linked list of all keys that mapped to that index. Open addressing trades away the flexibility of dynamic chains for the benefits of spatial locality, simplicity, and reduced memory overhead.</p>
+
+<p>Understanding open addressing requires grasping three interconnected ideas: <strong>how an alternative slot is found</strong> (the probe strategy), <strong>how the table's occupancy level affects performance</strong> (the load factor), and <strong>how deletions are managed safely</strong> (tombstones). Each of the three main probe strategies — linear probing, quadratic probing, and double hashing — offers a different trade-off between simplicity, clustering behavior, and probe distribution quality.</p>
+
+<p><strong>What Is Open Addressing?</strong></p>
+
+<p>In open addressing, when a collision occurs at a slot, the algorithm does not build a chain at that slot. Instead, it follows a <em>probe sequence</em> — a deterministic series of alternative indices within the same array — until it finds an empty slot. The key-value pair is then stored at that empty slot. Every element lives directly in the table array itself, with no auxiliary data structures.</p>
+
+<p>This design has important consequences:</p>
+<ul>
+  <li><strong>The table must never be completely full.</strong> Probe sequences rely on encountering an empty slot either to place a new key (during insertion) or to confirm that a key is absent (during lookup). A completely full table has no empty slots, so probe sequences cannot terminate correctly. This is why open-addressed tables are always kept below a maximum <em>load factor</em> and resized before becoming full.</li>
+  <li><strong>Cache performance is often better than chaining.</strong> Because all entries share a contiguous array, accessing nearby slots during probing tends to hit the CPU cache. Linked list nodes in chaining are scattered across the heap, causing cache misses. For workloads where cache efficiency matters — which is most modern workloads — open addressing can outperform chaining even when the probe sequences are a little longer.</li>
+  <li><strong>Probe sequences must be consistent.</strong> Every operation (insert, lookup, delete) must follow the exact same probe sequence for a given key. If insertion used one sequence and lookup used another, a stored key could never be found.</li>
+</ul>
+
+<p><strong>Linear Probing</strong></p>
+
+<p>Linear probing is the simplest open addressing strategy. When a collision occurs at index <em>h</em>, the algorithm checks the very next slot, then the one after that, and so on — wrapping around the end of the array if necessary. The probe sequence formula is:</p>
+
+<pre><code>index = (hash(key) + i) % tableSize
+</code></pre>
+
+<p>where <code>i</code> starts at 0 and increments by 1 at each step. So the sequence of slots examined for a key with home slot <em>h</em> in a table of size <em>M</em> is:</p>
+
+<pre><code>h, (h+1)%M, (h+2)%M, (h+3)%M, ...
+</code></pre>
+
+<p>Consider a table of size 7 and a simple hash function <code>hash(key) = key % 7</code>. Suppose we insert the keys 10, 17, 24 in that order.</p>
+
+<ul>
+  <li>Insert 10: <code>10 % 7 = 3</code>. Slot 3 is empty → place 10 at slot 3.</li>
+  <li>Insert 17: <code>17 % 7 = 3</code>. Slot 3 is occupied. Probe slot 4 → empty → place 17 at slot 4.</li>
+  <li>Insert 24: <code>24 % 7 = 3</code>. Slot 3 occupied. Probe slot 4 → occupied. Probe slot 5 → empty → place 24 at slot 5.</li>
+</ul>
+
+<table>
+  <thead>
+    <tr>
+      <th>Slot</th>
+      <th>0</th>
+      <th>1</th>
+      <th>2</th>
+      <th>3</th>
+      <th>4</th>
+      <th>5</th>
+      <th>6</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Contents</td>
+      <td>—</td>
+      <td>—</td>
+      <td>—</td>
+      <td>10</td>
+      <td>17</td>
+      <td>24</td>
+      <td>—</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Notice that slots 3, 4, and 5 form a contiguous block. This illustrates the core weakness of linear probing: <strong>primary clustering</strong>. Once a run of filled slots forms, any new key whose hash falls anywhere inside or immediately before that run will extend it further. A run of length <em>k</em> attracts new keys with probability proportional to <em>k</em>, so runs tend to grow longer over time, causing insertions and lookups to require more and more probes. In heavily loaded tables this can dramatically degrade average-case performance.</p>
+
+<p>Despite clustering, linear probing has excellent cache behavior because the probed slots are adjacent in memory. For tables with low to moderate load factors, this cache advantage often makes linear probing faster in practice than more sophisticated methods.</p>
+
+<p><strong>Quadratic Probing</strong></p>
+
+<p>Quadratic probing addresses primary clustering by spacing probes farther apart as the probe count increases. Instead of checking every consecutive slot, the step size grows quadratically:</p>
+
+<pre><code>index = (hash(key) + i²) % tableSize
+</code></pre>
+
+<p>The probe sequence for home slot <em>h</em> becomes:</p>
+
+<pre><code>h, (h+1)%M, (h+4)%M, (h+9)%M, (h+16)%M, ...
+</code></pre>
+
+<p>Because colliding keys jump to different positions after the first collision, long contiguous runs do not form. This eliminates primary clustering. However, quadratic probing introduces a subtler problem called <strong>secondary clustering</strong>: any two keys that happen to share the same home slot will follow the exact same probe sequence, since the offsets depend only on <em>i</em>, not on the key itself. They will compete for the same set of candidate slots, just as if linear probing had been used for those specific keys.</p>
+
+<p>There is also a mathematical concern: quadratic probing does not guarantee that the probe sequence will visit every slot in the table. If the probe sequence cycles back to already-visited slots before finding an empty one, an insertion can fail even though empty slots exist elsewhere. Two conditions together guarantee full coverage:</p>
+<ul>
+  <li>The table size <em>M</em> must be a <strong>prime number</strong>.</li>
+  <li>The <strong>load factor must stay below 0.5</strong> (the table is less than half full).</li>
+</ul>
+
+<p>Under these conditions it can be proven that at least half the slots will be reached, which is always enough to find an empty slot if the load factor is below 0.5. In practice, keeping load factors under 0.5 is more restrictive than the typical 0.75 threshold used with chaining, meaning quadratic probing wastes more memory per stored element.</p>
+
+<p>Using the same example (table size 7, <code>hash(key) = key % 7</code>), inserting keys 10, 17, 24:</p>
+<ul>
+  <li>Insert 10: slot 3 empty → place at 3.</li>
+  <li>Insert 17: slot 3 occupied. i=1 → (3+1)%7 = 4, empty → place at 4.</li>
+  <li>Insert 24: slot 3 occupied. i=1 → slot 4 occupied. i=2 → (3+4)%7 = 0, empty → place at 0.</li>
+</ul>
+
+<table>
+  <thead>
+    <tr>
+      <th>Slot</th>
+      <th>0</th>
+      <th>1</th>
+      <th>2</th>
+      <th>3</th>
+      <th>4</th>
+      <th>5</th>
+      <th>6</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Contents</td>
+      <td>24</td>
+      <td>—</td>
+      <td>—</td>
+      <td>10</td>
+      <td>17</td>
+      <td>—</td>
+      <td>—</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Key 24 landed at slot 0 instead of slot 5, breaking up the cluster that linear probing would have created.</p>
+
+<p><strong>Double Hashing</strong></p>
+
+<p>Double hashing is the most sophisticated open addressing technique and generally provides the best probe distribution. It eliminates both primary and secondary clustering by making the step size depend on the key itself, not just on the probe count. Two independent hash functions are used:</p>
+
+<pre><code>index = (hash1(key) + i * hash2(key)) % tableSize
+</code></pre>
+
+<p>The probe sequence for a given key is:</p>
+
+<pre><code>hash1(key), hash1(key) + hash2(key), hash1(key) + 2*hash2(key), ...  (all mod M)
+</code></pre>
+
+<p>Because <code>hash2(key)</code> differs for different keys, even two keys with the same home slot will follow different probe sequences after the first collision. This breaks secondary clustering. And because neither sequence necessarily scans adjacent slots, primary clustering is also avoided.</p>
+
+<p>Designing <code>hash2</code> requires care:</p>
+<ul>
+  <li><strong>hash2 must never return 0.</strong> A step size of 0 would mean the algorithm probes the same slot forever, causing an infinite loop. A common safeguard is <code>hash2(key) = R - (key % R)</code> where <em>R</em> is a prime number smaller than the table size. This expression always yields a value between 1 and R.</li>
+  <li><strong>hash2 should be independent of hash1.</strong> If both functions produce correlated values, the probe sequences are less uniformly distributed and clustering can re-emerge.</li>
+  <li><strong>The table size should be prime.</strong> This ensures that for any nonzero step size <em>s</em>, the sequence <code>h, h+s, h+2s, ...</code> (mod M) visits all M slots before repeating, guaranteeing that every empty slot is reachable.</li>
+</ul>
+
+<p>A typical double hashing setup for integer keys with table size <em>M</em> (prime) and a second prime <em>R &lt; M</em>:</p>
+
+<pre><code>hash1(key) = key % M
+hash2(key) = R - (key % R)
+</code></pre>
+
+<p>Inserting keys 10, 17, 24 into a size-7 table with R=5:</p>
+<ul>
+  <li><code>hash2(10) = 5 - (10%5) = 5 - 0 = 5</code></li>
+  <li><code>hash2(17) = 5 - (17%5) = 5 - 2 = 3</code></li>
+  <li><code>hash2(24) = 5 - (24%5) = 5 - 4 = 1</code></li>
+</ul>
+<ul>
+  <li>Insert 10: slot 3 empty → place at 3.</li>
+  <li>Insert 17: slot 3 occupied. Step = 3. Next: (3+3)%7 = 6, empty → place at 6.</li>
+  <li>Insert 24: slot 3 occupied. Step = 1. Next: (3+1)%7 = 4, empty → place at 4.</li>
+</ul>
+
+<table>
+  <thead>
+    <tr>
+      <th>Slot</th>
+      <th>0</th>
+      <th>1</th>
+      <th>2</th>
+      <th>3</th>
+      <th>4</th>
+      <th>5</th>
+      <th>6</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Contents</td>
+      <td>—</td>
+      <td>—</td>
+      <td>—</td>
+      <td>10</td>
+      <td>24</td>
+      <td>—</td>
+      <td>17</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The three keys are distributed across non-adjacent slots with no clustering. The cost is computing two hash functions for every operation, which adds a small but constant overhead compared to linear or quadratic probing.</p>
+
+<p><strong>Probe Sequences and Slot Selection</strong></p>
+
+<p>Regardless of which technique is used, the logic of a probe sequence is the same in structure. The sequence begins at the key's <strong>home slot</strong> — the index returned by the primary hash function — and proceeds according to the probing formula until one of two things happens:</p>
+<ul>
+  <li>An <strong>empty slot</strong> is found. During insertion, the key is placed here. During lookup, this confirms the key is not in the table (because if it had been inserted, the probe sequence would have stopped here at that time, and the key would be in this slot or a slot already examined).</li>
+  <li>The <strong>target key</strong> is found in a slot. The operation succeeds.</li>
+</ul>
+
+<p>A crucial invariant is that the probe sequence used during lookup must be <em>identical</em> to the one used during insertion. If a key was placed at position <code>(h + 4) % M</code> during insertion because slots <em>h</em>, <em>(h+1)%M</em>, and <em>(h+4)%M</em> followed the quadratic sequence, then lookup must follow that same path. There is no separate "search" path — the insert path and find path are the same.</p>
+
+<p>This also means that the probe sequence is entirely deterministic given the key and the table size. No randomness is involved at runtime; the sequence is computed algebraically from the key's hash values and the probe formula.</p>
+
+<p><strong>Handling Deletions in Open Addressing</strong></p>
+
+<p>Deletion is the trickiest aspect of open addressing. Naively setting a deleted slot back to "empty" breaks the probe sequence invariant. Consider this scenario: key A and key B both hash to slot 5. A is inserted at slot 5, B probes forward and lands at slot 6. Later, A is deleted and slot 5 is marked empty. Now a lookup for B starts at slot 5, sees "empty", and concludes that B is not in the table — even though B is sitting at slot 6. The lookup terminated prematurely because the empty marker at slot 5 looked like the end of a chain that was never started.</p>
+
+<p>The solution is to use a <strong>tombstone</strong> (also called a sentinel or deleted marker). When a slot is deleted, it is marked with a special value that means "this slot was once occupied but is now logically empty." The key distinction is:</p>
+
+<ul>
+  <li><strong>Tombstone during lookup:</strong> The probe sequence <em>continues past</em> a tombstone. The key might still be further along the sequence.</li>
+  <li><strong>Empty slot during lookup:</strong> The probe sequence <em>terminates</em>. The key is definitively absent.</li>
+  <li><strong>Tombstone during insertion:</strong> The slot <em>can be reused</em>. The algorithm records the first tombstone it encounters and, if the key is not found further along the sequence, places the new key at that tombstone slot (reclaiming the space).</li>
+</ul>
+
+<p>In pseudocode, an insertion with tombstone handling looks like:</p>
+
+<pre><code>function insert(table, key, value):
+    h = hash1(key)
+    firstTombstone = -1
+    i = 0
+    while true:
+        slot = probeSequence(h, i)
+        if table[slot] == EMPTY:
+            if firstTombstone != -1:
+                table[firstTombstone] = (key, value)
+            else:
+                table[slot] = (key, value)
+            return
+        elif table[slot] == TOMBSTONE:
+            if firstTombstone == -1:
+                firstTombstone = slot
+        elif table[slot].key == key:
+            table[slot].value = value  // update existing
+            return
+        i++
+</code></pre>
+
+<p>The downside is that tombstones accumulate over time. Each tombstone is a slot that cannot be used to terminate a negative lookup (a search for a key that is absent), so negative lookups must probe through all tombstones until a genuinely empty slot is found. A table with many tombstones and few truly empty slots can suffer from degraded lookup performance even if the actual number of live entries is small. When tombstone density becomes problematic, the solution is a full <strong>rehash</strong>: allocate a new (possibly larger) array and reinsert every live key into it. Because no key is deleted during a fresh rehash, no tombstones are created, and the new table has genuine empty slots scattered throughout.</p>
+
+<p><strong>Load Factor and Performance in Open Addressing</strong></p>
+
+<p>The <strong>load factor</strong> α is defined as the ratio of the number of stored entries to the total number of slots:</p>
+
+<pre><code>α = n / M
+</code></pre>
+
+<p>where <em>n</em> is the number of live entries and <em>M</em> is the table size. Load factor is the single most important determinant of open addressing performance. Because probe sequences must find empty slots to terminate, and the probability of any given slot being empty is (1 − α), higher load factors mean longer expected probe sequences.</p>
+
+<p>For linear probing, the expected number of probes for a successful lookup is approximately:</p>
+
+<pre><code>½ (1 + 1/(1 - α))
+</code></pre>
+
+<p>And for an unsuccessful lookup (or insertion):</p>
+
+<pre><code>½ (1 + 1/(1 - α)²)
+</code></pre>
+
+<p>These formulas (Knuth's analysis) show that at α = 0.5 the expected probes are modest, but at α = 0.9 unsuccessful lookups require on average about 50 probes — a massive degradation. The table below illustrates how dramatically probe count grows with load factor under linear probing:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Load Factor (α)</th>
+      <th>Expected Probes (Successful)</th>
+      <th>Expected Probes (Unsuccessful)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0.25</td>
+      <td>1.17</td>
+      <td>1.39</td>
+    </tr>
+    <tr>
+      <td>0.50</td>
+      <td>1.50</td>
+      <td>2.50</td>
+    </tr>
+    <tr>
+      <td>0.75</td>
+      <td>2.50</td>
+      <td>8.50</td>
+    </tr>
+    <tr>
+      <td>0.90</td>
+      <td>5.50</td>
+      <td>50.50</td>
+    </tr>
+    <tr>
+      <td>0.99</td>
+      <td>50.50</td>
+      <td>5000.50</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Double hashing and quadratic probing perform better at high load factors than linear probing because they avoid clustering, but all open addressing strategies degrade sharply as α approaches 1.</p>
+
+<p>To keep performance near O(1), open-addressed hash tables are <strong>resized</strong> whenever the load factor exceeds a chosen threshold — commonly 0.7 for double hashing, or 0.5 for quadratic probing. Resizing (also called rehashing) allocates a new array — typically about twice the size of the old one, with the new size chosen to be prime — and reinserts every live entry from the old table into the new one using the new table size in all hash function computations. This is an O(n) operation but happens infrequently enough that the amortized cost per insertion remains O(1).</p>
+
+<p>A comparison of the three strategies across the dimensions that matter most in practice:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Strategy</th>
+      <th>Primary Clustering</th>
+      <th>Secondary Clustering</th>
+      <th>Cache Efficiency</th>
+      <th>Probe Distribution</th>
+      <th>Implementation Complexity</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Linear Probing</td>
+      <td>Yes — severe</td>
+      <td>No</td>
+      <td>Excellent</td>
+      <td>Poor at high α</td>
+      <td>Low</td>
+    </tr>
+    <tr>
+      <td>Quadratic Probing</td>
+      <td>No</td>
+      <td>Yes — moderate</td>
+      <td>Moderate</td>
+      <td>Good (with prime M, α &lt; 0.5)</td>
+      <td>Medium</td>
+    </tr>
+    <tr>
+      <td>Double Hashing</td>
+      <td>No</td>
+      <td>No</td>
+      <td>Lower</td>
+      <td>Excellent</td>
+      <td>Higher</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>In summary, open addressing is a powerful and memory-efficient collision resolution paradigm whose performance is governed primarily by the choice of probing strategy and the table's load factor. Linear probing wins on cache efficiency but suffers from primary clustering. Quadratic probing avoids that clustering but introduces secondary clustering and requires restrictive load factor limits. Double hashing provides the best theoretical probe distribution at the cost of computing two hash functions and slightly reduced cache locality. All three share the same deletion semantics — tombstones — and all three benefit enormously from keeping the load factor well below 1 through timely rehashing.</p>
+        <div class="notes"><strong>Notes</strong>The probe count formulas cited for linear probing are the classical results from Donald Knuth&#39;s &lt;em&gt;The Art of Computer Programming, Volume 3: Sorting and Searching&lt;/em&gt;. For quadratic probing and double hashing, probe count expectations are lower than linear probing at equivalent load factors but follow similar qualitative trends. Instructors may wish to supplement with empirical benchmarks showing the practical advantage of linear probing&#39;s cache behavior at low to moderate load factors despite its theoretical clustering disadvantage.</div>
+      </div>
+    </details>
+  </main>
+</body></html>

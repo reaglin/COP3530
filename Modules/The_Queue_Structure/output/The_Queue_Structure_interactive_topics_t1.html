@@ -1,0 +1,233 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Introduction to the Queue Data Structure</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+  <style>
+    body { padding-left: 1.1rem; padding-right: 1.1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid rgba(128,128,128,.45); padding: .45em .7em; text-align: left; vertical-align: top; }
+    thead th { background: rgba(128,128,128,.18); font-weight: 600; }
+    tbody tr:nth-child(even) { background: rgba(128,128,128,.08); }
+  </style>
+  <style>
+    summary.slide-header { list-style: none; }
+    summary.slide-header::-webkit-details-marker { display: none; }
+    details.slide-card[open] > .slide-body { display: block; }
+    details.slide-card[open] .chevron { transform: rotate(90deg); }
+    @media print { details.slide-card > .slide-body { display: block !important; } .chevron { display: none; } }
+  </style>
+</head><body>
+  <header>
+    <h1>Introduction to the Queue Data Structure</h1>
+  </header><main>
+    <details class="slide-card" open>
+      <summary class="slide-header"><span class="slide-num">1</span><h2>Introduction to the Queue Data Structure</h2><span class="chevron">▶</span></summary>
+      <div class="slide-body">
+        <p>Among the foundational data structures in computer science, the queue holds a special place because it mirrors one of the most intuitive principles in everyday life: if you arrive first, you are served first. A queue is an ordered collection of elements in which the organization is determined entirely by the sequence of insertions. Understanding the queue means understanding not just its mechanics but the reasoning behind why restricting access to a data structure can be a powerful design decision.</p>
+
+<p>A <strong>queue</strong> is a linear data structure that maintains its elements in a strict sequence based on the order in which they were inserted. Unlike a general-purpose array or linked list, a queue does not permit you to reach into the middle of the collection and retrieve or modify an arbitrary element. Instead, every interaction with the queue is channeled through exactly two designated points: one end where new elements arrive and one end from which elements depart. This deliberate restriction is not a limitation in the negative sense — it is the defining feature that gives the queue its predictability and usefulness.</p>
+
+<p>Because access is confined to the two ends, the internal state of a queue at any moment is easy to reason about. You always know that the element at the front has been waiting the longest, and the element at the rear arrived most recently. There are no surprises, no shortcuts, and no way for a late-arriving element to displace an earlier one. This consistency makes queues exceptionally reliable building blocks for systems where ordering guarantees matter.</p>
+
+<p><strong>The FIFO Principle</strong></p>
+
+<p>The behavioral heart of the queue is the <strong>First-In, First-Out</strong> principle, universally abbreviated as <strong>FIFO</strong>. FIFO states that the element which was inserted into the queue earliest is always the first element to be removed. Every element that arrives after it must wait until all previously inserted elements have been removed before it can reach the front.</p>
+
+<p>To make this concrete, imagine four tasks arriving in sequence — call them Task A, Task B, Task C, and Task D — each inserted into a queue in that order. When the system is ready to process the next task, it will always retrieve Task A first, then Task B, then Task C, and finally Task D. Task D cannot be accessed before Task A, B, or C, regardless of any other consideration. The queue enforces this sequence absolutely.</p>
+
+<p>This property models <em>fairness</em> in a natural and compelling way. In any situation where the order of arrival should determine the order of service — a print job spooler, a customer service line, network packet scheduling — FIFO ensures that no element is unfairly bypassed. Every element waits exactly as long as the elements that arrived before it, and no longer. This stands in direct contrast to priority-based structures, where arrival order can be overridden, but in standard queues, arrival order is sovereign.</p>
+
+<p><strong>Core Terminology: Enqueue and Dequeue</strong></p>
+
+<p>Working with a queue requires precise vocabulary. The two primary operations each have a dedicated name that reflects both the action and the position at which it occurs.</p>
+
+<ul>
+  <li><strong>Enqueue</strong> — This is the operation of <em>adding</em> a new element to the queue. An enqueued element always joins at the <strong>rear</strong> (also called the back or tail) of the queue. No matter what else is happening, a newly inserted element always goes to the very end of the existing sequence. For example, if a queue currently holds <code>[A, B, C]</code> with A at the front and C at the rear, enqueueing D produces <code>[A, B, C, D]</code>.</li>
+  <li><strong>Dequeue</strong> — This is the operation of <em>removing</em> an element from the queue. A dequeued element is always taken from the <strong>front</strong> (also called the head) of the queue. It is the element that has been waiting the longest. Continuing the example above, dequeuing from <code>[A, B, C, D]</code> removes A and leaves <code>[B, C, D]</code>, with B now occupying the front position.</li>
+</ul>
+
+<p>Two additional supporting operations are commonly defined alongside enqueue and dequeue:</p>
+
+<ul>
+  <li><strong>Peek</strong> (sometimes called <em>front</em>) — Inspects the element at the front of the queue without removing it. This allows a caller to see what will be dequeued next without actually consuming it.</li>
+  <li><strong>isEmpty</strong> — Reports whether the queue contains any elements at all. Attempting to dequeue from an empty queue is an error condition, so this check is frequently performed before any removal.</li>
+</ul>
+
+<p>The naming convention reinforces the physical metaphor: you <em>enqueue</em> at the rear just as a new person joins the back of a line, and you <em>dequeue</em> from the front just as the next person at the head of the line is served and departs.</p>
+
+<p>The following table summarizes these core operations together with their descriptions and the position in the queue each affects:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Operation</th>
+      <th>Description</th>
+      <th>Position Affected</th>
+      <th>Modifies Queue?</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>enqueue(element)</code></td>
+      <td>Adds a new element to the queue</td>
+      <td>Rear (back / tail)</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td><code>dequeue()</code></td>
+      <td>Removes and returns the front element</td>
+      <td>Front (head)</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td><code>peek()</code></td>
+      <td>Returns the front element without removing it</td>
+      <td>Front (head)</td>
+      <td>No</td>
+    </tr>
+    <tr>
+      <td><code>isEmpty()</code></td>
+      <td>Returns true if the queue has no elements</td>
+      <td>Entire structure</td>
+      <td>No</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Queues as Abstract Data Types</strong></p>
+
+<p>In computer science, an <strong>Abstract Data Type (ADT)</strong> is a mathematical model of a data structure defined by its behavior — the set of operations it supports and the rules governing those operations — rather than by any specific implementation. The queue is a classic ADT, and understanding it at this level of abstraction is important for writing flexible, maintainable software.</p>
+
+<p>As an ADT, the queue makes the following behavioral guarantees:</p>
+
+<ul>
+  <li>Elements can only be inserted at the rear.</li>
+  <li>Elements can only be removed from the front.</li>
+  <li>The element removed next is always the element that has been in the queue the longest (FIFO).</li>
+  <li>No direct access to any element other than the current front element is permitted.</li>
+</ul>
+
+<p>What the ADT definition deliberately leaves unspecified is <em>how</em> these guarantees are achieved internally. A queue can be built on top of an array, a singly linked list, a doubly linked list, or even two stacks working in concert. As long as the external behavior — the FIFO contract — is preserved, the underlying mechanism is an implementation detail that users of the queue never need to know about.</p>
+
+<p>This separation of <em>interface</em> from <em>implementation</em> has enormous practical value. A developer writing code that uses a queue can reason about correctness purely in terms of the FIFO guarantee without caring whether memory is being managed via dynamic allocation or a fixed-size buffer. If performance requirements change and a different internal structure would be more efficient, the implementation can be swapped out entirely without any change to the code that uses it. This principle — programming to an interface rather than an implementation — is one of the cornerstones of good software design.</p>
+
+<p>Consider a simple pseudocode illustration of the queue ADT in use:</p>
+
+<pre><code>queue = new Queue()
+
+queue.enqueue("first")
+queue.enqueue("second")
+queue.enqueue("third")
+
+print(queue.peek())     // Output: "first"
+print(queue.dequeue())  // Output: "first"
+print(queue.dequeue())  // Output: "second"
+print(queue.isEmpty())  // Output: false
+print(queue.dequeue())  // Output: "third"
+print(queue.isEmpty())  // Output: true
+</code></pre>
+
+<p>Notice that the code above says nothing about arrays or linked lists or pointers. It interacts entirely through the abstract operations, and those operations behave exactly as FIFO demands.</p>
+
+<p><strong>Queues Among Other Data Structures</strong></p>
+
+<p>Placing the queue in the broader context of data structures helps clarify both what it shares with its neighbors and what makes it distinct.</p>
+
+<p>The queue belongs to the family of <strong>linear data structures</strong>, meaning its elements are arranged in a sequence where each element has at most one predecessor and one successor. Arrays, linked lists, and stacks are also linear data structures. They all store elements in a defined order and support operations for adding and removing elements. At this level of description, queues and stacks sound similar — but the direction from which removals occur makes all the difference.</p>
+
+<p>A <strong>stack</strong> operates on a <strong>Last-In, First-Out (LIFO)</strong> principle. The most recently inserted element is the first to be removed. This is the opposite of FIFO. Stacks are ideal for scenarios involving reversal, backtracking, or nested structures — such as function call frames in a program's execution stack, undo/redo mechanisms, or parsing expressions. Queues, by contrast, are ideal when the original order of arrival must be preserved and honored — scheduling, buffering, and breadth-first traversal are canonical examples.</p>
+
+<p>A plain <strong>array</strong> or <strong>linked list</strong> allows access at any position — you can read, insert, or remove elements from the beginning, middle, or end. This flexibility is powerful but unregulated. A queue intentionally removes that flexibility. By allowing insertions only at the rear and removals only at the front, the queue imposes a policy that makes the data structure's behavior completely deterministic and predictable.</p>
+
+<p>The following table contrasts queues with related linear structures along several key dimensions:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Data Structure</th>
+      <th>Ordering Policy</th>
+      <th>Insert Position</th>
+      <th>Remove Position</th>
+      <th>Arbitrary Access?</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Array</td>
+      <td>Index-based (no inherent policy)</td>
+      <td>Any index</td>
+      <td>Any index</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td>Linked List</td>
+      <td>Positional (no inherent policy)</td>
+      <td>Any node</td>
+      <td>Any node</td>
+      <td>Yes (by traversal)</td>
+    </tr>
+    <tr>
+      <td>Stack</td>
+      <td>LIFO</td>
+      <td>Top only</td>
+      <td>Top only</td>
+      <td>No</td>
+    </tr>
+    <tr>
+      <td>Queue</td>
+      <td>FIFO</td>
+      <td>Rear only</td>
+      <td>Front only</td>
+      <td>No</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>This comparison highlights an important insight: the queue's restricted access is not a deficiency compared to arrays or linked lists — it is a deliberate design choice that encodes a specific behavioral guarantee into the data structure itself. When you use a queue, you are not just storing data; you are making a commitment that the data will be processed in exactly the order it arrived. That commitment is what makes the queue an indispensable tool in so many computational contexts.</p>
+        <div class="notes"><strong>Notes</strong>The pseudocode example in the ADT section is intentionally implementation-agnostic to reinforce the abstraction concept. Instructors may wish to follow up this topic with a concrete implementation exercise (e.g., building a queue with an array or linked list) to ground the abstract discussion. The two comparison tables can serve as useful reference material for students reviewing multiple data structures simultaneously.</div>
+      </div>
+    </details>
+  </main>
+</body></html>

@@ -1,0 +1,217 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Introduction to Hash Compression</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+  <style>
+    body { padding-left: 1.1rem; padding-right: 1.1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid rgba(128,128,128,.45); padding: .45em .7em; text-align: left; vertical-align: top; }
+    thead th { background: rgba(128,128,128,.18); font-weight: 600; }
+    tbody tr:nth-child(even) { background: rgba(128,128,128,.08); }
+    a.topic-detail-link { text-decoration: underline; }
+  </style>
+  <style>
+    summary.slide-header { list-style: none; }
+    summary.slide-header::-webkit-details-marker { display: none; }
+    details.slide-card[open] > .slide-body { display: block; }
+    details.slide-card[open] .chevron { transform: rotate(90deg); }
+    @media print { details.slide-card > .slide-body { display: block !important; } .chevron { display: none; } }
+  </style>
+</head><body>
+  <header>
+    <h1>Introduction to Hash Compression</h1>
+  </header><main>
+    <details class="slide-card" open>
+      <summary class="slide-header"><span class="slide-num">1</span><h2>Introduction to Hash Compression</h2><span class="chevron">▶</span></summary>
+      <div class="slide-body">
+        <p>Every time you look up a contact by name on your phone, query a record in a database, or have a compiler resolve a variable name, a <strong>hash function</strong> is working behind the scenes. At its heart, a hash function is a recipe for converting an input value — a <em>key</em> — into a numeric position inside a fixed-size storage structure. That conversion process, called <strong>hash compression</strong>, is what makes constant-time data retrieval possible. Without it, storing and finding data efficiently among millions of entries would require scanning through records one by one, or maintaining enormous lookup tables that consume more memory than any real system could afford.</p>
+
+<p>To appreciate why hash compression exists, it helps to think carefully about what a hash function actually does. It accepts a key — which might be a string, a large integer, a date, or any other type of data — and produces a single non-negative integer that serves as an array index. The essential constraint is that this integer must fall within <strong>[0, N−1]</strong> where <em>N</em> is the capacity of the underlying array, regardless of what the key looks like or how large it is. This act of squeezing an arbitrarily complex input into a bounded numeric range is precisely what "compression" means in this context.</p>
+
+<p>Consider a concrete example. Suppose you are building a hash table with 100 slots (N = 100) to store employee records keyed by Social Security Number. An SSN such as 987-65-4321 represents the integer 987654321, a nine-digit value far outside the range [0, 99]. Hash compression transforms that large integer into a valid index — for instance, by computing 987654321 mod 100 = 21 — so the record can be placed at slot 21 and later retrieved directly from that same slot.</p>
+
+<p><strong>The Core Problem: Large Key Spaces</strong></p>
+
+<p>The fundamental tension in hashing is a mismatch of scale. The set of all values a key might take is called the <strong>key space</strong>, and in practice this space is either astronomically large or theoretically infinite. Consider just a few examples:</p>
+
+<ul>
+  <li>All strings of up to 20 lowercase letters number more than 10<sup>28</sup> possibilities.</li>
+  <li>A 64-bit integer key space contains exactly 2<sup>64</sup> ≈ 1.8 × 10<sup>19</sup> distinct values.</li>
+  <li>Email addresses, URLs, and arbitrary byte sequences are unbounded in principle.</li>
+</ul>
+
+<p>Storage structures, by contrast, have a fixed, predetermined capacity determined by available memory and design requirements. A hash table might have 1,000 slots, or even 1,000,000, but either figure is negligibly small compared to the size of most key spaces. This mismatch is irreducible: no matter how much memory you allocate, you cannot create one slot for every possible key when the key space is effectively infinite.</p>
+
+<p>One naive solution — the <strong>direct-address table</strong> — illustrates the problem vividly. In a direct-address table, each key is used <em>directly</em> as an array index, with no compression at all. If your keys are integers in the range [0, U−1], you simply allocate an array of size U. Direct access is perfectly fast — O(1) — but memory usage is proportional to U, the size of the entire key space. For a table covering all 32-bit integers, that means over four billion slots. For 64-bit integers it becomes completely impossible. Direct-address tables are practical only when the key space is small and densely populated, a rare situation in real-world applications.</p>
+
+<p>Hash compression solves this by accepting a deliberate trade-off: instead of giving every possible key its own guaranteed slot, we map the entire key space onto a much smaller index range and manage the occasional conflicts that result. This trade-off is the conceptual foundation of every hash table ever built.</p>
+
+<p><strong>Mapping Keys to Index Ranges</strong></p>
+
+<p>A well-designed hash function must satisfy several mapping requirements simultaneously. First, and most critically, <strong>every output must fall within [0, N−1]</strong>. An index of −1, or one equal to or greater than N, would produce an out-of-bounds array access and corrupt memory or crash the program. This guarantee is non-negotiable.</p>
+
+<p>Second, the mapping must be <strong>deterministic</strong>: the same key must always produce the same index. If the function returned different indices for the same key on different calls, stored values could never be reliably retrieved. Determinism is what allows a hash table to act like a mathematical function — a reliable, repeatable mapping from keys to positions.</p>
+
+<p>Third, a good mapping should distribute keys <strong>as evenly as possible</strong> across the index range. To understand why this matters, imagine 1,000 keys all hashing to index 42 while the other 999 slots remain empty. Every lookup and insertion would degrade to a sequential search through that single crowded slot, eliminating the O(1) advantage entirely. Even distribution keeps each slot lightly loaded and preserves fast access. The table below contrasts the behavior of a poorly distributing function with a well-distributing one for 12 keys in a table of size 6:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Index</th>
+      <th>Keys (poor distribution)</th>
+      <th>Keys (good distribution)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>k1, k2, k3, k4, k5, k6, k7, k8</td>
+      <td>k1, k2</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>k9, k10</td>
+      <td>k3, k4</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>k11</td>
+      <td>k5, k6</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>k12</td>
+      <td>k7, k8</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td><em>(empty)</em></td>
+      <td>k9, k10</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td><em>(empty)</em></td>
+      <td>k11, k12</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The poor distribution concentrates load on the first few slots, creating long chains that destroy performance. The good distribution places exactly two keys per slot, keeping search paths short and uniform.</p>
+
+<p><strong>Motivation for Hash Compression</strong></p>
+
+<p>The practical motivation for hash compression comes down to a single compelling goal: <strong>O(1) average-case access</strong>. Arrays support constant-time access by index — given an index, a computer can jump directly to the corresponding memory address with a single arithmetic operation. Hash compression transforms an arbitrary key into exactly such an index, porting the speed of direct array access to data with complex, real-world key types.</p>
+
+<p>This capability underpins an enormous range of software systems:</p>
+
+<ul>
+  <li><strong>Databases</strong> use hash indexes to locate rows by primary key without scanning an entire table.</li>
+  <li><strong>Caches</strong> (CPU caches, web caches, DNS caches) rely on hashing to map resource identifiers to storage slots in microseconds.</li>
+  <li><strong>Symbol tables</strong> in compilers and interpreters store variable names and their associated types or memory addresses using hash maps, enabling fast name resolution during parsing and code generation.</li>
+  <li><strong>Routing tables</strong> in networking equipment use hashing to forward packets at line speed.</li>
+  <li><strong>Cryptographic systems</strong> use a related but distinct family of hash functions for integrity verification and digital signatures.</li>
+</ul>
+
+<p>In each case, the underlying requirement is the same: take an input of arbitrary form and size, and produce a bounded integer index reliably and quickly. Hash compression is what makes this possible.</p>
+
+<p><strong>Core Vocabulary</strong></p>
+
+<p>Before going further, it is worth establishing the precise meaning of the terms that appear throughout any discussion of hashing. Ambiguity in vocabulary is a common source of confusion in this topic.</p>
+
+<ul>
+  <li><strong>Key:</strong> The input value to be stored, retrieved, or otherwise processed. A key may be any data type — an integer, a string, a composite object — as long as a hash function is defined for it. In a phone book hash table, the key might be a person's name; in a cache, it might be a URL.</li>
+  <li><strong>Hash function:</strong> The algorithm that converts a key into a numeric index. A hash function <em>h</em> can be written formally as <em>h : K → {0, 1, …, N−1}</em>, mapping from the key space <em>K</em> into the index range of a table with <em>N</em> slots.</li>
+  <li><strong>Index range:</strong> The bounded set of valid output positions. For a table of size N, the index range is [0, N−1]. Every value produced by the hash function must fall within this range.</li>
+  <li><strong>Collision:</strong> The situation that arises when two distinct keys produce the same index. Formally, a collision occurs when <em>k1 ≠ k2</em> but <em>h(k1) = h(k2)</em>. Because the key space is vastly larger than the index range, collisions are mathematically inevitable — the pigeonhole principle guarantees they will occur once you store more than one key. The design of a hash table must therefore include a <strong>collision resolution strategy</strong> rather than hoping collisions will not happen.</li>
+  <li><strong>Load factor:</strong> The ratio of the number of stored entries (<em>n</em>) to the table capacity (<em>N</em>), written λ = n / N. A load factor of 0.5 means the table is half full. As the load factor rises, collisions become more frequent because more keys compete for the same slots. Most practical hash tables maintain a load factor below 0.75 and resize when this threshold is exceeded.</li>
+</ul>
+
+<p>Understanding the relationship between load factor and collision probability is essential. Even with a perfect hash function providing completely uniform distribution, the expected number of collisions grows rapidly as load factor increases. This is a consequence of the birthday paradox: with only 23 people in a room, there is already a 50% chance that two share a birthday, even though there are 365 days to choose from. Similarly, collisions become likely well before a hash table is full.</p>
+
+<p><strong>Properties of an Effective Hash Function</strong></p>
+
+<p>Not every function that produces an integer from a key qualifies as a good hash function. Four properties define what "good" means in this context:</p>
+
+<ul>
+  <li><strong>Determinism:</strong> Identical inputs must always produce the same output. This is non-negotiable. A function that introduces randomness or depends on external state (like the current time) would make retrieval impossible — you might store a value at index 7 but look it up at index 43. In practice, any pure mathematical function of the key is deterministic by definition, but care must be taken when keys are objects: two objects that are logically equal (by value) must hash to the same index, even if they are different instances in memory. Languages like Java enforce this by requiring that classes which override <code>equals()</code> must also override <code>hashCode()</code> consistently.</li>
+  <li><strong>Uniform distribution:</strong> Keys should be spread as evenly as possible across [0, N−1]. An ideal hash function would behave like a random oracle — each key independently and uniformly selects an index — but in practice designers aim to approximate this behavior. Functions that fail this property produce <em>clustering</em>, where certain indices accumulate many keys while others go unused. Clustering degrades average-case performance from O(1) toward O(n).</li>
+  <li><strong>Efficiency:</strong> The function should compute the index quickly. For integer keys, a good hash function runs in O(1) time. For keys of variable length — strings, byte arrays — the time is O(k) where k is the length of the key, which is unavoidable since at minimum each character must be examined once. A hash function that takes O(n) time in the number of stored entries would eliminate the performance advantage of hashing entirely.</li>
+  <li><strong>Compression guarantee:</strong> The output must always fall within the valid index range [0, N−1], never producing a negative value or an index ≥ N. This is typically enforced by the compression step of the hash function, most commonly a modulo operation. For example:</li>
+</ul>
+
+<pre><code>index = hash_code(key) % N
+</code></pre>
+
+<p>However, this simple approach carries a subtle danger: in languages where the modulo of a negative number can itself be negative (such as Java and Python 2 in certain contexts), an additional adjustment is needed:</p>
+
+<pre><code>index = ((hash_code(key) % N) + N) % N
+</code></pre>
+
+<p>This double-modulo idiom guarantees a non-negative result regardless of the sign of <code>hash_code(key)</code>, ensuring the compression guarantee always holds.</p>
+
+<p>These four properties interact with one another. Optimizing purely for efficiency might tempt a designer to use a trivially simple function (like always returning 0), but that would completely destroy uniform distribution. A function with excellent distribution might be computationally expensive, hurting efficiency. Good hash function design balances all four properties simultaneously, accepting that none can be fully maximized in isolation.</p>
+
+<p>To see these ideas together in a complete, minimal example, consider hashing short strings into a table of size 7. A simple approach sums the ASCII values of each character and applies modulo:</p>
+
+<pre><code>def simple_hash(key, N):
+    total = 0
+    for ch in key:
+        total += ord(ch)
+    return total % N
+
+# Examples with N = 7:
+# simple_hash("cat", 7)  = (99 + 97 + 116) % 7 = 312 % 7 = 4
+# simple_hash("act", 7)  = (97 + 99 + 116) % 7 = 312 % 7 = 4  -- collision!
+# simple_hash("dog", 7)  = (100 + 111 + 103) % 7 = 314 % 7 = 6
+</code></pre>
+
+<p>This illustrates that even a deterministic, efficient, and range-bounded function can have poor distribution: "cat" and "act" produce a collision because the sum of characters is order-independent. Real-world hash functions incorporate the <em>position</em> of each character into the computation to avoid this and achieve better distribution — but the fundamental structure of compute-then-compress remains the same.</p>
+
+<p>Hash compression, in summary, is the bridge between the unbounded world of real data and the bounded world of array-based storage. Every hash table, every hash map, and every hash set in existence depends on this bridge to function correctly. The quality of that bridge — how uniformly it distributes keys, how reliably it produces valid indices, how quickly it does its work — determines whether a hash table delivers on its promise of O(1) performance or quietly degrades into something far slower.</p>
+        <div class="notes"><strong>Notes</strong>Covers all listed subtopics in depth: definition of hash compression, the key-space mismatch problem, direct-address table limitations, mapping requirements (range, determinism, uniformity), motivation (O(1) access and real-world applications), full core vocabulary definitions with collision/load-factor discussion, and all four properties of an effective hash function with code examples illustrating the compression guarantee and a distribution comparison table.</div>
+      </div>
+    </details>
+  </main>
+</body></html>

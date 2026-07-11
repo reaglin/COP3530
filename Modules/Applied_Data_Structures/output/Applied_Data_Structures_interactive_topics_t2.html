@@ -1,0 +1,241 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blockchain Architecture and Data Structures</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+  <style>
+    body { padding-left: 1.1rem; padding-right: 1.1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid rgba(128,128,128,.45); padding: .45em .7em; text-align: left; vertical-align: top; }
+    thead th { background: rgba(128,128,128,.18); font-weight: 600; }
+    tbody tr:nth-child(even) { background: rgba(128,128,128,.08); }
+    a.topic-detail-link { text-decoration: underline; }
+  </style>
+  <style>
+    summary.slide-header { list-style: none; }
+    summary.slide-header::-webkit-details-marker { display: none; }
+    details.slide-card[open] > .slide-body { display: block; }
+    details.slide-card[open] .chevron { transform: rotate(90deg); }
+    @media print { details.slide-card > .slide-body { display: block !important; } .chevron { display: none; } }
+  </style>
+</head><body>
+  <header>
+    <h1>Blockchain Architecture and Data Structures</h1>
+  </header><main>
+    <details class="slide-card" open>
+      <summary class="slide-header"><span class="slide-num">1</span><h2>Blockchain Architecture and Data Structures</h2><span class="chevron">▶</span></summary>
+      <div class="slide-body">
+        <p>Blockchain technology is, at its core, a carefully engineered combination of well-understood computer science primitives — linked lists, cryptographic hash functions, and binary trees — assembled in a way that produces something genuinely novel: a distributed ledger that is simultaneously transparent, verifiable by any participant, and practically impossible to alter after the fact. Understanding blockchain deeply means understanding <em>why</em> each structural choice was made and how the pieces reinforce one another. This topic examines the full architecture from the ground up, tracing how data is stored, how integrity is enforced, how verification is made efficient, and how distribution across thousands of independent nodes transforms a clever data structure into a trustworthy record-keeping system.</p>
+
+<p><strong>The Linked-List Foundation of a Blockchain</strong></p>
+
+<p>A blockchain shares its most basic shape with the classic linked-list data structure taught in introductory computer science courses. In a traditional singly linked list, each node holds a payload and a pointer to the next node. A blockchain inverts the direction of that pointer: each block holds its payload (transaction data) and a reference — not to the <em>next</em> block, but to the <em>preceding</em> one. This backward-pointing design is not accidental; it is the foundation of the entire security model.</p>
+
+<p>Each block is composed of two logical sections. The <strong>block header</strong> contains metadata about the block itself — the timestamp, a difficulty target, a nonce, the cryptographic hash of the previous block, and the Merkle root of the transaction set. The <strong>block body</strong> contains the actual transaction records. This separation matters and will be discussed further when we examine lightweight clients. The critical field right now is the <em>previous block hash</em>: a fixed-length cryptographic fingerprint of the entire preceding block, computed from that block's header and content.</p>
+
+<p>Because each block includes a cryptographic fingerprint of its predecessor, the blocks form a chain of dependency stretching all the way back to the very first block. That first block, called the <strong>genesis block</strong>, is unique in that it has no predecessor. Its "previous hash" field is conventionally set to all zeros or an agreed-upon placeholder. The genesis block is hard-coded into every compliant implementation of a blockchain protocol and serves as the universal, immutable anchor for the entire history that follows. Bitcoin's genesis block, for example, was created by Satoshi Nakamoto on January 3, 2009, and contains the famous embedded message: <em>"The Times 03/Jan/2009 Chancellor on brink of second bailout for banks."</em></p>
+
+<p>The backward-linking structure creates an immediate and elegant security property: <strong>tampering with any historical block breaks every subsequent link</strong>. Suppose an attacker wants to alter a transaction buried five blocks back. Changing that block's content changes its hash. But the next block stores the old hash of the altered block as its "previous block hash" field — now that reference is wrong. To fix it, the attacker must also recompute block N+1, which changes <em>its</em> hash, breaking block N+2's reference, and so on, cascading forward through every subsequent block all the way to the current tip of the chain. Any honest node immediately detects the inconsistency by independently recomputing hashes and comparing them.</p>
+
+<p>This is fundamentally different from a traditional linked list, where a programmer can insert or modify a node in O(1) time with direct memory access. In a blockchain, appending a new block is not a local operation at all — it requires achieving <strong>network-wide consensus</strong>. New blocks must be validated by the distributed network according to strict protocol rules before they are accepted. This deliberate inefficiency compared to a traditional data structure is a feature, not a bug: it means no single party can unilaterally rewrite the record.</p>
+
+<p><strong>Cryptographic Hashing as the Integrity Mechanism</strong></p>
+
+<p>The linchpin that makes the backward-pointing reference meaningful is the <strong>cryptographic hash function</strong>. A hash function takes an input of arbitrary size and produces a fixed-size output called a digest or hash. Bitcoin uses SHA-256, which always produces a 256-bit (32-byte) output regardless of whether the input is one byte or one gigabyte. Ethereum uses Keccak-256 for most internal operations.</p>
+
+<p>Cryptographic hash functions possess several critical properties that make them suitable for blockchain use:</p>
+
+<ul>
+  <li><strong>Determinism:</strong> The same input always produces exactly the same output. This is what makes independent verification possible — any node in the world can hash the same block data and confirm it matches the stored hash, with no need to trust the source.</li>
+  <li><strong>Pre-image resistance (one-way property):</strong> Given only a digest, it is computationally infeasible to reconstruct the original input. This means storing a hash of block data reveals nothing useful to an attacker trying to forge a block — they cannot work backward from the hash to engineer a malicious input that produces the same output.</li>
+  <li><strong>Collision resistance:</strong> It is computationally infeasible to find two different inputs that produce the same hash output. This ensures that two different blocks cannot accidentally or deliberately be made to look identical.</li>
+  <li><strong>Avalanche effect:</strong> A tiny change in the input — even flipping a single bit — produces a completely different, unpredictable output. Changing the word "send $10" to "send $11" in a transaction produces an entirely different hash, making selective forgery impossible.</li>
+</ul>
+
+<p>Each block stores two hashes: its <em>own</em> hash (computed from its complete header and data, and referenced by the next block) and the <em>previous block's</em> hash embedded in its header. Together, these form a chain of cryptographic commitments. To visualize this:</p>
+
+<pre><code>Block 1 (Genesis)          Block 2                    Block 3
+┌──────────────────┐       ┌──────────────────┐       ┌──────────────────┐
+│ prev_hash: 0000  │       │ prev_hash: H(B1) │       │ prev_hash: H(B2) │
+│ data: [Tx...]    │  ───► │ data: [Tx...]    │  ───► │ data: [Tx...]    │
+│ nonce, timestamp │       │ nonce, timestamp │       │ nonce, timestamp │
+│ hash: H(B1)      │       │ hash: H(B2)      │       │ hash: H(B3)      │
+└──────────────────┘       └──────────────────┘       └──────────────────┘
+</code></pre>
+
+<p>H(B1) is computed from the entire content of Block 1 and is stored as the "previous hash" in Block 2. If a single byte anywhere in Block 1 changes, H(B1) changes entirely, and Block 2's reference immediately becomes invalid.</p>
+
+<p>In Proof-of-Work blockchains like Bitcoin, hashing plays an additional role through the <strong>mining process</strong>. Protocol rules specify that a valid block hash must be numerically less than a target value — in practice, this means the hash must begin with a certain number of leading zeros. Because hash outputs are unpredictable, miners cannot engineer a valid hash directly. Instead, they repeatedly vary a field in the block header called the <strong>nonce</strong> (a 32-bit number) and recompute the hash each time until they stumble upon a value that satisfies the target. At current Bitcoin difficulty, miners perform quintillions of hash computations per second collectively before finding a valid block. This makes block creation <em>deliberately, verifiably costly</em> — a key component of the security model — because an attacker trying to rewrite history must redo all that work, plus keep pace with ongoing honest mining.</p>
+
+<p><strong>Merkle Trees for Transaction Verification</strong></p>
+
+<p>A blockchain block might contain thousands of transactions. Naively, verifying that a specific transaction is included in a block would require downloading and checking all transactions in that block — an expensive operation for devices with limited bandwidth or storage. The solution is a data structure called a <strong>Merkle tree</strong>, named after Ralph Merkle who described it in 1979.</p>
+
+<p>A Merkle tree is a binary hash tree constructed as follows. Start with the set of all transactions in a block. Hash each individual transaction to produce a set of <strong>leaf node hashes</strong>. Then, pair up adjacent leaf hashes and hash them together to produce parent nodes. Repeat this process — hashing pairs of parent nodes together — level by level until only a single hash remains at the top: the <strong>Merkle root</strong>. If the number of transactions is odd at any level, the last hash is duplicated to make a pair.</p>
+
+<pre><code>          Merkle Root
+           Hash(ABCD)
+          /          \
+    Hash(AB)        Hash(CD)
+    /      \        /      \
+Hash(A) Hash(B) Hash(C) Hash(D)
+   |       |       |       |
+  TxA    TxB    TxC    TxD
+</code></pre>
+
+<p>The Merkle root is a single 32-byte value that cryptographically commits to <em>every</em> transaction in the block. This root is stored in the block header. If any transaction changes, its leaf hash changes, which changes its parent's hash, which cascades upward, producing a different Merkle root — and therefore a different block header hash, invalidating the block entirely.</p>
+
+<p>The practical power of Merkle trees lies in <strong>efficient membership proofs</strong>, often called Merkle proofs or Merkle paths. Suppose a mobile wallet wants to verify that transaction TxC was included in a block without downloading the entire block. It needs only:</p>
+
+<ul>
+  <li>Hash(TxC) — the hash of the transaction itself</li>
+  <li>Hash(D) — TxC's sibling in the tree</li>
+  <li>Hash(AB) — the sibling of Hash(CD) at the next level</li>
+  <li>The Merkle root from the block header (which can be obtained from headers alone)</li>
+</ul>
+
+<p>With these <strong>O(log n)</strong> hashes, the wallet can independently recompute Hash(CD) = Hash(Hash(C) + Hash(D)), then Hash(ABCD) = Hash(Hash(AB) + Hash(CD)), and confirm it matches the Merkle root in the trusted block header. If it does, TxC was provably included. This verification requires only about 12 hashes for a block with 4,096 transactions (since log₂(4096) = 12), rather than all 4,096. This is the basis for <strong>Simplified Payment Verification (SPV)</strong>, the mechanism that allows lightweight clients like mobile wallets to verify transactions securely without running a full node.</p>
+
+<p><strong>Block Header Structure and Metadata</strong></p>
+
+<p>The block header is a compact, fixed-size data structure that serves as the canonical identifier for a block. In Bitcoin, a block header is exactly 80 bytes. Despite its small size, it encodes everything needed to verify the block's position in the chain and the integrity of its contents. The standard fields are:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Size</th>
+      <th>Purpose</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Version</td>
+      <td>4 bytes</td>
+      <td>Protocol version; signals software capabilities and rule sets</td>
+    </tr>
+    <tr>
+      <td>Previous Block Hash</td>
+      <td>32 bytes</td>
+      <td>SHA-256 hash of the preceding block's header; creates the chain link</td>
+    </tr>
+    <tr>
+      <td>Merkle Root</td>
+      <td>32 bytes</td>
+      <td>Root of the Merkle tree of all transactions; commits to transaction set</td>
+    </tr>
+    <tr>
+      <td>Timestamp</td>
+      <td>4 bytes</td>
+      <td>Unix time when the block was created; provides ordering context</td>
+    </tr>
+    <tr>
+      <td>Bits (Difficulty Target)</td>
+      <td>4 bytes</td>
+      <td>Compact encoding of the current Proof-of-Work difficulty target</td>
+    </tr>
+    <tr>
+      <td>Nonce</td>
+      <td>4 bytes</td>
+      <td>Value miners iterate over to find a valid Proof-of-Work hash</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The <strong>block hash</strong> — the identifier by which a block is known and referenced by its successor — is simply the cryptographic hash of the header (SHA-256 applied twice in Bitcoin's case). It is not stored inside the block itself; any node computes it on demand. This means the header's own hash becomes the link in the chain, and because the header includes the previous block hash and the Merkle root, that single 32-byte identifier commits to the entire history and transaction set behind it.</p>
+
+<p>Separating the header from the transaction body has a profound practical implication: <strong>lightweight clients can download and validate headers alone</strong> to track the longest chain. Bitcoin's blockchain has over 800,000 blocks, but the headers for all of them total only about 64 megabytes — manageable even on a smartphone. A lightweight client can confirm a transaction using the Merkle proof mechanism described above, relying on headers it has independently verified form a valid chain, without ever storing the gigabytes of transaction data that full nodes maintain.</p>
+
+<p>Timestamps deserve a nuanced comment. Each block includes a timestamp representing when the miner claims the block was created. This provides human-readable ordering context and is used in difficulty adjustment calculations. However, timestamps are <em>not strictly trusted in isolation</em>. Miners have some freedom to set timestamps slightly inaccurate (Bitcoin allows a block timestamp to be up to two hours ahead of the median network time). Consensus rules enforce that timestamps must be greater than the median of the last eleven blocks' timestamps and not too far in the future. This prevents timestamp manipulation attacks while accommodating real-world clock drift across globally distributed nodes.</p>
+
+<p><strong>Distributed Ledger and the Role of Consensus</strong></p>
+
+<p>The blockchain data structure described so far would be merely an interesting cryptographic curiosity if it existed on a single server. Its transformative property emerges when the ledger is replicated across thousands of <strong>full nodes</strong>, each independently maintaining and validating a complete copy of the entire chain. There is no central server, no database administrator, no authority who can unilaterally alter the record. Every full node is a peer with equal standing.</p>
+
+<p>When a new block is broadcast to the network, every full node independently verifies it against the complete set of consensus rules: Does it reference a valid previous block? Does its Proof-of-Work hash meet the current difficulty target? Are all transactions structurally valid and properly signed? Does the total value of outputs not exceed the total value of inputs (plus allowable fees)? Is the Merkle root consistent with the included transactions? Only if all checks pass does a node accept the block and append it to its local copy of the chain.</p>
+
+<p>Occasionally, two miners find valid blocks at nearly the same moment and broadcast competing blocks to different parts of the network simultaneously, creating a <strong>temporary fork</strong> — a brief divergence where some nodes are on one branch and others are on another. This is a normal network event, not a failure. The protocol resolves it through the <strong>longest chain rule</strong> (more precisely, the "heaviest chain" rule in Proof-of-Work systems, measured by cumulative Proof-of-Work): whichever branch accumulates more work — that is, has more blocks appended to it — becomes the canonical chain. Nodes that were on the shorter branch reorganize to the longer one, discarding their orphaned block. Transactions in the orphaned block return to the mempool (the pool of unconfirmed transactions) and are typically included in a future block.</p>
+
+<p>The combination of cryptographic linking and distributed replication sets the security bar for an attacker extraordinarily high. To successfully rewrite history, an attacker cannot simply modify data on one machine — they must:</p>
+
+<ul>
+  <li>Recompute the Proof-of-Work for the altered block (computationally expensive)</li>
+  <li>Recompute the Proof-of-Work for every subsequent block (cost multiplies with depth)</li>
+  <li>Do all of this faster than the honest network continues to extend the real chain (requires controlling more than 50% of total network hash power — a "51% attack")</li>
+  <li>Then get the majority of the network to accept the altered chain over the established one</li>
+</ul>
+
+<p>For large, established blockchains like Bitcoin, the honest network hash rate is measured in exahashes per second. Acquiring majority control would require billions of dollars in specialized hardware and energy expenditure — and even then, the attempt would likely be detected and economically punished by a drop in the value of the asset the attacker sought to profit from.</p>
+
+<p>Consensus rules themselves function as an implicit <strong>governance layer</strong> encoded directly in protocol software. Rules about block size, transaction format, Proof-of-Work algorithm, coin issuance schedule, and dozens of other parameters are enforced identically by every full node. Changing the rules requires updating the software on a sufficient portion of the network — a process called a soft fork (backward-compatible rule tightening) or hard fork (incompatible rule change). This means the structural validity guarantees are not enforced by any authority; they are enforced by the collective agreement of every participating node running compatible software.</p>
+
+<p><strong>Immutability and the Structural Guarantee</strong></p>
+
+<p>Blockchain immutability is not a marketing claim — it is a direct mathematical consequence of the architecture described above. Consider what rewriting a transaction buried 100 blocks deep in Bitcoin's chain would actually require. The attacker must:</p>
+
+<ul>
+  <li>Recompute the altered block's Proof-of-Work (expected trillions of hash attempts at current difficulty)</li>
+  <li>Recompute Proof-of-Work for each of the 100 subsequent blocks</li>
+  <li>Produce a chain of 101 recomputed blocks faster than the honest network produces new blocks — the honest chain is extending right now, increasing the gap</li>
+</ul>
+
+<p>This is an <strong>exponentially growing task</strong> relative to the depth of the target block. The concept of <strong>confirmation count</strong> — how many blocks have been appended after a given block — directly measures this security. A transaction with one confirmation is secured by one block's worth of Proof-of-Work. A transaction with six confirmations (the conventional threshold for Bitcoin high-value transfers) is secured by six blocks of Proof-of-Work, and rewriting it requires outpacing the entire honest network while recomputing seven blocks. For practical purposes, transactions with sufficient confirmations are considered irreversible.</p>
+
+<p>Smart contract platforms like Ethereum extend immutability beyond transaction data to <strong>executable code</strong>. When a smart contract is deployed to the Ethereum network, its bytecode is stored in the blockchain's state tree, associated with its address. Because that code is on-chain, it is subject to the same immutability guarantees as transaction data — no party, not even the original developer, can secretly alter the contract's logic after deployment. Users can inspect the deployed bytecode (or, if the source code is verified, the human-readable Solidity source) and trust that it will execute exactly as written, every time, with no hidden modifications. This property is foundational to decentralized finance (DeFi) protocols and other trust-minimized applications, where users must rely on code rather than institutional promises.</p>
+
+<p>The practical applications of blockchain immutability extend across many domains where historical fidelity is critical:</p>
+
+<ul>
+  <li><strong>Audit trails:</strong> Regulatory compliance records, access logs, and financial audit trails stored on-chain cannot be retroactively altered to conceal misconduct.</li>
+  <li><strong>Supply chain records:</strong> Provenance data — tracking goods from origin through every custody transfer — benefits from immutability because no single participant in the chain can rewrite upstream records to hide adulteration or substitution.</li>
+  <li><strong>Financial ledgers:</strong> Settlement records, trade histories, and ownership registries that are immutable reduce the need for costly reconciliation between counterparties who previously had to maintain separate, potentially conflicting records.</li>
+  <li><strong>Digital credentials:</strong> Certificates, diplomas, and identity claims recorded on-chain provide verifiable provenance without relying on the issuing institution's continued availability or honest record-keeping.</li>
+</ul>
+
+<p>Taken together, the linked-list structure, cryptographic hashing, Merkle trees, compact headers, distributed validation, and consensus mechanics are not independent features — they form a single, mutually reinforcing system. Remove any one piece and the guarantees weaken significantly. It is precisely their combination that allows a blockchain to function as a trustworthy, verifiable, and tamper-evident record across a network of participants who may not trust one another at all.</p>
+        <div class="notes"><strong>Notes</strong>Examines how blockchain technology leverages linked data structures, cryptographic hashing, and trees to create immutable, distributed ledgers. Traces the specific structural decisions that make blockchain secure and verifiable.</div>
+      </div>
+    </details>
+  </main>
+</body></html>

@@ -1,0 +1,382 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Expression Evaluation Using Stacks</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+  <style>
+    body { padding-left: 1.1rem; padding-right: 1.1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid rgba(128,128,128,.45); padding: .45em .7em; text-align: left; vertical-align: top; }
+    thead th { background: rgba(128,128,128,.18); font-weight: 600; }
+    tbody tr:nth-child(even) { background: rgba(128,128,128,.08); }
+  </style>
+  <style>
+    summary.slide-header { list-style: none; }
+    summary.slide-header::-webkit-details-marker { display: none; }
+    details.slide-card[open] > .slide-body { display: block; }
+    details.slide-card[open] .chevron { transform: rotate(90deg); }
+    @media print { details.slide-card > .slide-body { display: block !important; } .chevron { display: none; } }
+  </style>
+</head><body>
+  <header>
+    <h1>Expression Evaluation Using Stacks</h1>
+  </header><main>
+    <details class="slide-card" open>
+      <summary class="slide-header"><span class="slide-num">1</span><h2>Expression Evaluation Using Stacks</h2><span class="chevron">▶</span></summary>
+      <div class="slide-body">
+        <p>Stacks are among the most elegant data structures in computer science precisely because their behavior — last in, first out — mirrors the way nested structures naturally unfold. When you read a mathematical expression like <code>((3 + 4) * (2 - 1))</code>, you intuitively resolve the innermost parentheses first, work outward, and keep track of where you are in the nesting. A stack does exactly the same thing algorithmically. This makes stacks the standard building block in compilers, interpreters, and calculators whenever expressions must be parsed and evaluated correctly.</p>
+
+<p>Understanding expression evaluation with stacks requires grasping several interrelated ideas: why the stack's structure fits the problem so naturally, how to use one to verify that parentheses are balanced, the three notations in which expressions can be written, the algorithm that converts human-readable infix notation into machine-friendly postfix notation, how to evaluate postfix expressions efficiently using a stack, and how operator precedence and associativity are woven into all of the above. Each of these ideas builds on the previous one, and together they form a complete picture of stack-based expression processing.</p>
+
+<p><strong>Why Stacks Are Natural for Expression Parsing</strong></p>
+
+<p>Mathematical expressions are inherently recursive. A parenthesized sub-expression can contain another parenthesized sub-expression, which can contain yet another, and so on. When a parser encounters an opening parenthesis, it must set aside whatever it was doing and begin working on the inner expression. When it reaches the matching closing parenthesis, it needs to return to exactly the point it left off — and "exactly the point it left off" is the definition of what the top of a stack gives you.</p>
+
+<p>Consider what happens when you evaluate <code>2 * (3 + (4 - 1))</code> mentally. You read <code>2 *</code> and then realize you cannot proceed until the parenthesized group is resolved. You "save" the multiplication and dive into <code>3 + (4 - 1)</code>. Again you save the addition and resolve <code>4 - 1 = 3</code>. Now you can finish the addition: <code>3 + 3 = 6</code>. Now you can finish the multiplication: <code>2 * 6 = 12</code>. At each level, you pushed a pending operation onto a mental stack; at each closing parenthesis, you popped and completed the operation. A program does this with an explicit stack data structure.</p>
+
+<p>This pattern appears everywhere in software: the call stack of a running program uses the same mechanism to track which function called which. Compilers, calculators, and interpreters all exploit it. There is no coincidence here — the problem structure dictates the data structure.</p>
+
+<p><strong>Balancing Parentheses</strong></p>
+
+<p>One of the simplest and most practically useful applications of a stack is checking whether all grouping symbols in an expression are properly balanced. "Grouping symbols" include round parentheses <code>()</code>, curly braces <code>{}</code>, and square brackets <code>[]</code>. A well-formed expression must open and close each symbol in the correct order.</p>
+
+<p>The algorithm is straightforward:</p>
+<ul>
+  <li>Read the expression character by character from left to right.</li>
+  <li>Whenever an <em>opening</em> symbol — <code>(</code>, <code>{</code>, or <code>[</code> — is encountered, push it onto the stack.</li>
+  <li>Whenever a <em>closing</em> symbol — <code>)</code>, <code>}</code>, or <code>]</code> — is encountered, check whether the stack is empty. If it is, there is no matching opener, so the expression is unbalanced. If the stack is not empty, pop the top element and verify that it is the corresponding opener. A <code>)</code> must match <code>(</code>, a <code>}</code> must match <code>{</code>, and a <code>]</code> must match <code>[</code>. If the wrong opener is on top, there is a mismatch and the expression is unbalanced.</li>
+  <li>After the entire input has been read, if the stack is empty, the expression is balanced. If the stack still contains items, there are unclosed openers, and the expression is unbalanced.</li>
+</ul>
+
+<p>Let us trace through two examples. First, the balanced expression <code>{[()()]}</code>:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Character Read</th>
+      <th>Action</th>
+      <th>Stack After Action</th>
+      <th>Result</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td><code>{</code></td><td>Push</td><td><code>{</code></td><td>—</td></tr>
+    <tr><td><code>[</code></td><td>Push</td><td><code>{ [</code></td><td>—</td></tr>
+    <tr><td><code>(</code></td><td>Push</td><td><code>{ [ (</code></td><td>—</td></tr>
+    <tr><td><code>)</code></td><td>Pop <code>(</code>, matches <code>)</code></td><td><code>{ [</code></td><td>OK</td></tr>
+    <tr><td><code>(</code></td><td>Push</td><td><code>{ [ (</code></td><td>—</td></tr>
+    <tr><td><code>)</code></td><td>Pop <code>(</code>, matches <code>)</code></td><td><code>{ [</code></td><td>OK</td></tr>
+    <tr><td><code>]</code></td><td>Pop <code>[</code>, matches <code>]</code></td><td><code>{</code></td><td>OK</td></tr>
+    <tr><td><code>}</code></td><td>Pop <code>{</code>, matches <code>}</code></td><td><em>empty</em></td><td>OK</td></tr>
+    <tr><td><em>end</em></td><td>Stack is empty</td><td><em>empty</em></td><td><strong>Balanced</strong></td></tr>
+  </tbody>
+</table>
+
+<p>Now consider the unbalanced expression <code>([)]</code>:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Character Read</th>
+      <th>Action</th>
+      <th>Stack After Action</th>
+      <th>Result</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td><code>(</code></td><td>Push</td><td><code>(</code></td><td>—</td></tr>
+    <tr><td><code>[</code></td><td>Push</td><td><code>( [</code></td><td>—</td></tr>
+    <tr><td><code>)</code></td><td>Pop <code>[</code>, does NOT match <code>)</code></td><td><code>(</code></td><td><strong>Unbalanced</strong></td></tr>
+  </tbody>
+</table>
+
+<p>Even though every opener eventually has a closer, the nesting order is wrong. The stack catches this immediately because the top of the stack always holds the most recently opened, not-yet-closed symbol — and that is precisely the one that must be closed next.</p>
+
+<p>In Python, this algorithm looks like the following:</p>
+
+<pre><code>def is_balanced(expression):
+    stack = []
+    matching = {')': '(', '}': '{', ']': '['}
+    for ch in expression:
+        if ch in '({[':
+            stack.append(ch)
+        elif ch in ')}]':
+            if not stack or stack[-1] != matching[ch]:
+                return False
+            stack.pop()
+    return len(stack) == 0
+
+print(is_balanced("{[()()]}"))   # True
+print(is_balanced("([)]"))       # False
+print(is_balanced("((()"))       # False
+</code></pre>
+
+<p><strong>Infix, Prefix, and Postfix Notation</strong></p>
+
+<p>Humans write arithmetic in <em>infix notation</em>, where operators appear between their operands: <code>3 + 4</code>, <code>a * b + c</code>. Infix notation is readable, but it is ambiguous without additional rules. When you see <code>3 + 4 * 2</code>, you need to know that <code>*</code> has higher precedence than <code>+</code> in order to compute <code>3 + 8 = 11</code> rather than <code>14</code>. Parentheses can override precedence, further complicating parsing.</p>
+
+<p><em>Prefix notation</em> (also called Polish notation) places the operator before its operands. The expression <code>3 + 4</code> becomes <code>+ 3 4</code>, and <code>3 + 4 * 2</code> becomes <code>+ 3 * 4 2</code>. No parentheses or precedence rules are needed; the structure of the expression is unambiguous by position alone.</p>
+
+<p><em>Postfix notation</em> (also called Reverse Polish Notation, or RPN) places the operator after its operands. <code>3 + 4</code> becomes <code>3 4 +</code>, and <code>3 + 4 * 2</code> becomes <code>3 4 2 * +</code>. Like prefix, postfix requires no parentheses and encodes operator order explicitly. Postfix is especially convenient for stack-based evaluation, which is why it is preferred in expression evaluation algorithms and was used in many early calculators (including Hewlett-Packard's famous HP-35).</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Infix Expression</th>
+      <th>Prefix Equivalent</th>
+      <th>Postfix Equivalent</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td><code>3 + 4</code></td><td><code>+ 3 4</code></td><td><code>3 4 +</code></td></tr>
+    <tr><td><code>3 + 4 * 2</code></td><td><code>+ 3 * 4 2</code></td><td><code>3 4 2 * +</code></td></tr>
+    <tr><td><code>(3 + 4) * 2</code></td><td><code>* + 3 4 2</code></td><td><code>3 4 + 2 *</code></td></tr>
+    <tr><td><code>a * b + c / d</code></td><td><code>+ * a b / c d</code></td><td><code>a b * c d / +</code></td></tr>
+  </tbody>
+</table>
+
+<p>The key insight is that postfix notation makes evaluation order completely explicit. A machine can evaluate a postfix expression by making a single left-to-right pass with a stack, with no need to look ahead or apply precedence rules at evaluation time. All the complexity of precedence and associativity is resolved once, during the conversion from infix to postfix.</p>
+
+<p><strong>Converting Infix to Postfix: The Shunting-Yard Algorithm</strong></p>
+
+<p>The <em>Shunting-Yard Algorithm</em>, devised by Edsger Dijkstra in 1961 (named after the railway shunting yard analogy), converts an infix expression into postfix notation using a stack for operators and a queue (or simple list) for output. The algorithm handles operator precedence, left and right associativity, and parentheses.</p>
+
+<p>The rules are:</p>
+<ul>
+  <li><strong>Operand (number or variable):</strong> Send it directly to the output.</li>
+  <li><strong>Operator:</strong> Before pushing the new operator onto the stack, pop and send to output any operator already on the stack whose precedence is <em>greater than</em> the new operator's precedence, or <em>equal to</em> the new operator's precedence if that operator is <em>left-associative</em>. Stop popping when the top of the stack is a left parenthesis or is of lower precedence (for left-associative) / lower or equal precedence (for right-associative). Then push the new operator.</li>
+  <li><strong>Left parenthesis <code>(</code>:</strong> Push it onto the stack as a marker.</li>
+  <li><strong>Right parenthesis <code>)</code>:</strong> Pop operators from the stack and send them to output until a left parenthesis is found on top. Discard the left parenthesis (do not send it to output). If no left parenthesis is found, the expression has mismatched parentheses.</li>
+  <li><strong>End of input:</strong> Pop all remaining operators from the stack and append them to the output. Any remaining parenthesis at this point indicates a mismatch.</li>
+</ul>
+
+<p>Let us assign precedence values and associativity:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Operator</th>
+      <th>Precedence</th>
+      <th>Associativity</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td><code>+</code></td><td>1</td><td>Left</td></tr>
+    <tr><td><code>-</code></td><td>1</td><td>Left</td></tr>
+    <tr><td><code>*</code></td><td>2</td><td>Left</td></tr>
+    <tr><td><code>/</code></td><td>2</td><td>Left</td></tr>
+    <tr><td><code>^</code></td><td>3</td><td>Right</td></tr>
+  </tbody>
+</table>
+
+<p>Now trace the conversion of <code>3 + 4 * 2 / ( 1 - 5 ) ^ 2</code>:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Token</th>
+      <th>Action</th>
+      <th>Output So Far</th>
+      <th>Operator Stack</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td><code>3</code></td><td>Output operand</td><td><code>3</code></td><td><em>empty</em></td></tr>
+    <tr><td><code>+</code></td><td>Stack empty, push</td><td><code>3</code></td><td><code>+</code></td></tr>
+    <tr><td><code>4</code></td><td>Output operand</td><td><code>3 4</code></td><td><code>+</code></td></tr>
+    <tr><td><code>*</code></td><td>Prec(*)=2 &gt; Prec(+)=1, push</td><td><code>3 4</code></td><td><code>+ *</code></td></tr>
+    <tr><td><code>2</code></td><td>Output operand</td><td><code>3 4 2</code></td><td><code>+ *</code></td></tr>
+    <tr><td><code>/</code></td><td>Prec(/)=2 = Prec(*)=2, left-assoc: pop *, then push /</td><td><code>3 4 2 *</code></td><td><code>+ /</code></td></tr>
+    <tr><td><code>(</code></td><td>Push left paren</td><td><code>3 4 2 *</code></td><td><code>+ / (</code></td></tr>
+    <tr><td><code>1</code></td><td>Output operand</td><td><code>3 4 2 * 1</code></td><td><code>+ / (</code></td></tr>
+    <tr><td><code>-</code></td><td>Top is (, push</td><td><code>3 4 2 * 1</code></td><td><code>+ / ( -</code></td></tr>
+    <tr><td><code>5</code></td><td>Output operand</td><td><code>3 4 2 * 1 5</code></td><td><code>+ / ( -</code></td></tr>
+    <tr><td><code>)</code></td><td>Pop until (: output -, discard (</td><td><code>3 4 2 * 1 5 -</code></td><td><code>+ /</code></td></tr>
+    <tr><td><code>^</code></td><td>Prec(^)=3 &gt; Prec(/)=2, push</td><td><code>3 4 2 * 1 5 -</code></td><td><code>+ / ^</code></td></tr>
+    <tr><td><code>2</code></td><td>Output operand</td><td><code>3 4 2 * 1 5 - 2</code></td><td><code>+ / ^</code></td></tr>
+    <tr><td><em>end</em></td><td>Pop all: ^, /, +</td><td><code>3 4 2 * 1 5 - 2 ^ / +</code></td><td><em>empty</em></td></tr>
+  </tbody>
+</table>
+
+<p>The postfix result is <code>3 4 2 * 1 5 - 2 ^ / +</code>. You can verify this is correct: <code>4*2=8</code>, <code>1-5=-4</code>, <code>(-4)^2=16</code>, <code>8/16=0.5</code>, <code>3+0.5=3.5</code>. Indeed the original infix expression also evaluates to 3.5.</p>
+
+<p>A Python implementation of the Shunting-Yard Algorithm:</p>
+
+<pre><code>def infix_to_postfix(tokens):
+    precedence = {'+': 1, '-': 1, '*': 2, '/': 2, '^': 3}
+    right_assoc = {'^'}
+    output = []
+    stack = []
+
+    for token in tokens:
+        if token not in precedence and token not in '()':
+            # Operand: numbers or variable names
+            output.append(token)
+        elif token == '(':
+            stack.append(token)
+        elif token == ')':
+            while stack and stack[-1] != '(':
+                output.append(stack.pop())
+            stack.pop()  # discard '('
+        else:
+            # Operator
+            while (stack and stack[-1] != '(' and
+                   stack[-1] in precedence and
+                   (precedence[stack[-1]] > precedence[token] or
+                    (precedence[stack[-1]] == precedence[token]
+                     and token not in right_assoc))):
+                output.append(stack.pop())
+            stack.append(token)
+
+    while stack:
+        output.append(stack.pop())
+
+    return output
+
+tokens = ['3','+','4','*','2','/','(','1','-','5',')','*','2']
+print(infix_to_postfix(tokens))
+# Output: ['3', '4', '2', '*', '1', '5', '-', '2', '*', '/', '+']
+</code></pre>
+
+<p><strong>Evaluating Postfix Expressions with a Stack</strong></p>
+
+<p>Once an expression is in postfix form, evaluating it is remarkably simple. The algorithm makes a single left-to-right scan:</p>
+<ul>
+  <li>If the current token is an <strong>operand</strong>, push it onto the stack.</li>
+  <li>If the current token is a <strong>binary operator</strong>, pop two operands from the stack — the first popped is the <em>right</em> operand, and the second popped is the <em>left</em> operand. Apply the operator, and push the result back onto the stack.</li>
+  <li>After the entire expression has been processed, the stack contains exactly one value: the final result.</li>
+</ul>
+
+<p>Let us evaluate <code>3 4 2 * 1 5 - 2 ^ / +</code> step by step:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Token</th>
+      <th>Action</th>
+      <th>Stack After Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td><code>3</code></td><td>Push 3</td><td><code>3</code></td></tr>
+    <tr><td><code>4</code></td><td>Push 4</td><td><code>3, 4</code></td></tr>
+    <tr><td><code>2</code></td><td>Push 2</td><td><code>3, 4, 2</code></td></tr>
+    <tr><td><code>*</code></td><td>Pop 2 and 4; push 4*2=8</td><td><code>3, 8</code></td></tr>
+    <tr><td><code>1</code></td><td>Push 1</td><td><code>3, 8, 1</code></td></tr>
+    <tr><td><code>5</code></td><td>Push 5</td><td><code>3, 8, 1, 5</code></td></tr>
+    <tr><td><code>-</code></td><td>Pop 5 and 1; push 1-5=-4</td><td><code>3, 8, -4</code></td></tr>
+    <tr><td><code>2</code></td><td>Push 2</td><td><code>3, 8, -4, 2</code></td></tr>
+    <tr><td><code>^</code></td><td>Pop 2 and -4; push (-4)^2=16</td><td><code>3, 8, 16</code></td></tr>
+    <tr><td><code>/</code></td><td>Pop 16 and 8; push 8/16=0.5</td><td><code>3, 0.5</code></td></tr>
+    <tr><td><code>+</code></td><td>Pop 0.5 and 3; push 3+0.5=3.5</td><td><code>3.5</code></td></tr>
+    <tr><td><em>end</em></td><td>Final result on top of stack</td><td><strong>3.5</strong></td></tr>
+  </tbody>
+</table>
+
+<p>The result is 3.5, as expected. Notice that the order of popping matters: when evaluating <code>a - b</code>, the first value popped is <code>b</code> (the right operand) and the second is <code>a</code> (the left operand). For commutative operations like addition and multiplication, order does not affect the result, but for subtraction, division, and exponentiation it does.</p>
+
+<p>A Python implementation:</p>
+
+<pre><code>def evaluate_postfix(tokens):
+    stack = []
+    for token in tokens:
+        if token == '+':
+            b, a = stack.pop(), stack.pop()
+            stack.append(a + b)
+        elif token == '-':
+            b, a = stack.pop(), stack.pop()
+            stack.append(a - b)
+        elif token == '*':
+            b, a = stack.pop(), stack.pop()
+            stack.append(a * b)
+        elif token == '/':
+            b, a = stack.pop(), stack.pop()
+            stack.append(a / b)
+        elif token == '^':
+            b, a = stack.pop(), stack.pop()
+            stack.append(a ** b)
+        else:
+            stack.append(float(token))
+    return stack[0]
+
+postfix = ['3','4','2','*','1','5','-','2','^','/','+']
+print(evaluate_postfix(postfix))  # 3.5
+</code></pre>
+
+<p>This algorithm operates in <strong>O(n)</strong> time where <em>n</em> is the number of tokens, since each token is processed exactly once and each stack operation is O(1). There is no backtracking, no lookahead, and no recursive descent required. This linear-time complexity is one of the strongest practical arguments for converting expressions to postfix before evaluation.</p>
+
+<p><strong>Operator Precedence and Associativity in Stack-Based Parsing</strong></p>
+
+<p>Operator precedence determines which operations bind more tightly to their operands. In standard arithmetic, multiplication and division have higher precedence than addition and subtraction. Exponentiation typically has the highest precedence. If these rules are not correctly encoded in the Shunting-Yard Algorithm, the resulting postfix expression will not evaluate to the mathematically correct answer.</p>
+
+<p>The mechanism is simple but must be applied carefully: when a new operator is being pushed onto the stack, the algorithm compares its precedence to that of the operator currently on top of the stack. If the top operator has <em>greater or equal</em> precedence (subject to associativity, discussed below), it must be popped and sent to output before the new operator is pushed. This ensures that higher-precedence operations appear in the postfix output before lower-precedence ones, so they are applied first during evaluation.</p>
+
+<p><em>Associativity</em> governs how operators of <em>equal</em> precedence are grouped when no parentheses are present. Consider <code>8 - 3 - 2</code>. Mathematically this is <code>(8 - 3) - 2 = 3</code>, not <code>8 - (3 - 2) = 7</code>. Subtraction is <strong>left-associative</strong>: operations at the same level group from left to right. The Shunting-Yard Algorithm handles this by popping an operator of equal precedence from the stack (sending it to output) before pushing the new operator of the same precedence — thereby ensuring the left operation appears in the postfix output first.</p>
+
+<p>Exponentiation, by mathematical convention, is <strong>right-associative</strong>: <code>2 ^ 3 ^ 2</code> means <code>2 ^ (3 ^ 2) = 2 ^ 9 = 512</code>, not <code>(2 ^ 3) ^ 2 = 8 ^ 2 = 64</code>. For right-associative operators, when the new operator has the <em>same</em> precedence as the top of the stack, the stack is <em>not</em> popped; the new operator is pushed on top. This leaves the earlier exponentiation lower on the stack, meaning it will be applied <em>after</em> the one just pushed — achieving right-to-left grouping.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Expression</th>
+      <th>Correct Grouping</th>
+      <th>Correct Postfix</th>
+      <th>Result</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td><code>8 - 3 - 2</code></td><td><code>(8 - 3) - 2</code> (left-assoc)</td><td><code>8 3 - 2 -</code></td><td>3</td></tr>
+    <tr><td><code>2 ^ 3 ^ 2</code></td><td><code>2 ^ (3 ^ 2)</code> (right-assoc)</td><td><code>2 3 2 ^ ^</code></td><td>512</td></tr>
+    <tr><td><code>10 / 5 / 2</code></td><td><code>(10 / 5) / 2</code> (left-assoc)</td><td><code>10 5 / 2 /</code></td><td>1</td></tr>
+  </tbody>
+</table>
+
+<p>Getting these rules wrong produces subtly incorrect results that can be difficult to debug. For example, if a parser incorrectly treated <code>-</code> as right-associative, <code>8 - 3 - 2</code> would yield 7 instead of 3. The combination of a precedence table and an associativity flag for each operator, checked at the moment an operator is pushed onto the stack, is what makes the Shunting-Yard Algorithm both correct and complete for standard arithmetic expressions.</p>
+
+<p>In summary, the stack is not merely a convenient data structure for expression parsing — it is the <em>natural</em> data structure for it. The nesting structure of expressions, the need to remember pending operations while resolving inner ones, the linear-time complexity of postfix evaluation, and the clean encoding of precedence and associativity in a single algorithm all reinforce why stacks have been the foundation of expression evaluation since the earliest days of compiler design.</p>
+        <div class="notes"><strong>Notes</strong>The trace tables for both balancing parentheses and the Shunting-Yard algorithm are rendered as proper HTML tables. Code examples are in Python for clarity. The postfix evaluation section emphasizes the O(n) complexity. The precedence/associativity section includes concrete numeric examples to illustrate left- vs. right-associativity consequences.</div>
+      </div>
+    </details>
+  </main>
+</body></html>

@@ -1,0 +1,25 @@
+﻿{
+  "Artifacts": [
+    {
+      "Path": "output/ext_16706deb.html",
+      "DisplayName": "JSFiddle Standard CEN",
+      "Kind": "Video",
+      "Description": "",
+      "AddedUtc": "2026-06-30T23:27:41.3666722Z"
+    },
+    {
+      "Path": "output/ext_fc870594.html",
+      "DisplayName": "Javascript Standard CIS",
+      "Kind": "Video",
+      "Description": "",
+      "AddedUtc": "2026-06-30T23:33:03.0494316Z"
+    },
+    {
+      "Path": "output/ext_651078ec.html",
+      "DisplayName": "JavaScript Tutorial",
+      "Kind": "Web Page",
+      "Description": "W3Schools\u0027 JavaScript Tutorial is a comprehensive, beginner-friendly reference and tutorial covering all core JavaScript concepts, including variables, data types, functions, conditionals, loops, and objects. Each topic is presented with concise explanations and interactive \u0027Try it Yourself\u0027 code examples that run directly in the browser. The resource serves as both a structured learning path and an on-demand reference guide.",
+      "AddedUtc": "2026-06-30T23:44:16.4774269Z"
+    }
+  ]
+}

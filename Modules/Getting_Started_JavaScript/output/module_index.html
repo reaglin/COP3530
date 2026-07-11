@@ -3,357 +3,398 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Module 1: Getting Started – COP3530 Data Structures</title>
+  <title>Module 1: Getting Started: JavaScript and JSFiddle Environment — COP3530</title>
   <style>
     /* ── Reset & Base ── */
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
-      font-size: 1rem;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: #f4f6f9;
+      color: #1e2530;
       line-height: 1.6;
-      background-color: #f4f6f9;
-      color: #2c3e50;
+      min-height: 100vh;
     }
 
-    /* ── Page Shell ── */
-    .page-wrapper {
-      max-width: 1080px;
+    /* ── Header / Hero ── */
+    header {
+      background: linear-gradient(135deg, #1a3a5c 0%, #2563a8 100%);
+      color: #ffffff;
+      padding: 2.5rem 1.5rem 2rem;
+    }
+
+    .header-inner {
+      max-width: 1100px;
       margin: 0 auto;
-      padding: 2.5rem 1.5rem 4rem;
-    }
-
-    /* ── Header ── */
-    .page-header {
-      background: linear-gradient(135deg, #1a3a5c 0%, #2e6da4 100%);
-      color: #fff;
-      border-radius: 10px;
-      padding: 2.2rem 2.4rem;
-      margin-bottom: 2.4rem;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.14);
     }
 
     .course-label {
-      font-size: 0.8rem;
+      display: inline-block;
+      font-size: 0.78rem;
       font-weight: 600;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
-      opacity: 0.82;
-      margin-bottom: 0.45rem;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 4px;
+      padding: 0.25rem 0.65rem;
+      margin-bottom: 0.85rem;
+      color: #cce0ff;
     }
 
-    .page-header h1 {
-      font-size: clamp(1.35rem, 3vw, 2rem);
+    header h1 {
+      font-size: clamp(1.45rem, 3.5vw, 2.1rem);
       font-weight: 700;
       line-height: 1.25;
-      margin-bottom: 0.9rem;
+      margin-bottom: 0.85rem;
+      color: #ffffff;
     }
 
-    .page-header p {
-      font-size: 0.97rem;
-      opacity: 0.9;
-      max-width: 72ch;
+    header h1 span.module-num {
+      color: #93c5fd;
     }
 
-    /* ── Section Label ── */
+    header p.intro {
+      font-size: 0.98rem;
+      max-width: 780px;
+      color: #d6e8ff;
+      opacity: 0.92;
+    }
+
+    /* ── Main Content ── */
+    main {
+      max-width: 1100px;
+      margin: 2.2rem auto 3rem;
+      padding: 0 1.25rem;
+    }
+
     .section-label {
       font-size: 0.75rem;
       font-weight: 700;
-      letter-spacing: 0.09em;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: #5a7a99;
+      color: #5b7aa0;
       margin-bottom: 1.1rem;
-      padding-left: 0.25rem;
-      border-left: 3px solid #2e6da4;
-      padding-left: 0.65rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 2px solid #d8e4f0;
     }
 
     /* ── Card Grid ── */
     .card-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 1.25rem;
+      gap: 1.2rem;
     }
 
-    /* ── Individual Card ── */
     .card {
       background: #ffffff;
-      border: 1px solid #dce3ec;
-      border-radius: 9px;
-      padding: 1.4rem 1.5rem;
+      border: 1px solid #dce6f0;
+      border-radius: 10px;
+      padding: 1.35rem 1.4rem 1.25rem;
       display: flex;
       flex-direction: column;
-      gap: 0.65rem;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.055);
-      transition: box-shadow 0.2s ease, transform 0.2s ease;
+      gap: 0.55rem;
+      box-shadow: 0 2px 6px rgba(30, 60, 100, 0.06);
+      transition: box-shadow 0.18s ease, transform 0.18s ease;
     }
 
     .card:hover {
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 6px 18px rgba(30, 60, 120, 0.11);
       transform: translateY(-2px);
     }
 
-    /* ── Card Top Row (badges) ── */
+    /* ── Card Header Row ── */
+    .card-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+
+    .card-name {
+      font-size: 1rem;
+      font-weight: 650;
+      color: #1a3a5c;
+      line-height: 1.35;
+      flex: 1;
+    }
+
+    .card-name a {
+      color: #1a3a5c;
+      text-decoration: none;
+      border-bottom: 2px solid #93c5fd;
+      padding-bottom: 1px;
+      transition: color 0.15s, border-color 0.15s;
+    }
+
+    .card-name a:hover,
+    .card-name a:focus {
+      color: #1d4ed8;
+      border-color: #1d4ed8;
+      outline: none;
+    }
+
+    .card-name a:focus-visible {
+      outline: 3px solid #3b82f6;
+      outline-offset: 2px;
+      border-radius: 2px;
+    }
+
+    /* ── Source Link ── */
+    .source-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.28rem;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #4a7fb5;
+      text-decoration: none;
+      background: #eef4fb;
+      border: 1px solid #c3d9ef;
+      border-radius: 4px;
+      padding: 0.2rem 0.5rem;
+      white-space: nowrap;
+      transition: background 0.15s, color 0.15s;
+      flex-shrink: 0;
+      margin-top: 0.1rem;
+    }
+
+    .source-link:hover,
+    .source-link:focus {
+      background: #dbeafe;
+      color: #1d4ed8;
+      border-color: #93c5fd;
+      outline: none;
+    }
+
+    .source-link:focus-visible {
+      outline: 3px solid #3b82f6;
+      outline-offset: 2px;
+    }
+
+    .source-link svg {
+      flex-shrink: 0;
+    }
+
+    /* ── Meta badges row ── */
     .card-meta {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
       gap: 0.45rem;
+      margin-top: 0.1rem;
     }
 
     .badge {
       display: inline-block;
-      font-size: 0.7rem;
-      font-weight: 600;
+      font-size: 0.68rem;
+      font-weight: 700;
       letter-spacing: 0.04em;
       text-transform: uppercase;
-      padding: 0.2em 0.6em;
       border-radius: 4px;
-      white-space: nowrap;
+      padding: 0.18rem 0.55rem;
+      line-height: 1.4;
     }
 
-    .badge-type {
-      background-color: #e8f0fb;
-      color: #2456a4;
-      border: 1px solid #c2d5f5;
-    }
+    /* Type badge colors */
+    .badge-type-module-topics    { background: #ede9fe; color: #5b21b6; }
+    .badge-type-text-content     { background: #fef3c7; color: #92400e; }
+    .badge-type-topic-detail     { background: #d1fae5; color: #065f46; }
+    .badge-type-video            { background: #fee2e2; color: #991b1b; }
+    .badge-type-web-page         { background: #e0f2fe; color: #0c4a6e; }
+    .badge-type-default          { background: #f1f5f9; color: #334155; }
 
     .badge-filetype {
-      background-color: #f0f4f0;
-      color: #3a6b3a;
-      border: 1px solid #c0d8c0;
-      font-family: "Courier New", monospace;
+      background: #f1f5f9;
+      color: #475569;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 0.67rem;
     }
 
-    /* ── Card Title Row ── */
-    .card-title-row {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: baseline;
-      gap: 0.55rem;
-    }
-
-    .card-title {
-      font-size: 1.03rem;
-      font-weight: 700;
-      color: #1a3a5c;
-      line-height: 1.3;
-    }
-
-    .card-title a {
-      color: #1a5fa8;
-      text-decoration: none;
-      border-bottom: 2px solid transparent;
-      transition: border-color 0.18s ease, color 0.18s ease;
-    }
-
-    .card-title a:hover,
-    .card-title a:focus {
-      color: #0d3f7a;
-      border-bottom-color: #0d3f7a;
-      outline: none;
-    }
-
-    .source-link {
-      font-size: 0.74rem;
-      font-weight: 600;
-      color: #5a7a99;
-      text-decoration: none;
-      border: 1px solid #b0c4d8;
-      border-radius: 4px;
-      padding: 0.15em 0.5em;
-      white-space: nowrap;
-      transition: background-color 0.18s ease, color 0.18s ease;
-      flex-shrink: 0;
-    }
-
-    .source-link:hover,
-    .source-link:focus {
-      background-color: #dce8f4;
-      color: #1a3a5c;
-      outline: none;
-    }
-
-    /* ── Card Description ── */
-    .card-description {
-      font-size: 0.9rem;
-      color: #455a6e;
-      line-height: 1.6;
-      flex-grow: 1;
+    /* ── Description ── */
+    .card-desc {
+      font-size: 0.875rem;
+      color: #3d5166;
+      line-height: 1.58;
+      flex: 1;
     }
 
     /* ── Footer ── */
-    .page-footer {
-      margin-top: 3rem;
+    footer {
       text-align: center;
       font-size: 0.78rem;
-      color: #8fa3b5;
-    }
-
-    /* ── Accessibility: Focus ring ── */
-    a:focus-visible {
-      outline: 3px solid #2e6da4;
-      outline-offset: 2px;
-      border-radius: 3px;
+      color: #8099b4;
+      padding: 1.5rem 1rem 2rem;
+      border-top: 1px solid #dce6f0;
     }
 
     /* ── Responsive tweaks ── */
-    @media (max-width: 500px) {
-      .page-header {
-        padding: 1.6rem 1.3rem;
-      }
-
-      .card {
-        padding: 1.1rem 1.2rem;
-      }
+    @media (max-width: 480px) {
+      .card-grid { grid-template-columns: 1fr; }
+      header { padding: 2rem 1rem 1.5rem; }
     }
   </style>
 </head>
 <body>
-  <div class="page-wrapper">
 
-    <!-- ── Page Header ── -->
-    <header class="page-header">
-      <p class="course-label">COP3530 &mdash; Data Structures &nbsp;|&nbsp; Module 1</p>
-      <h1>Getting Started: JavaScript and JSFiddle Environment</h1>
-      <p>
-        This module introduces JavaScript as the course language and walks you through the
-        JSFiddle browser-based development environment. By the end you will have written,
-        run, and debugged your first JavaScript program — no local installation required.
-        Use the artifacts below as your guided path through the material.
+  <header>
+    <div class="header-inner">
+      <div class="course-label">COP3530 &mdash; Data Structures</div>
+      <h1><span class="module-num">Module 1.</span> Getting Started: JavaScript and JSFiddle Environment</h1>
+      <p class="intro">
+        This module introduces JavaScript as the course language and the JSFiddle browser-based
+        development environment. You will write and run your first program, explore foundational
+        programming strategies, and build the working habits that support everything ahead in
+        the course.
       </p>
-    </header>
+    </div>
+  </header>
 
-    <!-- ── Artifact Grid ── -->
-    <main>
-      <p class="section-label">Module Artifacts &mdash; 6 items</p>
+  <main>
+    <p class="section-label">Module Artifacts &mdash; 9 items</p>
 
-      <div class="card-grid">
+    <div class="card-grid">
 
-        <!-- Card 1: Module Topics -->
-        <article class="card">
-          <div class="card-meta">
-            <span class="badge badge-type">Module Topics</span>
-            <span class="badge badge-filetype">.json</span>
-          </div>
-          <div class="card-title-row">
-            <span class="card-title">
-              <a href="module_topics.html">Module Topics</a>
-            </span>
-            <a class="source-link" href="../hierarchy.json">source file</a>
-          </div>
-          <p class="card-description">
-            Covers the fundamentals of JavaScript (its definition, role in software development,
-            and relevance to the course), how to navigate and configure the JSFiddle environment,
-            and how to write, run, and debug a first JavaScript program; learners use this as a
-            roadmap of what the module will teach, while instructors use it to confirm curricular
-            alignment.
-          </p>
-        </article>
+      <!-- ── Artifact 1: Module Topics ── -->
+      <article class="card">
+        <div class="card-header">
+          <span class="card-name">
+            <a href="module_topics.html">Module Topics</a>
+          </span>
+          <a class="source-link" href="../hierarchy.json" title="View source file">
+            <svg width="11" height="11" viewBox="0 0 16 16" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+              <path d="M2 2h7l3 3v9H2V2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" fill="none"/>
+              <path d="M9 2v4h4" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" fill="none"/>
+            </svg>
+            source file
+          </a>
+        </div>
+        <div class="card-meta">
+          <span class="badge badge-type-module-topics">Module Topics</span>
+          <span class="badge badge-filetype">.json</span>
+        </div>
+        <p class="card-desc">Covers the fundamentals of JavaScript (its definition, role in software development, and relevance to the course), how to navigate and configure the JSFiddle environment, and how to write, run, and debug a first JavaScript program; learners use this as a roadmap of what the module will teach, while instructors use it to confirm curricular alignment.</p>
+      </article>
 
-        <!-- Card 2: Foundational Programming Strategies (interactive) -->
-        <article class="card">
-          <div class="card-meta">
-            <span class="badge badge-type">Text Content</span>
-            <span class="badge badge-filetype">.html</span>
-          </div>
-          <div class="card-title-row">
-            <span class="card-title">
-              <a href="_interactive.html">Foundational Programming Strategies</a>
-            </span>
-          </div>
-          <p class="card-description">
-            Covers core programming building blocks &mdash; variables, conditionals, loops, and
-            functions &mdash; that recur throughout data structures implementations, serving as a
-            conceptual reference learners read before tackling more complex topics.
-          </p>
-        </article>
+      <!-- ── Artifact 2: Foundational Programming Strategies (Text Content) ── -->
+      <article class="card">
+        <div class="card-header">
+          <span class="card-name">
+            <a href="_interactive.html">Foundational Programming Strategies</a>
+          </span>
+        </div>
+        <div class="card-meta">
+          <span class="badge badge-type-text-content">Text Content</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <p class="card-desc">Covers core programming building blocks — variables, conditionals, loops, and functions — that recur throughout data structures implementations, serving as a conceptual reference learners read before tackling more complex topics.</p>
+      </article>
 
-        <!-- Card 3: Introduction to JavaScript -->
-        <article class="card">
-          <div class="card-meta">
-            <span class="badge badge-type">Text Content</span>
-            <span class="badge badge-filetype">.html</span>
-          </div>
-          <div class="card-title-row">
-            <span class="card-title">
-              <a href="Getting_Started_JavaScript_interactive_topics_t1.html">Introduction to JavaScript</a>
-            </span>
-          </div>
-          <p class="card-description">
-            Introduces JavaScript as the primary language for the course, explaining its real-world
-            prevalence and role in the curriculum so learners understand why it was chosen and what
-            to expect going forward.
-          </p>
-        </article>
+      <!-- ── Artifact 3: Introduction to JavaScript ── -->
+      <article class="card">
+        <div class="card-header">
+          <span class="card-name">
+            <a href="Getting_Started_JavaScript_interactive_topics_t1.html">Introduction to JavaScript</a>
+          </span>
+        </div>
+        <div class="card-meta">
+          <span class="badge badge-type-topic-detail">Topic Detail</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <p class="card-desc">Introduces JavaScript as the primary language for the course, explaining its real-world prevalence and role in the curriculum so learners understand why it was chosen and what to expect going forward.</p>
+      </article>
 
-        <!-- Card 4: The JSFiddle Development Environment -->
-        <article class="card">
-          <div class="card-meta">
-            <span class="badge badge-type">Text Content</span>
-            <span class="badge badge-filetype">.html</span>
-          </div>
-          <div class="card-title-row">
-            <span class="card-title">
-              <a href="Getting_Started_JavaScript_interactive_topics_t2.html">The JSFiddle Development Environment</a>
-            </span>
-          </div>
-          <p class="card-description">
-            Explains the JSFiddle browser-based coding environment &mdash; its layout, panels, and
-            how to run code &mdash; so learners can begin writing and testing JavaScript immediately
-            without installing any local tools.
-          </p>
-        </article>
+      <!-- ── Artifact 4: The JSFiddle Development Environment ── -->
+      <article class="card">
+        <div class="card-header">
+          <span class="card-name">
+            <a href="Getting_Started_JavaScript_interactive_topics_t2.html">The JSFiddle Development Environment</a>
+          </span>
+        </div>
+        <div class="card-meta">
+          <span class="badge badge-type-topic-detail">Topic Detail</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <p class="card-desc">Explains the JSFiddle browser-based coding environment — its layout, panels, and how to run code — so learners can begin writing and testing JavaScript immediately without installing any local tools.</p>
+      </article>
 
-        <!-- Card 5: Writing and Running Your First Program -->
-        <article class="card">
-          <div class="card-meta">
-            <span class="badge badge-type">Text Content</span>
-            <span class="badge badge-filetype">.html</span>
-          </div>
-          <div class="card-title-row">
-            <span class="card-title">
-              <a href="Getting_Started_JavaScript_interactive_topics_t3.html">Writing and Running Your First Program</a>
-            </span>
-          </div>
-          <p class="card-description">
-            Guides learners through writing and executing their first JavaScript program in JSFiddle,
-            emphasizing the habit of running code early and often to establish a working feedback loop
-            between the learner and their tools.
-          </p>
-        </article>
+      <!-- ── Artifact 5: Writing and Running Your First Program ── -->
+      <article class="card">
+        <div class="card-header">
+          <span class="card-name">
+            <a href="Getting_Started_JavaScript_interactive_topics_t3.html">Writing and Running Your First Program</a>
+          </span>
+        </div>
+        <div class="card-meta">
+          <span class="badge badge-type-topic-detail">Topic Detail</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <p class="card-desc">Guides learners through writing and executing their first JavaScript program in JSFiddle, emphasizing the habit of running code early and often to establish a working feedback loop between the learner and their tools.</p>
+      </article>
 
-        <!-- Card 6: Foundational Programming Strategies (t4) -->
-        <article class="card">
-          <div class="card-meta">
-            <span class="badge badge-type">Text Content</span>
-            <span class="badge badge-filetype">.html</span>
-          </div>
-          <div class="card-title-row">
-            <span class="card-title">
-              <a href="Getting_Started_JavaScript_interactive_topics_t4.html">Foundational Programming Strategies</a>
-            </span>
-          </div>
-          <p class="card-description">
-            Covers core programming building blocks &mdash; variables, conditionals, loops, and
-            functions &mdash; that recur throughout data structures implementations, serving as a
-            conceptual reference learners read before tackling more complex topics.
-          </p>
-        </article>
+      <!-- ── Artifact 6: Foundational Programming Strategies (Topic Detail) ── -->
+      <article class="card">
+        <div class="card-header">
+          <span class="card-name">
+            <a href="Getting_Started_JavaScript_interactive_topics_t4.html">Foundational Programming Strategies</a>
+          </span>
+        </div>
+        <div class="card-meta">
+          <span class="badge badge-type-topic-detail">Topic Detail</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <p class="card-desc">Covers core programming building blocks — variables, conditionals, loops, and functions — that recur throughout data structures implementations, serving as a conceptual reference learners read before tackling more complex topics.</p>
+      </article>
 
-      </div><!-- /.card-grid -->
-    </main>
+      <!-- ── Artifact 7: Using JSFiddle Video ── -->
+      <article class="card">
+        <div class="card-header">
+          <span class="card-name">
+            <a href="ext_16706deb.html">Using JSFiddle Video</a>
+          </span>
+        </div>
+        <div class="card-meta">
+          <span class="badge badge-type-video">Video</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <p class="card-desc">This video introduces learners to the JSFiddle online development environment — covering its interface, panels, and how to write and run code — so students can set up and use JSFiddle as their coding workspace for JavaScript exercises throughout the course.</p>
+      </article>
 
-    <!-- ── Footer ── -->
-    <footer class="page-footer">
-      <p>COP3530 &mdash; Data Structures &nbsp;&bull;&nbsp; Module 1 &nbsp;&bull;&nbsp; Course Materials Index</p>
-    </footer>
+      <!-- ── Artifact 8: Using JavaScript Video ── -->
+      <article class="card">
+        <div class="card-header">
+          <span class="card-name">
+            <a href="ext_fc870594.html">Using JavaScript Video</a>
+          </span>
+        </div>
+        <div class="card-meta">
+          <span class="badge badge-type-video">Video</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <p class="card-desc">This video, produced by Daytona State College, introduces or reviews foundational JavaScript concepts aligned with standard college-level CIS coursework, and learners would watch it to build or reinforce their JavaScript knowledge before working with data structures in the course.</p>
+      </article>
 
-  </div><!-- /.page-wrapper -->
+      <!-- ── Artifact 9: JavaScript Tutorial ── -->
+      <article class="card">
+        <div class="card-header">
+          <span class="card-name">
+            <a href="ext_651078ec.html">JavaScript Tutorial</a>
+          </span>
+        </div>
+        <div class="card-meta">
+          <span class="badge badge-type-web-page">Web Page</span>
+          <span class="badge badge-filetype">.html</span>
+        </div>
+        <p class="card-desc">W3Schools' JavaScript Tutorial is a comprehensive, beginner-friendly reference and tutorial covering all core JavaScript concepts, including variables, data types, functions, conditionals, loops, and objects. Each topic is presented with concise explanations and interactive 'Try it Yourself' code examples that run directly in the browser. The resource serves as both a structured learning path and an on-demand reference guide.</p>
+      </article>
+
+    </div><!-- /.card-grid -->
+  </main>
+
+  <footer>
+    <p>COP3530 &mdash; Data Structures &nbsp;|&nbsp; Module 1: Getting Started: JavaScript and JSFiddle Environment</p>
+  </footer>
+
 
 <footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
 </body>

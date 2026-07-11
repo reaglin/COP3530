@@ -1,0 +1,18 @@
+{
+  "activities": [
+    {
+      "id": "d6a65cb1-1b78-4a91-921a-4890135d2efe",
+      "title": "Cloze Passage (Interactive)",
+      "fileName": "cloze-passage-interactive.html",
+      "templateName": "Cloze Passage (Interactive)",
+      "objective": "Create an interactive activity that helps students achieve outcome MO1: Explain the Last-In, First-Out (LIFO) principle and contrast it with the ordering rules of other data structures such as queues",
+      "moduleStudentOutcomeIds": [
+        "df5ea2b7-7352-4f04-b286-9dcc1bf027c4"
+      ],
+      "currentVersion": 1,
+      "totalVersions": 1,
+      "createdDate": "2026-07-01T19:17:22.7277229-04:00",
+      "modifiedDate": "2026-07-01T19:17:22.727744-04:00"
+    }
+  ]
+}

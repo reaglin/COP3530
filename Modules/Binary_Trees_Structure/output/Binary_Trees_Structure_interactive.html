@@ -1,0 +1,483 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Implementing a BST in JavaScript</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+  <style>
+    body { padding-left: 1.1rem; padding-right: 1.1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid rgba(128,128,128,.45); padding: .45em .7em; text-align: left; vertical-align: top; }
+    thead th { background: rgba(128,128,128,.18); font-weight: 600; }
+    tbody tr:nth-child(even) { background: rgba(128,128,128,.08); }
+    a.topic-detail-link { text-decoration: underline; }
+  </style>
+  <style>
+    summary.slide-header { list-style: none; }
+    summary.slide-header::-webkit-details-marker { display: none; }
+    details.slide-card[open] > .slide-body { display: block; }
+    details.slide-card[open] .chevron { transform: rotate(90deg); }
+    @media print { details.slide-card > .slide-body { display: block !important; } .chevron { display: none; } }
+  </style>
+</head><body>
+  <header>
+    <h1>Implementing a BST in JavaScript</h1>
+  </header><main>
+    <details class="slide-card" open>
+      <summary class="slide-header"><span class="slide-num">1</span><h2>Implementing a BST in JavaScript</h2><span class="chevron">▶</span></summary>
+      <div class="slide-body">
+        <p>A <strong>Binary Search Tree (BST)</strong> is one of the most fundamental data structures in computer science, and implementing one from scratch in JavaScript is an excellent way to solidify both your understanding of the structure and your ability to reason about recursive algorithms. A BST organizes values so that, at every node, all values in the left subtree are smaller and all values in the right subtree are larger. This property makes searching, inserting, and deleting values dramatically more efficient than scanning a flat list — provided the tree stays reasonably balanced. In this topic we will build a complete, working BST in JavaScript step by step, covering every operation with full code, detailed explanation, and illustrative examples.</p>
+
+<p><strong>Defining the Node Class</strong></p>
+
+<p>Every element stored in a BST lives inside a <em>node</em>. A node is a small container that holds three things: the data value itself, a pointer to its left child, and a pointer to its right child. When a node is first created it has no children, so both pointers start as <code>null</code>. That null state is exactly what distinguishes a <em>leaf node</em> (a node with no children) from an internal node.</p>
+
+<p>Using a JavaScript <code>class</code> gives us a clean, repeatable way to stamp out new nodes throughout the life of the tree. Every call to <code>new Node(value)</code> produces an object with identical structure, which means insertion and other operations can always rely on the same property names without any defensive checks.</p>
+
+<pre><code>class Node {
+  constructor(value) {
+    this.value = value;   // the data stored in this node
+    this.left  = null;    // pointer to the left child (smaller values)
+    this.right = null;    // pointer to the right child (larger values)
+  }
+}
+</code></pre>
+
+<p>For example, <code>new Node(42)</code> creates an object <code>{ value: 42, left: null, right: null }</code>. Because both child pointers are <code>null</code>, the node is technically a complete, valid BST all by itself — a tree of size one.</p>
+
+<p><strong>Setting Up the BinarySearchTree Class</strong></p>
+
+<p>The tree itself is managed by a separate class whose job is to track the <em>root</em> — the topmost node from which every other node is reachable. When the tree is first created, no nodes exist, so the root is <code>null</code>. Every operation (insert, search, delete, traversal) is added as a method on this class, which keeps all the logic in one place and prevents outside code from directly overwriting the root and corrupting the structure.</p>
+
+<pre><code>class BinarySearchTree {
+  constructor() {
+    this.root = null;   // empty tree: no root yet
+  }
+}
+</code></pre>
+
+<p>Encapsulation matters here. If <code>root</code> were a bare global variable, any part of your program could accidentally set it to <code>undefined</code> or point it at the wrong node. Tucking it inside the class means the only way to interact with the tree is through the methods you deliberately design — a much safer contract.</p>
+
+<p><strong>Implementing the Insert Method</strong></p>
+
+<p>Insertion is the operation that builds the tree. The BST property dictates exactly where every new value must go: travel left when the new value is smaller than the current node, travel right when it is larger, and keep going until you reach a <code>null</code> slot. That slot is exactly where the new node belongs.</p>
+
+<p>Two special situations need handling. First, if the tree is completely empty (<code>this.root === null</code>), the new node simply becomes the root. Second, duplicate values need a defined policy. The most common convention is to ignore duplicates entirely (treating the BST as a set), though you could instead place duplicates consistently to the right.</p>
+
+<p>Recursion is the natural fit here because the problem at each node is identical to the overall problem: "Where in <em>this subtree</em> does the new value belong?" A helper method accepts both the current node and the value to insert, and returns the (possibly updated) subtree root so that parent pointers update automatically without extra bookkeeping.</p>
+
+<pre><code>class BinarySearchTree {
+  constructor() {
+    this.root = null;
+  }
+
+  insert(value) {
+    const newNode = new Node(value);
+    if (this.root === null) {
+      this.root = newNode;   // first insertion: new node becomes root
+      return this;
+    }
+    this._insertNode(this.root, newNode);
+    return this;
+  }
+
+  _insertNode(current, newNode) {
+    if (newNode.value === current.value) {
+      return;   // duplicate: ignore
+    }
+    if (newNode.value &lt; current.value) {
+      // go left
+      if (current.left === null) {
+        current.left = newNode;       // found the empty slot
+      } else {
+        this._insertNode(current.left, newNode);   // keep descending
+      }
+    } else {
+      // go right
+      if (current.right === null) {
+        current.right = newNode;
+      } else {
+        this._insertNode(current.right, newNode);
+      }
+    }
+  }
+}
+</code></pre>
+
+<p>Consider inserting the sequence <strong>10, 5, 15, 3, 7</strong>:</p>
+
+<ul>
+  <li><strong>10</strong> — tree is empty, becomes root.</li>
+  <li><strong>5</strong> — 5 &lt; 10, go left; left is null → insert here. Root's left child is now 5.</li>
+  <li><strong>15</strong> — 15 &gt; 10, go right; right is null → insert here. Root's right child is now 15.</li>
+  <li><strong>3</strong> — 3 &lt; 10, go left to 5; 3 &lt; 5, go left; null → insert. Node 5's left child is 3.</li>
+  <li><strong>7</strong> — 7 &lt; 10, go left to 5; 7 &gt; 5, go right; null → insert. Node 5's right child is 7.</li>
+</ul>
+
+<p>The result is a balanced-looking tree. In-order traversal (explained below) would yield <strong>3, 5, 7, 10, 15</strong> — perfectly sorted.</p>
+
+<p><strong>Implementing Search / Lookup</strong></p>
+
+<p>Searching exploits the BST property to eliminate half the remaining tree at each step. Start at the root. If the target matches the current node's value, you found it. If the target is smaller, move left; if larger, move right. If you ever reach <code>null</code>, the value is not in the tree.</p>
+
+<pre><code>// Add this method to BinarySearchTree
+find(value) {
+  return this._findNode(this.root, value);
+}
+
+_findNode(current, value) {
+  if (current === null) {
+    return false;           // fell off the tree: value not found
+  }
+  if (value === current.value) {
+    return true;            // exact match
+  }
+  if (value &lt; current.value) {
+    return this._findNode(current.left, value);
+  } else {
+    return this._findNode(current.right, value);
+  }
+}
+</code></pre>
+
+<p>Using the tree built above (<strong>10, 5, 15, 3, 7</strong>):</p>
+
+<ul>
+  <li><code>find(7)</code> → compare 7 with 10 (go left), compare 7 with 5 (go right), compare 7 with 7 → <strong>true</strong>.</li>
+  <li><code>find(9)</code> → compare 9 with 10 (go left), compare 9 with 5 (go right), compare 9 with 7 (go right), null → <strong>false</strong>.</li>
+</ul>
+
+<p>The time complexity of search is <strong>O(log n)</strong> for a balanced BST because each comparison halves the search space. In the worst case — a tree that has degenerated into a linked list because values were inserted in sorted order — every node must be visited, giving <strong>O(n)</strong>. This is why self-balancing trees (AVL, Red-Black) exist, though they are beyond the scope of this implementation.</p>
+
+<p><strong>Implementing BST Traversal Methods</strong></p>
+
+<p>Traversal means visiting every node in the tree in a specific order. There are three classic depth-first traversal orders, each with a different visit sequence relative to a node's subtrees. A fourth strategy, breadth-first (level-order) traversal, uses a queue rather than recursion, but the three recursive patterns are the most commonly tested.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Traversal</th>
+      <th>Visit Order</th>
+      <th>Primary Use Case</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>In-order</td>
+      <td>Left → Current → Right</td>
+      <td>Produces values in ascending sorted order</td>
+    </tr>
+    <tr>
+      <td>Pre-order</td>
+      <td>Current → Left → Right</td>
+      <td>Serializing or copying the tree structure</td>
+    </tr>
+    <tr>
+      <td>Post-order</td>
+      <td>Left → Right → Current</td>
+      <td>Deleting nodes or evaluating expression trees</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>All three can be implemented by pushing visited values into an array that is returned at the end, or by calling a user-supplied callback for each node. The array approach is often easier to test because you can compare the output directly.</p>
+
+<pre><code>// Add these methods to BinarySearchTree
+
+// In-order: Left → Node → Right  (sorted ascending)
+inOrder(node = this.root, result = []) {
+  if (node !== null) {
+    this.inOrder(node.left, result);
+    result.push(node.value);
+    this.inOrder(node.right, result);
+  }
+  return result;
+}
+
+// Pre-order: Node → Left → Right  (root first)
+preOrder(node = this.root, result = []) {
+  if (node !== null) {
+    result.push(node.value);
+    this.preOrder(node.left, result);
+    this.preOrder(node.right, result);
+  }
+  return result;
+}
+
+// Post-order: Left → Right → Node  (root last)
+postOrder(node = this.root, result = []) {
+  if (node !== null) {
+    this.postOrder(node.left, result);
+    this.postOrder(node.right, result);
+    result.push(node.value);
+  }
+  return result;
+}
+</code></pre>
+
+<p>For the tree containing <strong>10, 5, 15, 3, 7</strong>:</p>
+
+<ul>
+  <li><strong>In-order:</strong> <code>[3, 5, 7, 10, 15]</code> — always sorted ascending, a quick sanity check that the BST property holds.</li>
+  <li><strong>Pre-order:</strong> <code>[10, 5, 3, 7, 15]</code> — the root appears first; feeding these values into a fresh BST's insert method would rebuild an identical tree.</li>
+  <li><strong>Post-order:</strong> <code>[3, 7, 5, 15, 10]</code> — the root appears last; every node is processed only after both its subtrees are done, ideal for cleanup operations.</li>
+</ul>
+
+<p><strong>Implementing the Delete Method</strong></p>
+
+<p>Deletion is the most complex BST operation because removing a node must preserve the BST property for the entire remaining tree. There are exactly three cases based on how many children the target node has.</p>
+
+<p><em>Case 1 — Leaf node (no children):</em> Simply set the parent's pointer that pointed to this node to <code>null</code>. The node is disconnected and will be garbage collected.</p>
+
+<p><em>Case 2 — One child:</em> Bypass the deleted node by pointing the parent directly at the node's only child. The subtree rooted at that child is still valid because it always satisfied the BST property relative to the deleted node, and therefore also relative to the deleted node's parent.</p>
+
+<p><em>Case 3 — Two children:</em> This case cannot be solved by simple pointer manipulation. Instead, we find the <strong>in-order successor</strong> — the smallest value in the right subtree, i.e., the leftmost node of the right child. This value is guaranteed to be larger than everything in the left subtree (because it came from the right) and smaller than everything else in the right subtree (because it is the minimum there). We copy its value into the node being "deleted," then delete the in-order successor from the right subtree — which is now guaranteed to be either a leaf or a node with only a right child (it had no left child by definition, since it was the leftmost).</p>
+
+<p>The recursive approach handles parent-pointer updates automatically: each call returns the updated subtree root, and the caller assigns that return value to its own left or right pointer.</p>
+
+<pre><code>// Add these methods to BinarySearchTree
+
+delete(value) {
+  this.root = this._deleteNode(this.root, value);
+  return this;
+}
+
+_deleteNode(current, value) {
+  if (current === null) {
+    return null;   // value not found; nothing to delete
+  }
+
+  if (value &lt; current.value) {
+    // target is in the left subtree
+    current.left = this._deleteNode(current.left, value);
+
+  } else if (value &gt; current.value) {
+    // target is in the right subtree
+    current.right = this._deleteNode(current.right, value);
+
+  } else {
+    // ---- found the node to delete ----
+
+    // Case 1: leaf node
+    if (current.left === null &amp;&amp; current.right === null) {
+      return null;
+    }
+
+    // Case 2a: only right child
+    if (current.left === null) {
+      return current.right;
+    }
+
+    // Case 2b: only left child
+    if (current.right === null) {
+      return current.left;
+    }
+
+    // Case 3: two children — find in-order successor (min of right subtree)
+    const successor = this._findMin(current.right);
+    current.value = successor.value;          // overwrite with successor value
+    current.right = this._deleteNode(current.right, successor.value); // remove successor
+  }
+
+  return current;   // return updated subtree root so parent can relink
+}
+
+_findMin(node) {
+  while (node.left !== null) {
+    node = node.left;
+  }
+  return node;
+}
+</code></pre>
+
+<p>Walking through an example with the tree <strong>10, 5, 15, 3, 7, 12, 20</strong>:</p>
+
+<ul>
+  <li><strong>Delete 3 (leaf):</strong> Node 5's left pointer becomes <code>null</code>. Tree: 10, 5, 15, 7, 12, 20.</li>
+  <li><strong>Delete 5 (one child — only right child 7):</strong> Node 10's left pointer skips over 5 and points directly to 7. Tree: 10, 7, 15, 12, 20.</li>
+  <li><strong>Delete 10 (root with two children):</strong> In-order successor of 10 is 12 (leftmost of right subtree rooted at 15). Copy 12 into root, then delete 12 from the right subtree (12 is a leaf there). Tree: 12, 7, 15, 20. In-order: <code>[7, 12, 15, 20]</code> ✓.</li>
+</ul>
+
+<p><strong>Putting It All Together: Testing the BST</strong></p>
+
+<p>The best way to validate your implementation is to run it against a set of known inputs and verify the outputs match expectations. In-order traversal is your primary debugging tool: the output must always be a sorted array if the BST property holds.</p>
+
+<pre><code>const bst = new BinarySearchTree();
+
+// Insert values
+[10, 5, 15, 3, 7, 12, 20].forEach(v => bst.insert(v));
+
+// Traversal checks
+console.log(bst.inOrder());    // [3, 5, 7, 10, 12, 15, 20]  ← sorted ✓
+console.log(bst.preOrder());   // [10, 5, 3, 7, 15, 12, 20]
+console.log(bst.postOrder());  // [3, 7, 5, 12, 20, 15, 10]
+
+// Search checks
+console.log(bst.find(7));    // true
+console.log(bst.find(99));   // false
+
+// Delete leaf
+bst.delete(3);
+console.log(bst.inOrder());  // [5, 7, 10, 12, 15, 20] ✓
+
+// Delete node with one child (5 now has only right child 7)
+bst.delete(5);
+console.log(bst.inOrder());  // [7, 10, 12, 15, 20] ✓
+
+// Delete node with two children (root 10)
+bst.delete(10);
+console.log(bst.inOrder());  // [7, 12, 15, 20] ✓
+
+// Edge cases
+const emptyBST = new BinarySearchTree();
+console.log(emptyBST.find(5));     // false — searching empty tree
+console.log(emptyBST.inOrder());   // [] — traversing empty tree
+
+// Duplicate insertion
+const dupBST = new BinarySearchTree();
+dupBST.insert(10).insert(10).insert(10);
+console.log(dupBST.inOrder());     // [10] — duplicates ignored
+</code></pre>
+
+<p>Testing all three deletion cases explicitly is critical. A subtle bug in the two-child case — for instance, forgetting to recursively delete the in-order successor after copying its value — will leave a duplicate in the tree that in-order traversal will expose immediately. Similarly, always test deleting the root node, because that is the one node whose parent is not another node but rather <code>this.root</code>, and the recursive return-value pattern handles it correctly only if <code>this.root</code> is assigned the result of the initial recursive call.</p>
+
+<p>A complete picture of the classes together, for reference:</p>
+
+<pre><code>class Node {
+  constructor(value) {
+    this.value = value;
+    this.left  = null;
+    this.right = null;
+  }
+}
+
+class BinarySearchTree {
+  constructor() {
+    this.root = null;
+  }
+
+  insert(value) {
+    const newNode = new Node(value);
+    if (this.root === null) { this.root = newNode; return this; }
+    this._insertNode(this.root, newNode);
+    return this;
+  }
+
+  _insertNode(current, newNode) {
+    if (newNode.value === current.value) return;
+    if (newNode.value &lt; current.value) {
+      if (current.left === null) current.left = newNode;
+      else this._insertNode(current.left, newNode);
+    } else {
+      if (current.right === null) current.right = newNode;
+      else this._insertNode(current.right, newNode);
+    }
+  }
+
+  find(value) { return this._findNode(this.root, value); }
+  _findNode(current, value) {
+    if (current === null) return false;
+    if (value === current.value) return true;
+    return value &lt; current.value
+      ? this._findNode(current.left,  value)
+      : this._findNode(current.right, value);
+  }
+
+  inOrder(node = this.root, result = []) {
+    if (node !== null) {
+      this.inOrder(node.left, result);
+      result.push(node.value);
+      this.inOrder(node.right, result);
+    }
+    return result;
+  }
+
+  preOrder(node = this.root, result = []) {
+    if (node !== null) {
+      result.push(node.value);
+      this.preOrder(node.left,  result);
+      this.preOrder(node.right, result);
+    }
+    return result;
+  }
+
+  postOrder(node = this.root, result = []) {
+    if (node !== null) {
+      this.postOrder(node.left,  result);
+      this.postOrder(node.right, result);
+      result.push(node.value);
+    }
+    return result;
+  }
+
+  delete(value) { this.root = this._deleteNode(this.root, value); return this; }
+  _deleteNode(current, value) {
+    if (current === null) return null;
+    if (value &lt; current.value) {
+      current.left  = this._deleteNode(current.left,  value);
+    } else if (value &gt; current.value) {
+      current.right = this._deleteNode(current.right, value);
+    } else {
+      if (!current.left &amp;&amp; !current.right) return null;
+      if (!current.left)  return current.right;
+      if (!current.right) return current.left;
+      const successor  = this._findMin(current.right);
+      current.value    = successor.value;
+      current.right    = this._deleteNode(current.right, successor.value);
+    }
+    return current;
+  }
+
+  _findMin(node) {
+    while (node.left !== null) node = node.left;
+    return node;
+  }
+}
+</code></pre>
+
+<p>With this implementation in hand you have a fully functional BST that supports insertion, lookup, all three depth-first traversals, and deletion across all three node configurations. The consistent use of recursion, the encapsulation of state inside the class, and the return-value pattern for pointer updates form patterns you will encounter repeatedly in more advanced tree algorithms and data structure work.</p>
+        <div class="notes"><strong>Notes</strong>Instructors may wish to demonstrate the degenerate (linked-list) case by inserting values in sorted order and showing that inOrder still works but tree height equals n, motivating discussion of self-balancing trees as a natural follow-on topic.</div>
+      </div>
+    </details>
+  </main>
+</body></html>

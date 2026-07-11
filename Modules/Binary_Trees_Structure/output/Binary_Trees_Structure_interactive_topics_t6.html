@@ -1,0 +1,358 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tree Traversal Strategies</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+  <style>
+    body { padding-left: 1.1rem; padding-right: 1.1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid rgba(128,128,128,.45); padding: .45em .7em; text-align: left; vertical-align: top; }
+    thead th { background: rgba(128,128,128,.18); font-weight: 600; }
+    tbody tr:nth-child(even) { background: rgba(128,128,128,.08); }
+    a.topic-detail-link { text-decoration: underline; }
+  </style>
+  <style>
+    summary.slide-header { list-style: none; }
+    summary.slide-header::-webkit-details-marker { display: none; }
+    details.slide-card[open] > .slide-body { display: block; }
+    details.slide-card[open] .chevron { transform: rotate(90deg); }
+    @media print { details.slide-card > .slide-body { display: block !important; } .chevron { display: none; } }
+  </style>
+</head><body>
+  <header>
+    <h1>Tree Traversal Strategies</h1>
+  </header><main>
+    <details class="slide-card" open>
+      <summary class="slide-header"><span class="slide-num">1</span><h2>Tree Traversal Strategies</h2><span class="chevron">▶</span></summary>
+      <div class="slide-body">
+        <p>Tree traversal is the process of visiting every node in a tree data structure exactly once in a well-defined order. Unlike linear data structures such as arrays or linked lists, trees are hierarchical, so there is no single "natural" sequence in which to visit nodes. Instead, different traversal strategies prioritize different relationships — parent before children, children before parent, or left subtree before right subtree — and each ordering unlocks different computational capabilities. Mastering the three classical depth-first traversals (in-order, pre-order, and post-order) and understanding both their recursive and iterative implementations is foundational to solving a wide range of problems involving binary trees and binary search trees (BSTs).</p>
+
+<p>To ground the discussion, consider the following binary tree used throughout all examples below:</p>
+
+<pre><code>        10
+       /  \
+      5    15
+     / \   / \
+    3   7 12  20
+</code></pre>
+
+<p>Every traversal begins at the root and systematically visits every node. The difference lies solely in <em>when</em> the current node is processed relative to its left and right subtrees.</p>
+
+<p><strong>In-Order Traversal (Left → Root → Right)</strong></p>
+
+<p>In-order traversal follows a strict three-step pattern at every node: first recurse into the left subtree, then process the current node, then recurse into the right subtree. Because each node is handled only <em>after</em> its entire left subtree has been visited, the algorithm effectively "unwinds" from the deepest left leaf upward before moving rightward.</p>
+
+<p>Applied to the example tree, in-order traversal visits nodes in this sequence:</p>
+
+<pre><code>3 → 5 → 7 → 10 → 12 → 15 → 20
+</code></pre>
+
+<p>Notice that the result is a perfectly sorted, non-decreasing sequence. This is not a coincidence — it is a fundamental property of BSTs. In a valid BST every node in the left subtree holds a smaller value than the current node, and every node in the right subtree holds a larger value. In-order traversal exploits this invariant: by always processing left before root before right, it naturally retrieves keys in ascending order.</p>
+
+<p>A simple recursive implementation in Python illustrates how concisely the definition translates to code:</p>
+
+<pre><code>def in_order(node):
+    if node is None:
+        return
+    in_order(node.left)    # 1. Traverse left subtree
+    print(node.value)       # 2. Process current node
+    in_order(node.right)   # 3. Traverse right subtree
+</code></pre>
+
+<p>Common use cases for in-order traversal include:</p>
+<ul>
+  <li><strong>Sorted output from a BST:</strong> Retrieving all keys in ascending order without a separate sorting step.</li>
+  <li><strong>BST validation:</strong> If in-order traversal of a claimed BST does not produce a strictly non-decreasing sequence, the BST property is violated.</li>
+  <li><strong>Range queries:</strong> By tracking the previously visited value, in-order traversal can efficiently report all keys within a range [lo, hi].</li>
+  <li><strong>Kth smallest element:</strong> Counting nodes as they are processed in-order directly identifies the kth smallest key.</li>
+</ul>
+
+<p><strong>Pre-Order Traversal (Root → Left → Right)</strong></p>
+
+<p>Pre-order traversal processes the current node <em>first</em>, before visiting either subtree. The pattern is: process the current node, recurse into the left subtree, then recurse into the right subtree. Because the root is always handled before its descendants, this traversal captures the tree's top-down hierarchical structure.</p>
+
+<p>Applied to the same example tree, pre-order traversal produces:</p>
+
+<pre><code>10 → 5 → 3 → 7 → 15 → 12 → 20
+</code></pre>
+
+<p>Observe that the root (10) appears first, followed immediately by the root of the left subtree (5), and so on. The sequence encodes parent-before-child relationships throughout.</p>
+
+<pre><code>def pre_order(node):
+    if node is None:
+        return
+    print(node.value)       # 1. Process current node
+    pre_order(node.left)   # 2. Traverse left subtree
+    pre_order(node.right)  # 3. Traverse right subtree
+</code></pre>
+
+<p>A critical property of pre-order traversal is that the output sequence can be used to reconstruct the <em>exact</em> same tree. If the pre-order values are reinserted into a new BST in the same order, every insertion goes to the same position as in the original, because each parent node is inserted before its children. This makes pre-order traversal the natural choice for:</p>
+<ul>
+  <li><strong>Tree serialization:</strong> Converting the tree to a flat string or array that can be stored or transmitted.</li>
+  <li><strong>Tree cloning:</strong> Creating an exact structural copy by inserting nodes in pre-order sequence.</li>
+  <li><strong>Expression tree evaluation:</strong> In prefix (Polish) notation, the operator appears before its operands, directly matching pre-order output.</li>
+  <li><strong>Directory structure printing:</strong> File-system trees are printed pre-order so a directory name appears before its contents.</li>
+  <li><strong>Depth-first search (DFS):</strong> Pre-order traversal is the conceptual foundation of DFS on trees and graphs.</li>
+</ul>
+
+<p><strong>Post-Order Traversal (Left → Right → Root)</strong></p>
+
+<p>Post-order traversal is the mirror image of pre-order in terms of when the current node is processed: both subtrees must be fully visited <em>before</em> the current node is handled. The pattern is: recurse left, recurse right, then process the current node.</p>
+
+<p>Applied to the example tree, post-order traversal produces:</p>
+
+<pre><code>3 → 7 → 5 → 12 → 20 → 15 → 10
+</code></pre>
+
+<p>The root (10) appears last, after every other node has been visited. Every leaf appears before its parent, and every parent appears before its own parent.</p>
+
+<pre><code>def post_order(node):
+    if node is None:
+        return
+    post_order(node.left)   # 1. Traverse left subtree
+    post_order(node.right)  # 2. Traverse right subtree
+    print(node.value)        # 3. Process current node
+</code></pre>
+
+<p>Post-order traversal is ideal for <em>bottom-up aggregation</em> — any computation where a node's result depends on results already computed for its children:</p>
+<ul>
+  <li><strong>Tree deletion:</strong> Child nodes must be freed from memory before their parent, otherwise the parent pointer is lost and children become unreachable (memory leak). Post-order traversal guarantees children are deleted first.</li>
+  <li><strong>Computing subtree height:</strong> The height of a node is 1 + max(height(left), height(right)); this formula requires child heights to be known first.</li>
+  <li><strong>Computing subtree size:</strong> size(node) = 1 + size(left) + size(right) — children must be counted before the parent.</li>
+  <li><strong>Postfix (Reverse Polish) notation:</strong> In an expression tree, post-order traversal produces the postfix form of the expression. For the tree representing (3 + 5) × 2, post-order outputs <code>3 5 + 2 ×</code>, which can be evaluated with a simple stack-based algorithm without any parentheses.</li>
+  <li><strong>Dependency resolution:</strong> In build systems or task schedulers modelled as trees, dependencies (children) must be completed before the dependent task (parent) can run.</li>
+</ul>
+
+<p><strong>Recursive vs. Iterative Traversal Implementations</strong></p>
+
+<p>Recursive implementations are elegant because each traversal's definition maps directly to a few lines of code — a base case (null check) and two recursive calls sandwiching the node processing step. The language runtime manages the call stack automatically, recording which node to return to after each recursive call completes.</p>
+
+<p>However, recursion has practical limits. Deep or unbalanced trees can cause stack overflow errors because each recursive call consumes a stack frame. In many production environments or languages with small default stack sizes, iterative implementations using an explicit stack are preferred.</p>
+
+<p>The iterative in-order traversal is the most instructive to study because it reveals exactly what the recursive call stack is doing behind the scenes:</p>
+
+<pre><code>def in_order_iterative(root):
+    stack = []
+    current = root
+    while current is not None or stack:
+        # Drill as far left as possible, pushing each node
+        while current is not None:
+            stack.append(current)
+            current = current.left
+        # Pop the top node (leftmost unvisited)
+        current = stack.pop()
+        print(current.value)   # Process node
+        # Move to the right subtree
+        current = current.right
+</code></pre>
+
+<p>The outer loop continues as long as there are unvisited nodes either in hand (<code>current</code>) or waiting on the stack. The inner loop simulates the recursive descent into the left subtree by pushing every left child. When the inner loop ends (no more left children), the top of the stack is the next node to process — the leftmost unvisited node. After processing it, attention shifts to its right subtree, and the process repeats.</p>
+
+<p>Pre-order iterative traversal is slightly simpler because the node is processed on the way <em>down</em>:</p>
+
+<pre><code>def pre_order_iterative(root):
+    if root is None:
+        return
+    stack = [root]
+    while stack:
+        node = stack.pop()
+        print(node.value)          # Process node immediately
+        if node.right:
+            stack.append(node.right)  # Push right first (LIFO)
+        if node.left:
+            stack.append(node.left)   # Push left second so it's popped first
+</code></pre>
+
+<p>Right is pushed before left so that left is on top of the stack and processed next, matching the left-before-right ordering of pre-order traversal.</p>
+
+<p>The following table summarizes the key differences between recursive and iterative approaches:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Dimension</th>
+      <th>Recursive</th>
+      <th>Iterative</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Code clarity</td>
+      <td>Very concise; mirrors the definition directly</td>
+      <td>More verbose; explicitly manages stack state</td>
+    </tr>
+    <tr>
+      <td>Stack management</td>
+      <td>Handled automatically by the language runtime</td>
+      <td>Programmer manages an explicit stack data structure</td>
+    </tr>
+    <tr>
+      <td>Risk of stack overflow</td>
+      <td>Yes, for very deep or pathological trees</td>
+      <td>No; heap memory for explicit stack is much larger</td>
+    </tr>
+    <tr>
+      <td>Space complexity</td>
+      <td>O(h) call stack frames, where h is tree height</td>
+      <td>O(h) explicit stack entries — same asymptotic cost</td>
+    </tr>
+    <tr>
+      <td>Best when</td>
+      <td>Tree depth is bounded; readability is a priority</td>
+      <td>Deep trees; tail-call optimization unavailable; strict memory control needed</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Practical Use Cases for Each Traversal</strong></p>
+
+<p>Choosing the correct traversal for a problem is itself an important algorithmic skill. The following table maps common problem types to the traversal best suited for them:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Problem / Task</th>
+      <th>Best Traversal</th>
+      <th>Reason</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Print BST keys in sorted order</td>
+      <td>In-order</td>
+      <td>BST invariant guarantees ascending output</td>
+    </tr>
+    <tr>
+      <td>Validate BST property</td>
+      <td>In-order</td>
+      <td>Check that each visited value exceeds the previous</td>
+    </tr>
+    <tr>
+      <td>Serialize a tree to a string</td>
+      <td>Pre-order</td>
+      <td>Parent-before-child order makes deserialization straightforward</td>
+    </tr>
+    <tr>
+      <td>Clone / copy a tree</td>
+      <td>Pre-order</td>
+      <td>Create each node before creating its children</td>
+    </tr>
+    <tr>
+      <td>Evaluate an expression tree</td>
+      <td>Post-order</td>
+      <td>Operands (children) must be resolved before applying operator (parent)</td>
+    </tr>
+    <tr>
+      <td>Delete an entire tree</td>
+      <td>Post-order</td>
+      <td>Free children before freeing the parent</td>
+    </tr>
+    <tr>
+      <td>Compute subtree height or size</td>
+      <td>Post-order</td>
+      <td>Child values must be computed before the parent aggregates them</td>
+    </tr>
+    <tr>
+      <td>Print directory structure</td>
+      <td>Pre-order</td>
+      <td>Show parent directory before its contents</td>
+    </tr>
+    <tr>
+      <td>Find kth smallest element in BST</td>
+      <td>In-order</td>
+      <td>Count nodes as they are visited in ascending order</td>
+    </tr>
+    <tr>
+      <td>Generate postfix expression</td>
+      <td>Post-order</td>
+      <td>Produces Reverse Polish Notation directly</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Traversal and Tree Serialization</strong></p>
+
+<p>Serialization transforms a tree into a linear sequence (string, array, stream) that can be stored, transmitted across a network, or reconstructed later. Deserialization is the inverse: rebuilding the original tree from that sequence. Not all traversal orders are equally useful for serialization.</p>
+
+<p>Pre-order traversal is the most natural choice for serialization. Because each node is written before its children, a deserializer can read nodes sequentially and always knows that the next value in the stream is a child of the most recently processed node. Null pointers are typically encoded with a sentinel value (such as <code>#</code> or <code>null</code>) so that the deserializer knows when a subtree ends:</p>
+
+<pre><code># Example serialized pre-order string for the example tree:
+"10,5,3,#,#,7,#,#,15,12,#,#,20,#,#"
+</code></pre>
+
+<p>Deserialization reads this string left to right, rebuilding each node and recursing into left and right children exactly as in a standard pre-order traversal.</p>
+
+<p>In-order traversal alone is <strong>insufficient</strong> for serializing a general binary tree. Consider two structurally different trees that both produce the same in-order sequence:</p>
+
+<pre><code>Tree A:        Tree B:
+    2              1
+   /                \
+  1                  2
+
+In-order of both: 1 → 2
+</code></pre>
+
+<p>Without null sentinels, in-order output cannot distinguish between these two trees. Even with sentinels, in-order deserialization is more complex than pre-order deserialization because the root appears in the middle of the sequence and must be located before the left and right subtrees can be identified.</p>
+
+<p>A classic and powerful technique combines <em>both</em> pre-order and in-order sequences to uniquely reconstruct any binary tree with distinct node values, even without null sentinels:</p>
+<ul>
+  <li>The <strong>first element</strong> of the pre-order sequence is always the root of the current subtree.</li>
+  <li>Locating that root value in the in-order sequence divides the in-order sequence into a left portion (all nodes in the left subtree) and a right portion (all nodes in the right subtree).</li>
+  <li>The sizes of these portions tell you exactly how many values in the pre-order sequence belong to the left subtree vs. the right subtree.</li>
+  <li>The process is applied recursively until the entire tree is reconstructed.</li>
+</ul>
+
+<p>For example, given pre-order <code>[10, 5, 3, 7, 15, 12, 20]</code> and in-order <code>[3, 5, 7, 10, 12, 15, 20]</code>:</p>
+<ul>
+  <li>Root = 10 (first of pre-order). In in-order, 10 is at index 3, so left subtree has 3 nodes (3, 5, 7) and right subtree has 3 nodes (12, 15, 20).</li>
+  <li>Left subtree: pre-order slice <code>[5, 3, 7]</code>, in-order slice <code>[3, 5, 7]</code> → root = 5, left = {3}, right = {7}.</li>
+  <li>Right subtree: pre-order slice <code>[15, 12, 20]</code>, in-order slice <code>[12, 15, 20]</code> → root = 15, left = {12}, right = {20}.</li>
+</ul>
+
+<p>This reconstruction technique is a staple of technical interviews and competitive programming. It demonstrates that the choice of traversal is not merely a practical detail but carries deep structural information about the tree itself. Understanding <em>why</em> each traversal exposes or obscures structural information — and knowing when to combine traversals — separates superficial familiarity from genuine mastery of tree algorithms.</p>
+        <div class="notes"><strong>Notes</strong>Covers in-order, pre-order, and post-order traversal algorithms in depth with recursive and iterative code examples in Python, practical use-case tables, and a detailed treatment of tree serialization including the classic pre-order + in-order reconstruction technique.</div>
+      </div>
+    </details>
+  </main>
+</body></html>

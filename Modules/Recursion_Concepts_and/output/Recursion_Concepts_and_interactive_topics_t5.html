@@ -1,0 +1,248 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fibonacci Sequence Using Recursion</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+  <style>
+    body { padding-left: 1.1rem; padding-right: 1.1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid rgba(128,128,128,.45); padding: .45em .7em; text-align: left; vertical-align: top; }
+    thead th { background: rgba(128,128,128,.18); font-weight: 600; }
+    tbody tr:nth-child(even) { background: rgba(128,128,128,.08); }
+    a.topic-detail-link { text-decoration: underline; }
+  </style>
+  <style>
+    summary.slide-header { list-style: none; }
+    summary.slide-header::-webkit-details-marker { display: none; }
+    details.slide-card[open] > .slide-body { display: block; }
+    details.slide-card[open] .chevron { transform: rotate(90deg); }
+    @media print { details.slide-card > .slide-body { display: block !important; } .chevron { display: none; } }
+  </style>
+</head><body>
+  <header>
+    <h1>Fibonacci Sequence Using Recursion</h1>
+  </header><main>
+    <details class="slide-card" open>
+      <summary class="slide-header"><span class="slide-num">1</span><h2>Fibonacci Sequence Using Recursion</h2><span class="chevron">▶</span></summary>
+      <div class="slide-body">
+        <p>The Fibonacci sequence is one of the most celebrated patterns in mathematics, and it also serves as a cornerstone example in computer science for understanding recursion. What makes the Fibonacci sequence so compelling from a programming perspective is that its mathematical definition is <em>inherently self-referential</em> — each number is defined in terms of previous numbers in the same sequence. This natural self-reference maps almost directly onto the concept of a recursive function, making Fibonacci an ideal subject for studying how recursion works, how the call stack behaves when a function calls itself more than once, and what performance consequences emerge from that behavior.</p>
+
+<p>The Fibonacci sequence begins with two fixed starting values and then builds every subsequent value from the two that came before it. The sequence looks like this: 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, and so on. The formal mathematical definition captures this pattern with two base values and one recurrence rule:</p>
+
+<ul>
+  <li><strong>Fibonacci(0) = 0</strong> — the zeroth position in the sequence holds the value 0.</li>
+  <li><strong>Fibonacci(1) = 1</strong> — the first position in the sequence holds the value 1.</li>
+  <li><strong>Fibonacci(n) = Fibonacci(n - 1) + Fibonacci(n - 2)</strong> for every n greater than 1.</li>
+</ul>
+
+<p>Notice that the rule for computing any Fibonacci number beyond the first two is expressed purely in terms of <em>earlier Fibonacci numbers</em>. This is exactly what recursion exploits: to find the answer for a large problem, break it into smaller problems of the same shape, solve those, and combine the results. The two starting values — Fibonacci(0) and Fibonacci(1) — act as the stopping points that prevent the self-referential process from going on forever.</p>
+
+<p><strong>Defining the Base Cases</strong></p>
+
+<p>Every recursive function must have at least one base case: a condition under which the function returns a direct answer without calling itself again. Base cases are the foundation of any recursive solution because they <em>anchor</em> the chain of calls. Without them, recursion would descend infinitely, eventually causing a stack overflow error.</p>
+
+<p>For the Fibonacci sequence, there are exactly two base cases, and both are necessary:</p>
+
+<ul>
+  <li><strong>When n === 0, return 0.</strong> This represents the zeroth element of the sequence. No further recursion is needed; the answer is simply 0.</li>
+  <li><strong>When n === 1, return 1.</strong> This represents the first element of the sequence. Again, the answer is known directly and no further recursion is required.</li>
+</ul>
+
+<p>Together, these two base cases ensure that every possible chain of recursive calls will eventually reach a stopping point. Because every recursive call reduces <em>n</em> by either 1 or 2, and because both 0 and 1 are covered by base cases, no call chain can descend below zero. This guarantees termination for any non-negative integer input.</p>
+
+<p>It is worth noting that having <em>two</em> base cases is a direct consequence of the recurrence relation itself. The relation references both <em>n - 1</em> and <em>n - 2</em>, so both of those positions must have explicitly defined values — otherwise the recursion would have nowhere to stop when it reaches the very bottom of the sequence.</p>
+
+<p><strong>Implementing Fibonacci Recursively in JavaScript</strong></p>
+
+<p>Translating the mathematical definition into a JavaScript function is remarkably straightforward because the structure of the code mirrors the structure of the definition almost line for line. The function accepts a single integer <em>n</em> representing the position in the sequence, checks for the two base cases, and otherwise returns the sum of two recursive calls.</p>
+
+<pre><code>function fibonacci(n) {
+  // Base case: the 0th Fibonacci number is 0
+  if (n === 0) return 0;
+
+  // Base case: the 1st Fibonacci number is 1
+  if (n === 1) return 1;
+
+  // Recursive case: sum of the two preceding Fibonacci numbers
+  return fibonacci(n - 1) + fibonacci(n - 2);
+}
+
+console.log(fibonacci(0));  // 0
+console.log(fibonacci(1));  // 1
+console.log(fibonacci(4));  // 3
+console.log(fibonacci(6));  // 8
+console.log(fibonacci(10)); // 55
+</code></pre>
+
+<p>The critical line is the <code>return fibonacci(n - 1) + fibonacci(n - 2)</code> statement. This single line launches <em>two separate recursive calls</em> before the current function invocation can produce a result. The JavaScript runtime must fully resolve <code>fibonacci(n - 1)</code> (itself potentially triggering many more calls), then fully resolve <code>fibonacci(n - 2)</code>, and only then can it add the two results together and return from the current frame.</p>
+
+<p>This distinguishes Fibonacci recursion sharply from simpler recursive functions like computing a factorial. A factorial function makes only <em>one</em> recursive call per invocation:</p>
+
+<pre><code>function factorial(n) {
+  if (n === 0) return 1;
+  return n * factorial(n - 1); // only ONE recursive call
+}
+</code></pre>
+
+<p>The factorial call chain is a straight line — each frame waits for exactly one child to return. Fibonacci, on the other hand, creates a <em>branching tree</em> of calls because each frame spawns two children. This branching is what gives Fibonacci its distinctive performance characteristics and makes it an important case study.</p>
+
+<p><strong>How the Call Stack Grows with Two Recursive Calls</strong></p>
+
+<p>To understand why two recursive calls per invocation is significant, it helps to visualize the <em>call tree</em> that forms when <code>fibonacci(n)</code> is evaluated. Each node in the tree represents one function invocation. Each non-base-case node has exactly two children: one for <code>fibonacci(n - 1)</code> and one for <code>fibonacci(n - 2)</code>. Leaf nodes are the base cases that return 0 or 1 without branching further.</p>
+
+<p>Consider <code>fibonacci(5)</code>. The call tree begins to expand like this:</p>
+
+<pre><code>fibonacci(5)
+├── fibonacci(4)
+│   ├── fibonacci(3)
+│   │   ├── fibonacci(2)
+│   │   │   ├── fibonacci(1)  → 1
+│   │   │   └── fibonacci(0)  → 0
+│   │   └── fibonacci(1)      → 1
+│   └── fibonacci(2)
+│       ├── fibonacci(1)      → 1
+│       └── fibonacci(0)      → 0
+└── fibonacci(3)
+    ├── fibonacci(2)
+    │   ├── fibonacci(1)      → 1
+    │   └── fibonacci(0)      → 0
+    └── fibonacci(1)          → 1
+</code></pre>
+
+<p>Two important structural properties emerge from this tree:</p>
+
+<ul>
+  <li><strong>The depth of the call stack at any moment equals n.</strong> The deepest branch descends from <code>fibonacci(n)</code> all the way down by subtracting 1 at each step until it reaches <code>fibonacci(0)</code> or <code>fibonacci(1)</code>. That path has exactly <em>n</em> frames deep. This means for <code>fibonacci(50)</code>, the call stack could hold up to 50 frames simultaneously — manageable in terms of stack depth, but the <em>total number of calls</em> is what becomes problematic.</li>
+  <li><strong>The total number of calls grows exponentially.</strong> Because each node doubles the work, the tree has roughly 2<sup>n</sup> nodes in total. For <code>fibonacci(5)</code> the tree is already 15 nodes. For <code>fibonacci(30)</code> it grows to over a billion calls.</li>
+</ul>
+
+<p>At any given moment during execution, the JavaScript engine holds only the frames along one active path from root to leaf — not the entire tree at once. But the engine must visit every node eventually, which is what drives the total execution time upward so dramatically.</p>
+
+<p><strong>Performance Trade-offs of Naive Recursive Fibonacci</strong></p>
+
+<p>The naive recursive implementation of Fibonacci is elegant and easy to understand, but it is severely inefficient for large values of <em>n</em>. The core problem is <em>redundant computation</em>: the same subproblems are solved over and over again across different branches of the call tree.</p>
+
+<p>Look again at the call tree for <code>fibonacci(5)</code>. Notice that <code>fibonacci(2)</code> appears <em>three times</em>, <code>fibonacci(3)</code> appears <em>twice</em>, and <code>fibonacci(1)</code> and <code>fibonacci(0)</code> appear multiple times. Every single one of these repeated calls does the full work of recomputing the result from scratch. As <em>n</em> grows, the redundancy multiplies catastrophically.</p>
+
+<p>The time complexity of naive recursive Fibonacci is <strong>O(2<sup>n</sup>)</strong>. This is an exponential growth rate, which is among the worst possible. To put it in concrete terms:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>n</th>
+      <th>Approximate number of calls</th>
+      <th>Approximate time (relative)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>5</td>
+      <td>15</td>
+      <td>Instant</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>177</td>
+      <td>Instant</td>
+    </tr>
+    <tr>
+      <td>20</td>
+      <td>~21,891</td>
+      <td>Instant</td>
+    </tr>
+    <tr>
+      <td>30</td>
+      <td>~2,692,537</td>
+      <td>Milliseconds</td>
+    </tr>
+    <tr>
+      <td>40</td>
+      <td>~331,160,281</td>
+      <td>Seconds</td>
+    </tr>
+    <tr>
+      <td>50</td>
+      <td>~40,730,022,147</td>
+      <td>Minutes to hours</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Each increment of <em>n</em> roughly doubles the number of calls. This doubling behavior is the hallmark of O(2<sup>n</sup>) complexity. By contrast, a well-optimized iterative or memoized approach computes <code>fibonacci(n)</code> in O(n) time — linear rather than exponential — by ensuring each subproblem is computed only once.</p>
+
+<p>The space complexity of naive recursive Fibonacci is <strong>O(n)</strong> because, at any one moment, the deepest live call chain holds at most <em>n</em> frames on the call stack simultaneously. Although the total work is exponential, the memory footprint at any instant is only linear — each frame along the currently active path occupies stack space, and once a branch resolves, its frames are popped.</p>
+
+<p>Recognizing these trade-offs — exponential time complexity due to redundant recomputation — is the primary motivation for studying optimization strategies. <strong>Memoization</strong> wraps the recursive function with a cache so that once <code>fibonacci(k)</code> is computed for any <em>k</em>, the result is stored and returned immediately on any subsequent call with the same argument. An <strong>iterative approach</strong> eliminates recursion entirely, computing the sequence from the bottom up using a simple loop with two variables. Both strategies reduce the time complexity to O(n) and the space complexity to O(1) for the iterative version.</p>
+
+<p><strong>Tracing a Small Fibonacci Example by Hand</strong></p>
+
+<p>Walking through <code>fibonacci(4)</code> step by step is one of the clearest ways to build an intuition for how two-branch recursion works and how results bubble back up through the call stack.</p>
+
+<p>Start by calling <code>fibonacci(4)</code>. Since 4 is neither 0 nor 1, the function cannot return immediately. It must first evaluate <code>fibonacci(3)</code> and then <code>fibonacci(2)</code>, and finally sum those results. So <code>fibonacci(4)</code> is pushed onto the call stack and pauses, waiting.</p>
+
+<pre><code>fibonacci(4) is called → needs fibonacci(3) + fibonacci(2)
+  fibonacci(3) is called → needs fibonacci(2) + fibonacci(1)
+    fibonacci(2) is called → needs fibonacci(1) + fibonacci(0)
+      fibonacci(1) is called → BASE CASE → returns 1
+      fibonacci(0) is called → BASE CASE → returns 0
+    fibonacci(2) returns 1 + 0 = 1
+    fibonacci(1) is called → BASE CASE → returns 1
+  fibonacci(3) returns 1 + 1 = 2
+  fibonacci(2) is called → needs fibonacci(1) + fibonacci(0)
+    fibonacci(1) is called → BASE CASE → returns 1
+    fibonacci(0) is called → BASE CASE → returns 0
+  fibonacci(2) returns 1 + 0 = 1
+fibonacci(4) returns 2 + 1 = 3
+</code></pre>
+
+<p>Let's count the calls made: <code>fibonacci(4)</code> once, <code>fibonacci(3)</code> once, <code>fibonacci(2)</code> twice, <code>fibonacci(1)</code> three times, <code>fibonacci(0)</code> twice — a total of 9 function invocations just to compute the 4th Fibonacci number. Already the redundancy is visible: <code>fibonacci(2)</code> is computed independently twice, and <code>fibonacci(1)</code> is computed three separate times.</p>
+
+<p>The final answer bubbles up as follows. The deepest base cases return first, passing their values 1 and 0 back up to their parent <code>fibonacci(2)</code> frame, which sums them to get 1. That 1 travels up to <code>fibonacci(3)</code>, which also receives a 1 from its <code>fibonacci(1)</code> base case, summing to 2. Meanwhile, the second independent call to <code>fibonacci(2)</code> goes through the same base-case resolution and returns 1. Finally, <code>fibonacci(4)</code> receives its two resolved children — 2 from <code>fibonacci(3)</code> and 1 from <code>fibonacci(2)</code> — and returns their sum: <strong>3</strong>.</p>
+
+<p>This trace confirms that <code>fibonacci(4) = 3</code>, which matches the sequence: 0, 1, 1, 2, <strong>3</strong>. The exercise also vividly illustrates the key mechanics of two-branch recursion: calls expand outward and downward building up a tree of pending frames, base cases resolve first, and then results cascade back upward through each waiting frame until the original call finally obtains the values it needed and can complete.</p>
+        <div class="notes"><strong>Notes</strong>Students often find it helpful to draw the call tree on paper before tracing the code. Encourage them to count total function calls vs. unique subproblems to make the redundancy of naive recursion concrete. The comparison table of call counts for different values of n is a powerful visual motivator for understanding why memoization or iterative approaches matter.</div>
+      </div>
+    </details>
+  </main>
+</body></html>

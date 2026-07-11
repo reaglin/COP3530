@@ -1,0 +1,263 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Queues vs. Stacks: A Comparison</title>
+  <style>
+:root {
+    --bg:         #ffffff;
+    --surface:    #f8f9fa;
+    --border:     #dee2e6;
+    --accent:     #2563eb;
+    --accent-bg:  #eff6ff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --bullet-bg:  #f1f5f9;
+    --notes-bg:   #fefce8;
+    --notes-border:#fbbf24;
+    --code-bg:    #f8fafc;
+    --code-border:#e2e8f0;
+    --radius:     8px;
+    --shadow:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; margin: 0; padding: 0; }
+header { background: var(--accent); color: #fff; padding: 2.5rem 2rem 2rem; }
+header h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 700; }
+header p  { margin: 0; opacity: .85; font-size: .95rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; box-shadow: var(--shadow); overflow: hidden; }
+.slide-header { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.25rem; cursor: pointer; user-select: none; background: var(--accent-bg); border-bottom: 1px solid var(--border); }
+.slide-header:hover { background: #dbeafe; }
+.slide-num { background: var(--accent); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.slide-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); flex: 1; }
+.chevron { transition: transform .25s; font-size: .8rem; color: var(--muted); }
+.slide-body { padding: 1.25rem; display: none; }
+.slide-body.open { display: block; }
+.bullets { list-style: none; margin: 0 0 1rem; padding: 0; }
+.bullets li { background: var(--bullet-bg); border-radius: 6px; padding: .55rem .9rem; margin-bottom: .4rem; display: flex; gap: .6rem; align-items: flex-start; }
+.bullets li::before { content: "•"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+.notes { background: var(--notes-bg); border-left: 3px solid var(--notes-border); border-radius: 0 6px 6px 0; padding: .75rem 1rem; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+.notes strong { display: block; margin-bottom: .25rem; color: #92400e; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+/* Document layout */
+.doc-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.doc-section:last-child { border-bottom: none; }
+.doc-section h2 { color: var(--accent); font-size: 1.4rem; margin: 0 0 1rem; display: flex; gap: .75rem; align-items: center; }
+pre, code { font-family: 'Cascadia Code', 'Consolas', monospace; }
+pre { background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 1rem; overflow-x: auto; white-space: pre; line-height: 1.5; font-size: .9rem; }
+  </style>
+  <style>
+    body { padding-left: 1.1rem; padding-right: 1.1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid rgba(128,128,128,.45); padding: .45em .7em; text-align: left; vertical-align: top; }
+    thead th { background: rgba(128,128,128,.18); font-weight: 600; }
+    tbody tr:nth-child(even) { background: rgba(128,128,128,.08); }
+  </style>
+  <style>
+    summary.slide-header { list-style: none; }
+    summary.slide-header::-webkit-details-marker { display: none; }
+    details.slide-card[open] > .slide-body { display: block; }
+    details.slide-card[open] .chevron { transform: rotate(90deg); }
+    @media print { details.slide-card > .slide-body { display: block !important; } .chevron { display: none; } }
+  </style>
+</head><body>
+  <header>
+    <h1>Queues vs. Stacks: A Comparison</h1>
+  </header><main>
+    <details class="slide-card" open>
+      <summary class="slide-header"><span class="slide-num">1</span><h2>Queues vs. Stacks: A Comparison</h2><span class="chevron">▶</span></summary>
+      <div class="slide-body">
+        <p>Two of the most fundamental data structures in computer science are the <strong>queue</strong> and the <strong>stack</strong>. On the surface they look deceptively similar: both are linear collections that store a sequence of elements, both expose a small, clean interface, and both are used constantly in algorithms and system design. Yet a single, decisive difference in how each structure orders its elements gives rise to entirely separate families of problems for which each is the natural — and often the only correct — choice. Understanding that difference deeply, rather than merely memorizing it, is what allows a programmer to reach for the right tool instinctively.</p>
+
+<p>At the heart of everything is the <strong>ordering principle</strong>. A <strong>queue</strong> follows <em>First-In, First-Out</em> (FIFO): whichever element entered the collection earliest is the first one to leave it. Think of a line of customers at a checkout counter — the person who joined the line first is served first, and newcomers wait at the back. A <strong>stack</strong> follows <em>Last-In, First-Out</em> (LIFO): whichever element was added most recently is the first one removed. Think of a stack of plates — you always take the plate from the top, which is the one most recently placed there. Every other distinction between queues and stacks — the names of their operations, how they must be implemented, and the problems they solve naturally — flows directly from this single difference in ordering.</p>
+
+<p>Choosing the wrong ordering principle for a problem is not merely a style issue; it produces <em>logically incorrect behavior</em>. If you use a stack where a queue is required, earlier arrivals get processed last. If you use a queue where a stack is required, the most recent context is buried beneath older entries instead of being immediately accessible. Bugs of this kind are often subtle because the program may still run without crashing — it just produces wrong answers or explores the wrong paths.</p>
+
+<p>The <strong>core operations</strong> of each structure reflect its ordering principle directly. A queue exposes two primary mutating operations:</p>
+<ul>
+  <li><strong>Enqueue</strong> — adds an element to the <em>rear</em> (also called the tail or back) of the queue.</li>
+  <li><strong>Dequeue</strong> — removes and returns the element at the <em>front</em> (also called the head) of the queue.</li>
+</ul>
+
+<p>A stack exposes two analogous mutating operations:</p>
+<ul>
+  <li><strong>Push</strong> — adds an element to the <em>top</em> of the stack.</li>
+  <li><strong>Pop</strong> — removes and returns the element at the <em>top</em> of the stack.</li>
+</ul>
+
+<p>Notice the asymmetry: in a queue, enqueue and dequeue act on <em>opposite ends</em>, while in a stack, push and pop both act on the <em>same end</em>. Beyond these mutating operations, both structures share a common set of read-only and utility operations that make their interfaces equally minimal:</p>
+
+<ul>
+  <li><strong>Peek / Front / Top</strong> — inspects the next element to be removed without actually removing it. In a queue this shows the front element; in a stack it shows the top element.</li>
+  <li><strong>isEmpty</strong> — returns <code>true</code> if the collection contains no elements.</li>
+  <li><strong>Size</strong> — returns the number of elements currently stored.</li>
+</ul>
+
+<p>The following table summarizes these operational differences side by side:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Aspect</th>
+      <th>Queue</th>
+      <th>Stack</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Ordering principle</td>
+      <td>FIFO — First-In, First-Out</td>
+      <td>LIFO — Last-In, First-Out</td>
+    </tr>
+    <tr>
+      <td>Add operation</td>
+      <td><code>enqueue</code> (to the rear)</td>
+      <td><code>push</code> (to the top)</td>
+    </tr>
+    <tr>
+      <td>Remove operation</td>
+      <td><code>dequeue</code> (from the front)</td>
+      <td><code>pop</code> (from the top)</td>
+    </tr>
+    <tr>
+      <td>Inspect without removing</td>
+      <td><code>peek</code> / <code>front</code></td>
+      <td><code>peek</code> / <code>top</code></td>
+    </tr>
+    <tr>
+      <td>Active end(s)</td>
+      <td>Two ends (front and rear)</td>
+      <td>One end (top)</td>
+    </tr>
+    <tr>
+      <td>Implementation complexity</td>
+      <td>Higher — must manage two ends efficiently</td>
+      <td>Lower — single pointer or index suffices</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The difference in <strong>points of access</strong> has a direct impact on how each structure is implemented. A stack needs to track only a single position — the top — so a simple array with an integer index, or a singly linked list with a head pointer, is entirely sufficient. Every operation is O(1) and the bookkeeping is minimal.</p>
+
+<p>A queue, however, requires efficient access at <em>both</em> ends simultaneously. A naive array-based implementation that always removes from index 0 forces every remaining element to shift left, producing O(n) dequeue operations — unacceptable for high-throughput use cases. Two practical solutions exist:</p>
+<ul>
+  <li><strong>Circular array (ring buffer)</strong> — the array is treated as if its last index wraps back around to index 0. Two indices, <code>front</code> and <code>rear</code>, advance through the array using modular arithmetic. Both enqueue and dequeue remain O(1).</li>
+  <li><strong>Singly linked list with head and tail pointers</strong> — <code>enqueue</code> appends to the tail (O(1)) and <code>dequeue</code> removes from the head (O(1)). This avoids wasted space and the wraparound bookkeeping of a circular array.</li>
+</ul>
+
+<p>A concrete illustration helps make the ordering principles tangible. Suppose four tasks — A, B, C, D — arrive in that order and are processed one at a time.</p>
+
+<p><strong>Using a queue (FIFO):</strong></p>
+<pre><code>Enqueue A → [A]
+Enqueue B → [A, B]
+Enqueue C → [A, B, C]
+Enqueue D → [A, B, C, D]
+
+Dequeue → A  (oldest element removed first)
+Dequeue → B
+Dequeue → C
+Dequeue → D
+Processing order: A, B, C, D  ← same as arrival order</code></pre>
+
+<p><strong>Using a stack (LIFO):</strong></p>
+<pre><code>Push A → [A]
+Push B → [A, B]
+Push C → [A, B, C]
+Push D → [A, B, C, D]  ← D is at the top
+
+Pop → D  (most recent element removed first)
+Pop → C
+Pop → B
+Pop → A
+Processing order: D, C, B, A  ← reverse of arrival order</code></pre>
+
+<p>This reversal is not a defect of stacks — it is precisely the property that makes them powerful for the right class of problems.</p>
+
+<p>The <strong>use cases best suited to queues</strong> share a common theme: <em>arrival order must be respected</em>.</p>
+<ul>
+  <li><strong>Task scheduling and job queues.</strong> Operating systems and print spoolers use FIFO queues so that the first process or document submitted is the first to receive CPU time or paper. Fairness demands that earlier arrivals are not indefinitely displaced by later ones — a property guaranteed by FIFO but violated by LIFO.</li>
+  <li><strong>Buffering in data streams.</strong> Keyboard input, audio samples, and network packets arrive at unpredictable rates. A queue buffers them in arrival order so the consumer always processes them in the correct sequence. Reversing that order — as a stack would — would garble keystrokes and corrupt data.</li>
+  <li><strong>Breadth-first search (BFS).</strong> BFS explores a graph level by level: all nodes at distance 1 from the source are visited before any node at distance 2. This is achieved by enqueuing each newly discovered neighbor and dequeuing from the front. Because FIFO ensures the oldest discovery is processed next, the wavefront expands outward evenly. Substituting a stack converts BFS into DFS, which explores one deep path before backtracking — a fundamentally different traversal.</li>
+  <li><strong>Waiting-line simulations.</strong> Discrete-event simulations of call centers, hospital triage, or checkout lanes model arrivals and departures as events on a queue. The semantics of the real-world system map directly onto queue semantics.</li>
+</ul>
+
+<p>The <strong>use cases best suited to stacks</strong> share a different common theme: <em>the most recently seen context is the most immediately relevant</em>.</p>
+<ul>
+  <li><strong>Function call management (the call stack).</strong> When a program calls a function, the runtime pushes a <em>stack frame</em> containing the return address, local variables, and parameters onto the call stack. When the function returns, its frame is popped and control resumes at the return address of the frame now on top — which is exactly the function that made the call. This nesting structure is inherently LIFO: the most recently called function must finish before the caller can continue. A queue could not model this correctly.</li>
+  <li><strong>Undo and redo functionality.</strong> Every action performed by the user is pushed onto an undo stack. Pressing Undo pops the most recent action and reverses it. Pressing Redo pops from a separate redo stack. The LIFO order ensures actions are undone in reverse chronological sequence, which is exactly what users expect.</li>
+  <li><strong>Expression parsing and evaluation.</strong> Checking whether parentheses, brackets, and braces are balanced requires a stack: opening symbols are pushed; each closing symbol is compared against the top of the stack, which must be its matching opener. Similarly, converting an infix expression like <code>3 + 4 * 2</code> to postfix (Reverse Polish Notation) uses a stack to hold operators according to precedence. A queue cannot provide the "most recently seen unmatched opener" without additional bookkeeping.</li>
+  <li><strong>Iterative depth-first search (DFS).</strong> Recursive DFS implicitly uses the call stack. An iterative version replaces that implicit stack with an explicit one: push the starting node, then repeatedly pop a node, process it, and push its unvisited neighbors. Because the most recently pushed neighbor is explored first, the algorithm dives deep along one path before backtracking — exactly DFS behavior.</li>
+</ul>
+
+<p>Having understood both structures in detail, the practical question becomes: <strong>how do you select the right structure for a given problem?</strong> A reliable decision process focuses on the required processing order:</p>
+<ul>
+  <li>Ask: <em>"Does the order in which items arrive matter, and must that order be preserved during processing?"</em> If yes — if fairness, sequencing, or level-by-level exploration is required — choose a <strong>queue</strong>.</li>
+  <li>Ask: <em>"Does solving the current step require undoing or revisiting the most recent decision, or does the problem involve nested structure where inner layers must be resolved before outer ones?"</em> If yes — backtracking, reversal, call management, balanced-bracket checking — choose a <strong>stack</strong>.</li>
+  <li>Some problems require elements to be efficiently added or removed from <em>both</em> ends with no fixed ordering preference. These call for a <strong>deque</strong> (double-ended queue), which generalizes both structures. A deque can simulate a stack (by using only one end) or a queue (by adding to one end and removing from the other) and is the right choice when neither pure FIFO nor pure LIFO suffices.</li>
+</ul>
+
+<p>A common class of interview and coursework problems deliberately tests this decision-making ability. For example: <em>"Implement a queue using two stacks."</em> One stack receives all enqueued elements. When a dequeue is needed, if the second stack is empty, all elements from the first stack are poured into it — reversing their order — so the bottom of the first stack (the oldest element) becomes the top of the second. This exploits the fact that two reversals cancel out, restoring FIFO order from LIFO storage. The inverse problem — implementing a stack using two queues — is trickier and less efficient, which itself illustrates that stacks and queues are not interchangeable abstractions.</p>
+
+<p>The following table consolidates the use-case guidance:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Problem Characteristic</th>
+      <th>Appropriate Structure</th>
+      <th>Reason</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Process items in arrival order</td>
+      <td>Queue</td>
+      <td>FIFO preserves arrival sequence</td>
+    </tr>
+    <tr>
+      <td>Fairness / no starvation of early arrivals</td>
+      <td>Queue</td>
+      <td>FIFO guarantees earlier items are served first</td>
+    </tr>
+    <tr>
+      <td>Level-by-level graph traversal (BFS)</td>
+      <td>Queue</td>
+      <td>Oldest discovered nodes processed before newer ones</td>
+    </tr>
+    <tr>
+      <td>Buffering ordered data streams</td>
+      <td>Queue</td>
+      <td>Preserves original sequence of arriving data</td>
+    </tr>
+    <tr>
+      <td>Function call / return management</td>
+      <td>Stack</td>
+      <td>Most recent call must finish before caller resumes (LIFO)</td>
+    </tr>
+    <tr>
+      <td>Undo / redo of user actions</td>
+      <td>Stack</td>
+      <td>Most recent action reversed first (LIFO)</td>
+    </tr>
+    <tr>
+      <td>Balanced bracket / parenthesis checking</td>
+      <td>Stack</td>
+      <td>Most recent unmatched opener is needed immediately</td>
+    </tr>
+    <tr>
+      <td>Deep-path graph traversal (DFS)</td>
+      <td>Stack</td>
+      <td>Most recently discovered node explored first (LIFO)</td>
+    </tr>
+    <tr>
+      <td>Efficient insertion and removal at both ends</td>
+      <td>Deque</td>
+      <td>Generalizes both FIFO and LIFO</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>In summary, queues and stacks are distinguished entirely by their ordering principle — FIFO versus LIFO — and every aspect of their design, implementation, and appropriate application follows from that single difference. Queues shine wherever arrival order must be honored and fairness enforced. Stacks shine wherever the most recent context is the most immediately relevant and problems exhibit natural nesting or reversal. Recognizing which ordering principle a problem implicitly requires — before writing a single line of code — is one of the clearest marks of sound algorithmic thinking.</p>
+        <div class="notes"><strong>Notes</strong>The topic covers all listed subtopics: FIFO vs. LIFO ordering principles, core operations compared (enqueue/dequeue vs. push/pop, peek, isEmpty, size), points of access and implementation implications (circular array, linked list), use cases for queues (scheduling, buffering, BFS, simulations), use cases for stacks (call stack, undo/redo, expression parsing, iterative DFS), and selection guidance including deques and the dual-stack/dual-queue trick. Two summary tables are included for quick reference.</div>
+      </div>
+    </details>
+  </main>
+</body></html>

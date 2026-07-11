@@ -1,0 +1,11 @@
+﻿{
+  "Artifacts": [
+    {
+      "Path": "output/ext_f7ebc594.html",
+      "DisplayName": "Google Maps is unreasonably fast. Let me explain",
+      "Kind": "Video",
+      "Description": "This Veritasium video explores the mathematical and algorithmic principles behind how Google Maps computes routes so efficiently. It examines the graph-based representation of road networks and the optimization strategies that make real-time pathfinding feasible at massive scale. The video connects foundational graph theory to a widely recognized, high-impact real-world application.",
+      "AddedUtc": "2026-07-10T20:08:15.7238692Z"
+    }
+  ]
+}
