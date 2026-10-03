@@ -1,428 +1,179 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Computational Complexity: Deep Dive into Analysis — COP3530</title>
-  <style>
-    /* ── Reset & Base ── */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --color-bg:          #f4f6f9;
-      --color-surface:     #ffffff;
-      --color-border:      #dde2ea;
-      --color-primary:     #1a4f8a;
-      --color-primary-dk:  #133a66;
-      --color-accent:      #2e7fd4;
-      --color-accent-lt:   #e8f1fb;
-      --color-text:        #1e2430;
-      --color-muted:       #5a6577;
-      --color-tag-bg:      #eef2f8;
-      --color-tag-text:    #3a4d6b;
-      --color-ft-bg:       #f0f4f0;
-      --color-ft-text:     #2e5c2e;
-      --radius:            8px;
-      --shadow:            0 2px 8px rgba(0,0,0,0.08);
-      --shadow-hover:      0 6px 18px rgba(0,0,0,0.13);
-      --font:              'Segoe UI', system-ui, -apple-system, sans-serif;
-      --transition:        0.18s ease;
-    }
-
-    body {
-      font-family: var(--font);
-      background: var(--color-bg);
-      color: var(--color-text);
-      line-height: 1.6;
-      min-height: 100vh;
-    }
-
-    /* ── Header Banner ── */
-    .site-header {
-      background: linear-gradient(135deg, var(--color-primary-dk) 0%, var(--color-primary) 60%, #2563a8 100%);
-      color: #fff;
-      padding: 2.5rem 1.5rem 2rem;
-    }
-
-    .header-inner {
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-
-    .course-label {
-      display: inline-block;
-      font-size: 0.78rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      background: rgba(255,255,255,0.15);
-      border: 1px solid rgba(255,255,255,0.25);
-      color: #d6e8ff;
-      padding: 0.25rem 0.75rem;
-      border-radius: 20px;
-      margin-bottom: 0.85rem;
-    }
-
-    .site-header h1 {
-      font-size: clamp(1.5rem, 3vw, 2.2rem);
-      font-weight: 700;
-      line-height: 1.25;
-      margin-bottom: 0.9rem;
-      letter-spacing: -0.01em;
-    }
-
-    .site-header p {
-      font-size: 1rem;
-      color: #c8dcf5;
-      max-width: 720px;
-      line-height: 1.65;
-    }
-
-    /* ── Main Content ── */
-    main {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 2.5rem 1.5rem 3.5rem;
-    }
-
-    .section-label {
-      font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--color-muted);
-      margin-bottom: 1.2rem;
-      padding-bottom: 0.5rem;
-      border-bottom: 2px solid var(--color-border);
-    }
-
-    /* ── Card Grid ── */
-    .card-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 1.25rem;
-    }
-
-    .card {
-      background: var(--color-surface);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 1.4rem 1.5rem 1.35rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.65rem;
-      transition: box-shadow var(--transition), transform var(--transition), border-color var(--transition);
-    }
-
-    .card:hover {
-      box-shadow: var(--shadow-hover);
-      transform: translateY(-2px);
-      border-color: #b8cde8;
-    }
-
-    /* Card top row: tags */
-    .card-meta {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-    }
-
-    .tag {
-      font-size: 0.7rem;
-      font-weight: 600;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      padding: 0.2rem 0.6rem;
-      border-radius: 4px;
-    }
-
-    .tag-type {
-      background: var(--color-tag-bg);
-      color: var(--color-tag-text);
-      border: 1px solid #c8d5ea;
-    }
-
-    .tag-filetype {
-      background: var(--color-ft-bg);
-      color: var(--color-ft-text);
-      border: 1px solid #bfd4bf;
-      font-family: 'Courier New', Courier, monospace;
-    }
-
-    /* Card name / title row */
-    .card-title-row {
-      display: flex;
-      align-items: baseline;
-      flex-wrap: wrap;
-      gap: 0.5rem 0.75rem;
-    }
-
-    .card-name {
-      font-size: 1.02rem;
-      font-weight: 700;
-      color: var(--color-text);
-      line-height: 1.3;
-    }
-
-    .card-name a {
-      color: var(--color-accent);
-      text-decoration: none;
-      transition: color var(--transition);
-    }
-
-    .card-name a:hover,
-    .card-name a:focus {
-      color: var(--color-primary-dk);
-      text-decoration: underline;
-    }
-
-    .card-name a:focus-visible {
-      outline: 2px solid var(--color-accent);
-      outline-offset: 2px;
-      border-radius: 2px;
-    }
-
-    .source-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.3rem;
-      font-size: 0.73rem;
-      font-weight: 600;
-      color: var(--color-muted);
-      text-decoration: none;
-      border: 1px solid var(--color-border);
-      background: var(--color-bg);
-      padding: 0.15rem 0.55rem;
-      border-radius: 4px;
-      white-space: nowrap;
-      transition: background var(--transition), color var(--transition), border-color var(--transition);
-      flex-shrink: 0;
-    }
-
-    .source-link:hover,
-    .source-link:focus {
-      background: var(--color-accent-lt);
-      color: var(--color-accent);
-      border-color: #a0c0e8;
-      text-decoration: none;
-    }
-
-    .source-link:focus-visible {
-      outline: 2px solid var(--color-accent);
-      outline-offset: 2px;
-    }
-
-    .source-link svg {
-      flex-shrink: 0;
-    }
-
-    /* Card description */
-    .card-desc {
-      font-size: 0.88rem;
-      color: var(--color-muted);
-      line-height: 1.6;
-      flex: 1;
-    }
-
-    /* Divider line inside card */
-    .card-divider {
-      border: none;
-      border-top: 1px solid var(--color-border);
-      margin: 0.1rem 0 0;
-    }
-
-    /* ── Footer ── */
-    .site-footer {
-      text-align: center;
-      padding: 1.5rem 1rem;
-      font-size: 0.8rem;
-      color: #8a95a5;
-      border-top: 1px solid var(--color-border);
-      background: var(--color-surface);
-    }
-
-    /* ── Responsive ── */
-    @media (max-width: 600px) {
-      .site-header { padding: 2rem 1rem 1.75rem; }
-      main { padding: 1.75rem 1rem 3rem; }
-      .card-grid { grid-template-columns: 1fr; }
-      .card { padding: 1.2rem 1.2rem 1.15rem; }
-    }
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Computational Complexity: Deep Dive into Analysis — COP3530 - Data Structures</title>
+  <link rel="stylesheet" href="../assets/site.css">
 </head>
 <body>
-<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ COP3530 - Data Structures</a></div>
-<div style="border:1px solid #c9d4e3;background:#f5f8fc;border-radius:8px;padding:10px 16px;margin:0 0 18px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;font-family:'Segoe UI',Arial,sans-serif"><strong style="color:#1a3c6e">Module outline:</strong><a href="topics-outcomes.html#topics" style="color:#1a3c6e;font-weight:600;text-decoration:none">📋 Module Topics</a><a href="topics-outcomes.html#outcomes" style="color:#137333;font-weight:600;text-decoration:none">🎯 Student Learning Outcomes</a></div>
-
-  <header class="site-header" role="banner">
-    <div class="header-inner">
-      <span class="course-label">COP3530 — Data Structures</span>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="hero">
+    <div class="hero-inner">
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="../index.html">COP3530 - Data Structures</a><span class="sep" aria-hidden="true">›</span><span class="current">Computational Complexity: Deep Dive into Analysis</span>
+  </nav>
+      <div class="hero-label">Module 7</div>
       <h1>Computational Complexity: Deep Dive into Analysis</h1>
-      <p>
-        This module provides a rigorous exploration of computational complexity, equipping learners
-        with the mathematical tools and analytical frameworks needed to evaluate algorithm efficiency.
-        Topics span Big O, Omega, and Theta notations, best/worst/average case reasoning, and the
-        practical software-engineering implications of asymptotic analysis.
-      </p>
+      <p class="hero-desc">This lesson provides an in-depth treatment of computational complexity theory, expanding on Big O notation to include best, worst, and average cases, as well as Omega and Theta notations. Students will analyze the complexity of algorithms encountered so far in the course.</p>
     </div>
   </header>
-
-  <main>
-    <p class="section-label">Module Artifacts &mdash; 9 items</p>
-
-    <div class="card-grid" role="list">
-
-      <!-- Card 1 -->
-      <article class="card" role="listitem">
-        <div class="card-meta">
-          <span class="tag tag-type">Module Topics</span>
-          <span class="tag tag-filetype">.json</span>
-        </div>
-        <div class="card-title-row">
-          <span class="card-name">
-            <a href="content/module_topics.html">Module Topics</a>
-          </span>
-          <a class="source-link" href="source/hierarchy.json" aria-label="Source file for Module Topics">
-            <svg width="11" height="11" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-              <path d="M13 10v3H3v-3H1v3a2 2 0 002 2h10a2 2 0 002-2v-3h-2zM8 1L4 5h3v6h2V5h3L8 1z" fill="currentColor"/>
-            </svg>
-            source file
-          </a>
-        </div>
-        <hr class="card-divider" />
-        <p class="card-desc">Covers computational complexity fundamentals including Big O notation, best/worst/average case analysis, and Omega notation, serving as a navigational outline that guides learners and instructors through the module's core topics in algorithm efficiency analysis.</p>
-      </article>
-
-      <!-- Card 2 -->
-      <article class="card" role="listitem">
-        <div class="card-meta">
-          <span class="tag tag-type">Topic Detail</span>
-          <span class="tag tag-filetype">.html</span>
-        </div>
-        <div class="card-title-row">
-          <span class="card-name">
-            <a href="content/Computational_Complexity_Dee_interactive_topics_t1.html">Foundations of Computational Complexity</a>
-          </span>
-        </div>
-        <hr class="card-divider" />
-        <p class="card-desc">This reading introduces computational complexity theory, explaining how and why resource usage (time, memory, bandwidth) scales with problem size, and serves as foundational background for learners beginning their study of algorithm analysis.</p>
-      </article>
-
-      <!-- Card 3 -->
-      <article class="card" role="listitem">
-        <div class="card-meta">
-          <span class="tag tag-type">Topic Detail</span>
-          <span class="tag tag-filetype">.html</span>
-        </div>
-        <div class="card-title-row">
-          <span class="card-name">
-            <a href="content/Computational_Complexity_Dee_interactive_topics_t2.html">Big O Notation Revisited</a>
-          </span>
-        </div>
-        <hr class="card-divider" />
-        <p class="card-desc">This reading revisits Big O notation as a mathematical tool for expressing how an algorithm's time or space consumption scales with input size, and learners use it to understand upper-bound analysis independent of hardware or implementation details.</p>
-      </article>
-
-      <!-- Card 4 -->
-      <article class="card" role="listitem">
-        <div class="card-meta">
-          <span class="tag tag-type">Topic Detail</span>
-          <span class="tag tag-filetype">.html</span>
-        </div>
-        <div class="card-title-row">
-          <span class="card-name">
-            <a href="content/Computational_Complexity_Dee_interactive_topics_t3.html">Best, Worst, and Average Case Analysis</a>
-          </span>
-        </div>
-        <hr class="card-divider" />
-        <p class="card-desc">This reading explains how best, worst, and average case analysis capture the range of an algorithm's performance depending on input characteristics, and learners use it to develop a nuanced understanding of why a single complexity figure may not tell the full story.</p>
-      </article>
-
-      <!-- Card 5 -->
-      <article class="card" role="listitem">
-        <div class="card-meta">
-          <span class="tag tag-type">Topic Detail</span>
-          <span class="tag tag-filetype">.html</span>
-        </div>
-        <div class="card-title-row">
-          <span class="card-name">
-            <a href="content/Computational_Complexity_Dee_interactive_topics_t4.html">Omega and Theta Notations</a>
-          </span>
-        </div>
-        <hr class="card-divider" />
-        <p class="card-desc">This reading introduces Omega (lower-bound) and Theta (tight-bound) notations alongside Big O, and learners use it to describe algorithm performance from multiple perspectives and identify when a bound is as precise as possible.</p>
-      </article>
-
-      <!-- Card 6 -->
-      <article class="card" role="listitem">
-        <div class="card-meta">
-          <span class="tag tag-type">Topic Detail</span>
-          <span class="tag tag-filetype">.html</span>
-        </div>
-        <div class="card-title-row">
-          <span class="card-name">
-            <a href="content/Computational_Complexity_Dee_interactive_topics_t5.html">Comparing Asymptotic Notations</a>
-          </span>
-        </div>
-        <hr class="card-divider" />
-        <p class="card-desc">This reading compares Big O, Omega, and Theta notations side by side, clarifying when each is appropriate, and learners and instructors use it to consolidate understanding of the full asymptotic notation toolkit and how to select the right notation for a given analysis.</p>
-      </article>
-
-      <!-- Card 7 -->
-      <article class="card" role="listitem">
-        <div class="card-meta">
-          <span class="tag tag-type">Topic Detail</span>
-          <span class="tag tag-filetype">.html</span>
-        </div>
-        <div class="card-title-row">
-          <span class="card-name">
-            <a href="content/Computational_Complexity_Dee_interactive_topics_t6.html">Complexity Analysis of Known Algorithms</a>
-          </span>
-        </div>
-        <hr class="card-divider" />
-        <p class="card-desc">This reading walks through the complexity analysis of well-known algorithms (such as sorting and searching), and learners use it to practice deriving and interpreting time and space complexity for concrete, familiar examples.</p>
-      </article>
-
-      <!-- Card 8 -->
-      <article class="card" role="listitem">
-        <div class="card-meta">
-          <span class="tag tag-type">Topic Detail</span>
-          <span class="tag tag-filetype">.html</span>
-        </div>
-        <div class="card-title-row">
-          <span class="card-name">
-            <a href="content/Computational_Complexity_Dee_interactive_topics_t7.html">Practical Implications of Complexity</a>
-          </span>
-        </div>
-        <hr class="card-divider" />
-        <p class="card-desc">This reading connects complexity theory to real-world software engineering decisions about performance, scalability, and resource investment, and learners use it to understand how algorithmic analysis directly influences practical system design choices.</p>
-      </article>
-
-      <!-- Card 9 -->
-      <article class="card" role="listitem">
-        <div class="card-meta">
-          <span class="tag tag-type">Text Content</span>
-          <span class="tag tag-filetype">.html</span>
-        </div>
-        <div class="card-title-row">
-          <span class="card-name">
-            <a href="content/Computational_Complexity_Dee_interactive.html">Practical Implications of Complexity</a>
-          </span>
-        </div>
-        <hr class="card-divider" />
-        <p class="card-desc">This reading connects complexity theory to real-world software engineering decisions about performance, scalability, and resource investment, and learners use it to understand how algorithmic analysis directly influences practical system design choices.</p>
-      </article>
-
-    </div>
+  <main class="page-wrap" id="main">
+<section aria-labelledby="topics-h">
+<h2 id="topics-h">Topics</h2>
+<p class="section-intro">This module covers 7 topics. Open a topic to see its subtopics.</p>
+<ol class="topic-list">
+<li><a class="topic-card" href="topics-outcomes.html#topic-1"><span class="topic-num" aria-hidden="true">1</span><span class="topic-text"><span class="topic-title">Foundations of Computational Complexity</span><span class="topic-meta">6 subtopics</span></span></a></li>
+<li><a class="topic-card" href="topics-outcomes.html#topic-2"><span class="topic-num" aria-hidden="true">2</span><span class="topic-text"><span class="topic-title">Big O Notation Revisited</span><span class="topic-meta">6 subtopics</span></span></a></li>
+<li><a class="topic-card" href="topics-outcomes.html#topic-3"><span class="topic-num" aria-hidden="true">3</span><span class="topic-text"><span class="topic-title">Best, Worst, and Average Case Analysis</span><span class="topic-meta">6 subtopics</span></span></a></li>
+<li><a class="topic-card" href="topics-outcomes.html#topic-4"><span class="topic-num" aria-hidden="true">4</span><span class="topic-text"><span class="topic-title">Omega and Theta Notations</span><span class="topic-meta">6 subtopics</span></span></a></li>
+<li><a class="topic-card" href="topics-outcomes.html#topic-5"><span class="topic-num" aria-hidden="true">5</span><span class="topic-text"><span class="topic-title">Comparing Asymptotic Notations</span><span class="topic-meta">6 subtopics</span></span></a></li>
+<li><a class="topic-card" href="topics-outcomes.html#topic-6"><span class="topic-num" aria-hidden="true">6</span><span class="topic-text"><span class="topic-title">Complexity Analysis of Known Algorithms</span><span class="topic-meta">6 subtopics</span></span></a></li>
+<li><a class="topic-card" href="topics-outcomes.html#topic-7"><span class="topic-num" aria-hidden="true">7</span><span class="topic-text"><span class="topic-title">Practical Implications of Complexity</span><span class="topic-meta">6 subtopics</span></span></a></li>
+</ol>
+<p class="more-links"><a href="topics-outcomes.html#topics">All topics and subtopics</a><a href="topics-outcomes.html#outcomes">Student learning outcomes</a></p>
+</section>
+<section aria-labelledby="content-h">
+<h2 id="content-h">Module Content</h2>
+<p class="section-intro">16 items.</p>
+<ul class="content-grid">
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">📄</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topic Detail</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Computational_Complexity_Dee_interactive_topics_t1.html">Foundations of Computational Complexity</a></div>
+    <p class="content-desc">This reading introduces computational complexity theory, explaining how and why resource usage (time, memory, bandwidth) scales with problem size, and serves as foundational background for learners beginning their study of algorithm analysis.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">📄</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topic Detail</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Computational_Complexity_Dee_interactive_topics_t2.html">Big O Notation Revisited</a></div>
+    <p class="content-desc">This reading revisits Big O notation as a mathematical tool for expressing how an algorithm&#39;s time or space consumption scales with input size, and learners use it to understand upper-bound analysis independent of hardware or implementation details.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">📄</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topic Detail</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Computational_Complexity_Dee_interactive_topics_t3.html">Best, Worst, and Average Case Analysis</a></div>
+    <p class="content-desc">This reading explains how best, worst, and average case analysis capture the range of an algorithm&#39;s performance depending on input characteristics, and learners use it to develop a nuanced understanding of why a single complexity figure may not tell the full story.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">📄</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topic Detail</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Computational_Complexity_Dee_interactive_topics_t4.html">Omega and Theta Notations</a></div>
+    <p class="content-desc">This reading introduces Omega (lower-bound) and Theta (tight-bound) notations alongside Big O, and learners use it to describe algorithm performance from multiple perspectives and identify when a bound is as precise as possible.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">📄</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topic Detail</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Computational_Complexity_Dee_interactive_topics_t5.html">Comparing Asymptotic Notations</a></div>
+    <p class="content-desc">This reading compares Big O, Omega, and Theta notations side by side, clarifying when each is appropriate, and learners and instructors use it to consolidate understanding of the full asymptotic notation toolkit and how to select the right notation for a given analysis.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">📄</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topic Detail</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Computational_Complexity_Dee_interactive_topics_t6.html">Complexity Analysis of Known Algorithms</a></div>
+    <p class="content-desc">This reading walks through the complexity analysis of well-known algorithms (such as sorting and searching), and learners use it to practice deriving and interpreting time and space complexity for concrete, familiar examples.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">📄</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topic Detail</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Computational_Complexity_Dee_interactive_topics_t7.html">Practical Implications of Complexity</a></div>
+    <p class="content-desc">This reading connects complexity theory to real-world software engineering decisions about performance, scalability, and resource investment, and learners use it to understand how algorithmic analysis directly influences practical system design choices.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">📄</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Reading</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Computational_Complexity_Dee_interactive.html">Practical Implications of Complexity</a></div>
+    <p class="content-desc">This reading connects complexity theory to real-world software engineering decisions about performance, scalability, and resource investment, and learners use it to understand how algorithmic analysis directly influences practical system design choices.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">🎬</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topics and Embedded Video</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Computational_Complexity_Dee_t1_videos.html">Foundations of Computational Complexity — Videos</a></div>
+    <p class="content-desc">An introductory reading that defines computational complexity as the study of how time and space requirements scale with input size, teaching learners to count dominant operations instead of timing code so algorithms can be compared independently of hardware.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">🎬</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topics and Embedded Video</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Computational_Complexity_Dee_t2_videos.html">Big O Notation Revisited — Videos</a></div>
+    <p class="content-desc">A refresher lesson on Big O notation that explains how upper bounds on growth rate are derived and why they remain valid across machines, languages, and compilers, giving learners the core vocabulary for expressing algorithm efficiency.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">🎬</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topics and Embedded Video</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Computational_Complexity_Dee_t3_videos.html">Best, Worst, and Average Case Analysis — Videos</a></div>
+    <p class="content-desc">A reading that distinguishes best-, worst-, and average-case analysis using examples such as linear search, helping learners describe precisely how an algorithm&#39;s performance varies with different inputs.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">🎬</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topics and Embedded Video</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Computational_Complexity_Dee_t4_videos.html">Omega and Theta Notations — Videos</a></div>
+    <p class="content-desc">A lesson introducing Omega (lower bound) and Theta (tight bound) notations, explaining why Big O alone gives an incomplete picture and how to state growth rates more accurately.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">🎬</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topics and Embedded Video</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Computational_Complexity_Dee_t5_videos.html">Comparing Asymptotic Notations — Videos</a></div>
+    <p class="content-desc">A comparative reading that places Big O, Omega, and Theta side by side, clarifying when each bound is appropriate so learners can choose the right notation for a given analysis.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">🎬</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topics and Embedded Video</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Computational_Complexity_Dee_t6_videos.html">Complexity Analysis of Known Algorithms — Videos</a></div>
+    <p class="content-desc">An applied lesson that works through the complexity of familiar algorithms — linear search, binary search, bubble sort, selection sort, and merge sort — so learners practice deriving bounds rather than memorizing a table of results.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">🎬</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topics and Embedded Video</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Computational_Complexity_Dee_t7_videos.html">Practical Implications of Complexity — Videos</a></div>
+    <p class="content-desc">A reading on why complexity analysis matters in practice, showing how growth rates predict real program behavior at scale and guide engineering decisions about algorithm and data structure choice.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">🎬</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topics and Embedded Video</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Computational_Complexity_Dee_videos_merged.html">Computational Complexity: Deep Dive into Analysis — 7 topics (merged)</a></div>
+    <p class="content-desc">A consolidated full-module document compiling all topic readings from foundations through practical implications, usable as a single reference for review or as printable course notes.</p>
+  </div>
+</li>
+</ul>
+</section>
+<nav class="module-nav" aria-label="Modules">
+  <a href="../recursion-concepts-and-implementation/index.html">← Recursion: Concepts and Implementation</a>
+  <a class="center-link" href="../index.html">↑ All modules</a>
+  <a href="../sorting-algorithms-comparison-and-implementation/index.html">Sorting Algorithms: Comparison and Implementation →</a>
+</nav>
   </main>
-
-  <footer class="site-footer" role="contentinfo">
-    COP3530 &mdash; Data Structures &nbsp;|&nbsp; Computational Complexity: Deep Dive into Analysis
-  </footer>
-
-
-<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
-<section class="presemaker-extras" style="max-width:1000px;margin:2rem auto;padding:0 1rem;"><h2>Topics &amp; Learning Outcomes</h2><p><a href="topics-outcomes.html">View Topics &amp; Learning Outcomes</a></p></section><script src="embed-inject.js" defer></script></body>
+<script src="embed-inject.js" defer></script>
+<footer class="presemaker-credit" data-credit="2" style="margin-top:2rem;padding:14px 8px;border-top:1px solid #ddd;background:#fff;text-align:center;font:13px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#595959;"><svg width="20" height="20" viewBox="0 0 2048 2048" aria-hidden="true" focusable="false" style="vertical-align:-5px;margin-right:7px"><rect width="2048" height="2048" rx="384" fill="#0F6E6E"/><path fill="#0A5050" d="M1024 1000 344 832v816l680 168zm0 0 680-168v816l-680 168z"/><path fill="#fff" d="M1024 944 384 784v808l640 160zm0 0 640-160v808l-640 160z"/><rect x="1002" y="944" width="44" height="808" fill="#0F6E6E"/><rect x="936" y="246" width="176" height="448" rx="44" fill="#fff"/><rect x="800" y="382" width="448" height="176" rx="44" fill="#fff"/></svg>Created with <a href="https://softwareplus.ai/coursebuilder/" target="_blank" rel="noopener" style="color:#2f5d8f;font-weight:600;text-decoration:none;">CourseBuilder+</a><span aria-hidden="true"> · </span><a href="https://softwareplus.ai/" target="_blank" rel="noopener" style="color:#2f5d8f;text-decoration:none;">SoftwarePlus.ai</a></footer>
+</body>
 </html>

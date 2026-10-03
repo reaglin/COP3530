@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Complexity Analysis of Known Algorithms</title>
+<style>
+body{font-family:'Segoe UI',Arial,sans-serif;max-width:820px;margin:2rem auto;padding:0 1.25rem;color:#222;line-height:1.55}
+h1{font-size:1.9rem;border-bottom:2px solid #ddd;padding-bottom:.4rem}
+h2{font-size:1.3rem;color:#1f3864;margin-top:1.6rem}
+body{padding-left:1.1rem;padding-right:1.1rem}
+ul,ol{margin:.4rem 0 1rem 1.4rem}
+li{margin:.25rem 0}
+nav.toc{background:rgba(128,128,128,.08);border:1px solid rgba(128,128,128,.25);border-radius:8px;padding:.6rem 1rem;margin:1.2rem 0}
+nav.toc strong{display:block;margin-bottom:.3rem}
+nav.toc a{display:block;text-decoration:none;padding:.12rem 0}
+section.item{border-top:1px solid rgba(128,128,128,.22);padding-top:.3rem}
+table{border-collapse:collapse;width:100%;margin:.8rem 0}
+th,td{border:1px solid rgba(128,128,128,.45);padding:.4rem .6rem;text-align:left;vertical-align:top}
+thead th{background:rgba(128,128,128,.18);font-weight:600}
+tbody tr:nth-child(even){background:rgba(128,128,128,.08)}
+</style>
+</head>
+<body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Computational Complexity: Deep Dive into Analysis</a></div>
+<h1>Complexity Analysis of Known Algorithms</h1>
+<nav class="toc"><strong>Contents</strong>
+<a href="#sec1">Introduction</a>
+<a href="#sec2">Video 1: Binary search in 4 minutes</a>
+<a href="#sec3">Video 2: Sorting Algorithms Time and Space Complexity | Sorting Algorithms | Big-O | Geekific</a>
+<a href="#sec4">Video 3: Optimized Bubble Sort | Best Case | O(n) Time Complexity | Sorting Algorithms |DAA</a>
+<a href="#sec5">How These Videos Support the Learning Outcomes</a>
+<a href="#sec6">About These Videos</a>
+</nav>
+<section class="item" id="sec1">
+<h2>Introduction</h2>
+<p>So far in this course you have learned the vocabulary of asymptotic analysis — Big O, Omega, and Theta — and the mechanics of counting operations. This topic puts that vocabulary to work on algorithms you already know how to code: linear search, binary search, bubble sort, selection sort, and merge sort. The goal is not to memorize a table of complexities but to be able to reconstruct each result from the structure of the algorithm itself.</p>
+<p>That skill matters because the same handful of structural patterns reappear constantly. A single pass over n elements gives you O(n); a loop nested inside another loop over the same data gives you O(n^2); repeatedly halving a search space gives you O(log n); and splitting a problem in half and merging the results gives you O(n log n). Once you can recognize these patterns, you can analyze unfamiliar code without memorizing anything new.</p>
+<p>As you watch the videos below, pay attention to three things: which operation is being counted as the dominant one, how the count changes between the best, average, and worst case, and why a particular notation is chosen to report the result. Notice especially that an algorithm can have different best- and worst-case behavior — optimized bubble sort is the classic example — and that reporting only Big O hides that distinction. Try pausing each video and deriving the bound yourself before the presenter states it.</p>
+</section>
+<section class="item" id="sec2">
+<h2>Video 1: Binary search in 4 minutes</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/fDKIpRe8GW4?cc_load_policy=1&amp;rel=0" title="Video: Binary search in 4 minutes (Michael Sambol)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Michael Sambol</strong> · 4:00 · 249,492 views · 3y ago · captions — <a href="https://www.youtube.com/watch?v=fDKIpRe8GW4" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>A compact walkthrough of the binary search algorithm, covering how the search range is repeatedly halved against a sorted array and including a link to a Python implementation. Expect a trace of the algorithm on example data alongside a statement of its logarithmic running time.</p>
+<h3>Why this video</h3>
+<p>Binary search is the canonical example of the recursive-halving pattern, and this short, widely-viewed explanation from a well-known algorithms channel gives you a concrete mental model for why repeated halving yields O(log n) rather than O(n).</p>
+</section>
+<section class="item" id="sec3">
+<h2>Video 2: Sorting Algorithms Time and Space Complexity | Sorting Algorithms | Big-O | Geekific</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/UqmKiz2P0Lw?cc_load_policy=1&amp;rel=0" title="Video: Sorting Algorithms Time and Space Complexity | Sorting Algorithms | Big-O | Geekific (Geekific)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Geekific</strong> · 13:39 · 21,750 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=UqmKiz2P0Lw" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>A broader survey that collects the time and space complexities of the standard sorting algorithms and relates them to Big-O notation. Based on its title and series context, it is likely to cover bubble sort, selection sort, insertion sort, merge sort and others, comparing their best, average and worst cases side by side.</p>
+<h3>Why this video</h3>
+<p>It directly supports the bubble sort, selection sort, and merge sort subtopics in one place, and the side-by-side comparison is useful practice for justifying why one algorithm scales better than another.</p>
+</section>
+<section class="item" id="sec4">
+<h2>Video 3: Optimized Bubble Sort | Best Case | O(n) Time Complexity | Sorting Algorithms |DAA</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/g6hr8B3OWio?cc_load_policy=1&amp;rel=0" title="Video: Optimized Bubble Sort | Best Case | O(n) Time Complexity | Sorting Algorithms |DAA (Gate Smashers)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Gate Smashers</strong> · 8:32 · 67,682 views · 3y ago · captions — <a href="https://www.youtube.com/watch?v=g6hr8B3OWio" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>A focused lecture on the optimized version of bubble sort — the variant that stops early when a pass makes no swaps — and why that modification produces O(n) best-case behavior. The video explains the reasoning behind the best case in contrast to the usual quadratic result.</p>
+<h3>Why this video</h3>
+<p>It is the clearest illustration in this set of why best case and worst case must be derived separately, which is exactly the distinction you need when deciding between Big O, Omega, and Theta for a given algorithm.</p>
+</section>
+<section class="item" id="sec5">
+<h2>How These Videos Support the Learning Outcomes</h2>
+<p>Together these videos move from a single algorithm to a comparative view. The binary search video gives you the recursive-halving pattern behind O(log n), and the optimized bubble sort video shows how a small implementation change separates best-case from worst-case behavior — both directly supporting the derivation of best, worst, and average cases (MO2) and the classification of loop and halving patterns into growth-rate categories (MO3). The sorting comparison video assembles the complexities of bubble, selection, and merge sort in one frame, which is the raw material for comparing scalability and time-space trade-offs when selecting an algorithm (MO4). Where the videos report a single Big O figure, use the best-case/worst-case contrast raised in the bubble sort video to practice articulating which bound you actually need and why (MO1, MO5).</p>
+</section>
+<section class="item" id="sec6">
+<h2>About These Videos</h2>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+
+<footer class="presemaker-credit" data-credit="2" style="margin-top:2rem;padding:14px 8px;border-top:1px solid #ddd;background:#fff;text-align:center;font:13px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#595959;"><svg width="20" height="20" viewBox="0 0 2048 2048" aria-hidden="true" focusable="false" style="vertical-align:-5px;margin-right:7px"><rect width="2048" height="2048" rx="384" fill="#0F6E6E"/><path fill="#0A5050" d="M1024 1000 344 832v816l680 168zm0 0 680-168v816l-680 168z"/><path fill="#fff" d="M1024 944 384 784v808l640 160zm0 0 640-160v808l-640 160z"/><rect x="1002" y="944" width="44" height="808" fill="#0F6E6E"/><rect x="936" y="246" width="176" height="448" rx="44" fill="#fff"/><rect x="800" y="382" width="448" height="176" rx="44" fill="#fff"/></svg>Created with <a href="https://softwareplus.ai/coursebuilder/" target="_blank" rel="noopener" style="color:#2f5d8f;font-weight:600;text-decoration:none;">CourseBuilder+</a><span aria-hidden="true"> · </span><a href="https://softwareplus.ai/" target="_blank" rel="noopener" style="color:#2f5d8f;text-decoration:none;">SoftwarePlus.ai</a></footer>
+</body>
+</html>

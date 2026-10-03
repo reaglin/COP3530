@@ -1,5 +1,10 @@
 ﻿[
   {
+    "title": "Advanced Tree Structures: AVL Trees, Heaps, and Tries (module page)",
+    "href": "index.html",
+    "type": "Module page"
+  },
+  {
     "title": "Advanced Tree Structures: AVL Trees, Heaps, and Tries \u2014 Topics \u0026 Learning Outcomes",
     "href": "topics-outcomes.html",
     "type": "Page"
@@ -50,8 +55,43 @@
     "type": "Content"
   },
   {
-    "title": "Advanced Tree Structures: AVL Trees, Heaps, and Tries \u2014 Module Topics",
-    "href": "content/module_topics.html",
+    "title": "Review of Binary Search Trees and Their Limitations",
+    "href": "content/Advanced_Tree_Structures_t1_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "AVL Trees and Self-Balancing Mechanisms",
+    "href": "content/Advanced_Tree_Structures_t2_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "AVL Tree Performance and Use Cases",
+    "href": "content/Advanced_Tree_Structures_t3_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "Heap Trees and Priority Queues",
+    "href": "content/Advanced_Tree_Structures_t4_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "Heap Operations and Performance Trade-offs",
+    "href": "content/Advanced_Tree_Structures_t5_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "Trie Structures for String Storage and Retrieval",
+    "href": "content/Advanced_Tree_Structures_t6_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "Comparing Advanced Tree Structures: Use Cases and Trade-offs",
+    "href": "content/Advanced_Tree_Structures_t7_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "Advanced Tree Structures: AVL Trees, Heaps, and Tries",
+    "href": "content/Advanced_Tree_Structures_videos_merged.html",
     "type": "Content"
   }
 ]

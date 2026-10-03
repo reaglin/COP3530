@@ -18,13 +18,13 @@ li{margin:5px 0}
 .el-body{color:#555}
 .prefix{color:#555;font-style:italic;margin:6px 0 14px}
 .mo{border:1px solid #e2e2e2;border-radius:6px;padding:12px 16px;margin:12px 0}
-.mo .code{font-size:.8rem;color:#888;text-transform:uppercase;letter-spacing:.04em}
+.mo .code{font-size:.8rem;color:#595959;text-transform:uppercase;letter-spacing:.04em}
 .mo .statement{font-weight:600;margin:4px 0 8px}
 .meta span{display:inline-block;background:#eef2f8;color:#1a3c6e;border-radius:3px;padding:1px 8px;margin:0 6px 0 0;font-size:.85rem}
 .meta .map{background:#eaf6ec;color:#137333}
 .co{margin:7px 0}
 .co .code{font-weight:600;color:#1a3c6e;margin-right:6px}
-.empty{color:#888}
+.empty{color:#595959}
 </style>
 </head>
 <body>
@@ -33,7 +33,7 @@ li{margin:5px 0}
 <div class="toc"><a href="#topics">📋 Module Topics</a><a href="#outcomes">🎯 Student Learning Outcomes</a></div>
 
 <h2 id="topics">Module Topics</h2>
-<h3>Introduction to the Stack Data Structure</h3>
+<h3 id="topic-1">Introduction to the Stack Data Structure</h3>
 <div class="summary">An overview of what a stack is and why it is a fundamental data structure in computer science. This topic establishes the conceptual foundation before diving into implementation details.</div>
 <ul>
 <li><strong>What Is a Stack?</strong> <span class="el-body">— A stack is a linear data structure that stores a collection of elements in a specific, ordered way.</span></li>
@@ -42,7 +42,7 @@ li{margin:5px 0}
 <li><strong>Why Stacks Are Fundamental in Computer Science</strong> <span class="el-body">— Stacks are considered a foundational data structure because they appear at the core of many essential computing mechanisms.</span></li>
 <li><strong>Stacks as an Abstract Data Type</strong> <span class="el-body">— A stack is best understood first as an abstract data type (ADT) — defined by its behavior rather than its implementation.</span></li>
 </ul>
-<h3>The LIFO Principle</h3>
+<h3 id="topic-2">The LIFO Principle</h3>
 <div class="summary">A focused exploration of the Last In, First Out principle that governs how stacks operate. Students will learn how this ordering rule distinguishes stacks from other data structures.</div>
 <ul>
 <li><strong>Defining LIFO</strong> <span class="el-body">— LIFO stands for Last In, First Out, and it is the fundamental ordering rule that governs every stack data structure.</span></li>
@@ -52,7 +52,7 @@ li{margin:5px 0}
 <li><strong>The Concept of the &#39;Top&#39;</strong> <span class="el-body">— The &#39;top&#39; is the single access point of a stack and is central to how the LIFO rule is maintained.</span></li>
 <li><strong>Why LIFO Makes Stacks Uniquely Useful</strong> <span class="el-body">— The LIFO ordering is not arbitrary — it naturally models a class of real computational problems that involve reversing or backtracking through a sequence of states.</span></li>
 </ul>
-<h3>Internal Implementation of a Stack</h3>
+<h3 id="topic-3">Internal Implementation of a Stack</h3>
 <div class="summary">An examination of how a stack is structured and managed internally, including the underlying mechanisms that support its core operations. This topic bridges theory and practical construction.</div>
 <ul>
 <li><strong>Underlying Data Containers</strong> <span class="el-body">— A stack is not a primitive structure; it is built on top of existing data containers such as arrays or linked lists.</span></li>
@@ -63,7 +63,7 @@ li{margin:5px 0}
 <li><strong>Encapsulation in a JavaScript Class</strong> <span class="el-body">— In JavaScript, a stack is typically encapsulated inside a class that exposes only the intended interface and hides the internal backing array.</span></li>
 <li><strong>Time and Space Complexity of Core Operations</strong> <span class="el-body">— Understanding the complexity of stack operations confirms why the stack is valued for its efficiency in both time and space.</span></li>
 </ul>
-<h3>Building a Stack in JavaScript</h3>
+<h3 id="topic-4">Building a Stack in JavaScript</h3>
 <div class="summary">A hands-on walkthrough of implementing a stack using JavaScript, covering the creation of push, pop, peek, and related methods. Students will write and test working stack code.</div>
 <ul>
 <li><strong>Setting Up the Stack Class</strong> <span class="el-body">— A stack in JavaScript is most cleanly implemented as a class, encapsulating all data and behavior in one structure.</span></li>
@@ -74,7 +74,7 @@ li{margin:5px 0}
 <li><strong>Implementing a Print or toString Method</strong> <span class="el-body">— A print or toString method lets developers visualize the current contents of the stack, which is especially useful during testing and debugging.</span></li>
 <li><strong>Testing the Stack Implementation</strong> <span class="el-body">— After writing all methods, students should create a Stack instance and call each method to verify correct behavior.</span></li>
 </ul>
-<h3>Expression Evaluation Using Stacks</h3>
+<h3 id="topic-5">Expression Evaluation Using Stacks</h3>
 <div class="summary">An exploration of how stacks are used to parse and evaluate mathematical or logical expressions, such as balancing parentheses or converting infix to postfix notation. Real examples illustrate the practical power of the stack.</div>
 <ul>
 <li><strong>Why Stacks Are Natural for Expression Parsing</strong> <span class="el-body">— The LIFO nature of stacks mirrors the nested structure of mathematical expressions, making them ideal for parsing and evaluating them.</span></li>
@@ -84,7 +84,7 @@ li{margin:5px 0}
 <li><strong>Evaluating Postfix Expressions with a Stack</strong> <span class="el-body">— Once an expression is in postfix form, a stack makes evaluation straightforward: operands are pushed, and each operator pops its operands, computes a result, and pushes it back.</span></li>
 <li><strong>Operator Precedence and Associativity in Stack-Based Parsing</strong> <span class="el-body">— Correct expression evaluation requires respecting operator precedence (e.g., multiplication before addition) and associativity (left-to-right vs. right-to-left), both of which are handled by the stack during conversion.</span></li>
 </ul>
-<h3>Undo Mechanisms and Other Real-World Use Cases</h3>
+<h3 id="topic-6">Undo Mechanisms and Other Real-World Use Cases</h3>
 <div class="summary">A survey of practical applications where stacks power everyday software features, with undo functionality as a primary example. Students will connect abstract data structure concepts to familiar tools and systems.</div>
 <ul>
 <li><strong>The Undo Operation: A Classic Stack Use Case</strong> <span class="el-body">— Undo functionality in text editors, graphic tools, and productivity software is one of the most recognizable real-world applications of a stack.</span></li>
@@ -127,6 +127,6 @@ li{margin:5px 0}
 <div class="co"><span class="code">CO3</span>Implement data structures and algorithms in computer code.</div>
 <div class="co"><span class="code">CO4</span>Analyze the performance of algorithms and data structures</div>
 
-<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
+<footer class="presemaker-credit" data-credit="2" style="margin-top:2rem;padding:14px 8px;border-top:1px solid #ddd;background:#fff;text-align:center;font:13px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#595959;"><svg width="20" height="20" viewBox="0 0 2048 2048" aria-hidden="true" focusable="false" style="vertical-align:-5px;margin-right:7px"><rect width="2048" height="2048" rx="384" fill="#0F6E6E"/><path fill="#0A5050" d="M1024 1000 344 832v816l680 168zm0 0 680-168v816l-680 168z"/><path fill="#fff" d="M1024 944 384 784v808l640 160zm0 0 640-160v808l-640 160z"/><rect x="1002" y="944" width="44" height="808" fill="#0F6E6E"/><rect x="936" y="246" width="176" height="448" rx="44" fill="#fff"/><rect x="800" y="382" width="448" height="176" rx="44" fill="#fff"/></svg>Created with <a href="https://softwareplus.ai/coursebuilder/" target="_blank" rel="noopener" style="color:#2f5d8f;font-weight:600;text-decoration:none;">CourseBuilder+</a><span aria-hidden="true"> · </span><a href="https://softwareplus.ai/" target="_blank" rel="noopener" style="color:#2f5d8f;text-decoration:none;">SoftwarePlus.ai</a></footer>
 </body>
 </html>

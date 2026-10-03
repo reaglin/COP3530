@@ -1,410 +1,179 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hash Tables: Structure and Collision Resolution — COP3530</title>
-  <style>
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    :root {
-      --color-bg: #f4f6f9;
-      --color-surface: #ffffff;
-      --color-border: #dde2ea;
-      --color-primary: #1a4f8a;
-      --color-primary-dark: #133a66;
-      --color-accent: #2e7d52;
-      --color-accent-hover: #225e3e;
-      --color-text: #1e2430;
-      --color-muted: #5a6478;
-      --color-tag-bg: #e8edf5;
-      --color-tag-text: #2c4a75;
-      --color-tag-type-bg: #eef6f1;
-      --color-tag-type-text: #1e5c3a;
-      --color-source-bg: #f5f0e8;
-      --color-source-text: #7a5c1e;
-      --color-source-hover: #5a4010;
-      --radius: 8px;
-      --shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
-      --shadow-hover: 0 6px 18px rgba(0, 0, 0, 0.12);
-      --font-sans: 'Segoe UI', system-ui, -apple-system, sans-serif;
-      --font-mono: 'Consolas', 'Courier New', monospace;
-    }
-
-    body {
-      font-family: var(--font-sans);
-      background-color: var(--color-bg);
-      color: var(--color-text);
-      line-height: 1.6;
-      min-height: 100vh;
-    }
-
-    /* ── Header ── */
-    header {
-      background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
-      color: #ffffff;
-      padding: 2.5rem 1.5rem 2rem;
-      border-bottom: 4px solid #0e2a4a;
-    }
-
-    .header-inner {
-      max-width: 1080px;
-      margin: 0 auto;
-    }
-
-    .course-label {
-      display: inline-block;
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      background: rgba(255, 255, 255, 0.15);
-      color: rgba(255, 255, 255, 0.9);
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      border-radius: 4px;
-      padding: 0.2rem 0.6rem;
-      margin-bottom: 0.75rem;
-    }
-
-    header h1 {
-      font-size: clamp(1.5rem, 3.5vw, 2.2rem);
-      font-weight: 700;
-      line-height: 1.25;
-      margin-bottom: 0.85rem;
-      letter-spacing: -0.01em;
-    }
-
-    .intro {
-      font-size: 1rem;
-      color: rgba(255, 255, 255, 0.85);
-      max-width: 720px;
-      line-height: 1.7;
-    }
-
-    /* ── Main ── */
-    main {
-      max-width: 1080px;
-      margin: 0 auto;
-      padding: 2rem 1.5rem 3rem;
-    }
-
-    .section-label {
-      font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--color-muted);
-      margin-bottom: 1.1rem;
-      padding-bottom: 0.5rem;
-      border-bottom: 1px solid var(--color-border);
-    }
-
-    /* ── Card Grid ── */
-    .card-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 1.25rem;
-    }
-
-    .card {
-      background: var(--color-surface);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius);
-      padding: 1.35rem 1.4rem 1.25rem;
-      box-shadow: var(--shadow);
-      display: flex;
-      flex-direction: column;
-      gap: 0.65rem;
-      transition: box-shadow 0.2s ease, transform 0.2s ease;
-    }
-
-    .card:hover {
-      box-shadow: var(--shadow-hover);
-      transform: translateY(-2px);
-    }
-
-    /* ── Card Header ── */
-    .card-header {
-      display: flex;
-      flex-direction: column;
-      gap: 0.45rem;
-    }
-
-    .card-name {
-      font-size: 1rem;
-      font-weight: 600;
-      color: var(--color-text);
-      line-height: 1.35;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: baseline;
-      gap: 0.5rem;
-    }
-
-    .card-name a.name-link {
-      color: var(--color-primary);
-      text-decoration: none;
-      border-bottom: 1.5px solid transparent;
-      transition: border-color 0.15s, color 0.15s;
-    }
-
-    .card-name a.name-link:hover {
-      color: var(--color-primary-dark);
-      border-bottom-color: var(--color-primary-dark);
-    }
-
-    .card-name span.name-plain {
-      color: var(--color-text);
-    }
-
-    .source-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.25rem;
-      font-size: 0.72rem;
-      font-weight: 600;
-      color: var(--color-source-text);
-      background: var(--color-source-bg);
-      border: 1px solid #e0d0b0;
-      border-radius: 4px;
-      padding: 0.15rem 0.45rem;
-      text-decoration: none;
-      white-space: nowrap;
-      transition: background 0.15s, color 0.15s;
-    }
-
-    .source-link:hover {
-      background: #ecdec0;
-      color: var(--color-source-hover);
-    }
-
-    .source-link::before {
-      content: "⬇";
-      font-size: 0.65rem;
-    }
-
-    /* ── Tags Row ── */
-    .tags-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.4rem;
-      align-items: center;
-    }
-
-    .tag {
-      font-size: 0.7rem;
-      font-weight: 600;
-      letter-spacing: 0.03em;
-      border-radius: 4px;
-      padding: 0.2rem 0.5rem;
-      white-space: nowrap;
-    }
-
-    .tag-type {
-      background: var(--color-tag-type-bg);
-      color: var(--color-tag-type-text);
-      border: 1px solid #c0dece;
-    }
-
-    .tag-filetype {
-      background: var(--color-tag-bg);
-      color: var(--color-tag-text);
-      border: 1px solid #c8d5e8;
-      font-family: var(--font-mono);
-    }
-
-    /* ── Description ── */
-    .card-description {
-      font-size: 0.875rem;
-      color: var(--color-muted);
-      line-height: 1.65;
-      flex-grow: 1;
-    }
-
-    /* ── Footer ── */
-    footer {
-      text-align: center;
-      font-size: 0.78rem;
-      color: var(--color-muted);
-      padding: 1.5rem 1rem 2rem;
-      border-top: 1px solid var(--color-border);
-      background: var(--color-surface);
-    }
-
-    /* ── Responsive ── */
-    @media (max-width: 600px) {
-      header {
-        padding: 2rem 1rem 1.75rem;
-      }
-
-      main {
-        padding: 1.5rem 1rem 2.5rem;
-      }
-
-      .card-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hash Tables: Structure and Collision Resolution — COP3530 - Data Structures</title>
+  <link rel="stylesheet" href="../assets/site.css">
 </head>
 <body>
-<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ COP3530 - Data Structures</a></div>
-<div style="border:1px solid #c9d4e3;background:#f5f8fc;border-radius:8px;padding:10px 16px;margin:0 0 18px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;font-family:'Segoe UI',Arial,sans-serif"><strong style="color:#1a3c6e">Module outline:</strong><a href="topics-outcomes.html#topics" style="color:#1a3c6e;font-weight:600;text-decoration:none">📋 Module Topics</a><a href="topics-outcomes.html#outcomes" style="color:#137333;font-weight:600;text-decoration:none">🎯 Student Learning Outcomes</a></div>
-
-  <header>
-    <div class="header-inner">
-      <span class="course-label">COP3530 — Data Structures</span>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="hero">
+    <div class="hero-inner">
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="../index.html">COP3530 - Data Structures</a><span class="sep" aria-hidden="true">›</span><span class="current">Hash Tables: Structure and Collision Resolution</span>
+  </nav>
+      <div class="hero-label">Module 10</div>
       <h1>Hash Tables: Structure and Collision Resolution</h1>
-      <p class="intro">
-        This module covers the fundamentals of hash tables — from their internal array-based design and hash function properties to collision resolution strategies including chaining and open addressing. Work through the topics below to build a solid conceptual and practical understanding of one of the most widely used data structures in software engineering.
-      </p>
+      <p class="hero-desc">This lesson covers the hash table data structure, including its internal array-based design, collision resolution strategies such as chaining and open addressing, and performance analysis. Students will implement a hash table in JavaScript.</p>
     </div>
   </header>
-
-  <main>
-    <p class="section-label">Module Artifacts &mdash; 9 items</p>
-
-    <div class="card-grid">
-
-      <!-- Artifact 1: Module Topics -->
-      <div class="card">
-        <div class="card-header">
-          <div class="card-name">
-            <a class="name-link" href="content/module_topics.html">Module Topics</a>
-            <a class="source-link" href="source/hierarchy.json">source file</a>
-          </div>
-          <div class="tags-row">
-            <span class="tag tag-type">Module Topics</span>
-            <span class="tag tag-filetype">.json</span>
-          </div>
-        </div>
-        <p class="card-description">Outlines the module's learning topics spanning hash table fundamentals (structure, key-value purpose, array-based design), hash function properties (determinism, uniform distribution, speed), and collision resolution strategies (chaining and open addressing), serving as a navigational overview for learners and instructors to understand the scope and sequence of the module.</p>
-      </div>
-
-      <!-- Artifact 2: Introduction to Hash Tables -->
-      <div class="card">
-        <div class="card-header">
-          <div class="card-name">
-            <a class="name-link" href="content/Hash_Tables_Structure_interactive_topics_t1.html">Introduction to Hash Tables</a>
-          </div>
-          <div class="tags-row">
-            <span class="tag tag-type">Topic Detail</span>
-            <span class="tag tag-filetype">.html</span>
-          </div>
-        </div>
-        <p class="card-description">Introduces hash tables conceptually — explaining what they are, why they matter, and how they achieve fast storage and retrieval regardless of collection size — serving as a starting-point reading for learners new to the data structure.</p>
-      </div>
-
-      <!-- Artifact 3: Internal Array-Based Design -->
-      <div class="card">
-        <div class="card-header">
-          <div class="card-name">
-            <a class="name-link" href="content/Hash_Tables_Structure_interactive_topics_t2.html">Internal Array-Based Design</a>
-          </div>
-          <div class="tags-row">
-            <span class="tag tag-type">Topic Detail</span>
-            <span class="tag tag-filetype">.html</span>
-          </div>
-        </div>
-        <p class="card-description">Explains how a hash table is built on top of a contiguous internal array — covering how buckets are indexed and how the array forms the foundation for O(1) operations — helping learners understand the underlying memory structure before exploring higher-level behavior.</p>
-      </div>
-
-      <!-- Artifact 4: Hash Function Design and Properties -->
-      <div class="card">
-        <div class="card-header">
-          <div class="card-name">
-            <a class="name-link" href="content/Hash_Tables_Structure_interactive_topics_t3.html">Hash Function Design and Properties</a>
-          </div>
-          <div class="tags-row">
-            <span class="tag tag-type">Topic Detail</span>
-            <span class="tag tag-filetype">.html</span>
-          </div>
-        </div>
-        <p class="card-description">Covers the design principles and required properties of hash functions — including how keys of various types are converted to array indices and what makes a hash function high-quality — so learners can evaluate and write effective hash functions for their implementations.</p>
-      </div>
-
-      <!-- Artifact 5: Collision Resolution: Chaining -->
-      <div class="card">
-        <div class="card-header">
-          <div class="card-name">
-            <a class="name-link" href="content/Hash_Tables_Structure_interactive_topics_t4.html">Collision Resolution: Chaining</a>
-          </div>
-          <div class="tags-row">
-            <span class="tag tag-type">Topic Detail</span>
-            <span class="tag tag-filetype">.html</span>
-          </div>
-        </div>
-        <p class="card-description">Explains the chaining collision-resolution strategy — where colliding keys are stored together at the same bucket using a linked structure — so learners understand how to implement and reason about one of the most common approaches to handling hash collisions.</p>
-      </div>
-
-      <!-- Artifact 6: Collision Resolution: Open Addressing -->
-      <div class="card">
-        <div class="card-header">
-          <div class="card-name">
-            <a class="name-link" href="content/Hash_Tables_Structure_interactive_topics_t5.html">Collision Resolution: Open Addressing</a>
-          </div>
-          <div class="tags-row">
-            <span class="tag tag-type">Topic Detail</span>
-            <span class="tag tag-filetype">.html</span>
-          </div>
-        </div>
-        <p class="card-description">Explains open addressing as a collision-resolution strategy — covering probing techniques such as linear, quadratic, and double hashing that find alternative slots within the array when a collision occurs — so learners can compare it with chaining and understand its trade-offs.</p>
-      </div>
-
-      <!-- Artifact 7: Performance Analysis of Hash Tables -->
-      <div class="card">
-        <div class="card-header">
-          <div class="card-name">
-            <a class="name-link" href="content/Hash_Tables_Structure_interactive_topics_t6.html">Performance Analysis of Hash Tables</a>
-          </div>
-          <div class="tags-row">
-            <span class="tag tag-type">Topic Detail</span>
-            <span class="tag tag-filetype">.html</span>
-          </div>
-        </div>
-        <p class="card-description">Analyzes hash table time complexity — examining average-case and worst-case performance for insertion, deletion, and lookup, the role of load factor, and conditions that degrade efficiency — equipping learners and instructors with the tools to evaluate and tune hash table performance.</p>
-      </div>
-
-      <!-- Artifact 8: Implementing a Hash Table in JavaScript (Topic Detail) -->
-      <div class="card">
-        <div class="card-header">
-          <div class="card-name">
-            <a class="name-link" href="content/Hash_Tables_Structure_interactive_topics_t7.html">Implementing a Hash Table in JavaScript</a>
-          </div>
-          <div class="tags-row">
-            <span class="tag tag-type">Topic Detail</span>
-            <span class="tag tag-filetype">.html</span>
-          </div>
-        </div>
-        <p class="card-description">Walks learners through building a hash table from scratch in JavaScript using chaining or open addressing — demonstrating how insert, lookup, and delete operations are coded — serving as a hands-on coding reference that bridges conceptual understanding and practical implementation.</p>
-      </div>
-
-      <!-- Artifact 9: Implementing a Hash Table in JavaScript (Text Content) -->
-      <div class="card">
-        <div class="card-header">
-          <div class="card-name">
-            <a class="name-link" href="content/Hash_Tables_Structure_interactive.html">Implementing a Hash Table in JavaScript</a>
-          </div>
-          <div class="tags-row">
-            <span class="tag tag-type">Text Content</span>
-            <span class="tag tag-filetype">.html</span>
-          </div>
-        </div>
-        <p class="card-description">Walks learners through building a hash table from scratch in JavaScript using chaining or open addressing — demonstrating how insert, lookup, and delete operations are coded — serving as a hands-on coding reference that bridges conceptual understanding and practical implementation.</p>
-      </div>
-
-    </div>
+  <main class="page-wrap" id="main">
+<section aria-labelledby="topics-h">
+<h2 id="topics-h">Topics</h2>
+<p class="section-intro">This module covers 7 topics. Open a topic to see its subtopics.</p>
+<ol class="topic-list">
+<li><a class="topic-card" href="topics-outcomes.html#topic-1"><span class="topic-num" aria-hidden="true">1</span><span class="topic-text"><span class="topic-title">Introduction to Hash Tables</span><span class="topic-meta">5 subtopics</span></span></a></li>
+<li><a class="topic-card" href="topics-outcomes.html#topic-2"><span class="topic-num" aria-hidden="true">2</span><span class="topic-text"><span class="topic-title">Internal Array-Based Design</span><span class="topic-meta">5 subtopics</span></span></a></li>
+<li><a class="topic-card" href="topics-outcomes.html#topic-3"><span class="topic-num" aria-hidden="true">3</span><span class="topic-text"><span class="topic-title">Hash Function Design and Properties</span><span class="topic-meta">6 subtopics</span></span></a></li>
+<li><a class="topic-card" href="topics-outcomes.html#topic-4"><span class="topic-num" aria-hidden="true">4</span><span class="topic-text"><span class="topic-title">Collision Resolution: Chaining</span><span class="topic-meta">6 subtopics</span></span></a></li>
+<li><a class="topic-card" href="topics-outcomes.html#topic-5"><span class="topic-num" aria-hidden="true">5</span><span class="topic-text"><span class="topic-title">Collision Resolution: Open Addressing</span><span class="topic-meta">7 subtopics</span></span></a></li>
+<li><a class="topic-card" href="topics-outcomes.html#topic-6"><span class="topic-num" aria-hidden="true">6</span><span class="topic-text"><span class="topic-title">Performance Analysis of Hash Tables</span><span class="topic-meta">7 subtopics</span></span></a></li>
+<li><a class="topic-card" href="topics-outcomes.html#topic-7"><span class="topic-num" aria-hidden="true">7</span><span class="topic-text"><span class="topic-title">Implementing a Hash Table in JavaScript</span><span class="topic-meta">7 subtopics</span></span></a></li>
+</ol>
+<p class="more-links"><a href="topics-outcomes.html#topics">All topics and subtopics</a><a href="topics-outcomes.html#outcomes">Student learning outcomes</a></p>
+</section>
+<section aria-labelledby="content-h">
+<h2 id="content-h">Module Content</h2>
+<p class="section-intro">16 items.</p>
+<ul class="content-grid">
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">📄</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topic Detail</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Hash_Tables_Structure_interactive_topics_t1.html">Introduction to Hash Tables</a></div>
+    <p class="content-desc">Introduces hash tables conceptually — explaining what they are, why they matter, and how they achieve fast storage and retrieval regardless of collection size — serving as a starting-point reading for learners new to the data structure.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">📄</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topic Detail</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Hash_Tables_Structure_interactive_topics_t2.html">Internal Array-Based Design</a></div>
+    <p class="content-desc">Explains how a hash table is built on top of a contiguous internal array — covering how buckets are indexed and how the array forms the foundation for O(1) operations — helping learners understand the underlying memory structure before exploring higher-level behavior.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">📄</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topic Detail</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Hash_Tables_Structure_interactive_topics_t3.html">Hash Function Design and Properties</a></div>
+    <p class="content-desc">Covers the design principles and required properties of hash functions — including how keys of various types are converted to array indices and what makes a hash function high-quality — so learners can evaluate and write effective hash functions for their implementations.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">📄</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topic Detail</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Hash_Tables_Structure_interactive_topics_t4.html">Collision Resolution: Chaining</a></div>
+    <p class="content-desc">Explains the chaining collision-resolution strategy — where colliding keys are stored together at the same bucket using a linked structure — so learners understand how to implement and reason about one of the most common approaches to handling hash collisions.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">📄</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topic Detail</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Hash_Tables_Structure_interactive_topics_t5.html">Collision Resolution: Open Addressing</a></div>
+    <p class="content-desc">Explains open addressing as a collision-resolution strategy — covering probing techniques such as linear, quadratic, and double hashing that find alternative slots within the array when a collision occurs — so learners can compare it with chaining and understand its trade-offs.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">📄</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topic Detail</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Hash_Tables_Structure_interactive_topics_t6.html">Performance Analysis of Hash Tables</a></div>
+    <p class="content-desc">Analyzes hash table time complexity — examining average-case and worst-case performance for insertion, deletion, and lookup, the role of load factor, and conditions that degrade efficiency — equipping learners and instructors with the tools to evaluate and tune hash table performance.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">📄</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topic Detail</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Hash_Tables_Structure_interactive_topics_t7.html">Implementing a Hash Table in JavaScript</a></div>
+    <p class="content-desc">Walks learners through building a hash table from scratch in JavaScript using chaining or open addressing — demonstrating how insert, lookup, and delete operations are coded — serving as a hands-on coding reference that bridges conceptual understanding and practical implementation.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">📄</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Reading</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Hash_Tables_Structure_interactive.html">Implementing a Hash Table in JavaScript</a></div>
+    <p class="content-desc">Walks learners through building a hash table from scratch in JavaScript using chaining or open addressing — demonstrating how insert, lookup, and delete operations are coded — serving as a hands-on coding reference that bridges conceptual understanding and practical implementation.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">🎬</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topics and Embedded Video</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Hash_Tables_Structure_t1_videos.html">Introduction to Hash Tables — Videos</a></div>
+    <p class="content-desc">An introductory reading that defines a hash table as a key-value store with average constant-time insert, lookup, and remove, explaining how a hash function converts a key into an array index; learners use it to build the vocabulary and mental model needed for the rest of the module.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">🎬</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topics and Embedded Video</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Hash_Tables_Structure_t2_videos.html">Internal Array-Based Design — Videos</a></div>
+    <p class="content-desc">A lesson showing how a hash table is layered on top of an ordinary array, with the hash function mapping keys to slot indices and the array providing constant-time access; learners use it to understand the internal design that makes collisions and resizing meaningful.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">🎬</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topics and Embedded Video</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Hash_Tables_Structure_t3_videos.html">Hash Function Design and Properties — Videos</a></div>
+    <p class="content-desc">A reading on hash function design that examines the key properties a good hash function must have — deterministic output, uniform distribution, and efficient computation — and how those properties underpin near constant-time operations; learners use it to evaluate or write their own hash functions.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">🎬</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topics and Embedded Video</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Hash_Tables_Structure_t4_videos.html">Collision Resolution: Chaining — Videos</a></div>
+    <p class="content-desc">A topic explaining chaining as a collision resolution strategy, where each bucket holds a small container (such as a linked list) of all key-value pairs that hash to the same index; learners use it to trace insertion, search, and deletion when multiple keys collide.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">🎬</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topics and Embedded Video</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Hash_Tables_Structure_t5_videos.html">Collision Resolution: Open Addressing — Videos</a></div>
+    <p class="content-desc">A topic covering open addressing, in which all elements are stored directly in the table array and collisions trigger a probe sequence to find the next empty slot; learners use it to compare probing rules against chaining and understand clustering and deletion issues.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">🎬</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topics and Embedded Video</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Hash_Tables_Structure_t6_videos.html">Performance Analysis of Hash Tables — Videos</a></div>
+    <p class="content-desc">An analysis lesson that unpacks the conditions behind the O(1) average-case claim — even key distribution, controlled load factor, and non-degenerate collision handling — and what happens in the worst case; learners use it to reason about hash table performance and resizing decisions.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">🎬</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topics and Embedded Video</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Hash_Tables_Structure_t7_videos.html">Implementing a Hash Table in JavaScript — Videos</a></div>
+    <p class="content-desc">A hands-on coding topic walking through building a HashTable class in JavaScript with an array of buckets, a hash function, and a collision resolution strategy; learners use it to implement and test insert, get, and remove operations themselves.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">🎬</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topics and Embedded Video</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Hash_Tables_Structure_videos_merged.html">Hash Tables: Structure and Collision Resolution — 7 topics (merged)</a></div>
+    <p class="content-desc">A consolidated module overview that strings together all topics — introduction, array-based internals, hash function design, chaining, open addressing, performance analysis, and the JavaScript implementation — for use as a single continuous reading or review reference.</p>
+  </div>
+</li>
+</ul>
+</section>
+<nav class="module-nav" aria-label="Modules">
+  <a href="../hash-compression-concepts-and-techniques/index.html">← Hash Compression: Concepts and Techniques</a>
+  <a class="center-link" href="../index.html">↑ All modules</a>
+  <a href="../hash-algorithms-and-applications-password-hashing-and-beyond/index.html">Hash Algorithms and Applications: Password Hashing and Beyond →</a>
+</nav>
   </main>
-
-  <footer>
-    <p>COP3530 &mdash; Data Structures &nbsp;|&nbsp; Module: Hash Tables: Structure and Collision Resolution</p>
-  </footer>
-
-
-<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
-<section class="presemaker-extras" style="max-width:1000px;margin:2rem auto;padding:0 1rem;"><h2>Topics &amp; Learning Outcomes</h2><p><a href="topics-outcomes.html">View Topics &amp; Learning Outcomes</a></p></section><script src="embed-inject.js" defer></script></body>
+<script src="embed-inject.js" defer></script>
+<footer class="presemaker-credit" data-credit="2" style="margin-top:2rem;padding:14px 8px;border-top:1px solid #ddd;background:#fff;text-align:center;font:13px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#595959;"><svg width="20" height="20" viewBox="0 0 2048 2048" aria-hidden="true" focusable="false" style="vertical-align:-5px;margin-right:7px"><rect width="2048" height="2048" rx="384" fill="#0F6E6E"/><path fill="#0A5050" d="M1024 1000 344 832v816l680 168zm0 0 680-168v816l-680 168z"/><path fill="#fff" d="M1024 944 384 784v808l640 160zm0 0 640-160v808l-640 160z"/><rect x="1002" y="944" width="44" height="808" fill="#0F6E6E"/><rect x="936" y="246" width="176" height="448" rx="44" fill="#fff"/><rect x="800" y="382" width="448" height="176" rx="44" fill="#fff"/></svg>Created with <a href="https://softwareplus.ai/coursebuilder/" target="_blank" rel="noopener" style="color:#2f5d8f;font-weight:600;text-decoration:none;">CourseBuilder+</a><span aria-hidden="true"> · </span><a href="https://softwareplus.ai/" target="_blank" rel="noopener" style="color:#2f5d8f;text-decoration:none;">SoftwarePlus.ai</a></footer>
+</body>
 </html>

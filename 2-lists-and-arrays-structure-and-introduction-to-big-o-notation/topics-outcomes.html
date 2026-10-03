@@ -18,13 +18,13 @@ li{margin:5px 0}
 .el-body{color:#555}
 .prefix{color:#555;font-style:italic;margin:6px 0 14px}
 .mo{border:1px solid #e2e2e2;border-radius:6px;padding:12px 16px;margin:12px 0}
-.mo .code{font-size:.8rem;color:#888;text-transform:uppercase;letter-spacing:.04em}
+.mo .code{font-size:.8rem;color:#595959;text-transform:uppercase;letter-spacing:.04em}
 .mo .statement{font-weight:600;margin:4px 0 8px}
 .meta span{display:inline-block;background:#eef2f8;color:#1a3c6e;border-radius:3px;padding:1px 8px;margin:0 6px 0 0;font-size:.85rem}
 .meta .map{background:#eaf6ec;color:#137333}
 .co{margin:7px 0}
 .co .code{font-weight:600;color:#1a3c6e;margin-right:6px}
-.empty{color:#888}
+.empty{color:#595959}
 </style>
 </head>
 <body>
@@ -33,7 +33,7 @@ li{margin:5px 0}
 <div class="toc"><a href="#topics">📋 Module Topics</a><a href="#outcomes">🎯 Student Learning Outcomes</a></div>
 
 <h2 id="topics">Module Topics</h2>
-<h3>Introduction to Lists and Arrays</h3>
+<h3 id="topic-1">Introduction to Lists and Arrays</h3>
 <div class="summary">Introduces lists and arrays as fundamental data structures, covering their definitions, characteristics, and how they are used to store and organize data.</div>
 <ul>
 <li><strong>What Are Data Structures?</strong> <span class="el-body">— Data structures are organized ways of storing and managing data in a computer so that it can be accessed and modified efficiently.</span></li>
@@ -43,7 +43,7 @@ li{margin:5px 0}
 <li><strong>Storing and Organizing Data</strong> <span class="el-body">— Lists and arrays are used to group related data together under a single variable name, making programs cleaner and more manageable.</span></li>
 <li><strong>Arrays vs. Lists: Key Differences</strong> <span class="el-body">— While arrays and lists are conceptually similar, they differ in flexibility, memory management, and typical use cases.</span></li>
 </ul>
-<h3>Array Structure and Memory Layout</h3>
+<h3 id="topic-2">Array Structure and Memory Layout</h3>
 <div class="summary">Explores how arrays are structured in memory, including indexing, fixed sizing, and how elements are stored contiguously to enable efficient access.</div>
 <ul>
 <li><strong>What Is an Array?</strong> <span class="el-body">— An array is a fundamental data structure that stores a collection of elements of the same type under a single variable name.</span></li>
@@ -53,7 +53,7 @@ li{margin:5px 0}
 <li><strong>Fixed Size and Static Allocation</strong> <span class="el-body">— A traditional array has a fixed size that must be declared at creation time and cannot change during program execution.</span></li>
 <li><strong>Element Access vs. Search</strong> <span class="el-body">— Accessing an element by index is immediate, but finding an element by its value requires scanning through the array.</span></li>
 </ul>
-<h3>List Structure and Dynamic Behavior</h3>
+<h3 id="topic-3">List Structure and Dynamic Behavior</h3>
 <div class="summary">Examines how lists differ from arrays in their dynamic nature, covering variable sizing, element management, and the flexibility they offer for data storage.</div>
 <ul>
 <li><strong>What Makes a List Dynamic</strong> <span class="el-body">— Unlike arrays, lists are dynamic data structures that can grow or shrink in size as elements are added or removed during program execution.</span></li>
@@ -63,7 +63,7 @@ li{margin:5px 0}
 <li><strong>Flexibility for Diverse Data Storage</strong> <span class="el-body">— Lists are highly flexible containers that can store elements of varying types in many programming languages, making them adaptable for a wide range of use cases.</span></li>
 <li><strong>Lists vs. Arrays: Key Structural Differences</strong> <span class="el-body">— While both lists and arrays store ordered collections of elements, they differ fundamentally in how they manage size, memory, and flexibility.</span></li>
 </ul>
-<h3>Core Data Operations on Lists and Arrays</h3>
+<h3 id="topic-4">Core Data Operations on Lists and Arrays</h3>
 <div class="summary">Covers the fundamental operations performed on lists and arrays such as insertion, deletion, access, and search, establishing a basis for evaluating their efficiency.</div>
 <ul>
 <li><strong>Accessing Elements</strong> <span class="el-body">— Accessing an element in a list or array involves retrieving a value stored at a specific position using an index.</span></li>
@@ -73,7 +73,7 @@ li{margin:5px 0}
 <li><strong>Comparing Operation Costs Across Positions</strong> <span class="el-body">— The efficiency of each core operation depends heavily on where in the list or array it is performed.</span></li>
 <li><strong>Why These Operations Form the Basis of Efficiency Analysis</strong> <span class="el-body">— Access, search, insertion, and deletion are the foundational operations used to evaluate and compare the practical performance of data structures.</span></li>
 </ul>
-<h3>Introduction to Computational Complexity</h3>
+<h3 id="topic-5">Introduction to Computational Complexity</h3>
 <div class="summary">Introduces the concept of computational complexity, explaining why measuring the efficiency of algorithms and data operations matters as input sizes grow.</div>
 <ul>
 <li><strong>What Is Computational Complexity?</strong> <span class="el-body">— Computational complexity is the study of how the resources required by an algorithm — primarily time and memory — scale as the size of the input grows.</span></li>
@@ -83,7 +83,7 @@ li{margin:5px 0}
 <li><strong>Worst, Best, and Average Cases</strong> <span class="el-body">— When analyzing how long an operation takes, it is important to consider not just one scenario but the range of possible outcomes: the best case, worst case, and average case.</span></li>
 <li><strong>The Purpose of Abstraction in Complexity</strong> <span class="el-body">— Computational complexity intentionally abstracts away hardware details, programming language specifics, and exact instruction counts to focus on fundamental growth patterns.</span></li>
 </ul>
-<h3>Big O Notation Fundamentals</h3>
+<h3 id="topic-6">Big O Notation Fundamentals</h3>
 <div class="summary">Explains Big O notation as a standardized way to express algorithmic efficiency, covering common complexity classes such as O(1), O(n), and O(n&#178;) with clear examples.</div>
 <ul>
 <li><strong>What Is Big O Notation?</strong> <span class="el-body">— Big O notation is a standardized mathematical language used to describe how the runtime or space requirements of an algorithm scale as the input size grows.</span></li>
@@ -94,7 +94,7 @@ li{margin:5px 0}
 <li><strong>Dropping Constants and Non-Dominant Terms</strong> <span class="el-body">— Big O notation simplifies expressions by dropping constant multipliers and lower-order terms, keeping only the fastest-growing factor.</span></li>
 <li><strong>Why Big O Matters for Lists and Arrays</strong> <span class="el-body">— Applying Big O thinking to list and array operations helps developers predict performance and avoid bottlenecks when working with data structures.</span></li>
 </ul>
-<h3>Applying Big O to List and Array Operations</h3>
+<h3 id="topic-7">Applying Big O to List and Array Operations</h3>
 <div class="summary">Applies Big O notation to the core operations of lists and arrays, enabling students to reason about and compare the relative efficiency of different data structure choices.</div>
 <ul>
 <li><strong>Access by Index: O(1) Constant Time</strong> <span class="el-body">— Accessing an element in an array or list by its index is one of the most efficient operations possible, classified as O(1) or constant time.</span></li>
@@ -131,6 +131,6 @@ li{margin:5px 0}
 <div class="co"><span class="code">CO3</span>Implement data structures and algorithms in computer code.</div>
 <div class="co"><span class="code">CO4</span>Analyze the performance of algorithms and data structures</div>
 
-<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
+<footer class="presemaker-credit" data-credit="2" style="margin-top:2rem;padding:14px 8px;border-top:1px solid #ddd;background:#fff;text-align:center;font:13px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#595959;"><svg width="20" height="20" viewBox="0 0 2048 2048" aria-hidden="true" focusable="false" style="vertical-align:-5px;margin-right:7px"><rect width="2048" height="2048" rx="384" fill="#0F6E6E"/><path fill="#0A5050" d="M1024 1000 344 832v816l680 168zm0 0 680-168v816l-680 168z"/><path fill="#fff" d="M1024 944 384 784v808l640 160zm0 0 640-160v808l-640 160z"/><rect x="1002" y="944" width="44" height="808" fill="#0F6E6E"/><rect x="936" y="246" width="176" height="448" rx="44" fill="#fff"/><rect x="800" y="382" width="448" height="176" rx="44" fill="#fff"/></svg>Created with <a href="https://softwareplus.ai/coursebuilder/" target="_blank" rel="noopener" style="color:#2f5d8f;font-weight:600;text-decoration:none;">CourseBuilder+</a><span aria-hidden="true"> · </span><a href="https://softwareplus.ai/" target="_blank" rel="noopener" style="color:#2f5d8f;text-decoration:none;">SoftwarePlus.ai</a></footer>
 </body>
 </html>

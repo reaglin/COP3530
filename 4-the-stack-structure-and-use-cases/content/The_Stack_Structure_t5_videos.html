@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Expression Evaluation Using Stacks</title>
+<style>
+body{font-family:'Segoe UI',Arial,sans-serif;max-width:820px;margin:2rem auto;padding:0 1.25rem;color:#222;line-height:1.55}
+h1{font-size:1.9rem;border-bottom:2px solid #ddd;padding-bottom:.4rem}
+h2{font-size:1.3rem;color:#1f3864;margin-top:1.6rem}
+body{padding-left:1.1rem;padding-right:1.1rem}
+ul,ol{margin:.4rem 0 1rem 1.4rem}
+li{margin:.25rem 0}
+nav.toc{background:rgba(128,128,128,.08);border:1px solid rgba(128,128,128,.25);border-radius:8px;padding:.6rem 1rem;margin:1.2rem 0}
+nav.toc strong{display:block;margin-bottom:.3rem}
+nav.toc a{display:block;text-decoration:none;padding:.12rem 0}
+section.item{border-top:1px solid rgba(128,128,128,.22);padding-top:.3rem}
+table{border-collapse:collapse;width:100%;margin:.8rem 0}
+th,td{border:1px solid rgba(128,128,128,.45);padding:.4rem .6rem;text-align:left;vertical-align:top}
+thead th{background:rgba(128,128,128,.18);font-weight:600}
+tbody tr:nth-child(even){background:rgba(128,128,128,.08)}
+</style>
+</head>
+<body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ 4- The Stack: Structure and Use Cases</a></div>
+<h1>Expression Evaluation Using Stacks</h1>
+<nav class="toc"><strong>Contents</strong>
+<a href="#sec1">Introduction</a>
+<a href="#sec2">Video 1: Lec-36: Infix, Prefix &amp; Postfix&#128105;‍&#128295; with examples | Data Structure</a>
+<a href="#sec3">Video 2: Lec-40: Infix to postfix Conversion using Stack | Infix➡️Postfix Conversion with examples</a>
+<a href="#sec4">Video 3: Lec-42: Postfix Expression Evaluation | Stack Application | Data Structure</a>
+<a href="#sec5">How These Videos Support the Learning Outcomes</a>
+<a href="#sec6">About These Videos</a>
+</nav>
+<section class="item" id="sec1">
+<h2>Introduction</h2>
+<p>Expressions like 3 + 4 * (2 - 1) are easy for people to read, but a computer cannot simply scan them left to right and get the right answer. Operators have different precedence levels, parentheses override those levels, and some operators associate left to right while others associate right to left. The stack solves this problem elegantly: whenever you encounter something whose handling must be postponed — an open parenthesis, an operator of lower precedence, an operand waiting for its operator — you push it and come back to it later, in exactly the reverse order you set it aside. That Last-In, First-Out behavior is what makes stacks the natural tool for parsing.</p>
+<p>In this topic you will work through the chain of ideas that compilers and calculators actually use: checking that parentheses and brackets are balanced, understanding the three notations (infix, prefix, postfix), converting infix to postfix with the Shunting-Yard algorithm, and then evaluating a postfix expression with a single stack and a single left-to-right pass. The payoff is that postfix needs no parentheses and no precedence rules at evaluation time — all of that complexity is resolved during conversion.</p>
+<p>As you watch the videos below, trace each example by hand with pencil and paper. Keep a column for the stack contents and a column for the output at every step, and pay close attention to the rules that govern when an operator is pushed versus when it forces pops: comparing precedence of the incoming operator against the top of the stack, handling equal precedence according to associativity, and treating the open parenthesis as a barrier that only a matching close parenthesis can remove.</p>
+</section>
+<section class="item" id="sec2">
+<h2>Video 1: Lec-36: Infix, Prefix &amp; Postfix&#128105;‍&#128295; with examples | Data Structure</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/vtyuftvugXY?cc_load_policy=1&amp;rel=0" title="Video: Lec-36: Infix, Prefix &amp; Postfix&#128105;‍&#128295; with examples | Data Structure (Gate Smashers)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Gate Smashers</strong> · 13:33 · 552,840 views · 3y ago · captions — <a href="https://www.youtube.com/watch?v=vtyuftvugXY" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>This lecture introduces the three ways of writing an expression — infix (operator between operands), prefix (operator first), and postfix (operator last) — and walks through worked examples converting between them. Based on its title and description, it should cover how operator position changes the reading order and why prefix and postfix forms need no parentheses.</p>
+<h3>Why this video</h3>
+<p>It establishes the vocabulary and notation that the rest of the topic depends on, so watching it first makes the conversion and evaluation videos much easier to follow.</p>
+</section>
+<section class="item" id="sec3">
+<h2>Video 2: Lec-40: Infix to postfix Conversion using Stack | Infix➡️Postfix Conversion with examples</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/N1Sr-j-cf4c?cc_load_policy=1&amp;rel=0" title="Video: Lec-40: Infix to postfix Conversion using Stack | Infix➡️Postfix Conversion with examples (Gate Smashers)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Gate Smashers</strong> · 15:15 · 650,693 views · 3y ago · captions — <a href="https://www.youtube.com/watch?v=N1Sr-j-cf4c" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>This lecture demonstrates infix-to-postfix conversion using a stack, stepping through example expressions symbol by symbol. Expect it to show the standard rules: operands go straight to the output, operators are pushed or popped based on precedence comparisons with the stack top, and parentheses are handled as push-and-pop pairs.</p>
+<h3>Why this video</h3>
+<p>This is the core Shunting-Yard procedure stated in the module outcomes, presented as a hand-traceable algorithm with precedence and parenthesis handling made explicit.</p>
+</section>
+<section class="item" id="sec4">
+<h2>Video 3: Lec-42: Postfix Expression Evaluation | Stack Application | Data Structure</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/dc4bfoxIbu8?cc_load_policy=1&amp;rel=0" title="Video: Lec-42: Postfix Expression Evaluation | Stack Application | Data Structure (Gate Smashers)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Gate Smashers</strong> · 10:52 · 196,590 views · 3y ago · captions — <a href="https://www.youtube.com/watch?v=dc4bfoxIbu8" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>This lecture covers evaluating a postfix expression with a stack: scan left to right, push operands, and on each operator pop the required operands, apply the operation, and push the result back. It is framed explicitly as an application of the stack data structure, with numeric examples worked out.</p>
+<h3>Why this video</h3>
+<p>It completes the pipeline by showing what you do with the postfix string produced by the previous video, and it highlights the order-of-operands detail that trips students up when subtraction or division is involved.</p>
+</section>
+<section class="item" id="sec5">
+<h2>How These Videos Support the Learning Outcomes</h2>
+<p>Together these three videos target MO4 directly: the first gives you the notation framework, the second shows the stack-based infix-to-postfix conversion including precedence, associativity, and parenthesis handling, and the third shows single-pass postfix evaluation with a stack. In doing so they also reinforce MO1, since every rule in these algorithms is a consequence of LIFO ordering, and they give you concrete algorithms to implement on top of the Stack class you build in MO2 using push, pop, peek, and isEmpty. Watching them with a trace table in hand will also prepare you to reason about MO3, because each algorithm makes a single pass over the input while the stack grows at most to the size of the expression.</p>
+</section>
+<section class="item" id="sec6">
+<h2>About These Videos</h2>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+
+<footer class="presemaker-credit" data-credit="2" style="margin-top:2rem;padding:14px 8px;border-top:1px solid #ddd;background:#fff;text-align:center;font:13px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#595959;"><svg width="20" height="20" viewBox="0 0 2048 2048" aria-hidden="true" focusable="false" style="vertical-align:-5px;margin-right:7px"><rect width="2048" height="2048" rx="384" fill="#0F6E6E"/><path fill="#0A5050" d="M1024 1000 344 832v816l680 168zm0 0 680-168v816l-680 168z"/><path fill="#fff" d="M1024 944 384 784v808l640 160zm0 0 640-160v808l-640 160z"/><rect x="1002" y="944" width="44" height="808" fill="#0F6E6E"/><rect x="936" y="246" width="176" height="448" rx="44" fill="#fff"/><rect x="800" y="382" width="448" height="176" rx="44" fill="#fff"/></svg>Created with <a href="https://softwareplus.ai/coursebuilder/" target="_blank" rel="noopener" style="color:#2f5d8f;font-weight:600;text-decoration:none;">CourseBuilder+</a><span aria-hidden="true"> · </span><a href="https://softwareplus.ai/" target="_blank" rel="noopener" style="color:#2f5d8f;text-decoration:none;">SoftwarePlus.ai</a></footer>
+</body>
+</html>

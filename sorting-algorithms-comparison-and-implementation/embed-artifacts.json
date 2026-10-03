@@ -1,5 +1,10 @@
 ﻿[
   {
+    "title": "Sorting Algorithms: Comparison and Implementation (module page)",
+    "href": "index.html",
+    "type": "Module page"
+  },
+  {
     "title": "Sorting Algorithms: Comparison and Implementation \u2014 Topics \u0026 Learning Outcomes",
     "href": "topics-outcomes.html",
     "type": "Page"
@@ -8,11 +13,6 @@
     "title": "Sorting Algorithms: Comparison and Implementation \u2014 Module Topics",
     "href": "topics.html",
     "type": "Page"
-  },
-  {
-    "title": "Sorting Algorithms: Comparison and Implementation \u2014 Module Topics",
-    "href": "content/module_topics.html",
-    "type": "Content"
   },
   {
     "title": "Comparing Sorting Algorithms",
@@ -47,6 +47,41 @@
   {
     "title": "Comparing Sorting Algorithms",
     "href": "content/Sorting_Algorithms_Compariso_interactive_topics_t6.html",
+    "type": "Content"
+  },
+  {
+    "title": "Introduction to Sorting Algorithms",
+    "href": "content/Sorting_Algorithms_Compariso_t1_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "Bubble Sort",
+    "href": "content/Sorting_Algorithms_Compariso_t2_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "Insertion Sort",
+    "href": "content/Sorting_Algorithms_Compariso_t3_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "Merge Sort",
+    "href": "content/Sorting_Algorithms_Compariso_t4_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "Quicksort",
+    "href": "content/Sorting_Algorithms_Compariso_t5_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "Comparing Sorting Algorithms",
+    "href": "content/Sorting_Algorithms_Compariso_t6_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "Sorting Algorithms: Comparison and Implementation",
+    "href": "content/Sorting_Algorithms_Compariso_videos_merged.html",
     "type": "Content"
   }
 ]

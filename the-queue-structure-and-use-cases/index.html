@@ -1,408 +1,162 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The Queue: Structure and Use Cases — COP3530</title>
-  <style>
-    /* ── Reset & Base ── */
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html {
-      font-size: 16px;
-    }
-
-    body {
-      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-      background-color: #f4f6f9;
-      color: #1e2533;
-      line-height: 1.6;
-      min-height: 100vh;
-    }
-
-    /* ── Header / Hero ── */
-    header {
-      background: linear-gradient(135deg, #1a3a5c 0%, #2563a8 100%);
-      color: #ffffff;
-      padding: 2.75rem 2rem 2.25rem;
-      border-bottom: 4px solid #f0a500;
-    }
-
-    .header-inner {
-      max-width: 960px;
-      margin: 0 auto;
-    }
-
-    .course-label {
-      display: inline-block;
-      font-size: 0.78rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      background-color: rgba(255, 255, 255, 0.15);
-      color: #d6e8ff;
-      padding: 0.25rem 0.65rem;
-      border-radius: 3px;
-      margin-bottom: 0.75rem;
-    }
-
-    header h1 {
-      font-size: clamp(1.55rem, 4vw, 2.25rem);
-      font-weight: 700;
-      line-height: 1.25;
-      margin-bottom: 0.85rem;
-      color: #ffffff;
-    }
-
-    header p {
-      font-size: 0.98rem;
-      max-width: 680px;
-      color: #c8ddf5;
-      line-height: 1.7;
-    }
-
-    /* ── Main Content ── */
-    main {
-      max-width: 960px;
-      margin: 2.5rem auto 3.5rem;
-      padding: 0 1.25rem;
-    }
-
-    .section-heading {
-      font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: #5a6a82;
-      margin-bottom: 1.25rem;
-      padding-bottom: 0.5rem;
-      border-bottom: 1px solid #dde3ec;
-    }
-
-    /* ── Card Grid ── */
-    .card-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 1.25rem;
-    }
-
-    .card {
-      background: #ffffff;
-      border: 1px solid #dde3ec;
-      border-radius: 8px;
-      padding: 1.35rem 1.4rem 1.3rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.55rem;
-      transition: box-shadow 0.18s ease, transform 0.18s ease;
-    }
-
-    .card:hover {
-      box-shadow: 0 6px 22px rgba(37, 99, 168, 0.12);
-      transform: translateY(-2px);
-    }
-
-    /* ── Card Meta row ── */
-    .card-meta {
-      display: flex;
-      align-items: center;
-      gap: 0.45rem;
-      flex-wrap: wrap;
-    }
-
-    .badge {
-      font-size: 0.68rem;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      padding: 0.2rem 0.5rem;
-      border-radius: 3px;
-      white-space: nowrap;
-    }
-
-    .badge-type {
-      background-color: #e8f0fb;
-      color: #2563a8;
-    }
-
-    .badge-filetype {
-      background-color: #f0f3f8;
-      color: #5a6a82;
-      border: 1px solid #dde3ec;
-    }
-
-    /* ── Card Title row ── */
-    .card-title-row {
-      display: flex;
-      align-items: baseline;
-      gap: 0.6rem;
-      flex-wrap: wrap;
-    }
-
-    .card-name {
-      font-size: 1.0rem;
-      font-weight: 600;
-      color: #1e2533;
-      line-height: 1.35;
-    }
-
-    .card-name a {
-      color: #1a52a0;
-      text-decoration: none;
-      border-bottom: 1px solid transparent;
-      transition: border-color 0.15s ease, color 0.15s ease;
-    }
-
-    .card-name a:hover {
-      color: #0d3878;
-      border-bottom-color: #0d3878;
-    }
-
-    .card-name a:focus-visible {
-      outline: 2px solid #2563a8;
-      outline-offset: 2px;
-      border-radius: 2px;
-    }
-
-    .source-link {
-      font-size: 0.72rem;
-      font-weight: 500;
-      color: #6b7d96;
-      text-decoration: none;
-      white-space: nowrap;
-      border: 1px solid #c8d3e4;
-      border-radius: 3px;
-      padding: 0.15rem 0.45rem;
-      transition: background-color 0.15s ease, color 0.15s ease;
-      flex-shrink: 0;
-    }
-
-    .source-link:hover {
-      background-color: #e8f0fb;
-      color: #1a52a0;
-      border-color: #9ab4d8;
-    }
-
-    .source-link:focus-visible {
-      outline: 2px solid #2563a8;
-      outline-offset: 2px;
-    }
-
-    /* ── Card Description ── */
-    .card-description {
-      font-size: 0.875rem;
-      color: #4a5568;
-      line-height: 1.65;
-      flex: 1;
-    }
-
-    /* ── Footer ── */
-    footer {
-      text-align: center;
-      padding: 1.5rem 1rem;
-      font-size: 0.78rem;
-      color: #8a97ab;
-      border-top: 1px solid #dde3ec;
-      background-color: #f4f6f9;
-    }
-
-    /* ── Responsive tweaks ── */
-    @media (max-width: 520px) {
-      header {
-        padding: 2rem 1.25rem 1.75rem;
-      }
-
-      .card-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .card {
-        padding: 1.15rem 1.2rem;
-      }
-    }
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Queue: Structure and Use Cases — COP3530 - Data Structures</title>
+  <link rel="stylesheet" href="../assets/site.css">
 </head>
 <body>
-<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ COP3530 - Data Structures</a></div>
-<div style="border:1px solid #c9d4e3;background:#f5f8fc;border-radius:8px;padding:10px 16px;margin:0 0 18px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;font-family:'Segoe UI',Arial,sans-serif"><strong style="color:#1a3c6e">Module outline:</strong><a href="topics-outcomes.html#topics" style="color:#1a3c6e;font-weight:600;text-decoration:none">📋 Module Topics</a><a href="topics-outcomes.html#outcomes" style="color:#137333;font-weight:600;text-decoration:none">🎯 Student Learning Outcomes</a></div>
-
-  <header>
-    <div class="header-inner">
-      <span class="course-label">COP3530 &mdash; Data Structures</span>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="hero">
+    <div class="hero-inner">
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="../index.html">COP3530 - Data Structures</a><span class="sep" aria-hidden="true">›</span><span class="current">The Queue: Structure and Use Cases</span>
+  </nav>
+      <div class="hero-label">Module 5</div>
       <h1>The Queue: Structure and Use Cases</h1>
-      <p>
-        This module introduces the queue data structure, its defining First-In, First-Out (FIFO)
-        principle, and its fundamental operations. Learners will explore both array-based and
-        linked-list-based implementations, compare queues with stacks, and discover how queues
-        power real-world computing systems such as process scheduling, network buffering, and
-        graph traversal.
-      </p>
+      <p class="hero-desc">This lesson introduces the queue data structure, explaining its FIFO principle, implementation approaches, and real-world applications such as scheduling and buffering. Students will implement queue operations and compare the structure to stacks.</p>
     </div>
   </header>
-
-  <main>
-    <p class="section-heading">Module Artifacts &mdash; 7 items</p>
-
-    <div class="card-grid">
-
-      <!-- 1. Module Topics -->
-      <article class="card">
-        <div class="card-meta">
-          <span class="badge badge-type">Module Topics</span>
-          <span class="badge badge-filetype">.json</span>
-        </div>
-        <div class="card-title-row">
-          <span class="card-name">
-            <a href="content/module_topics.html">Module Topics</a>
-          </span>
-          <a class="source-link" href="source/hierarchy.json">source file</a>
-        </div>
-        <p class="card-description">
-          Outlines the module's learning topics covering queue fundamentals (FIFO principle,
-          core terminology), standard operations (enqueue, dequeue, peek), and implementation
-          approaches (array-based and linked list-based), serving as a navigational guide for
-          learners and instructors to understand the scope and sequence of the module.
-        </p>
-      </article>
-
-      <!-- 2. Queues vs. Stacks (Text Content) -->
-      <article class="card">
-        <div class="card-meta">
-          <span class="badge badge-type">Text Content</span>
-          <span class="badge badge-filetype">.html</span>
-        </div>
-        <div class="card-title-row">
-          <span class="card-name">
-            <a href="content/_interactive.html">Queues vs. Stacks: A Comparison</a>
-          </span>
-        </div>
-        <p class="card-description">
-          This reading contrasts queues and stacks by examining their structural similarities
-          and the key difference in ordering (FIFO vs. LIFO), helping learners understand when
-          to choose one over the other.
-        </p>
-      </article>
-
-      <!-- 3. Introduction to the Queue Data Structure -->
-      <article class="card">
-        <div class="card-meta">
-          <span class="badge badge-type">Topic Detail</span>
-          <span class="badge badge-filetype">.html</span>
-        </div>
-        <div class="card-title-row">
-          <span class="card-name">
-            <a href="content/The_Queue_Structure_interactive_topics_t1.html">Introduction to the Queue Data Structure</a>
-          </span>
-        </div>
-        <p class="card-description">
-          This introductory reading defines the queue data structure, explains its core concept
-          of ordered insertion and removal, and establishes the foundational vocabulary learners
-          need before studying queue operations and implementations.
-        </p>
-      </article>
-
-      <!-- 4. The FIFO Principle -->
-      <article class="card">
-        <div class="card-meta">
-          <span class="badge badge-type">Topic Detail</span>
-          <span class="badge badge-filetype">.html</span>
-        </div>
-        <div class="card-title-row">
-          <span class="card-name">
-            <a href="content/The_Queue_Structure_interactive_topics_t2.html">The FIFO Principle</a>
-          </span>
-        </div>
-        <p class="card-description">
-          This reading explains the First-In, First-Out (FIFO) principle as the defining rule
-          of queues, clarifying why it distinguishes queues from other data structures and how
-          it governs element ordering.
-        </p>
-      </article>
-
-      <!-- 5. Queue Operations -->
-      <article class="card">
-        <div class="card-meta">
-          <span class="badge badge-type">Topic Detail</span>
-          <span class="badge badge-filetype">.html</span>
-        </div>
-        <div class="card-title-row">
-          <span class="card-name">
-            <a href="content/The_Queue_Structure_interactive_topics_t3.html">Queue Operations</a>
-          </span>
-        </div>
-        <p class="card-description">
-          This reading covers the four fundamental queue operations—enqueue, dequeue, peek, and
-          isEmpty—describing what each does and how they collectively enforce FIFO behavior,
-          serving as a reference for learners before or during implementation.
-        </p>
-      </article>
-
-      <!-- 6. Implementing a Queue -->
-      <article class="card">
-        <div class="card-meta">
-          <span class="badge badge-type">Topic Detail</span>
-          <span class="badge badge-filetype">.html</span>
-        </div>
-        <div class="card-title-row">
-          <span class="card-name">
-            <a href="content/The_Queue_Structure_interactive_topics_t4.html">Implementing a Queue</a>
-          </span>
-        </div>
-        <p class="card-description">
-          This reading walks through how to implement a queue using concrete approaches (such
-          as arrays or linked lists), covering the trade-offs of each method so learners can
-          build a working queue in code.
-        </p>
-      </article>
-
-      <!-- 7. Real-World Applications of Queues -->
-      <article class="card">
-        <div class="card-meta">
-          <span class="badge badge-type">Topic Detail</span>
-          <span class="badge badge-filetype">.html</span>
-        </div>
-        <div class="card-title-row">
-          <span class="card-name">
-            <a href="content/The_Queue_Structure_interactive_topics_t5.html">Real-World Applications of Queues</a>
-          </span>
-        </div>
-        <p class="card-description">
-          This reading surveys practical computing scenarios where queues are applied—such as
-          OS process scheduling, network buffering, print job management, and breadth-first
-          traversal—helping learners connect the abstract FIFO concept to real systems.
-        </p>
-      </article>
-
-      <!-- 8. Queues vs. Stacks (Topic Detail) -->
-      <article class="card">
-        <div class="card-meta">
-          <span class="badge badge-type">Topic Detail</span>
-          <span class="badge badge-filetype">.html</span>
-        </div>
-        <div class="card-title-row">
-          <span class="card-name">
-            <a href="content/The_Queue_Structure_interactive_topics_t6.html">Queues vs. Stacks: A Comparison</a>
-          </span>
-        </div>
-        <p class="card-description">
-          This reading contrasts queues and stacks by examining their structural similarities
-          and the key difference in ordering (FIFO vs. LIFO), helping learners understand when
-          to choose one over the other.
-        </p>
-      </article>
-
-    </div>
+  <main class="page-wrap" id="main">
+<section aria-labelledby="topics-h">
+<h2 id="topics-h">Topics</h2>
+<p class="section-intro">This module covers 6 topics. Open a topic to see its subtopics.</p>
+<ol class="topic-list">
+<li><a class="topic-card" href="topics-outcomes.html#topic-1"><span class="topic-num" aria-hidden="true">1</span><span class="topic-text"><span class="topic-title">Introduction to the Queue Data Structure</span><span class="topic-meta">5 subtopics</span></span></a></li>
+<li><a class="topic-card" href="topics-outcomes.html#topic-2"><span class="topic-num" aria-hidden="true">2</span><span class="topic-text"><span class="topic-title">The FIFO Principle</span><span class="topic-meta">5 subtopics</span></span></a></li>
+<li><a class="topic-card" href="topics-outcomes.html#topic-3"><span class="topic-num" aria-hidden="true">3</span><span class="topic-text"><span class="topic-title">Queue Operations</span><span class="topic-meta">5 subtopics</span></span></a></li>
+<li><a class="topic-card" href="topics-outcomes.html#topic-4"><span class="topic-num" aria-hidden="true">4</span><span class="topic-text"><span class="topic-title">Implementing a Queue</span><span class="topic-meta">6 subtopics</span></span></a></li>
+<li><a class="topic-card" href="topics-outcomes.html#topic-5"><span class="topic-num" aria-hidden="true">5</span><span class="topic-text"><span class="topic-title">Real-World Applications of Queues</span><span class="topic-meta">6 subtopics</span></span></a></li>
+<li><a class="topic-card" href="topics-outcomes.html#topic-6"><span class="topic-num" aria-hidden="true">6</span><span class="topic-text"><span class="topic-title">Queues vs. Stacks: A Comparison</span><span class="topic-meta">6 subtopics</span></span></a></li>
+</ol>
+<p class="more-links"><a href="topics-outcomes.html#topics">All topics and subtopics</a><a href="topics-outcomes.html#outcomes">Student learning outcomes</a></p>
+</section>
+<section aria-labelledby="content-h">
+<h2 id="content-h">Module Content</h2>
+<p class="section-intro">14 items.</p>
+<ul class="content-grid">
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">📄</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Reading</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/_interactive.html">Queues vs. Stacks: A Comparison</a></div>
+    <p class="content-desc">This reading contrasts queues and stacks by examining their structural similarities and the key difference in ordering (FIFO vs. LIFO), helping learners understand when to choose one over the other.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">📄</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topic Detail</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/The_Queue_Structure_interactive_topics_t1.html">Introduction to the Queue Data Structure</a></div>
+    <p class="content-desc">This introductory reading defines the queue data structure, explains its core concept of ordered insertion and removal, and establishes the foundational vocabulary learners need before studying queue operations and implementations.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">📄</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topic Detail</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/The_Queue_Structure_interactive_topics_t2.html">The FIFO Principle</a></div>
+    <p class="content-desc">This reading explains the First-In, First-Out (FIFO) principle as the defining rule of queues, clarifying why it distinguishes queues from other data structures and how it governs element ordering.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">📄</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topic Detail</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/The_Queue_Structure_interactive_topics_t3.html">Queue Operations</a></div>
+    <p class="content-desc">This reading covers the four fundamental queue operations—enqueue, dequeue, peek, and isEmpty—describing what each does and how they collectively enforce FIFO behavior, serving as a reference for learners before or during implementation.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">📄</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topic Detail</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/The_Queue_Structure_interactive_topics_t4.html">Implementing a Queue</a></div>
+    <p class="content-desc">This reading walks through how to implement a queue using concrete approaches (such as arrays or linked lists), covering the trade-offs of each method so learners can build a working queue in code.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">📄</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topic Detail</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/The_Queue_Structure_interactive_topics_t5.html">Real-World Applications of Queues</a></div>
+    <p class="content-desc">This reading surveys practical computing scenarios where queues are applied—such as OS process scheduling, network buffering, print job management, and breadth-first traversal—helping learners connect the abstract FIFO concept to real systems.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">📄</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topic Detail</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/The_Queue_Structure_interactive_topics_t6.html">Queues vs. Stacks: A Comparison</a></div>
+    <p class="content-desc">This reading contrasts queues and stacks by examining their structural similarities and the key difference in ordering (FIFO vs. LIFO), helping learners understand when to choose one over the other.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">🎬</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topics and Embedded Video</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/The_Queue_Structure_t1_videos.html">Introduction to the Queue Data Structure — Videos</a></div>
+    <p class="content-desc">An introductory reading that defines the queue as an ordered collection with insertions at the rear and removals at the front, using the familiar waiting-in-line analogy to orient learners before they encounter formal terminology and operations.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">🎬</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topics and Embedded Video</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/The_Queue_Structure_t2_videos.html">The FIFO Principle — Videos</a></div>
+    <p class="content-desc">A focused lesson on the First-In, First-Out ordering rule, explaining why enqueue at the rear and dequeue at the front must never be violated and warning against common misuses of queue ordering.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">🎬</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topics and Embedded Video</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/The_Queue_Structure_t3_videos.html">Queue Operations — Videos</a></div>
+    <p class="content-desc">A walkthrough of the queue&#39;s abstract interface, covering enqueue, dequeue, peek, isEmpty and size one operation at a time so learners understand exactly what each does and what it returns.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">🎬</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topics and Embedded Video</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/The_Queue_Structure_t4_videos.html">Implementing a Queue — Videos</a></div>
+    <p class="content-desc">A hands-on implementation reading that builds the queue two ways — over a fixed-size array and over a linked list — and compares the trade-offs of each approach when turning the ADT into working code.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">🎬</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topics and Embedded Video</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/The_Queue_Structure_t5_videos.html">Real-World Applications of Queues — Videos</a></div>
+    <p class="content-desc">A applications reading that connects the FIFO principle to real systems such as CPU job scheduling, printer spoolers, network packet buffers and customer service lines.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">🎬</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topics and Embedded Video</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/The_Queue_Structure_t6_videos.html">Queues vs. Stacks: A Comparison — Videos</a></div>
+    <p class="content-desc">A comparative lesson contrasting the queue&#39;s FIFO discipline with the stack&#39;s LIFO discipline, highlighting their opposite insertion/removal restrictions and when to choose one over the other.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">🎬</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topics and Embedded Video</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/The_Queue_Structure_videos_merged.html">The Queue: Structure and Use Cases — 6 topics (merged)</a></div>
+    <p class="content-desc">The consolidated module document that compiles all topic readings — introduction, FIFO, operations, implementations, applications and the stack comparison — into a single continuous text for review or printing.</p>
+  </div>
+</li>
+</ul>
+</section>
+<nav class="module-nav" aria-label="Modules">
+  <a href="../4-the-stack-structure-and-use-cases/index.html">← 4- The Stack: Structure and Use Cases</a>
+  <a class="center-link" href="../index.html">↑ All modules</a>
+  <a href="../recursion-concepts-and-implementation/index.html">Recursion: Concepts and Implementation →</a>
+</nav>
   </main>
-
-  <footer>
-    COP3530 &mdash; Data Structures &nbsp;&bull;&nbsp; The Queue: Structure and Use Cases
-  </footer>
-
-
-<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
-<section class="presemaker-extras" style="max-width:1000px;margin:2rem auto;padding:0 1rem;"><h2>Topics &amp; Learning Outcomes</h2><p><a href="topics-outcomes.html">View Topics &amp; Learning Outcomes</a></p></section><script src="embed-inject.js" defer></script></body>
+<script src="embed-inject.js" defer></script>
+<footer class="presemaker-credit" data-credit="2" style="margin-top:2rem;padding:14px 8px;border-top:1px solid #ddd;background:#fff;text-align:center;font:13px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#595959;"><svg width="20" height="20" viewBox="0 0 2048 2048" aria-hidden="true" focusable="false" style="vertical-align:-5px;margin-right:7px"><rect width="2048" height="2048" rx="384" fill="#0F6E6E"/><path fill="#0A5050" d="M1024 1000 344 832v816l680 168zm0 0 680-168v816l-680 168z"/><path fill="#fff" d="M1024 944 384 784v808l640 160zm0 0 640-160v808l-640 160z"/><rect x="1002" y="944" width="44" height="808" fill="#0F6E6E"/><rect x="936" y="246" width="176" height="448" rx="44" fill="#fff"/><rect x="800" y="382" width="448" height="176" rx="44" fill="#fff"/></svg>Created with <a href="https://softwareplus.ai/coursebuilder/" target="_blank" rel="noopener" style="color:#2f5d8f;font-weight:600;text-decoration:none;">CourseBuilder+</a><span aria-hidden="true"> · </span><a href="https://softwareplus.ai/" target="_blank" rel="noopener" style="color:#2f5d8f;text-decoration:none;">SoftwarePlus.ai</a></footer>
+</body>
 </html>

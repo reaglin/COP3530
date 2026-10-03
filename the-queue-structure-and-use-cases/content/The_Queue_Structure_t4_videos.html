@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Implementing a Queue</title>
+<style>
+body{font-family:'Segoe UI',Arial,sans-serif;max-width:820px;margin:2rem auto;padding:0 1.25rem;color:#222;line-height:1.55}
+h1{font-size:1.9rem;border-bottom:2px solid #ddd;padding-bottom:.4rem}
+h2{font-size:1.3rem;color:#1f3864;margin-top:1.6rem}
+body{padding-left:1.1rem;padding-right:1.1rem}
+ul,ol{margin:.4rem 0 1rem 1.4rem}
+li{margin:.25rem 0}
+nav.toc{background:rgba(128,128,128,.08);border:1px solid rgba(128,128,128,.25);border-radius:8px;padding:.6rem 1rem;margin:1.2rem 0}
+nav.toc strong{display:block;margin-bottom:.3rem}
+nav.toc a{display:block;text-decoration:none;padding:.12rem 0}
+section.item{border-top:1px solid rgba(128,128,128,.22);padding-top:.3rem}
+table{border-collapse:collapse;width:100%;margin:.8rem 0}
+th,td{border:1px solid rgba(128,128,128,.45);padding:.4rem .6rem;text-align:left;vertical-align:top}
+thead th{background:rgba(128,128,128,.18);font-weight:600}
+tbody tr:nth-child(even){background:rgba(128,128,128,.08)}
+</style>
+</head>
+<body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ The Queue: Structure and Use Cases</a></div>
+<h1>Implementing a Queue</h1>
+<nav class="toc"><strong>Contents</strong>
+<a href="#sec1">Introduction</a>
+<a href="#sec2">Video 1: Lec-50: Implementation of Queue using Array | Enqueue() in Queue | Data Structure #gatesmashers</a>
+<a href="#sec3">Video 2: Lec-51: Implementation of Queue using Linked List | Enqueue() in Queue | Data Structure</a>
+<a href="#sec4">Video 3: Queues Explained and Implemented with Arrays and LinkedLists in Java | Data Structures | Geekific</a>
+<a href="#sec5">How These Videos Support the Learning Outcomes</a>
+<a href="#sec6">About These Videos</a>
+</nav>
+<section class="item" id="sec1">
+<h2>Introduction</h2>
+<p>A queue is an abstract data type defined by its behavior: elements enter at the rear and leave from the front, in first-in-first-out order. Knowing that behavior is not the same as being able to build it. In this topic you move from the concept to the code, implementing the queue two different ways — on top of a fixed-size array and on top of a linked list — and seeing exactly what each choice costs you.</p>
+<p>The array-based version is usually the first one students write, and it is also the one that exposes the most interesting problems. Where do front and rear pointers start? What happens when rear reaches the end of the array but space has been freed at the front? How do you distinguish an empty queue from a full one? The linked list version avoids the fixed-capacity problem but introduces pointer bookkeeping of its own, especially when the queue becomes empty and both head and tail must be reset.</p>
+<p>As you watch, keep a running list of three things: the exact conditions that signal overflow and underflow, the pointer updates performed by enqueue and dequeue, and the time and space cost of each operation. You should finish this topic able to argue for one implementation over the other given a specific scenario, not just recite that both are O(1) for the core operations.</p>
+</section>
+<section class="item" id="sec2">
+<h2>Video 1: Lec-50: Implementation of Queue using Array | Enqueue() in Queue | Data Structure #gatesmashers</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/hGbphQIOHYs?cc_load_policy=1&amp;rel=0" title="Video: Lec-50: Implementation of Queue using Array | Enqueue() in Queue | Data Structure #gatesmashers (Gate Smashers)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Gate Smashers</strong> · 13:15 · 143,376 views · 3y ago · captions — <a href="https://www.youtube.com/watch?v=hGbphQIOHYs" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>This lecture walks through building a queue on top of an array, focusing on the enqueue operation and the front and rear index variables that track the queue&#39;s boundaries. Based on its title and placement in a sequenced data structures series, it is likely to cover the initial values of the pointers, the overflow condition when rear reaches the end of the array, and the step-by-step code for inserting an element.</p>
+<h3>Why this video</h3>
+<p>Gate Smashers produces exam-oriented data structures lectures with careful step-by-step tracing, which makes it a strong fit for the array-based implementation and edge-case handling subtopics where small index errors matter most.</p>
+</section>
+<section class="item" id="sec3">
+<h2>Video 2: Lec-51: Implementation of Queue using Linked List | Enqueue() in Queue | Data Structure</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/XqtbBB-Y-Zs?cc_load_policy=1&amp;rel=0" title="Video: Lec-51: Implementation of Queue using Linked List | Enqueue() in Queue | Data Structure (Gate Smashers)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Gate Smashers</strong> · 11:35 · 103,436 views · 3y ago · captions — <a href="https://www.youtube.com/watch?v=XqtbBB-Y-Zs" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>The follow-up lecture in the same series implements the queue using a linked list, with enqueue highlighted in the title. Expect coverage of node creation, maintaining front and rear pointers, the special case of inserting into an empty queue, and how dynamic allocation removes the fixed-capacity limit of the array version.</p>
+<h3>Why this video</h3>
+<p>Watching this immediately after the array lecture gives you the same instructor, notation, and worked style applied to the second implementation, which makes the structural trade-offs between the two approaches easier to see directly.</p>
+</section>
+<section class="item" id="sec4">
+<h2>Video 3: Queues Explained and Implemented with Arrays and LinkedLists in Java | Data Structures | Geekific</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/b6VAlM0-RaE?cc_load_policy=1&amp;rel=0" title="Video: Queues Explained and Implemented with Arrays and LinkedLists in Java | Data Structures | Geekific (Geekific)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Geekific</strong> · 12:01 · 3,165 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=b6VAlM0-RaE" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>Geekific explains the queue ADT and then implements it both ways in Java, so array-based and linked-list-based versions appear side by side in a single video. The description points to an accompanying GitHub repository, so the full source for the core operations is available to read and run alongside the explanation.</p>
+<h3>Why this video</h3>
+<p>Its dual-implementation format directly serves the trade-offs subtopic, and seeing real compilable Java code bridges the gap between the pseudocode in the lectures and the code you will write for this course.</p>
+</section>
+<section class="item" id="sec5">
+<h2>How These Videos Support the Learning Outcomes</h2>
+<p>Together these videos carry you from the FIFO definition into working code (MO1, MO2): the first two lectures build the array-based and linked list-based queues separately, with explicit attention to pointer initialization, overflow and underflow conditions, and the empty-queue edge case, while the Geekific video shows both implementations in compilable Java you can study and extend. Presenting the two approaches in parallel also sets up the comparison required by MO3, since you can weigh fixed capacity and index arithmetic against per-node memory overhead and pointer maintenance while both implementations are fresh. The implementation-level detail here reinforces the access-point reasoning — insert at rear, remove at front — that you will contrast with stack behavior when addressing MO4 and MO5.</p>
+</section>
+<section class="item" id="sec6">
+<h2>About These Videos</h2>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+
+<footer class="presemaker-credit" data-credit="2" style="margin-top:2rem;padding:14px 8px;border-top:1px solid #ddd;background:#fff;text-align:center;font:13px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#595959;"><svg width="20" height="20" viewBox="0 0 2048 2048" aria-hidden="true" focusable="false" style="vertical-align:-5px;margin-right:7px"><rect width="2048" height="2048" rx="384" fill="#0F6E6E"/><path fill="#0A5050" d="M1024 1000 344 832v816l680 168zm0 0 680-168v816l-680 168z"/><path fill="#fff" d="M1024 944 384 784v808l640 160zm0 0 640-160v808l-640 160z"/><rect x="1002" y="944" width="44" height="808" fill="#0F6E6E"/><rect x="936" y="246" width="176" height="448" rx="44" fill="#fff"/><rect x="800" y="382" width="448" height="176" rx="44" fill="#fff"/></svg>Created with <a href="https://softwareplus.ai/coursebuilder/" target="_blank" rel="noopener" style="color:#2f5d8f;font-weight:600;text-decoration:none;">CourseBuilder+</a><span aria-hidden="true"> · </span><a href="https://softwareplus.ai/" target="_blank" rel="noopener" style="color:#2f5d8f;text-decoration:none;">SoftwarePlus.ai</a></footer>
+</body>
+</html>

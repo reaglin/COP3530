@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Heap Trees and Priority Queues</title>
+<style>
+body{font-family:'Segoe UI',Arial,sans-serif;max-width:820px;margin:2rem auto;padding:0 1.25rem;color:#222;line-height:1.55}
+h1{font-size:1.9rem;border-bottom:2px solid #ddd;padding-bottom:.4rem}
+h2{font-size:1.3rem;color:#1f3864;margin-top:1.6rem}
+body{padding-left:1.1rem;padding-right:1.1rem}
+ul,ol{margin:.4rem 0 1rem 1.4rem}
+li{margin:.25rem 0}
+nav.toc{background:rgba(128,128,128,.08);border:1px solid rgba(128,128,128,.25);border-radius:8px;padding:.6rem 1rem;margin:1.2rem 0}
+nav.toc strong{display:block;margin-bottom:.3rem}
+nav.toc a{display:block;text-decoration:none;padding:.12rem 0}
+section.item{border-top:1px solid rgba(128,128,128,.22);padding-top:.3rem}
+table{border-collapse:collapse;width:100%;margin:.8rem 0}
+th,td{border:1px solid rgba(128,128,128,.45);padding:.4rem .6rem;text-align:left;vertical-align:top}
+thead th{background:rgba(128,128,128,.18);font-weight:600}
+tbody tr:nth-child(even){background:rgba(128,128,128,.08)}
+</style>
+</head>
+<body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Advanced Tree Structures: AVL Trees, Heaps, and Tries</a></div>
+<h1>Heap Trees and Priority Queues</h1>
+<nav class="toc"><strong>Contents</strong>
+<a href="#sec1">Introduction</a>
+<a href="#sec2">Video 1: L-3.13: Introduction to Heap Tree with examples | Max Min Heap</a>
+<a href="#sec3">Video 2: L-3.14: Insertion in Heap Tree | Max-Heap &amp; Min-Heap Creation | Time Complexities</a>
+<a href="#sec4">Video 3: Heaps, heapsort, and priority queues - Inside code</a>
+<a href="#sec5">How These Videos Support the Learning Outcomes</a>
+<a href="#sec6">About These Videos</a>
+</nav>
+<section class="item" id="sec1">
+<h2>Introduction</h2>
+<p>A heap is a complete binary tree that satisfies an ordering rule between every parent and its children: in a max-heap each parent is greater than or equal to its children, and in a min-heap each parent is less than or equal to its children. Notice what the heap property does NOT guarantee — there is no left-to-right ordering as in a binary search tree, so searching for an arbitrary value is still O(n). What you do get, cheaply and reliably, is constant-time access to the single most extreme element at the root, plus O(log n) insertion and removal. Because the tree is always complete, a heap needs no pointers at all: it can be packed into an array where the children of index i live at 2i+1 and 2i+2, and the parent at (i-1)/2.</p>
+<p>That combination is exactly what a priority queue needs. A priority queue serves elements by priority rather than arrival order, and it underpins job schedulers, event simulation, Huffman coding, and the frontier in Dijkstra&#39;s and A* search algorithms — structures you will meet again later in this course and in algorithms courses. The two core maintenance routines are bubble-up (sift-up), used after appending a new element at the end of the array, and bubble-down (sift-down), used after moving the last element to the root when the root is extracted. Building a heap from an unordered array with heapify applies sift-down from the last internal node backwards, which runs in O(n) rather than the O(n log n) you might expect from n separate insertions.</p>
+<p>As you watch, keep a pencil moving. Draw the tree and the array side by side, and after every swap check that both views still agree. Pay attention to when the speaker compares against a parent versus against children, how far a sifted element can travel (at most the height of the tree, hence O(log n)), and how the same two routines get reused for insertion, removal, heapify, and heapsort. Also note which videos use 0-based versus 1-based indexing, since the parent and child formulas change slightly between the two conventions.</p>
+</section>
+<section class="item" id="sec2">
+<h2>Video 1: L-3.13: Introduction to Heap Tree with examples | Max Min Heap</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/uuot9ItgTEI?cc_load_policy=1&amp;rel=0" title="Video: L-3.13: Introduction to Heap Tree with examples | Max Min Heap (Gate Smashers)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Gate Smashers</strong> · 7:45 · 1,301,882 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=uuot9ItgTEI" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>An introductory lecture on heap trees that, based on its title and description, defines what a heap is and walks through examples of both max-heaps and min-heaps. Expect coverage of the complete binary tree requirement and the parent-child ordering property that distinguishes a heap from other binary trees, illustrated with worked examples rather than code.</p>
+<h3>Why this video</h3>
+<p>This is the natural starting point for the first two subtopics — heap structure and the min-heap versus max-heap distinction — and Gate Smashers is a widely used exam-prep channel known for slow, example-driven board explanations that suit students seeing heaps for the first time.</p>
+</section>
+<section class="item" id="sec3">
+<h2>Video 2: L-3.14: Insertion in Heap Tree | Max-Heap &amp; Min-Heap Creation | Time Complexities</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/KzXpfxRzVQM?cc_load_policy=1&amp;rel=0" title="Video: L-3.14: Insertion in Heap Tree | Max-Heap &amp; Min-Heap Creation | Time Complexities (Gate Smashers)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Gate Smashers</strong> · 11:33 · 889,227 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=KzXpfxRzVQM" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>The follow-up lecture in the same series, focused on inserting elements into a heap and building max-heaps and min-heaps from a sequence of values. The title also promises discussion of time complexities, so expect the per-insertion O(log n) cost and the overall cost of constructing a heap by repeated insertion to be addressed.</p>
+<h3>Why this video</h3>
+<p>It targets the insertion and bubble-up subtopic directly and gives you repeated traced examples, which is precisely the skill of stepping through comparisons and swaps that you will be asked to demonstrate.</p>
+</section>
+<section class="item" id="sec4">
+<h2>Video 3: Heaps, heapsort, and priority queues - Inside code</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/pLIajuc31qk?cc_load_policy=1&amp;rel=0" title="Video: Heaps, heapsort, and priority queues - Inside code (Inside code)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Inside code</strong> · 19:01 · 156,915 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=pLIajuc31qk" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>A longer, more technical treatment that covers heaps together with heapsort and priority queues, with source code linked in the description. Expect the array-based representation, the sift-up and sift-down routines, extraction of the root, and how a heap is used to implement a priority queue and to sort in place.</p>
+<h3>Why this video</h3>
+<p>Inside code works at an implementation level, which fills in the removal, heapify, and priority-queue subtopics that the introductory lectures touch on more lightly, and connects the structure to a concrete application you can run and modify.</p>
+</section>
+<section class="item" id="sec5">
+<h2>How These Videos Support the Learning Outcomes</h2>
+<p>Together these videos build the array-based heap skill set targeted by MO3: the first establishes the complete-binary-tree and ordering properties, the second drills insertion with bubble-up, and the third completes the picture with root removal, sift-down, heapify, and the priority queue interface so you can trace each operation and compute parent and child indices confidently. The structural emphasis also supports MO1, since heaps keep their shape complete by construction and therefore never degrade the way an unbalanced BST does, and the recurring discussion of time complexities feeds MO5, where you will weigh a heap&#39;s O(1) access to the extremum and O(log n) updates against the full ordered traversal and search capability that an AVL tree offers.</p>
+</section>
+<section class="item" id="sec6">
+<h2>About These Videos</h2>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+
+<footer class="presemaker-credit" data-credit="2" style="margin-top:2rem;padding:14px 8px;border-top:1px solid #ddd;background:#fff;text-align:center;font:13px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#595959;"><svg width="20" height="20" viewBox="0 0 2048 2048" aria-hidden="true" focusable="false" style="vertical-align:-5px;margin-right:7px"><rect width="2048" height="2048" rx="384" fill="#0F6E6E"/><path fill="#0A5050" d="M1024 1000 344 832v816l680 168zm0 0 680-168v816l-680 168z"/><path fill="#fff" d="M1024 944 384 784v808l640 160zm0 0 640-160v808l-640 160z"/><rect x="1002" y="944" width="44" height="808" fill="#0F6E6E"/><rect x="936" y="246" width="176" height="448" rx="44" fill="#fff"/><rect x="800" y="382" width="448" height="176" rx="44" fill="#fff"/></svg>Created with <a href="https://softwareplus.ai/coursebuilder/" target="_blank" rel="noopener" style="color:#2f5d8f;font-weight:600;text-decoration:none;">CourseBuilder+</a><span aria-hidden="true"> · </span><a href="https://softwareplus.ai/" target="_blank" rel="noopener" style="color:#2f5d8f;text-decoration:none;">SoftwarePlus.ai</a></footer>
+</body>
+</html>

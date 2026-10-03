@@ -1,5 +1,10 @@
 ﻿[
   {
+    "title": "Graphs: Structure, Representation, and Traversal (module page)",
+    "href": "index.html",
+    "type": "Module page"
+  },
+  {
     "title": "Graphs: Structure, Representation, and Traversal \u2014 Topics \u0026 Learning Outcomes",
     "href": "topics-outcomes.html",
     "type": "Page"
@@ -55,8 +60,43 @@
     "type": "Content"
   },
   {
-    "title": "Graphs: Structure, Representation, and Traversal \u2014 Module Topics",
-    "href": "content/module_topics.html",
+    "title": "Introduction to Graph Data Structures",
+    "href": "content/Graphs_Structure_Representat_t1_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "Directed and Undirected Graphs",
+    "href": "content/Graphs_Structure_Representat_t2_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "Adjacency Matrix Representation",
+    "href": "content/Graphs_Structure_Representat_t3_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "Adjacency List Representation",
+    "href": "content/Graphs_Structure_Representat_t4_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "Breadth-First Search (BFS)",
+    "href": "content/Graphs_Structure_Representat_t5_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "Depth-First Search (DFS)",
+    "href": "content/Graphs_Structure_Representat_t6_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "Implementing Graph Traversal in JavaScript",
+    "href": "content/Graphs_Structure_Representat_t7_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "Graphs: Structure, Representation, and Traversal",
+    "href": "content/Graphs_Structure_Representat_videos_merged.html",
     "type": "Content"
   }
 ]

@@ -1,5 +1,10 @@
 ﻿[
   {
+    "title": "Computational Complexity: Deep Dive into Analysis (module page)",
+    "href": "index.html",
+    "type": "Module page"
+  },
+  {
     "title": "Computational Complexity: Deep Dive into Analysis \u2014 Topics \u0026 Learning Outcomes",
     "href": "topics-outcomes.html",
     "type": "Page"
@@ -50,8 +55,43 @@
     "type": "Content"
   },
   {
-    "title": "Computational Complexity: Deep Dive into Analysis \u2014 Module Topics",
-    "href": "content/module_topics.html",
+    "title": "Foundations of Computational Complexity",
+    "href": "content/Computational_Complexity_Dee_t1_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "Big O Notation Revisited",
+    "href": "content/Computational_Complexity_Dee_t2_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "Best, Worst, and Average Case Analysis",
+    "href": "content/Computational_Complexity_Dee_t3_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "Omega and Theta Notations",
+    "href": "content/Computational_Complexity_Dee_t4_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "Comparing Asymptotic Notations",
+    "href": "content/Computational_Complexity_Dee_t5_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "Complexity Analysis of Known Algorithms",
+    "href": "content/Computational_Complexity_Dee_t6_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "Practical Implications of Complexity",
+    "href": "content/Computational_Complexity_Dee_t7_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "Computational Complexity: Deep Dive into Analysis",
+    "href": "content/Computational_Complexity_Dee_videos_merged.html",
     "type": "Content"
   }
 ]

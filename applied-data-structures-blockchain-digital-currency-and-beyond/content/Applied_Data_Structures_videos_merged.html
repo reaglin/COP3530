@@ -1,0 +1,260 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Applied Data Structures: Blockchain, Digital Currency, and Beyond</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+body{font-family:'Segoe UI',Arial,sans-serif;max-width:820px;margin:2rem auto;padding:0 1.25rem;color:#222;line-height:1.55}
+h1{font-size:1.9rem;border-bottom:2px solid #ddd;padding-bottom:.4rem}
+h2{font-size:1.3rem;color:#1f3864;margin-top:1.6rem}
+body{padding-left:1.1rem;padding-right:1.1rem}
+ul,ol{margin:.4rem 0 1rem 1.4rem}
+li{margin:.25rem 0}
+nav.toc{background:rgba(128,128,128,.08);border:1px solid rgba(128,128,128,.25);border-radius:8px;padding:.6rem 1rem;margin:1.2rem 0}
+nav.toc strong{display:block;margin-bottom:.3rem}
+nav.toc a{display:block;text-decoration:none;padding:.12rem 0}
+section.item{border-top:1px solid rgba(128,128,128,.22);padding-top:.3rem}
+table{border-collapse:collapse;width:100%;margin:.8rem 0}
+th,td{border:1px solid rgba(128,128,128,.45);padding:.4rem .6rem;text-align:left;vertical-align:top}
+thead th{background:rgba(128,128,128,.18);font-weight:600}
+tbody tr:nth-child(even){background:rgba(128,128,128,.08)}
+</style>
+<style>section.merged-part{border-top:2px solid rgba(128,128,128,.3);margin-top:2rem;padding-top:.5rem}nav.toc{background:rgba(128,128,128,.08);border:1px solid rgba(128,128,128,.25);border-radius:8px;padding:.6rem 1rem;margin:1.2rem 0}nav.toc a{display:block;text-decoration:none;padding:.12rem 0}</style>
+</head>
+<body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Applied Data Structures: Blockchain, Digital Currency, and Beyond</a></div>
+<h1>Applied Data Structures: Blockchain, Digital Currency, and Beyond</h1>
+<nav class="toc"><strong>Contents</strong>
+<a href="#part1">Foundations of Data Structures in Real-World Systems</a>
+<a href="#part2">Blockchain Architecture and Data Structures</a>
+<a href="#part3">Digital Currency Systems</a>
+<a href="#part4">Graphs and Social Network Applications</a>
+<a href="#part5">Combining Data Structures in Complex Systems</a>
+</nav>
+<section class="merged-part" id="part1">
+<h2>Foundations of Data Structures in Real-World Systems</h2>
+<section class="item" id="p1-sec1">
+<h3>Introduction</h3>
+<p>So far in COP3530 you have studied hash tables, trees, and graphs mostly as isolated topics: how each one is built, how it performs, and how to implement it. This topic shifts the perspective. Real systems rarely use a single structure in isolation — they layer and combine them. A database might use a hash index for point lookups, a B-tree for range queries, and a log-structured file for durable writes, all inside one engine. A blockchain combines a linked list, cryptographic hashing, and a Merkle tree. A social platform stores relationships as a graph while using hash tables to find a user's record in constant time.</p>
+<p>The subtopics here build that layered view. Hash tables are the lookup foundation: constant-average-time access keyed by a value you compute rather than search for. Trees are hierarchical organizers: they keep data sorted, support ranges and prefixes, and summarize subtrees. Graphs model relationships that have no natural hierarchy — friendships, transactions, routes, dependencies. Composition is where these meet, and the conceptual framework is the habit of asking, for any system: what operations must be fast, what structure makes them fast, and what does that choice cost?</p>
+<p>As you watch, resist the urge to just collect names of structures. For each one mentioned, ask three questions: what operation is it optimizing, what does it give up in exchange, and what would break if you swapped in a different structure? Jot down any case where two structures are used together — those composition examples are exactly what you will be asked to analyze and design later in this module.</p>
+</section>
+<section class="item" id="p1-sec2">
+<h3>Video 1: 10 Key Data Structures We Use Every Day</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/ouipSd_5ivQ?cc_load_policy=1&amp;rel=0" title="Video: 10 Key Data Structures We Use Every Day (ByteByteGo)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>ByteByteGo</strong> · 8:43 · 451,701 views · 3y ago · captions — <a href="https://www.youtube.com/watch?v=ouipSd_5ivQ" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A fast, animated tour of data structures that appear in systems people use daily, connecting each structure to a concrete application rather than to abstract operations. Based on its title and ByteByteGo's system-design focus, expect coverage of structures such as lists, hash tables, trees, heaps, and graphs, each paired with a real product or service where it does the work. The format is survey-style breadth rather than deep implementation detail.</p>
+<h4>Why this video</h4>
+<p>It is the natural opening piece for this topic because it establishes the core framing — these structures are infrastructure, not just coursework — and touches hash tables, trees, and graphs within a single coherent narrative. ByteByteGo is a well-regarded system-design channel whose explanations are known for accuracy and clean visuals.</p>
+</section>
+<section class="item" id="p1-sec3">
+<h3>Video 2: L-6.1: What is hashing with example | Hashing in data structure</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/W5q0xgxmRd8?cc_load_policy=1&amp;rel=0" title="Video: L-6.1: What is hashing with example | Hashing in data structure (Gate Smashers)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Gate Smashers</strong> · 5:53 · 2,565,047 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=W5q0xgxmRd8" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A focused lecture on what hashing actually means in a data structures context, working from a worked example rather than from formal definitions alone. Expect treatment of the hash function, mapping keys to table indices, and why this gives fast direct access compared to searching. As an introductory lecture in a numbered series, it is likely to set up collision handling as the follow-on problem.</p>
+<h4>Why this video</h4>
+<p>This is the dedicated treatment for the Hash Tables as Lookup Foundations subtopic, and the example-driven approach is useful if your mental model of hashing is still fuzzy before the module moves on to cryptographic hash functions. Gate Smashers is a widely used exam-preparation channel known for short, methodical blackboard-style explanations.</p>
+</section>
+<section class="item" id="p1-sec4">
+<h3>Video 3: 8 Key Data Structures That Power Modern Databases</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/W_v05d_2RTo?cc_load_policy=1&amp;rel=0" title="Video: 8 Key Data Structures That Power Modern Databases (ByteByteGo)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>ByteByteGo</strong> · 4:34 · 239,237 views · 3y ago · captions — <a href="https://www.youtube.com/watch?v=W_v05d_2RTo" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A short overview of the data structures that database engines rely on internally, likely covering structures such as B-trees, LSM trees, hash indexes, and related variants, with attention to what each is good at. Being a database-focused piece, it should connect structural choices to operational behavior — reads versus writes, point lookups versus range scans. The emphasis is on why a given engine picks one structure over another.</p>
+<h4>Why this video</h4>
+<p>This video is the clearest illustration of the Composition of Structures in Practice and Conceptual Framework subtopics: a database is a single system that deliberately combines several structures and accepts trade-offs for each. It gives you a concrete, analyzable example of the kind of structural reasoning you will later apply to a blockchain or digital currency platform.</p>
+</section>
+<section class="item" id="p1-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>These three videos supply the shared vocabulary and analytical habits the rest of the module depends on. The hashing lecture grounds the hash-function concept that MO1 extends into cryptographic hashing and Merkle trees, while the ByteByteGo survey reinforces trees and graphs as everyday system components — the starting point for the graph representation and traversal work in MO2 and MO3. The database video models MO4 directly: it shows how to look at a real system, name the structures inside it, and explain the trade-offs behind each choice. Together they build the composition mindset MO5 asks you to demonstrate, where a solution is assembled from several structures and each selection is justified against stated performance requirements rather than chosen by default.</p>
+</section>
+<section class="item" id="p1-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part2">
+<h2>Blockchain Architecture and Data Structures</h2>
+<section class="item" id="p2-sec1">
+<h3>Introduction</h3>
+<p>A blockchain is, at its core, a data structures problem. Strip away the economics and the hype and what remains is a singly linked list whose "pointers" are cryptographic hash digests rather than memory addresses, with each node (a block) carrying a tree of transactions summarized by a Merkle root. The structural choices are what produce the properties people care about: because every block header contains the hash of the previous header, altering any historical transaction changes that block's hash, which invalidates every link downstream. Immutability here is not a policy or a promise — it is a consequence of how the structure is wired together.</p>
+<p>In this course, blockchain serves as a case study in composition. You have already studied linked lists, hash functions and hash tables, and binary trees in isolation; here you see them stacked so that each one does a specific job. Hashing provides a fixed-size fingerprint and collision resistance. The Merkle tree lets a verifier confirm that a single transaction belongs to a block using only O(log n) sibling hashes instead of downloading the whole block. The block header bundles the metadata (previous hash, Merkle root, timestamp, nonce, difficulty) that makes validation cheap. Distribution and consensus then decide which chain the network accepts when two valid chains exist.</p>
+<p>As you watch the videos below, keep a running list of questions: Which structure is being used, what operation does it make fast, and what does it cost? Where does a hash act as an identifier versus as an integrity check? How does a Merkle proof differ from re-hashing an entire block? Note that these videos come from industry and educational channels rather than an algorithms course, so you may need to translate their vocabulary back into the data structures terms we use in lecture.</p>
+</section>
+<section class="item" id="p2-sec2">
+<h3>Video 1: What is Blockchain Layer 0, 1, 2, 3 Explained | Layers of Blockchain Architecture</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/qniz6h2fYuc?cc_load_policy=1&amp;rel=0" title="Video: What is Blockchain Layer 0, 1, 2, 3 Explained | Layers of Blockchain Architecture (Learn with Whiteboard)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Learn with Whiteboard</strong> · 11:01 · 64,392 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=qniz6h2fYuc" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>This video walks through the layered view of blockchain systems — Layer 0 (the underlying network and interoperability infrastructure), Layer 1 (the base chain where blocks, consensus, and the ledger live), Layer 2 (scaling solutions built on top), and Layer 3 (applications). Based on its title and description, it is a whiteboard-style conceptual overview rather than a code walkthrough, and it situates the block-and-chain data structure within the larger system that surrounds it.</p>
+<h4>Why this video</h4>
+<p>It gives you the vocabulary and system context needed before drilling into structures, and it makes clear that the distributed ledger and consensus mechanism are properties of a specific layer rather than of the chain structure itself — directly supporting the "Distributed Ledger and the Role of Consensus" subtopic.</p>
+</section>
+<section class="item" id="p2-sec3">
+<h3>Video 2: What Is a Blockchain Hash?</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/LRiA2OWGwtw?cc_load_policy=1&amp;rel=0" title="Video: What Is a Blockchain Hash? (Chainlink)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Chainlink</strong> · 4:29 · 7,621 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=LRiA2OWGwtw" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A short, focused explanation of what a hash is in a blockchain context, aimed at people learning blockchain development and smart contracts. Expect coverage of what a hash function does, the properties that make it useful (deterministic output, fixed length, infeasibility of reversing or forging), and how hashes are applied in blockchain systems.</p>
+<h4>Why this video</h4>
+<p>Chainlink is a well-known blockchain infrastructure producer, and at under five minutes this is a tight, accurate treatment of the single mechanism that makes every other guarantee in the topic work — the integrity mechanism behind linked blocks, Merkle roots, and immutability.</p>
+</section>
+<section class="item" id="p2-sec4">
+<h3>Video 3: Blockchain Fundamental Concepts</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/p3eyssNJ-e4?cc_load_policy=1&amp;rel=0" title="Video: Blockchain Fundamental Concepts (Himmat Patil)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Himmat Patil</strong> · 14:25 · 170 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=p3eyssNJ-e4" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A fundamentals lecture that, per its own tags, covers Merkle trees, types of blockchains, use cases, and blockchain limitations. The longer running time allows it to connect the internal structure of a block to broader questions about where blockchain is and is not an appropriate design choice.</p>
+<h4>Why this video</h4>
+<p>It is the only one of the three to address Merkle trees explicitly, and its attention to limitations and trade-offs matches the course's emphasis on evaluating structural design decisions rather than just describing them.</p>
+</section>
+<section class="item" id="p2-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these videos map onto MO1 and MO4. The Chainlink video supplies the cryptographic hashing layer, the fundamentals lecture adds Merkle trees and the trade-offs and limitations of the design, and the layers video places the chain structure inside the distributed, consensus-driven system that gives it meaning — collectively letting you explain how linked structures, hashes, and trees compose into immutability and transaction verifiability (MO1). The discussion of layers, use cases, and limitations also feeds MO4 by modeling how to identify which structures a real platform uses and what those choices cost. The graph-focused outcomes (MO2, MO3) and the integrative design task (MO5) are addressed by other materials in this module; use these videos as the concrete worked example you draw on when justifying structure selection later.</p>
+</section>
+<section class="item" id="p2-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part3">
+<h2>Digital Currency Systems</h2>
+<section class="item" id="p3-sec1">
+<h3>Introduction</h3>
+<p>Digital currency systems are a useful case study for this course because almost every component of a cryptocurrency is, underneath the marketing language, a familiar data structure doing a specific job. A wallet is essentially a key-value store mapping keys and addresses to spendable funds. Pending transactions sit in a mempool, a priority-ordered holding area that nodes draw from. Confirmed transactions are summarized by a Merkle tree so that membership can be verified with a short proof instead of a full scan, and blocks are chained together much like a linked list in which each node stores a hash pointer to its predecessor.</p>
+<p>Two accounting models dominate. In the UTXO (unspent transaction output) model used by Bitcoin, a wallet balance is not a stored number at all but the sum of a set of discrete unspent outputs, each of which must be consumed whole and replaced by new outputs. In the account model used by Ethereum, balances are stored directly in a mutable key-value map. The choice between these shapes everything downstream: storage size, lookup cost, parallelism, privacy, and how easily the system scales.</p>
+<p>As you watch the videos below, keep translating the vocabulary back into course terms. When you hear "UTXO set," ask what structure holds it and what the cost of a lookup or update is. When you hear "hash," ask what properties make it suitable for linking blocks and for building Merkle trees. When you hear about fees and consolidation, ask what trade-off is being made between storage footprint, computation, and user privacy — that habit of naming the trade-off is exactly what the module assessments will ask for.</p>
+</section>
+<section class="item" id="p3-sec2">
+<h3>Video 1: UTXO (Bitcoin) vs Account-Based (Ethereum) Blockchains Explained: What's The DIFFERENCE??</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/R-51IfdNoH0?cc_load_policy=1&amp;rel=0" title="Video: UTXO (Bitcoin) vs Account-Based (Ethereum) Blockchains Explained: What's The DIFFERENCE?? (CoinGecko)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>CoinGecko</strong> · 4:01 · 16,500 views · 2y ago · captions — <a href="https://www.youtube.com/watch?v=R-51IfdNoH0" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A short, comparative explainer contrasting the two dominant bookkeeping models in blockchains: UTXO-based systems such as Bitcoin and account-based systems such as Ethereum. Based on its title and description, it should walk through how each model represents a balance, how a transaction changes state under each, and where the practical differences show up.</p>
+<h4>Why this video</h4>
+<p>It directly supports the Transaction Data and the UTXO Model subtopic and gives you the side-by-side framing you need to discuss storage and lookup trade-offs rather than treating UTXO as the only option.</p>
+</section>
+<section class="item" id="p3-sec3">
+<h3>Video 2: Bitcoin UTXOs Explained: Save on Fees &amp; Boost Privacy</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/YV4vVryXD4w?cc_load_policy=1&amp;rel=0" title="Video: Bitcoin UTXOs Explained: Save on Fees &amp; Boost Privacy (Trezor)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Trezor</strong> · 8:12 · 24,851 views · 1y ago · captions — <a href="https://www.youtube.com/watch?v=YV4vVryXD4w" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A longer, practice-oriented walkthrough of Bitcoin UTXOs from a hardware wallet maker, focused on what a UTXO actually is and how the set of UTXOs a wallet controls affects transaction fees and privacy. The description points toward UTXO consolidation — combining many small outputs into fewer larger ones — as a concrete management technique.</p>
+<h4>Why this video</h4>
+<p>Coming from Trezor, a wallet producer, it grounds the abstract UTXO model in real wallet behavior and makes the data-structure trade-off tangible: more entries in the set means larger transactions, higher fees, and different privacy properties.</p>
+</section>
+<section class="item" id="p3-sec4">
+<h3>Video 3: Ep 06: Hashing Algorithm [Bitcoin Tech Tales]</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/onh67V_MMpc?cc_load_policy=1&amp;rel=0" title="Video: Ep 06: Hashing Algorithm [Bitcoin Tech Tales] (bubbleya)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>bubbleya</strong> · 3:30 · 30 views · 2y ago · captions — <a href="https://www.youtube.com/watch?v=onh67V_MMpc" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>An episode from a short serialized explainer series that steps aside from the ongoing payment story to look at the hashing algorithm itself. Expect coverage of what a cryptographic hash function does to an input and why its output behaves the way it does in a Bitcoin context.</p>
+<h4>Why this video</h4>
+<p>Hashing is the primitive that makes hash pointers, block chaining, and Merkle trees work, so this brief piece fills in the foundation that the Merkle tree and linked-list-of-blocks subtopics build on.</p>
+</section>
+<section class="item" id="p3-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these videos feed primarily into MO1 and MO4. The hashing episode supplies the cryptographic primitive that underlies hash-linked blocks and Merkle proofs, which is the foundation MO1 asks you to explain. The two UTXO videos give you both the conceptual model and its real-world consequences, so that when MO4 asks you to evaluate the structural design decisions of a digital currency platform you can name the actual structures in play — key-value stores for wallets and account balances, a UTXO set, a mempool — and articulate concrete trade-offs in storage, fees, and privacy. They also build the comparative vocabulary you will reuse in MO5 when justifying your own multi-structure design against stated requirements.</p>
+</section>
+<section class="item" id="p3-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part4">
+<h2>Graphs and Social Network Applications</h2>
+<section class="item" id="p4-sec1">
+<h3>Introduction</h3>
+<p>Social networks are, at their core, graphs: people (or accounts, pages, wallets) are vertices, and relationships (friendship, following, messaging, transactions) are edges. Once you model a platform this way, questions that sound social become questions about graph structure — How many hops separate two users? Which accounts sit at the center of a cluster? Which groups of users are densely connected to each other but sparsely connected to everyone else? How fast would a post spread if it started here?</p>
+<p>In this module you have been looking at how real systems compose data structures to meet concrete requirements, and graphs are the structure that carries relationship and influence. Two representation choices dominate practice: the adjacency matrix, which gives constant-time edge lookup at the cost of space proportional to the square of the vertex count, and the adjacency list, which is far more compact for the sparse graphs that real social networks actually are. On top of whichever representation you choose, the two workhorse traversals — breadth-first search and depth-first search — power features such as degrees-of-separation and "people you may know" (BFS, which explores level by level) and connected-component or community discovery (DFS, which dives deep along a path before backtracking).</p>
+<p>The videos below focus on those traversals, since mastering BFS and DFS mechanics is what makes the application-level topics (centrality, information flow, platform design) tractable. While you watch, pay attention to three things: the auxiliary structure each algorithm uses (queue for BFS, stack or recursion for DFS), how the visited set prevents infinite looping in cyclic graphs, and the order in which vertices are discovered. Then mentally re-map each example graph onto a friend network and ask what the traversal output would mean in that setting.</p>
+</section>
+<section class="item" id="p4-sec2">
+<h3>Video 1: L-4.15: BFS &amp; DFS | Breadth First Search | Depth First Search | Graph Traversing | DAA</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/N2P7w22tN9c?cc_load_policy=1&amp;rel=0" title="Video: L-4.15: BFS &amp; DFS | Breadth First Search | Depth First Search | Graph Traversing | DAA (Gate Smashers)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Gate Smashers</strong> · 11:16 · 2,509,205 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=N2P7w22tN9c" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A side-by-side introduction to breadth-first search and depth-first search as graph traversal strategies, covering how each algorithm visits vertices and the supporting structures (queue for BFS, stack/recursion for DFS) that produce those orders. Based on its title and course framing (DAA), it is likely to work through traversal examples on sample graphs and discuss the algorithms' behavior and complexity.</p>
+<h4>Why this video</h4>
+<p>Because it presents both traversals in one lecture, it is the best starting point for seeing how BFS and DFS differ in exploration order — the distinction that explains why one suits connection discovery and the other suits component and community exploration. Gate Smashers is a widely used exam-prep channel with a step-by-step lecture style, and the view count reflects its popularity with CS students.</p>
+</section>
+<section class="item" id="p4-sec3">
+<h3>Video 2: Breadth-first search in 4 minutes</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/HZ5YTanv5QE?cc_load_policy=1&amp;rel=0" title="Video: Breadth-first search in 4 minutes (Michael Sambol)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Michael Sambol</strong> · 3:59 · 603,429 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=HZ5YTanv5QE" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A compact four-minute treatment of breadth-first search: the level-by-level exploration pattern, the queue that drives it, and the visited marking that keeps traversal finite. The description links to a Python implementation, so you can read the code alongside the explanation.</p>
+<h4>Why this video</h4>
+<p>Short, precise videos like this are ideal for review before tracing BFS by hand on a social graph, which is exactly what connection discovery and shortest-hop (degrees-of-separation) features require. Michael Sambol's algorithm series is well known for accurate, no-filler visual walkthroughs paired with published code.</p>
+</section>
+<section class="item" id="p4-sec4">
+<h3>Video 3: Depth-first search in 4 minutes</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/Urx87-NMm6c?cc_load_policy=1&amp;rel=0" title="Video: Depth-first search in 4 minutes (Michael Sambol)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Michael Sambol</strong> · 4:01 · 550,064 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=Urx87-NMm6c" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>The companion video on depth-first search, explaining how the algorithm follows one path as far as possible before backtracking, and how recursion or an explicit stack implements that behavior. A linked Python implementation is provided for readers who want to connect the trace to working code.</p>
+<h4>Why this video</h4>
+<p>DFS is the traversal behind connected-component identification and the clustering intuitions underlying community detection, so a clean, correct explanation of its backtracking behavior directly supports that subtopic. Watching it immediately after the BFS video makes the structural contrast between the two algorithms easy to internalize.</p>
+</section>
+<section class="item" id="p4-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>These three videos concentrate on MO3: by the end of them you should be able to trace BFS and DFS step by step on a graph, name the auxiliary structure each uses, and explain why BFS produces shortest-hop distances while DFS reaches entire connected regions — the mechanics behind connection discovery and community detection features. They also provide the operational grounding for MO2, since the per-vertex neighbor iteration shown in every traversal trace is precisely the operation that adjacency lists make cheap and adjacency matrices make expensive on sparse social graphs; keep that cost comparison in mind as you watch. Finally, because MO4 and MO5 ask you to evaluate and design multi-structure systems, treat these traversals as components you can now justify choosing: the videos supply the algorithmic behavior, and your course readings on representations, centrality, and platform case studies supply the design context in which that behavior pays off.</p>
+</section>
+<section class="item" id="p4-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part5">
+<h2>Combining Data Structures in Complex Systems</h2>
+<section class="item" id="p5-sec1">
+<h3>Introduction</h3>
+<p>Up to this point in the course you have studied data structures largely one at a time: a linked list here, a hash table there, a tree or graph in isolation. Real systems almost never work that way. A blockchain node, a payment network, or a social platform stitches several structures together — hash tables for fast lookup, linked structures for ordering and history, trees for verification, graphs for relationships — and layers them so that each structure handles the operation it is best suited for.</p>
+<p>This topic asks you to think like a system designer rather than a single-structure implementer. Blockchain is our primary case study: hash-linked blocks, cryptographic digests, and Merkle trees combine to give immutability and efficient transaction verification, while hash tables and indexes make wallet balances and transaction lookups practical. Social and transactional networks give us a second case study, where the choice between adjacency lists and adjacency matrices, and between BFS and DFS traversal, directly changes storage cost and feature performance.</p>
+<p>The three videos below come from ByteByteGo, a system design channel, and they frame the same question from an industry perspective: which structures, algorithms, and storage engines do large systems actually combine, and why. As you watch, keep a running list of the data structures mentioned, note the trade-off that justifies each one (time versus space, read speed versus write cost, simplicity versus scalability), and ask how you would describe that same decision using the formal cost analysis you have learned in this course.</p>
+</section>
+<section class="item" id="p5-sec2">
+<h3>Video 1: 8 Most Important System Design Concepts You Should Know</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/BTjxUS_PylA?cc_load_policy=1&amp;rel=0" title="Video: 8 Most Important System Design Concepts You Should Know (ByteByteGo)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>ByteByteGo</strong> · 6:05 · 565,363 views · 1y ago · captions — <a href="https://www.youtube.com/watch?v=BTjxUS_PylA" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A fast tour of core system design concepts that recur across large-scale applications — the kinds of building blocks (caching, indexing, replication, partitioning, and similar ideas) that engineers assemble when designing a service. The emphasis is on how these pieces fit together rather than on implementing any one of them in code.</p>
+<h4>Why this video</h4>
+<p>It establishes the central premise of this topic — that complex systems are built by integrating multiple components and structures — and gives you industry vocabulary for discussing layered architecture and structural design decisions.</p>
+</section>
+<section class="item" id="p5-sec3">
+<h3>Video 2: Algorithms You Should Know Before System Design Interviews</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/xbgzl2maQUU?cc_load_policy=1&amp;rel=0" title="Video: Algorithms You Should Know Before System Design Interviews (ByteByteGo)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>ByteByteGo</strong> · 6:55 · 266,982 views · 3y ago · captions — <a href="https://www.youtube.com/watch?v=xbgzl2maQUU" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A survey of the algorithms and underlying data structures that commonly appear in system design discussions, presented in the context of real system components rather than textbook exercises. Expect coverage of techniques such as hashing and consistent hashing, tree- and trie-based indexing, and probabilistic or graph-related structures used at scale.</p>
+<h4>Why this video</h4>
+<p>This is the closest fit to the topic's core question: it shows named data structures being selected for specific system roles, which supports the hash table, tree, and graph integration you are asked to reason about.</p>
+</section>
+<section class="item" id="p5-sec4">
+<h3>Video 3: How To Choose The Right Database?</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/kkeFE6iRfMM?cc_load_policy=1&amp;rel=0" title="Video: How To Choose The Right Database? (ByteByteGo)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>ByteByteGo</strong> · 6:58 · 445,561 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=kkeFE6iRfMM" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A walkthrough of how to choose among database types — relational, key-value, document, graph, and others — based on the shape of the data and the access patterns the application needs. The video frames the decision as a set of trade-offs rather than a single correct answer.</p>
+<h4>Why this video</h4>
+<p>Database engines are data structures in production, so this video makes the trade-off reasoning concrete, including the case for graph stores when relationships dominate, as in social and transactional networks.</p>
+</section>
+<section class="item" id="p5-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these videos supply the design-thinking frame that the module's case studies fill in with specifics. The algorithms video reinforces how hashing, trees, and graph-oriented structures are selected for particular roles, supporting your analysis of blockchain's hash-linked blocks and Merkle trees (MO1) and of digital currency platforms as integrated multi-structure systems (MO4). The database selection video models the explicit storage-versus-operation trade-off reasoning you will apply when justifying adjacency lists against adjacency matrices (MO2) and when choosing graph representations that make traversal-based features practical (MO3). The system design concepts video ties it all to layered architecture, preparing you to propose and defend your own multi-structure solution against stated performance and functional requirements (MO5). Note that none of the videos covers blockchain internals or BFS and DFS traversal directly — those come from the module readings and lectures; use the videos for the integration mindset and trade-off vocabulary.</p>
+</section>
+<section class="item" id="p5-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+
+<footer class="presemaker-credit" data-credit="2" style="margin-top:2rem;padding:14px 8px;border-top:1px solid #ddd;background:#fff;text-align:center;font:13px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#595959;"><svg width="20" height="20" viewBox="0 0 2048 2048" aria-hidden="true" focusable="false" style="vertical-align:-5px;margin-right:7px"><rect width="2048" height="2048" rx="384" fill="#0F6E6E"/><path fill="#0A5050" d="M1024 1000 344 832v816l680 168zm0 0 680-168v816l-680 168z"/><path fill="#fff" d="M1024 944 384 784v808l640 160zm0 0 640-160v808l-640 160z"/><rect x="1002" y="944" width="44" height="808" fill="#0F6E6E"/><rect x="936" y="246" width="176" height="448" rx="44" fill="#fff"/><rect x="800" y="382" width="448" height="176" rx="44" fill="#fff"/></svg>Created with <a href="https://softwareplus.ai/coursebuilder/" target="_blank" rel="noopener" style="color:#2f5d8f;font-weight:600;text-decoration:none;">CourseBuilder+</a><span aria-hidden="true"> · </span><a href="https://softwareplus.ai/" target="_blank" rel="noopener" style="color:#2f5d8f;text-decoration:none;">SoftwarePlus.ai</a></footer>
+</body>
+</html>

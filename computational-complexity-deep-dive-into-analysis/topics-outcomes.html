@@ -18,13 +18,13 @@ li{margin:5px 0}
 .el-body{color:#555}
 .prefix{color:#555;font-style:italic;margin:6px 0 14px}
 .mo{border:1px solid #e2e2e2;border-radius:6px;padding:12px 16px;margin:12px 0}
-.mo .code{font-size:.8rem;color:#888;text-transform:uppercase;letter-spacing:.04em}
+.mo .code{font-size:.8rem;color:#595959;text-transform:uppercase;letter-spacing:.04em}
 .mo .statement{font-weight:600;margin:4px 0 8px}
 .meta span{display:inline-block;background:#eef2f8;color:#1a3c6e;border-radius:3px;padding:1px 8px;margin:0 6px 0 0;font-size:.85rem}
 .meta .map{background:#eaf6ec;color:#137333}
 .co{margin:7px 0}
 .co .code{font-weight:600;color:#1a3c6e;margin-right:6px}
-.empty{color:#888}
+.empty{color:#595959}
 </style>
 </head>
 <body>
@@ -33,7 +33,7 @@ li{margin:5px 0}
 <div class="toc"><a href="#topics">📋 Module Topics</a><a href="#outcomes">🎯 Student Learning Outcomes</a></div>
 
 <h2 id="topics">Module Topics</h2>
-<h3>Foundations of Computational Complexity</h3>
+<h3 id="topic-1">Foundations of Computational Complexity</h3>
 <div class="summary">Introduces the core concepts and goals of computational complexity theory, establishing why analyzing algorithm efficiency matters. Covers the fundamental vocabulary and mental models needed for deeper analysis.</div>
 <ul>
 <li><strong>What Is Computational Complexity Theory?</strong> <span class="el-body">— Computational complexity theory is the branch of computer science that studies how the resources required by an algorithm — primarily time and memory — scale as the size of the input grows.</span></li>
@@ -43,7 +43,7 @@ li{margin:5px 0}
 <li><strong>Asymptotic Notation: The Vocabulary of Complexity</strong> <span class="el-body">— Asymptotic notations — Big O, Omega, and Theta — are the formal mathematical tools used to describe and classify algorithm complexity.</span></li>
 <li><strong>Mental Model: Growth Rate Classes</strong> <span class="el-body">— Algorithms naturally fall into families defined by their growth rates, forming a hierarchy from extremely efficient to computationally infeasible.</span></li>
 </ul>
-<h3>Big O Notation Revisited</h3>
+<h3 id="topic-2">Big O Notation Revisited</h3>
 <div class="summary">Provides an in-depth review of Big O notation as a measure of upper-bound algorithm performance. Reinforces how to express and interpret growth rates for common algorithm patterns.</div>
 <ul>
 <li><strong>What Big O Notation Represents</strong> <span class="el-body">— Big O notation is a mathematical framework used to describe the upper bound of an algorithm&#39;s growth rate as input size increases.</span></li>
@@ -53,7 +53,7 @@ li{margin:5px 0}
 <li><strong>Big O and Worst-Case Analysis</strong> <span class="el-body">— Big O notation is most naturally aligned with worst-case analysis, ensuring performance guarantees under the most demanding input conditions.</span></li>
 <li><strong>Practical Significance of Big O</strong> <span class="el-body">— Understanding Big O notation helps developers make informed decisions when selecting or designing algorithms for real-world problems.</span></li>
 </ul>
-<h3>Best, Worst, and Average Case Analysis</h3>
+<h3 id="topic-3">Best, Worst, and Average Case Analysis</h3>
 <div class="summary">Explores how algorithm performance varies depending on the nature of the input data across three distinct scenarios. Students learn to identify and calculate each case for a given algorithm.</div>
 <ul>
 <li><strong>Defining the Three Cases of Algorithm Performance</strong> <span class="el-body">— Algorithm performance is not fixed — it varies depending on the specific input provided. To capture this variability, computer scientists analyze three distinct scenarios: best case, worst case, and average case.</span></li>
@@ -63,7 +63,7 @@ li{margin:5px 0}
 <li><strong>Identifying Cases for a Given Algorithm</strong> <span class="el-body">— A systematic approach is needed to correctly identify best, worst, and average cases for any algorithm. This involves examining the algorithm&#39;s logic and determining which inputs drive minimum, maximum, and typical operation counts.</span></li>
 <li><strong>Comparing the Three Cases Across Common Algorithms</strong> <span class="el-body">— Examining best, worst, and average cases side by side for well-known algorithms reinforces the concepts and reveals how algorithm choice depends on expected input conditions.</span></li>
 </ul>
-<h3>Omega and Theta Notations</h3>
+<h3 id="topic-4">Omega and Theta Notations</h3>
 <div class="summary">Introduces Omega notation for lower bounds and Theta notation for tight bounds, complementing the upper-bound perspective of Big O. Students learn when and how to apply each notation appropriately.</div>
 <ul>
 <li><strong>Omega Notation: Defining Lower Bounds</strong> <span class="el-body">— Omega notation (Ω) formally describes the lower bound of an algorithm&#39;s running time, representing the best-case scenario in asymptotic terms.</span></li>
@@ -73,7 +73,7 @@ li{margin:5px 0}
 <li><strong>When to Apply Each Notation</strong> <span class="el-body">— Choosing the appropriate notation depends on what aspect of an algorithm&#39;s performance you need to characterize and how precisely the bounds can be established.</span></li>
 <li><strong>Applying Theta and Omega to Course Algorithms</strong> <span class="el-body">— Revisiting algorithms studied earlier in the course through the lens of Omega and Theta notations deepens understanding of their true complexity profiles.</span></li>
 </ul>
-<h3>Comparing Asymptotic Notations</h3>
+<h3 id="topic-5">Comparing Asymptotic Notations</h3>
 <div class="summary">Examines the relationships between Big O, Omega, and Theta notations and how they work together to fully characterize algorithm complexity. Highlights the distinctions and practical use cases for each.</div>
 <ul>
 <li><strong>Big O Notation: The Upper Bound</strong> <span class="el-body">— Big O notation describes the worst-case or upper bound of an algorithm&#39;s growth rate, expressing the maximum resources an algorithm will consume as input size increases.</span></li>
@@ -83,7 +83,7 @@ li{margin:5px 0}
 <li><strong>Practical Use Cases: Choosing the Right Notation</strong> <span class="el-body">— Selecting the appropriate notation depends on the analysis goal—whether you are making worst-case guarantees, proving lower bounds, or characterizing average behavior precisely.</span></li>
 <li><strong>Asymptotic Equivalence and Dominance</strong> <span class="el-body">— Understanding which functions grow faster than others is essential to correctly applying and comparing asymptotic notations across different algorithms.</span></li>
 </ul>
-<h3>Complexity Analysis of Known Algorithms</h3>
+<h3 id="topic-6">Complexity Analysis of Known Algorithms</h3>
 <div class="summary">Applies complexity analysis techniques to algorithms already encountered in the course, such as sorting and searching algorithms. Students practice deriving and justifying complexity classifications for familiar examples.</div>
 <ul>
 <li><strong>Complexity Analysis of Linear Search</strong> <span class="el-body">— Linear search scans each element sequentially, making it one of the simplest algorithms to analyze across all three cases.</span></li>
@@ -93,7 +93,7 @@ li{margin:5px 0}
 <li><strong>Complexity Analysis of Selection Sort</strong> <span class="el-body">— Selection sort finds the minimum element on each pass and places it in its correct position, always performing the same number of comparisons regardless of input.</span></li>
 <li><strong>Deriving and Justifying Complexity Classifications</strong> <span class="el-body">— Formally deriving a complexity class requires identifying the dominant operations, bounding them with appropriate notation, and justifying the result rigorously.</span></li>
 </ul>
-<h3>Practical Implications of Complexity</h3>
+<h3 id="topic-7">Practical Implications of Complexity</h3>
 <div class="summary">Connects theoretical complexity analysis to real-world decisions about algorithm selection and optimization. Discusses how understanding complexity guides engineers in building efficient, scalable software.</div>
 <ul>
 <li><strong>Choosing the Right Algorithm for the Job</strong> <span class="el-body">— Understanding complexity empowers engineers to select algorithms that match the performance demands of their specific use case.</span></li>
@@ -136,6 +136,6 @@ li{margin:5px 0}
 <div class="co"><span class="code">CO3</span>Implement data structures and algorithms in computer code.</div>
 <div class="co"><span class="code">CO4</span>Analyze the performance of algorithms and data structures</div>
 
-<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
+<footer class="presemaker-credit" data-credit="2" style="margin-top:2rem;padding:14px 8px;border-top:1px solid #ddd;background:#fff;text-align:center;font:13px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#595959;"><svg width="20" height="20" viewBox="0 0 2048 2048" aria-hidden="true" focusable="false" style="vertical-align:-5px;margin-right:7px"><rect width="2048" height="2048" rx="384" fill="#0F6E6E"/><path fill="#0A5050" d="M1024 1000 344 832v816l680 168zm0 0 680-168v816l-680 168z"/><path fill="#fff" d="M1024 944 384 784v808l640 160zm0 0 640-160v808l-640 160z"/><rect x="1002" y="944" width="44" height="808" fill="#0F6E6E"/><rect x="936" y="246" width="176" height="448" rx="44" fill="#fff"/><rect x="800" y="382" width="448" height="176" rx="44" fill="#fff"/></svg>Created with <a href="https://softwareplus.ai/coursebuilder/" target="_blank" rel="noopener" style="color:#2f5d8f;font-weight:600;text-decoration:none;">CourseBuilder+</a><span aria-hidden="true"> · </span><a href="https://softwareplus.ai/" target="_blank" rel="noopener" style="color:#2f5d8f;text-decoration:none;">SoftwarePlus.ai</a></footer>
 </body>
 </html>

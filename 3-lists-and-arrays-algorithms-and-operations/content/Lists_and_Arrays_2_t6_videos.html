@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Time and Space Complexity Analysis</title>
+<style>
+body{font-family:'Segoe UI',Arial,sans-serif;max-width:820px;margin:2rem auto;padding:0 1.25rem;color:#222;line-height:1.55}
+h1{font-size:1.9rem;border-bottom:2px solid #ddd;padding-bottom:.4rem}
+h2{font-size:1.3rem;color:#1f3864;margin-top:1.6rem}
+body{padding-left:1.1rem;padding-right:1.1rem}
+ul,ol{margin:.4rem 0 1rem 1.4rem}
+li{margin:.25rem 0}
+nav.toc{background:rgba(128,128,128,.08);border:1px solid rgba(128,128,128,.25);border-radius:8px;padding:.6rem 1rem;margin:1.2rem 0}
+nav.toc strong{display:block;margin-bottom:.3rem}
+nav.toc a{display:block;text-decoration:none;padding:.12rem 0}
+section.item{border-top:1px solid rgba(128,128,128,.22);padding-top:.3rem}
+table{border-collapse:collapse;width:100%;margin:.8rem 0}
+th,td{border:1px solid rgba(128,128,128,.45);padding:.4rem .6rem;text-align:left;vertical-align:top}
+thead th{background:rgba(128,128,128,.18);font-weight:600}
+tbody tr:nth-child(even){background:rgba(128,128,128,.08)}
+</style>
+</head>
+<body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ 3- Lists and Arrays: Algorithms and Operations</a></div>
+<h1>Time and Space Complexity Analysis</h1>
+<nav class="toc"><strong>Contents</strong>
+<a href="#sec1">Introduction</a>
+<a href="#sec2">Video 1: Introduction to Big-O Notation with Examples | Time and Space Complexity Simplified | Geekific</a>
+<a href="#sec3">Video 2: Time complexity and Comparison of All Data Structures</a>
+<a href="#sec4">Video 3: Time Complexity &amp; Big O notation | Analysis and Calculation | Java C++ Anuj Bhaiya ✅DSAOne Course #1</a>
+<a href="#sec5">How These Videos Support the Learning Outcomes</a>
+<a href="#sec6">About These Videos</a>
+</nav>
+<section class="item" id="sec1">
+<h2>Introduction</h2>
+<p>Every operation you write on a list or array has a cost: the number of steps it takes as the data grows, and the extra memory it needs while running. Time and space complexity analysis gives you a vocabulary — Big O notation — for describing those costs in a way that is independent of your machine, your language, and the size of any particular test case. Instead of saying &quot;this loop felt fast,&quot; you can say that traversal is O(n), that binary search on a sorted array is O(log n), or that inserting at the front of an array is O(n) because every later element must shift.</p>
+<p>This matters in COP3530 because arrays and lists support the same operations with very different costs depending on where in the structure you work and whether the data is sorted. Knowing that access by index is O(1) but search by value is O(n), or that deletion from the end is cheap while deletion from the middle is not, is what lets you choose the right operation and the right structure for a problem rather than guessing.</p>
+<p>As you watch the videos below, pay attention to three things: how a piece of code is translated into a count of operations, how lower-order terms and constants are dropped to produce the final Big O expression, and how the same operation (search, insert, delete, traverse) compares across different data structures. Try pausing and predicting the complexity of each example before the presenter reveals it — that habit is what the module assessments will ask you to do.</p>
+</section>
+<section class="item" id="sec2">
+<h2>Video 1: Introduction to Big-O Notation with Examples | Time and Space Complexity Simplified | Geekific</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/W0Fwot0KNjA?cc_load_policy=1&amp;rel=0" title="Video: Introduction to Big-O Notation with Examples | Time and Space Complexity Simplified | Geekific (Geekific)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Geekific</strong> · 15:25 · 5,255 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=W0Fwot0KNjA" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>A from-scratch introduction to Big O notation that defines what complexity means and walks through worked examples to build up the idea of describing an algorithm&#39;s growth rate. Based on its title and description, it covers both time complexity and space complexity rather than treating time alone. Expect common classes such as constant, linear, and quadratic behavior to be illustrated with small code samples.</p>
+<h3>Why this video</h3>
+<p>It is the natural starting point for the Introduction to Big O Notation and Space Complexity Considerations subtopics, and at roughly fifteen minutes it stays focused on the fundamentals without assuming prior analysis experience.</p>
+</section>
+<section class="item" id="sec3">
+<h2>Video 2: Time complexity and Comparison of All Data Structures</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/1lqoJ-NSmDE?cc_load_policy=1&amp;rel=0" title="Video: Time complexity and Comparison of All Data Structures (Gate Smashers)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Gate Smashers</strong> · 8:13 · 162,146 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=1lqoJ-NSmDE" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>A compact lecture from Gate Smashers that surveys the time complexity of standard operations across a range of data structures and places them side by side for comparison. The focus is on the resulting complexity table — what searching, insertion, and deletion cost in each structure — rather than on deriving each bound in detail. It is pitched at exam and interview preparation, so the material is presented in a summarized, memorable form.</p>
+<h3>Why this video</h3>
+<p>This directly serves the Comparing Operations Across Data Structures subtopic and gives you a reference view of how arrays and lists stack up against alternatives for insertion, deletion, and searching.</p>
+</section>
+<section class="item" id="sec4">
+<h2>Video 3: Time Complexity &amp; Big O notation | Analysis and Calculation | Java C++ Anuj Bhaiya ✅DSAOne Course #1</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/N89PN_uyelU?cc_load_policy=1&amp;rel=0" title="Video: Time Complexity &amp; Big O notation | Analysis and Calculation | Java C++ Anuj Bhaiya ✅DSAOne Course #1 (Anuj Kumar Sharma)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Anuj Kumar Sharma</strong> · 17:05 · 1,043,506 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=N89PN_uyelU" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>The opening lesson of Anuj Kumar Sharma&#39;s DSA One course, which introduces Big O notation and then shows how to analyze and calculate the complexity of code, with examples framed for Java and C++ programmers. Its description indicates coverage of both time and space complexity and of the calculation process itself, not just definitions. Expect step-by-step counting of loop iterations and simplification to a final Big O expression.</p>
+<h3>Why this video</h3>
+<p>With over a million views and a course-style structure, it is a well-tested, clearly paced treatment of how to actually derive complexity from loops — the skill you need for analyzing traversal, search, insertion, and deletion code.</p>
+</section>
+<section class="item" id="sec5">
+<h2>How These Videos Support the Learning Outcomes</h2>
+<p>These three videos primarily support MO3 by giving you the notation and the calculation technique needed to analyze insertion, deletion, searching, and traversal on lists and arrays. The Geekific and Anuj Kumar Sharma videos build the foundation — what Big O means and how to derive it from code, including space costs — while the Gate Smashers comparison lecture supplies the cross-structure perspective that underpins MO4, where you must choose the most efficient operation for a given position and data ordering. The complexity contrasts shown in these videos, especially linear versus logarithmic growth, also reinforce MO2&#39;s comparison of linear and binary search, and give you a way to reason about the cost of the array operations and traversal techniques you implement for MO1 and MO5.</p>
+</section>
+<section class="item" id="sec6">
+<h2>About These Videos</h2>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+
+<footer class="presemaker-credit" data-credit="2" style="margin-top:2rem;padding:14px 8px;border-top:1px solid #ddd;background:#fff;text-align:center;font:13px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#595959;"><svg width="20" height="20" viewBox="0 0 2048 2048" aria-hidden="true" focusable="false" style="vertical-align:-5px;margin-right:7px"><rect width="2048" height="2048" rx="384" fill="#0F6E6E"/><path fill="#0A5050" d="M1024 1000 344 832v816l680 168zm0 0 680-168v816l-680 168z"/><path fill="#fff" d="M1024 944 384 784v808l640 160zm0 0 640-160v808l-640 160z"/><rect x="1002" y="944" width="44" height="808" fill="#0F6E6E"/><rect x="936" y="246" width="176" height="448" rx="44" fill="#fff"/><rect x="800" y="382" width="448" height="176" rx="44" fill="#fff"/></svg>Created with <a href="https://softwareplus.ai/coursebuilder/" target="_blank" rel="noopener" style="color:#2f5d8f;font-weight:600;text-decoration:none;">CourseBuilder+</a><span aria-hidden="true"> · </span><a href="https://softwareplus.ai/" target="_blank" rel="noopener" style="color:#2f5d8f;text-decoration:none;">SoftwarePlus.ai</a></footer>
+</body>
+</html>

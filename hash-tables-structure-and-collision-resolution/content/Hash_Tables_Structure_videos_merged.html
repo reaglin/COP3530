@@ -1,0 +1,350 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Hash Tables: Structure and Collision Resolution</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+body{font-family:'Segoe UI',Arial,sans-serif;max-width:820px;margin:2rem auto;padding:0 1.25rem;color:#222;line-height:1.55}
+h1{font-size:1.9rem;border-bottom:2px solid #ddd;padding-bottom:.4rem}
+h2{font-size:1.3rem;color:#1f3864;margin-top:1.6rem}
+body{padding-left:1.1rem;padding-right:1.1rem}
+ul,ol{margin:.4rem 0 1rem 1.4rem}
+li{margin:.25rem 0}
+nav.toc{background:rgba(128,128,128,.08);border:1px solid rgba(128,128,128,.25);border-radius:8px;padding:.6rem 1rem;margin:1.2rem 0}
+nav.toc strong{display:block;margin-bottom:.3rem}
+nav.toc a{display:block;text-decoration:none;padding:.12rem 0}
+section.item{border-top:1px solid rgba(128,128,128,.22);padding-top:.3rem}
+table{border-collapse:collapse;width:100%;margin:.8rem 0}
+th,td{border:1px solid rgba(128,128,128,.45);padding:.4rem .6rem;text-align:left;vertical-align:top}
+thead th{background:rgba(128,128,128,.18);font-weight:600}
+tbody tr:nth-child(even){background:rgba(128,128,128,.08)}
+</style>
+<style>section.merged-part{border-top:2px solid rgba(128,128,128,.3);margin-top:2rem;padding-top:.5rem}nav.toc{background:rgba(128,128,128,.08);border:1px solid rgba(128,128,128,.25);border-radius:8px;padding:.6rem 1rem;margin:1.2rem 0}nav.toc a{display:block;text-decoration:none;padding:.12rem 0}</style>
+</head>
+<body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Hash Tables: Structure and Collision Resolution</a></div>
+<h1>Hash Tables: Structure and Collision Resolution</h1>
+<nav class="toc"><strong>Contents</strong>
+<a href="#part1">Introduction to Hash Tables</a>
+<a href="#part2">Internal Array-Based Design</a>
+<a href="#part3">Hash Function Design and Properties</a>
+<a href="#part4">Collision Resolution: Chaining</a>
+<a href="#part5">Collision Resolution: Open Addressing</a>
+<a href="#part6">Performance Analysis of Hash Tables</a>
+<a href="#part7">Implementing a Hash Table in JavaScript</a>
+</nav>
+<section class="merged-part" id="part1">
+<h2>Introduction to Hash Tables</h2>
+<section class="item" id="p1-sec1">
+<h3>Introduction</h3>
+<p>A hash table is a data structure that stores key-value pairs and, in the average case, lets you insert, look up, and remove an entry in constant time. Instead of scanning a list to find a key, a hash table runs the key through a hash function that produces a number, and that number is converted into an index in an underlying array. The array does the actual storing; the hash function is what tells you where to look.</p>
+<p>This topic matters because hash tables sit underneath many of the tools you already use — dictionaries, maps, sets, caches, symbol tables, database indexes — and because the rest of this module builds directly on it. Before you can reason about collisions, load factors, or chaining versus open addressing, you need a clear mental picture of the key-to-index mapping and of the array that the mapping points into.</p>
+<p>While watching these videos, focus on three things. First, what exactly the hash function takes in and what it produces. Second, how that output becomes a valid array index (watch for the modulo step). Third, the moment where two different keys land on the same index — that is a collision, and noticing where it comes from now will make the collision-resolution material later in the module much easier.</p>
+</section>
+<section class="item" id="p1-sec2">
+<h3>Video 1: L-6.1: What is hashing with example | Hashing in data structure</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/W5q0xgxmRd8?cc_load_policy=1&amp;rel=0" title="Video: L-6.1: What is hashing with example | Hashing in data structure (Gate Smashers)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Gate Smashers</strong> · 5:53 · 2,565,032 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=W5q0xgxmRd8" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A short lecture that defines hashing in the context of data structures and walks through an example of mapping keys into a table. Based on the title and description, it should cover what a hash function is, why hashing is used instead of searching linearly, and how a simple hash function such as modulo division places keys into slots.</p>
+<h4>Why this video</h4>
+<p>Gate Smashers is a widely followed exam-prep channel known for compact, example-driven explanations, and this video's focus on the concept of hashing with a worked example matches the subtopics on hashing and the role of the underlying array.</p>
+</section>
+<section class="item" id="p1-sec3">
+<h3>Video 2: Hash tables in 4 minutes</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/knV86FlSXJ8?cc_load_policy=1&amp;rel=0" title="Video: Hash tables in 4 minutes (Michael Sambol)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Michael Sambol</strong> · 3:52 · 389,765 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=knV86FlSXJ8" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A four-minute overview of hash tables as a data structure, with accompanying Python code linked in the description. It is likely to cover the key-value store idea, how a hash function maps a key to a bucket, and the basic operations, with a brief look at what happens when keys collide.</p>
+<h4>Why this video</h4>
+<p>Michael Sambol's algorithm videos are known for being tightly edited and technically accurate, making this an efficient first or second pass that reinforces the key-value purpose and the array-backed structure.</p>
+</section>
+<section class="item" id="p1-sec4">
+<h3>Video 3: Introduction to Hashing | Data Structures and Algorithms</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/44A_jk4_Rx8?cc_load_policy=1&amp;rel=0" title="Video: Introduction to Hashing | Data Structures and Algorithms (Dinesh Varyani)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Dinesh Varyani</strong> · 14:22 · 24,350 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=44A_jk4_Rx8" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A longer, slide-based introduction to hashing within a full data structures and algorithms course. The extra runtime suggests a more gradual treatment: what problem hashing solves, how keys are converted to indices, and how the hash table relates to the array it is built on.</p>
+<h4>Why this video</h4>
+<p>This is the most detailed of the three and is useful if the shorter videos move too quickly; as part of a structured DSA series, it places hashing in the broader context of data structures covered in this course.</p>
+</section>
+<section class="item" id="p1-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>These videos establish the foundation that MO1 depends on: each one shows a hash function taking a key and producing an array index, which is the mapping you will later analyze in terms of determinism, uniform distribution, and speed. By making the underlying array and its fixed number of slots explicit, they also set up the collision scenario central to MO2 and the load-factor reasoning behind MO3, since collisions are what push performance away from O(1). Finally, the conceptual model of set, get, and remove on a key-value store — reinforced by the code sample linked from the Sambol video — gives you the design target you will implement in JavaScript for MO4.</p>
+</section>
+<section class="item" id="p1-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part2">
+<h2>Internal Array-Based Design</h2>
+<section class="item" id="p2-sec1">
+<h3>Introduction</h3>
+<p>A hash table is not a new kind of memory — it is a clever way of using an ordinary array. The array gives you constant-time access to any slot once you know its index, and the hash function is the piece that turns a key (a string, a number, an object) into one of those indices. Understanding this layering is the key to the whole module: everything else, including collisions and load factor, follows from the fact that we are squeezing a large space of possible keys into a fixed, finite set of array positions.</p>
+<p>In this topic we focus on the mechanics of that mapping. A hash function takes a key, computes a numeric hash code, and then reduces it into the valid index range (commonly with the modulo operator against the table size). Because the result is computed rather than searched for, storage and retrieval can be O(1) on average — but only if the function is fast to compute and spreads keys reasonably evenly. The function must also be deterministic: the same key must always produce the same index, or you will store a value in one slot and look for it in another.</p>
+<p>While watching, pay attention to three things. First, how each presenter describes the step from key to hash code to array index. Second, what assumptions they make about table size and the modulo step. Third, the moment collisions are introduced — notice that collisions are an unavoidable consequence of the array-based design, not a bug in it. That observation sets up the collision resolution material later in this module.</p>
+</section>
+<section class="item" id="p2-sec2">
+<h3>Video 1: Hash Tables Overview</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/H9Alh1NFePQ?cc_load_policy=1&amp;rel=0" title="Video: Hash Tables Overview (Professor Kevin Wortman)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Professor Kevin Wortman</strong> · 11:29 · 386 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=H9Alh1NFePQ" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A lecture-style overview of the hash table data structure from a university instructor, delivered with accompanying slides. Based on its framing as an overview, it should cover the underlying array, the role of the hash function in choosing a slot, and the basic insert and lookup operations, before moving toward collisions and performance.</p>
+<h4>Why this video</h4>
+<p>The longest and most academic of the three, this video gives the fuller treatment of why an array underpins the structure and how that choice drives retrieval efficiency — a good match for a course-level introduction to internal design.</p>
+</section>
+<section class="item" id="p2-sec3">
+<h3>Video 2: L-6.1: What is hashing with example | Hashing in data structure</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/W5q0xgxmRd8?cc_load_policy=1&amp;rel=0" title="Video: L-6.1: What is hashing with example | Hashing in data structure (Gate Smashers)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Gate Smashers</strong> · 5:53 · 2,565,032 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=W5q0xgxmRd8" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A worked introduction to hashing in data structures that defines the concept and walks through an example. Expect a concrete demonstration of taking keys, applying a hash function such as modulo division, and placing values into numbered positions in a table.</p>
+<h4>Why this video</h4>
+<p>Gate Smashers is a widely used exam-prep channel, and this heavily viewed lesson is built around a step-by-step example, which makes the key-to-index mapping and the determinism requirement easy to see in practice.</p>
+</section>
+<section class="item" id="p2-sec4">
+<h3>Video 3: Hash tables in 4 minutes</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/knV86FlSXJ8?cc_load_policy=1&amp;rel=0" title="Video: Hash tables in 4 minutes (Michael Sambol)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Michael Sambol</strong> · 3:52 · 389,765 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=knV86FlSXJ8" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A compact, four-minute summary of hash tables from a channel known for short algorithm explainers, with accompanying Python code linked in the description. It condenses the essentials: hashing a key to an index, storing and retrieving values, and the performance characteristics of the structure.</p>
+<h4>Why this video</h4>
+<p>Michael Sambol's videos are accurate and tightly edited, making this an efficient first pass or a review after the longer lectures, and the linked code lets you connect the array-and-hash-function idea to an actual implementation.</p>
+</section>
+<section class="item" id="p2-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these videos build the foundation for MO1: each one shows a hash function converting a key into an array index, and collectively they emphasize that the computation must be fast, deterministic, and spread keys across the table. By making clear that a finite array cannot hold a limitless key space, they also set up MO2 and MO3 — collisions and load factor become natural consequences of the array-based design rather than isolated topics, and the claim of O(1) average access is shown to depend on how well keys distribute. The shortest video's linked implementation code points ahead to MO4, where you will write your own hash function and chaining-based table.</p>
+</section>
+<section class="item" id="p2-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part3">
+<h2>Hash Function Design and Properties</h2>
+<section class="item" id="p3-sec1">
+<h3>Introduction</h3>
+<p>A hash function is the engine of a hash table: it takes a key — a string, an integer, or any other value — and converts it into an index in an underlying array. Everything a hash table promises, including near constant-time insertion, lookup, and deletion, depends on how well that conversion is done. In this topic we look closely at the three properties that define a good hash function: determinism (the same key must always produce the same index), uniform distribution (keys should spread evenly across the table rather than piling into a few slots), and computational speed (hashing must be cheap, since it happens on every operation).</p>
+<p>We also examine the mechanics behind common hash functions. For integers, the division method using the modulo operation is the usual starting point; for strings, techniques typically combine character codes with a multiplier (polynomial rolling hashes) before reducing the result modulo the table size. The modulo operation is what guarantees that any hash value lands inside the array bounds, and the choice of table size — prime versus power of two — directly affects how evenly values are distributed.</p>
+<p>Finally, we consider what goes wrong when a hash function is poorly designed. Clustering, long collision chains, and lookups that degrade from O(1) toward O(n) are all symptoms of non-uniform hashing. As you watch the videos below, pay attention to how each one computes an index from a key, where collisions appear, and how the table size influences the result — those observations connect directly to the collision resolution strategies covered next in this module.</p>
+</section>
+<section class="item" id="p3-sec2">
+<h3>Video 1: L-6.1: What is hashing with example | Hashing in data structure</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/W5q0xgxmRd8?cc_load_policy=1&amp;rel=0" title="Video: L-6.1: What is hashing with example | Hashing in data structure (Gate Smashers)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Gate Smashers</strong> · 5:53 · 2,565,032 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=W5q0xgxmRd8" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>This is the introductory lecture in Gate Smashers' hashing series, explaining what hashing is and walking through a worked example of mapping keys into a hash table. Based on its title and description, it should cover the basic idea of a hash function, how a key is transformed into an array index (typically via the division/modulo method), and why hashing gives fast access compared to searching a list. It also introduces the point at which two keys map to the same slot — a collision.</p>
+<h4>Why this video</h4>
+<p>It is the clearest starting point for the foundational idea behind MO1: how a hash function maps keys to indices, with concrete numeric examples that make the role of the modulo operation visible. Gate Smashers is a widely used exam-prep channel with a step-by-step lecture style, and this video has been watched millions of times by data structures students.</p>
+</section>
+<section class="item" id="p3-sec3">
+<h3>Video 2: L-6.2: Collision Resolution Techniques in Hashing | What are the collision resolution techniques?</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/j612Fj-mgCY?cc_load_policy=1&amp;rel=0" title="Video: L-6.2: Collision Resolution Techniques in Hashing | What are the collision resolution techniques? (Gate Smashers)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Gate Smashers</strong> · 5:33 · 1,323,306 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=j612Fj-mgCY" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>The follow-up lecture in the same series, this video addresses what happens when two keys hash to the same index and surveys the standard collision resolution techniques. Its description frames collisions as the central problem, so expect an overview of approaches such as chaining and open addressing with probing. It serves as the bridge between hash function design and the collision handling strategies treated later in this module.</p>
+<h4>Why this video</h4>
+<p>Collisions are the direct consequence of imperfect or poorly chosen hash functions, so this video shows students why uniform distribution matters in practice rather than only in theory. Watching it immediately after the first lecture keeps the explanation and notation consistent.</p>
+</section>
+<section class="item" id="p3-sec4">
+<h3>Video 3: Hash tables in 4 minutes</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/knV86FlSXJ8?cc_load_policy=1&amp;rel=0" title="Video: Hash tables in 4 minutes (Michael Sambol)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Michael Sambol</strong> · 3:52 · 389,765 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=knV86FlSXJ8" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A compact, fast-paced overview of hash tables from Michael Sambol, covering the structure and its core operations in under four minutes. The description links to a Python implementation on GitHub, so the explanation is tied to working code rather than abstract diagrams alone. Expect the hash function, index computation, and basic collision handling to be summarized efficiently.</p>
+<h4>Why this video</h4>
+<p>Sambol's algorithms videos are known for precise, concise explanations, making this an excellent review or a quick first pass before the longer lectures. The accompanying code repository is useful preparation for implementing your own hash function and table later in the module.</p>
+</section>
+<section class="item" id="p3-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these videos build the conceptual base this module requires. The Gate Smashers introduction and the Sambol overview both target MO1 directly, showing how a hash function maps a key to an array index and why determinism, even distribution, and cheap computation are necessary properties. The Gate Smashers collision resolution lecture previews MO2 by surveying chaining and probing strategies, and all three videos make the connection to MO3 visible: as collisions accumulate, performance drifts away from O(1). The linked implementation code in the Sambol video gives you a concrete model to adapt when you construct and test your own hash table for MO4.</p>
+</section>
+<section class="item" id="p3-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part4">
+<h2>Collision Resolution: Chaining</h2>
+<section class="item" id="p4-sec1">
+<h3>Introduction</h3>
+<p>A hash function turns a key into an array index, but no matter how good that function is, two different keys will eventually land on the same index. That event is called a collision, and every usable hash table needs a plan for it. Chaining is the most common plan: instead of storing a single key-value pair in each bucket, each bucket holds a small container — usually a linked list — and every pair that hashes to that index is appended to the chain.</p>
+<p>This topic walks through what that means in practice. Insertion means finding the bucket and adding a node to its chain; searching means hashing to the bucket and then walking the chain comparing keys; deletion means unlinking a node from a chain, which is noticeably simpler than deletion under open addressing, where removing an element can break probe sequences. The key performance idea is the load factor (number of stored entries divided by number of buckets): as it rises, average chain length rises with it, and lookup drifts from O(1) toward O(n) in the worst case where every key collides.</p>
+<p>As you watch, keep three questions in mind. First, what exactly is stored in the array — values, or pointers to list nodes? Second, why must you still compare keys after reaching the right bucket? Third, how does chaining compare to open addressing on memory overhead, tolerance for high load factors, and ease of deletion? You will implement chaining yourself later in the module, so pay attention to the structure of the code as well as the diagrams.</p>
+</section>
+<section class="item" id="p4-sec2">
+<h3>Video 1: L-6.3: Chaining in Hashing | What is chaining in hashing with examples</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/hmMYPZ5wLX0?cc_load_policy=1&amp;rel=0" title="Video: L-6.3: Chaining in Hashing | What is chaining in hashing with examples (Gate Smashers)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Gate Smashers</strong> · 6:42 · 847,830 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=hmMYPZ5wLX0" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A focused follow-up lecture on chaining specifically, explaining what happens when two keys hash to the same index and how a linked list at that index stores all colliding entries. The description indicates worked examples, so expect keys to be hashed and inserted step by step into chains.</p>
+<h4>Why this video</h4>
+<p>This is the core explanatory video for the topic, covering what chaining is and how insertion and lookup proceed through a chain, in a short, example-driven format that pairs directly with the overview lecture.</p>
+</section>
+<section class="item" id="p4-sec3">
+<h3>Video 2: Implement a HashTable | Separate Chaining Collision Resolution Technique | Part 1 | Animation</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/NGd08g328i4?cc_load_policy=1&amp;rel=0" title="Video: Implement a HashTable | Separate Chaining Collision Resolution Technique | Part 1 | Animation (Dinesh Varyani)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Dinesh Varyani</strong> · 10:01 · 16,271 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=NGd08g328i4" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>An animated implementation walkthrough that builds a hash table using separate chaining, showing how the bucket array and node links are constructed in code. As part one of a series, it is likely to focus on the data structure setup and the insertion path before later parts handle other operations.</p>
+<h4>Why this video</h4>
+<p>It moves you from diagrams to an actual implementation, which is the bridge you need for coding set, get, and remove with chaining yourself; the animated style makes the pointer manipulation in each chain easy to follow.</p>
+</section>
+<section class="item" id="p4-sec4">
+<h3>Video 3: L-6.2: Collision Resolution Techniques in Hashing | What are the collision resolution techniques?</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/j612Fj-mgCY?cc_load_policy=1&amp;rel=0" title="Video: L-6.2: Collision Resolution Techniques in Hashing | What are the collision resolution techniques? (Gate Smashers)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Gate Smashers</strong> · 5:33 · 1,323,306 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=j612Fj-mgCY" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>This lecture introduces collisions in hashing and surveys the main families of resolution techniques, typically contrasting separate chaining with open addressing methods such as linear probing, quadratic probing, and double hashing. It is framed as an overview that places chaining in context rather than drilling into one approach.</p>
+<h4>Why this video</h4>
+<p>Watching this first gives you the map before the detail, which is exactly what the trade-offs subtopic requires; Gate Smashers is a widely used exam-prep channel whose treatment of collision resolution is concise and terminology-accurate.</p>
+</section>
+<section class="item" id="p4-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these videos target the chaining half of MO2: the overview lecture names chaining alongside linear probing, quadratic probing, and double hashing so you can compare memory use, load factor tolerance, and deletion handling, while the dedicated chaining lecture supplies the detail needed to argue those trade-offs. Both reinforce MO1 by showing the hash function in action as the step that produces the index where collisions occur, and the discussion of chain length and load factor supports MO3's focus on when hash table operations diverge from O(1) toward linear behavior. The implementation walkthrough directly prepares you for MO4 by demonstrating how a bucket array of linked nodes is coded and exercised, which you will then reproduce and test in JavaScript.</p>
+</section>
+<section class="item" id="p4-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part5">
+<h2>Collision Resolution: Open Addressing</h2>
+<section class="item" id="p5-sec1">
+<h3>Introduction</h3>
+<p>When two keys hash to the same index, a hash table needs a plan. Open addressing is one such plan: instead of storing colliding items in a separate structure like a linked list, every element lives directly in the table array, and a collision sends the insertion routine looking for another empty slot according to a fixed, repeatable rule. That rule is called the probe sequence, and the three classic versions you will meet here are linear probing (try the next slot, then the next), quadratic probing (step away by growing squared offsets), and double hashing (let a second hash function determine the step size).</p>
+<p>This matters in COP3530 because open addressing is the main alternative to separate chaining, and the comparison is a recurring exam and interview topic. Open addressing avoids pointer overhead and keeps data contiguous in memory, but it imposes constraints chaining does not: the load factor can never exceed 1, performance degrades sharply as the table fills, and deletion cannot simply blank out a slot without breaking the probe sequences that pass through it — hence tombstone or lazy-deletion markers.</p>
+<p>As you watch the videos below, keep a pencil handy and build the table yourself alongside the instructor. Watch specifically for three things: the exact formula used to compute each successive probe, how the search operation must follow the same sequence that insertion used, and where clustering appears — primary clustering in linear probing, secondary clustering in quadratic probing — and how each later technique tries to reduce it.</p>
+</section>
+<section class="item" id="p5-sec2">
+<h3>Video 1: L-6.4: Linear Probing in Hashing with example</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/ZEyPqqRTO00?cc_load_policy=1&amp;rel=0" title="Video: L-6.4: Linear Probing in Hashing with example (Gate Smashers)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Gate Smashers</strong> · 12:40 · 945,731 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=ZEyPqqRTO00" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A worked introduction to linear probing, the simplest open addressing scheme, in which a collision causes the table to be scanned sequentially until an empty slot is found. Based on the title and description, the video walks through a concrete numeric example of inserting keys into a table and resolving collisions step by step. Expect discussion of how searching must follow the same sequential probe path and why long runs of occupied slots (primary clustering) form.</p>
+<h4>Why this video</h4>
+<p>Gate Smashers is a widely used exam-prep channel known for slow, example-driven explanations, and this video is the standard starting point for the probe-sequence idea that the rest of the topic builds on.</p>
+</section>
+<section class="item" id="p5-sec3">
+<h3>Video 2: L-6.6: Quadratic Probing in Hashing with example</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/-yQ2Kj-Jn0A?cc_load_policy=1&amp;rel=0" title="Video: L-6.6: Quadratic Probing in Hashing with example (Gate Smashers)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Gate Smashers</strong> · 7:41 · 690,427 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=-yQ2Kj-Jn0A" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>This video covers quadratic probing, where the offset from the home slot grows as a square (1, 4, 9, and so on) rather than by one each time. It is presented as a direct response to the clustering problem in linear probing, so expect a comparison with the previous method and a worked insertion example. Likely points include the probe formula itself and the caveat that quadratic probing may fail to find an empty slot even when one exists, depending on table size.</p>
+<h4>Why this video</h4>
+<p>It is the natural follow-up in the same instructor's sequence, so the notation and example style carry over, and it directly addresses the Quadratic Probing and Probe Sequences subtopics.</p>
+</section>
+<section class="item" id="p5-sec4">
+<h3>Video 3: L-6.7: Double Hashing | Collision Resolution Technique</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/1P7ygNSe9lY?cc_load_policy=1&amp;rel=0" title="Video: L-6.7: Double Hashing | Collision Resolution Technique (Gate Smashers)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Gate Smashers</strong> · 10:28 · 723,043 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=1P7ygNSe9lY" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>An explanation of double hashing, in which a second, independent hash function determines the step size used to move through the table after a collision. The description frames it around the core question of what happens when two keys land on the same spot, so expect the two-function formula and a traced example of the resulting probe sequence. It typically also covers why the secondary hash must never return zero and why its result should be relatively prime to the table size.</p>
+<h4>Why this video</h4>
+<p>Double hashing is the most effective of the three at spreading probes and eliminating clustering, and this video completes the Gate Smashers trio so you can compare all three techniques using consistent terminology.</p>
+</section>
+<section class="item" id="p5-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these three videos give you the open addressing half of MO2: each one presents a distinct probe strategy with a worked example, so you can line them up against separate chaining and against each other in terms of memory layout, clustering behavior, and the constraints they place on the table. The clustering discussions and the fact that all elements must fit inside the array connect directly to MO3, since growing clusters and a load factor approaching 1 are precisely what pull lookup away from O(1) toward linear-time scans. The videos also reinforce MO1, because every probe sequence starts from a hash value and depends on that hash distributing keys evenly. Note that deletion with tombstones and the JavaScript chaining implementation in MO4 are handled in your course readings and coding work rather than in these videos, so treat the videos as conceptual grounding and bring the deletion question with you when you build your own table.</p>
+</section>
+<section class="item" id="p5-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part6">
+<h2>Performance Analysis of Hash Tables</h2>
+<section class="item" id="p6-sec1">
+<h3>Introduction</h3>
+<p>Hash tables are often described as offering "constant time" lookup, insertion, and deletion, but that claim comes with conditions. The O(1) average case depends on a hash function that spreads keys evenly, a load factor that is kept under control, and a collision resolution strategy that does not degenerate. When any of those assumptions breaks down, performance slides toward O(n) — the same cost as scanning a plain array.</p>
+<p>In this topic you will work through what actually drives hash table performance: the load factor (the ratio of stored entries to table slots), how often collisions occur, and how chaining and open addressing each respond as the table fills. You will also look at the space side of the trade-off — the extra pointers chaining requires, the empty slots open addressing needs to stay fast, and the amortized cost of resizing and rehashing when the table grows.</p>
+<p>As you watch the videos below, keep three questions in mind. First, what operation is being performed at each step, and how many probes or list traversals does it take? Second, how would that count change if the table were nearly full versus mostly empty? Third, what input would force the worst case — and why does that matter for real systems that accept untrusted keys?</p>
+</section>
+<section class="item" id="p6-sec2">
+<h3>Video 1: Hash tables in 4 minutes</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/knV86FlSXJ8?cc_load_policy=1&amp;rel=0" title="Video: Hash tables in 4 minutes (Michael Sambol)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Michael Sambol</strong> · 3:52 · 389,765 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=knV86FlSXJ8" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A compact overview of hash tables covering how a hash function maps keys to array indices and how the core operations — insert, search, and delete — are carried out. The video is likely to state the expected O(1) average-case cost alongside the O(n) worst case, and to introduce collisions as the reason the two differ. Accompanying Python code is linked in the description for students who want to trace the operations concretely.</p>
+<h4>Why this video</h4>
+<p>Michael Sambol's algorithm videos are known for being tightly scripted and accurate, making this an efficient starting point that frames the time complexity of core operations before you dig into the details of each collision strategy.</p>
+</section>
+<section class="item" id="p6-sec3">
+<h3>Video 2: L-6.3: Chaining in Hashing | What is chaining in hashing with examples</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/hmMYPZ5wLX0?cc_load_policy=1&amp;rel=0" title="Video: L-6.3: Chaining in Hashing | What is chaining in hashing with examples (Gate Smashers)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Gate Smashers</strong> · 6:42 · 847,830 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=hmMYPZ5wLX0" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>This lecture explains separate chaining: when two keys hash to the same index, the entries are stored in a linked list attached to that slot. Expect worked examples showing keys being inserted into buckets, and discussion of how search cost depends on the length of the chain at a given index. The treatment typically connects chain length to the load factor and the expected number of comparisons per lookup.</p>
+<h4>Why this video</h4>
+<p>Gate Smashers covers this material at an exam-preparation level of detail, which maps directly onto the average-case analysis with chaining — the key insight that expected search cost grows roughly in proportion to the load factor.</p>
+</section>
+<section class="item" id="p6-sec4">
+<h3>Video 3: L-6.4: Linear Probing in Hashing with example</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/ZEyPqqRTO00?cc_load_policy=1&amp;rel=0" title="Video: L-6.4: Linear Probing in Hashing with example (Gate Smashers)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Gate Smashers</strong> · 12:40 · 945,731 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=ZEyPqqRTO00" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A longer, step-by-step treatment of linear probing as an open addressing scheme, where collisions are resolved by scanning forward to the next free slot. The extended running time allows for detailed insertion and search examples, and the video is likely to illustrate clustering — the way occupied slots group together and lengthen subsequent probe sequences. Deletion and its complications under probing are commonly addressed in lectures of this kind.</p>
+<h4>Why this video</h4>
+<p>Open addressing degrades much more sharply as the load factor approaches 1 than chaining does, and seeing probe sequences worked out slot by slot makes that divergence concrete rather than abstract.</p>
+</section>
+<section class="item" id="p6-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these videos build the foundation for MO3: the first establishes the baseline O(1) average and O(n) worst-case claims for insertion, deletion, and lookup, while the chaining and linear probing videos show exactly why and when performance diverges from constant time as collisions accumulate. They also reinforce MO1 by reviewing how keys are mapped to indices, and MO2 by letting you compare the two resolution strategies side by side on memory use, load factor tolerance, and deletion handling. Because the chaining video treats the same technique required in MO4, it doubles as conceptual preparation for implementing set, get, and remove with separate chaining in your own code.</p>
+</section>
+<section class="item" id="p6-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part7">
+<h2>Implementing a Hash Table in JavaScript</h2>
+<section class="item" id="p7-sec1">
+<h3>Introduction</h3>
+<p>A hash table turns a key into an array index with a hash function, then stores a key-value pair at that slot. Because different keys can hash to the same index, every real implementation needs a collision resolution strategy. In this topic you will build the structure yourself in JavaScript: a HashTable class holding an array of buckets, a hash function that converts keys into valid indices, and set, get, remove, and keys methods that use separate chaining — each bucket holding a list of entries rather than a single value.</p>
+<p>This hands-on work matters because it makes the theory concrete. Once you have written the loop that walks a bucket's chain looking for a matching key, the claim that lookup is O(1) on average but O(n) in the worst case stops being abstract: the length of that chain is exactly what determines the cost. Writing the remove method also exposes why deletion is simpler under chaining than under open addressing.</p>
+<p>The videos below are from a Java-based data structures series, so treat them as language-neutral blueprints rather than copy-and-paste code. While watching, focus on the structure of the decisions — how the index is computed and kept within array bounds, how the code distinguishes "bucket is empty" from "bucket has a chain," and how an existing key is updated rather than duplicated. Then translate those same steps into JavaScript, using arrays and objects (or Map) in place of the Java classes, and test each method as you add it.</p>
+</section>
+<section class="item" id="p7-sec2">
+<h3>Video 1: Implement a HashTable | Separate Chaining Collision Resolution Technique | Part 1 | Animation</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/NGd08g328i4?cc_load_policy=1&amp;rel=0" title="Video: Implement a HashTable | Separate Chaining Collision Resolution Technique | Part 1 | Animation (Dinesh Varyani)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Dinesh Varyani</strong> · 10:01 · 16,271 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=NGd08g328i4" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>An animated walkthrough of what a hash table with separate chaining looks like internally: an array of buckets where each bucket holds a linked chain of entries. It introduces the design of the structure before any code is written, including how keys are placed and how collisions are absorbed into chains.</p>
+<h4>Why this video</h4>
+<p>This is the right starting point for Setting Up the HashTable Class, since it establishes the mental model of the bucket array and chains that your JavaScript class will mirror.</p>
+</section>
+<section class="item" id="p7-sec3">
+<h3>Video 2: Implement a HashTable | Separate Chaining Collision Resolution Technique | Part 2 | Implementation</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/dIew1UascBo?cc_load_policy=1&amp;rel=0" title="Video: Implement a HashTable | Separate Chaining Collision Resolution Technique | Part 2 | Implementation (Dinesh Varyani)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Dinesh Varyani</strong> · 9:03 · 17,737 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=dIew1UascBo" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>The follow-up to Part 1, moving from animation to actual implementation. It walks through coding the hash table class, its internal storage, and the supporting pieces needed to make separate chaining work in code.</p>
+<h4>Why this video</h4>
+<p>Seeing the structure translated into working code bridges the gap between the diagram and your own class definition, hash function, and bucket array in JavaScript.</p>
+</section>
+<section class="item" id="p7-sec4">
+<h3>Video 3: How to Put a Key-Value pair in a HashTable? | Part 1 | Separate Chaining Collision Resolution</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/cz9BrdMsSdY?cc_load_policy=1&amp;rel=0" title="Video: How to Put a Key-Value pair in a HashTable? | Part 1 | Separate Chaining Collision Resolution (Dinesh Varyani)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Dinesh Varyani</strong> · 13:51 · 12,362 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=cz9BrdMsSdY" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A focused treatment of the insertion operation: how a key-value pair is placed into the table under separate chaining. It covers computing the index from the key, handling the case where the bucket is already occupied, and appending to or updating within the existing chain.</p>
+<h4>Why this video</h4>
+<p>Insertion is the method where hashing and collision handling meet, so this directly supports Writing the Hash Function and Implementing the set Method with Chaining — including the update-versus-append decision students commonly get wrong.</p>
+</section>
+<section class="item" id="p7-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these videos carry the heaviest weight for MO4: they model the full path from structural design to coded set logic with separate chaining, giving you a reference implementation to adapt into a JavaScript class with set, get, remove, and keys. The index-computation discussion reinforces MO1 by showing how a key is deterministically reduced to a valid array position, while the chain-handling in the insertion video supports MO2 and MO3 by making visible what grows when collisions occur and why longer chains push operations away from constant time. Use the videos for the design logic, then write, run, and systematically test your own JavaScript version to complete the outcome.</p>
+</section>
+<section class="item" id="p7-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+
+<footer class="presemaker-credit" data-credit="2" style="margin-top:2rem;padding:14px 8px;border-top:1px solid #ddd;background:#fff;text-align:center;font:13px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#595959;"><svg width="20" height="20" viewBox="0 0 2048 2048" aria-hidden="true" focusable="false" style="vertical-align:-5px;margin-right:7px"><rect width="2048" height="2048" rx="384" fill="#0F6E6E"/><path fill="#0A5050" d="M1024 1000 344 832v816l680 168zm0 0 680-168v816l-680 168z"/><path fill="#fff" d="M1024 944 384 784v808l640 160zm0 0 640-160v808l-640 160z"/><rect x="1002" y="944" width="44" height="808" fill="#0F6E6E"/><rect x="936" y="246" width="176" height="448" rx="44" fill="#fff"/><rect x="800" y="382" width="448" height="176" rx="44" fill="#fff"/></svg>Created with <a href="https://softwareplus.ai/coursebuilder/" target="_blank" rel="noopener" style="color:#2f5d8f;font-weight:600;text-decoration:none;">CourseBuilder+</a><span aria-hidden="true"> · </span><a href="https://softwareplus.ai/" target="_blank" rel="noopener" style="color:#2f5d8f;text-decoration:none;">SoftwarePlus.ai</a></footer>
+</body>
+</html>

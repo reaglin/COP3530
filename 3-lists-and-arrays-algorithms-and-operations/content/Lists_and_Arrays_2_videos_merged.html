@@ -1,0 +1,305 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>3- Lists and Arrays: Algorithms and Operations</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+body{font-family:'Segoe UI',Arial,sans-serif;max-width:820px;margin:2rem auto;padding:0 1.25rem;color:#222;line-height:1.55}
+h1{font-size:1.9rem;border-bottom:2px solid #ddd;padding-bottom:.4rem}
+h2{font-size:1.3rem;color:#1f3864;margin-top:1.6rem}
+body{padding-left:1.1rem;padding-right:1.1rem}
+ul,ol{margin:.4rem 0 1rem 1.4rem}
+li{margin:.25rem 0}
+nav.toc{background:rgba(128,128,128,.08);border:1px solid rgba(128,128,128,.25);border-radius:8px;padding:.6rem 1rem;margin:1.2rem 0}
+nav.toc strong{display:block;margin-bottom:.3rem}
+nav.toc a{display:block;text-decoration:none;padding:.12rem 0}
+section.item{border-top:1px solid rgba(128,128,128,.22);padding-top:.3rem}
+table{border-collapse:collapse;width:100%;margin:.8rem 0}
+th,td{border:1px solid rgba(128,128,128,.45);padding:.4rem .6rem;text-align:left;vertical-align:top}
+thead th{background:rgba(128,128,128,.18);font-weight:600}
+tbody tr:nth-child(even){background:rgba(128,128,128,.08)}
+</style>
+<style>section.merged-part{border-top:2px solid rgba(128,128,128,.3);margin-top:2rem;padding-top:.5rem}nav.toc{background:rgba(128,128,128,.08);border:1px solid rgba(128,128,128,.25);border-radius:8px;padding:.6rem 1rem;margin:1.2rem 0}nav.toc a{display:block;text-decoration:none;padding:.12rem 0}</style>
+</head>
+<body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ 3- Lists and Arrays: Algorithms and Operations</a></div>
+<h1>3- Lists and Arrays: Algorithms and Operations</h1>
+<nav class="toc"><strong>Contents</strong>
+<a href="#part1">Introduction to Lists and Arrays</a>
+<a href="#part2">Insertion Operations</a>
+<a href="#part3">Deletion Operations</a>
+<a href="#part4">Searching Algorithms</a>
+<a href="#part5">Traversal Techniques</a>
+<a href="#part6">Time and Space Complexity Analysis</a>
+</nav>
+<section class="merged-part" id="part1">
+<h2>Introduction to Lists and Arrays</h2>
+<section class="item" id="p1-sec1">
+<h3>Introduction</h3>
+<p>Lists and arrays are the starting point for almost everything else in this course. An array is an ordered sequence of elements stored under a single name, where each element is reached by a numeric index that normally begins at 0. That simple idea — position-based access — is what makes arrays fast for some tasks (reading or writing a known position) and slower for others (inserting or deleting in the middle, which may require shifting elements). A linked list stores the same kind of ordered data differently, chaining nodes together with references, which trades fast indexing for cheaper insertion and deletion.</p>
+<p>In JavaScript, arrays are flexible: they can grow and shrink, hold mixed types, and come with built-in methods you will use constantly in this module. Before you can analyze or optimize array algorithms, you need comfort with the mechanics — length, bracket notation, zero-based indexing, and how out-of-range access behaves. That fluency is the foundation for the insertion, deletion, search, and traversal work that follows in Module 3.</p>
+<p>As you watch, keep three questions in mind. First, what exactly does indexing cost compared with searching? Second, when would you prefer a linked structure over a contiguous array? Third, how does the ordered, indexed nature of an array shape the algorithms we can write on top of it? Jot down the trade-offs you hear; they reappear in the Big O discussions later in the module.</p>
+</section>
+<section class="item" id="p1-sec2">
+<h3>Video 1: Lec-17: Arrays vs Linked Lists | Data Structures</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/d4pp0noHOB8?cc_load_policy=1&amp;rel=0" title="Video: Lec-17: Arrays vs Linked Lists | Data Structures (Gate Smashers)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Gate Smashers</strong> · 8:41 · 244,396 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=d4pp0noHOB8" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A lecture-style comparison of arrays and linked lists, contrasting how each stores data and what that means for access, insertion, deletion, and memory use. Expect discussion of contiguous memory and indexed access in arrays versus node-and-pointer structure in linked lists, along with the situations where each is preferable. The treatment is conceptual and language-independent, so it applies to JavaScript as well as other languages.</p>
+<h4>Why this video</h4>
+<p>Gate Smashers is a well-known CS lecture channel used widely for exam and interview preparation, and this video directly addresses the "What Are Lists and Arrays?" and "Key Characteristics of Arrays" subtopics by framing arrays through explicit trade-offs rather than definitions alone.</p>
+</section>
+<section class="item" id="p1-sec3">
+<h3>Video 2: Top 7 Data Structures for Interviews Explained SIMPLY</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/cQWr9DFE1ww?cc_load_policy=1&amp;rel=0" title="Video: Top 7 Data Structures for Interviews Explained SIMPLY (Codebagel)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Codebagel</strong> · 13:02 · 410,896 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=cQWr9DFE1ww" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A fast survey of seven data structures commonly asked about in technical interviews, with arrays and lists among them. It is intended to give you the big picture — what each structure is, roughly how it behaves, and when you would reach for it — rather than deep implementation detail. Use it to place arrays and lists in context alongside stacks, queues, trees, and hash-based structures.</p>
+<h4>Why this video</h4>
+<p>It supports the "Why Lists and Arrays Matter in Algorithms" subtopic by showing arrays as the baseline structure other structures are compared against, and its plain, example-driven style makes it a useful orientation video early in the module.</p>
+</section>
+<section class="item" id="p1-sec4">
+<h3>Video 3: Array Length, Indexing, and Bracket Notation | JavaScript Fundamentals Series</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/hxu2-AgMG0A?cc_load_policy=1&amp;rel=0" title="Video: Array Length, Indexing, and Bracket Notation | JavaScript Fundamentals Series (Code with Carrie)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Code with Carrie</strong> · 4:31 · 21 views · 4mo ago · captions — <a href="https://www.youtube.com/watch?v=hxu2-AgMG0A" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A short, hands-on JavaScript tutorial on working with arrays: reading the length property, accessing elements with bracket notation, and applying zero-based indexing. The description notes it builds on the same indexing ideas you may already know from strings, so it emphasizes transferring that mental model to arrays. Expect small code demonstrations rather than theory.</p>
+<h4>Why this video</h4>
+<p>This is the most direct match for the "Arrays in JavaScript" and "Ordered Sequence and Indexing" subtopics, and it gives you the exact syntax you will need before attempting manual array algorithms in this module.</p>
+</section>
+<section class="item" id="p1-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these videos build the conceptual and syntactic groundwork the module outcomes depend on. The JavaScript indexing and length walkthrough gives you the bracket notation and zero-based positioning required to implement insertion, deletion, searching, and traversal by hand (MO1) and to write nested-loop or higher-order traversals later (MO5). The arrays-versus-linked-lists lecture introduces the cost differences — cheap indexed access, expensive mid-sequence shifting — that underpin Big O analysis (MO3) and the ability to choose an appropriate operation or structure for a given scenario (MO4). The interview-oriented overview situates arrays among other structures and motivates why ordering and indexing matter, which is the premise behind comparing linear and binary search in the next part of the module (MO2).</p>
+</section>
+<section class="item" id="p1-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part2">
+<h2>Insertion Operations</h2>
+<section class="item" id="p2-sec1">
+<h3>Introduction</h3>
+<p>Inserting an element into an array sounds trivial until you look at what the machine actually has to do. Because array elements occupy contiguous positions and are reached by index, adding a value anywhere other than the very end forces every element after that point to shift one slot to the right. That shifting is the whole story of insertion: it determines the algorithm you write, the edge cases you must handle, and the cost you pay.</p>
+<p>In this topic we work through three cases. Insertion at the end is the cheap case, usually a constant-time operation (amortized, when a dynamic array occasionally has to grow and copy). Insertion at the beginning is the expensive case, because every existing element has to move. Insertion at an arbitrary position sits in between but is analyzed the same way in Big O terms. Alongside JavaScript's built-in methods such as push, unshift, and splice, you should be able to write the manual algorithm yourself: loop backward from the last element, copy each value one position forward, then place the new value in the opened slot.</p>
+<p>As you watch the videos below, keep two questions in mind. First, how many elements move for this insertion, and how does that number depend on the insertion position and the array length? Second, what happens to capacity when the array is full? The examples are shown in C in two of the videos and in JavaScript in the third, but the underlying shifting behavior and the resulting O(n) worst case are the same in both languages.</p>
+</section>
+<section class="item" id="p2-sec2">
+<h3>Video 1: Arrays: Insertion — Data Structures in C | 2.7</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/ahRAZ68Eu0w?cc_load_policy=1&amp;rel=0" title="Video: Arrays: Insertion — Data Structures in C | 2.7 (Glass Box Computing)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Glass Box Computing</strong> · 6:24 · 3 views · 2mo ago · captions — <a href="https://www.youtube.com/watch?v=ahRAZ68Eu0w" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A short, focused lesson on inserting an element into an array, presented as part of a sequenced data structures course in C. Based on its title and description, it walks through what happens step by step during an insertion and what it costs to keep the array structure valid, which means handling the shifting of subsequent elements and the position where the new value lands.</p>
+<h4>Why this video</h4>
+<p>It isolates insertion as its own operation rather than burying it in a long survey video, so it maps directly onto the Understanding Array Insertion and Manual Insertion Algorithm subtopics.</p>
+</section>
+<section class="item" id="p2-sec3">
+<h3>Video 2: Dynamic Arrays: Access, Insert &amp; Delete — Data Structures in C | 3.7</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/uMfsVNw3_ig?cc_load_policy=1&amp;rel=0" title="Video: Dynamic Arrays: Access, Insert &amp; Delete — Data Structures in C | 3.7 (Glass Box Computing)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Glass Box Computing</strong> · 5:14 · 6 views · 2mo ago · captions — <a href="https://www.youtube.com/watch?v=uMfsVNw3_ig" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>This video covers three operations on a dynamic array — access, insertion, and deletion — and contrasts their costs. Its description states the key comparison explicitly: get and set remain O(1), while inserting or deleting in the middle still requires the array's O(n) shift. Expect discussion of how a dynamic (resizable) array behaves differently from a fixed-size one.</p>
+<h4>Why this video</h4>
+<p>It supplies the complexity framing for this topic, giving you the constant-time versus linear-time contrast you need for the Time and Space Complexity of Insertion subtopic and for reasoning about insertion position.</p>
+</section>
+<section class="item" id="p2-sec4">
+<h3>Video 3: Array Methods: Adding and Removing Elements | JavaScript Fundamentals Series</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/shZWIO2dzhM?cc_load_policy=1&amp;rel=0" title="Video: Array Methods: Adding and Removing Elements | JavaScript Fundamentals Series (Code with Carrie)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Code with Carrie</strong> · 4:04 · 7 views · 4mo ago · captions — <a href="https://www.youtube.com/watch?v=shZWIO2dzhM" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A brief JavaScript-focused walkthrough of the built-in array methods used to add and remove elements, aimed at managing lists without manually targeting index numbers. Expect coverage of the standard mutating methods for adding to the end and the front of an array, and how they compare to hand-written index manipulation.</p>
+<h4>Why this video</h4>
+<p>It connects the language-agnostic algorithm to the JavaScript syntax this course uses, supporting the Insertion at the End and Insertion at the Beginning subtopics with the built-in methods you will actually call in your code.</p>
+</section>
+<section class="item" id="p2-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these videos cover both halves of MO1: the Code with Carrie video demonstrates insertion using JavaScript built-in methods, while the two Glass Box Computing videos expose the underlying manual shifting algorithm that you will reimplement yourself. The dynamic array video directly serves MO3 by naming the complexities of access, insertion, and deletion and explaining why middle insertions cost O(n), and it supports MO4 by giving you the constant-time versus linear-time trade-off needed to choose an insertion strategy based on position. Note that these videos do not address searching or multi-dimensional traversal, so MO2 and MO5 are developed through other resources in this module.</p>
+</section>
+<section class="item" id="p2-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part3">
+<h2>Deletion Operations</h2>
+<section class="item" id="p3-sec1">
+<h3>Introduction</h3>
+<p>Deletion looks simple — "just remove the item" — but in an array it is rarely that simple. Because array elements live in contiguous positions, removing one from anywhere other than the end leaves a hole that must be repaired by shifting every following element back one slot. That shifting is the hidden cost behind most deletion operations, and it is the reason deleting from the end is cheap while deleting from the beginning or middle is not.</p>
+<p>In this topic you will work through the main deletion scenarios: removing from the end, from the beginning, from an arbitrary middle index, and removing by value rather than by position. You will also contrast mutating approaches (which change the original array in place, such as pop, shift, and splice) with non-mutating approaches like filter, which leaves the original untouched and returns a new array containing only the elements you wanted to keep. Knowing which style you are using matters a great deal once arrays are shared across functions.</p>
+<p>As you watch, keep three questions in mind. First, what physically happens to the remaining elements and to the length after a removal? Second, how many element moves does each operation require in the worst case — constant work, or work proportional to n? Third, does the method you are using modify the original array or return a new one? The videos below approach these questions from two angles: a low-level C view that makes the shifting and memory behavior visible, and a practical JavaScript walkthrough of the built-in methods you will actually write in this course.</p>
+</section>
+<section class="item" id="p3-sec2">
+<h3>Video 1: Arrays: Deletion — Data Structures in C | 2.8</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/m3LQQF1B3Aw?cc_load_policy=1&amp;rel=0" title="Video: Arrays: Deletion — Data Structures in C | 2.8 (Glass Box Computing)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Glass Box Computing</strong> · 5:57 · 3 views · 2mo ago · captions — <a href="https://www.youtube.com/watch?v=m3LQQF1B3Aw" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A short, focused lesson on deleting an element from an array in C, stepping through what the removal actually does to the stored data. Based on its description, it emphasizes the gap left behind by a removal and the shifting needed to close it, along with the bookkeeping of tracking the array's logical size. Expect a step-by-step trace rather than a language-feature tour.</p>
+<h4>Why this video</h4>
+<p>It directly supports Understanding Deletion in Arrays and the beginning/middle cases by showing the shift operation explicitly, which is the mechanism JavaScript's built-in methods hide from you.</p>
+</section>
+<section class="item" id="p3-sec3">
+<h3>Video 2: Dynamic Arrays: Access, Insert &amp; Delete — Data Structures in C | 3.7</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/uMfsVNw3_ig?cc_load_policy=1&amp;rel=0" title="Video: Dynamic Arrays: Access, Insert &amp; Delete — Data Structures in C | 3.7 (Glass Box Computing)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Glass Box Computing</strong> · 5:14 · 6 views · 2mo ago · captions — <a href="https://www.youtube.com/watch?v=uMfsVNw3_ig" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>This lesson compares three dynamic-array operations side by side: access (get and set), insertion, and deletion. Per its description, it makes the key contrast explicit — indexed access stays O(1) while inserting or deleting in the middle still costs the O(n) shift, even when the array can grow and shrink on its own.</p>
+<h4>Why this video</h4>
+<p>It is the clearest fit for Time Complexity of Deletion Operations, giving you the cost comparison you need for Big O reasoning and for choosing an operation based on position.</p>
+</section>
+<section class="item" id="p3-sec4">
+<h3>Video 3: How to remove element using Javascript ? | The Complete JavaScript Course | Ep.60</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/TBSNNHYwu1g?cc_load_policy=1&amp;rel=0" title="Video: How to remove element using Javascript ? | The Complete JavaScript Course | Ep.60 (Anurag Singh ProCodrr)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Anurag Singh ProCodrr</strong> · 14:09 · 12,111 views · 3y ago · captions — <a href="https://www.youtube.com/watch?v=TBSNNHYwu1g" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A JavaScript-focused episode from a full course series, walking through the practical ways to remove elements from an array in JavaScript. Given its title and course context, expect coverage of the built-in removal methods and worked code examples you can follow along with, at a pace that suits learners new to the language.</p>
+<h4>Why this video</h4>
+<p>It grounds the concepts in the JavaScript syntax this course uses, covering deleting from the end, beginning, middle, and by value in the environment where you will write your own implementations.</p>
+</section>
+<section class="item" id="p3-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these videos build toward MO1 by showing deletion both as a manual shifting algorithm and as a set of JavaScript built-in methods, so you can implement either approach. The dynamic-array comparison supports MO3 by naming the costs explicitly — O(1) access and end-removal versus O(n) shifting for beginning and middle deletions — and that same contrast feeds MO4, where you must choose an operation based on position and complexity trade-offs. The JavaScript walkthrough also prepares you for the non-mutating, higher-order style used in MO5, where filter removes elements by producing a new array rather than editing the original in place.</p>
+</section>
+<section class="item" id="p3-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part4">
+<h2>Searching Algorithms</h2>
+<section class="item" id="p4-sec1">
+<h3>Introduction</h3>
+<p>Searching is one of the most common things we ask a program to do: given a collection of data, find whether a particular value is present and, if so, where. In this topic we look at two classic approaches. Linear search walks through a list one element at a time and compares each item to the target; it works on any array, sorted or not. Binary search repeatedly cuts a sorted array in half, discarding the portion that cannot contain the target, which makes it dramatically faster but adds the requirement that the data already be in order.</p>
+<p>These algorithms matter in this course for two reasons. First, they are the simplest realistic setting for reasoning about Big O: linear search is O(n), binary search is O(log n), and you can see exactly why by counting comparisons. Second, they force you to think about trade-offs. Binary search is faster per lookup, but if the data is unsorted you must pay the cost of sorting first, so the "better" algorithm depends on the scenario.</p>
+<p>As you watch the videos below, pay attention to three things: the preconditions each algorithm requires, the exact loop structure and index arithmetic (especially the low, high, and mid pointers in binary search, and how the boundaries are updated), and the comparison counts the presenters use to justify the running time. The videos use pseudocode and Python, so after watching, practice rewriting each algorithm in JavaScript using a while or for loop over an array, and test it on arrays where the target is first, last, in the middle, and absent entirely.</p>
+</section>
+<section class="item" id="p4-sec2">
+<h3>Video 1: Binary search in 4 minutes</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/fDKIpRe8GW4?cc_load_policy=1&amp;rel=0" title="Video: Binary search in 4 minutes (Michael Sambol)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Michael Sambol</strong> · 4:00 · 249,492 views · 3y ago · captions — <a href="https://www.youtube.com/watch?v=fDKIpRe8GW4" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A fast, focused explanation of binary search: how the algorithm maintains a search range, checks the middle element, and discards half the array on each step. The description links to a code implementation on GitHub, so the walkthrough is tied to actual working code. In four minutes it should cover the sorted-array requirement and the logarithmic running time.</p>
+<h4>Why this video</h4>
+<p>Michael Sambol's algorithm videos are widely used for their accuracy and economy, making this an efficient reference for the Binary Search subtopic and an easy one to rewatch while you translate the logic into JavaScript.</p>
+</section>
+<section class="item" id="p4-sec3">
+<h3>Video 2: Lec-14: Linear Search in Data Structure by #Naina Mam | Time Complexity</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/t9gErvSVid0?cc_load_policy=1&amp;rel=0" title="Video: Lec-14: Linear Search in Data Structure by #Naina Mam | Time Complexity (Gate Smashers)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Gate Smashers</strong> · 12:28 · 521,952 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=t9gErvSVid0" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A lecture-style walkthrough of linear search as a data structures topic, stepping through how the algorithm scans an array element by element until it finds the target or reaches the end. Based on the title, it also covers the time complexity of linear search, which should include the best, average, and worst cases. The pace is slower and more instructional than a quick summary video, so expect worked examples on the board.</p>
+<h4>Why this video</h4>
+<p>Gate Smashers is a well-known computer science teaching channel, and this video pairs the mechanics of linear search with its complexity analysis, which directly supports the "What Is a Searching Algorithm?" and "Linear Search" subtopics.</p>
+</section>
+<section class="item" id="p4-sec4">
+<h3>Video 3: Binary Search - Basic Algorithms Fast (15)</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/TW3OXyTJ6Pg?cc_load_policy=1&amp;rel=0" title="Video: Binary Search - Basic Algorithms Fast (15) (Begin Coding Fast)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Begin Coding Fast</strong> · 7:50 · 715 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=TW3OXyTJ6Pg" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>Part of a beginner-oriented series on basic algorithms, this video walks through binary search as an example of the divide-and-conquer strategy, explaining how the algorithm repeatedly splits the data set. At nearly eight minutes it has room for a slower trace of the steps than a summary video allows. Expect emphasis on the conceptual idea of halving the problem as well as the procedure itself.</p>
+<h4>Why this video</h4>
+<p>It reinforces binary search from a coding-fundamentals perspective and frames it as divide-and-conquer, which is useful background when you compare binary search against linear search and explain why the two have different growth rates.</p>
+</section>
+<section class="item" id="p4-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these videos give you the step-by-step procedures you need to implement searching manually in JavaScript (MO1), and the contrast between the linear search lecture and the two binary search explanations lets you compare requirements, procedures, and appropriate use cases side by side (MO2). Both the linear search lecture's complexity discussion and the binary search videos' halving argument build the reasoning behind O(n) versus O(log n) (MO3), which in turn is what you use to decide whether sorting first and searching with binary search is worth it for a given data set and access pattern (MO4). Use the videos for the algorithms and analysis, then rely on the module's code examples and practice work for the JavaScript implementations and traversal techniques (MO5).</p>
+</section>
+<section class="item" id="p4-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part5">
+<h2>Traversal Techniques</h2>
+<section class="item" id="p5-sec1">
+<h3>Introduction</h3>
+<p>Traversal is the act of systematically visiting every element in a list or array so you can read, test, transform, or accumulate values. It is the foundation beneath almost every other array operation: searching, filtering, summing, copying, and rearranging all depend on some form of ordered visit to each element. In JavaScript you have several ways to express a traversal — a classic for loop with an index, a reverse loop counting down, a for...of loop over values, and higher-order methods such as forEach, map, filter, and reduce.</p>
+<p>Each technique carries trade-offs. An index-based for loop gives you full control over the starting point, stopping condition, and step size, which is what you need for reverse traversal or for step-and-skip patterns like visiting every second element. A for...of loop is cleaner when you only need values and not positions. Higher-order methods are expressive and reduce boilerplate, but they hide the loop, so you still need to reason about what work is happening on each pass. Nested loops extend all of this to two-dimensional arrays, where an outer loop walks the rows and an inner loop walks the columns.</p>
+<p>As you watch the videos below, pay attention to three things: which loop construct is used and why, how the index or iteration variable is controlled, and what the traversal costs in terms of how many elements are visited. Whenever a video shows a built-in method, try to picture the equivalent manual loop underneath it — being able to move between the two views is exactly the skill this module is building toward.</p>
+</section>
+<section class="item" id="p5-sec2">
+<h3>Video 1: Special Array Methods: Looping and Mapping Over Elements | JavaScript Fundamentals Series</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/Lr4gNBg3mGQ?cc_load_policy=1&amp;rel=0" title="Video: Special Array Methods: Looping and Mapping Over Elements | JavaScript Fundamentals Series (Code with Carrie)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Code with Carrie</strong> · 4:44 · 45 views · 4mo ago · captions — <a href="https://www.youtube.com/watch?v=Lr4gNBg3mGQ" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>This short lesson introduces JavaScript's built-in array iteration methods, building on the idea of higher-order functions that accept inline arrow callbacks. Based on its title and description, it focuses on looping and mapping over elements, so expect to see methods such as forEach and map applied to sample arrays. It frames these methods as the idiomatic alternative to writing an index-based loop by hand.</p>
+<h4>Why this video</h4>
+<p>It maps directly onto the Traversal with Higher-Order Methods subtopic and connects callback syntax to practical iteration, which is the bridge students need before writing their own map and forEach solutions.</p>
+</section>
+<section class="item" id="p5-sec3">
+<h3>Video 2: Iterating through 2D Arrays</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/p6GZu38bw6Y?cc_load_policy=1&amp;rel=0" title="Video: Iterating through 2D Arrays (MrBrownCS)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>MrBrownCS</strong> · 9:33 · 2,291 views · 1y ago · captions — <a href="https://www.youtube.com/watch?v=p6GZu38bw6Y" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>This video follows an earlier lesson on what 2D arrays are and shows how to use for loops to visit each element in a two-dimensional structure. Expect an explanation of nested loops, with an outer loop over one dimension and an inner loop over the other, and discussion of traversing in different orders such as row by row versus column by column. The pacing is deliberate and the examples are worked through step by step.</p>
+<h4>Why this video</h4>
+<p>It is the clearest fit for the Nested Traversal for Multi-Dimensional Arrays subtopic, and the explicit outer-and-inner loop treatment from an established CS teaching channel reinforces the index control you practice in simple forward and reverse traversal.</p>
+</section>
+<section class="item" id="p5-sec4">
+<h3>Video 3: Special Array Methods: Querying Arrays | JavaScript Fundamentals Series</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/7MyWPOuFH6M?cc_load_policy=1&amp;rel=0" title="Video: Special Array Methods: Querying Arrays | JavaScript Fundamentals Series (Code with Carrie)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Code with Carrie</strong> · 4:42 · 33 views · 4mo ago · captions — <a href="https://www.youtube.com/watch?v=7MyWPOuFH6M" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>This lesson covers JavaScript's array querying methods, framed around realistic scenarios like searching databases and telemetry feeds for specific values. Based on the title and description, it is likely to demonstrate methods that locate or test elements, such as find, findIndex, includes, indexOf, and filter. Each of these quietly performs a traversal of the array in order to answer a question about its contents.</p>
+<h4>Why this video</h4>
+<p>It shows traversal in service of a goal rather than as an end in itself, extending the higher-order methods subtopic toward the search operations covered elsewhere in this module.</p>
+</section>
+<section class="item" id="p5-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these videos cover the traversal half of MO1 and feed directly into MO5: the higher-order methods videos demonstrate forEach, map, filter, and related built-ins, while the 2D array video supplies the nested-loop technique needed for multi-dimensional traversal. The querying video links traversal to searching, giving you a concrete starting point for the linear search comparisons in MO2. For MO3 and MO4, use the videos as raw material rather than as the full answer: as you watch, count how many elements each pattern visits and ask when an index loop, a for...of loop, or a built-in method is the better choice for a given scenario, then confirm your reasoning against the Big O analysis presented in the module readings.</p>
+</section>
+<section class="item" id="p5-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part6">
+<h2>Time and Space Complexity Analysis</h2>
+<section class="item" id="p6-sec1">
+<h3>Introduction</h3>
+<p>Every operation you write on a list or array has a cost: the number of steps it takes as the data grows, and the extra memory it needs while running. Time and space complexity analysis gives you a vocabulary — Big O notation — for describing those costs in a way that is independent of your machine, your language, and the size of any particular test case. Instead of saying "this loop felt fast," you can say that traversal is O(n), that binary search on a sorted array is O(log n), or that inserting at the front of an array is O(n) because every later element must shift.</p>
+<p>This matters in COP3530 because arrays and lists support the same operations with very different costs depending on where in the structure you work and whether the data is sorted. Knowing that access by index is O(1) but search by value is O(n), or that deletion from the end is cheap while deletion from the middle is not, is what lets you choose the right operation and the right structure for a problem rather than guessing.</p>
+<p>As you watch the videos below, pay attention to three things: how a piece of code is translated into a count of operations, how lower-order terms and constants are dropped to produce the final Big O expression, and how the same operation (search, insert, delete, traverse) compares across different data structures. Try pausing and predicting the complexity of each example before the presenter reveals it — that habit is what the module assessments will ask you to do.</p>
+</section>
+<section class="item" id="p6-sec2">
+<h3>Video 1: Introduction to Big-O Notation with Examples | Time and Space Complexity Simplified | Geekific</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/W0Fwot0KNjA?cc_load_policy=1&amp;rel=0" title="Video: Introduction to Big-O Notation with Examples | Time and Space Complexity Simplified | Geekific (Geekific)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Geekific</strong> · 15:25 · 5,255 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=W0Fwot0KNjA" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A from-scratch introduction to Big O notation that defines what complexity means and walks through worked examples to build up the idea of describing an algorithm's growth rate. Based on its title and description, it covers both time complexity and space complexity rather than treating time alone. Expect common classes such as constant, linear, and quadratic behavior to be illustrated with small code samples.</p>
+<h4>Why this video</h4>
+<p>It is the natural starting point for the Introduction to Big O Notation and Space Complexity Considerations subtopics, and at roughly fifteen minutes it stays focused on the fundamentals without assuming prior analysis experience.</p>
+</section>
+<section class="item" id="p6-sec3">
+<h3>Video 2: Time complexity and Comparison of All Data Structures</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/1lqoJ-NSmDE?cc_load_policy=1&amp;rel=0" title="Video: Time complexity and Comparison of All Data Structures (Gate Smashers)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Gate Smashers</strong> · 8:13 · 162,146 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=1lqoJ-NSmDE" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A compact lecture from Gate Smashers that surveys the time complexity of standard operations across a range of data structures and places them side by side for comparison. The focus is on the resulting complexity table — what searching, insertion, and deletion cost in each structure — rather than on deriving each bound in detail. It is pitched at exam and interview preparation, so the material is presented in a summarized, memorable form.</p>
+<h4>Why this video</h4>
+<p>This directly serves the Comparing Operations Across Data Structures subtopic and gives you a reference view of how arrays and lists stack up against alternatives for insertion, deletion, and searching.</p>
+</section>
+<section class="item" id="p6-sec4">
+<h3>Video 3: Time Complexity &amp; Big O notation | Analysis and Calculation | Java C++ Anuj Bhaiya ✅DSAOne Course #1</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/N89PN_uyelU?cc_load_policy=1&amp;rel=0" title="Video: Time Complexity &amp; Big O notation | Analysis and Calculation | Java C++ Anuj Bhaiya ✅DSAOne Course #1 (Anuj Kumar Sharma)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Anuj Kumar Sharma</strong> · 17:05 · 1,043,506 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=N89PN_uyelU" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>The opening lesson of Anuj Kumar Sharma's DSA One course, which introduces Big O notation and then shows how to analyze and calculate the complexity of code, with examples framed for Java and C++ programmers. Its description indicates coverage of both time and space complexity and of the calculation process itself, not just definitions. Expect step-by-step counting of loop iterations and simplification to a final Big O expression.</p>
+<h4>Why this video</h4>
+<p>With over a million views and a course-style structure, it is a well-tested, clearly paced treatment of how to actually derive complexity from loops — the skill you need for analyzing traversal, search, insertion, and deletion code.</p>
+</section>
+<section class="item" id="p6-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>These three videos primarily support MO3 by giving you the notation and the calculation technique needed to analyze insertion, deletion, searching, and traversal on lists and arrays. The Geekific and Anuj Kumar Sharma videos build the foundation — what Big O means and how to derive it from code, including space costs — while the Gate Smashers comparison lecture supplies the cross-structure perspective that underpins MO4, where you must choose the most efficient operation for a given position and data ordering. The complexity contrasts shown in these videos, especially linear versus logarithmic growth, also reinforce MO2's comparison of linear and binary search, and give you a way to reason about the cost of the array operations and traversal techniques you implement for MO1 and MO5.</p>
+</section>
+<section class="item" id="p6-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+
+<footer class="presemaker-credit" data-credit="2" style="margin-top:2rem;padding:14px 8px;border-top:1px solid #ddd;background:#fff;text-align:center;font:13px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#595959;"><svg width="20" height="20" viewBox="0 0 2048 2048" aria-hidden="true" focusable="false" style="vertical-align:-5px;margin-right:7px"><rect width="2048" height="2048" rx="384" fill="#0F6E6E"/><path fill="#0A5050" d="M1024 1000 344 832v816l680 168zm0 0 680-168v816l-680 168z"/><path fill="#fff" d="M1024 944 384 784v808l640 160zm0 0 640-160v808l-640 160z"/><rect x="1002" y="944" width="44" height="808" fill="#0F6E6E"/><rect x="936" y="246" width="176" height="448" rx="44" fill="#fff"/><rect x="800" y="382" width="448" height="176" rx="44" fill="#fff"/></svg>Created with <a href="https://softwareplus.ai/coursebuilder/" target="_blank" rel="noopener" style="color:#2f5d8f;font-weight:600;text-decoration:none;">CourseBuilder+</a><span aria-hidden="true"> · </span><a href="https://softwareplus.ai/" target="_blank" rel="noopener" style="color:#2f5d8f;text-decoration:none;">SoftwarePlus.ai</a></footer>
+</body>
+</html>

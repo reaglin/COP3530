@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Review of Binary Search Trees and Their Limitations</title>
+<style>
+body{font-family:'Segoe UI',Arial,sans-serif;max-width:820px;margin:2rem auto;padding:0 1.25rem;color:#222;line-height:1.55}
+h1{font-size:1.9rem;border-bottom:2px solid #ddd;padding-bottom:.4rem}
+h2{font-size:1.3rem;color:#1f3864;margin-top:1.6rem}
+body{padding-left:1.1rem;padding-right:1.1rem}
+ul,ol{margin:.4rem 0 1rem 1.4rem}
+li{margin:.25rem 0}
+nav.toc{background:rgba(128,128,128,.08);border:1px solid rgba(128,128,128,.25);border-radius:8px;padding:.6rem 1rem;margin:1.2rem 0}
+nav.toc strong{display:block;margin-bottom:.3rem}
+nav.toc a{display:block;text-decoration:none;padding:.12rem 0}
+section.item{border-top:1px solid rgba(128,128,128,.22);padding-top:.3rem}
+table{border-collapse:collapse;width:100%;margin:.8rem 0}
+th,td{border:1px solid rgba(128,128,128,.45);padding:.4rem .6rem;text-align:left;vertical-align:top}
+thead th{background:rgba(128,128,128,.18);font-weight:600}
+tbody tr:nth-child(even){background:rgba(128,128,128,.08)}
+</style>
+</head>
+<body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Advanced Tree Structures: AVL Trees, Heaps, and Tries</a></div>
+<h1>Review of Binary Search Trees and Their Limitations</h1>
+<nav class="toc"><strong>Contents</strong>
+<a href="#sec1">Introduction</a>
+<a href="#sec2">Video 1: Binary Search Trees: Introduction &amp; Properties</a>
+<a href="#sec3">Video 2: Binary Search Trees (BST) Explained and Implemented in Java with Examples | Geekific</a>
+<a href="#sec4">Video 3: BST Analysis</a>
+<a href="#sec5">How These Videos Support the Learning Outcomes</a>
+<a href="#sec6">About These Videos</a>
+</nav>
+<section class="item" id="sec1">
+<h2>Introduction</h2>
+<p>A binary search tree (BST) organizes data so that, at every node, all keys in the left subtree are smaller and all keys in the right subtree are larger. That single ordering invariant is what makes search, insertion, and deletion feel fast: at each step you discard half of the remaining possibilities, much like binary search on a sorted array. Before moving on to AVL trees, heaps, and tries, we need to be precise about what a BST guarantees and, just as importantly, what it does not.</p>
+<p>The catch is that BST performance depends on shape, not just on size. Operations cost O(h), where h is the height of the tree. A well-proportioned tree over n keys has height around log n, but a tree built by inserting already-sorted (or reverse-sorted) data degenerates into a path essentially a linked list and height becomes n. This is the gap between the average case and the worst case that motivates every structure in this module: if we can force the tree to stay shallow, we get logarithmic behavior regardless of input order.</p>
+<p>As you watch, keep three questions in mind. First, how is each operation (search, insert, delete) expressed recursively in terms of the ordering invariant? Second, where exactly does the cost of an operation come from, and how does it relate to height? Third, which insertion sequences produce balanced versus degenerate trees? Try sketching a few insertion orders on paper and comparing the resulting shapes before you reach the AVL material.</p>
+</section>
+<section class="item" id="sec2">
+<h2>Video 1: Binary Search Trees: Introduction &amp; Properties</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/XQJJhNiGlL0?cc_load_policy=1&amp;rel=0" title="Video: Binary Search Trees: Introduction &amp; Properties (CodeWithHarry)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>CodeWithHarry</strong> · 14:28 · 373,063 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=XQJJhNiGlL0" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>An introductory lecture on binary search trees that defines the BST ordering property and walks through the structural rules that distinguish a BST from an arbitrary binary tree. Based on its title and description, it covers the core vocabulary (root, subtree, ordered/sorted binary tree) and the basic properties you rely on when searching. Expect worked examples that show how the ordering invariant guides traversal down the tree.</p>
+<h3>Why this video</h3>
+<p>This is the right starting point for the Binary Search Tree Fundamentals subtopic: it builds the vocabulary and the invariant that everything else in the module depends on, from a widely watched channel known for slow, example-driven explanations.</p>
+</section>
+<section class="item" id="sec3">
+<h2>Video 2: Binary Search Trees (BST) Explained and Implemented in Java with Examples | Geekific</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/zIX3zQP0khM?cc_load_policy=1&amp;rel=0" title="Video: Binary Search Trees (BST) Explained and Implemented in Java with Examples | Geekific (Geekific)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Geekific</strong> · 19:57 · 36,955 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=zIX3zQP0khM" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>A code-focused treatment that explains BST concepts and then implements them in Java, with examples and a linked GitHub repository. It is likely to walk through node structure and the insert, search, and delete routines, including the trickier delete cases such as removing a node with two children. The implementation view connects the abstract ordering rule to concrete recursive code.</p>
+<h3>Why this video</h3>
+<p>Seeing the operations as actual code reinforces why each operation follows a single root-to-leaf path, which is exactly the observation that makes the height-dependence argument click; Geekific&#39;s implementation walkthroughs pair well with the more conceptual video above.</p>
+</section>
+<section class="item" id="sec4">
+<h2>Video 3: BST Analysis</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/pZq-gIZPAKg?cc_load_policy=1&amp;rel=0" title="Video: BST Analysis (Professor Kevin Wortman)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Professor Kevin Wortman</strong> · 10:32 · 166 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=pZq-gIZPAKg" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>A short lecture devoted specifically to the asymptotic (big-O) efficiency of BST operations, presented with slides by a university instructor. It should establish that search, insert, and delete all cost O(h) and then analyze what h can be, contrasting the balanced case with the degenerate case. This is the analytical complement to the two implementation-oriented videos.</p>
+<h3>Why this video</h3>
+<p>It directly serves the Time Complexity, Tree Imbalance, and Worst-Case Degenerate Trees subtopics, and because it comes from a course lecture it uses the same formal big-O framing we expect in your written analyses.</p>
+</section>
+<section class="item" id="sec5">
+<h2>How These Videos Support the Learning Outcomes</h2>
+<p>Together these three videos establish the baseline that the rest of the module builds on. The first two give you the structural definition and a concrete implementation of BST search, insert, and delete, so you can reason about operations as traversals along a single path; the third converts that observation into an explicit O(h) analysis and shows how h collapses to n in a degenerate tree. That is precisely the argument MO1 asks you to be able to make, and it supplies the baseline complexity figures you will compare against when evaluating AVL trees, heaps, and tries under MO5. The balance problem identified here is also the direct motivation for the rotation-based repair operations you will trace in MO2 and for the shape invariants that make heap and trie operations predictable in MO3 and MO4.</p>
+</section>
+<section class="item" id="sec6">
+<h2>About These Videos</h2>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+
+<footer class="presemaker-credit" data-credit="2" style="margin-top:2rem;padding:14px 8px;border-top:1px solid #ddd;background:#fff;text-align:center;font:13px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#595959;"><svg width="20" height="20" viewBox="0 0 2048 2048" aria-hidden="true" focusable="false" style="vertical-align:-5px;margin-right:7px"><rect width="2048" height="2048" rx="384" fill="#0F6E6E"/><path fill="#0A5050" d="M1024 1000 344 832v816l680 168zm0 0 680-168v816l-680 168z"/><path fill="#fff" d="M1024 944 384 784v808l640 160zm0 0 640-160v808l-640 160z"/><rect x="1002" y="944" width="44" height="808" fill="#0F6E6E"/><rect x="936" y="246" width="176" height="448" rx="44" fill="#fff"/><rect x="800" y="382" width="448" height="176" rx="44" fill="#fff"/></svg>Created with <a href="https://softwareplus.ai/coursebuilder/" target="_blank" rel="noopener" style="color:#2f5d8f;font-weight:600;text-decoration:none;">CourseBuilder+</a><span aria-hidden="true"> · </span><a href="https://softwareplus.ai/" target="_blank" rel="noopener" style="color:#2f5d8f;text-decoration:none;">SoftwarePlus.ai</a></footer>
+</body>
+</html>

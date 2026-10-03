@@ -18,13 +18,13 @@ li{margin:5px 0}
 .el-body{color:#555}
 .prefix{color:#555;font-style:italic;margin:6px 0 14px}
 .mo{border:1px solid #e2e2e2;border-radius:6px;padding:12px 16px;margin:12px 0}
-.mo .code{font-size:.8rem;color:#888;text-transform:uppercase;letter-spacing:.04em}
+.mo .code{font-size:.8rem;color:#595959;text-transform:uppercase;letter-spacing:.04em}
 .mo .statement{font-weight:600;margin:4px 0 8px}
 .meta span{display:inline-block;background:#eef2f8;color:#1a3c6e;border-radius:3px;padding:1px 8px;margin:0 6px 0 0;font-size:.85rem}
 .meta .map{background:#eaf6ec;color:#137333}
 .co{margin:7px 0}
 .co .code{font-weight:600;color:#1a3c6e;margin-right:6px}
-.empty{color:#888}
+.empty{color:#595959}
 </style>
 </head>
 <body>
@@ -33,7 +33,7 @@ li{margin:5px 0}
 <div class="toc"><a href="#topics">📋 Module Topics</a><a href="#outcomes">🎯 Student Learning Outcomes</a></div>
 
 <h2 id="topics">Module Topics</h2>
-<h3>Introduction to the Queue Data Structure</h3>
+<h3 id="topic-1">Introduction to the Queue Data Structure</h3>
 <div class="summary">This topic establishes what a queue is and where it fits within the broader landscape of data structures. Students are introduced to the queue as an ordered collection with specific rules governing how data enters and exits.</div>
 <ul>
 <li><strong>What Is a Queue?</strong> <span class="el-body">— A queue is an ordered collection of elements designed so that items are added at one end and removed from the other.</span></li>
@@ -42,7 +42,7 @@ li{margin:5px 0}
 <li><strong>Queues as Abstract Data Types</strong> <span class="el-body">— A queue is classified as an abstract data type (ADT), meaning it is defined by its behavior and rules rather than by any single specific implementation.</span></li>
 <li><strong>Queues Among Other Data Structures</strong> <span class="el-body">— Understanding where the queue fits in the broader landscape of data structures helps clarify when it is the appropriate tool to use.</span></li>
 </ul>
-<h3>The FIFO Principle</h3>
+<h3 id="topic-2">The FIFO Principle</h3>
 <div class="summary">This topic explains the First-In, First-Out principle that defines queue behavior. Students learn how FIFO governs the order of insertion and removal, distinguishing queues from other data structures.</div>
 <ul>
 <li><strong>What FIFO Means</strong> <span class="el-body">— FIFO stands for First-In, First-Out, the core principle that defines how a queue operates.</span></li>
@@ -51,7 +51,7 @@ li{margin:5px 0}
 <li><strong>Why FIFO Matters for Fairness and Order</strong> <span class="el-body">— The FIFO principle naturally encodes fairness by ensuring every element is processed in the exact order it arrived.</span></li>
 <li><strong>FIFO as a Defining Constraint of the Queue</strong> <span class="el-body">— FIFO is not just a behavioral tendency of queues — it is the defining rule that distinguishes a queue from other data structures.</span></li>
 </ul>
-<h3>Queue Operations</h3>
+<h3 id="topic-3">Queue Operations</h3>
 <div class="summary">This topic covers the core operations performed on a queue, including enqueue, dequeue, peek, and isEmpty. Students examine the mechanics and expected behavior of each operation.</div>
 <ul>
 <li><strong>The Enqueue Operation</strong> <span class="el-body">— Enqueue is the operation that adds a new element to the back (rear) of the queue.</span></li>
@@ -60,7 +60,7 @@ li{margin:5px 0}
 <li><strong>The isEmpty Operation</strong> <span class="el-body">— isEmpty checks whether the queue currently contains any elements, returning a boolean result.</span></li>
 <li><strong>Operation Behavior and Expected Outcomes</strong> <span class="el-body">— Each queue operation has a well-defined expected behavior that ensures the integrity of the FIFO ordering.</span></li>
 </ul>
-<h3>Implementing a Queue</h3>
+<h3 id="topic-4">Implementing a Queue</h3>
 <div class="summary">This topic explores the primary approaches to implementing a queue, such as using arrays or linked lists. Students implement queue operations in code and evaluate the trade-offs of each approach.</div>
 <ul>
 <li><strong>Array-Based Queue Implementation</strong> <span class="el-body">— A queue can be implemented using a fixed-size or dynamic array, where one end serves as the front and the other as the rear.</span></li>
@@ -70,7 +70,7 @@ li{margin:5px 0}
 <li><strong>Handling Edge Cases in Implementation</strong> <span class="el-body">— Robust queue implementations must correctly handle boundary conditions that arise during normal operation.</span></li>
 <li><strong>Time and Space Complexity Analysis</strong> <span class="el-body">— Evaluating the complexity of queue operations helps students understand the efficiency guarantees each implementation provides.</span></li>
 </ul>
-<h3>Real-World Applications of Queues</h3>
+<h3 id="topic-5">Real-World Applications of Queues</h3>
 <div class="summary">This topic connects queue concepts to practical use cases such as task scheduling, print spooling, and data buffering. Students analyze how the FIFO principle makes queues suitable for these scenarios.</div>
 <ul>
 <li><strong>Task Scheduling and the FIFO Guarantee</strong> <span class="el-body">— Operating systems and applications use queues to schedule tasks, ensuring that processes are handled in the order they arrive.</span></li>
@@ -80,7 +80,7 @@ li{margin:5px 0}
 <li><strong>Breadth-First Search (BFS) in Algorithms</strong> <span class="el-body">— Queues are the underlying data structure that drives breadth-first search, enabling level-by-level exploration of graphs and trees.</span></li>
 <li><strong>Customer Service and Ticketing Systems</strong> <span class="el-body">— Help desks, call centers, and online ticketing systems model customer requests as queue entries to provide fair, orderly service.</span></li>
 </ul>
-<h3>Queues vs. Stacks: A Comparison</h3>
+<h3 id="topic-6">Queues vs. Stacks: A Comparison</h3>
 <div class="summary">This topic directly compares the queue and stack data structures, highlighting differences in ordering principles, operations, and appropriate use cases. Students develop the ability to select the right structure for a given problem.</div>
 <ul>
 <li><strong>Ordering Principles: FIFO vs. LIFO</strong> <span class="el-body">— The most fundamental difference between queues and stacks is the order in which elements are accessed and removed.</span></li>
@@ -123,6 +123,6 @@ li{margin:5px 0}
 <div class="co"><span class="code">CO3</span>Implement data structures and algorithms in computer code.</div>
 <div class="co"><span class="code">CO4</span>Analyze the performance of algorithms and data structures</div>
 
-<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
+<footer class="presemaker-credit" data-credit="2" style="margin-top:2rem;padding:14px 8px;border-top:1px solid #ddd;background:#fff;text-align:center;font:13px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#595959;"><svg width="20" height="20" viewBox="0 0 2048 2048" aria-hidden="true" focusable="false" style="vertical-align:-5px;margin-right:7px"><rect width="2048" height="2048" rx="384" fill="#0F6E6E"/><path fill="#0A5050" d="M1024 1000 344 832v816l680 168zm0 0 680-168v816l-680 168z"/><path fill="#fff" d="M1024 944 384 784v808l640 160zm0 0 640-160v808l-640 160z"/><rect x="1002" y="944" width="44" height="808" fill="#0F6E6E"/><rect x="936" y="246" width="176" height="448" rx="44" fill="#fff"/><rect x="800" y="382" width="448" height="176" rx="44" fill="#fff"/></svg>Created with <a href="https://softwareplus.ai/coursebuilder/" target="_blank" rel="noopener" style="color:#2f5d8f;font-weight:600;text-decoration:none;">CourseBuilder+</a><span aria-hidden="true"> · </span><a href="https://softwareplus.ai/" target="_blank" rel="noopener" style="color:#2f5d8f;text-decoration:none;">SoftwarePlus.ai</a></footer>
 </body>
 </html>

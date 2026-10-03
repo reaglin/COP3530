@@ -18,13 +18,13 @@ li{margin:5px 0}
 .el-body{color:#555}
 .prefix{color:#555;font-style:italic;margin:6px 0 14px}
 .mo{border:1px solid #e2e2e2;border-radius:6px;padding:12px 16px;margin:12px 0}
-.mo .code{font-size:.8rem;color:#888;text-transform:uppercase;letter-spacing:.04em}
+.mo .code{font-size:.8rem;color:#595959;text-transform:uppercase;letter-spacing:.04em}
 .mo .statement{font-weight:600;margin:4px 0 8px}
 .meta span{display:inline-block;background:#eef2f8;color:#1a3c6e;border-radius:3px;padding:1px 8px;margin:0 6px 0 0;font-size:.85rem}
 .meta .map{background:#eaf6ec;color:#137333}
 .co{margin:7px 0}
 .co .code{font-weight:600;color:#1a3c6e;margin-right:6px}
-.empty{color:#888}
+.empty{color:#595959}
 </style>
 </head>
 <body>
@@ -33,7 +33,7 @@ li{margin:5px 0}
 <div class="toc"><a href="#topics">📋 Module Topics</a><a href="#outcomes">🎯 Student Learning Outcomes</a></div>
 
 <h2 id="topics">Module Topics</h2>
-<h3>Introduction to Hashing Algorithms</h3>
+<h3 id="topic-1">Introduction to Hashing Algorithms</h3>
 <div class="summary">This topic introduces the foundational concepts of hashing algorithms, explaining what hash functions are and how they transform input data into fixed-length outputs. It establishes the vocabulary and core principles needed for deeper exploration throughout the module.</div>
 <ul>
 <li><strong>What Is a Hash Function?</strong> <span class="el-body">— A hash function is a mathematical algorithm that takes an input of arbitrary length and produces a fixed-length output, commonly called a hash, digest, or checksum.</span></li>
@@ -43,7 +43,7 @@ li{margin:5px 0}
 <li><strong>Common Hashing Algorithms and Their Use Cases</strong> <span class="el-body">— Several hashing algorithms are widely used in practice, each with different characteristics in terms of output length, speed, and security strength.</span></li>
 <li><strong>The Role of Hashing in Data Integrity</strong> <span class="el-body">— Hashing plays a critical role in verifying that data has not been altered or corrupted during storage or transmission.</span></li>
 </ul>
-<h3>Cryptographic Hash Functions</h3>
+<h3 id="topic-2">Cryptographic Hash Functions</h3>
 <div class="summary">This topic examines the properties that distinguish cryptographic hash functions from general-purpose hash functions, including collision resistance, preimage resistance, and avalanche effect. Students explore widely used algorithms such as SHA-256 and MD5 and understand their roles in security contexts.</div>
 <ul>
 <li><strong>What Makes a Hash Function Cryptographic</strong> <span class="el-body">— Cryptographic hash functions are a specialized subset of hash functions designed to meet rigorous security requirements beyond simple data lookup or checksum tasks.</span></li>
@@ -54,7 +54,7 @@ li{margin:5px 0}
 <li><strong>SHA-256 and the SHA-2 Family</strong> <span class="el-body">— SHA-256 is part of the SHA-2 family of cryptographic hash functions developed by the NSA and standardized by NIST, producing a 256-bit digest that is widely trusted for security applications.</span></li>
 <li><strong>Role of Cryptographic Hash Functions in Security Systems</strong> <span class="el-body">— Cryptographic hash functions serve as foundational primitives across a wide range of security contexts, including data integrity verification, digital signatures, and authentication systems.</span></li>
 </ul>
-<h3>Password Hashing Fundamentals</h3>
+<h3 id="topic-3">Password Hashing Fundamentals</h3>
 <div class="summary">This topic covers how hashing is applied specifically to password storage, explaining why plain-text and simple-hash storage are insecure. Students learn how systems use dedicated password hashing algorithms to protect user credentials at rest.</div>
 <ul>
 <li><strong>Why Plain-Text Password Storage Is Dangerous</strong> <span class="el-body">— Storing passwords in plain text means any unauthorized access to the database immediately exposes every user&#39;s credentials.</span></li>
@@ -64,7 +64,7 @@ li{margin:5px 0}
 <li><strong>Work Factors and Computational Cost Tuning</strong> <span class="el-body">— Password hashing algorithms expose a work factor setting that controls how much computation is required to produce a single hash.</span></li>
 <li><strong>How Systems Verify Passwords at Login</strong> <span class="el-body">— Because cryptographic hashes are one-way functions, systems verify passwords by re-hashing the candidate input and comparing the result to the stored hash.</span></li>
 </ul>
-<h3>Salting and Advanced Password Protection Techniques</h3>
+<h3 id="topic-4">Salting and Advanced Password Protection Techniques</h3>
 <div class="summary">This topic explores salting as a critical technique for defending against rainbow table and dictionary attacks, detailing how random salts are generated and stored alongside password hashes. It also introduces concepts such as key stretching and modern algorithms like bcrypt, scrypt, and Argon2.</div>
 <ul>
 <li><strong>What Is Salting and Why It Matters</strong> <span class="el-body">— Salting is the practice of appending or prepending a unique, randomly generated value (the &#39;salt&#39;) to a password before hashing it, ensuring that identical passwords produce different hash outputs.</span></li>
@@ -75,7 +75,7 @@ li{margin:5px 0}
 <li><strong>Modern Password Hashing Algorithms: bcrypt and scrypt</strong> <span class="el-body">— bcrypt and scrypt are purpose-built password hashing algorithms that incorporate salting and key stretching by design, and are considered significantly more secure than applying a general-purpose cryptographic hash directly to a password.</span></li>
 <li><strong>Argon2: The Modern Standard</strong> <span class="el-body">— Argon2 is the winner of the Password Hashing Competition (2015) and is now widely recommended as the state-of-the-art algorithm for password hashing, offering configurable time, memory, and parallelism cost parameters.</span></li>
 </ul>
-<h3>Ensuring Data Integrity with Hashing</h3>
+<h3 id="topic-5">Ensuring Data Integrity with Hashing</h3>
 <div class="summary">This topic demonstrates how hash functions are used beyond passwords to verify the integrity of files, messages, and software distributions. Students examine real-world use cases including checksums, digital signatures, and hash-based message authentication codes (HMACs).</div>
 <ul>
 <li><strong>Hash Functions as Integrity Verification Tools</strong> <span class="el-body">— Hash functions produce a fixed-length digest that acts as a unique fingerprint for any given input, making them ideal for verifying that data has not been altered.</span></li>
@@ -85,7 +85,7 @@ li{margin:5px 0}
 <li><strong>Digital Signatures and Hash Functions</strong> <span class="el-body">— Digital signatures use asymmetric cryptography together with hash functions to provide non-repudiable proof of data origin and integrity.</span></li>
 <li><strong>Comparing Integrity Mechanisms: Checksums vs. HMACs vs. Digital Signatures</strong> <span class="el-body">— Different integrity mechanisms offer different levels of security and serve distinct use cases depending on whether authentication and non-repudiation are required.</span></li>
 </ul>
-<h3>Common Attacks and Vulnerabilities</h3>
+<h3 id="topic-6">Common Attacks and Vulnerabilities</h3>
 <div class="summary">This topic identifies the most significant threats against hashing implementations, including brute-force attacks, collision attacks, and rainbow table lookups. Students learn to recognize weak hashing practices and understand the conditions under which hash-based security can fail.</div>
 <ul>
 <li><strong>Brute-Force Attacks on Hashed Passwords</strong> <span class="el-body">— A brute-force attack attempts to recover a plaintext password by systematically hashing every possible input and comparing it to a stored hash value.</span></li>
@@ -96,7 +96,7 @@ li{margin:5px 0}
 <li><strong>Timing Attacks on Hash Comparison</strong> <span class="el-body">— Timing attacks exploit measurable differences in computation time during hash comparison to infer information about a secret value, even without direct access to the hash.</span></li>
 <li><strong>Dictionary and Wordlist Attacks</strong> <span class="el-body">— Dictionary attacks narrow the brute-force search space by hashing known words, common passwords, and their variations rather than trying every possible character combination.</span></li>
 </ul>
-<h3>Best Practices and Real-World Applications</h3>
+<h3 id="topic-7">Best Practices and Real-World Applications</h3>
 <div class="summary">This topic synthesizes the module by presenting industry best practices for implementing hashing securely in modern software systems. Students explore practical applications across authentication, blockchain, digital forensics, and secure communications.</div>
 <ul>
 <li><strong>Choosing the Right Hash Algorithm for the Job</strong> <span class="el-body">— Selecting an appropriate hashing algorithm is the foundation of secure implementation, as different use cases demand different algorithmic properties.</span></li>
@@ -139,6 +139,6 @@ li{margin:5px 0}
 <div class="co"><span class="code">CO3</span>Implement data structures and algorithms in computer code.</div>
 <div class="co"><span class="code">CO4</span>Analyze the performance of algorithms and data structures</div>
 
-<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
+<footer class="presemaker-credit" data-credit="2" style="margin-top:2rem;padding:14px 8px;border-top:1px solid #ddd;background:#fff;text-align:center;font:13px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#595959;"><svg width="20" height="20" viewBox="0 0 2048 2048" aria-hidden="true" focusable="false" style="vertical-align:-5px;margin-right:7px"><rect width="2048" height="2048" rx="384" fill="#0F6E6E"/><path fill="#0A5050" d="M1024 1000 344 832v816l680 168zm0 0 680-168v816l-680 168z"/><path fill="#fff" d="M1024 944 384 784v808l640 160zm0 0 640-160v808l-640 160z"/><rect x="1002" y="944" width="44" height="808" fill="#0F6E6E"/><rect x="936" y="246" width="176" height="448" rx="44" fill="#fff"/><rect x="800" y="382" width="448" height="176" rx="44" fill="#fff"/></svg>Created with <a href="https://softwareplus.ai/coursebuilder/" target="_blank" rel="noopener" style="color:#2f5d8f;font-weight:600;text-decoration:none;">CourseBuilder+</a><span aria-hidden="true"> · </span><a href="https://softwareplus.ai/" target="_blank" rel="noopener" style="color:#2f5d8f;text-decoration:none;">SoftwarePlus.ai</a></footer>
 </body>
 </html>

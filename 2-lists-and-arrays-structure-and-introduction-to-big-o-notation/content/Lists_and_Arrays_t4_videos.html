@@ -1,0 +1,69 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Core Data Operations on Lists and Arrays</title>
+<style>
+body{font-family:'Segoe UI',Arial,sans-serif;max-width:820px;margin:2rem auto;padding:0 1.25rem;color:#222;line-height:1.55}
+h1{font-size:1.9rem;border-bottom:2px solid #ddd;padding-bottom:.4rem}
+h2{font-size:1.3rem;color:#1f3864;margin-top:1.6rem}
+body{padding-left:1.1rem;padding-right:1.1rem}
+ul,ol{margin:.4rem 0 1rem 1.4rem}
+li{margin:.25rem 0}
+nav.toc{background:rgba(128,128,128,.08);border:1px solid rgba(128,128,128,.25);border-radius:8px;padding:.6rem 1rem;margin:1.2rem 0}
+nav.toc strong{display:block;margin-bottom:.3rem}
+nav.toc a{display:block;text-decoration:none;padding:.12rem 0}
+section.item{border-top:1px solid rgba(128,128,128,.22);padding-top:.3rem}
+table{border-collapse:collapse;width:100%;margin:.8rem 0}
+th,td{border:1px solid rgba(128,128,128,.45);padding:.4rem .6rem;text-align:left;vertical-align:top}
+thead th{background:rgba(128,128,128,.18);font-weight:600}
+tbody tr:nth-child(even){background:rgba(128,128,128,.08)}
+</style>
+</head>
+<body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ 2 - Lists and Arrays: Structure and Introduction to Big O Notation</a></div>
+<h1>Core Data Operations on Lists and Arrays</h1>
+<nav class="toc"><strong>Contents</strong>
+<a href="#sec1">Introduction</a>
+<a href="#sec2">Video 1: Trie Data Structure | Insertion, Deletion &amp; Searching in a Trie | DSA-One Course #99</a>
+<a href="#sec3">Video 2: Lec-30: Introduction to Stack | PUSH and POP operations | Data Structure</a>
+<a href="#sec4">How These Videos Support the Learning Outcomes</a>
+<a href="#sec5">About These Videos</a>
+</nav>
+<section class="item" id="sec1">
+<h2>Introduction</h2>
+<p>Every data structure, no matter how simple or complex, is ultimately judged by what you can do with it and how much that costs. For lists and arrays, four operations form the core vocabulary: accessing an element at a given position, searching for an element by value, inserting a new element, and deleting an existing one. This topic asks you to describe each of these precisely — what steps the machine actually performs — before attaching any complexity notation to them.</p>
+<p>The critical insight in this topic is that cost depends on position. Accessing the fifth element of an array is not the same work as accessing the fifth element of a singly linked list; inserting at the front of an array is not the same work as inserting at the end. Once you can articulate why shifting elements, traversing pointers, or indexing directly differ in effort, Big O notation becomes a natural shorthand rather than a memorized table.</p>
+<p>The videos below extend the same operation vocabulary to other structures. As you watch, keep a running mental checklist: for each operation shown, ask where the work happens, whether the position of the operation changes the amount of work, and how the structure&#39;s layout makes some operations cheap and others expensive. That habit of questioning — not the specific structures demonstrated — is what carries into the rest of the course.</p>
+</section>
+<section class="item" id="sec2">
+<h2>Video 1: Trie Data Structure | Insertion, Deletion &amp; Searching in a Trie | DSA-One Course #99</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/soJgGe1CQHw?cc_load_policy=1&amp;rel=0" title="Video: Trie Data Structure | Insertion, Deletion &amp; Searching in a Trie | DSA-One Course #99 (Anuj Kumar Sharma)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Anuj Kumar Sharma</strong> · 18:10 · 71,323 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=soJgGe1CQHw" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>This lecture introduces the trie, a tree-based structure used for storing strings, and walks through how insertion, deletion, and searching are performed on it. Based on the title and description, you can expect a step-by-step treatment of each operation, likely with diagrams showing how characters are placed along paths from the root. It is part of a larger DSA course sequence, so it assumes some comfort with basic structures.</p>
+<h3>Why this video</h3>
+<p>It demonstrates the same four-operation framework — insert, delete, search — applied to a structure very different from a flat array, which helps you see that these operations are a universal lens for analyzing any data structure rather than something specific to lists.</p>
+</section>
+<section class="item" id="sec3">
+<h2>Video 2: Lec-30: Introduction to Stack | PUSH and POP operations | Data Structure</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/HRDHgKrYHgU?cc_load_policy=1&amp;rel=0" title="Video: Lec-30: Introduction to Stack | PUSH and POP operations | Data Structure (Gate Smashers)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Gate Smashers</strong> · 6:46 · 325,598 views · 3y ago · captions — <a href="https://www.youtube.com/watch?v=HRDHgKrYHgU" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>This Gate Smashers lecture introduces the stack and the two operations that define it, PUSH and POP, which are insertion and deletion restricted to a single end of the structure. Expect a clear explanation of how elements enter and leave, likely with worked examples of the top pointer moving as operations occur. The video is part of a widely used data structures lecture series aimed at exam and interview preparation.</p>
+<h3>Why this video</h3>
+<p>Because a stack restricts insertion and deletion to one position, it is a clean illustration of the subtopic on how operation cost varies by position — it shows why limiting where operations can happen makes them cheap and predictable.</p>
+</section>
+<section class="item" id="sec4">
+<h2>How These Videos Support the Learning Outcomes</h2>
+<p>Both videos reinforce MO2 by presenting insertion, deletion, and search as the defining operations of a data structure and showing exactly what steps each requires. The stack lecture speaks directly to the idea that position determines cost, since restricting insertion and deletion to one end keeps those operations constant-time, which supports the reasoning behind MO3. The trie video widens your view by applying the same operation vocabulary to a structure with a very different layout, which supports MO1&#39;s emphasis on how structural characteristics shape behavior and prepares you for the trade-off reasoning required by MO4. Use both as practice in asking the central question of this module: for this structure and this position, how much work does the operation actually take?</p>
+</section>
+<section class="item" id="sec5">
+<h2>About These Videos</h2>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+
+<footer class="presemaker-credit" data-credit="2" style="margin-top:2rem;padding:14px 8px;border-top:1px solid #ddd;background:#fff;text-align:center;font:13px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#595959;"><svg width="20" height="20" viewBox="0 0 2048 2048" aria-hidden="true" focusable="false" style="vertical-align:-5px;margin-right:7px"><rect width="2048" height="2048" rx="384" fill="#0F6E6E"/><path fill="#0A5050" d="M1024 1000 344 832v816l680 168zm0 0 680-168v816l-680 168z"/><path fill="#fff" d="M1024 944 384 784v808l640 160zm0 0 640-160v808l-640 160z"/><rect x="1002" y="944" width="44" height="808" fill="#0F6E6E"/><rect x="936" y="246" width="176" height="448" rx="44" fill="#fff"/><rect x="800" y="382" width="448" height="176" rx="44" fill="#fff"/></svg>Created with <a href="https://softwareplus.ai/coursebuilder/" target="_blank" rel="noopener" style="color:#2f5d8f;font-weight:600;text-decoration:none;">CourseBuilder+</a><span aria-hidden="true"> · </span><a href="https://softwareplus.ai/" target="_blank" rel="noopener" style="color:#2f5d8f;text-decoration:none;">SoftwarePlus.ai</a></footer>
+</body>
+</html>

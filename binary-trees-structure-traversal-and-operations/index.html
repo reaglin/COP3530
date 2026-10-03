@@ -1,435 +1,179 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Binary Trees: Structure, Traversal, and Operations — COP3530</title>
-  <style>
-    /* ── Reset & Base ── */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-      background: #f4f6f9;
-      color: #1e2430;
-      line-height: 1.65;
-      min-height: 100vh;
-    }
-
-    /* ── Header Banner ── */
-    header {
-      background: linear-gradient(135deg, #1a3a5c 0%, #2563a8 100%);
-      color: #ffffff;
-      padding: 2.75rem 2rem 2.25rem;
-      border-bottom: 4px solid #f0a500;
-    }
-
-    .header-inner {
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-
-    .course-label {
-      display: inline-block;
-      font-size: 0.78rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      background: rgba(255,255,255,0.15);
-      border: 1px solid rgba(255,255,255,0.3);
-      border-radius: 4px;
-      padding: 0.25rem 0.65rem;
-      margin-bottom: 0.85rem;
-      color: #d6e8ff;
-    }
-
-    header h1 {
-      font-size: clamp(1.45rem, 3.5vw, 2.15rem);
-      font-weight: 700;
-      letter-spacing: -0.01em;
-      margin-bottom: 0.85rem;
-      line-height: 1.25;
-    }
-
-    header p {
-      font-size: 1rem;
-      color: #c8ddf5;
-      max-width: 720px;
-    }
-
-    /* ── Main Content ── */
-    main {
-      max-width: 1100px;
-      margin: 2.5rem auto 3rem;
-      padding: 0 1.5rem;
-    }
-
-    .section-label {
-      font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: #5a6a82;
-      margin-bottom: 1.25rem;
-      border-bottom: 2px solid #dce3ed;
-      padding-bottom: 0.5rem;
-    }
-
-    /* ── Card Grid ── */
-    .card-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 1.25rem;
-    }
-
-    .card {
-      background: #ffffff;
-      border: 1px solid #dce3ed;
-      border-radius: 10px;
-      padding: 1.4rem 1.5rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.6rem;
-      transition: box-shadow 0.18s ease, transform 0.18s ease;
-      position: relative;
-    }
-
-    .card:hover {
-      box-shadow: 0 6px 22px rgba(30, 60, 110, 0.11);
-      transform: translateY(-2px);
-    }
-
-    /* ── Card Metadata Badges ── */
-    .card-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.45rem;
-      align-items: center;
-    }
-
-    .badge {
-      font-size: 0.68rem;
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      border-radius: 4px;
-      padding: 0.22rem 0.55rem;
-      white-space: nowrap;
-    }
-
-    .badge-type {
-      background: #e8effd;
-      color: #2455a4;
-      border: 1px solid #c3d4f5;
-    }
-
-    .badge-filetype {
-      background: #f0f4f8;
-      color: #5a6a82;
-      border: 1px solid #d0d9e6;
-      font-family: 'Courier New', monospace;
-    }
-
-    /* ── Card Title Row ── */
-    .card-title-row {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: baseline;
-      gap: 0.55rem;
-    }
-
-    .card-title {
-      font-size: 1rem;
-      font-weight: 700;
-      color: #1a3a5c;
-      line-height: 1.3;
-    }
-
-    .card-title a {
-      color: #1a5bb8;
-      text-decoration: none;
-      border-bottom: 2px solid transparent;
-      transition: border-color 0.15s ease, color 0.15s ease;
-    }
-
-    .card-title a:hover,
-    .card-title a:focus {
-      color: #0e3d82;
-      border-bottom-color: #f0a500;
-      outline: none;
-    }
-
-    .card-title a:focus-visible {
-      outline: 3px solid #f0a500;
-      outline-offset: 2px;
-      border-radius: 2px;
-    }
-
-    /* ── Source Link ── */
-    .source-link {
-      font-size: 0.72rem;
-      font-weight: 600;
-      color: #5a6a82;
-      text-decoration: none;
-      background: #f0f4f8;
-      border: 1px solid #d0d9e6;
-      border-radius: 4px;
-      padding: 0.18rem 0.5rem;
-      white-space: nowrap;
-      transition: background 0.14s ease, color 0.14s ease;
-      align-self: flex-start;
-    }
-
-    .source-link::before {
-      content: '↓ ';
-    }
-
-    .source-link:hover,
-    .source-link:focus {
-      background: #e2e9f3;
-      color: #1a3a5c;
-      outline: none;
-    }
-
-    .source-link:focus-visible {
-      outline: 3px solid #f0a500;
-      outline-offset: 2px;
-      border-radius: 3px;
-    }
-
-    /* ── Card Description ── */
-    .card-desc {
-      font-size: 0.875rem;
-      color: #3d4d62;
-      line-height: 1.6;
-      flex: 1;
-    }
-
-    /* ── Accent stripe by type ── */
-    .card[data-type="Module Topics"] {
-      border-left: 4px solid #f0a500;
-    }
-
-    .card[data-type="Topic Detail"] {
-      border-left: 4px solid #2563a8;
-    }
-
-    .card[data-type="Text Content"] {
-      border-left: 4px solid #27a865;
-    }
-
-    /* ── Footer ── */
-    footer {
-      text-align: center;
-      font-size: 0.78rem;
-      color: #8898ae;
-      padding: 1.5rem 1rem 2rem;
-      border-top: 1px solid #dce3ed;
-      background: #f4f6f9;
-    }
-
-    /* ── Responsive ── */
-    @media (max-width: 520px) {
-      header { padding: 2rem 1.25rem 1.75rem; }
-      main { padding: 0 1rem; margin-top: 1.75rem; }
-      .card-grid { grid-template-columns: 1fr; }
-      .card { padding: 1.15rem 1.2rem; }
-    }
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Binary Trees: Structure, Traversal, and Operations — COP3530 - Data Structures</title>
+  <link rel="stylesheet" href="../assets/site.css">
 </head>
 <body>
-<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ COP3530 - Data Structures</a></div>
-<div style="border:1px solid #c9d4e3;background:#f5f8fc;border-radius:8px;padding:10px 16px;margin:0 0 18px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;font-family:'Segoe UI',Arial,sans-serif"><strong style="color:#1a3c6e">Module outline:</strong><a href="topics-outcomes.html#topics" style="color:#1a3c6e;font-weight:600;text-decoration:none">📋 Module Topics</a><a href="topics-outcomes.html#outcomes" style="color:#137333;font-weight:600;text-decoration:none">🎯 Student Learning Outcomes</a></div>
-
-  <header>
-    <div class="header-inner">
-      <span class="course-label">COP3530 — Data Structures</span>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="hero">
+    <div class="hero-inner">
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="../index.html">COP3530 - Data Structures</a><span class="sep" aria-hidden="true">›</span><span class="current">Binary Trees: Structure, Traversal, and Operations</span>
+  </nav>
+      <div class="hero-label">Module 12</div>
       <h1>Binary Trees: Structure, Traversal, and Operations</h1>
-      <p>
-        This module explores the foundations of binary trees and binary search trees (BSTs),
-        from core terminology and node anatomy to insertion, deletion, and traversal algorithms.
-        Learners will build conceptual understanding alongside hands-on JavaScript implementation skills.
-      </p>
+      <p class="hero-desc">This lesson introduces binary trees and binary search trees, covering node structure, insertion, deletion, and key traversal strategies including in-order, pre-order, and post-order. Students will implement a binary search tree in JavaScript and analyze its operations.</p>
     </div>
   </header>
-
-  <main>
-    <p class="section-label">Module Artifacts — 9 items</p>
-
-    <div class="card-grid">
-
-      <!-- Card 1: Module Topics -->
-      <article class="card" data-type="Module Topics">
-        <div class="card-meta">
-          <span class="badge badge-type">Module Topics</span>
-          <span class="badge badge-filetype">.json</span>
-        </div>
-        <div class="card-title-row">
-          <span class="card-title">
-            <a href="content/module_topics.html">Module Topics</a>
-          </span>
-          <a class="source-link" href="source/hierarchy.json">source file</a>
-        </div>
-        <p class="card-desc">
-          A structured outline of the module's core topics — covering binary tree fundamentals
-          (nodes, edges, root), tree anatomy, BST ordering and node structure, insertion and search
-          logic with JavaScript implementation, and tree traversal methods — used by learners to
-          preview what will be taught and by instructors to verify full curriculum coverage.
-        </p>
-      </article>
-
-      <!-- Card 2: Introduction to Binary Trees -->
-      <article class="card" data-type="Topic Detail">
-        <div class="card-meta">
-          <span class="badge badge-type">Topic Detail</span>
-          <span class="badge badge-filetype">.html</span>
-        </div>
-        <div class="card-title-row">
-          <span class="card-title">
-            <a href="content/Binary_Trees_Structure_interactive_topics_t1.html">Introduction to Binary Trees</a>
-          </span>
-        </div>
-        <p class="card-desc">
-          This reading introduces the definition, terminology (root, parent, child, leaf), and
-          structural rules of binary trees, giving learners the conceptual foundation needed before
-          studying algorithms or specialized tree variants.
-        </p>
-      </article>
-
-      <!-- Card 3: Node Structure and Tree Anatomy -->
-      <article class="card" data-type="Topic Detail">
-        <div class="card-meta">
-          <span class="badge badge-type">Topic Detail</span>
-          <span class="badge badge-filetype">.html</span>
-        </div>
-        <div class="card-title-row">
-          <span class="card-title">
-            <a href="content/Binary_Trees_Structure_interactive_topics_t2.html">Node Structure and Tree Anatomy</a>
-          </span>
-        </div>
-        <p class="card-desc">
-          This reading explains the anatomy of a binary tree at the node level — covering pointer
-          structure, left/right child relationships, and how nodes link together — so learners can
-          reason precisely about tree construction and manipulation.
-        </p>
-      </article>
-
-      <!-- Card 4: Binary Search Trees (BST) Concepts -->
-      <article class="card" data-type="Topic Detail">
-        <div class="card-meta">
-          <span class="badge badge-type">Topic Detail</span>
-          <span class="badge badge-filetype">.html</span>
-        </div>
-        <div class="card-title-row">
-          <span class="card-title">
-            <a href="content/Binary_Trees_Structure_interactive_topics_t3.html">Binary Search Trees (BST) Concepts</a>
-          </span>
-        </div>
-        <p class="card-desc">
-          This reading defines the Binary Search Tree ordering property (left subtree holds smaller
-          values, right holds larger), distinguishing BSTs from general binary trees, so learners
-          understand the invariant that makes BST operations efficient.
-        </p>
-      </article>
-
-      <!-- Card 5: Insertion and Search Operations -->
-      <article class="card" data-type="Topic Detail">
-        <div class="card-meta">
-          <span class="badge badge-type">Topic Detail</span>
-          <span class="badge badge-filetype">.html</span>
-        </div>
-        <div class="card-title-row">
-          <span class="card-title">
-            <a href="content/Binary_Trees_Structure_interactive_topics_t4.html">Insertion and Search Operations</a>
-          </span>
-        </div>
-        <p class="card-desc">
-          This reading walks through how insertion and search operations work in a BST by following
-          the ordering invariant at each node, helping learners understand the recursive logic and
-          efficiency of these two core operations.
-        </p>
-      </article>
-
-      <!-- Card 6: Deletion Operations -->
-      <article class="card" data-type="Topic Detail">
-        <div class="card-meta">
-          <span class="badge badge-type">Topic Detail</span>
-          <span class="badge badge-filetype">.html</span>
-        </div>
-        <div class="card-title-row">
-          <span class="card-title">
-            <a href="content/Binary_Trees_Structure_interactive_topics_t5.html">Deletion Operations</a>
-          </span>
-        </div>
-        <p class="card-desc">
-          This reading covers the three cases of BST node deletion — leaf node, one-child node, and
-          two-child node (using in-order successor/predecessor) — so learners understand how to
-          remove nodes without violating the BST ordering property.
-        </p>
-      </article>
-
-      <!-- Card 7: Tree Traversal Strategies -->
-      <article class="card" data-type="Topic Detail">
-        <div class="card-meta">
-          <span class="badge badge-type">Topic Detail</span>
-          <span class="badge badge-filetype">.html</span>
-        </div>
-        <div class="card-title-row">
-          <span class="card-title">
-            <a href="content/Binary_Trees_Structure_interactive_topics_t6.html">Tree Traversal Strategies</a>
-          </span>
-        </div>
-        <p class="card-desc">
-          This reading surveys tree traversal strategies — including in-order, pre-order, post-order,
-          and level-order — explaining the visit sequence each produces and when each strategy is
-          appropriate for a given task.
-        </p>
-      </article>
-
-      <!-- Card 8: Implementing a BST in JavaScript (Topic Detail) -->
-      <article class="card" data-type="Topic Detail">
-        <div class="card-meta">
-          <span class="badge badge-type">Topic Detail</span>
-          <span class="badge badge-filetype">.html</span>
-        </div>
-        <div class="card-title-row">
-          <span class="card-title">
-            <a href="content/Binary_Trees_Structure_interactive_topics_t7.html">Implementing a BST in JavaScript</a>
-          </span>
-        </div>
-        <p class="card-desc">
-          This reading guides learners through a complete from-scratch JavaScript implementation of a
-          BST, including class and node structure and recursive algorithms, so they can translate
-          conceptual BST knowledge into working code.
-        </p>
-      </article>
-
-      <!-- Card 9: Implementing a BST in JavaScript (Text Content) -->
-      <article class="card" data-type="Text Content">
-        <div class="card-meta">
-          <span class="badge badge-type">Text Content</span>
-          <span class="badge badge-filetype">.html</span>
-        </div>
-        <div class="card-title-row">
-          <span class="card-title">
-            <a href="content/Binary_Trees_Structure_interactive.html">Implementing a BST in JavaScript</a>
-          </span>
-        </div>
-        <p class="card-desc">
-          This reading guides learners through a complete from-scratch JavaScript implementation of a
-          BST, including class and node structure and recursive algorithms, so they can translate
-          conceptual BST knowledge into working code.
-        </p>
-      </article>
-
-    </div>
+  <main class="page-wrap" id="main">
+<section aria-labelledby="topics-h">
+<h2 id="topics-h">Topics</h2>
+<p class="section-intro">This module covers 7 topics. Open a topic to see its subtopics.</p>
+<ol class="topic-list">
+<li><a class="topic-card" href="topics-outcomes.html#topic-1"><span class="topic-num" aria-hidden="true">1</span><span class="topic-text"><span class="topic-title">Introduction to Binary Trees</span><span class="topic-meta">6 subtopics</span></span></a></li>
+<li><a class="topic-card" href="topics-outcomes.html#topic-2"><span class="topic-num" aria-hidden="true">2</span><span class="topic-text"><span class="topic-title">Node Structure and Tree Anatomy</span><span class="topic-meta">6 subtopics</span></span></a></li>
+<li><a class="topic-card" href="topics-outcomes.html#topic-3"><span class="topic-num" aria-hidden="true">3</span><span class="topic-text"><span class="topic-title">Binary Search Trees (BST) Concepts</span><span class="topic-meta">5 subtopics</span></span></a></li>
+<li><a class="topic-card" href="topics-outcomes.html#topic-4"><span class="topic-num" aria-hidden="true">4</span><span class="topic-text"><span class="topic-title">Insertion and Search Operations</span><span class="topic-meta">7 subtopics</span></span></a></li>
+<li><a class="topic-card" href="topics-outcomes.html#topic-5"><span class="topic-num" aria-hidden="true">5</span><span class="topic-text"><span class="topic-title">Deletion Operations</span><span class="topic-meta">7 subtopics</span></span></a></li>
+<li><a class="topic-card" href="topics-outcomes.html#topic-6"><span class="topic-num" aria-hidden="true">6</span><span class="topic-text"><span class="topic-title">Tree Traversal Strategies</span><span class="topic-meta">6 subtopics</span></span></a></li>
+<li><a class="topic-card" href="topics-outcomes.html#topic-7"><span class="topic-num" aria-hidden="true">7</span><span class="topic-text"><span class="topic-title">Implementing a BST in JavaScript</span><span class="topic-meta">7 subtopics</span></span></a></li>
+</ol>
+<p class="more-links"><a href="topics-outcomes.html#topics">All topics and subtopics</a><a href="topics-outcomes.html#outcomes">Student learning outcomes</a></p>
+</section>
+<section aria-labelledby="content-h">
+<h2 id="content-h">Module Content</h2>
+<p class="section-intro">16 items.</p>
+<ul class="content-grid">
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">📄</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topic Detail</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Binary_Trees_Structure_interactive_topics_t1.html">Introduction to Binary Trees</a></div>
+    <p class="content-desc">This reading introduces the definition, terminology (root, parent, child, leaf), and structural rules of binary trees, giving learners the conceptual foundation needed before studying algorithms or specialized tree variants.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">📄</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topic Detail</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Binary_Trees_Structure_interactive_topics_t2.html">Node Structure and Tree Anatomy</a></div>
+    <p class="content-desc">This reading explains the anatomy of a binary tree at the node level — covering pointer structure, left/right child relationships, and how nodes link together — so learners can reason precisely about tree construction and manipulation.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">📄</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topic Detail</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Binary_Trees_Structure_interactive_topics_t3.html">Binary Search Trees (BST) Concepts</a></div>
+    <p class="content-desc">This reading defines the Binary Search Tree ordering property (left subtree holds smaller values, right holds larger), distinguishing BSTs from general binary trees, so learners understand the invariant that makes BST operations efficient.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">📄</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topic Detail</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Binary_Trees_Structure_interactive_topics_t4.html">Insertion and Search Operations</a></div>
+    <p class="content-desc">This reading walks through how insertion and search operations work in a BST by following the ordering invariant at each node, helping learners understand the recursive logic and efficiency of these two core operations.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">📄</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topic Detail</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Binary_Trees_Structure_interactive_topics_t5.html">Deletion Operations</a></div>
+    <p class="content-desc">This reading covers the three cases of BST node deletion — leaf node, one-child node, and two-child node (using in-order successor/predecessor) — so learners understand how to remove nodes without violating the BST ordering property.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">📄</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topic Detail</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Binary_Trees_Structure_interactive_topics_t6.html">Tree Traversal Strategies</a></div>
+    <p class="content-desc">This reading surveys tree traversal strategies — including in-order, pre-order, post-order, and level-order — explaining the visit sequence each produces and when each strategy is appropriate for a given task.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">📄</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topic Detail</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Binary_Trees_Structure_interactive_topics_t7.html">Implementing a BST in JavaScript</a></div>
+    <p class="content-desc">This reading guides learners through a complete from-scratch JavaScript implementation of a BST, including class and node structure and recursive algorithms, so they can translate conceptual BST knowledge into working code.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">📄</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Reading</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Binary_Trees_Structure_interactive.html">Implementing a BST in JavaScript</a></div>
+    <p class="content-desc">This reading guides learners through a complete from-scratch JavaScript implementation of a BST, including class and node structure and recursive algorithms, so they can translate conceptual BST knowledge into working code.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">🎬</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topics and Embedded Video</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Binary_Trees_Structure_t1_videos.html">Introduction to Binary Trees — Videos</a></div>
+    <p class="content-desc">A readed lesson introducing binary trees as hierarchical node-and-edge structures with at most two children per node, contrasting their branching layout with linear arrays and linked lists so learners understand why trees suit searching and organizing data.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">🎬</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topics and Embedded Video</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Binary_Trees_Structure_t2_videos.html">Node Structure and Tree Anatomy — Videos</a></div>
+    <p class="content-desc">A reading that establishes the vocabulary of tree anatomy — nodes holding a key plus left and right child references, null links, leaves, parents, depth and height — giving learners the terminology needed before studying traversal and search.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">🎬</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topics and Embedded Video</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Binary_Trees_Structure_t3_videos.html">Binary Search Trees (BST) Concepts — Videos</a></div>
+    <p class="content-desc">A conceptual reading on binary search trees that explains the ordering property (left subtree smaller, right subtree larger) and shows how this single rule enables efficient lookups that an unordered binary tree cannot support.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">🎬</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topics and Embedded Video</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Binary_Trees_Structure_t4_videos.html">Insertion and Search Operations — Videos</a></div>
+    <p class="content-desc">A lesson walking through BST insertion and search, showing how both operations start at the root and compare keys to decide whether to move left or right while preserving the ordering property.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">🎬</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topics and Embedded Video</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Binary_Trees_Structure_t5_videos.html">Deletion Operations — Videos</a></div>
+    <p class="content-desc">A reading on BST deletion that breaks the operation into the three standard cases — removing a node with zero, one, or two children — and explains how to repair the tree afterward, including the successor/predecessor replacement technique.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">🎬</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topics and Embedded Video</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Binary_Trees_Structure_t6_videos.html">Tree Traversal Strategies — Videos</a></div>
+    <p class="content-desc">A lesson on systematically visiting every node exactly once, comparing the depth-first in-order, pre-order, and post-order rules (and their differing output orders) so learners can pick the right traversal for a given task.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">🎬</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topics and Embedded Video</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Binary_Trees_Structure_t7_videos.html">Implementing a BST in JavaScript — Videos</a></div>
+    <p class="content-desc">A hands-on coding topic that translates BST theory into JavaScript, guiding learners to build a Node class and a BinarySearchTree class and to add insertion, search, and traversal methods one at a time.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">🎬</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topics and Embedded Video</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Binary_Trees_Structure_videos_merged.html">Binary Trees: Structure, Traversal, and Operations — 7 topics (merged)</a></div>
+    <p class="content-desc">A consolidated reading that compiles all module topics — tree fundamentals, node anatomy, BST concepts, insertion, search, deletion, traversal, and JavaScript implementation — into a single document for review or offline study.</p>
+  </div>
+</li>
+</ul>
+</section>
+<nav class="module-nav" aria-label="Modules">
+  <a href="../hash-algorithms-and-applications-password-hashing-and-beyond/index.html">← Hash Algorithms and Applications: Password Hashing and Beyond</a>
+  <a class="center-link" href="../index.html">↑ All modules</a>
+  <a href="../advanced-tree-structures-avl-trees-heaps-and-tries/index.html">Advanced Tree Structures: AVL Trees, Heaps, and Tries →</a>
+</nav>
   </main>
-
-  <footer>
-    <p>COP3530 — Data Structures &nbsp;|&nbsp; Module: Binary Trees: Structure, Traversal, and Operations</p>
-  </footer>
-
-
-<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
-<section class="presemaker-extras" style="max-width:1000px;margin:2rem auto;padding:0 1rem;"><h2>Topics &amp; Learning Outcomes</h2><p><a href="topics-outcomes.html">View Topics &amp; Learning Outcomes</a></p></section><script src="embed-inject.js" defer></script></body>
+<script src="embed-inject.js" defer></script>
+<footer class="presemaker-credit" data-credit="2" style="margin-top:2rem;padding:14px 8px;border-top:1px solid #ddd;background:#fff;text-align:center;font:13px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#595959;"><svg width="20" height="20" viewBox="0 0 2048 2048" aria-hidden="true" focusable="false" style="vertical-align:-5px;margin-right:7px"><rect width="2048" height="2048" rx="384" fill="#0F6E6E"/><path fill="#0A5050" d="M1024 1000 344 832v816l680 168zm0 0 680-168v816l-680 168z"/><path fill="#fff" d="M1024 944 384 784v808l640 160zm0 0 640-160v808l-640 160z"/><rect x="1002" y="944" width="44" height="808" fill="#0F6E6E"/><rect x="936" y="246" width="176" height="448" rx="44" fill="#fff"/><rect x="800" y="382" width="448" height="176" rx="44" fill="#fff"/></svg>Created with <a href="https://softwareplus.ai/coursebuilder/" target="_blank" rel="noopener" style="color:#2f5d8f;font-weight:600;text-decoration:none;">CourseBuilder+</a><span aria-hidden="true"> · </span><a href="https://softwareplus.ai/" target="_blank" rel="noopener" style="color:#2f5d8f;text-decoration:none;">SoftwarePlus.ai</a></footer>
+</body>
 </html>

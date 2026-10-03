@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Breadth-First Search (BFS)</title>
+<style>
+body{font-family:'Segoe UI',Arial,sans-serif;max-width:820px;margin:2rem auto;padding:0 1.25rem;color:#222;line-height:1.55}
+h1{font-size:1.9rem;border-bottom:2px solid #ddd;padding-bottom:.4rem}
+h2{font-size:1.3rem;color:#1f3864;margin-top:1.6rem}
+body{padding-left:1.1rem;padding-right:1.1rem}
+ul,ol{margin:.4rem 0 1rem 1.4rem}
+li{margin:.25rem 0}
+nav.toc{background:rgba(128,128,128,.08);border:1px solid rgba(128,128,128,.25);border-radius:8px;padding:.6rem 1rem;margin:1.2rem 0}
+nav.toc strong{display:block;margin-bottom:.3rem}
+nav.toc a{display:block;text-decoration:none;padding:.12rem 0}
+section.item{border-top:1px solid rgba(128,128,128,.22);padding-top:.3rem}
+table{border-collapse:collapse;width:100%;margin:.8rem 0}
+th,td{border:1px solid rgba(128,128,128,.45);padding:.4rem .6rem;text-align:left;vertical-align:top}
+thead th{background:rgba(128,128,128,.18);font-weight:600}
+tbody tr:nth-child(even){background:rgba(128,128,128,.08)}
+</style>
+</head>
+<body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Graphs: Structure, Representation, and Traversal</a></div>
+<h1>Breadth-First Search (BFS)</h1>
+<nav class="toc"><strong>Contents</strong>
+<a href="#sec1">Introduction</a>
+<a href="#sec2">Video 1: Breadth First Search Explained and Implemented in Java | BFS | Graph Traversal &amp; Theory | Geekific</a>
+<a href="#sec3">Video 2: Breadth-first search in 4 minutes</a>
+<a href="#sec4">Video 3: Breadth First Search (BFS) Graph Traversal in Data Structures</a>
+<a href="#sec5">How These Videos Support the Learning Outcomes</a>
+<a href="#sec6">About These Videos</a>
+</nav>
+<section class="item" id="sec1">
+<h2>Introduction</h2>
+<p>Breadth-First Search (BFS) is a graph traversal strategy that explores a graph in layers: starting from a source vertex, it visits every neighbor at distance one, then every vertex at distance two, and so on. The engine behind this level-by-level behavior is the queue, a first-in-first-out structure that holds vertices waiting to be explored. Alongside the queue you also need a visited set (or boolean array) so that cycles and shared neighbors do not cause a vertex to be processed twice.</p>
+<p>BFS matters in this course because it is one of the two canonical traversals you will implement on top of your adjacency list representation, and because its level order gives it properties DFS does not have — most notably, in an unweighted graph BFS finds the shortest path in number of edges from the source. It also forces you to think about graphs that are not fully connected: a single BFS call only reaches the component containing the start vertex, so a complete traversal requires looping over all vertices and launching a new BFS from each unvisited one.</p>
+<p>As you watch the videos below, focus on four things: exactly when a vertex is marked visited (on enqueue, not on dequeue, if you want to avoid duplicates), how the queue contents change at each step, how the traversal order depends on the order neighbors appear in the adjacency list, and where BFS shows up in practice — shortest paths, level/distance computation, web crawling, social network degrees of separation. Try tracing a small graph by hand before and after watching, and compare your order against the one in the video.</p>
+</section>
+<section class="item" id="sec2">
+<h2>Video 1: Breadth First Search Explained and Implemented in Java | BFS | Graph Traversal &amp; Theory | Geekific</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/9Oev6UgLhiI?cc_load_policy=1&amp;rel=0" title="Video: Breadth First Search Explained and Implemented in Java | BFS | Graph Traversal &amp; Theory | Geekific (Geekific)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Geekific</strong> · 6:22 · 72,911 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=9Oev6UgLhiI" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>Geekific presents the theory of BFS and then implements it in Java, connecting the conceptual queue-based traversal to actual code. Expect coverage of how the queue drives exploration, how visited tracking prevents revisiting vertices, and how the traversal is written against a graph structure, with the full source available in the linked repository.</p>
+<h3>Why this video</h3>
+<p>It pairs the algorithm logic with a concrete implementation, which is exactly the bridge you need when writing your own Graph class traversal method in this module.</p>
+</section>
+<section class="item" id="sec3">
+<h2>Video 2: Breadth-first search in 4 minutes</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/HZ5YTanv5QE?cc_load_policy=1&amp;rel=0" title="Video: Breadth-first search in 4 minutes (Michael Sambol)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Michael Sambol</strong> · 3:59 · 603,429 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=HZ5YTanv5QE" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>A compact, tightly edited explanation of breadth-first search that walks through the algorithm on a sample graph in under four minutes. It focuses on the core mechanics — the queue, marking vertices as visited, and the resulting level-by-level visit order — with linked Python code for those who want to see an implementation.</p>
+<h3>Why this video</h3>
+<p>Michael Sambol&#39;s algorithm shorts are widely used and known for clean, correct visual traces, making this the fastest way to get the BFS logic and traversal order straight before diving into longer treatments.</p>
+</section>
+<section class="item" id="sec4">
+<h2>Video 3: Breadth First Search (BFS) Graph Traversal in Data Structures</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/6dWUABpUky4?cc_load_policy=1&amp;rel=0" title="Video: Breadth First Search (BFS) Graph Traversal in Data Structures (CodeWithHarry)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>CodeWithHarry</strong> · 19:00 · 367,697 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=6dWUABpUky4" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>A longer, classroom-style lecture from CodeWithHarry that develops BFS as a graph traversal in a data structures context, including discussion of the BFS spanning tree produced by the traversal. The extra length allows for slower, more detailed stepping through examples and the data structures involved.</p>
+<h3>Why this video</h3>
+<p>The pace and depth suit students who want the step-by-step reasoning spelled out, and the spanning-tree framing adds useful intuition for why BFS order relates to shortest distances from the source.</p>
+</section>
+<section class="item" id="sec5">
+<h2>How These Videos Support the Learning Outcomes</h2>
+<p>These three videos concentrate on MO3 and MO5. The short Sambol video and the detailed CodeWithHarry lecture let you practice tracing BFS visit order on a given graph and reasoning about the queue state at each step, which is the core tracing skill in MO3; the longer lecture&#39;s example work also helps you see why an outer loop over all vertices is needed when a graph has multiple components. The Geekific implementation supports MO4 by showing BFS written as code over a graph structure, which you can translate into your JavaScript Graph class built on an adjacency list (MO2). Discussion of BFS uses — shortest paths in unweighted graphs, level or distance computation — gives you the evidence needed for MO5 when you argue whether BFS or DFS fits a given problem. The videos assume a graph is already defined, so pair them with the module&#39;s earlier material for MO1 and MO2.</p>
+</section>
+<section class="item" id="sec6">
+<h2>About These Videos</h2>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+
+<footer class="presemaker-credit" data-credit="2" style="margin-top:2rem;padding:14px 8px;border-top:1px solid #ddd;background:#fff;text-align:center;font:13px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#595959;"><svg width="20" height="20" viewBox="0 0 2048 2048" aria-hidden="true" focusable="false" style="vertical-align:-5px;margin-right:7px"><rect width="2048" height="2048" rx="384" fill="#0F6E6E"/><path fill="#0A5050" d="M1024 1000 344 832v816l680 168zm0 0 680-168v816l-680 168z"/><path fill="#fff" d="M1024 944 384 784v808l640 160zm0 0 640-160v808l-640 160z"/><rect x="1002" y="944" width="44" height="808" fill="#0F6E6E"/><rect x="936" y="246" width="176" height="448" rx="44" fill="#fff"/><rect x="800" y="382" width="448" height="176" rx="44" fill="#fff"/></svg>Created with <a href="https://softwareplus.ai/coursebuilder/" target="_blank" rel="noopener" style="color:#2f5d8f;font-weight:600;text-decoration:none;">CourseBuilder+</a><span aria-hidden="true"> · </span><a href="https://softwareplus.ai/" target="_blank" rel="noopener" style="color:#2f5d8f;text-decoration:none;">SoftwarePlus.ai</a></footer>
+</body>
+</html>

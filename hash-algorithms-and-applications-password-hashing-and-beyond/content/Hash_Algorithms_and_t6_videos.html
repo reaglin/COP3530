@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Common Attacks and Vulnerabilities</title>
+<style>
+body{font-family:'Segoe UI',Arial,sans-serif;max-width:820px;margin:2rem auto;padding:0 1.25rem;color:#222;line-height:1.55}
+h1{font-size:1.9rem;border-bottom:2px solid #ddd;padding-bottom:.4rem}
+h2{font-size:1.3rem;color:#1f3864;margin-top:1.6rem}
+body{padding-left:1.1rem;padding-right:1.1rem}
+ul,ol{margin:.4rem 0 1rem 1.4rem}
+li{margin:.25rem 0}
+nav.toc{background:rgba(128,128,128,.08);border:1px solid rgba(128,128,128,.25);border-radius:8px;padding:.6rem 1rem;margin:1.2rem 0}
+nav.toc strong{display:block;margin-bottom:.3rem}
+nav.toc a{display:block;text-decoration:none;padding:.12rem 0}
+section.item{border-top:1px solid rgba(128,128,128,.22);padding-top:.3rem}
+table{border-collapse:collapse;width:100%;margin:.8rem 0}
+th,td{border:1px solid rgba(128,128,128,.45);padding:.4rem .6rem;text-align:left;vertical-align:top}
+thead th{background:rgba(128,128,128,.18);font-weight:600}
+tbody tr:nth-child(even){background:rgba(128,128,128,.08)}
+</style>
+</head>
+<body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Hash Algorithms and Applications: Password Hashing and Beyond</a></div>
+<h1>Common Attacks and Vulnerabilities</h1>
+<nav class="toc"><strong>Contents</strong>
+<a href="#sec1">Introduction</a>
+<a href="#sec2">Video 1: Password Attacks - CompTIA Security+ SY0-701 - 2.4</a>
+<a href="#sec3">Video 2: Cryptographic Attacks - CompTIA Security+ SY0-701 - 2.4</a>
+<a href="#sec4">Video 3: Birthday Attacks Explained | Brute Force vs. Birthday Attack</a>
+<a href="#sec5">How These Videos Support the Learning Outcomes</a>
+<a href="#sec6">About These Videos</a>
+</nav>
+<section class="item" id="sec1">
+<h2>Introduction</h2>
+<p>Hashing is only as strong as the way it is used. A hash function that looks secure on paper can fail badly in practice when passwords are short, salts are missing, the algorithm is outdated, or the comparison code leaks information about how long it took to run. This topic surveys the attacks that exploit those weaknesses: brute-force and dictionary/wordlist guessing, precomputed rainbow tables, collision attacks against deprecated functions like MD5 and SHA-1, the consequences of unsalted hashing, and timing attacks on hash comparison.</p>
+<p>In COP3530 you already think about cost in terms of time and space. These attacks are the security version of that same reasoning: an attacker is choosing between spending computation (guess every candidate) and spending storage (precompute a huge table of hashes), and defenses like salting, peppering, and key stretching exist to push that cost beyond what is practical. Understanding the tradeoff is what lets you argue why bcrypt, scrypt, or Argon2 belong in an authentication system instead of a bare call to SHA-256.</p>
+<p>As you watch, keep a running list in two columns: the attack, and the specific countermeasure that defeats it. Pay attention to why a salt kills rainbow tables but does little against a targeted brute-force attack, why collision resistance matters for signatures and integrity checks more than for password storage, and why the birthday problem means collision resistance is roughly half the bit length of the digest.</p>
+</section>
+<section class="item" id="sec2">
+<h2>Video 1: Password Attacks - CompTIA Security+ SY0-701 - 2.4</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/-ZfbifHwEVE?cc_load_policy=1&amp;rel=0" title="Video: Password Attacks - CompTIA Security+ SY0-701 - 2.4 (Professor Messer)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Professor Messer</strong> · 7:16 · 162,498 views · 2y ago · captions — <a href="https://www.youtube.com/watch?v=-ZfbifHwEVE" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>A concise overview of how attackers go after passwords, covering the difference between online and offline guessing, brute-force attacks, and dictionary or wordlist approaches that exploit predictable human password choices. Based on the title and CompTIA Security+ objective 2.4, it should also address why stored password hashes are the real target and how salting changes the attacker&#39;s economics.</p>
+<h3>Why this video</h3>
+<p>Professor Messer is a well-known, carefully-scripted certification trainer, and this video maps directly onto the brute-force, dictionary/wordlist, and unsalted-hashing subtopics in a compact seven minutes.</p>
+</section>
+<section class="item" id="sec3">
+<h2>Video 2: Cryptographic Attacks - CompTIA Security+ SY0-701 - 2.4</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/7aJaEQy6Yoc?cc_load_policy=1&amp;rel=0" title="Video: Cryptographic Attacks - CompTIA Security+ SY0-701 - 2.4 (Professor Messer)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Professor Messer</strong> · 9:31 · 181,179 views · 2y ago · captions — <a href="https://www.youtube.com/watch?v=7aJaEQy6Yoc" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>This video surveys attacks aimed at the cryptography itself rather than at the user, which for Security+ objective 2.4 typically includes birthday and collision attacks, downgrade attacks, and the problems with deprecated algorithms. Expect discussion of why older hash functions are retired once practical attacks appear.</p>
+<h3>Why this video</h3>
+<p>It pairs with the password-attacks video to cover the other half of this topic — collision attacks and weak or deprecated hash functions — from the same clear, exam-focused producer.</p>
+</section>
+<section class="item" id="sec4">
+<h2>Video 3: Birthday Attacks Explained | Brute Force vs. Birthday Attack</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/tkFeRAyePAI?cc_load_policy=1&amp;rel=0" title="Video: Birthday Attacks Explained | Brute Force vs. Birthday Attack (Shree Learning Academy)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Shree Learning Academy</strong> · 6:13 · 16,679 views · 3y ago · captions — <a href="https://www.youtube.com/watch?v=tkFeRAyePAI" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>A focused explanation of the birthday attack: why finding any two inputs that collide is far easier than finding a preimage for one specific hash, and how the birthday paradox makes the effort roughly the square root of the naive search space. The video contrasts this directly with straightforward brute force.</p>
+<h3>Why this video</h3>
+<p>It gives the mathematical intuition behind collision resistance that the broader survey videos only mention, which is exactly what you need to explain why digest length matters when choosing a hash function.</p>
+</section>
+<section class="item" id="sec5">
+<h2>How These Videos Support the Learning Outcomes</h2>
+<p>Together these videos give you the attacker&#39;s perspective that MO3 asks you to evaluate: the Professor Messer pair maps the landscape of brute-force, dictionary, rainbow table, and cryptographic attacks along with their standard countermeasures, while the birthday attack video supplies the reasoning behind collision resistance that underpins MO1&#39;s comparison of MD5 and SHA-256. Seeing concretely how unsalted, fast, general-purpose hashes fall to precomputation and high-speed guessing is also the motivation for MO2 and MO5 — it is the reason a secure design you write later should use a salted, work-factor-tuned algorithm such as bcrypt, scrypt, or Argon2.</p>
+</section>
+<section class="item" id="sec6">
+<h2>About These Videos</h2>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+
+<footer class="presemaker-credit" data-credit="2" style="margin-top:2rem;padding:14px 8px;border-top:1px solid #ddd;background:#fff;text-align:center;font:13px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#595959;"><svg width="20" height="20" viewBox="0 0 2048 2048" aria-hidden="true" focusable="false" style="vertical-align:-5px;margin-right:7px"><rect width="2048" height="2048" rx="384" fill="#0F6E6E"/><path fill="#0A5050" d="M1024 1000 344 832v816l680 168zm0 0 680-168v816l-680 168z"/><path fill="#fff" d="M1024 944 384 784v808l640 160zm0 0 640-160v808l-640 160z"/><rect x="1002" y="944" width="44" height="808" fill="#0F6E6E"/><rect x="936" y="246" width="176" height="448" rx="44" fill="#fff"/><rect x="800" y="382" width="448" height="176" rx="44" fill="#fff"/></svg>Created with <a href="https://softwareplus.ai/coursebuilder/" target="_blank" rel="noopener" style="color:#2f5d8f;font-weight:600;text-decoration:none;">CourseBuilder+</a><span aria-hidden="true"> · </span><a href="https://softwareplus.ai/" target="_blank" rel="noopener" style="color:#2f5d8f;text-decoration:none;">SoftwarePlus.ai</a></footer>
+</body>
+</html>

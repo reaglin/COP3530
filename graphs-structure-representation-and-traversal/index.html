@@ -1,470 +1,187 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Graphs: Structure, Representation, and Traversal — COP3530</title>
-  <style>
-    /* ── Reset & Base ── */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --brand-dark:   #1a2f4e;
-      --brand-mid:    #2b5282;
-      --brand-light:  #ebf4ff;
-      --accent:       #2b6cb0;
-      --accent-hover: #1a4a8a;
-      --text-primary: #1a202c;
-      --text-secondary: #4a5568;
-      --text-muted:   #718096;
-      --border:       #d2dcea;
-      --card-bg:      #ffffff;
-      --page-bg:      #f4f7fb;
-      --badge-topic-bg:   #ebf8ff;
-      --badge-topic-txt:  #2b6cb0;
-      --badge-text-bg:    #f0fff4;
-      --badge-text-txt:   #276749;
-      --badge-video-bg:   #fff5f5;
-      --badge-video-txt:  #c53030;
-      --badge-module-bg:  #faf5ff;
-      --badge-module-txt: #6b46c1;
-      --badge-default-bg: #f7fafc;
-      --badge-default-txt:#4a5568;
-      --radius: 8px;
-      --shadow: 0 1px 4px rgba(0,0,0,0.08), 0 2px 12px rgba(0,0,0,0.06);
-    }
-
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-      background: var(--page-bg);
-      color: var(--text-primary);
-      line-height: 1.6;
-      min-height: 100vh;
-    }
-
-    /* ── Header ── */
-    .site-header {
-      background: linear-gradient(135deg, var(--brand-dark) 0%, var(--brand-mid) 100%);
-      color: #fff;
-      padding: 2.5rem 1.5rem 2rem;
-    }
-
-    .header-inner {
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-
-    .course-label {
-      display: inline-block;
-      font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: #90cdf4;
-      margin-bottom: 0.6rem;
-    }
-
-    .site-header h1 {
-      font-size: clamp(1.4rem, 3vw, 2.1rem);
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      line-height: 1.25;
-      margin-bottom: 0.9rem;
-    }
-
-    .site-header p {
-      font-size: 0.97rem;
-      color: #bee3f8;
-      max-width: 720px;
-      line-height: 1.7;
-    }
-
-    /* ── Main ── */
-    main {
-      max-width: 1100px;
-      margin: 2rem auto 3rem;
-      padding: 0 1.5rem;
-    }
-
-    .section-heading {
-      font-size: 0.7rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      margin-bottom: 1rem;
-      padding-bottom: 0.5rem;
-      border-bottom: 1px solid var(--border);
-    }
-
-    /* ── Card Grid ── */
-    .card-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 1.1rem;
-    }
-
-    .card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 1.25rem 1.35rem 1.15rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.6rem;
-      transition: box-shadow 0.18s ease, border-color 0.18s ease;
-    }
-
-    .card:hover {
-      box-shadow: 0 4px 18px rgba(0,0,0,0.11);
-      border-color: #b0c8e8;
-    }
-
-    /* ── Card Header Row ── */
-    .card-header {
-      display: flex;
-      align-items: flex-start;
-      gap: 0.55rem;
-      flex-wrap: wrap;
-    }
-
-    .card-title {
-      font-size: 0.97rem;
-      font-weight: 700;
-      color: var(--text-primary);
-      flex: 1 1 auto;
-      min-width: 0;
-      word-break: break-word;
-    }
-
-    .card-title a {
-      color: var(--accent);
-      text-decoration: none;
-      border-bottom: 1px solid transparent;
-      transition: color 0.15s, border-color 0.15s;
-    }
-
-    .card-title a:hover,
-    .card-title a:focus {
-      color: var(--accent-hover);
-      border-bottom-color: var(--accent-hover);
-      outline: none;
-    }
-
-    /* ── Source Link ── */
-    .source-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.25rem;
-      font-size: 0.7rem;
-      font-weight: 600;
-      color: var(--text-muted);
-      background: #f0f4f8;
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      padding: 0.18rem 0.45rem;
-      text-decoration: none;
-      white-space: nowrap;
-      flex-shrink: 0;
-      transition: background 0.15s, color 0.15s;
-    }
-
-    .source-link:hover,
-    .source-link:focus {
-      background: #dce6f2;
-      color: var(--brand-dark);
-      outline: none;
-    }
-
-    .source-link svg {
-      flex-shrink: 0;
-    }
-
-    /* ── Meta Row ── */
-    .card-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.4rem;
-      align-items: center;
-    }
-
-    /* ── Badges ── */
-    .badge {
-      font-size: 0.67rem;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      padding: 0.2rem 0.5rem;
-      border-radius: 4px;
-      white-space: nowrap;
-    }
-
-    .badge-type-topic   { background: var(--badge-topic-bg);   color: var(--badge-topic-txt); }
-    .badge-type-text    { background: var(--badge-text-bg);    color: var(--badge-text-txt); }
-    .badge-type-video   { background: var(--badge-video-bg);   color: var(--badge-video-txt); }
-    .badge-type-module  { background: var(--badge-module-bg);  color: var(--badge-module-txt); }
-    .badge-type-default { background: var(--badge-default-bg); color: var(--badge-default-txt); }
-
-    .badge-filetype {
-      background: #f7fafc;
-      color: var(--text-muted);
-      border: 1px solid var(--border);
-      font-size: 0.67rem;
-      font-weight: 600;
-      letter-spacing: 0.05em;
-      padding: 0.2rem 0.45rem;
-      border-radius: 4px;
-      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
-    }
-
-    /* ── Description ── */
-    .card-desc {
-      font-size: 0.855rem;
-      color: var(--text-secondary);
-      line-height: 1.65;
-      flex: 1;
-    }
-
-    /* ── Footer ── */
-    .site-footer {
-      text-align: center;
-      padding: 1.5rem 1rem;
-      font-size: 0.78rem;
-      color: var(--text-muted);
-      border-top: 1px solid var(--border);
-      background: #fff;
-    }
-
-    /* ── Responsive ── */
-    @media (max-width: 500px) {
-      .card-grid { grid-template-columns: 1fr; }
-      .site-header { padding: 1.75rem 1rem 1.5rem; }
-      main { padding: 0 1rem; }
-    }
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Graphs: Structure, Representation, and Traversal — COP3530 - Data Structures</title>
+  <link rel="stylesheet" href="../assets/site.css">
 </head>
 <body>
-<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ COP3530 - Data Structures</a></div>
-<div style="border:1px solid #c9d4e3;background:#f5f8fc;border-radius:8px;padding:10px 16px;margin:0 0 18px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;font-family:'Segoe UI',Arial,sans-serif"><strong style="color:#1a3c6e">Module outline:</strong><a href="topics-outcomes.html#topics" style="color:#1a3c6e;font-weight:600;text-decoration:none">📋 Module Topics</a><a href="topics-outcomes.html#outcomes" style="color:#137333;font-weight:600;text-decoration:none">🎯 Student Learning Outcomes</a></div>
-
-  <!-- ══════════════ HEADER ══════════════ -->
-  <header class="site-header">
-    <div class="header-inner">
-      <span class="course-label">COP3530 — Data Structures</span>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="hero">
+    <div class="hero-inner">
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="../index.html">COP3530 - Data Structures</a><span class="sep" aria-hidden="true">›</span><span class="current">Graphs: Structure, Representation, and Traversal</span>
+  </nav>
+      <div class="hero-label">Module 14</div>
       <h1>Graphs: Structure, Representation, and Traversal</h1>
-      <p>
-        This module explores graph data structures from the ground up — covering fundamental definitions,
-        directed and undirected graphs, adjacency matrix and list representations, and core traversal
-        algorithms including Breadth-First Search and Depth-First Search. Use the resources below to
-        build both conceptual understanding and practical implementation skills.
-      </p>
+      <p class="hero-desc">This lesson introduces the graph data structure, covering directed and undirected graphs, adjacency matrix and adjacency list representations, and traversal algorithms including breadth-first search and depth-first search. Students will implement graph traversal in JavaScript.</p>
     </div>
   </header>
-
-  <!-- ══════════════ MAIN ══════════════ -->
-  <main>
-    <p class="section-heading">Module Artifacts &nbsp;·&nbsp; 10 items</p>
-
-    <div class="card-grid">
-
-      <!-- Card 1: Module Topics -->
-      <article class="card">
-        <div class="card-header">
-          <span class="card-title">
-            <a href="content/module_topics.html">Module Topics</a>
-          </span>
-          <a class="source-link" href="source/hierarchy.json" title="View source file">
-            <svg width="11" height="11" viewBox="0 0 16 16" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
-              <path d="M13.5 9.5v3a1 1 0 01-1 1h-9a1 1 0 01-1-1v-9a1 1 0 011-1h3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-              <path d="M9 2.5h4.5V7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M7.5 8.5L13 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-            </svg>
-            source file
-          </a>
-        </div>
-        <div class="card-meta">
-          <span class="badge badge-type-module">Module Topics</span>
-          <span class="badge-filetype">.json</span>
-        </div>
-        <p class="card-desc">
-          This module outline covers the core concepts of graph data structures — including definitions of vertices
-          and edges, directed vs. undirected graphs, adjacency matrix and adjacency list representations, and graph
-          traversal algorithms — serving as a navigational guide for learners and instructors to see the full scope
-          of topics in the module.
-        </p>
-      </article>
-
-      <!-- Card 2: Introduction to Graph Data Structures -->
-      <article class="card">
-        <div class="card-header">
-          <span class="card-title">
-            <a href="content/Graphs_Structure_Representat_interactive_topics_t1.html">Introduction to Graph Data Structures</a>
-          </span>
-        </div>
-        <div class="card-meta">
-          <span class="badge badge-type-topic">Topic Detail</span>
-          <span class="badge-filetype">.html</span>
-        </div>
-        <p class="card-desc">
-          A foundational reading that introduces graph data structures by explaining what graphs are, why they are
-          more flexible than arrays, linked lists, and trees, and where they appear in real-world computing; learners
-          read it to build conceptual context before studying specific graph topics.
-        </p>
-      </article>
-
-      <!-- Card 3: Directed and Undirected Graphs -->
-      <article class="card">
-        <div class="card-header">
-          <span class="card-title">
-            <a href="content/Graphs_Structure_Representat_interactive_topics_t2.html">Directed and Undirected Graphs</a>
-          </span>
-        </div>
-        <div class="card-meta">
-          <span class="badge badge-type-topic">Topic Detail</span>
-          <span class="badge-filetype">.html</span>
-        </div>
-        <p class="card-desc">
-          A reading that distinguishes directed graphs (edges with a one-way direction) from undirected graphs
-          (symmetric edges), covering related terminology such as degree, paths, and cycles, so learners can
-          correctly classify and reason about graph relationships.
-        </p>
-      </article>
-
-      <!-- Card 4: Adjacency Matrix Representation -->
-      <article class="card">
-        <div class="card-header">
-          <span class="card-title">
-            <a href="content/Graphs_Structure_Representat_interactive_topics_t3.html">Adjacency Matrix Representation</a>
-          </span>
-        </div>
-        <div class="card-meta">
-          <span class="badge badge-type-topic">Topic Detail</span>
-          <span class="badge-filetype">.html</span>
-        </div>
-        <p class="card-desc">
-          A reading that explains the adjacency matrix storage format for graphs, covering how to build and interpret
-          the matrix, its memory cost, and the time complexity of common operations, so learners can evaluate when
-          this representation is appropriate.
-        </p>
-      </article>
-
-      <!-- Card 5: Adjacency List Representation -->
-      <article class="card">
-        <div class="card-header">
-          <span class="card-title">
-            <a href="content/Graphs_Structure_Representat_interactive_topics_t4.html">Adjacency List Representation</a>
-          </span>
-        </div>
-        <div class="card-meta">
-          <span class="badge badge-type-topic">Topic Detail</span>
-          <span class="badge-filetype">.html</span>
-        </div>
-        <p class="card-desc">
-          A reading that explains the adjacency list storage format for graphs, covering how lists of neighbors are
-          stored, their memory and time-complexity trade-offs compared with adjacency matrices, and how to implement
-          them, so learners can choose and apply the most practical representation for sparse graphs.
-        </p>
-      </article>
-
-      <!-- Card 6: BFS -->
-      <article class="card">
-        <div class="card-header">
-          <span class="card-title">
-            <a href="content/Graphs_Structure_Representat_interactive_topics_t5.html">Breadth-First Search (BFS)</a>
-          </span>
-        </div>
-        <div class="card-meta">
-          <span class="badge badge-type-topic">Topic Detail</span>
-          <span class="badge-filetype">.html</span>
-        </div>
-        <p class="card-desc">
-          A reading that explains the Breadth-First Search algorithm, covering its layer-by-layer traversal logic,
-          queue-based implementation, visited tracking, and use cases such as shortest-path finding in unweighted
-          graphs, so learners understand how to explore graphs level by level.
-        </p>
-      </article>
-
-      <!-- Card 7: DFS -->
-      <article class="card">
-        <div class="card-header">
-          <span class="card-title">
-            <a href="content/Graphs_Structure_Representat_interactive_topics_t6.html">Depth-First Search (DFS)</a>
-          </span>
-        </div>
-        <div class="card-meta">
-          <span class="badge badge-type-topic">Topic Detail</span>
-          <span class="badge-filetype">.html</span>
-        </div>
-        <p class="card-desc">
-          A reading that explains the Depth-First Search algorithm, covering its recursive and stack-based
-          implementations, backtracking behavior, visited tracking, and applications such as cycle detection and
-          topological sorting, so learners understand how to explore graphs along deep paths before backtracking.
-        </p>
-      </article>
-
-      <!-- Card 8: Implementing Graph Traversal (Topic Detail) -->
-      <article class="card">
-        <div class="card-header">
-          <span class="card-title">
-            <a href="content/Graphs_Structure_Representat_interactive_topics_t7.html">Implementing Graph Traversal in JavaScript</a>
-          </span>
-        </div>
-        <div class="card-meta">
-          <span class="badge badge-type-topic">Topic Detail</span>
-          <span class="badge-filetype">.html</span>
-        </div>
-        <p class="card-desc">
-          A hands-on coding reading that walks learners through building a JavaScript Graph class from scratch, then
-          adding BFS and DFS methods step by step, so they can translate traversal concepts into working, runnable code.
-        </p>
-      </article>
-
-      <!-- Card 9: Implementing Graph Traversal (Text Content) -->
-      <article class="card">
-        <div class="card-header">
-          <span class="card-title">
-            <a href="content/Graphs_Structure_Representat_interactive.html">Implementing Graph Traversal in JavaScript</a>
-          </span>
-        </div>
-        <div class="card-meta">
-          <span class="badge badge-type-text">Text Content</span>
-          <span class="badge-filetype">.html</span>
-        </div>
-        <p class="card-desc">
-          A hands-on coding reading that walks learners through building a JavaScript Graph class from scratch, then
-          adding BFS and DFS methods step by step, so they can translate traversal concepts into working, runnable code.
-        </p>
-      </article>
-
-      <!-- Card 10: Google Maps Video -->
-      <article class="card">
-        <div class="card-header">
-          <span class="card-title">
-            <a href="content/ext_f7ebc594.html">Google Maps is unreasonably fast. Let me explain</a>
-          </span>
-        </div>
-        <div class="card-meta">
-          <span class="badge badge-type-video">Video</span>
-          <span class="badge-filetype">.html</span>
-        </div>
-        <p class="card-desc">
-          This Veritasium video explores the mathematical and algorithmic principles behind how Google Maps computes
-          routes so efficiently. It examines the graph-based representation of road networks and the optimization
-          strategies that make real-time pathfinding feasible at massive scale. The video connects foundational graph
-          theory to a widely recognized, high-impact real-world application.
-        </p>
-      </article>
-
-    </div><!-- /.card-grid -->
+  <main class="page-wrap" id="main">
+<section aria-labelledby="topics-h">
+<h2 id="topics-h">Topics</h2>
+<p class="section-intro">This module covers 7 topics. Open a topic to see its subtopics.</p>
+<ol class="topic-list">
+<li><a class="topic-card" href="topics-outcomes.html#topic-1"><span class="topic-num" aria-hidden="true">1</span><span class="topic-text"><span class="topic-title">Introduction to Graph Data Structures</span><span class="topic-meta">6 subtopics</span></span></a></li>
+<li><a class="topic-card" href="topics-outcomes.html#topic-2"><span class="topic-num" aria-hidden="true">2</span><span class="topic-text"><span class="topic-title">Directed and Undirected Graphs</span><span class="topic-meta">6 subtopics</span></span></a></li>
+<li><a class="topic-card" href="topics-outcomes.html#topic-3"><span class="topic-num" aria-hidden="true">3</span><span class="topic-text"><span class="topic-title">Adjacency Matrix Representation</span><span class="topic-meta">6 subtopics</span></span></a></li>
+<li><a class="topic-card" href="topics-outcomes.html#topic-4"><span class="topic-num" aria-hidden="true">4</span><span class="topic-text"><span class="topic-title">Adjacency List Representation</span><span class="topic-meta">6 subtopics</span></span></a></li>
+<li><a class="topic-card" href="topics-outcomes.html#topic-5"><span class="topic-num" aria-hidden="true">5</span><span class="topic-text"><span class="topic-title">Breadth-First Search (BFS)</span><span class="topic-meta">6 subtopics</span></span></a></li>
+<li><a class="topic-card" href="topics-outcomes.html#topic-6"><span class="topic-num" aria-hidden="true">6</span><span class="topic-text"><span class="topic-title">Depth-First Search (DFS)</span><span class="topic-meta">6 subtopics</span></span></a></li>
+<li><a class="topic-card" href="topics-outcomes.html#topic-7"><span class="topic-num" aria-hidden="true">7</span><span class="topic-text"><span class="topic-title">Implementing Graph Traversal in JavaScript</span><span class="topic-meta">6 subtopics</span></span></a></li>
+</ol>
+<p class="more-links"><a href="topics-outcomes.html#topics">All topics and subtopics</a><a href="topics-outcomes.html#outcomes">Student learning outcomes</a></p>
+</section>
+<section aria-labelledby="content-h">
+<h2 id="content-h">Module Content</h2>
+<p class="section-intro">17 items.</p>
+<ul class="content-grid">
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">📄</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topic Detail</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Graphs_Structure_Representat_interactive_topics_t1.html">Introduction to Graph Data Structures</a></div>
+    <p class="content-desc">A foundational reading that introduces graph data structures by explaining what graphs are, why they are more flexible than arrays, linked lists, and trees, and where they appear in real-world computing; learners read it to build conceptual context before studying specific graph topics.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">📄</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topic Detail</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Graphs_Structure_Representat_interactive_topics_t2.html">Directed and Undirected Graphs</a></div>
+    <p class="content-desc">A reading that distinguishes directed graphs (edges with a one-way direction) from undirected graphs (symmetric edges), covering related terminology such as degree, paths, and cycles, so learners can correctly classify and reason about graph relationships.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">📄</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topic Detail</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Graphs_Structure_Representat_interactive_topics_t3.html">Adjacency Matrix Representation</a></div>
+    <p class="content-desc">A reading that explains the adjacency matrix storage format for graphs, covering how to build and interpret the matrix, its memory cost, and the time complexity of common operations, so learners can evaluate when this representation is appropriate.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">📄</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topic Detail</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Graphs_Structure_Representat_interactive_topics_t4.html">Adjacency List Representation</a></div>
+    <p class="content-desc">A reading that explains the adjacency list storage format for graphs, covering how lists of neighbors are stored, their memory and time-complexity trade-offs compared with adjacency matrices, and how to implement them, so learners can choose and apply the most practical representation for sparse graphs.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">📄</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topic Detail</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Graphs_Structure_Representat_interactive_topics_t5.html">Breadth-First Search (BFS)</a></div>
+    <p class="content-desc">A reading that explains the Breadth-First Search algorithm, covering its layer-by-layer traversal logic, queue-based implementation, visited tracking, and use cases such as shortest-path finding in unweighted graphs, so learners understand how to explore graphs level by level.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">📄</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topic Detail</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Graphs_Structure_Representat_interactive_topics_t6.html">Depth-First Search (DFS)</a></div>
+    <p class="content-desc">A reading that explains the Depth-First Search algorithm, covering its recursive and stack-based implementations, backtracking behavior, visited tracking, and applications such as cycle detection and topological sorting, so learners understand how to explore graphs along deep paths before backtracking.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">📄</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topic Detail</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Graphs_Structure_Representat_interactive_topics_t7.html">Implementing Graph Traversal in JavaScript</a></div>
+    <p class="content-desc">A hands-on coding reading that walks learners through building a JavaScript Graph class from scratch, then adding BFS and DFS methods step by step, so they can translate traversal concepts into working, runnable code.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">📄</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Reading</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Graphs_Structure_Representat_interactive.html">Implementing Graph Traversal in JavaScript</a></div>
+    <p class="content-desc">A hands-on coding reading that walks learners through building a JavaScript Graph class from scratch, then adding BFS and DFS methods step by step, so they can translate traversal concepts into working, runnable code.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">🎬</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topics and Embedded Video</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Graphs_Structure_Representat_t1_videos.html">Introduction to Graph Data Structures — Videos</a></div>
+    <p class="content-desc">An introductory reading that defines graphs in terms of vertices and edges, contrasts them with arrays, lists, and trees, and shows real-world systems they model, giving learners the vocabulary needed before tackling representations and traversals.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">🎬</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topics and Embedded Video</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Graphs_Structure_Representat_t2_videos.html">Directed and Undirected Graphs — Videos</a></div>
+    <p class="content-desc">A lesson distinguishing directed from undirected graphs, explaining how edge direction changes the meaning of a connection and illustrating it with examples like friendships, road networks, web links, and course prerequisites so learners can choose the right model for a problem.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">🎬</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topics and Embedded Video</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Graphs_Structure_Representat_t3_videos.html">Adjacency Matrix Representation — Videos</a></div>
+    <p class="content-desc">A reading on storing a graph as an n-by-n adjacency matrix, covering how row/column entries encode edges, how to look up or add an edge, and the space and time trade-offs, which learners use to decide when a matrix is the right representation.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">🎬</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topics and Embedded Video</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Graphs_Structure_Representat_t4_videos.html">Adjacency List Representation — Videos</a></div>
+    <p class="content-desc">A lesson on the adjacency list representation, showing how each vertex keeps a list of its neighbors (typically with JavaScript objects, arrays, or maps) and why this is the default choice for sparse graphs and traversal algorithms.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">🎬</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topics and Embedded Video</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Graphs_Structure_Representat_t5_videos.html">Breadth-First Search (BFS) — Videos</a></div>
+    <p class="content-desc">A tutorial on Breadth-First Search that explains level-by-level exploration from a source vertex using a queue and a visited set, teaching learners how to trace BFS by hand and apply it to shortest-path and layer-based problems.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">🎬</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topics and Embedded Video</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Graphs_Structure_Representat_t6_videos.html">Depth-First Search (DFS) — Videos</a></div>
+    <p class="content-desc">A tutorial on Depth-First Search that explains going as deep as possible along each branch before backtracking, contrasts it with BFS, and prepares learners to implement DFS recursively or with an explicit stack.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">🎬</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topics and Embedded Video</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Graphs_Structure_Representat_t7_videos.html">Implementing Graph Traversal in JavaScript — Videos</a></div>
+    <p class="content-desc">A hands-on coding lesson in which learners build a reusable JavaScript Graph class backed by an adjacency list and implement BFS and DFS methods on it, turning the module&#39;s conceptual material into working code.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">🎬</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topics and Embedded Video</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Graphs_Structure_Representat_videos_merged.html">Graphs: Structure, Representation, and Traversal — 7 topics (merged)</a></div>
+    <p class="content-desc">A consolidated reading that compiles all module topics — graph fundamentals, directed versus undirected graphs, adjacency matrices and lists, BFS, DFS, and the JavaScript implementation — into a single document for review or study reference.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">🎬</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Video</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/ext_f7ebc594.html">Google Maps is unreasonably fast. Let me explain</a></div>
+    <p class="content-desc">This Veritasium video explores the mathematical and algorithmic principles behind how Google Maps computes routes so efficiently. It examines the graph-based representation of road networks and the optimization strategies that make real-time pathfinding feasible at massive scale. The video connects foundational graph theory to a widely recognized, high-impact real-world application.</p>
+  </div>
+</li>
+</ul>
+</section>
+<nav class="module-nav" aria-label="Modules">
+  <a href="../advanced-tree-structures-avl-trees-heaps-and-tries/index.html">← Advanced Tree Structures: AVL Trees, Heaps, and Tries</a>
+  <a class="center-link" href="../index.html">↑ All modules</a>
+  <a href="../applied-data-structures-blockchain-digital-currency-and-beyond/index.html">Applied Data Structures: Blockchain, Digital Currency, and Beyond →</a>
+</nav>
   </main>
-
-  <!-- ══════════════ FOOTER ══════════════ -->
-  <footer class="site-footer">
-    COP3530 — Data Structures &nbsp;·&nbsp; Graphs: Structure, Representation, and Traversal
-  </footer>
-
-
-<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
-<section class="presemaker-extras" style="max-width:1000px;margin:2rem auto;padding:0 1rem;"><h2>Topics &amp; Learning Outcomes</h2><p><a href="topics-outcomes.html">View Topics &amp; Learning Outcomes</a></p></section><script src="embed-inject.js" defer></script></body>
+<script src="embed-inject.js" defer></script>
+<footer class="presemaker-credit" data-credit="2" style="margin-top:2rem;padding:14px 8px;border-top:1px solid #ddd;background:#fff;text-align:center;font:13px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#595959;"><svg width="20" height="20" viewBox="0 0 2048 2048" aria-hidden="true" focusable="false" style="vertical-align:-5px;margin-right:7px"><rect width="2048" height="2048" rx="384" fill="#0F6E6E"/><path fill="#0A5050" d="M1024 1000 344 832v816l680 168zm0 0 680-168v816l-680 168z"/><path fill="#fff" d="M1024 944 384 784v808l640 160zm0 0 640-160v808l-640 160z"/><rect x="1002" y="944" width="44" height="808" fill="#0F6E6E"/><rect x="936" y="246" width="176" height="448" rx="44" fill="#fff"/><rect x="800" y="382" width="448" height="176" rx="44" fill="#fff"/></svg>Created with <a href="https://softwareplus.ai/coursebuilder/" target="_blank" rel="noopener" style="color:#2f5d8f;font-weight:600;text-decoration:none;">CourseBuilder+</a><span aria-hidden="true"> · </span><a href="https://softwareplus.ai/" target="_blank" rel="noopener" style="color:#2f5d8f;text-decoration:none;">SoftwarePlus.ai</a></footer>
+</body>
 </html>

@@ -1,0 +1,350 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Graphs: Structure, Representation, and Traversal</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+body{font-family:'Segoe UI',Arial,sans-serif;max-width:820px;margin:2rem auto;padding:0 1.25rem;color:#222;line-height:1.55}
+h1{font-size:1.9rem;border-bottom:2px solid #ddd;padding-bottom:.4rem}
+h2{font-size:1.3rem;color:#1f3864;margin-top:1.6rem}
+body{padding-left:1.1rem;padding-right:1.1rem}
+ul,ol{margin:.4rem 0 1rem 1.4rem}
+li{margin:.25rem 0}
+nav.toc{background:rgba(128,128,128,.08);border:1px solid rgba(128,128,128,.25);border-radius:8px;padding:.6rem 1rem;margin:1.2rem 0}
+nav.toc strong{display:block;margin-bottom:.3rem}
+nav.toc a{display:block;text-decoration:none;padding:.12rem 0}
+section.item{border-top:1px solid rgba(128,128,128,.22);padding-top:.3rem}
+table{border-collapse:collapse;width:100%;margin:.8rem 0}
+th,td{border:1px solid rgba(128,128,128,.45);padding:.4rem .6rem;text-align:left;vertical-align:top}
+thead th{background:rgba(128,128,128,.18);font-weight:600}
+tbody tr:nth-child(even){background:rgba(128,128,128,.08)}
+</style>
+<style>section.merged-part{border-top:2px solid rgba(128,128,128,.3);margin-top:2rem;padding-top:.5rem}nav.toc{background:rgba(128,128,128,.08);border:1px solid rgba(128,128,128,.25);border-radius:8px;padding:.6rem 1rem;margin:1.2rem 0}nav.toc a{display:block;text-decoration:none;padding:.12rem 0}</style>
+</head>
+<body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Graphs: Structure, Representation, and Traversal</a></div>
+<h1>Graphs: Structure, Representation, and Traversal</h1>
+<nav class="toc"><strong>Contents</strong>
+<a href="#part1">Introduction to Graph Data Structures</a>
+<a href="#part2">Directed and Undirected Graphs</a>
+<a href="#part3">Adjacency Matrix Representation</a>
+<a href="#part4">Adjacency List Representation</a>
+<a href="#part5">Breadth-First Search (BFS)</a>
+<a href="#part6">Depth-First Search (DFS)</a>
+<a href="#part7">Implementing Graph Traversal in JavaScript</a>
+</nav>
+<section class="merged-part" id="part1">
+<h2>Introduction to Graph Data Structures</h2>
+<section class="item" id="p1-sec1">
+<h3>Introduction</h3>
+<p>A graph is a data structure made of vertices (also called nodes) connected by edges. Unlike arrays, lists, or trees, graphs place no restriction on how items may connect: any vertex can link to any number of others, connections can be one-way or two-way, and cycles are allowed. That flexibility is exactly why graphs model so many real systems — road networks, social connections, web links, course prerequisites, and dependency chains in software.</p>
+<p>In this course, graphs are the structure that ties together much of what you have already learned. Before you can implement adjacency lists or trace BFS and DFS, you need a precise vocabulary: vertex, edge, directed versus undirected, weighted versus unweighted, adjacency, degree, path, cycle, and connected versus disconnected. Getting these terms right early makes the later material about representation and traversal far easier to follow, because every algorithm description assumes them.</p>
+<p>As you watch, focus on three things. First, how each video draws a graph and names its parts, so you can read a diagram quickly. Second, the difference an arrow makes — what changes when an edge is directed. Third, the terminology around moving through a graph (walks, paths, cycles), since traversal algorithms are formally described in those terms. Try sketching a small graph of your own, such as five friends and who follows whom, and label it using the vocabulary from each video.</p>
+</section>
+<section class="item" id="p1-sec2">
+<h3>Video 1: Introduction to Graphs | Graph Data Structure</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/TwdjOQMTaQ4?cc_load_policy=1&amp;rel=0" title="Video: Introduction to Graphs | Graph Data Structure (CodeWithHarry)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>CodeWithHarry</strong> · 18:01 · 498,106 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=TwdjOQMTaQ4" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>This is the opening lecture of a graph data structure series, introducing what a graph is and why it matters as a data structure in programming. Based on its title and framing, it should define vertices and edges, show how graphs differ from other structures, and set up the topics that follow in the series. At 18 minutes it is the longest of the three, so expect a slower, example-driven pace.</p>
+<h4>Why this video</h4>
+<p>CodeWithHarry is a widely watched programming channel, and this video's position as the first in a dedicated graph series makes it a natural starting point for the "What Is a Graph?", vertices, and edges subtopics.</p>
+</section>
+<section class="item" id="p1-sec3">
+<h3>Video 2: Introduction to Graphs: the Fundamentals, an Overview, Types and More | Data Structures | Geekific</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/UUuFT5K6zrI?cc_load_policy=1&amp;rel=0" title="Video: Introduction to Graphs: the Fundamentals, an Overview, Types and More | Data Structures | Geekific (Geekific)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Geekific</strong> · 9:47 · 8,676 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=UUuFT5K6zrI" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A compact overview of graph fundamentals that, per its title, covers the basics plus the different types of graphs. Expect coverage of core terminology and the distinctions among graph varieties, most likely including directed versus undirected and weighted versus unweighted forms. Geekific provides an accompanying GitHub repository if you want to look at code alongside the explanation.</p>
+<h4>Why this video</h4>
+<p>Its explicit focus on "types" maps directly onto the directed-versus-undirected subtopic, and its brisk 10-minute length makes it a good second pass or review after the longer introduction.</p>
+</section>
+<section class="item" id="p1-sec4">
+<h3>Video 3: Guide to Walks, Trails, Paths, Circuits, and Cycles! [Graph Theory Tutorial]</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/hlHWguJVAdU?cc_load_policy=1&amp;rel=0" title="Video: Guide to Walks, Trails, Paths, Circuits, and Cycles! [Graph Theory Tutorial] (Vital Sine)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Vital Sine</strong> · 8:43 · 52,373 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=hlHWguJVAdU" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>This tutorial focuses on the terms used to describe movement through a graph: walks, trails, paths, circuits, and cycles. The description confirms it begins by defining a walk as a sequence and then distinguishes the related terms from it. Expect worked examples on small graphs showing why one sequence counts as a path and another does not.</p>
+<h4>Why this video</h4>
+<p>It sharpens the "Key Graph Vocabulary" subtopic with the precise distinctions that textbooks and algorithm descriptions rely on, which is useful groundwork before you study traversal.</p>
+</section>
+<section class="item" id="p1-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>These three videos build the vocabulary and mental models the module's outcomes depend on. The introductory videos establish vertices, edges, and the directed-versus-undirected distinction, which is the direct foundation for MO1 and for recognizing which graph type fits a given real-world relationship. Their coverage of graph types and structure also prepares you for MO2, since adjacency matrix and adjacency list trade-offs only make sense once you can reason about how many edges a graph has and whether edges are symmetric. The walks-and-paths tutorial supplies the exact terminology used when describing traversal order, supporting MO3 and MO5, and the shared vocabulary across all three carries into the implementation work in MO4.</p>
+</section>
+<section class="item" id="p1-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part2">
+<h2>Directed and Undirected Graphs</h2>
+<section class="item" id="p2-sec1">
+<h3>Introduction</h3>
+<p>A graph is one of the most flexible data structures you will meet in this course: it is simply a set of vertices (nodes) plus a set of edges that connect pairs of them. That minimal definition is powerful because almost any relationship can be modeled with it — friendships, road networks, web links, course prerequisites, package dependencies, and task scheduling. Before you can store a graph or traverse it, you need to be fluent in the vocabulary (vertex, edge, degree, path, cycle, adjacency) and in the single most important modeling decision: whether the edges have direction.</p>
+<p>In an undirected graph, an edge between A and B means the relationship runs both ways — if A is a Facebook friend of B, then B is a friend of A. In a directed graph (digraph), each edge points from a source to a target, so A following B on Twitter says nothing about B following A. That distinction changes how you count degree (in-degree and out-degree instead of a single degree), how you store the graph (one entry or two in an adjacency list), and what questions you can ask (reachability, cycles, topological order).</p>
+<p>As you watch these videos, keep a running list of two things. First, the terminology: write down each term and a one-sentence definition in your own words, because the rest of the module assumes it. Second, the direction question: for every example shown, ask yourself whether the relationship is inherently symmetric (undirected) or asymmetric (directed), and how the answer would change the code you write later in the module.</p>
+</section>
+<section class="item" id="p2-sec2">
+<h3>Video 1: 0405: Basic types of graphs and select properties</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/mj_EWVSVObM?cc_load_policy=1&amp;rel=0" title="Video: 0405: Basic types of graphs and select properties (cs128)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>cs128</strong> · 7:00 · 4,485 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=mj_EWVSVObM" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A short survey of the basic categories of graphs and a few of their key properties, including how the notion of degree is defined differently depending on the kind of graph you are working with. Expect coverage of undirected versus directed graphs and related distinctions such as weighted versus unweighted or simple versus multi-edge graphs, with the properties that follow from each.</p>
+<h4>Why this video</h4>
+<p>At seven minutes it is an efficient orientation to the graph types you need to tell apart, and its explicit attention to how degree is defined per graph type directly supports the 'key differences' subtopic.</p>
+</section>
+<section class="item" id="p2-sec3">
+<h3>Video 2: Graph Terminology</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/plaFujMGyc0?cc_load_policy=1&amp;rel=0" title="Video: Graph Terminology (Professor Kevin Wortman)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Professor Kevin Wortman</strong> · 12:37 · 314 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=plaFujMGyc0" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A lecture-style walkthrough of standard graph terminology, delivered with slides. It should establish the core vocabulary — vertices, edges, adjacency, degree, paths, cycles, connectivity — and the distinction between directed and undirected edges that the rest of this module builds on.</p>
+<h4>Why this video</h4>
+<p>It is the most thorough of the three on definitions, and a careful, slide-based university lecture is the right format for terminology you will be expected to use precisely in assignments and exams.</p>
+</section>
+<section class="item" id="p2-sec4">
+<h3>Video 3: Directed Graph ADT</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/z4fqHyJCUvI?cc_load_policy=1&amp;rel=0" title="Video: Directed Graph ADT (Professor Kevin Wortman)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Professor Kevin Wortman</strong> · 5:03 · 315 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=z4fqHyJCUvI" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A focused look at the directed graph as an abstract data type: what a digraph is and what operations it is expected to support. Because it frames digraphs as an ADT, it is likely to separate the interface (adding edges, querying neighbors or successors) from any particular implementation.</p>
+<h4>Why this video</h4>
+<p>It gives directed graphs their own dedicated treatment rather than a footnote, and the ADT framing is a natural bridge to the representation and Graph-class work that comes later in this module.</p>
+</section>
+<section class="item" id="p2-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these three videos target MO1 most directly: the terminology and basic-types videos give you the precise definitions and property differences needed to distinguish directed from undirected graphs, and the directed-graph ADT video sharpens what is special about edges with direction so you can choose the right model for a real-world relationship. They also lay necessary groundwork for the rest of the module — the ADT framing in particular previews the interface your adjacency-list Graph class will implement (MO2, MO4), and a solid grasp of adjacency and reachability is what makes BFS and DFS traversals (MO3, MO5) tractable later. Use these as the vocabulary foundation, then move on to the representation and traversal materials.</p>
+</section>
+<section class="item" id="p2-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part3">
+<h2>Adjacency Matrix Representation</h2>
+<section class="item" id="p3-sec1">
+<h3>Introduction</h3>
+<p>A graph is just a set of vertices and the edges that connect them, but before you can write code that works on a graph you have to decide how to store it. The adjacency matrix is the most direct answer: number the vertices 0 through n-1, then build an n-by-n table where the entry in row i and column j records whether an edge runs from vertex i to vertex j. For an unweighted graph the entries are typically 1 and 0; for a weighted graph they can hold the edge weight instead.</p>
+<p>This representation matters in COP3530 because it is one half of the central design trade-off you will be asked to reason about all module long. A matrix always occupies space proportional to the square of the vertex count, regardless of how few edges exist, but it answers the question "is there an edge between u and v?" in constant time. The adjacency list flips both of those properties. Knowing which one to reach for depends on whether your graph is dense or sparse, and on which operations your algorithm performs most often.</p>
+<p>As you watch, pay attention to a few specific things. First, notice how symmetry across the main diagonal signals an undirected graph, and how a directed graph's matrix is generally asymmetric. Second, track the complexity claims carefully: space, edge lookup, adding or removing an edge, and iterating over all neighbors of a vertex are each different costs. Third, watch for how the presenters handle weighted edges and self-loops, since those details often show up in assignments.</p>
+</section>
+<section class="item" id="p3-sec2">
+<h3>Video 1: 0406: Adjacency-matrix representation</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/bCkaPT1GqWw?cc_load_policy=1&amp;rel=0" title="Video: 0406: Adjacency-matrix representation (cs128)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>cs128</strong> · 10:10 · 4,539 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=bCkaPT1GqWw" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A focused lecture segment devoted entirely to the adjacency matrix representation of a graph G with a given vertex set and edge set. Given its short length and narrow title, it most likely walks through the formal definition of the matrix, how entries are filled in from the edge set, and the storage and lookup costs that follow. Expect a definition-first, notation-heavy treatment rather than code.</p>
+<h4>Why this video</h4>
+<p>This is the most tightly scoped video of the three, so it is a good first stop for the "What Is an Adjacency Matrix?" and space complexity subtopics before you move on to comparisons and implementations.</p>
+</section>
+<section class="item" id="p3-sec3">
+<h3>Video 2: Graph Data Structure | Adjacency Matrix and Adjacency List Graph | Graph DSA Java C++ | DSAOne #74</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/MEpBQ4YghAM?cc_load_policy=1&amp;rel=0" title="Video: Graph Data Structure | Adjacency Matrix and Adjacency List Graph | Graph DSA Java C++ | DSAOne #74 (Anuj Kumar Sharma)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Anuj Kumar Sharma</strong> · 12:16 · 137,080 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=MEpBQ4YghAM" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>Part of the DSAOne series, this video covers implementing graphs in code using both the adjacency matrix and the adjacency list, with Java and C++ mentioned in the title. It should show the actual two-dimensional array setup for a matrix alongside the list-of-neighbors alternative, so you can see the two data layouts side by side. The comparison framing means the trade-offs between the two should come up directly.</p>
+<h4>Why this video</h4>
+<p>The side-by-side treatment maps straight onto the advantages, trade-offs and limitations subtopics, and seeing concrete code makes the abstract space and time claims much easier to believe and remember.</p>
+</section>
+<section class="item" id="p3-sec4">
+<h3>Video 3: 4.2 : Representing Graphs</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/_5czfD3Bzlw?cc_load_policy=1&amp;rel=0" title="Video: 4.2 : Representing Graphs (IIT Madras - B.S. Degree Programme)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>IIT Madras - B.S. Degree Programme</strong> · 18:05 · 23,753 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=_5czfD3Bzlw" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A university lecture from IIT Madras on representing graphs, delivered as part of a programming and algorithms course taught by Prof. Madhavan. At eighteen minutes it is the longest of the three and should cover the representation question broadly, including matrices, lists, and the complexity reasoning behind choosing between them. Directed and undirected cases are a standard part of such a lecture.</p>
+<h4>Why this video</h4>
+<p>The longer format and academic source give you the most careful treatment of complexity analysis and of how directed versus undirected graphs change the matrix, which is exactly the reasoning the module asks you to reproduce.</p>
+</section>
+<section class="item" id="p3-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these videos build the representation knowledge the module depends on. The directed versus undirected discussion, and the matrix symmetry that distinguishes them, supports MO1 by giving you a concrete way to tell the two graph types apart. The heart of the alignment is MO2: all three videos address how much space a matrix consumes and how fast its common operations run, and the DSAOne and IIT Madras videos set those figures directly against the adjacency list so you can argue which representation suits a sparse or a dense graph. Because MO4 asks you to build a Graph class on adjacency list storage, understanding why the matrix is the wrong choice for that assignment is part of the preparation, and the code-level videos here make that contrast tangible before you move on to the traversal outcomes in MO3 and MO5.</p>
+</section>
+<section class="item" id="p3-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part4">
+<h2>Adjacency List Representation</h2>
+<section class="item" id="p4-sec1">
+<h3>Introduction</h3>
+<p>A graph is just a set of vertices and the edges that connect them, but before you can run any algorithm on one, you have to decide how to store it in memory. The adjacency list is the representation you will use most often in this course: for every vertex, you keep a list (or array, or set) of the vertices it connects to. In JavaScript this usually looks like an object or a Map whose keys are vertex labels and whose values are arrays of neighbors.</p>
+<p>The reason this representation matters is efficiency. An adjacency matrix stores a cell for every possible pair of vertices, which costs O(V^2) space no matter how few edges exist; an adjacency list costs roughly O(V + E), which is a huge win for sparse graphs such as road networks, social graphs, or dependency graphs. The trade-off is that checking "is there an edge from u to v?" requires scanning u's list instead of a single constant-time lookup, so neither representation is universally better.</p>
+<p>As you watch, pay attention to three things. First, how the structure changes between directed and undirected graphs: in an undirected graph each edge appears twice, once in each endpoint's list. Second, how the authors count space and time, and which operations favor the list versus the matrix. Third, the mechanics of actually building the structure in code, so you can translate the Java or pseudocode you see into the JavaScript Graph class you will write later in this module.</p>
+</section>
+<section class="item" id="p4-sec2">
+<h3>Video 1: 0406: Adjacency-list representation</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/wcITWm3bSMg?cc_load_policy=1&amp;rel=0" title="Video: 0406: Adjacency-list representation (cs128)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>cs128</strong> · 8:37 · 4,855 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=wcITWm3bSMg" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A focused lecture segment that defines the adjacency-list representation of a graph G = (V, E) as an array of lists indexed by vertex, with each list holding that vertex's neighbors. Based on its framing, it should walk through how edges are recorded for a sample graph and discuss the storage requirements of the structure.</p>
+<h4>Why this video</h4>
+<p>It gives the precise, textbook-style definition you need for "What Is an Adjacency List?" and "Space Complexity of the Adjacency List," from a course-lecture channel whose terminology matches standard data structures texts.</p>
+</section>
+<section class="item" id="p4-sec3">
+<h3>Video 2: 0406: Graph representation alternatives revisited</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/3d4Z78XqFik?cc_load_policy=1&amp;rel=0" title="Video: 0406: Graph representation alternatives revisited (cs128)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>cs128</strong> · 9:56 · 3,702 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=3d4Z78XqFik" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>This follow-up lecture revisits the competing ways to represent a graph and compares them operation by operation, noting for example that an adjacency matrix affords direct access for an edge-existence check while an adjacency list does not. Expect discussion of which representation is faster for iterating over a vertex's neighbors versus testing a single edge, and how sparse and dense graphs change the answer.</p>
+<h4>Why this video</h4>
+<p>It directly serves the "Adjacency List vs. Adjacency Matrix" and "When to Choose an Adjacency List" subtopics by framing the decision as a set of explicit trade-offs rather than a single right answer.</p>
+</section>
+<section class="item" id="p4-sec4">
+<h3>Video 3: Adjacency List Representation of an Undirected Graph in Java | Implementation</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/6rDKLqFLfh0?cc_load_policy=1&amp;rel=0" title="Video: Adjacency List Representation of an Undirected Graph in Java | Implementation (Dinesh Varyani)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Dinesh Varyani</strong> · 9:44 · 19,609 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=6rDKLqFLfh0" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>An implementation-oriented walkthrough that builds an adjacency list for an undirected graph in Java, showing how vertices are stored and how each edge is inserted into the lists of both endpoints. The video is part of a larger DSA series and uses animated slides alongside the code.</p>
+<h4>Why this video</h4>
+<p>Seeing an undirected graph built edge by edge makes the directed-versus-undirected distinction concrete, and the code structure maps cleanly onto the JavaScript Graph class you are asked to write, even though the syntax is Java.</p>
+</section>
+<section class="item" id="p4-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these videos build the representation knowledge the module depends on. The first establishes the adjacency list definition and its O(V + E) storage, and the second sets it against the adjacency matrix with explicit operation-by-operation trade-offs, which is exactly the comparison required by MO2. The third shows an undirected graph being constructed edge by edge, reinforcing the directed/undirected distinction in MO1 and giving you an implementation template to adapt for the JavaScript Graph class in MO4. Because BFS and DFS (MO3 and MO5) are normally run over an adjacency list, the fluency you gain here is a prerequisite for tracing and coding those traversals later in the module.</p>
+</section>
+<section class="item" id="p4-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part5">
+<h2>Breadth-First Search (BFS)</h2>
+<section class="item" id="p5-sec1">
+<h3>Introduction</h3>
+<p>Breadth-First Search (BFS) is a graph traversal strategy that explores a graph in layers: starting from a source vertex, it visits every neighbor at distance one, then every vertex at distance two, and so on. The engine behind this level-by-level behavior is the queue, a first-in-first-out structure that holds vertices waiting to be explored. Alongside the queue you also need a visited set (or boolean array) so that cycles and shared neighbors do not cause a vertex to be processed twice.</p>
+<p>BFS matters in this course because it is one of the two canonical traversals you will implement on top of your adjacency list representation, and because its level order gives it properties DFS does not have — most notably, in an unweighted graph BFS finds the shortest path in number of edges from the source. It also forces you to think about graphs that are not fully connected: a single BFS call only reaches the component containing the start vertex, so a complete traversal requires looping over all vertices and launching a new BFS from each unvisited one.</p>
+<p>As you watch the videos below, focus on four things: exactly when a vertex is marked visited (on enqueue, not on dequeue, if you want to avoid duplicates), how the queue contents change at each step, how the traversal order depends on the order neighbors appear in the adjacency list, and where BFS shows up in practice — shortest paths, level/distance computation, web crawling, social network degrees of separation. Try tracing a small graph by hand before and after watching, and compare your order against the one in the video.</p>
+</section>
+<section class="item" id="p5-sec2">
+<h3>Video 1: Breadth First Search Explained and Implemented in Java | BFS | Graph Traversal &amp; Theory | Geekific</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/9Oev6UgLhiI?cc_load_policy=1&amp;rel=0" title="Video: Breadth First Search Explained and Implemented in Java | BFS | Graph Traversal &amp; Theory | Geekific (Geekific)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Geekific</strong> · 6:22 · 72,911 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=9Oev6UgLhiI" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>Geekific presents the theory of BFS and then implements it in Java, connecting the conceptual queue-based traversal to actual code. Expect coverage of how the queue drives exploration, how visited tracking prevents revisiting vertices, and how the traversal is written against a graph structure, with the full source available in the linked repository.</p>
+<h4>Why this video</h4>
+<p>It pairs the algorithm logic with a concrete implementation, which is exactly the bridge you need when writing your own Graph class traversal method in this module.</p>
+</section>
+<section class="item" id="p5-sec3">
+<h3>Video 2: Breadth-first search in 4 minutes</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/HZ5YTanv5QE?cc_load_policy=1&amp;rel=0" title="Video: Breadth-first search in 4 minutes (Michael Sambol)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Michael Sambol</strong> · 3:59 · 603,429 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=HZ5YTanv5QE" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A compact, tightly edited explanation of breadth-first search that walks through the algorithm on a sample graph in under four minutes. It focuses on the core mechanics — the queue, marking vertices as visited, and the resulting level-by-level visit order — with linked Python code for those who want to see an implementation.</p>
+<h4>Why this video</h4>
+<p>Michael Sambol's algorithm shorts are widely used and known for clean, correct visual traces, making this the fastest way to get the BFS logic and traversal order straight before diving into longer treatments.</p>
+</section>
+<section class="item" id="p5-sec4">
+<h3>Video 3: Breadth First Search (BFS) Graph Traversal in Data Structures</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/6dWUABpUky4?cc_load_policy=1&amp;rel=0" title="Video: Breadth First Search (BFS) Graph Traversal in Data Structures (CodeWithHarry)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>CodeWithHarry</strong> · 19:00 · 367,697 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=6dWUABpUky4" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A longer, classroom-style lecture from CodeWithHarry that develops BFS as a graph traversal in a data structures context, including discussion of the BFS spanning tree produced by the traversal. The extra length allows for slower, more detailed stepping through examples and the data structures involved.</p>
+<h4>Why this video</h4>
+<p>The pace and depth suit students who want the step-by-step reasoning spelled out, and the spanning-tree framing adds useful intuition for why BFS order relates to shortest distances from the source.</p>
+</section>
+<section class="item" id="p5-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>These three videos concentrate on MO3 and MO5. The short Sambol video and the detailed CodeWithHarry lecture let you practice tracing BFS visit order on a given graph and reasoning about the queue state at each step, which is the core tracing skill in MO3; the longer lecture's example work also helps you see why an outer loop over all vertices is needed when a graph has multiple components. The Geekific implementation supports MO4 by showing BFS written as code over a graph structure, which you can translate into your JavaScript Graph class built on an adjacency list (MO2). Discussion of BFS uses — shortest paths in unweighted graphs, level or distance computation — gives you the evidence needed for MO5 when you argue whether BFS or DFS fits a given problem. The videos assume a graph is already defined, so pair them with the module's earlier material for MO1 and MO2.</p>
+</section>
+<section class="item" id="p5-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part6">
+<h2>Depth-First Search (DFS)</h2>
+<section class="item" id="p6-sec1">
+<h3>Introduction</h3>
+<p>Depth-First Search (DFS) is one of the two fundamental ways to systematically visit every vertex in a graph. The strategy is simple to state: from the current vertex, follow one edge as deep as you can, and only when you run out of unvisited neighbors do you back up (backtrack) and try another branch. That "go deep first" behavior is what separates DFS from BFS, which fans out level by level.</p>
+<p>In this course, DFS matters for two reasons. First, it is a building block: cycle detection, topological sorting, finding connected components, path existence checks, and maze/puzzle solving are all DFS in disguise. Second, it is a good test of your understanding of recursion and explicit stacks — the recursive version hides the stack in the call stack, while the iterative version makes that stack visible, and the two can produce different (but equally valid) visit orders.</p>
+<p>As you watch, keep a short checklist in mind: Where is the visited set maintained, and when is a vertex marked visited (on push, or on pop)? How is backtracking actually happening? What happens if the graph is disconnected — how does the algorithm restart from an unvisited vertex? And how would the same pseudocode map onto an adjacency list in your own Graph class? Try tracing each example by hand on paper before the video reveals the answer.</p>
+</section>
+<section class="item" id="p6-sec2">
+<h3>Video 1: Depth First Search Explained and Implemented in Java | DFS | Graph Traversal &amp; Theory | Geekific</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/x6iO0ZH9h7Q?cc_load_policy=1&amp;rel=0" title="Video: Depth First Search Explained and Implemented in Java | DFS | Graph Traversal &amp; Theory | Geekific (Geekific)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Geekific</strong> · 9:06 · 61,664 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=x6iO0ZH9h7Q" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A theory-plus-code walkthrough from the Geekific channel that explains the DFS idea and then implements it, with Java used as the demonstration language and the source posted on GitHub. Expect coverage of how DFS explores a branch fully before backtracking, how visited vertices are tracked, and how the traversal is driven over a graph structure. The accompanying repository lets you read the finished implementation line by line after watching.",</p>
+<h4>Why this video</h4>
+<p>It pairs the conceptual explanation with a concrete implementation, which supports both the "DFS Core Concept and Strategy" and the implementation subtopics; the logic translates directly to JavaScript even though the demo code is Java.</p>
+</section>
+<section class="item" id="p6-sec3">
+<h3>Video 2: Depth-first search in 4 minutes</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/Urx87-NMm6c?cc_load_policy=1&amp;rel=0" title="Video: Depth-first search in 4 minutes (Michael Sambol)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Michael Sambol</strong> · 4:01 · 550,064 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=Urx87-NMm6c" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A tightly edited four-minute explanation of depth-first search from Michael Sambol, a channel known for concise, animation-driven algorithm summaries. In roughly the length of a coffee break it walks through how DFS descends along a path and backtracks, with Python reference code linked in the description. It is the kind of video you can rewatch several times while tracing your own example graph.</p>
+<h4>Why this video</h4>
+<p>It is an excellent first exposure or quick review: short, accurate, and focused on traversal order and the deep-then-backtrack strategy, which is exactly what you need to trace DFS by hand on an exam.</p>
+</section>
+<section class="item" id="p6-sec4">
+<h3>Video 3: Iterative Depth First Search (DFS) traversal of an Undirected Graph | Animation</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/WxM-EENBY-w?cc_load_policy=1&amp;rel=0" title="Video: Iterative Depth First Search (DFS) traversal of an Undirected Graph | Animation (Dinesh Varyani)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Dinesh Varyani</strong> · 17:45 · 13,988 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=WxM-EENBY-w" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>Dinesh Varyani devotes nearly eighteen minutes to the iterative, stack-based form of DFS on an undirected graph, using step-by-step animation. The extended runtime allows the push/pop sequence, the state of the explicit stack, and the visited marking to be shown frame by frame as the traversal unfolds. It is part of a larger data-structures-and-algorithms series.</p>
+<h4>Why this video</h4>
+<p>It directly targets the "Iterative DFS Implementation" and "DFS Traversal Order and Visited Tracking" subtopics, and the slow animated trace makes clear why the iterative visit order can differ from the recursive one.</p>
+</section>
+<section class="item" id="p6-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these three videos carry the DFS half of MO3, MO4, and MO5. The Sambol video gives you the compact mental model needed to trace DFS order by hand (MO3), while the Geekific video shows a full recursive implementation over a graph structure and the Varyani video shows the explicit stack version — between them they cover both approaches you must be able to write in your own Graph class (MO4). Watching all three also surfaces the practical side of DFS — path finding, component discovery, and backtracking-style search — which you will draw on when justifying DFS versus BFS for a given scenario (MO5). Note that none of these videos focus on adjacency matrix versus adjacency list trade-offs (MO2) or on choosing directed versus undirected models (MO1); rely on the module readings and other videos for those outcomes, and be sure to supplement with practice on disconnected graphs, where an outer loop must restart DFS from each unvisited vertex.</p>
+</section>
+<section class="item" id="p6-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part7">
+<h2>Implementing Graph Traversal in JavaScript</h2>
+<section class="item" id="p7-sec1">
+<h3>Introduction</h3>
+<p>So far in this module you have studied graphs on paper: vertices, edges, directed versus undirected relationships, and the trade-offs between adjacency matrices and adjacency lists. Now you will turn those ideas into working code. The goal of this topic is to build a reusable Graph class in JavaScript that stores its edges as an adjacency list (commonly a Map or object whose keys are vertices and whose values are arrays of neighbors), exposes a method for adding edges, and then supports traversal.</p>
+<p>Traversal is where the structure earns its keep. Breadth-first search uses a queue and a visited set to explore a graph level by level, while depth-first search follows one path as far as it can before backtracking. DFS can be written two ways: recursively, where the JavaScript call stack does the bookkeeping for you, or iteratively, where you manage an explicit stack. Writing both versions makes the relationship between recursion and stacks concrete, and it prepares you to handle graphs large enough that deep recursion becomes risky.</p>
+<p>The videos below walk through implementations of BFS, recursive DFS, and iterative DFS on an undirected graph. While watching, pay attention to three things: how the graph is represented and how edges get added for an undirected graph (both directions), where the visited set is checked and updated, and the exact order in which vertices are printed. Afterward, run the same graph through all three traversals yourself and compare the output orders so you can explain why they differ.</p>
+</section>
+<section class="item" id="p7-sec2">
+<h3>Video 1: Breadth First Search (BFS) traversal of an Undirected Graph | Implementation</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/grewOnmAd0k?cc_load_policy=1&amp;rel=0" title="Video: Breadth First Search (BFS) traversal of an Undirected Graph | Implementation (Dinesh Varyani)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Dinesh Varyani</strong> · 6:05 · 11,941 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=grewOnmAd0k" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A short implementation-focused walkthrough of breadth-first search on an undirected graph. Based on the title and series, it should cover the queue-based BFS loop, the use of a visited structure to avoid revisiting vertices, and the resulting level-by-level traversal order on a sample graph.</p>
+<h4>Why this video</h4>
+<p>It targets the BFS subtopic directly at the code level rather than only in theory, and it comes from a structured data-structures-and-algorithms series, so the terminology and graph setup carry over to the DFS videos that follow.</p>
+</section>
+<section class="item" id="p7-sec3">
+<h3>Video 2: Recursive Depth First Search (DFS) traversal of an Undirected Graph | Implementation</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/mELMBBw1Yw0?cc_load_policy=1&amp;rel=0" title="Video: Recursive Depth First Search (DFS) traversal of an Undirected Graph | Implementation (Dinesh Varyani)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Dinesh Varyani</strong> · 5:41 · 1,612 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=mELMBBw1Yw0" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>This video implements depth-first search recursively on an undirected graph. Expect it to show a helper method that marks the current vertex visited and then calls itself on each unvisited neighbor, with the call stack handling backtracking automatically.</p>
+<h4>Why this video</h4>
+<p>It covers the recursive DFS subtopic and, because it uses the same graph and style as the BFS video, it makes the contrast between queue-driven and recursion-driven exploration easy to see.</p>
+</section>
+<section class="item" id="p7-sec4">
+<h3>Video 3: Iterative Depth First Search (DFS) traversal of an Undirected Graph | Implementation</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/Wzk6BBEBlYE?cc_load_policy=1&amp;rel=0" title="Video: Iterative Depth First Search (DFS) traversal of an Undirected Graph | Implementation (Dinesh Varyani)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Dinesh Varyani</strong> · 6:29 · 8,042 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=Wzk6BBEBlYE" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>The companion video showing DFS written iteratively with an explicit stack instead of recursion. It should demonstrate pushing a starting vertex, popping and visiting, then pushing unvisited neighbors, and it will likely highlight how the push order affects the visit order.</p>
+<h4>Why this video</h4>
+<p>It completes the recursive-versus-iterative pairing required by this topic and gives you a direct view of how an explicit stack replaces the call stack, which is useful for reasoning about deep or large graphs.</p>
+</section>
+<section class="item" id="p7-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these three videos support MO4 most directly: they model building and traversing an adjacency-list graph in code, including BFS, recursive DFS, and iterative DFS. Because each walkthrough traces the visit order on a concrete undirected graph, they also reinforce MO3 by letting you check your hand-traced orderings against a worked example, and they touch MO1 through the handling of undirected edges (added in both directions) and MO2 through the choice of adjacency-list storage. Comparing the BFS and DFS outputs across the videos prepares you for MO5, where you must justify which traversal fits a given problem, such as shortest-hop search versus exhaustive path exploration.</p>
+</section>
+<section class="item" id="p7-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+
+<footer class="presemaker-credit" data-credit="2" style="margin-top:2rem;padding:14px 8px;border-top:1px solid #ddd;background:#fff;text-align:center;font:13px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#595959;"><svg width="20" height="20" viewBox="0 0 2048 2048" aria-hidden="true" focusable="false" style="vertical-align:-5px;margin-right:7px"><rect width="2048" height="2048" rx="384" fill="#0F6E6E"/><path fill="#0A5050" d="M1024 1000 344 832v816l680 168zm0 0 680-168v816l-680 168z"/><path fill="#fff" d="M1024 944 384 784v808l640 160zm0 0 640-160v808l-640 160z"/><rect x="1002" y="944" width="44" height="808" fill="#0F6E6E"/><rect x="936" y="246" width="176" height="448" rx="44" fill="#fff"/><rect x="800" y="382" width="448" height="176" rx="44" fill="#fff"/></svg>Created with <a href="https://softwareplus.ai/coursebuilder/" target="_blank" rel="noopener" style="color:#2f5d8f;font-weight:600;text-decoration:none;">CourseBuilder+</a><span aria-hidden="true"> · </span><a href="https://softwareplus.ai/" target="_blank" rel="noopener" style="color:#2f5d8f;text-decoration:none;">SoftwarePlus.ai</a></footer>
+</body>
+</html>

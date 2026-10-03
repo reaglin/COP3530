@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Comparing Advanced Tree Structures: Use Cases and Trade-offs</title>
+<style>
+body{font-family:'Segoe UI',Arial,sans-serif;max-width:820px;margin:2rem auto;padding:0 1.25rem;color:#222;line-height:1.55}
+h1{font-size:1.9rem;border-bottom:2px solid #ddd;padding-bottom:.4rem}
+h2{font-size:1.3rem;color:#1f3864;margin-top:1.6rem}
+body{padding-left:1.1rem;padding-right:1.1rem}
+ul,ol{margin:.4rem 0 1rem 1.4rem}
+li{margin:.25rem 0}
+nav.toc{background:rgba(128,128,128,.08);border:1px solid rgba(128,128,128,.25);border-radius:8px;padding:.6rem 1rem;margin:1.2rem 0}
+nav.toc strong{display:block;margin-bottom:.3rem}
+nav.toc a{display:block;text-decoration:none;padding:.12rem 0}
+section.item{border-top:1px solid rgba(128,128,128,.22);padding-top:.3rem}
+table{border-collapse:collapse;width:100%;margin:.8rem 0}
+th,td{border:1px solid rgba(128,128,128,.45);padding:.4rem .6rem;text-align:left;vertical-align:top}
+thead th{background:rgba(128,128,128,.18);font-weight:600}
+tbody tr:nth-child(even){background:rgba(128,128,128,.08)}
+</style>
+</head>
+<body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Advanced Tree Structures: AVL Trees, Heaps, and Tries</a></div>
+<h1>Comparing Advanced Tree Structures: Use Cases and Trade-offs</h1>
+<nav class="toc"><strong>Contents</strong>
+<a href="#sec1">Introduction</a>
+<a href="#sec2">Video 1: Trees Compared and Visualized | BST vs AVL vs Red-Black vs Splay vs Heap | Geekific</a>
+<a href="#sec3">Video 2: 10 Key Data Structures We Use Every Day</a>
+<a href="#sec4">Video 3: 8 Key Data Structures That Power Modern Databases</a>
+<a href="#sec5">How These Videos Support the Learning Outcomes</a>
+<a href="#sec6">About These Videos</a>
+</nav>
+<section class="item" id="sec1">
+<h2>Introduction</h2>
+<p>So far in this module you have studied AVL trees, heaps, and tries one at a time, learning how each is built and how its operations work. This topic shifts the question from &quot;how does it work?&quot; to &quot;when should I use it?&quot; Each of these structures buys a particular guarantee at a particular cost: AVL trees pay for rotations and extra height bookkeeping in exchange for guaranteed O(log n) search on ordered data; heaps give up full ordering and fast arbitrary search in exchange for O(1) access to the minimum or maximum; tries trade significant memory for lookups whose cost depends on key length rather than the number of stored keys.</p>
+<p>This matters because real engineering decisions are rarely about which structure is &quot;best&quot; in the abstract. They are about matching a structure&#39;s strengths to the operations your problem performs most often. A scheduler that repeatedly asks for the next highest-priority task, an index that must support ordered range queries, and an autocomplete box that resolves prefixes are three different problems with three different right answers. Being able to justify that choice — with complexity bounds and practical considerations like memory overhead and cache behavior — is the skill this topic develops.</p>
+<p>As you watch the videos below, keep a comparison table in front of you with rows for AVL trees, heaps, and tries and columns for search, insert, delete, min/max access, space, and typical use cases. Note where the videos confirm what you already know, and pay attention to where real systems actually deploy these structures. Also watch for the common pitfalls: assuming a heap can search efficiently, assuming a balanced BST is always worth its rotation cost, and underestimating the memory footprint of a trie over a large alphabet.</p>
+</section>
+<section class="item" id="sec2">
+<h2>Video 1: Trees Compared and Visualized | BST vs AVL vs Red-Black vs Splay vs Heap | Geekific</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/hmSFuM2Tglw?cc_load_policy=1&amp;rel=0" title="Video: Trees Compared and Visualized | BST vs AVL vs Red-Black vs Splay vs Heap | Geekific (Geekific)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Geekific</strong> · 8:02 · 22,033 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=hmSFuM2Tglw" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>This Geekific video places several tree structures side by side — plain binary search trees, AVL trees, red-black trees, splay trees, and heaps — and uses visualizations to show how their shapes and behaviors differ. Based on its title and framing, it should highlight why an unbalanced BST degrades, what balancing schemes do about it, and how a heap&#39;s ordering property differs from a search tree&#39;s.</p>
+<h3>Why this video</h3>
+<p>This is the most directly on-topic video for the comparison itself, covering AVL trees and heaps in the same frame so you can see the structural contrast rather than studying them in isolation. Geekific&#39;s visual, example-driven style suits the &quot;performance characteristics at a glance&quot; and &quot;decision framework&quot; subtopics.</p>
+</section>
+<section class="item" id="sec3">
+<h2>Video 2: 10 Key Data Structures We Use Every Day</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/ouipSd_5ivQ?cc_load_policy=1&amp;rel=0" title="Video: 10 Key Data Structures We Use Every Day (ByteByteGo)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>ByteByteGo</strong> · 8:43 · 451,698 views · 3y ago · captions — <a href="https://www.youtube.com/watch?v=ouipSd_5ivQ" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>ByteByteGo surveys ten data structures that appear in everyday software systems, explaining for each one what problem it solves and where it shows up in practice. Expect heaps and tries to appear alongside hash tables, lists, and trees, each tied to a concrete application such as priority scheduling or autocomplete and spell checking.</p>
+<h3>Why this video</h3>
+<p>It supplies the real-world use-case grounding that the decision framework depends on, connecting abstract complexity bounds to the kinds of problems each structure was designed for. ByteByteGo is a well-regarded systems-oriented channel and keeps the explanations short and application-focused.</p>
+</section>
+<section class="item" id="sec4">
+<h2>Video 3: 8 Key Data Structures That Power Modern Databases</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/W_v05d_2RTo?cc_load_policy=1&amp;rel=0" title="Video: 8 Key Data Structures That Power Modern Databases (ByteByteGo)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>ByteByteGo</strong> · 4:34 · 239,237 views · 3y ago · captions — <a href="https://www.youtube.com/watch?v=W_v05d_2RTo" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>This short ByteByteGo video looks at the data structures underlying modern database systems, covering the structures used for indexing, ordered access, and fast lookup. Given the topic, it is likely to discuss balanced search trees and B-trees for indexes and to touch on specialized structures chosen for particular query patterns.</p>
+<h3>Why this video</h3>
+<p>It shows why balance guarantees matter at scale, which reinforces the &quot;AVL trees: when balance is the priority&quot; subtopic and the trade-off between in-memory tree balancing and disk-oriented alternatives. It also models the professional habit of justifying a structure choice by the workload it must serve.</p>
+</section>
+<section class="item" id="sec5">
+<h2>How These Videos Support the Learning Outcomes</h2>
+<p>Together these videos target the evaluative end of the module. The Geekific comparison reinforces MO1 by contrasting a degenerate BST with balanced and heap-ordered alternatives, and it reviews the structural invariants behind the rotation and heap mechanics you practice in MO2 and MO3. The two ByteByteGo videos primarily serve MO5: they connect heaps, tries, and balanced trees to the workloads they are actually deployed against, giving you concrete scenarios to reason about when justifying a selection, and the everyday-structures survey offers application context for the prefix operations you trace in MO4. None of the videos replaces hands-on tracing practice; use them to build the comparative judgment layer on top of the mechanics.</p>
+</section>
+<section class="item" id="sec6">
+<h2>About These Videos</h2>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+
+<footer class="presemaker-credit" data-credit="2" style="margin-top:2rem;padding:14px 8px;border-top:1px solid #ddd;background:#fff;text-align:center;font:13px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#595959;"><svg width="20" height="20" viewBox="0 0 2048 2048" aria-hidden="true" focusable="false" style="vertical-align:-5px;margin-right:7px"><rect width="2048" height="2048" rx="384" fill="#0F6E6E"/><path fill="#0A5050" d="M1024 1000 344 832v816l680 168zm0 0 680-168v816l-680 168z"/><path fill="#fff" d="M1024 944 384 784v808l640 160zm0 0 640-160v808l-640 160z"/><rect x="1002" y="944" width="44" height="808" fill="#0F6E6E"/><rect x="936" y="246" width="176" height="448" rx="44" fill="#fff"/><rect x="800" y="382" width="448" height="176" rx="44" fill="#fff"/></svg>Created with <a href="https://softwareplus.ai/coursebuilder/" target="_blank" rel="noopener" style="color:#2f5d8f;font-weight:600;text-decoration:none;">CourseBuilder+</a><span aria-hidden="true"> · </span><a href="https://softwareplus.ai/" target="_blank" rel="noopener" style="color:#2f5d8f;text-decoration:none;">SoftwarePlus.ai</a></footer>
+</body>
+</html>

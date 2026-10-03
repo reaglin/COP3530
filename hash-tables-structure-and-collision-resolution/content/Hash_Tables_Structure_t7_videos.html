@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Implementing a Hash Table in JavaScript</title>
+<style>
+body{font-family:'Segoe UI',Arial,sans-serif;max-width:820px;margin:2rem auto;padding:0 1.25rem;color:#222;line-height:1.55}
+h1{font-size:1.9rem;border-bottom:2px solid #ddd;padding-bottom:.4rem}
+h2{font-size:1.3rem;color:#1f3864;margin-top:1.6rem}
+body{padding-left:1.1rem;padding-right:1.1rem}
+ul,ol{margin:.4rem 0 1rem 1.4rem}
+li{margin:.25rem 0}
+nav.toc{background:rgba(128,128,128,.08);border:1px solid rgba(128,128,128,.25);border-radius:8px;padding:.6rem 1rem;margin:1.2rem 0}
+nav.toc strong{display:block;margin-bottom:.3rem}
+nav.toc a{display:block;text-decoration:none;padding:.12rem 0}
+section.item{border-top:1px solid rgba(128,128,128,.22);padding-top:.3rem}
+table{border-collapse:collapse;width:100%;margin:.8rem 0}
+th,td{border:1px solid rgba(128,128,128,.45);padding:.4rem .6rem;text-align:left;vertical-align:top}
+thead th{background:rgba(128,128,128,.18);font-weight:600}
+tbody tr:nth-child(even){background:rgba(128,128,128,.08)}
+</style>
+</head>
+<body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Hash Tables: Structure and Collision Resolution</a></div>
+<h1>Implementing a Hash Table in JavaScript</h1>
+<nav class="toc"><strong>Contents</strong>
+<a href="#sec1">Introduction</a>
+<a href="#sec2">Video 1: Implement a HashTable | Separate Chaining Collision Resolution Technique | Part 1 | Animation</a>
+<a href="#sec3">Video 2: Implement a HashTable | Separate Chaining Collision Resolution Technique | Part 2 | Implementation</a>
+<a href="#sec4">Video 3: How to Put a Key-Value pair in a HashTable? | Part 1 | Separate Chaining Collision Resolution</a>
+<a href="#sec5">How These Videos Support the Learning Outcomes</a>
+<a href="#sec6">About These Videos</a>
+</nav>
+<section class="item" id="sec1">
+<h2>Introduction</h2>
+<p>A hash table turns a key into an array index with a hash function, then stores a key-value pair at that slot. Because different keys can hash to the same index, every real implementation needs a collision resolution strategy. In this topic you will build the structure yourself in JavaScript: a HashTable class holding an array of buckets, a hash function that converts keys into valid indices, and set, get, remove, and keys methods that use separate chaining — each bucket holding a list of entries rather than a single value.</p>
+<p>This hands-on work matters because it makes the theory concrete. Once you have written the loop that walks a bucket&#39;s chain looking for a matching key, the claim that lookup is O(1) on average but O(n) in the worst case stops being abstract: the length of that chain is exactly what determines the cost. Writing the remove method also exposes why deletion is simpler under chaining than under open addressing.</p>
+<p>The videos below are from a Java-based data structures series, so treat them as language-neutral blueprints rather than copy-and-paste code. While watching, focus on the structure of the decisions — how the index is computed and kept within array bounds, how the code distinguishes &quot;bucket is empty&quot; from &quot;bucket has a chain,&quot; and how an existing key is updated rather than duplicated. Then translate those same steps into JavaScript, using arrays and objects (or Map) in place of the Java classes, and test each method as you add it.</p>
+</section>
+<section class="item" id="sec2">
+<h2>Video 1: Implement a HashTable | Separate Chaining Collision Resolution Technique | Part 1 | Animation</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/NGd08g328i4?cc_load_policy=1&amp;rel=0" title="Video: Implement a HashTable | Separate Chaining Collision Resolution Technique | Part 1 | Animation (Dinesh Varyani)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Dinesh Varyani</strong> · 10:01 · 16,271 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=NGd08g328i4" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>An animated walkthrough of what a hash table with separate chaining looks like internally: an array of buckets where each bucket holds a linked chain of entries. It introduces the design of the structure before any code is written, including how keys are placed and how collisions are absorbed into chains.</p>
+<h3>Why this video</h3>
+<p>This is the right starting point for Setting Up the HashTable Class, since it establishes the mental model of the bucket array and chains that your JavaScript class will mirror.</p>
+</section>
+<section class="item" id="sec3">
+<h2>Video 2: Implement a HashTable | Separate Chaining Collision Resolution Technique | Part 2 | Implementation</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/dIew1UascBo?cc_load_policy=1&amp;rel=0" title="Video: Implement a HashTable | Separate Chaining Collision Resolution Technique | Part 2 | Implementation (Dinesh Varyani)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Dinesh Varyani</strong> · 9:03 · 17,737 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=dIew1UascBo" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>The follow-up to Part 1, moving from animation to actual implementation. It walks through coding the hash table class, its internal storage, and the supporting pieces needed to make separate chaining work in code.</p>
+<h3>Why this video</h3>
+<p>Seeing the structure translated into working code bridges the gap between the diagram and your own class definition, hash function, and bucket array in JavaScript.</p>
+</section>
+<section class="item" id="sec4">
+<h2>Video 3: How to Put a Key-Value pair in a HashTable? | Part 1 | Separate Chaining Collision Resolution</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/cz9BrdMsSdY?cc_load_policy=1&amp;rel=0" title="Video: How to Put a Key-Value pair in a HashTable? | Part 1 | Separate Chaining Collision Resolution (Dinesh Varyani)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Dinesh Varyani</strong> · 13:51 · 12,362 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=cz9BrdMsSdY" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>A focused treatment of the insertion operation: how a key-value pair is placed into the table under separate chaining. It covers computing the index from the key, handling the case where the bucket is already occupied, and appending to or updating within the existing chain.</p>
+<h3>Why this video</h3>
+<p>Insertion is the method where hashing and collision handling meet, so this directly supports Writing the Hash Function and Implementing the set Method with Chaining — including the update-versus-append decision students commonly get wrong.</p>
+</section>
+<section class="item" id="sec5">
+<h2>How These Videos Support the Learning Outcomes</h2>
+<p>Together these videos carry the heaviest weight for MO4: they model the full path from structural design to coded set logic with separate chaining, giving you a reference implementation to adapt into a JavaScript class with set, get, remove, and keys. The index-computation discussion reinforces MO1 by showing how a key is deterministically reduced to a valid array position, while the chain-handling in the insertion video supports MO2 and MO3 by making visible what grows when collisions occur and why longer chains push operations away from constant time. Use the videos for the design logic, then write, run, and systematically test your own JavaScript version to complete the outcome.</p>
+</section>
+<section class="item" id="sec6">
+<h2>About These Videos</h2>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+
+<footer class="presemaker-credit" data-credit="2" style="margin-top:2rem;padding:14px 8px;border-top:1px solid #ddd;background:#fff;text-align:center;font:13px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#595959;"><svg width="20" height="20" viewBox="0 0 2048 2048" aria-hidden="true" focusable="false" style="vertical-align:-5px;margin-right:7px"><rect width="2048" height="2048" rx="384" fill="#0F6E6E"/><path fill="#0A5050" d="M1024 1000 344 832v816l680 168zm0 0 680-168v816l-680 168z"/><path fill="#fff" d="M1024 944 384 784v808l640 160zm0 0 640-160v808l-640 160z"/><rect x="1002" y="944" width="44" height="808" fill="#0F6E6E"/><rect x="936" y="246" width="176" height="448" rx="44" fill="#fff"/><rect x="800" y="382" width="448" height="176" rx="44" fill="#fff"/></svg>Created with <a href="https://softwareplus.ai/coursebuilder/" target="_blank" rel="noopener" style="color:#2f5d8f;font-weight:600;text-decoration:none;">CourseBuilder+</a><span aria-hidden="true"> · </span><a href="https://softwareplus.ai/" target="_blank" rel="noopener" style="color:#2f5d8f;text-decoration:none;">SoftwarePlus.ai</a></footer>
+</body>
+</html>

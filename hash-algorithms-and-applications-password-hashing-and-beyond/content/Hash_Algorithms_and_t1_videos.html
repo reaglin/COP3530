@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Introduction to Hashing Algorithms</title>
+<style>
+body{font-family:'Segoe UI',Arial,sans-serif;max-width:820px;margin:2rem auto;padding:0 1.25rem;color:#222;line-height:1.55}
+h1{font-size:1.9rem;border-bottom:2px solid #ddd;padding-bottom:.4rem}
+h2{font-size:1.3rem;color:#1f3864;margin-top:1.6rem}
+body{padding-left:1.1rem;padding-right:1.1rem}
+ul,ol{margin:.4rem 0 1rem 1.4rem}
+li{margin:.25rem 0}
+nav.toc{background:rgba(128,128,128,.08);border:1px solid rgba(128,128,128,.25);border-radius:8px;padding:.6rem 1rem;margin:1.2rem 0}
+nav.toc strong{display:block;margin-bottom:.3rem}
+nav.toc a{display:block;text-decoration:none;padding:.12rem 0}
+section.item{border-top:1px solid rgba(128,128,128,.22);padding-top:.3rem}
+table{border-collapse:collapse;width:100%;margin:.8rem 0}
+th,td{border:1px solid rgba(128,128,128,.45);padding:.4rem .6rem;text-align:left;vertical-align:top}
+thead th{background:rgba(128,128,128,.18);font-weight:600}
+tbody tr:nth-child(even){background:rgba(128,128,128,.08)}
+</style>
+</head>
+<body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Hash Algorithms and Applications: Password Hashing and Beyond</a></div>
+<h1>Introduction to Hashing Algorithms</h1>
+<nav class="toc"><strong>Contents</strong>
+<a href="#sec1">Introduction</a>
+<a href="#sec2">Video 1: Hashing and Digital Signatures - CompTIA Security+ SY0-701 - 1.4</a>
+<a href="#sec3">Video 2: Hashing - what it is, how it&#39;s used and why it matters - with MD5 and SHA2-256 examples</a>
+<a href="#sec4">Video 3: Hash Functions</a>
+<a href="#sec5">How These Videos Support the Learning Outcomes</a>
+<a href="#sec6">About These Videos</a>
+</nav>
+<section class="item" id="sec1">
+<h2>Introduction</h2>
+<p>A hash function takes an input of any size — a password, a file, a sentence, a multi-gigabyte disk image — and produces a fixed-length output, often called a digest or hash value. The same input always produces the same output, but even a one-bit change to the input should produce a completely different-looking digest. That deterministic, one-way transformation is the foundation for everything else in this module: password storage, file integrity checks, HMACs, and digital signatures all rest on it.</p>
+<p>In this course you will meet hashing from two directions. In data structures, hash functions map keys into buckets of a hash table, where speed and even distribution matter most and collisions are expected and handled. In security, cryptographic hash functions must additionally resist attacks: it should be infeasible to recover the input from the digest (preimage resistance) or to find two inputs with the same digest (collision resistance). Recognizing that these are related but different design goals — and that MD5 is still fine for a checksum but broken for signatures — is a key takeaway.</p>
+<p>As you watch, keep a short list going: What makes hashing different from encryption? (Hint: there is no key and no way back.) What does the avalanche effect look like in a worked example? Which algorithms are named, and what output lengths do they produce? Where does the speaker mention integrity verification, and what exactly is being compared to what?</p>
+</section>
+<section class="item" id="sec2">
+<h2>Video 1: Hashing and Digital Signatures - CompTIA Security+ SY0-701 - 1.4</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/EcGmQjl6XEo?cc_load_policy=1&amp;rel=0" title="Video: Hashing and Digital Signatures - CompTIA Security+ SY0-701 - 1.4 (Professor Messer)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Professor Messer</strong> · 10:25 · 370,236 views · 2y ago · captions — <a href="https://www.youtube.com/watch?v=EcGmQjl6XEo" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>A CompTIA Security+ lesson covering hashing and its role in digital signatures. Based on the title and exam objective 1.4, it should define hash functions as one-way digests, discuss collisions and algorithms such as MD5 and SHA, and explain how hashing is combined with public-key cryptography to provide integrity, authentication, and non-repudiation. Expect practical framing around verifying downloaded files and signing messages.</p>
+<h3>Why this video</h3>
+<p>Professor Messer is a widely used, exam-aligned certification instructor whose explanations are concise and accurate, and this video connects the core properties of cryptographic hashes directly to data integrity — two of the subtopics here — while previewing the digital signature material later in the module.</p>
+</section>
+<section class="item" id="sec3">
+<h2>Video 2: Hashing - what it is, how it&#39;s used and why it matters - with MD5 and SHA2-256 examples</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/ipljtD-ZdQ4?cc_load_policy=1&amp;rel=0" title="Video: Hashing - what it is, how it&#39;s used and why it matters - with MD5 and SHA2-256 examples (LearnCantrill)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>LearnCantrill</strong> · 13:20 · 16,634 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=ipljtD-ZdQ4" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>A walkthrough of what hashing is, how it is used, and why it matters, with concrete MD5 and SHA2-256 examples. The description indicates the video steps through the hashing process and shows how it supports other security processes, so expect demonstrations of fixed-length output and how small input changes alter the digest entirely.</p>
+<h3>Why this video</h3>
+<p>Seeing real MD5 and SHA-256 digests produced side by side makes fixed-length output and the avalanche effect tangible rather than abstract, and Adrian Cantrill is a well-regarded cloud and security trainer known for clear, example-driven explanations.</p>
+</section>
+<section class="item" id="sec4">
+<h2>Video 3: Hash Functions</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/FXUhBrqS5Bk?cc_load_policy=1&amp;rel=0" title="Video: Hash Functions (Professor Kevin Wortman)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Professor Kevin Wortman</strong> · 13:15 · 623 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=FXUhBrqS5Bk" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>A lecture-style treatment of hash functions specifically as they are used in the hash table data structure, delivered with accompanying slides. It should cover how a hash function maps keys to array indices, what makes a hash function good for table use, and why collisions arise and must be handled.</p>
+<h3>Why this video</h3>
+<p>This is the data-structures half of the picture that the security-oriented videos do not cover, and contrasting a hash-table hash function with a cryptographic one sharpens your understanding of what &quot;core properties&quot; actually means in each context.</p>
+</section>
+<section class="item" id="sec5">
+<h2>How These Videos Support the Learning Outcomes</h2>
+<p>These three videos build the shared vocabulary the rest of the module depends on. The MD5 and SHA-256 demonstrations and the discussion of collisions and one-way transformation prepare you for MO1, where you must distinguish hashing from encryption and compare preimage resistance, collision resistance, and the avalanche effect across algorithms. The integrity and digital signature material supports MO4 by showing how a digest is used to verify that data has not changed in transit or storage. The hash-table lecture clarifies why general-purpose hash functions are engineered for speed — the insight that later motivates MO2, MO3, and MO5, where deliberately slow, salted password hashing algorithms are introduced as the correct tool for credential storage.</p>
+</section>
+<section class="item" id="sec6">
+<h2>About These Videos</h2>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+
+<footer class="presemaker-credit" data-credit="2" style="margin-top:2rem;padding:14px 8px;border-top:1px solid #ddd;background:#fff;text-align:center;font:13px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#595959;"><svg width="20" height="20" viewBox="0 0 2048 2048" aria-hidden="true" focusable="false" style="vertical-align:-5px;margin-right:7px"><rect width="2048" height="2048" rx="384" fill="#0F6E6E"/><path fill="#0A5050" d="M1024 1000 344 832v816l680 168zm0 0 680-168v816l-680 168z"/><path fill="#fff" d="M1024 944 384 784v808l640 160zm0 0 640-160v808l-640 160z"/><rect x="1002" y="944" width="44" height="808" fill="#0F6E6E"/><rect x="936" y="246" width="176" height="448" rx="44" fill="#fff"/><rect x="800" y="382" width="448" height="176" rx="44" fill="#fff"/></svg>Created with <a href="https://softwareplus.ai/coursebuilder/" target="_blank" rel="noopener" style="color:#2f5d8f;font-weight:600;text-decoration:none;">CourseBuilder+</a><span aria-hidden="true"> · </span><a href="https://softwareplus.ai/" target="_blank" rel="noopener" style="color:#2f5d8f;text-decoration:none;">SoftwarePlus.ai</a></footer>
+</body>
+</html>

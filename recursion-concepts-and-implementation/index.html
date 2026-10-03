@@ -1,397 +1,179 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Recursion: Concepts and Implementation — COP3530</title>
-  <style>
-    /* ── Reset & Base ── */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    html { font-size: 16px; }
-
-    body {
-      font-family: "Segoe UI", Arial, sans-serif;
-      background: #f4f6f9;
-      color: #1e2a38;
-      line-height: 1.6;
-      min-height: 100vh;
-    }
-
-    /* ── Header ── */
-    header {
-      background: linear-gradient(135deg, #1a3a5c 0%, #2563a8 100%);
-      color: #fff;
-      padding: 2.5rem 1.5rem 2rem;
-    }
-
-    .header-inner {
-      max-width: 960px;
-      margin: 0 auto;
-    }
-
-    .course-label {
-      display: inline-block;
-      font-size: 0.78rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      background: rgba(255,255,255,0.18);
-      border: 1px solid rgba(255,255,255,0.35);
-      border-radius: 4px;
-      padding: 0.2rem 0.6rem;
-      margin-bottom: 0.75rem;
-    }
-
-    header h1 {
-      font-size: clamp(1.5rem, 3vw, 2.25rem);
-      font-weight: 700;
-      letter-spacing: -0.01em;
-      margin-bottom: 0.75rem;
-    }
-
-    header p {
-      font-size: 1rem;
-      max-width: 680px;
-      opacity: 0.9;
-    }
-
-    /* ── Main content ── */
-    main {
-      max-width: 960px;
-      margin: 2.5rem auto 3rem;
-      padding: 0 1.5rem;
-    }
-
-    .section-title {
-      font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: #5a7395;
-      margin-bottom: 1.25rem;
-      padding-bottom: 0.5rem;
-      border-bottom: 2px solid #dde3ec;
-    }
-
-    /* ── Card Grid ── */
-    .card-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 1.25rem;
-    }
-
-    .card {
-      background: #fff;
-      border: 1px solid #dde3ec;
-      border-radius: 8px;
-      padding: 1.25rem 1.35rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.55rem;
-      transition: box-shadow 0.18s ease, border-color 0.18s ease;
-    }
-
-    .card:hover {
-      box-shadow: 0 4px 16px rgba(30, 60, 100, 0.1);
-      border-color: #b3c5dc;
-    }
-
-    /* ── Card Header ── */
-    .card-header {
-      display: flex;
-      align-items: flex-start;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-    }
-
-    .card-name {
-      font-size: 1rem;
-      font-weight: 600;
-      color: #1e2a38;
-      flex: 1 1 auto;
-    }
-
-    .card-name a {
-      color: #1a5fa8;
-      text-decoration: none;
-      border-bottom: 1px solid transparent;
-      transition: border-color 0.15s;
-    }
-
-    .card-name a:hover,
-    .card-name a:focus {
-      border-bottom-color: #1a5fa8;
-      outline: none;
-    }
-
-    .source-link {
-      font-size: 0.72rem;
-      font-weight: 600;
-      color: #fff;
-      background: #5a7395;
-      border-radius: 3px;
-      padding: 0.15rem 0.45rem;
-      text-decoration: none;
-      white-space: nowrap;
-      align-self: center;
-      transition: background 0.15s;
-    }
-
-    .source-link:hover,
-    .source-link:focus {
-      background: #3d5572;
-      outline: none;
-    }
-
-    /* ── Badges ── */
-    .badge-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.4rem;
-      align-items: center;
-    }
-
-    .badge {
-      font-size: 0.7rem;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      border-radius: 3px;
-      padding: 0.18rem 0.5rem;
-      text-transform: uppercase;
-    }
-
-    .badge-type {
-      background: #e8f0fb;
-      color: #1a5fa8;
-      border: 1px solid #c0d4f0;
-    }
-
-    .badge-filetype {
-      background: #eef7f0;
-      color: #2e7d46;
-      border: 1px solid #b6dfc2;
-    }
-
-    /* ── Description ── */
-    .card-desc {
-      font-size: 0.875rem;
-      color: #445566;
-      flex: 1 1 auto;
-    }
-
-    /* ── Footer ── */
-    footer {
-      text-align: center;
-      font-size: 0.8rem;
-      color: #8899aa;
-      padding: 1.5rem 1rem 2rem;
-      border-top: 1px solid #dde3ec;
-    }
-
-    /* ── Responsive tweaks ── */
-    @media (max-width: 480px) {
-      .card-grid {
-        grid-template-columns: 1fr;
-      }
-      header { padding: 2rem 1.1rem 1.75rem; }
-    }
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recursion: Concepts and Implementation — COP3530 - Data Structures</title>
+  <link rel="stylesheet" href="../assets/site.css">
 </head>
 <body>
-<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ COP3530 - Data Structures</a></div>
-<div style="border:1px solid #c9d4e3;background:#f5f8fc;border-radius:8px;padding:10px 16px;margin:0 0 18px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;font-family:'Segoe UI',Arial,sans-serif"><strong style="color:#1a3c6e">Module outline:</strong><a href="topics-outcomes.html#topics" style="color:#1a3c6e;font-weight:600;text-decoration:none">📋 Module Topics</a><a href="topics-outcomes.html#outcomes" style="color:#137333;font-weight:600;text-decoration:none">🎯 Student Learning Outcomes</a></div>
-
-  <header>
-    <div class="header-inner">
-      <span class="course-label">COP3530 — Data Structures</span>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="hero">
+    <div class="hero-inner">
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="../index.html">COP3530 - Data Structures</a><span class="sep" aria-hidden="true">›</span><span class="current">Recursion: Concepts and Implementation</span>
+  </nav>
+      <div class="hero-label">Module 6</div>
       <h1>Recursion: Concepts and Implementation</h1>
-      <p>
-        This module introduces recursion as a fundamental programming technique,
-        covering its definition, structural requirements, runtime mechanics, and
-        classic implementations. Explore the artifacts below to navigate through
-        topics, readings, and interactive content.
-      </p>
+      <p class="hero-desc">This lesson explains recursion as a programming strategy, covering base cases, recursive calls, and the call stack. Students will implement classic recursive algorithms such as factorial, Fibonacci, and recursive list traversal in JavaScript.</p>
     </div>
   </header>
-
-  <main>
-    <p class="section-title">Module Artifacts</p>
-
-    <div class="card-grid">
-
-      <!-- Module Topics -->
-      <div class="card">
-        <div class="card-header">
-          <span class="card-name">
-            <a href="content/module_topics.html">Module Topics</a>
-          </span>
-          <a class="source-link" href="source/hierarchy.json">source file</a>
-        </div>
-        <div class="badge-row">
-          <span class="badge badge-type">Module Topics</span>
-          <span class="badge badge-filetype">.json</span>
-        </div>
-        <p class="card-desc">
-          A structured outline of the module's core topics — including the definition of recursion,
-          base and recursive cases, call stack mechanics, and classic implementations like factorial
-          and Fibonacci — that serves as a navigational guide for learners and instructors to
-          understand the scope and sequence of the module's content.
-        </p>
-      </div>
-
-      <!-- What is Recursion? -->
-      <div class="card">
-        <div class="card-header">
-          <span class="card-name">
-            <a href="content/Recursion_Concepts_and_interactive_topics_t1.html">What is Recursion?</a>
-          </span>
-        </div>
-        <div class="badge-row">
-          <span class="badge badge-type">Topic Detail</span>
-          <span class="badge badge-filetype">.html</span>
-        </div>
-        <p class="card-desc">
-          Introduces recursion as a programming technique in which a function calls itself to break
-          a problem into smaller instances of the same problem, and serves as a conceptual reading
-          for learners beginning the module.
-        </p>
-      </div>
-
-      <!-- Base Cases and Recursive Cases -->
-      <div class="card">
-        <div class="card-header">
-          <span class="card-name">
-            <a href="content/Recursion_Concepts_and_interactive_topics_t2.html">Base Cases and Recursive Cases</a>
-          </span>
-        </div>
-        <div class="badge-row">
-          <span class="badge badge-type">Topic Detail</span>
-          <span class="badge badge-filetype">.html</span>
-        </div>
-        <p class="card-desc">
-          Explains the two essential components of any recursive function — the base case (stopping
-          condition) and the recursive case (self-referential step) — and is used by learners to
-          understand how to structure correct, non-infinite recursive solutions.
-        </p>
-      </div>
-
-      <!-- The Call Stack and Recursion -->
-      <div class="card">
-        <div class="card-header">
-          <span class="card-name">
-            <a href="content/Recursion_Concepts_and_interactive_topics_t3.html">The Call Stack and Recursion</a>
-          </span>
-        </div>
-        <div class="badge-row">
-          <span class="badge badge-type">Topic Detail</span>
-          <span class="badge badge-filetype">.html</span>
-        </div>
-        <p class="card-desc">
-          Describes how the call stack manages function execution, local data, and return addresses
-          during recursive calls, helping learners understand the runtime mechanics and memory
-          implications of recursion.
-        </p>
-      </div>
-
-      <!-- Implementing Factorial with Recursion -->
-      <div class="card">
-        <div class="card-header">
-          <span class="card-name">
-            <a href="content/Recursion_Concepts_and_interactive_topics_t4.html">Implementing Factorial with Recursion</a>
-          </span>
-        </div>
-        <div class="badge-row">
-          <span class="badge badge-type">Topic Detail</span>
-          <span class="badge badge-filetype">.html</span>
-        </div>
-        <p class="card-desc">
-          Walks through implementing the factorial function recursively, using its naturally
-          self-referential mathematical definition to illustrate how to translate a recursive
-          formula directly into working code.
-        </p>
-      </div>
-
-      <!-- Fibonacci Sequence Using Recursion -->
-      <div class="card">
-        <div class="card-header">
-          <span class="card-name">
-            <a href="content/Recursion_Concepts_and_interactive_topics_t5.html">Fibonacci Sequence Using Recursion</a>
-          </span>
-        </div>
-        <div class="badge-row">
-          <span class="badge badge-type">Topic Detail</span>
-          <span class="badge badge-filetype">.html</span>
-        </div>
-        <p class="card-desc">
-          Covers the recursive implementation of the Fibonacci sequence, demonstrating how a
-          function can make two recursive calls and highlighting the resulting redundant computation
-          as an entry point for discussing efficiency trade-offs.
-        </p>
-      </div>
-
-      <!-- Recursive List Traversal -->
-      <div class="card">
-        <div class="card-header">
-          <span class="card-name">
-            <a href="content/Recursion_Concepts_and_interactive_topics_t6.html">Recursive List Traversal</a>
-          </span>
-        </div>
-        <div class="badge-row">
-          <span class="badge badge-type">Topic Detail</span>
-          <span class="badge badge-filetype">.html</span>
-        </div>
-        <p class="card-desc">
-          Demonstrates how to traverse a JavaScript array recursively by splitting it into a head
-          element and a remaining subarray, providing learners with a practical pattern for applying
-          recursion to list-processing problems.
-        </p>
-      </div>
-
-      <!-- When to Use Recursion (Topic Detail) -->
-      <div class="card">
-        <div class="card-header">
-          <span class="card-name">
-            <a href="content/Recursion_Concepts_and_interactive_topics_t7.html">When to Use Recursion</a>
-          </span>
-        </div>
-        <div class="badge-row">
-          <span class="badge badge-type">Topic Detail</span>
-          <span class="badge badge-filetype">.html</span>
-        </div>
-        <p class="card-desc">
-          Examines the trade-offs between recursion and iterative loops, guiding learners and
-          instructors in identifying problem types — such as tree traversal and divide-and-conquer —
-          where recursion is most appropriate versus where iteration is preferred.
-        </p>
-      </div>
-
-      <!-- When to Use Recursion (Text Content) -->
-      <div class="card">
-        <div class="card-header">
-          <span class="card-name">
-            <a href="content/Recursion_Concepts_and_interactive.html">When to Use Recursion</a>
-          </span>
-        </div>
-        <div class="badge-row">
-          <span class="badge badge-type">Text Content</span>
-          <span class="badge badge-filetype">.html</span>
-        </div>
-        <p class="card-desc">
-          Examines the trade-offs between recursion and iterative loops, guiding learners and
-          instructors in identifying problem types — such as tree traversal and divide-and-conquer —
-          where recursion is most appropriate versus where iteration is preferred.
-        </p>
-      </div>
-
-    </div>
+  <main class="page-wrap" id="main">
+<section aria-labelledby="topics-h">
+<h2 id="topics-h">Topics</h2>
+<p class="section-intro">This module covers 7 topics. Open a topic to see its subtopics.</p>
+<ol class="topic-list">
+<li><a class="topic-card" href="topics-outcomes.html#topic-1"><span class="topic-num" aria-hidden="true">1</span><span class="topic-text"><span class="topic-title">What is Recursion?</span><span class="topic-meta">5 subtopics</span></span></a></li>
+<li><a class="topic-card" href="topics-outcomes.html#topic-2"><span class="topic-num" aria-hidden="true">2</span><span class="topic-text"><span class="topic-title">Base Cases and Recursive Cases</span><span class="topic-meta">6 subtopics</span></span></a></li>
+<li><a class="topic-card" href="topics-outcomes.html#topic-3"><span class="topic-num" aria-hidden="true">3</span><span class="topic-text"><span class="topic-title">The Call Stack and Recursion</span><span class="topic-meta">6 subtopics</span></span></a></li>
+<li><a class="topic-card" href="topics-outcomes.html#topic-4"><span class="topic-num" aria-hidden="true">4</span><span class="topic-text"><span class="topic-title">Implementing Factorial with Recursion</span><span class="topic-meta">6 subtopics</span></span></a></li>
+<li><a class="topic-card" href="topics-outcomes.html#topic-5"><span class="topic-num" aria-hidden="true">5</span><span class="topic-text"><span class="topic-title">Fibonacci Sequence Using Recursion</span><span class="topic-meta">6 subtopics</span></span></a></li>
+<li><a class="topic-card" href="topics-outcomes.html#topic-6"><span class="topic-num" aria-hidden="true">6</span><span class="topic-text"><span class="topic-title">Recursive List Traversal</span><span class="topic-meta">6 subtopics</span></span></a></li>
+<li><a class="topic-card" href="topics-outcomes.html#topic-7"><span class="topic-num" aria-hidden="true">7</span><span class="topic-text"><span class="topic-title">When to Use Recursion</span><span class="topic-meta">5 subtopics</span></span></a></li>
+</ol>
+<p class="more-links"><a href="topics-outcomes.html#topics">All topics and subtopics</a><a href="topics-outcomes.html#outcomes">Student learning outcomes</a></p>
+</section>
+<section aria-labelledby="content-h">
+<h2 id="content-h">Module Content</h2>
+<p class="section-intro">16 items.</p>
+<ul class="content-grid">
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">📄</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topic Detail</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Recursion_Concepts_and_interactive_topics_t1.html">What is Recursion?</a></div>
+    <p class="content-desc">Introduces recursion as a programming technique in which a function calls itself to break a problem into smaller instances of the same problem, and serves as a conceptual reading for learners beginning the module.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">📄</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topic Detail</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Recursion_Concepts_and_interactive_topics_t2.html">Base Cases and Recursive Cases</a></div>
+    <p class="content-desc">Explains the two essential components of any recursive function — the base case (stopping condition) and the recursive case (self-referential step) — and is used by learners to understand how to structure correct, non-infinite recursive solutions.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">📄</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topic Detail</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Recursion_Concepts_and_interactive_topics_t3.html">The Call Stack and Recursion</a></div>
+    <p class="content-desc">Describes how the call stack manages function execution, local data, and return addresses during recursive calls, helping learners understand the runtime mechanics and memory implications of recursion.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">📄</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topic Detail</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Recursion_Concepts_and_interactive_topics_t4.html">Implementing Factorial with Recursion</a></div>
+    <p class="content-desc">Walks through implementing the factorial function recursively, using its naturally self-referential mathematical definition to illustrate how to translate a recursive formula directly into working code.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">📄</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topic Detail</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Recursion_Concepts_and_interactive_topics_t5.html">Fibonacci Sequence Using Recursion</a></div>
+    <p class="content-desc">Covers the recursive implementation of the Fibonacci sequence, demonstrating how a function can make two recursive calls and highlighting the resulting redundant computation as an entry point for discussing efficiency trade-offs.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">📄</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topic Detail</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Recursion_Concepts_and_interactive_topics_t6.html">Recursive List Traversal</a></div>
+    <p class="content-desc">Demonstrates how to traverse a JavaScript array recursively by splitting it into a head element and a remaining subarray, providing learners with a practical pattern for applying recursion to list-processing problems.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">📄</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topic Detail</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Recursion_Concepts_and_interactive_topics_t7.html">When to Use Recursion</a></div>
+    <p class="content-desc">Examines the trade-offs between recursion and iterative loops, guiding learners and instructors in identifying problem types — such as tree traversal and divide-and-conquer — where recursion is most appropriate versus where iteration is preferred.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">📄</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Reading</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Recursion_Concepts_and_interactive.html">When to Use Recursion</a></div>
+    <p class="content-desc">Examines the trade-offs between recursion and iterative loops, guiding learners and instructors in identifying problem types — such as tree traversal and divide-and-conquer — where recursion is most appropriate versus where iteration is preferred.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">🎬</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topics and Embedded Video</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Recursion_Concepts_and_t1_videos.html">What is Recursion? — Videos</a></div>
+    <p class="content-desc">An introductory reading that defines recursion as a problem-solving strategy in which a function calls itself on a smaller version of the same problem, using examples like factorial and list length to contrast self-referential definitions with explicit loops; learners read it first to build the conceptual vocabulary for the rest of the module.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">🎬</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topics and Embedded Video</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Recursion_Concepts_and_t2_videos.html">Base Cases and Recursive Cases — Videos</a></div>
+    <p class="content-desc">A lesson breaking recursive functions into their two required parts — the base case that stops the recursion and returns a value, and the recursive case that calls the function on a smaller subproblem — which learners use to diagnose why a function recurses forever or terminates correctly.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">🎬</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topics and Embedded Video</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Recursion_Concepts_and_t3_videos.html">The Call Stack and Recursion — Videos</a></div>
+    <p class="content-desc">An explanation of how the call stack stores one stack frame per active function call in last-in, first-out order, and how recursion makes this bookkeeping visible through stacked frames, return addresses, and local variables; instructors use it to motivate stack depth limits and stack overflow errors.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">🎬</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topics and Embedded Video</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Recursion_Concepts_and_t4_videos.html">Implementing Factorial with Recursion — Videos</a></div>
+    <p class="content-desc">A worked implementation topic that turns the mathematical definition n! = n * (n-1)! with 1! = 1 into a recursive function, showing how the definition supplies both the base case and the recursive case; learners code and trace factorial as their first recursive routine.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">🎬</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topics and Embedded Video</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Recursion_Concepts_and_t5_videos.html">Fibonacci Sequence Using Recursion — Videos</a></div>
+    <p class="content-desc">A guided example implementing fibonacci(n) in JavaScript, where the recursive case makes two recursive calls instead of one, including choosing the base case values for 0 and 1 and observing the repeated work this branching creates; learners use it to see the cost of naive recursion.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">🎬</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topics and Embedded Video</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Recursion_Concepts_and_t6_videos.html">Recursive List Traversal — Videos</a></div>
+    <p class="content-desc">A topic on processing arrays and linked lists recursively by handling the first element and passing the remainder to the same function, presented as an alternative to index-based loops; learners apply it to write traversal, sum, and search routines over list structures.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">🎬</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topics and Embedded Video</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Recursion_Concepts_and_t7_videos.html">When to Use Recursion — Videos</a></div>
+    <p class="content-desc">A decision-focused reading comparing recursion against iteration on criteria such as how well each maps to the problem&#39;s structure, readability, and performance or memory cost, helping learners judge when recursion is the right design choice rather than just a possible one.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">🎬</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topics and Embedded Video</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Recursion_Concepts_and_videos_merged.html">Recursion: Concepts and Implementation — 7 topics (merged)</a></div>
+    <p class="content-desc">A consolidated module overview that stitches together all seven topics — definition of recursion, base and recursive cases, the call stack, factorial, Fibonacci, list traversal, and recursion versus iteration — into a single continuous document for review or printing before an assessment.</p>
+  </div>
+</li>
+</ul>
+</section>
+<nav class="module-nav" aria-label="Modules">
+  <a href="../the-queue-structure-and-use-cases/index.html">← The Queue: Structure and Use Cases</a>
+  <a class="center-link" href="../index.html">↑ All modules</a>
+  <a href="../computational-complexity-deep-dive-into-analysis/index.html">Computational Complexity: Deep Dive into Analysis →</a>
+</nav>
   </main>
-
-  <footer>
-    COP3530 — Data Structures &nbsp;|&nbsp; Recursion: Concepts and Implementation
-  </footer>
-
-
-<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
-<section class="presemaker-extras" style="max-width:1000px;margin:2rem auto;padding:0 1rem;"><h2>Topics &amp; Learning Outcomes</h2><p><a href="topics-outcomes.html">View Topics &amp; Learning Outcomes</a></p></section><script src="embed-inject.js" defer></script></body>
+<script src="embed-inject.js" defer></script>
+<footer class="presemaker-credit" data-credit="2" style="margin-top:2rem;padding:14px 8px;border-top:1px solid #ddd;background:#fff;text-align:center;font:13px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#595959;"><svg width="20" height="20" viewBox="0 0 2048 2048" aria-hidden="true" focusable="false" style="vertical-align:-5px;margin-right:7px"><rect width="2048" height="2048" rx="384" fill="#0F6E6E"/><path fill="#0A5050" d="M1024 1000 344 832v816l680 168zm0 0 680-168v816l-680 168z"/><path fill="#fff" d="M1024 944 384 784v808l640 160zm0 0 640-160v808l-640 160z"/><rect x="1002" y="944" width="44" height="808" fill="#0F6E6E"/><rect x="936" y="246" width="176" height="448" rx="44" fill="#fff"/><rect x="800" y="382" width="448" height="176" rx="44" fill="#fff"/></svg>Created with <a href="https://softwareplus.ai/coursebuilder/" target="_blank" rel="noopener" style="color:#2f5d8f;font-weight:600;text-decoration:none;">CourseBuilder+</a><span aria-hidden="true"> · </span><a href="https://softwareplus.ai/" target="_blank" rel="noopener" style="color:#2f5d8f;text-decoration:none;">SoftwarePlus.ai</a></footer>
+</body>
 </html>

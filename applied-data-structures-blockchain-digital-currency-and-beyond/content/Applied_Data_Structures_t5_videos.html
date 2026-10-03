@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Combining Data Structures in Complex Systems</title>
+<style>
+body{font-family:'Segoe UI',Arial,sans-serif;max-width:820px;margin:2rem auto;padding:0 1.25rem;color:#222;line-height:1.55}
+h1{font-size:1.9rem;border-bottom:2px solid #ddd;padding-bottom:.4rem}
+h2{font-size:1.3rem;color:#1f3864;margin-top:1.6rem}
+body{padding-left:1.1rem;padding-right:1.1rem}
+ul,ol{margin:.4rem 0 1rem 1.4rem}
+li{margin:.25rem 0}
+nav.toc{background:rgba(128,128,128,.08);border:1px solid rgba(128,128,128,.25);border-radius:8px;padding:.6rem 1rem;margin:1.2rem 0}
+nav.toc strong{display:block;margin-bottom:.3rem}
+nav.toc a{display:block;text-decoration:none;padding:.12rem 0}
+section.item{border-top:1px solid rgba(128,128,128,.22);padding-top:.3rem}
+table{border-collapse:collapse;width:100%;margin:.8rem 0}
+th,td{border:1px solid rgba(128,128,128,.45);padding:.4rem .6rem;text-align:left;vertical-align:top}
+thead th{background:rgba(128,128,128,.18);font-weight:600}
+tbody tr:nth-child(even){background:rgba(128,128,128,.08)}
+</style>
+</head>
+<body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Applied Data Structures: Blockchain, Digital Currency, and Beyond</a></div>
+<h1>Combining Data Structures in Complex Systems</h1>
+<nav class="toc"><strong>Contents</strong>
+<a href="#sec1">Introduction</a>
+<a href="#sec2">Video 1: 8 Most Important System Design Concepts You Should Know</a>
+<a href="#sec3">Video 2: Algorithms You Should Know Before System Design Interviews</a>
+<a href="#sec4">Video 3: How To Choose The Right Database?</a>
+<a href="#sec5">How These Videos Support the Learning Outcomes</a>
+<a href="#sec6">About These Videos</a>
+</nav>
+<section class="item" id="sec1">
+<h2>Introduction</h2>
+<p>Up to this point in the course you have studied data structures largely one at a time: a linked list here, a hash table there, a tree or graph in isolation. Real systems almost never work that way. A blockchain node, a payment network, or a social platform stitches several structures together — hash tables for fast lookup, linked structures for ordering and history, trees for verification, graphs for relationships — and layers them so that each structure handles the operation it is best suited for.</p>
+<p>This topic asks you to think like a system designer rather than a single-structure implementer. Blockchain is our primary case study: hash-linked blocks, cryptographic digests, and Merkle trees combine to give immutability and efficient transaction verification, while hash tables and indexes make wallet balances and transaction lookups practical. Social and transactional networks give us a second case study, where the choice between adjacency lists and adjacency matrices, and between BFS and DFS traversal, directly changes storage cost and feature performance.</p>
+<p>The three videos below come from ByteByteGo, a system design channel, and they frame the same question from an industry perspective: which structures, algorithms, and storage engines do large systems actually combine, and why. As you watch, keep a running list of the data structures mentioned, note the trade-off that justifies each one (time versus space, read speed versus write cost, simplicity versus scalability), and ask how you would describe that same decision using the formal cost analysis you have learned in this course.</p>
+</section>
+<section class="item" id="sec2">
+<h2>Video 1: 8 Most Important System Design Concepts You Should Know</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/BTjxUS_PylA?cc_load_policy=1&amp;rel=0" title="Video: 8 Most Important System Design Concepts You Should Know (ByteByteGo)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>ByteByteGo</strong> · 6:05 · 565,363 views · 1y ago · captions — <a href="https://www.youtube.com/watch?v=BTjxUS_PylA" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>A fast tour of core system design concepts that recur across large-scale applications — the kinds of building blocks (caching, indexing, replication, partitioning, and similar ideas) that engineers assemble when designing a service. The emphasis is on how these pieces fit together rather than on implementing any one of them in code.</p>
+<h3>Why this video</h3>
+<p>It establishes the central premise of this topic — that complex systems are built by integrating multiple components and structures — and gives you industry vocabulary for discussing layered architecture and structural design decisions.</p>
+</section>
+<section class="item" id="sec3">
+<h2>Video 2: Algorithms You Should Know Before System Design Interviews</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/xbgzl2maQUU?cc_load_policy=1&amp;rel=0" title="Video: Algorithms You Should Know Before System Design Interviews (ByteByteGo)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>ByteByteGo</strong> · 6:55 · 266,982 views · 3y ago · captions — <a href="https://www.youtube.com/watch?v=xbgzl2maQUU" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>A survey of the algorithms and underlying data structures that commonly appear in system design discussions, presented in the context of real system components rather than textbook exercises. Expect coverage of techniques such as hashing and consistent hashing, tree- and trie-based indexing, and probabilistic or graph-related structures used at scale.</p>
+<h3>Why this video</h3>
+<p>This is the closest fit to the topic&#39;s core question: it shows named data structures being selected for specific system roles, which supports the hash table, tree, and graph integration you are asked to reason about.</p>
+</section>
+<section class="item" id="sec4">
+<h2>Video 3: How To Choose The Right Database?</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/kkeFE6iRfMM?cc_load_policy=1&amp;rel=0" title="Video: How To Choose The Right Database? (ByteByteGo)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>ByteByteGo</strong> · 6:58 · 445,561 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=kkeFE6iRfMM" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>A walkthrough of how to choose among database types — relational, key-value, document, graph, and others — based on the shape of the data and the access patterns the application needs. The video frames the decision as a set of trade-offs rather than a single correct answer.</p>
+<h3>Why this video</h3>
+<p>Database engines are data structures in production, so this video makes the trade-off reasoning concrete, including the case for graph stores when relationships dominate, as in social and transactional networks.</p>
+</section>
+<section class="item" id="sec5">
+<h2>How These Videos Support the Learning Outcomes</h2>
+<p>Together these videos supply the design-thinking frame that the module&#39;s case studies fill in with specifics. The algorithms video reinforces how hashing, trees, and graph-oriented structures are selected for particular roles, supporting your analysis of blockchain&#39;s hash-linked blocks and Merkle trees (MO1) and of digital currency platforms as integrated multi-structure systems (MO4). The database selection video models the explicit storage-versus-operation trade-off reasoning you will apply when justifying adjacency lists against adjacency matrices (MO2) and when choosing graph representations that make traversal-based features practical (MO3). The system design concepts video ties it all to layered architecture, preparing you to propose and defend your own multi-structure solution against stated performance and functional requirements (MO5). Note that none of the videos covers blockchain internals or BFS and DFS traversal directly — those come from the module readings and lectures; use the videos for the integration mindset and trade-off vocabulary.</p>
+</section>
+<section class="item" id="sec6">
+<h2>About These Videos</h2>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+
+<footer class="presemaker-credit" data-credit="2" style="margin-top:2rem;padding:14px 8px;border-top:1px solid #ddd;background:#fff;text-align:center;font:13px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#595959;"><svg width="20" height="20" viewBox="0 0 2048 2048" aria-hidden="true" focusable="false" style="vertical-align:-5px;margin-right:7px"><rect width="2048" height="2048" rx="384" fill="#0F6E6E"/><path fill="#0A5050" d="M1024 1000 344 832v816l680 168zm0 0 680-168v816l-680 168z"/><path fill="#fff" d="M1024 944 384 784v808l640 160zm0 0 640-160v808l-640 160z"/><rect x="1002" y="944" width="44" height="808" fill="#0F6E6E"/><rect x="936" y="246" width="176" height="448" rx="44" fill="#fff"/><rect x="800" y="382" width="448" height="176" rx="44" fill="#fff"/></svg>Created with <a href="https://softwareplus.ai/coursebuilder/" target="_blank" rel="noopener" style="color:#2f5d8f;font-weight:600;text-decoration:none;">CourseBuilder+</a><span aria-hidden="true"> · </span><a href="https://softwareplus.ai/" target="_blank" rel="noopener" style="color:#2f5d8f;text-decoration:none;">SoftwarePlus.ai</a></footer>
+</body>
+</html>

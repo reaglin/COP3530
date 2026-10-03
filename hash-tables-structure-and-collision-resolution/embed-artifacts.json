@@ -1,5 +1,10 @@
 ﻿[
   {
+    "title": "Hash Tables: Structure and Collision Resolution (module page)",
+    "href": "index.html",
+    "type": "Module page"
+  },
+  {
     "title": "Hash Tables: Structure and Collision Resolution \u2014 Topics \u0026 Learning Outcomes",
     "href": "topics-outcomes.html",
     "type": "Page"
@@ -50,8 +55,43 @@
     "type": "Content"
   },
   {
-    "title": "Hash Tables: Structure and Collision Resolution \u2014 Module Topics",
-    "href": "content/module_topics.html",
+    "title": "Introduction to Hash Tables",
+    "href": "content/Hash_Tables_Structure_t1_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "Internal Array-Based Design",
+    "href": "content/Hash_Tables_Structure_t2_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "Hash Function Design and Properties",
+    "href": "content/Hash_Tables_Structure_t3_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "Collision Resolution: Chaining",
+    "href": "content/Hash_Tables_Structure_t4_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "Collision Resolution: Open Addressing",
+    "href": "content/Hash_Tables_Structure_t5_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "Performance Analysis of Hash Tables",
+    "href": "content/Hash_Tables_Structure_t6_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "Implementing a Hash Table in JavaScript",
+    "href": "content/Hash_Tables_Structure_t7_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "Hash Tables: Structure and Collision Resolution",
+    "href": "content/Hash_Tables_Structure_videos_merged.html",
     "type": "Content"
   }
 ]

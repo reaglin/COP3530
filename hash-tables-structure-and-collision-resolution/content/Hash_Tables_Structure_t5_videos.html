@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Collision Resolution: Open Addressing</title>
+<style>
+body{font-family:'Segoe UI',Arial,sans-serif;max-width:820px;margin:2rem auto;padding:0 1.25rem;color:#222;line-height:1.55}
+h1{font-size:1.9rem;border-bottom:2px solid #ddd;padding-bottom:.4rem}
+h2{font-size:1.3rem;color:#1f3864;margin-top:1.6rem}
+body{padding-left:1.1rem;padding-right:1.1rem}
+ul,ol{margin:.4rem 0 1rem 1.4rem}
+li{margin:.25rem 0}
+nav.toc{background:rgba(128,128,128,.08);border:1px solid rgba(128,128,128,.25);border-radius:8px;padding:.6rem 1rem;margin:1.2rem 0}
+nav.toc strong{display:block;margin-bottom:.3rem}
+nav.toc a{display:block;text-decoration:none;padding:.12rem 0}
+section.item{border-top:1px solid rgba(128,128,128,.22);padding-top:.3rem}
+table{border-collapse:collapse;width:100%;margin:.8rem 0}
+th,td{border:1px solid rgba(128,128,128,.45);padding:.4rem .6rem;text-align:left;vertical-align:top}
+thead th{background:rgba(128,128,128,.18);font-weight:600}
+tbody tr:nth-child(even){background:rgba(128,128,128,.08)}
+</style>
+</head>
+<body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Hash Tables: Structure and Collision Resolution</a></div>
+<h1>Collision Resolution: Open Addressing</h1>
+<nav class="toc"><strong>Contents</strong>
+<a href="#sec1">Introduction</a>
+<a href="#sec2">Video 1: L-6.4: Linear Probing in Hashing with example</a>
+<a href="#sec3">Video 2: L-6.6: Quadratic Probing in Hashing with example</a>
+<a href="#sec4">Video 3: L-6.7: Double Hashing | Collision Resolution Technique</a>
+<a href="#sec5">How These Videos Support the Learning Outcomes</a>
+<a href="#sec6">About These Videos</a>
+</nav>
+<section class="item" id="sec1">
+<h2>Introduction</h2>
+<p>When two keys hash to the same index, a hash table needs a plan. Open addressing is one such plan: instead of storing colliding items in a separate structure like a linked list, every element lives directly in the table array, and a collision sends the insertion routine looking for another empty slot according to a fixed, repeatable rule. That rule is called the probe sequence, and the three classic versions you will meet here are linear probing (try the next slot, then the next), quadratic probing (step away by growing squared offsets), and double hashing (let a second hash function determine the step size).</p>
+<p>This matters in COP3530 because open addressing is the main alternative to separate chaining, and the comparison is a recurring exam and interview topic. Open addressing avoids pointer overhead and keeps data contiguous in memory, but it imposes constraints chaining does not: the load factor can never exceed 1, performance degrades sharply as the table fills, and deletion cannot simply blank out a slot without breaking the probe sequences that pass through it — hence tombstone or lazy-deletion markers.</p>
+<p>As you watch the videos below, keep a pencil handy and build the table yourself alongside the instructor. Watch specifically for three things: the exact formula used to compute each successive probe, how the search operation must follow the same sequence that insertion used, and where clustering appears — primary clustering in linear probing, secondary clustering in quadratic probing — and how each later technique tries to reduce it.</p>
+</section>
+<section class="item" id="sec2">
+<h2>Video 1: L-6.4: Linear Probing in Hashing with example</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/ZEyPqqRTO00?cc_load_policy=1&amp;rel=0" title="Video: L-6.4: Linear Probing in Hashing with example (Gate Smashers)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Gate Smashers</strong> · 12:40 · 945,731 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=ZEyPqqRTO00" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>A worked introduction to linear probing, the simplest open addressing scheme, in which a collision causes the table to be scanned sequentially until an empty slot is found. Based on the title and description, the video walks through a concrete numeric example of inserting keys into a table and resolving collisions step by step. Expect discussion of how searching must follow the same sequential probe path and why long runs of occupied slots (primary clustering) form.</p>
+<h3>Why this video</h3>
+<p>Gate Smashers is a widely used exam-prep channel known for slow, example-driven explanations, and this video is the standard starting point for the probe-sequence idea that the rest of the topic builds on.</p>
+</section>
+<section class="item" id="sec3">
+<h2>Video 2: L-6.6: Quadratic Probing in Hashing with example</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/-yQ2Kj-Jn0A?cc_load_policy=1&amp;rel=0" title="Video: L-6.6: Quadratic Probing in Hashing with example (Gate Smashers)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Gate Smashers</strong> · 7:41 · 690,427 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=-yQ2Kj-Jn0A" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>This video covers quadratic probing, where the offset from the home slot grows as a square (1, 4, 9, and so on) rather than by one each time. It is presented as a direct response to the clustering problem in linear probing, so expect a comparison with the previous method and a worked insertion example. Likely points include the probe formula itself and the caveat that quadratic probing may fail to find an empty slot even when one exists, depending on table size.</p>
+<h3>Why this video</h3>
+<p>It is the natural follow-up in the same instructor&#39;s sequence, so the notation and example style carry over, and it directly addresses the Quadratic Probing and Probe Sequences subtopics.</p>
+</section>
+<section class="item" id="sec4">
+<h2>Video 3: L-6.7: Double Hashing | Collision Resolution Technique</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/1P7ygNSe9lY?cc_load_policy=1&amp;rel=0" title="Video: L-6.7: Double Hashing | Collision Resolution Technique (Gate Smashers)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Gate Smashers</strong> · 10:28 · 723,043 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=1P7ygNSe9lY" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>An explanation of double hashing, in which a second, independent hash function determines the step size used to move through the table after a collision. The description frames it around the core question of what happens when two keys land on the same spot, so expect the two-function formula and a traced example of the resulting probe sequence. It typically also covers why the secondary hash must never return zero and why its result should be relatively prime to the table size.</p>
+<h3>Why this video</h3>
+<p>Double hashing is the most effective of the three at spreading probes and eliminating clustering, and this video completes the Gate Smashers trio so you can compare all three techniques using consistent terminology.</p>
+</section>
+<section class="item" id="sec5">
+<h2>How These Videos Support the Learning Outcomes</h2>
+<p>Together these three videos give you the open addressing half of MO2: each one presents a distinct probe strategy with a worked example, so you can line them up against separate chaining and against each other in terms of memory layout, clustering behavior, and the constraints they place on the table. The clustering discussions and the fact that all elements must fit inside the array connect directly to MO3, since growing clusters and a load factor approaching 1 are precisely what pull lookup away from O(1) toward linear-time scans. The videos also reinforce MO1, because every probe sequence starts from a hash value and depends on that hash distributing keys evenly. Note that deletion with tombstones and the JavaScript chaining implementation in MO4 are handled in your course readings and coding work rather than in these videos, so treat the videos as conceptual grounding and bring the deletion question with you when you build your own table.</p>
+</section>
+<section class="item" id="sec6">
+<h2>About These Videos</h2>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+
+<footer class="presemaker-credit" data-credit="2" style="margin-top:2rem;padding:14px 8px;border-top:1px solid #ddd;background:#fff;text-align:center;font:13px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#595959;"><svg width="20" height="20" viewBox="0 0 2048 2048" aria-hidden="true" focusable="false" style="vertical-align:-5px;margin-right:7px"><rect width="2048" height="2048" rx="384" fill="#0F6E6E"/><path fill="#0A5050" d="M1024 1000 344 832v816l680 168zm0 0 680-168v816l-680 168z"/><path fill="#fff" d="M1024 944 384 784v808l640 160zm0 0 640-160v808l-640 160z"/><rect x="1002" y="944" width="44" height="808" fill="#0F6E6E"/><rect x="936" y="246" width="176" height="448" rx="44" fill="#fff"/><rect x="800" y="382" width="448" height="176" rx="44" fill="#fff"/></svg>Created with <a href="https://softwareplus.ai/coursebuilder/" target="_blank" rel="noopener" style="color:#2f5d8f;font-weight:600;text-decoration:none;">CourseBuilder+</a><span aria-hidden="true"> · </span><a href="https://softwareplus.ai/" target="_blank" rel="noopener" style="color:#2f5d8f;text-decoration:none;">SoftwarePlus.ai</a></footer>
+</body>
+</html>

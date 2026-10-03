@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Merge Sort</title>
+<style>
+body{font-family:'Segoe UI',Arial,sans-serif;max-width:820px;margin:2rem auto;padding:0 1.25rem;color:#222;line-height:1.55}
+h1{font-size:1.9rem;border-bottom:2px solid #ddd;padding-bottom:.4rem}
+h2{font-size:1.3rem;color:#1f3864;margin-top:1.6rem}
+body{padding-left:1.1rem;padding-right:1.1rem}
+ul,ol{margin:.4rem 0 1rem 1.4rem}
+li{margin:.25rem 0}
+nav.toc{background:rgba(128,128,128,.08);border:1px solid rgba(128,128,128,.25);border-radius:8px;padding:.6rem 1rem;margin:1.2rem 0}
+nav.toc strong{display:block;margin-bottom:.3rem}
+nav.toc a{display:block;text-decoration:none;padding:.12rem 0}
+section.item{border-top:1px solid rgba(128,128,128,.22);padding-top:.3rem}
+table{border-collapse:collapse;width:100%;margin:.8rem 0}
+th,td{border:1px solid rgba(128,128,128,.45);padding:.4rem .6rem;text-align:left;vertical-align:top}
+thead th{background:rgba(128,128,128,.18);font-weight:600}
+tbody tr:nth-child(even){background:rgba(128,128,128,.08)}
+</style>
+</head>
+<body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Sorting Algorithms: Comparison and Implementation</a></div>
+<h1>Merge Sort</h1>
+<nav class="toc"><strong>Contents</strong>
+<a href="#sec1">Introduction</a>
+<a href="#sec2">Video 1: L-3.3: How Merge Sort Works?? Full explanation with example</a>
+<a href="#sec3">Video 2: Merge Sort Algorithm | C++ / Java Complete explanation for Beginners and Code | DSA-One Course #21</a>
+<a href="#sec4">Video 3: Merge Sort Algorithm Explained and Implemented with Examples in Java | Sorting Algorithms | Geekific</a>
+<a href="#sec5">How These Videos Support the Learning Outcomes</a>
+<a href="#sec6">About These Videos</a>
+</nav>
+<section class="item" id="sec1">
+<h2>Introduction</h2>
+<p>Merge sort is the classic example of divide-and-conquer: split an array in half, sort each half recursively, then merge the two sorted halves back into one sorted array. The real work happens not in the splitting but in the merge step, where two already-sorted sequences are combined in linear time by repeatedly taking the smaller of the two front elements. Because the array is halved at every level of recursion and each level does O(n) merging work, merge sort runs in O(n log n) time on every input — best, average, and worst case alike.</p>
+<p>That consistency is why merge sort matters in this course. Unlike bubble sort or insertion sort, it does not degrade on reversed or random data, and unlike quicksort it has no pathological worst case. The trade-off is memory: a straightforward implementation allocates auxiliary arrays, giving O(n) auxiliary space rather than quicksort&#39;s in-place behavior. Merge sort is also stable, which matters when you sort records by one key after another.</p>
+<p>As you watch these videos, trace the recursion carefully: note the base case (an array of length 0 or 1 is already sorted), the point where recursion stops and merging begins, and the order in which merges actually execute. Pay particular attention to the merge helper — the two index pointers, the comparison, and the cleanup loops that copy any leftover elements. The videos below use C++ and Java, so translate the logic into JavaScript as you go; the control flow is identical, and array slicing in JavaScript often makes the code shorter than the examples shown.</p>
+</section>
+<section class="item" id="sec2">
+<h2>Video 1: L-3.3: How Merge Sort Works?? Full explanation with example</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/tn9hxD8gx2M?cc_load_policy=1&amp;rel=0" title="Video: L-3.3: How Merge Sort Works?? Full explanation with example (Gate Smashers)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Gate Smashers</strong> · 9:52 · 1,582,402 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=tn9hxD8gx2M" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>A concise lecture walking through how merge sort works step by step on a worked example, showing the recursive division of the array and the merging back together. It focuses on building intuition for the divide-and-conquer strategy rather than on code.</p>
+<h3>Why this video</h3>
+<p>Gate Smashers is a widely followed exam-prep channel known for clear blackboard-style explanations, and this short video is the fastest way to internalize the recursive structure and the divide-and-conquer idea before you write any code.</p>
+</section>
+<section class="item" id="sec3">
+<h2>Video 2: Merge Sort Algorithm | C++ / Java Complete explanation for Beginners and Code | DSA-One Course #21</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/aDX3MFL0tYs?cc_load_policy=1&amp;rel=0" title="Video: Merge Sort Algorithm | C++ / Java Complete explanation for Beginners and Code | DSA-One Course #21 (Anuj Kumar Sharma)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Anuj Kumar Sharma</strong> · 19:51 · 263,951 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=aDX3MFL0tYs" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>Part of the DSA-One course, this longer video covers the concepts behind merge sort and then develops a complete implementation in C++ and Java, including the merge helper function. It is paced for beginners and works through the code line by line.</p>
+<h3>Why this video</h3>
+<p>The extended runtime allows the instructor to connect the conceptual picture to actual code, which is exactly the bridge you need before writing your own JavaScript version with its recursive calls and merge routine.</p>
+</section>
+<section class="item" id="sec4">
+<h2>Video 3: Merge Sort Algorithm Explained and Implemented with Examples in Java | Sorting Algorithms | Geekific</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/U4g1dMry4W4?cc_load_policy=1&amp;rel=0" title="Video: Merge Sort Algorithm Explained and Implemented with Examples in Java | Sorting Algorithms | Geekific (Geekific)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Geekific</strong> · 15:07 · 8,589 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=U4g1dMry4W4" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>Geekific explains merge sort with examples and then implements it in Java, situating it alongside the channel&#39;s other sorting algorithm videos. The description points to a public GitHub repository where the code can be read and compared.</p>
+<h3>Why this video</h3>
+<p>This video reinforces the implementation from a second perspective and places merge sort in the context of other sorting algorithms, supporting the comparison work on time complexity, space usage, and practical trade-offs.</p>
+</section>
+<section class="item" id="sec5">
+<h2>How These Videos Support the Learning Outcomes</h2>
+<p>Together these videos move from intuition to implementation to comparison. The Gate Smashers lecture establishes the divide-and-conquer strategy and recursive structure you will mirror when coding merge sort in JavaScript (MO1), while the Anuj Kumar Sharma and Geekific videos show full implementations, including the merge helper, that you can translate line by line. All three address why the recursion depth of log n combined with linear merging yields O(n log n) in every case, and the implementations make the auxiliary array usage visible so you can reason about O(n) space (MO2). Seeing merge sort coded next to other sorting algorithms supports the stability and in-place comparisons (MO3) and gives you the evidence needed to argue when merge sort is the right choice versus quicksort or insertion sort for a given data size and memory budget (MO4).</p>
+</section>
+<section class="item" id="sec6">
+<h2>About These Videos</h2>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+
+<footer class="presemaker-credit" data-credit="2" style="margin-top:2rem;padding:14px 8px;border-top:1px solid #ddd;background:#fff;text-align:center;font:13px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#595959;"><svg width="20" height="20" viewBox="0 0 2048 2048" aria-hidden="true" focusable="false" style="vertical-align:-5px;margin-right:7px"><rect width="2048" height="2048" rx="384" fill="#0F6E6E"/><path fill="#0A5050" d="M1024 1000 344 832v816l680 168zm0 0 680-168v816l-680 168z"/><path fill="#fff" d="M1024 944 384 784v808l640 160zm0 0 640-160v808l-640 160z"/><rect x="1002" y="944" width="44" height="808" fill="#0F6E6E"/><rect x="936" y="246" width="176" height="448" rx="44" fill="#fff"/><rect x="800" y="382" width="448" height="176" rx="44" fill="#fff"/></svg>Created with <a href="https://softwareplus.ai/coursebuilder/" target="_blank" rel="noopener" style="color:#2f5d8f;font-weight:600;text-decoration:none;">CourseBuilder+</a><span aria-hidden="true"> · </span><a href="https://softwareplus.ai/" target="_blank" rel="noopener" style="color:#2f5d8f;text-decoration:none;">SoftwarePlus.ai</a></footer>
+</body>
+</html>

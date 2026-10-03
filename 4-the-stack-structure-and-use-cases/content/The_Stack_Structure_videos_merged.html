@@ -1,0 +1,287 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>4- The Stack: Structure and Use Cases</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+body{font-family:'Segoe UI',Arial,sans-serif;max-width:820px;margin:2rem auto;padding:0 1.25rem;color:#222;line-height:1.55}
+h1{font-size:1.9rem;border-bottom:2px solid #ddd;padding-bottom:.4rem}
+h2{font-size:1.3rem;color:#1f3864;margin-top:1.6rem}
+body{padding-left:1.1rem;padding-right:1.1rem}
+ul,ol{margin:.4rem 0 1rem 1.4rem}
+li{margin:.25rem 0}
+nav.toc{background:rgba(128,128,128,.08);border:1px solid rgba(128,128,128,.25);border-radius:8px;padding:.6rem 1rem;margin:1.2rem 0}
+nav.toc strong{display:block;margin-bottom:.3rem}
+nav.toc a{display:block;text-decoration:none;padding:.12rem 0}
+section.item{border-top:1px solid rgba(128,128,128,.22);padding-top:.3rem}
+table{border-collapse:collapse;width:100%;margin:.8rem 0}
+th,td{border:1px solid rgba(128,128,128,.45);padding:.4rem .6rem;text-align:left;vertical-align:top}
+thead th{background:rgba(128,128,128,.18);font-weight:600}
+tbody tr:nth-child(even){background:rgba(128,128,128,.08)}
+</style>
+<style>section.merged-part{border-top:2px solid rgba(128,128,128,.3);margin-top:2rem;padding-top:.5rem}nav.toc{background:rgba(128,128,128,.08);border:1px solid rgba(128,128,128,.25);border-radius:8px;padding:.6rem 1rem;margin:1.2rem 0}nav.toc a{display:block;text-decoration:none;padding:.12rem 0}</style>
+</head>
+<body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ 4- The Stack: Structure and Use Cases</a></div>
+<h1>4- The Stack: Structure and Use Cases</h1>
+<nav class="toc"><strong>Contents</strong>
+<a href="#part1">Introduction to the Stack Data Structure</a>
+<a href="#part2">The LIFO Principle</a>
+<a href="#part3">Internal Implementation of a Stack</a>
+<a href="#part4">Building a Stack in JavaScript</a>
+<a href="#part5">Expression Evaluation Using Stacks</a>
+<a href="#part6">Undo Mechanisms and Other Real-World Use Cases</a>
+</nav>
+<section class="merged-part" id="part1">
+<h2>Introduction to the Stack Data Structure</h2>
+<section class="item" id="p1-sec1">
+<h3>Introduction</h3>
+<p>A stack is one of the simplest and most widely used data structures in computer science. It stores a collection of items but deliberately restricts how you interact with them: you may only add or remove at one end, called the top. That single restriction produces the Last-In, First-Out (LIFO) ordering that gives stacks their character — the most recently added item is always the first one to leave.</p>
+<p>In this module we build toward implementing a Stack class ourselves, so it matters that you first understand the stack conceptually, independent of any code. That is the idea behind treating a stack as an Abstract Data Type (ADT): we specify the operations it must support — push, pop, peek, isEmpty, size — and the rules governing their behavior, and only afterward decide whether an array, a linked list, or something else will hold the data underneath.</p>
+<p>As you watch, pay attention to three things. First, how each video describes what happens to the top of the stack during push and pop. Second, the distinction between the interface (what operations exist and what they promise) and the implementation (how they are carried out). Third, any mention of where stacks appear in real systems — function call stacks, undo features, backtracking — since those use cases return later in the module.</p>
+</section>
+<section class="item" id="p1-sec2">
+<h3>Video 1: Lec-30: Introduction to Stack | PUSH and POP operations | Data Structure</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/HRDHgKrYHgU?cc_load_policy=1&amp;rel=0" title="Video: Lec-30: Introduction to Stack | PUSH and POP operations | Data Structure (Gate Smashers)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Gate Smashers</strong> · 6:46 · 325,602 views · 3y ago · captions — <a href="https://www.youtube.com/watch?v=HRDHgKrYHgU" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A lecture-style introduction to the stack that defines the structure and walks through the PUSH and POP operations, the two fundamental ways to modify a stack. Based on its title and format, it should illustrate the LIFO ordering with step-by-step examples of items entering and leaving the top of the stack, and likely touches on conditions such as overflow and underflow that arise when a stack is full or empty.</p>
+<h4>Why this video</h4>
+<p>Gate Smashers produces exam-oriented data structures lectures, and this short, highly viewed video gives a clear and concrete first pass at the What Is a Stack?, LIFO Principle, and Core Stack Operations subtopics before you see any code.</p>
+</section>
+<section class="item" id="p1-sec3">
+<h3>Video 2: ADTs and Data Structures</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/ztO1Ra0DBoQ?cc_load_policy=1&amp;rel=0" title="Video: ADTs and Data Structures (Professor Kevin Wortman)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Professor Kevin Wortman</strong> · 8:03 · 416 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=ztO1Ra0DBoQ" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>This video explains the general concept of an Abstract Data Type and how ADTs are used to define and categorize data structures. Expect a discussion of the separation between the operations a type promises to support and the concrete mechanism that implements them, with accompanying slides.</p>
+<h4>Why this video</h4>
+<p>It supplies the vocabulary behind the Stacks as an Abstract Data Type subtopic, taught by a computer science professor in a short, lecture-slide format that makes the interface-versus-implementation distinction explicit.</p>
+</section>
+<section class="item" id="p1-sec4">
+<h3>Video 3: Stack Abstract Data Type</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/ety66gcs9Og?cc_load_policy=1&amp;rel=0" title="Video: Stack Abstract Data Type (Professor Kevin Wortman)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Professor Kevin Wortman</strong> · 5:07 · 409 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=ety66gcs9Og" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A focused follow-up that applies the ADT framework specifically to the stack, defining the stack ADT and the operations it specifies. In roughly five minutes it should lay out the formal description of stack behavior rather than any one language's implementation.</p>
+<h4>Why this video</h4>
+<p>Watched after the general ADT video, it directly connects the abstract specification to the stack itself, which is exactly the conceptual foundation this topic is meant to establish before implementation work begins.</p>
+</section>
+<section class="item" id="p1-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these videos build the conceptual base the module's outcomes depend on. The Gate Smashers lecture establishes LIFO ordering and the push/pop operations, supporting MO1 and giving you the behavioral model you will later encode as methods for MO2. The two Professor Wortman videos frame the stack as an Abstract Data Type, which is the mindset behind MO3: once the required operations are specified independently of storage, you can reason about whether an array or a linked list best implements them and at what cost. The operation-level understanding gained here is also the prerequisite for the applied outcomes MO4 and MO5, where stack behavior is used to evaluate expressions and to explain features such as undo, browser history, and call stacks.</p>
+</section>
+<section class="item" id="p1-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part2">
+<h2>The LIFO Principle</h2>
+<section class="item" id="p2-sec1">
+<h3>Introduction</h3>
+<p>A stack is one of the simplest data structures you will study in this course, and almost all of its behavior follows from a single rule: Last In, First Out, or LIFO. Whatever element was added most recently is the only one you are allowed to remove next, and the only one you are allowed to inspect. That restriction is not a limitation to work around — it is the entire point, because it makes the structure predictable, fast, and a perfect match for problems that unwind in reverse order.</p>
+<p>In this topic we define LIFO precisely, ground it in a familiar physical analogy (a stack of plates or trays), and contrast it with other ordering principles you already know — the First In, First Out rule of a queue, and the index-based random access of an array. We then look at the two operations that enforce LIFO, push and pop, and at the idea of the 'top': a single reference or index that marks where the next push lands and where the next pop comes from. Understanding the top is what makes later discussions of constant-time operations and underlying containers make sense.</p>
+<p>As you watch the videos below, keep three questions in mind. First, where exactly is the top, and how does it move during a push versus a pop? Second, what happens when you pop an empty stack or push onto a full one — how is that condition detected? Third, what kinds of problems would become harder if you were allowed to reach into the middle of the stack? That last question is the bridge to Module 4's later topics on undo features, call stacks, and expression evaluation.</p>
+</section>
+<section class="item" id="p2-sec2">
+<h3>Video 1: Lec-30: Introduction to Stack | PUSH and POP operations | Data Structure</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/HRDHgKrYHgU?cc_load_policy=1&amp;rel=0" title="Video: Lec-30: Introduction to Stack | PUSH and POP operations | Data Structure (Gate Smashers)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Gate Smashers</strong> · 6:46 · 325,602 views · 3y ago · captions — <a href="https://www.youtube.com/watch?v=HRDHgKrYHgU" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A concise introductory lecture on the stack as an abstract data type, focused on the push and pop operations that add and remove elements at the top. Based on its title and framing, expect a walkthrough of how elements enter and leave in LIFO order, how the top pointer or index shifts with each operation, and likely mention of overflow and underflow conditions.</p>
+<h4>Why this video</h4>
+<p>Gate Smashers is a widely followed exam-prep computer science channel known for tight, board-style explanations, and at under seven minutes this video gives you a fast, accurate grounding in the two core operations and the concept of the top.</p>
+</section>
+<section class="item" id="p2-sec3">
+<h3>Video 2: Lecture 13: From Theory to Practice: Implementing Stacks, Queues, and Bags | Best Practices</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/htdJvxNBRtI?cc_load_policy=1&amp;rel=0" title="Video: Lecture 13: From Theory to Practice: Implementing Stacks, Queues, and Bags | Best Practices (Study Hub)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Study Hub</strong> · 16:20 · 1,201 views · 2y ago · captions — <a href="https://www.youtube.com/watch?v=htdJvxNBRtI" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A longer lecture that moves from the theory of stacks, queues, and bags toward how they are actually implemented. The description explicitly contrasts LIFO with FIFO, so expect a side-by-side treatment of the two ordering rules along with discussion of implementation choices and best practices for each structure.</p>
+<h4>Why this video</h4>
+<p>This is the best fit for the 'LIFO vs. other ordering principles' subtopic, since it puts stacks and queues next to each other rather than presenting LIFO in isolation, and it previews the implementation work coming later in the module.</p>
+</section>
+<section class="item" id="p2-sec4">
+<h3>Video 3: Stack and LIFO Revealed | Data Structures</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/SYZWEpIKzt4?cc_load_policy=1&amp;rel=0" title="Video: Stack and LIFO Revealed | Data Structures (Mr. Feynman)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Mr. Feynman</strong> · 14:39 · 123 views · 2y ago · captions — <a href="https://www.youtube.com/watch?v=SYZWEpIKzt4" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A focused treatment of stacks built around the LIFO principle itself, with code examples noted in C++ and JavaScript plus coding challenges. Expect the definition of LIFO, demonstrations of how pushing and popping behave in code, and examples of where the pattern is useful.</p>
+<h4>Why this video</h4>
+<p>The JavaScript examples connect directly to the language you will use for your own Stack class in this module, and the dedicated emphasis on LIFO makes it a good reinforcement of why the ordering rule matters rather than just how it works.</p>
+</section>
+<section class="item" id="p2-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these three videos target MO1 most directly: each defines LIFO and explains the push and pop operations that enforce it, and the Study Hub lecture explicitly contrasts LIFO with the FIFO ordering of a queue, which is exactly the comparison MO1 asks you to make. The emphasis on the top pointer and on overflow and underflow conditions sets up MO3, since constant-time push and pop depend entirely on only ever touching one end of the container. The JavaScript and C++ examples in the Mr. Feynman video preview the class you will build for MO2, and the discussion of why LIFO is useful lays the conceptual groundwork for the application topics in MO4 and MO5, where you will see this same reverse-order behavior driving undo features, call stacks, and expression evaluation.</p>
+</section>
+<section class="item" id="p2-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part3">
+<h2>Internal Implementation of a Stack</h2>
+<section class="item" id="p3-sec1">
+<h3>Introduction</h3>
+<p>A stack is simple to describe — last in, first out — but to use it well you need to know what is happening underneath. Internally, a stack is just a container (commonly an array, sometimes a linked list) plus a single marker, the top, that tells you where the next item goes and which item comes off next. Every core operation is defined in terms of that marker: push writes at the top and advances it, pop reads at the top and retracts it, peek reads without changing it, and size is derived from it.</p>
+<p>This topic matters in COP3530 because you will build a Stack class in JavaScript rather than only use one. Writing push and pop yourself forces you to confront the details that are easy to gloss over: what the top should be when the stack is empty, what happens when you pop an empty stack (underflow) or push onto a full fixed-size array (overflow), and how to keep the internal container private so callers cannot bypass LIFO ordering. The same reasoning explains why push and pop are O(1) time while the stack as a whole is O(n) space.</p>
+<p>As you watch, track three things in every example: where the top marker sits before and after each operation, the exact order of the steps inside push and pop (check the boundary first, then move the pointer and the data), and which parts of the implementation would change if you swapped an array for a linked list. The videos below use array-based stacks in C-style pseudocode and code; your job is to carry the mechanics over to a JavaScript class.</p>
+</section>
+<section class="item" id="p3-sec2">
+<h3>Video 1: Lec-31: PUSH operation using Array | Implementation of Stack | Data Structure</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/rR0WheIxDC0?cc_load_policy=1&amp;rel=0" title="Video: Lec-31: PUSH operation using Array | Implementation of Stack | Data Structure (Gate Smashers)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Gate Smashers</strong> · 8:05 · 204,915 views · 3y ago · captions — <a href="https://www.youtube.com/watch?v=rR0WheIxDC0" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A focused follow-up lecture on implementing the push operation using an array as the underlying container. Expect coverage of how the top index is initialized and incremented, how elements are written into the array, and the overflow condition that occurs when the array is already full. This is the clearest link between the abstract operation and a concrete container.</p>
+<h4>Why this video</h4>
+<p>It directly addresses several subtopics at once — underlying data containers, the top pointer, push mechanics, and boundary conditions — in a short, exam-focused lecture from an established CS channel.</p>
+</section>
+<section class="item" id="p3-sec3">
+<h3>Video 2: Lec-30: Introduction to Stack | PUSH and POP operations | Data Structure</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/HRDHgKrYHgU?cc_load_policy=1&amp;rel=0" title="Video: Lec-30: Introduction to Stack | PUSH and POP operations | Data Structure (Gate Smashers)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Gate Smashers</strong> · 6:46 · 325,602 views · 3y ago · captions — <a href="https://www.youtube.com/watch?v=HRDHgKrYHgU" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>An introductory lecture on the stack as an abstract data type, presenting the LIFO principle and walking through the push and pop operations. Based on its title and description, it establishes the basic vocabulary — top, push, pop — and traces how elements enter and leave the structure. Watch this first if the idea of a single access point at the top is still new to you.</p>
+<h4>Why this video</h4>
+<p>Gate Smashers produces widely used exam-oriented CS lectures, and this one sets up the conceptual model of top, push, and pop that the rest of the topic builds on before any code appears.</p>
+</section>
+<section class="item" id="p3-sec4">
+<h3>Video 3: Push and Pop — Array Stack — Data Structures in C | 6.5</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/Wz4X9unD-IA?cc_load_policy=1&amp;rel=0" title="Video: Push and Pop — Array Stack — Data Structures in C | 6.5 (Glass Box Computing)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Glass Box Computing</strong> · 7:39 · 3 views · 2mo ago · captions — <a href="https://www.youtube.com/watch?v=Wz4X9unD-IA" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A step-by-step walkthrough of push and pop on an array-backed stack, presented as part of a C data structures series. The description promises a detailed trace of exactly what happens at the top during each operation, so expect the array contents and the top index to be shown changing together. It complements the earlier videos by covering pop with the same care as push.</p>
+<h4>Why this video</h4>
+<p>The paired, step-by-step treatment of both operations reinforces pop mechanics and empty-stack boundary checks, which are the details students most often get wrong when writing their own class.</p>
+</section>
+<section class="item" id="p3-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these videos support MO1 by grounding the LIFO principle in the behavior of a single top marker, and MO2 by showing the exact step order inside push and pop that you will translate into a JavaScript Stack class with peek, isEmpty, size, and toString. The array-based implementations supply the evidence for MO3: because push and pop touch only the top index, they run in constant time, and the array container makes the O(n) space cost of storing n elements visible. Understanding these internals also prepares you for MO4 and MO5, since expression-evaluation algorithms and features like undo and call stacks depend on push and pop behaving predictably at the boundaries.</p>
+</section>
+<section class="item" id="p3-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part4">
+<h2>Building a Stack in JavaScript</h2>
+<section class="item" id="p4-sec1">
+<h3>Introduction</h3>
+<p>A stack is one of the simplest data structures you will build, and that simplicity is exactly why it is worth building yourself. In this topic you will write a Stack class from scratch in JavaScript: a constructor that sets up the internal storage (commonly an array), a push method that adds an item to the top, a pop method that removes and returns the top item, and a peek method that lets you look at the top without removing it. You will round the class out with isEmpty and size helpers and a print or toString method so you can inspect the contents while debugging, then test everything with a sequence of operations that proves the Last-In, First-Out ordering actually holds.</p>
+<p>This matters because almost everything later in the course leans on stacks. Expression parsing, backtracking, recursion and the JavaScript call stack itself all depend on the same handful of constant-time operations you are about to write. Once you have implemented the class, the behavior of those higher-level algorithms becomes much easier to reason about, because you know exactly what happens on each push and pop.</p>
+<p>The videos below are implementation-focused rather than JavaScript-specific, so treat them as models of stack reasoning rather than code to copy. While watching, pay attention to three things: which end of the underlying container is treated as the top, how each method handles the empty-stack edge case, and how the author tests the structure after writing it. If a video uses Java, try translating the logic into your own JavaScript class as you go — that translation exercise is where most of the learning happens.</p>
+</section>
+<section class="item" id="p4-sec2">
+<h3>Video 1: Implement Stack using Queues | Explained, Visualized and Implemented | Geekific</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/N7RykWhHogk?cc_load_policy=1&amp;rel=0" title="Video: Implement Stack using Queues | Explained, Visualized and Implemented | Geekific (Geekific)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Geekific</strong> · 3:55 · 5,101 views · 3y ago · captions — <a href="https://www.youtube.com/watch?v=N7RykWhHogk" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>This Geekific video explains, visualizes and implements a stack whose underlying storage is built from queues, walking through how push and pop must be rearranged when the container does not naturally support LIFO. Expect an animated explanation followed by a coded implementation, with the source available on the channel's GitHub repository. It covers the same core operations you are implementing — push, pop and peek — but forces them through an unusual container.</p>
+<h4>Why this video</h4>
+<p>Because the LIFO behavior has to be manufactured here, the video makes the contract of push, pop and peek unusually explicit, which sharpens your understanding of what your own Stack class must guarantee. Geekific's visualize-then-implement format also models the step-by-step method-by-method approach this topic asks you to follow.</p>
+</section>
+<section class="item" id="p4-sec3">
+<h3>Video 2: Implement Queue using Stacks | Explained, Visualized and Implemented | Geekific</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/dGv0QeJf5F8?cc_load_policy=1&amp;rel=0" title="Video: Implement Queue using Stacks | Explained, Visualized and Implemented | Geekific (Geekific)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Geekific</strong> · 4:07 · 3,200 views · 3y ago · captions — <a href="https://www.youtube.com/watch?v=dGv0QeJf5F8" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>The companion Geekific video reverses the exercise: it builds a queue using stacks, visualizing how repeated pops from one stack into another flip the ordering. It explains the approach first and then implements it, again with code linked on the channel's GitHub. Along the way it relies on exactly the primitive operations — push, pop, peek, isEmpty — that you are writing in this topic.</p>
+<h4>Why this video</h4>
+<p>It is the clearest possible illustration of why stack ordering differs from queue ordering, which is the distinction underlying this whole module. It also shows your Stack class being used as a building block, a good preview of why clean helper methods like isEmpty matter.</p>
+</section>
+<section class="item" id="p4-sec4">
+<h3>Video 3: How to reverse a String using a Stack in Java ? | Animation</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/HFgyvNpBF4Q?cc_load_policy=1&amp;rel=0" title="Video: How to reverse a String using a Stack in Java ? | Animation (Dinesh Varyani)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Dinesh Varyani</strong> · 6:13 · 24,421 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=HFgyvNpBF4Q" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>Dinesh Varyani uses animation to show how pushing every character of a string onto a stack and then popping them off produces the reversed string. The video walks through the algorithm visually before showing the Java code, so you can see the stack grow and shrink one element at a time. It is a short, single-purpose demonstration of stack usage rather than a full class implementation.</p>
+<h4>Why this video</h4>
+<p>It is an ideal first test case for the Stack class you build: simple enough to hand-trace, but it exercises push, pop and isEmpty together. The animation makes the LIFO ordering visible, which helps when you are verifying that your own implementation behaves correctly.</p>
+</section>
+<section class="item" id="p4-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these videos reinforce the hands-on goals of this topic. The string-reversal animation and both Geekific implementations repeatedly exercise push, pop, peek and isEmpty, giving you concrete models to translate into the JavaScript Stack class required by MO2, and the string-reversal example doubles as a ready-made test case. The paired stack-from-queues and queue-from-stacks videos directly contrast LIFO and FIFO ordering, supporting MO1, and they also expose how the choice of underlying container affects the cost of each operation, which feeds into the complexity discussion in MO3. Finally, seeing a stack used to drive a small algorithm previews the application-level work on expression evaluation and real-world stack-based features covered in MO4 and MO5.</p>
+</section>
+<section class="item" id="p4-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part5">
+<h2>Expression Evaluation Using Stacks</h2>
+<section class="item" id="p5-sec1">
+<h3>Introduction</h3>
+<p>Expressions like 3 + 4 * (2 - 1) are easy for people to read, but a computer cannot simply scan them left to right and get the right answer. Operators have different precedence levels, parentheses override those levels, and some operators associate left to right while others associate right to left. The stack solves this problem elegantly: whenever you encounter something whose handling must be postponed — an open parenthesis, an operator of lower precedence, an operand waiting for its operator — you push it and come back to it later, in exactly the reverse order you set it aside. That Last-In, First-Out behavior is what makes stacks the natural tool for parsing.</p>
+<p>In this topic you will work through the chain of ideas that compilers and calculators actually use: checking that parentheses and brackets are balanced, understanding the three notations (infix, prefix, postfix), converting infix to postfix with the Shunting-Yard algorithm, and then evaluating a postfix expression with a single stack and a single left-to-right pass. The payoff is that postfix needs no parentheses and no precedence rules at evaluation time — all of that complexity is resolved during conversion.</p>
+<p>As you watch the videos below, trace each example by hand with pencil and paper. Keep a column for the stack contents and a column for the output at every step, and pay close attention to the rules that govern when an operator is pushed versus when it forces pops: comparing precedence of the incoming operator against the top of the stack, handling equal precedence according to associativity, and treating the open parenthesis as a barrier that only a matching close parenthesis can remove.</p>
+</section>
+<section class="item" id="p5-sec2">
+<h3>Video 1: Lec-36: Infix, Prefix &amp; Postfix👩‍🔧 with examples | Data Structure</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/vtyuftvugXY?cc_load_policy=1&amp;rel=0" title="Video: Lec-36: Infix, Prefix &amp; Postfix👩‍🔧 with examples | Data Structure (Gate Smashers)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Gate Smashers</strong> · 13:33 · 552,840 views · 3y ago · captions — <a href="https://www.youtube.com/watch?v=vtyuftvugXY" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>This lecture introduces the three ways of writing an expression — infix (operator between operands), prefix (operator first), and postfix (operator last) — and walks through worked examples converting between them. Based on its title and description, it should cover how operator position changes the reading order and why prefix and postfix forms need no parentheses.</p>
+<h4>Why this video</h4>
+<p>It establishes the vocabulary and notation that the rest of the topic depends on, so watching it first makes the conversion and evaluation videos much easier to follow.</p>
+</section>
+<section class="item" id="p5-sec3">
+<h3>Video 2: Lec-40: Infix to postfix Conversion using Stack | Infix➡️Postfix Conversion with examples</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/N1Sr-j-cf4c?cc_load_policy=1&amp;rel=0" title="Video: Lec-40: Infix to postfix Conversion using Stack | Infix➡️Postfix Conversion with examples (Gate Smashers)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Gate Smashers</strong> · 15:15 · 650,693 views · 3y ago · captions — <a href="https://www.youtube.com/watch?v=N1Sr-j-cf4c" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>This lecture demonstrates infix-to-postfix conversion using a stack, stepping through example expressions symbol by symbol. Expect it to show the standard rules: operands go straight to the output, operators are pushed or popped based on precedence comparisons with the stack top, and parentheses are handled as push-and-pop pairs.</p>
+<h4>Why this video</h4>
+<p>This is the core Shunting-Yard procedure stated in the module outcomes, presented as a hand-traceable algorithm with precedence and parenthesis handling made explicit.</p>
+</section>
+<section class="item" id="p5-sec4">
+<h3>Video 3: Lec-42: Postfix Expression Evaluation | Stack Application | Data Structure</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/dc4bfoxIbu8?cc_load_policy=1&amp;rel=0" title="Video: Lec-42: Postfix Expression Evaluation | Stack Application | Data Structure (Gate Smashers)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Gate Smashers</strong> · 10:52 · 196,590 views · 3y ago · captions — <a href="https://www.youtube.com/watch?v=dc4bfoxIbu8" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>This lecture covers evaluating a postfix expression with a stack: scan left to right, push operands, and on each operator pop the required operands, apply the operation, and push the result back. It is framed explicitly as an application of the stack data structure, with numeric examples worked out.</p>
+<h4>Why this video</h4>
+<p>It completes the pipeline by showing what you do with the postfix string produced by the previous video, and it highlights the order-of-operands detail that trips students up when subtraction or division is involved.</p>
+</section>
+<section class="item" id="p5-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these three videos target MO4 directly: the first gives you the notation framework, the second shows the stack-based infix-to-postfix conversion including precedence, associativity, and parenthesis handling, and the third shows single-pass postfix evaluation with a stack. In doing so they also reinforce MO1, since every rule in these algorithms is a consequence of LIFO ordering, and they give you concrete algorithms to implement on top of the Stack class you build in MO2 using push, pop, peek, and isEmpty. Watching them with a trace table in hand will also prepare you to reason about MO3, because each algorithm makes a single pass over the input while the stack grows at most to the size of the expression.</p>
+</section>
+<section class="item" id="p5-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part6">
+<h2>Undo Mechanisms and Other Real-World Use Cases</h2>
+<section class="item" id="p6-sec1">
+<h3>Introduction</h3>
+<p>Up to this point you have studied the stack as an abstract structure: a container with push, pop, and peek, governed by a Last-In, First-Out rule. This topic asks a different question — where does that rule actually show up in the software you use every day? The answer is: almost everywhere. Pressing Ctrl+Z in a text editor, clicking the back button in a browser, watching a function return control to its caller, checking whether parentheses balance in an expression, or exploring a maze until you hit a dead end and retreat — all of these are LIFO behavior wearing different costumes.</p>
+<p>The common thread is reversal. Whenever a system needs to undo the most recent thing first, or return to the most recently suspended state, a stack is the natural fit. An undo feature pushes each action onto a stack and pops them off in reverse order. Browser history pushes each visited page, and the back button pops. The call stack pushes a frame for every function invocation and pops it when the function returns, which is also why infinite recursion produces a stack overflow. Expression parsers push operators and operands until they can be resolved, and backtracking algorithms push partial solutions so they can retreat when a path fails.</p>
+<p>As you watch the video below, keep a mental checklist: What is being pushed? When is it pushed? What triggers the pop? If you can answer those three questions for any feature, you can decide whether a stack is the right tool. Pay particular attention to the call stack, since it is the example that is both the most invisible to everyday users and the most important for you as a programmer — it explains recursion, return addresses, local variable lifetimes, and a whole category of runtime errors.</p>
+</section>
+<section class="item" id="p6-sec2">
+<h3>Video 1: Lec-44: Understanding Call Stack with example | Data Structure #gatesmashers #Stack</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/x9yuHFyuWZg?cc_load_policy=1&amp;rel=0" title="Video: Lec-44: Understanding Call Stack with example | Data Structure #gatesmashers #Stack (Gate Smashers)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Gate Smashers</strong> · 8:52 · 65,296 views · 3y ago · captions — <a href="https://www.youtube.com/watch?v=x9yuHFyuWZg" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>This lecture from the Gate Smashers data structures series walks through the call stack, the runtime mechanism that tracks which functions are currently executing. Based on its title and framing, it uses a worked example to show how a stack frame is pushed when a function is called and popped when that function returns, and how control flows back to the caller in reverse order. Expect discussion of why this structure is a stack rather than any other container, and how nested or recursive calls stack up.</p>
+<h4>Why this video</h4>
+<p>The call stack is the hardest of this topic's use cases to observe directly, so a step-by-step example is exactly what the subtopic needs. Gate Smashers is a well-established computer science lecture channel aimed at exam and interview preparation, and its explanations are concise and example-driven, which makes the abstract push/pop pattern concrete.</p>
+</section>
+<section class="item" id="p6-sec3">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>The video directly supports MO5 by making one of the named real-world use cases — the call stack in program execution — explicit and traceable, so you can explain how LIFO ordering enables it rather than simply naming it. Because the call stack is pure push-on-call, pop-on-return behavior, it also reinforces MO1: it is a clean demonstration of why last-in, first-out is the correct ordering here and why a queue would break the logic entirely. Finally, understanding how frames stack and unwind gives you the mental model you will need for the recursive and backtracking work behind MO4, where operators and partial results are held on a stack until they can be resolved.</p>
+</section>
+<section class="item" id="p6-sec4">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+
+<footer class="presemaker-credit" data-credit="2" style="margin-top:2rem;padding:14px 8px;border-top:1px solid #ddd;background:#fff;text-align:center;font:13px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#595959;"><svg width="20" height="20" viewBox="0 0 2048 2048" aria-hidden="true" focusable="false" style="vertical-align:-5px;margin-right:7px"><rect width="2048" height="2048" rx="384" fill="#0F6E6E"/><path fill="#0A5050" d="M1024 1000 344 832v816l680 168zm0 0 680-168v816l-680 168z"/><path fill="#fff" d="M1024 944 384 784v808l640 160zm0 0 640-160v808l-640 160z"/><rect x="1002" y="944" width="44" height="808" fill="#0F6E6E"/><rect x="936" y="246" width="176" height="448" rx="44" fill="#fff"/><rect x="800" y="382" width="448" height="176" rx="44" fill="#fff"/></svg>Created with <a href="https://softwareplus.ai/coursebuilder/" target="_blank" rel="noopener" style="color:#2f5d8f;font-weight:600;text-decoration:none;">CourseBuilder+</a><span aria-hidden="true"> · </span><a href="https://softwareplus.ai/" target="_blank" rel="noopener" style="color:#2f5d8f;text-decoration:none;">SoftwarePlus.ai</a></footer>
+</body>
+</html>

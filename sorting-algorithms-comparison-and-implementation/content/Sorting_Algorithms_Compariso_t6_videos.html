@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Comparing Sorting Algorithms</title>
+<style>
+body{font-family:'Segoe UI',Arial,sans-serif;max-width:820px;margin:2rem auto;padding:0 1.25rem;color:#222;line-height:1.55}
+h1{font-size:1.9rem;border-bottom:2px solid #ddd;padding-bottom:.4rem}
+h2{font-size:1.3rem;color:#1f3864;margin-top:1.6rem}
+body{padding-left:1.1rem;padding-right:1.1rem}
+ul,ol{margin:.4rem 0 1rem 1.4rem}
+li{margin:.25rem 0}
+nav.toc{background:rgba(128,128,128,.08);border:1px solid rgba(128,128,128,.25);border-radius:8px;padding:.6rem 1rem;margin:1.2rem 0}
+nav.toc strong{display:block;margin-bottom:.3rem}
+nav.toc a{display:block;text-decoration:none;padding:.12rem 0}
+section.item{border-top:1px solid rgba(128,128,128,.22);padding-top:.3rem}
+table{border-collapse:collapse;width:100%;margin:.8rem 0}
+th,td{border:1px solid rgba(128,128,128,.45);padding:.4rem .6rem;text-align:left;vertical-align:top}
+thead th{background:rgba(128,128,128,.18);font-weight:600}
+tbody tr:nth-child(even){background:rgba(128,128,128,.08)}
+</style>
+</head>
+<body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Sorting Algorithms: Comparison and Implementation</a></div>
+<h1>Comparing Sorting Algorithms</h1>
+<nav class="toc"><strong>Contents</strong>
+<a href="#sec1">Introduction</a>
+<a href="#sec2">Video 1: Sorting Algorithms Time and Space Complexity | Sorting Algorithms | Big-O | Geekific</a>
+<a href="#sec3">Video 2: 10 Sorting Algorithms Easily Explained</a>
+<a href="#sec4">Video 3: Shell sort vs Insertion sort</a>
+<a href="#sec5">How These Videos Support the Learning Outcomes</a>
+<a href="#sec6">About These Videos</a>
+</nav>
+<section class="item" id="sec1">
+<h2>Introduction</h2>
+<p>Once you can write bubble sort, insertion sort, merge sort, and quicksort, the next question is the one that actually matters in practice: which one should you use, and why? This topic puts the four algorithms side by side and compares them on the dimensions that drive real decisions — best, average, and worst-case time complexity, extra memory usage, whether equal elements keep their original relative order (stability), and how each behaves on small inputs versus large ones.</p>
+<p>Input order matters more than students usually expect. Insertion sort is nearly linear on data that is already almost sorted, while a naive quicksort pivot choice can degrade to O(n^2) on sorted input. Memory matters too: merge sort&#39;s O(n) auxiliary space can be a problem on large datasets, and quicksort still carries recursion stack overhead even though it sorts in place. Building a mental comparison table — algorithm, best/average/worst time, space, stable or not, typical use case — is the core skill of this topic.</p>
+<p>As you watch the videos below, keep that table open and fill it in. Note where different sources agree on the Big O values, pay attention to any assumptions being made (such as pivot strategy or whether a linked list or array is being sorted), and watch the animated comparisons to connect the abstract complexity classes to visible differences in how many operations each algorithm performs.</p>
+</section>
+<section class="item" id="sec2">
+<h2>Video 1: Sorting Algorithms Time and Space Complexity | Sorting Algorithms | Big-O | Geekific</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/UqmKiz2P0Lw?cc_load_policy=1&amp;rel=0" title="Video: Sorting Algorithms Time and Space Complexity | Sorting Algorithms | Big-O | Geekific (Geekific)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Geekific</strong> · 13:39 · 21,750 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=UqmKiz2P0Lw" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>This Geekific video walks through the time and space complexity of the common sorting algorithms, framing each one in Big-O terms. Based on its title and description, it summarizes a series of earlier algorithm videos and consolidates the best-case, average-case, and worst-case costs along with memory usage. Expect the kind of overview that maps directly onto a comparison table.</p>
+<h3>Why this video</h3>
+<p>It is the most directly on-topic video for the Time Complexity Overview and Space Complexity Considerations subtopics, and the channel&#39;s accompanying GitHub repository lets you check implementations against the stated complexities.</p>
+</section>
+<section class="item" id="sec3">
+<h2>Video 2: 10 Sorting Algorithms Easily Explained</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/rbbTd-gkajw?cc_load_policy=1&amp;rel=0" title="Video: 10 Sorting Algorithms Easily Explained (Coding with Lewis)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Coding with Lewis</strong> · 10:48 · 348,227 views · 2y ago · captions — <a href="https://www.youtube.com/watch?v=rbbTd-gkajw" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>Coding with Lewis gives a fast, visual tour of ten sorting algorithms, explaining the basic idea behind each one. Because it covers a wide range rather than one algorithm in depth, it is useful for seeing how bubble, insertion, merge, and quicksort relate to the broader family of sorting approaches and where each tends to be used.</p>
+<h3>Why this video</h3>
+<p>Its breadth supports the side-by-side comparison and algorithm-selection subtopics, and the short, clearly explained format makes it a good orientation or review before you work through the formal analysis.</p>
+</section>
+<section class="item" id="sec4">
+<h2>Video 3: Shell sort vs Insertion sort</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/g06hNBhoS1k?cc_load_policy=1&amp;rel=0" title="Video: Shell sort vs Insertion sort (udiprod)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>udiprod</strong> · 6:23 · 179,029 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=g06hNBhoS1k" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>This udiprod video introduces shell sort and then runs it head-to-head against insertion sort in an animated race. The visual match-up shows how two algorithms on the same data can diverge dramatically in the number of operations they perform as input size grows.</p>
+<h3>Why this video</h3>
+<p>udiprod is known for accurate, carefully built algorithm animations, and this direct comparison makes the Performance on Small vs. Large Datasets and Impact of Input Order subtopics concrete in a way that a complexity table alone cannot.</p>
+</section>
+<section class="item" id="sec5">
+<h2>How These Videos Support the Learning Outcomes</h2>
+<p>Together these videos reinforce the analytical and decision-making outcomes of the module. The Geekific overview supports MO2 by stating best, average, and worst-case time and space complexities in Big O terms for the algorithms you implement in MO1. The Coding with Lewis survey supports MO3 and MO4 by placing bubble, insertion, merge, and quicksort within a wider set of approaches and highlighting their practical niches. The udiprod head-to-head animation supports MO3 and MO4 by demonstrating visually how input size and ordering change which algorithm finishes first, which is exactly the reasoning you will apply when selecting an algorithm for a given scenario.</p>
+</section>
+<section class="item" id="sec6">
+<h2>About These Videos</h2>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+
+<footer class="presemaker-credit" data-credit="2" style="margin-top:2rem;padding:14px 8px;border-top:1px solid #ddd;background:#fff;text-align:center;font:13px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#595959;"><svg width="20" height="20" viewBox="0 0 2048 2048" aria-hidden="true" focusable="false" style="vertical-align:-5px;margin-right:7px"><rect width="2048" height="2048" rx="384" fill="#0F6E6E"/><path fill="#0A5050" d="M1024 1000 344 832v816l680 168zm0 0 680-168v816l-680 168z"/><path fill="#fff" d="M1024 944 384 784v808l640 160zm0 0 640-160v808l-640 160z"/><rect x="1002" y="944" width="44" height="808" fill="#0F6E6E"/><rect x="936" y="246" width="176" height="448" rx="44" fill="#fff"/><rect x="800" y="382" width="448" height="176" rx="44" fill="#fff"/></svg>Created with <a href="https://softwareplus.ai/coursebuilder/" target="_blank" rel="noopener" style="color:#2f5d8f;font-weight:600;text-decoration:none;">CourseBuilder+</a><span aria-hidden="true"> · </span><a href="https://softwareplus.ai/" target="_blank" rel="noopener" style="color:#2f5d8f;text-decoration:none;">SoftwarePlus.ai</a></footer>
+</body>
+</html>

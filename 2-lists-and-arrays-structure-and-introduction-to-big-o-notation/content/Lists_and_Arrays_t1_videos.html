@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Introduction to Lists and Arrays</title>
+<style>
+body{font-family:'Segoe UI',Arial,sans-serif;max-width:820px;margin:2rem auto;padding:0 1.25rem;color:#222;line-height:1.55}
+h1{font-size:1.9rem;border-bottom:2px solid #ddd;padding-bottom:.4rem}
+h2{font-size:1.3rem;color:#1f3864;margin-top:1.6rem}
+body{padding-left:1.1rem;padding-right:1.1rem}
+ul,ol{margin:.4rem 0 1rem 1.4rem}
+li{margin:.25rem 0}
+nav.toc{background:rgba(128,128,128,.08);border:1px solid rgba(128,128,128,.25);border-radius:8px;padding:.6rem 1rem;margin:1.2rem 0}
+nav.toc strong{display:block;margin-bottom:.3rem}
+nav.toc a{display:block;text-decoration:none;padding:.12rem 0}
+section.item{border-top:1px solid rgba(128,128,128,.22);padding-top:.3rem}
+table{border-collapse:collapse;width:100%;margin:.8rem 0}
+th,td{border:1px solid rgba(128,128,128,.45);padding:.4rem .6rem;text-align:left;vertical-align:top}
+thead th{background:rgba(128,128,128,.18);font-weight:600}
+tbody tr:nth-child(even){background:rgba(128,128,128,.08)}
+</style>
+</head>
+<body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ 2 - Lists and Arrays: Structure and Introduction to Big O Notation</a></div>
+<h1>Introduction to Lists and Arrays</h1>
+<nav class="toc"><strong>Contents</strong>
+<a href="#sec1">Introduction</a>
+<a href="#sec2">Video 1: Lec-17: Arrays vs Linked Lists | Data Structures</a>
+<a href="#sec3">Video 2: 10 Key Data Structures We Use Every Day</a>
+<a href="#sec4">Video 3: Linked lists in 4 minutes</a>
+<a href="#sec5">How These Videos Support the Learning Outcomes</a>
+<a href="#sec6">About These Videos</a>
+</nav>
+<section class="item" id="sec1">
+<h2>Introduction</h2>
+<p>Data structures are the organized ways we store data in memory so that a program can find it, change it, and reuse it efficiently. Arrays and lists are the two starting points for almost every other structure you will meet in this course: an array is a fixed-size block of contiguous memory whose elements are reached by index, while a linked list is a chain of nodes where each node holds a value and a reference to the next node. Both are ordered collections, but they organize memory in very different ways, and that difference drives everything else.</p>
+<p>This topic matters because the rest of COP3530 builds on it. Stacks, queues, hash tables, trees, and graphs are all implemented on top of array-like or node-based storage, and the trade-offs you learn here — fast indexed access versus cheap insertion and deletion — reappear constantly. Getting comfortable now with how memory is laid out, what indexing really means, and when resizing is required will make the Big O analysis later in the module feel like a natural next step rather than a separate subject.</p>
+<p>As you watch, keep a short comparison table going. For each structure, note: how elements are located (by index or by following links), whether the size is fixed or grows, what happens when you insert or delete at the front, middle, or end, and what extra memory the structure costs. Try to express each answer in plain words first; attaching Big O labels comes later in the module.</p>
+</section>
+<section class="item" id="sec2">
+<h2>Video 1: Lec-17: Arrays vs Linked Lists | Data Structures</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/d4pp0noHOB8?cc_load_policy=1&amp;rel=0" title="Video: Lec-17: Arrays vs Linked Lists | Data Structures (Gate Smashers)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Gate Smashers</strong> · 8:41 · 244,396 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=d4pp0noHOB8" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>A lecture-style comparison of arrays and linked lists, contrasting contiguous versus linked memory allocation, static versus dynamic sizing, and the cost of accessing, inserting, and deleting elements. It is framed for exam and interview preparation, so it emphasizes the points that are most often tested.</p>
+<h3>Why this video</h3>
+<p>This is the most direct match for the &quot;Arrays vs. Lists: Key Differences&quot; subtopic and pulls the module&#39;s comparison together in one place. The Gate Smashers channel is widely used by computer science students and works through the trade-offs step by step on the board.</p>
+</section>
+<section class="item" id="sec3">
+<h2>Video 2: 10 Key Data Structures We Use Every Day</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/ouipSd_5ivQ?cc_load_policy=1&amp;rel=0" title="Video: 10 Key Data Structures We Use Every Day (ByteByteGo)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>ByteByteGo</strong> · 8:43 · 451,698 views · 3y ago · captions — <a href="https://www.youtube.com/watch?v=ouipSd_5ivQ" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>A fast, animated tour of ten data structures that appear in everyday software, almost certainly including arrays and linked lists along with stacks, queues, hash tables, trees, and graphs. Based on the title and channel, it focuses on what each structure looks like and where it is actually used in real systems rather than on code details.</p>
+<h3>Why this video</h3>
+<p>It gives you the big-picture answer to &quot;what are data structures?&quot; and shows where arrays and lists sit among the others, which is a useful frame before you study either one closely. ByteByteGo is a well-known systems-oriented channel whose clear animations suit an introductory overview.</p>
+</section>
+<section class="item" id="sec4">
+<h2>Video 3: Linked lists in 4 minutes</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/F8AbOfQwl1c?cc_load_policy=1&amp;rel=0" title="Video: Linked lists in 4 minutes (Michael Sambol)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Michael Sambol</strong> · 4:22 · 217,408 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=F8AbOfQwl1c" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>A concise four-minute explanation of linked lists from Michael Sambol, with accompanying Python code linked in the description. Expect a walkthrough of nodes and references, how the list is traversed from the head, and the basic insertion and deletion operations.</p>
+<h3>Why this video</h3>
+<p>It defines lists precisely and visually, covering the node-and-pointer structure that distinguishes them from arrays. Sambol&#39;s short, textbook-aligned videos are a reliable, no-filler complement to your reading on the &quot;Defining Lists&quot; subtopic.</p>
+</section>
+<section class="item" id="sec5">
+<h2>How These Videos Support the Learning Outcomes</h2>
+<p>Together these videos move from the general to the specific. The ByteByteGo overview establishes what data structures are and why we choose among them, the Sambol video defines the linked list and its node-based organization, and the Gate Smashers lecture sets arrays and lists side by side on memory layout, sizing, and operation cost — directly supporting MO1 and MO2. The access, search, insertion, and deletion behaviors demonstrated here are the raw material you will label with O(1), O(n), and O(n squared) in the Big O portion of the module (MO3), and the trade-off reasoning modeled in the comparison video previews the kind of justification MO4 asks you to produce when selecting a structure for a given use case.</p>
+</section>
+<section class="item" id="sec6">
+<h2>About These Videos</h2>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+
+<footer class="presemaker-credit" data-credit="2" style="margin-top:2rem;padding:14px 8px;border-top:1px solid #ddd;background:#fff;text-align:center;font:13px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#595959;"><svg width="20" height="20" viewBox="0 0 2048 2048" aria-hidden="true" focusable="false" style="vertical-align:-5px;margin-right:7px"><rect width="2048" height="2048" rx="384" fill="#0F6E6E"/><path fill="#0A5050" d="M1024 1000 344 832v816l680 168zm0 0 680-168v816l-680 168z"/><path fill="#fff" d="M1024 944 384 784v808l640 160zm0 0 640-160v808l-640 160z"/><rect x="1002" y="944" width="44" height="808" fill="#0F6E6E"/><rect x="936" y="246" width="176" height="448" rx="44" fill="#fff"/><rect x="800" y="382" width="448" height="176" rx="44" fill="#fff"/></svg>Created with <a href="https://softwareplus.ai/coursebuilder/" target="_blank" rel="noopener" style="color:#2f5d8f;font-weight:600;text-decoration:none;">CourseBuilder+</a><span aria-hidden="true"> · </span><a href="https://softwareplus.ai/" target="_blank" rel="noopener" style="color:#2f5d8f;text-decoration:none;">SoftwarePlus.ai</a></footer>
+</body>
+</html>

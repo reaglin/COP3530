@@ -1,5 +1,10 @@
 ﻿[
   {
+    "title": "2 - Lists and Arrays: Structure and Introduction to Big O Notation (module page)",
+    "href": "index.html",
+    "type": "Module page"
+  },
+  {
     "title": "2 - Lists and Arrays: Structure and Introduction to Big O Notation \u2014 Topics \u0026 Learning Outcomes",
     "href": "topics-outcomes.html",
     "type": "Page"
@@ -45,8 +50,43 @@
     "type": "Content"
   },
   {
-    "title": "2 - Lists and Arrays: Structure and Introduction to Big O Notation \u2014 Module Topics",
-    "href": "content/module_topics.html",
+    "title": "Introduction to Lists and Arrays",
+    "href": "content/Lists_and_Arrays_t1_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "Array Structure and Memory Layout",
+    "href": "content/Lists_and_Arrays_t2_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "List Structure and Dynamic Behavior",
+    "href": "content/Lists_and_Arrays_t3_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "Core Data Operations on Lists and Arrays",
+    "href": "content/Lists_and_Arrays_t4_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "Introduction to Computational Complexity",
+    "href": "content/Lists_and_Arrays_t5_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "Big O Notation Fundamentals",
+    "href": "content/Lists_and_Arrays_t6_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "Applying Big O to List and Array Operations",
+    "href": "content/Lists_and_Arrays_t7_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "2 - Lists and Arrays: Structure and Introduction to Big O Notation",
+    "href": "content/Lists_and_Arrays_videos_merged.html",
     "type": "Content"
   },
   {

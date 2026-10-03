@@ -1,5 +1,10 @@
 ﻿[
   {
+    "title": "Recursion: Concepts and Implementation (module page)",
+    "href": "index.html",
+    "type": "Module page"
+  },
+  {
     "title": "Recursion: Concepts and Implementation \u2014 Topics \u0026 Learning Outcomes",
     "href": "topics-outcomes.html",
     "type": "Page"
@@ -8,11 +13,6 @@
     "title": "Recursion: Concepts and Implementation \u2014 Module Topics",
     "href": "topics.html",
     "type": "Page"
-  },
-  {
-    "title": "Recursion: Concepts and Implementation \u2014 Module Topics",
-    "href": "content/module_topics.html",
-    "type": "Content"
   },
   {
     "title": "When to Use Recursion",
@@ -52,6 +52,46 @@
   {
     "title": "When to Use Recursion",
     "href": "content/Recursion_Concepts_and_interactive_topics_t7.html",
+    "type": "Content"
+  },
+  {
+    "title": "What is Recursion?",
+    "href": "content/Recursion_Concepts_and_t1_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "Base Cases and Recursive Cases",
+    "href": "content/Recursion_Concepts_and_t2_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "The Call Stack and Recursion",
+    "href": "content/Recursion_Concepts_and_t3_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "Implementing Factorial with Recursion",
+    "href": "content/Recursion_Concepts_and_t4_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "Fibonacci Sequence Using Recursion",
+    "href": "content/Recursion_Concepts_and_t5_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "Recursive List Traversal",
+    "href": "content/Recursion_Concepts_and_t6_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "When to Use Recursion",
+    "href": "content/Recursion_Concepts_and_t7_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "Recursion: Concepts and Implementation",
+    "href": "content/Recursion_Concepts_and_videos_merged.html",
     "type": "Content"
   }
 ]

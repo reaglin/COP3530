@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Best Practices and Real-World Applications</title>
+<style>
+body{font-family:'Segoe UI',Arial,sans-serif;max-width:820px;margin:2rem auto;padding:0 1.25rem;color:#222;line-height:1.55}
+h1{font-size:1.9rem;border-bottom:2px solid #ddd;padding-bottom:.4rem}
+h2{font-size:1.3rem;color:#1f3864;margin-top:1.6rem}
+body{padding-left:1.1rem;padding-right:1.1rem}
+ul,ol{margin:.4rem 0 1rem 1.4rem}
+li{margin:.25rem 0}
+nav.toc{background:rgba(128,128,128,.08);border:1px solid rgba(128,128,128,.25);border-radius:8px;padding:.6rem 1rem;margin:1.2rem 0}
+nav.toc strong{display:block;margin-bottom:.3rem}
+nav.toc a{display:block;text-decoration:none;padding:.12rem 0}
+section.item{border-top:1px solid rgba(128,128,128,.22);padding-top:.3rem}
+table{border-collapse:collapse;width:100%;margin:.8rem 0}
+th,td{border:1px solid rgba(128,128,128,.45);padding:.4rem .6rem;text-align:left;vertical-align:top}
+thead th{background:rgba(128,128,128,.18);font-weight:600}
+tbody tr:nth-child(even){background:rgba(128,128,128,.08)}
+</style>
+</head>
+<body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Hash Algorithms and Applications: Password Hashing and Beyond</a></div>
+<h1>Best Practices and Real-World Applications</h1>
+<nav class="toc"><strong>Contents</strong>
+<a href="#sec1">Introduction</a>
+<a href="#sec2">Video 1: Salting, peppering, and hashing passwords</a>
+<a href="#sec3">Video 2: What is Hashing in Blockchain | Blockchain Hashing Explained</a>
+<a href="#sec4">Video 3: Hashing and Digital Signatures - CompTIA Security+ SY0-701 - 1.4</a>
+<a href="#sec5">How These Videos Support the Learning Outcomes</a>
+<a href="#sec6">About These Videos</a>
+</nav>
+<section class="item" id="sec1">
+<h2>Introduction</h2>
+<p>Everything you have learned about hash functions in this module comes together here: how practitioners actually choose and deploy hashing in production systems. Choosing &quot;the right hash for the job&quot; is not one decision but several — a fast general-purpose digest like SHA-256 is appropriate for file integrity and digital signatures, while password storage calls for a deliberately slow, memory-hard algorithm such as bcrypt, scrypt, or Argon2 with per-user salts and a tuned work factor. The same primitive also appears in message authentication (HMAC), in TLS handshakes and certificates, in blockchain block linking and Merkle trees, and in digital forensics where a hash value serves as a tamper-evident fingerprint of seized evidence.</p>
+<p>This matters in COP3530 because hashing is where a data structures concept meets real security consequences. A hash table and a password database use the same underlying idea, but the engineering requirements are opposite: one wants speed, the other wants slowness and unpredictability. Understanding that distinction — and the surrounding practices of salting, peppering, key stretching, standards compliance, and periodic re-evaluation as hardware improves — is what separates a working implementation from a safe one.</p>
+<p>As you watch the videos below, keep three questions in mind. First, what property of the hash function is each application relying on (preimage resistance, collision resistance, the avalanche effect, or just speed)? Second, what attack is each countermeasure defending against — a salt stops rainbow tables, a pepper defends against a database-only leak, a work factor slows brute force. Third, where does the secret live in each scheme: in nothing (a plain digest), in a stored server-side value (a pepper), in a shared key (HMAC), or in a private key (digital signatures).</p>
+</section>
+<section class="item" id="sec2">
+<h2>Video 1: Salting, peppering, and hashing passwords</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/FvstbO787Qo?cc_load_policy=1&amp;rel=0" title="Video: Salting, peppering, and hashing passwords (mCoding)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>mCoding</strong> · 8:56 · 74,761 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=FvstbO787Qo" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>This video walks through what an attacker can actually do with a leaked password database and why storing raw or naively hashed passwords fails. It explains salting as a per-user random value that defeats precomputed rainbow tables, peppering as a secret value kept outside the database, and how these combine with hashing in a realistic authentication flow.</p>
+<h3>Why this video</h3>
+<p>It directly addresses the salting and peppering subtopic with a practical, attacker-centered framing, and mCoding is a well-regarded programming channel known for careful, implementation-level explanations rather than hand-waving.</p>
+</section>
+<section class="item" id="sec3">
+<h2>Video 2: What is Hashing in Blockchain | Blockchain Hashing Explained</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/5Nbia23Ju_E?cc_load_policy=1&amp;rel=0" title="Video: What is Hashing in Blockchain | Blockchain Hashing Explained (Learn with Whiteboard)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Learn with Whiteboard</strong> · 5:50 · 16,828 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=5Nbia23Ju_E" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>A short whiteboard-style overview of how hash functions are used in blockchain systems — how a block&#39;s contents are reduced to a fixed-length digest, how each block references the hash of the previous one, and why changing any past data invalidates the chain. Expect coverage of basic hash properties such as determinism and the avalanche effect in the context of distributed ledgers.</p>
+<h3>Why this video</h3>
+<p>It gives concise, beginner-friendly coverage of the blockchain and distributed ledger subtopic, connecting the abstract collision-resistance property you studied earlier to a concrete tamper-evidence mechanism.</p>
+</section>
+<section class="item" id="sec4">
+<h2>Video 3: Hashing and Digital Signatures - CompTIA Security+ SY0-701 - 1.4</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/EcGmQjl6XEo?cc_load_policy=1&amp;rel=0" title="Video: Hashing and Digital Signatures - CompTIA Security+ SY0-701 - 1.4 (Professor Messer)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Professor Messer</strong> · 10:25 · 370,236 views · 2y ago · captions — <a href="https://www.youtube.com/watch?v=EcGmQjl6XEo" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>Reviewed a second time, this video is also the best single reference in the set for the vocabulary used by compliance frameworks and certification standards around hashing and signatures. Watch it again with an eye to terminology you will need when reading security documentation.</p>
+<h3>Why this video</h3>
+<p>Its standards-oriented presentation supports the industry standards, compliance, and ongoing vigilance subtopic, where precise and conventional terminology matters.</p>
+</section>
+<section class="item" id="sec5">
+<h2>How These Videos Support the Learning Outcomes</h2>
+<p>Together these videos move from theory to deployment. The mCoding video is the core support for MO2, MO3, and MO5, showing why dedicated password hashing with salts, peppers, and work factors beats a bare cryptographic digest and what an attacker gains from a leaked database. The Professor Messer lesson supports MO1 and MO4 by contrasting hashing with encryption-based mechanisms and showing how digests, HMACs, and digital signatures provide integrity and authenticity in software distribution, secure communications, and forensic evidence handling. The blockchain video reinforces MO1 and MO4 from a different angle, demonstrating how collision resistance and the avalanche effect make chained hashes a practical tamper-detection structure. Watched as a set, they give you the comparative judgment MO1 through MO5 ask for: knowing not just how hash functions work, but which one to reach for in a given situation and why.</p>
+</section>
+<section class="item" id="sec6">
+<h2>About These Videos</h2>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+
+<footer class="presemaker-credit" data-credit="2" style="margin-top:2rem;padding:14px 8px;border-top:1px solid #ddd;background:#fff;text-align:center;font:13px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#595959;"><svg width="20" height="20" viewBox="0 0 2048 2048" aria-hidden="true" focusable="false" style="vertical-align:-5px;margin-right:7px"><rect width="2048" height="2048" rx="384" fill="#0F6E6E"/><path fill="#0A5050" d="M1024 1000 344 832v816l680 168zm0 0 680-168v816l-680 168z"/><path fill="#fff" d="M1024 944 384 784v808l640 160zm0 0 640-160v808l-640 160z"/><rect x="1002" y="944" width="44" height="808" fill="#0F6E6E"/><rect x="936" y="246" width="176" height="448" rx="44" fill="#fff"/><rect x="800" y="382" width="448" height="176" rx="44" fill="#fff"/></svg>Created with <a href="https://softwareplus.ai/coursebuilder/" target="_blank" rel="noopener" style="color:#2f5d8f;font-weight:600;text-decoration:none;">CourseBuilder+</a><span aria-hidden="true"> · </span><a href="https://softwareplus.ai/" target="_blank" rel="noopener" style="color:#2f5d8f;text-decoration:none;">SoftwarePlus.ai</a></footer>
+</body>
+</html>

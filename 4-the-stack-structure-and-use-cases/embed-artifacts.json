@@ -1,5 +1,10 @@
 ﻿[
   {
+    "title": "4- The Stack: Structure and Use Cases (module page)",
+    "href": "index.html",
+    "type": "Module page"
+  },
+  {
     "title": "4- The Stack: Structure and Use Cases \u2014 Topics \u0026 Learning Outcomes",
     "href": "topics-outcomes.html",
     "type": "Page"
@@ -8,11 +13,6 @@
     "title": "4- The Stack: Structure and Use Cases \u2014 Module Topics",
     "href": "topics.html",
     "type": "Page"
-  },
-  {
-    "title": "4- The Stack: Structure and Use Cases \u2014 Module Topics",
-    "href": "content/module_topics.html",
-    "type": "Content"
   },
   {
     "title": "Introduction to the Stack Data Structure",
@@ -42,6 +42,41 @@
   {
     "title": "Undo Mechanisms and Other Real-World Use Cases",
     "href": "content/The_Stack_Structure_interactive_topics_t6.html",
+    "type": "Content"
+  },
+  {
+    "title": "Introduction to the Stack Data Structure",
+    "href": "content/The_Stack_Structure_t1_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "The LIFO Principle",
+    "href": "content/The_Stack_Structure_t2_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "Internal Implementation of a Stack",
+    "href": "content/The_Stack_Structure_t3_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "Building a Stack in JavaScript",
+    "href": "content/The_Stack_Structure_t4_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "Expression Evaluation Using Stacks",
+    "href": "content/The_Stack_Structure_t5_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "Undo Mechanisms and Other Real-World Use Cases",
+    "href": "content/The_Stack_Structure_t6_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "4- The Stack: Structure and Use Cases",
+    "href": "content/The_Stack_Structure_videos_merged.html",
     "type": "Content"
   },
   {

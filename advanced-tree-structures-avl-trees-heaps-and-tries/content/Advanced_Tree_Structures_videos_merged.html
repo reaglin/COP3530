@@ -1,0 +1,341 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Advanced Tree Structures: AVL Trees, Heaps, and Tries</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+body{font-family:'Segoe UI',Arial,sans-serif;max-width:820px;margin:2rem auto;padding:0 1.25rem;color:#222;line-height:1.55}
+h1{font-size:1.9rem;border-bottom:2px solid #ddd;padding-bottom:.4rem}
+h2{font-size:1.3rem;color:#1f3864;margin-top:1.6rem}
+body{padding-left:1.1rem;padding-right:1.1rem}
+ul,ol{margin:.4rem 0 1rem 1.4rem}
+li{margin:.25rem 0}
+nav.toc{background:rgba(128,128,128,.08);border:1px solid rgba(128,128,128,.25);border-radius:8px;padding:.6rem 1rem;margin:1.2rem 0}
+nav.toc strong{display:block;margin-bottom:.3rem}
+nav.toc a{display:block;text-decoration:none;padding:.12rem 0}
+section.item{border-top:1px solid rgba(128,128,128,.22);padding-top:.3rem}
+table{border-collapse:collapse;width:100%;margin:.8rem 0}
+th,td{border:1px solid rgba(128,128,128,.45);padding:.4rem .6rem;text-align:left;vertical-align:top}
+thead th{background:rgba(128,128,128,.18);font-weight:600}
+tbody tr:nth-child(even){background:rgba(128,128,128,.08)}
+</style>
+<style>section.merged-part{border-top:2px solid rgba(128,128,128,.3);margin-top:2rem;padding-top:.5rem}nav.toc{background:rgba(128,128,128,.08);border:1px solid rgba(128,128,128,.25);border-radius:8px;padding:.6rem 1rem;margin:1.2rem 0}nav.toc a{display:block;text-decoration:none;padding:.12rem 0}</style>
+</head>
+<body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Advanced Tree Structures: AVL Trees, Heaps, and Tries</a></div>
+<h1>Advanced Tree Structures: AVL Trees, Heaps, and Tries</h1>
+<nav class="toc"><strong>Contents</strong>
+<a href="#part1">Review of Binary Search Trees and Their Limitations</a>
+<a href="#part2">AVL Trees and Self-Balancing Mechanisms</a>
+<a href="#part3">AVL Tree Performance and Use Cases</a>
+<a href="#part4">Heap Trees and Priority Queues</a>
+<a href="#part5">Heap Operations and Performance Trade-offs</a>
+<a href="#part6">Trie Structures for String Storage and Retrieval</a>
+<a href="#part7">Comparing Advanced Tree Structures: Use Cases and Trade-offs</a>
+</nav>
+<section class="merged-part" id="part1">
+<h2>Review of Binary Search Trees and Their Limitations</h2>
+<section class="item" id="p1-sec1">
+<h3>Introduction</h3>
+<p>A binary search tree (BST) organizes data so that, at every node, all keys in the left subtree are smaller and all keys in the right subtree are larger. That single ordering invariant is what makes search, insertion, and deletion feel fast: at each step you discard half of the remaining possibilities, much like binary search on a sorted array. Before moving on to AVL trees, heaps, and tries, we need to be precise about what a BST guarantees and, just as importantly, what it does not.</p>
+<p>The catch is that BST performance depends on shape, not just on size. Operations cost O(h), where h is the height of the tree. A well-proportioned tree over n keys has height around log n, but a tree built by inserting already-sorted (or reverse-sorted) data degenerates into a path essentially a linked list and height becomes n. This is the gap between the average case and the worst case that motivates every structure in this module: if we can force the tree to stay shallow, we get logarithmic behavior regardless of input order.</p>
+<p>As you watch, keep three questions in mind. First, how is each operation (search, insert, delete) expressed recursively in terms of the ordering invariant? Second, where exactly does the cost of an operation come from, and how does it relate to height? Third, which insertion sequences produce balanced versus degenerate trees? Try sketching a few insertion orders on paper and comparing the resulting shapes before you reach the AVL material.</p>
+</section>
+<section class="item" id="p1-sec2">
+<h3>Video 1: Binary Search Trees: Introduction &amp; Properties</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/XQJJhNiGlL0?cc_load_policy=1&amp;rel=0" title="Video: Binary Search Trees: Introduction &amp; Properties (CodeWithHarry)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>CodeWithHarry</strong> · 14:28 · 373,063 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=XQJJhNiGlL0" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>An introductory lecture on binary search trees that defines the BST ordering property and walks through the structural rules that distinguish a BST from an arbitrary binary tree. Based on its title and description, it covers the core vocabulary (root, subtree, ordered/sorted binary tree) and the basic properties you rely on when searching. Expect worked examples that show how the ordering invariant guides traversal down the tree.</p>
+<h4>Why this video</h4>
+<p>This is the right starting point for the Binary Search Tree Fundamentals subtopic: it builds the vocabulary and the invariant that everything else in the module depends on, from a widely watched channel known for slow, example-driven explanations.</p>
+</section>
+<section class="item" id="p1-sec3">
+<h3>Video 2: Binary Search Trees (BST) Explained and Implemented in Java with Examples | Geekific</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/zIX3zQP0khM?cc_load_policy=1&amp;rel=0" title="Video: Binary Search Trees (BST) Explained and Implemented in Java with Examples | Geekific (Geekific)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Geekific</strong> · 19:57 · 36,955 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=zIX3zQP0khM" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A code-focused treatment that explains BST concepts and then implements them in Java, with examples and a linked GitHub repository. It is likely to walk through node structure and the insert, search, and delete routines, including the trickier delete cases such as removing a node with two children. The implementation view connects the abstract ordering rule to concrete recursive code.</p>
+<h4>Why this video</h4>
+<p>Seeing the operations as actual code reinforces why each operation follows a single root-to-leaf path, which is exactly the observation that makes the height-dependence argument click; Geekific's implementation walkthroughs pair well with the more conceptual video above.</p>
+</section>
+<section class="item" id="p1-sec4">
+<h3>Video 3: BST Analysis</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/pZq-gIZPAKg?cc_load_policy=1&amp;rel=0" title="Video: BST Analysis (Professor Kevin Wortman)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Professor Kevin Wortman</strong> · 10:32 · 166 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=pZq-gIZPAKg" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A short lecture devoted specifically to the asymptotic (big-O) efficiency of BST operations, presented with slides by a university instructor. It should establish that search, insert, and delete all cost O(h) and then analyze what h can be, contrasting the balanced case with the degenerate case. This is the analytical complement to the two implementation-oriented videos.</p>
+<h4>Why this video</h4>
+<p>It directly serves the Time Complexity, Tree Imbalance, and Worst-Case Degenerate Trees subtopics, and because it comes from a course lecture it uses the same formal big-O framing we expect in your written analyses.</p>
+</section>
+<section class="item" id="p1-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these three videos establish the baseline that the rest of the module builds on. The first two give you the structural definition and a concrete implementation of BST search, insert, and delete, so you can reason about operations as traversals along a single path; the third converts that observation into an explicit O(h) analysis and shows how h collapses to n in a degenerate tree. That is precisely the argument MO1 asks you to be able to make, and it supplies the baseline complexity figures you will compare against when evaluating AVL trees, heaps, and tries under MO5. The balance problem identified here is also the direct motivation for the rotation-based repair operations you will trace in MO2 and for the shape invariants that make heap and trie operations predictable in MO3 and MO4.</p>
+</section>
+<section class="item" id="p1-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part2">
+<h2>AVL Trees and Self-Balancing Mechanisms</h2>
+<section class="item" id="p2-sec1">
+<h3>Introduction</h3>
+<p>A binary search tree gives you O(log n) search, insert, and delete only when it stays reasonably short. Insert keys in sorted or nearly sorted order and the same tree degenerates into what is essentially a linked list, pushing every operation to O(n). AVL trees fix this by adding one simple rule: for every node, the heights of its left and right subtrees may differ by at most one. That difference is the node's balance factor, and whenever an insertion or deletion violates the rule, the tree repairs itself with local restructuring operations called rotations.</p>
+<p>In this topic you will learn the AVL definition and its height guarantee, how to compute and update balance factors, and the four repair cases: single left and single right rotations for the "straight line" imbalances, and the left-right and right-left double rotations for the "zig-zag" cases. Insertion requires at most one rotation (single or double) to restore balance; deletion may require rebalancing at several nodes along the path back to the root, which is why it is treated separately.</p>
+<p>The three videos below form a short, ordered sequence: definition and search, then insertion, then deletion. While watching, keep a pen handy and redraw each example yourself. Focus on three things: which node is the first unbalanced ancestor, which of the four cases applies based on the direction of the imbalance, and how heights and balance factors are updated after the rotation. Pausing to predict the rotation before the narrator performs it is the fastest way to build fluency for exams.</p>
+</section>
+<section class="item" id="p2-sec2">
+<h3>Video 1: AVL trees in 5 minutes — Intro &amp; Search</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/DB1HFCEdLxA?cc_load_policy=1&amp;rel=0" title="Video: AVL trees in 5 minutes — Intro &amp; Search (Michael Sambol)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Michael Sambol</strong> · 5:00 · 168,628 views · 3y ago · captions — <a href="https://www.youtube.com/watch?v=DB1HFCEdLxA" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A compact introduction to AVL trees that defines the structure and walks through the search operation. Expect the balance condition, the role of node heights, and why searching an AVL tree works exactly like searching an ordinary BST but with a guaranteed O(log n) bound. Linked source code is provided on the channel's GitHub repository.</p>
+<h4>Why this video</h4>
+<p>Michael Sambol's data structures series is a widely used, carefully scripted set of explanations, and this video covers the "motivation," "definition and properties," and "balance factor" subtopics before any rotation mechanics are introduced.</p>
+</section>
+<section class="item" id="p2-sec3">
+<h3>Video 2: AVL trees in 9 minutes — Insertions</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/JPI-DPizQYk?cc_load_policy=1&amp;rel=0" title="Video: AVL trees in 9 minutes — Insertions (Michael Sambol)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Michael Sambol</strong> · 9:00 · 91,153 views · 3y ago · captions — <a href="https://www.youtube.com/watch?v=JPI-DPizQYk" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>The longest video of the three, devoted to AVL insertion. It should cover how a new key is inserted as in a normal BST, how the imbalance is detected on the way back up, and how the rotation cases are chosen and applied to restore the AVL invariant.</p>
+<h4>Why this video</h4>
+<p>Insertion is where single and double rotations are introduced most naturally, and the extra running time here gives room for worked examples of the left-left, right-right, left-right, and right-left cases you must be able to trace.</p>
+</section>
+<section class="item" id="p2-sec4">
+<h3>Video 3: AVL trees in 5 minutes — Deletions</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/PBkXmhiCP1M?cc_load_policy=1&amp;rel=0" title="Video: AVL trees in 5 minutes — Deletions (Michael Sambol)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Michael Sambol</strong> · 5:20 · 89,410 views · 3y ago · captions — <a href="https://www.youtube.com/watch?v=PBkXmhiCP1M" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A focused treatment of AVL deletion. It should show the standard BST removal cases (leaf, one child, two children with a successor or predecessor) and then the rebalancing that follows, including the fact that deletion can require rotations at more than one ancestor.</p>
+<h4>Why this video</h4>
+<p>Deletion is the subtopic students most often skip, and this video completes the set from the same instructor so the notation, diagrams, and terminology match the previous two videos exactly.</p>
+</section>
+<section class="item" id="p2-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these videos directly serve MO1 and MO2. The first establishes why unbalanced BSTs degrade and what structural invariant AVL trees impose to prevent it, supporting the AVL portion of MO1. The insertion and deletion videos give you worked traces of the balance factor check and the single and double rotations needed to restore it, which is precisely the skill MO2 asks you to demonstrate. The height guarantee discussed throughout also supplies the O(log n) reasoning you will reuse when comparing AVL trees against heaps and tries for MO5; heaps and tries themselves (MO3, MO4) are covered elsewhere in the module.</p>
+</section>
+<section class="item" id="p2-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part3">
+<h2>AVL Tree Performance and Use Cases</h2>
+<section class="item" id="p3-sec1">
+<h3>Introduction</h3>
+<p>An AVL tree is a binary search tree that enforces a balance invariant: for every node, the heights of its left and right subtrees differ by at most one. That single structural guarantee is what turns the shaky worst case of an ordinary BST into a dependable one. Because the height of an AVL tree with n keys stays proportional to log n, search, insert, and remove are all O(log n) in the worst case, not just on average.</p>
+<p>This topic asks you to reason about that guarantee rather than just state it. You will look at where the log n bound comes from, what the extra balance information costs in memory (a height or balance factor stored per node, plus the rotations performed during updates), and how AVL trees compare to plain BSTs, to other balanced trees such as red-black trees, and to hash tables. Each comparison has a different flavor: plain BSTs are cheaper to update but can degrade to a linked list on sorted input; red-black trees rebalance less aggressively and so insert slightly faster but search slightly slower; hash tables beat both on average lookup time but give up ordering and worst-case predictability.</p>
+<p>As you watch, keep two questions in front of you. First, is the claim being made about the average case or the worst case? That distinction is the whole argument for AVL trees in lookup-intensive and latency-sensitive systems, where a predictable upper bound matters more than a good average. Second, what does the structure give up to earn its guarantee? Write down the trade-off in your own words for each structure you see, because the final learning outcome in this module is about justifying a choice, not memorizing a table.</p>
+</section>
+<section class="item" id="p3-sec2">
+<h3>Video 1: AVL Tree Analysis</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/Qbs_ehWNdP0?cc_load_policy=1&amp;rel=0" title="Video: AVL Tree Analysis (Professor Kevin Wortman)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Professor Kevin Wortman</strong> · 10:18 · 283 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=Qbs_ehWNdP0" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A focused analysis of the cost of AVL tree operations, arguing that search, insert, and remove each run in O(log n) time. Based on the title and description, it works through why the balance condition bounds the tree's height and how that bound carries over to the three core operations, contrasting the result with the slower behavior possible in an unbalanced tree.</p>
+<h4>Why this video</h4>
+<p>This is the most direct match for the time-complexity subtopic, and it comes from a university instructor presenting the reasoning behind the bound rather than just asserting it, which is what you need in order to defend the claim yourself.</p>
+</section>
+<section class="item" id="p3-sec3">
+<h3>Video 2: Trees Compared and Visualized | BST vs AVL vs Red-Black vs Splay vs Heap | Geekific</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/hmSFuM2Tglw?cc_load_policy=1&amp;rel=0" title="Video: Trees Compared and Visualized | BST vs AVL vs Red-Black vs Splay vs Heap | Geekific (Geekific)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Geekific</strong> · 8:02 · 22,033 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=hmSFuM2Tglw" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A visual side-by-side tour of five related structures: binary search trees, AVL trees, red-black trees, splay trees, and heaps. The video is likely to show how each structure behaves on the same operations and where their performance and balancing strategies differ, using animations rather than formal proofs.</p>
+<h4>Why this video</h4>
+<p>It places the AVL tree in context among its alternatives, which supports the comparison and trade-off subtopics directly and helps you see that "balanced" is a family of designs with different costs, not a single answer.</p>
+</section>
+<section class="item" id="p3-sec4">
+<h3>Video 3: BSTs versus Hash Tables</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/wmXUcQQ9ZB8?cc_load_policy=1&amp;rel=0" title="Video: BSTs versus Hash Tables (Professor Kevin Wortman)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Professor Kevin Wortman</strong> · 6:29 · 481 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=wmXUcQQ9ZB8" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A performance comparison between binary search trees and hash tables. Expect a discussion of average-case versus worst-case lookup cost, and of the capabilities a hash table gives up, such as ordered traversal and range queries, in exchange for its speed.</p>
+<h4>Why this video</h4>
+<p>Hash tables are the main competitor whenever an application is lookup-intensive, so this video sharpens the question of when an AVL tree is actually the right choice and when you should prefer an alternative.</p>
+</section>
+<section class="item" id="p3-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these videos carry the module's complexity and trade-off outcomes. The AVL analysis video supplies the worst-case O(log n) argument that explains how the balance invariant prevents the O(n) degradation of an unbalanced BST, supporting MO1 and giving the complexity half of MO5. The comparison video extends that reasoning across red-black, splay, and heap structures, and the BST-versus-hash-table video adds the non-tree alternative, so that between them you have the evidence needed to justify selecting one structure over another for a given scenario as MO5 requires. These videos deliberately address performance and selection rather than the mechanics of rotations, heapify, or trie traversal covered in MO2 through MO4, which are developed elsewhere in the module.</p>
+</section>
+<section class="item" id="p3-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part4">
+<h2>Heap Trees and Priority Queues</h2>
+<section class="item" id="p4-sec1">
+<h3>Introduction</h3>
+<p>A heap is a complete binary tree that satisfies an ordering rule between every parent and its children: in a max-heap each parent is greater than or equal to its children, and in a min-heap each parent is less than or equal to its children. Notice what the heap property does NOT guarantee — there is no left-to-right ordering as in a binary search tree, so searching for an arbitrary value is still O(n). What you do get, cheaply and reliably, is constant-time access to the single most extreme element at the root, plus O(log n) insertion and removal. Because the tree is always complete, a heap needs no pointers at all: it can be packed into an array where the children of index i live at 2i+1 and 2i+2, and the parent at (i-1)/2.</p>
+<p>That combination is exactly what a priority queue needs. A priority queue serves elements by priority rather than arrival order, and it underpins job schedulers, event simulation, Huffman coding, and the frontier in Dijkstra's and A* search algorithms — structures you will meet again later in this course and in algorithms courses. The two core maintenance routines are bubble-up (sift-up), used after appending a new element at the end of the array, and bubble-down (sift-down), used after moving the last element to the root when the root is extracted. Building a heap from an unordered array with heapify applies sift-down from the last internal node backwards, which runs in O(n) rather than the O(n log n) you might expect from n separate insertions.</p>
+<p>As you watch, keep a pencil moving. Draw the tree and the array side by side, and after every swap check that both views still agree. Pay attention to when the speaker compares against a parent versus against children, how far a sifted element can travel (at most the height of the tree, hence O(log n)), and how the same two routines get reused for insertion, removal, heapify, and heapsort. Also note which videos use 0-based versus 1-based indexing, since the parent and child formulas change slightly between the two conventions.</p>
+</section>
+<section class="item" id="p4-sec2">
+<h3>Video 1: L-3.13: Introduction to Heap Tree with examples | Max Min Heap</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/uuot9ItgTEI?cc_load_policy=1&amp;rel=0" title="Video: L-3.13: Introduction to Heap Tree with examples | Max Min Heap (Gate Smashers)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Gate Smashers</strong> · 7:45 · 1,301,882 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=uuot9ItgTEI" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>An introductory lecture on heap trees that, based on its title and description, defines what a heap is and walks through examples of both max-heaps and min-heaps. Expect coverage of the complete binary tree requirement and the parent-child ordering property that distinguishes a heap from other binary trees, illustrated with worked examples rather than code.</p>
+<h4>Why this video</h4>
+<p>This is the natural starting point for the first two subtopics — heap structure and the min-heap versus max-heap distinction — and Gate Smashers is a widely used exam-prep channel known for slow, example-driven board explanations that suit students seeing heaps for the first time.</p>
+</section>
+<section class="item" id="p4-sec3">
+<h3>Video 2: L-3.14: Insertion in Heap Tree | Max-Heap &amp; Min-Heap Creation | Time Complexities</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/KzXpfxRzVQM?cc_load_policy=1&amp;rel=0" title="Video: L-3.14: Insertion in Heap Tree | Max-Heap &amp; Min-Heap Creation | Time Complexities (Gate Smashers)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Gate Smashers</strong> · 11:33 · 889,227 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=KzXpfxRzVQM" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>The follow-up lecture in the same series, focused on inserting elements into a heap and building max-heaps and min-heaps from a sequence of values. The title also promises discussion of time complexities, so expect the per-insertion O(log n) cost and the overall cost of constructing a heap by repeated insertion to be addressed.</p>
+<h4>Why this video</h4>
+<p>It targets the insertion and bubble-up subtopic directly and gives you repeated traced examples, which is precisely the skill of stepping through comparisons and swaps that you will be asked to demonstrate.</p>
+</section>
+<section class="item" id="p4-sec4">
+<h3>Video 3: Heaps, heapsort, and priority queues - Inside code</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/pLIajuc31qk?cc_load_policy=1&amp;rel=0" title="Video: Heaps, heapsort, and priority queues - Inside code (Inside code)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Inside code</strong> · 19:01 · 156,915 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=pLIajuc31qk" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A longer, more technical treatment that covers heaps together with heapsort and priority queues, with source code linked in the description. Expect the array-based representation, the sift-up and sift-down routines, extraction of the root, and how a heap is used to implement a priority queue and to sort in place.</p>
+<h4>Why this video</h4>
+<p>Inside code works at an implementation level, which fills in the removal, heapify, and priority-queue subtopics that the introductory lectures touch on more lightly, and connects the structure to a concrete application you can run and modify.</p>
+</section>
+<section class="item" id="p4-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these videos build the array-based heap skill set targeted by MO3: the first establishes the complete-binary-tree and ordering properties, the second drills insertion with bubble-up, and the third completes the picture with root removal, sift-down, heapify, and the priority queue interface so you can trace each operation and compute parent and child indices confidently. The structural emphasis also supports MO1, since heaps keep their shape complete by construction and therefore never degrade the way an unbalanced BST does, and the recurring discussion of time complexities feeds MO5, where you will weigh a heap's O(1) access to the extremum and O(log n) updates against the full ordered traversal and search capability that an AVL tree offers.</p>
+</section>
+<section class="item" id="p4-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part5">
+<h2>Heap Operations and Performance Trade-offs</h2>
+<section class="item" id="p5-sec1">
+<h3>Introduction</h3>
+<p>A binary heap is a complete binary tree that satisfies the heap property: in a min-heap every parent is no larger than its children, and in a max-heap every parent is no smaller. Because the tree is complete, we can store it in a plain array and compute relationships arithmetically — for a node at index i (0-based), its children sit at 2i+1 and 2i+2 and its parent at floor((i-1)/2). This array trick is what makes heaps fast and memory-efficient, and it is the reason heaps are the standard implementation behind priority queues.</p>
+<p>The operations you need to master are few but must be traced carefully. Insert places a new element at the end of the array and sifts it up while it violates the heap property; extract-min or extract-max removes the root, moves the last element into the root slot, and sifts down; heapify restores the property at a subtree, and repeated heapify from the middle of the array builds a heap from unordered data. Insert and extract run in O(log n), peeking at the root is O(1), and building a heap bottom-up is O(n).</p>
+<p>As you watch, keep two questions in mind. First, at every swap, what are the index computations — which child is chosen for comparison, and why? Second, how does a heap compare to alternatives such as a sorted array, an unsorted array, or a balanced BST: a heap gives you cheap access to the extreme element but does not support fast arbitrary search or ordered traversal, which is exactly the trade-off that decides when to use one.</p>
+</section>
+<section class="item" id="p5-sec2">
+<h3>Video 1: Heaps in 6 minutes — Methods</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/pAU21g-jBiE?cc_load_policy=1&amp;rel=0" title="Video: Heaps in 6 minutes — Methods (Michael Sambol)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Michael Sambol</strong> · 5:56 · 155,597 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=pAU21g-jBiE" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A compact walkthrough of the core heap methods — building a heap and the insert and extract routines that keep the heap property intact — presented step by step with accompanying Python code linked in the description. Expect to see the sift-up and sift-down movement of elements illustrated on a concrete example.</p>
+<h4>Why this video</h4>
+<p>Michael Sambol's data structures series is known for short, precise animations that match textbook algorithms, and this one directly targets the insert, extract, and heapify subtopics with runnable code you can read afterward.</p>
+</section>
+<section class="item" id="p5-sec3">
+<h3>Video 2: L-3.18: Heap sort with Example | Heapify Method</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/nJ6FdAIr_6g?cc_load_policy=1&amp;rel=0" title="Video: L-3.18: Heap sort with Example | Heapify Method (Gate Smashers)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Gate Smashers</strong> · 13:38 · 1,763,490 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=nJ6FdAIr_6g" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A longer, example-driven lecture that explains the heapify method and then uses it to drive heap sort, working through a full example by hand. Along the way it covers how elements are arranged and reorganized as the largest or smallest element is repeatedly removed from the root.</p>
+<h4>Why this video</h4>
+<p>The slower pace and worked example are useful for practicing the trace-by-hand skill, and seeing heapify applied to sorting reinforces why building a heap and repeatedly extracting the root are the key cost drivers in heap performance.</p>
+</section>
+<section class="item" id="p5-sec4">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these videos target MO3 most directly: both walk through insert, extract, and heapify on concrete examples so you can practice tracing operations and the parent/child index arithmetic of the array representation. The emphasis on sift-up and sift-down paths bounded by the height of a complete tree also supports MO1 and MO5, giving you the O(log n) and O(n) results you will need in order to argue when a heap is preferable to an AVL tree, a sorted array, or a trie for a priority-based task.</p>
+</section>
+<section class="item" id="p5-sec5">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part6">
+<h2>Trie Structures for String Storage and Retrieval</h2>
+<section class="item" id="p6-sec1">
+<h3>Introduction</h3>
+<p>A trie (also called a prefix tree) is a tree structure built specifically for storing strings. Instead of storing an entire key at a single node, a trie spreads a string across a path: each edge or node position corresponds to one character, and a word is represented by the sequence of characters encountered from the root down to a node marked as the end of a word. Because strings that begin the same way share the same initial path, tries naturally group words by common prefix.</p>
+<p>This matters in COP3530 because tries trade memory for predictable speed. Lookup in a balanced BST costs O(log n) comparisons of whole strings, while a trie lookup costs roughly O(m) steps for a string of length m, independent of how many words are stored. That makes tries the structure behind autocomplete, spell-checking, IP routing tables, and dictionary word games. The cost is space: every node may hold an array or map of child pointers, one slot per possible character.</p>
+<p>As you watch, pay close attention to four things: how a node is represented (child array versus hash map, plus the end-of-word flag), how insertion walks down the tree creating nodes only when a child is missing, how search distinguishes "this prefix exists" from "this complete word exists," and how deletion must avoid removing nodes that are still needed by other words. Try tracing a small word set such as cat, car, card, and dog by hand on paper, then check your drawing against the walkthroughs in the videos.</p>
+</section>
+<section class="item" id="p6-sec2">
+<h3>Video 1: Trie Data Structure | Insertion, Deletion &amp; Searching in a Trie | DSA-One Course #99</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/soJgGe1CQHw?cc_load_policy=1&amp;rel=0" title="Video: Trie Data Structure | Insertion, Deletion &amp; Searching in a Trie | DSA-One Course #99 (Anuj Kumar Sharma)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Anuj Kumar Sharma</strong> · 18:10 · 71,324 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=soJgGe1CQHw" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A full lesson on the trie data structure that works through insertion, deletion, and searching, as the title indicates. Expect the node structure to be introduced first, followed by step-by-step traversal of each operation. Deletion in particular is given explicit attention, which many shorter trie introductions skip.</p>
+<h4>Why this video</h4>
+<p>At 18 minutes it is the most complete of the three, and it is the only one that explicitly covers deletion alongside insertion and search, so it maps directly onto the construction, insertion, and lookup subtopics.</p>
+</section>
+<section class="item" id="p6-sec3">
+<h3>Video 2: Trie data structure - Inside code</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/qA8l8TAMyig?cc_load_policy=1&amp;rel=0" title="Video: Trie data structure - Inside code (Inside code)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Inside code</strong> · 13:26 · 18,150 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=qA8l8TAMyig" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>Revisit this one after the Java implementation if the node representation still feels unclear, since it approaches the same structure from a more language-neutral angle. Watching the operations twice, from two explanations, is an efficient way to lock in the traversal pattern.</p>
+<h4>Why this video</h4>
+<p>Repeated exposure from a different instructor is a practical way to confirm you have the insertion and search traversals correct rather than merely familiar.</p>
+</section>
+<section class="item" id="p6-sec4">
+<h3>Video 3: Tries Explained and Implemented in Java with Examples | Prefix Trees | Advanced DS | Geekific</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/SDgp7TJJtk4?cc_load_policy=1&amp;rel=0" title="Video: Tries Explained and Implemented in Java with Examples | Prefix Trees | Advanced DS | Geekific (Geekific)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Geekific</strong> · 11:19 · 5,036 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=SDgp7TJJtk4" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>Geekific's treatment of tries and prefix trees, explained conceptually and then implemented in Java with worked examples. It is framed as an advanced data structures lesson, so expect attention to how the node class holds its children and end-of-word marker. The GitHub repository linked in the description holds the accompanying code.</p>
+<h4>Why this video</h4>
+<p>The explicit prefix-tree framing and Java implementation make it the best fit for the prefix-based searching subtopic and for students who want to see trie code in a language close to course assignments.</p>
+</section>
+<section class="item" id="p6-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these videos target MO4 most directly: each one builds a trie from a set of strings and traces character-by-character traversal for insertion and search, which is exactly the skill you must demonstrate. They also support MO1, since seeing that trie lookup depends on string length rather than the number of stored keys clarifies why tries sidestep the degradation that plagues unbalanced binary search trees on string data. Finally, the discussion of child arrays, node counts, and memory overhead in these walkthroughs gives you the evidence needed for MO5, where you must weigh a trie's O(m) search time against its space cost and justify choosing it over an AVL tree or heap for a given problem.</p>
+</section>
+<section class="item" id="p6-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part7">
+<h2>Comparing Advanced Tree Structures: Use Cases and Trade-offs</h2>
+<section class="item" id="p7-sec1">
+<h3>Introduction</h3>
+<p>So far in this module you have studied AVL trees, heaps, and tries one at a time, learning how each is built and how its operations work. This topic shifts the question from "how does it work?" to "when should I use it?" Each of these structures buys a particular guarantee at a particular cost: AVL trees pay for rotations and extra height bookkeeping in exchange for guaranteed O(log n) search on ordered data; heaps give up full ordering and fast arbitrary search in exchange for O(1) access to the minimum or maximum; tries trade significant memory for lookups whose cost depends on key length rather than the number of stored keys.</p>
+<p>This matters because real engineering decisions are rarely about which structure is "best" in the abstract. They are about matching a structure's strengths to the operations your problem performs most often. A scheduler that repeatedly asks for the next highest-priority task, an index that must support ordered range queries, and an autocomplete box that resolves prefixes are three different problems with three different right answers. Being able to justify that choice — with complexity bounds and practical considerations like memory overhead and cache behavior — is the skill this topic develops.</p>
+<p>As you watch the videos below, keep a comparison table in front of you with rows for AVL trees, heaps, and tries and columns for search, insert, delete, min/max access, space, and typical use cases. Note where the videos confirm what you already know, and pay attention to where real systems actually deploy these structures. Also watch for the common pitfalls: assuming a heap can search efficiently, assuming a balanced BST is always worth its rotation cost, and underestimating the memory footprint of a trie over a large alphabet.</p>
+</section>
+<section class="item" id="p7-sec2">
+<h3>Video 1: Trees Compared and Visualized | BST vs AVL vs Red-Black vs Splay vs Heap | Geekific</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/hmSFuM2Tglw?cc_load_policy=1&amp;rel=0" title="Video: Trees Compared and Visualized | BST vs AVL vs Red-Black vs Splay vs Heap | Geekific (Geekific)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Geekific</strong> · 8:02 · 22,033 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=hmSFuM2Tglw" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>This Geekific video places several tree structures side by side — plain binary search trees, AVL trees, red-black trees, splay trees, and heaps — and uses visualizations to show how their shapes and behaviors differ. Based on its title and framing, it should highlight why an unbalanced BST degrades, what balancing schemes do about it, and how a heap's ordering property differs from a search tree's.</p>
+<h4>Why this video</h4>
+<p>This is the most directly on-topic video for the comparison itself, covering AVL trees and heaps in the same frame so you can see the structural contrast rather than studying them in isolation. Geekific's visual, example-driven style suits the "performance characteristics at a glance" and "decision framework" subtopics.</p>
+</section>
+<section class="item" id="p7-sec3">
+<h3>Video 2: 10 Key Data Structures We Use Every Day</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/ouipSd_5ivQ?cc_load_policy=1&amp;rel=0" title="Video: 10 Key Data Structures We Use Every Day (ByteByteGo)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>ByteByteGo</strong> · 8:43 · 451,698 views · 3y ago · captions — <a href="https://www.youtube.com/watch?v=ouipSd_5ivQ" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>ByteByteGo surveys ten data structures that appear in everyday software systems, explaining for each one what problem it solves and where it shows up in practice. Expect heaps and tries to appear alongside hash tables, lists, and trees, each tied to a concrete application such as priority scheduling or autocomplete and spell checking.</p>
+<h4>Why this video</h4>
+<p>It supplies the real-world use-case grounding that the decision framework depends on, connecting abstract complexity bounds to the kinds of problems each structure was designed for. ByteByteGo is a well-regarded systems-oriented channel and keeps the explanations short and application-focused.</p>
+</section>
+<section class="item" id="p7-sec4">
+<h3>Video 3: 8 Key Data Structures That Power Modern Databases</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/W_v05d_2RTo?cc_load_policy=1&amp;rel=0" title="Video: 8 Key Data Structures That Power Modern Databases (ByteByteGo)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>ByteByteGo</strong> · 4:34 · 239,237 views · 3y ago · captions — <a href="https://www.youtube.com/watch?v=W_v05d_2RTo" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>This short ByteByteGo video looks at the data structures underlying modern database systems, covering the structures used for indexing, ordered access, and fast lookup. Given the topic, it is likely to discuss balanced search trees and B-trees for indexes and to touch on specialized structures chosen for particular query patterns.</p>
+<h4>Why this video</h4>
+<p>It shows why balance guarantees matter at scale, which reinforces the "AVL trees: when balance is the priority" subtopic and the trade-off between in-memory tree balancing and disk-oriented alternatives. It also models the professional habit of justifying a structure choice by the workload it must serve.</p>
+</section>
+<section class="item" id="p7-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these videos target the evaluative end of the module. The Geekific comparison reinforces MO1 by contrasting a degenerate BST with balanced and heap-ordered alternatives, and it reviews the structural invariants behind the rotation and heap mechanics you practice in MO2 and MO3. The two ByteByteGo videos primarily serve MO5: they connect heaps, tries, and balanced trees to the workloads they are actually deployed against, giving you concrete scenarios to reason about when justifying a selection, and the everyday-structures survey offers application context for the prefix operations you trace in MO4. None of the videos replaces hands-on tracing practice; use them to build the comparative judgment layer on top of the mechanics.</p>
+</section>
+<section class="item" id="p7-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+
+<footer class="presemaker-credit" data-credit="2" style="margin-top:2rem;padding:14px 8px;border-top:1px solid #ddd;background:#fff;text-align:center;font:13px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#595959;"><svg width="20" height="20" viewBox="0 0 2048 2048" aria-hidden="true" focusable="false" style="vertical-align:-5px;margin-right:7px"><rect width="2048" height="2048" rx="384" fill="#0F6E6E"/><path fill="#0A5050" d="M1024 1000 344 832v816l680 168zm0 0 680-168v816l-680 168z"/><path fill="#fff" d="M1024 944 384 784v808l640 160zm0 0 640-160v808l-640 160z"/><rect x="1002" y="944" width="44" height="808" fill="#0F6E6E"/><rect x="936" y="246" width="176" height="448" rx="44" fill="#fff"/><rect x="800" y="382" width="448" height="176" rx="44" fill="#fff"/></svg>Created with <a href="https://softwareplus.ai/coursebuilder/" target="_blank" rel="noopener" style="color:#2f5d8f;font-weight:600;text-decoration:none;">CourseBuilder+</a><span aria-hidden="true"> · </span><a href="https://softwareplus.ai/" target="_blank" rel="noopener" style="color:#2f5d8f;text-decoration:none;">SoftwarePlus.ai</a></footer>
+</body>
+</html>

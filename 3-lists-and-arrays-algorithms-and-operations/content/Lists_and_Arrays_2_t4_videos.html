@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Searching Algorithms</title>
+<style>
+body{font-family:'Segoe UI',Arial,sans-serif;max-width:820px;margin:2rem auto;padding:0 1.25rem;color:#222;line-height:1.55}
+h1{font-size:1.9rem;border-bottom:2px solid #ddd;padding-bottom:.4rem}
+h2{font-size:1.3rem;color:#1f3864;margin-top:1.6rem}
+body{padding-left:1.1rem;padding-right:1.1rem}
+ul,ol{margin:.4rem 0 1rem 1.4rem}
+li{margin:.25rem 0}
+nav.toc{background:rgba(128,128,128,.08);border:1px solid rgba(128,128,128,.25);border-radius:8px;padding:.6rem 1rem;margin:1.2rem 0}
+nav.toc strong{display:block;margin-bottom:.3rem}
+nav.toc a{display:block;text-decoration:none;padding:.12rem 0}
+section.item{border-top:1px solid rgba(128,128,128,.22);padding-top:.3rem}
+table{border-collapse:collapse;width:100%;margin:.8rem 0}
+th,td{border:1px solid rgba(128,128,128,.45);padding:.4rem .6rem;text-align:left;vertical-align:top}
+thead th{background:rgba(128,128,128,.18);font-weight:600}
+tbody tr:nth-child(even){background:rgba(128,128,128,.08)}
+</style>
+</head>
+<body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ 3- Lists and Arrays: Algorithms and Operations</a></div>
+<h1>Searching Algorithms</h1>
+<nav class="toc"><strong>Contents</strong>
+<a href="#sec1">Introduction</a>
+<a href="#sec2">Video 1: Binary search in 4 minutes</a>
+<a href="#sec3">Video 2: Lec-14: Linear Search in Data Structure by #Naina Mam | Time Complexity</a>
+<a href="#sec4">Video 3: Binary Search - Basic Algorithms Fast (15)</a>
+<a href="#sec5">How These Videos Support the Learning Outcomes</a>
+<a href="#sec6">About These Videos</a>
+</nav>
+<section class="item" id="sec1">
+<h2>Introduction</h2>
+<p>Searching is one of the most common things we ask a program to do: given a collection of data, find whether a particular value is present and, if so, where. In this topic we look at two classic approaches. Linear search walks through a list one element at a time and compares each item to the target; it works on any array, sorted or not. Binary search repeatedly cuts a sorted array in half, discarding the portion that cannot contain the target, which makes it dramatically faster but adds the requirement that the data already be in order.</p>
+<p>These algorithms matter in this course for two reasons. First, they are the simplest realistic setting for reasoning about Big O: linear search is O(n), binary search is O(log n), and you can see exactly why by counting comparisons. Second, they force you to think about trade-offs. Binary search is faster per lookup, but if the data is unsorted you must pay the cost of sorting first, so the &quot;better&quot; algorithm depends on the scenario.</p>
+<p>As you watch the videos below, pay attention to three things: the preconditions each algorithm requires, the exact loop structure and index arithmetic (especially the low, high, and mid pointers in binary search, and how the boundaries are updated), and the comparison counts the presenters use to justify the running time. The videos use pseudocode and Python, so after watching, practice rewriting each algorithm in JavaScript using a while or for loop over an array, and test it on arrays where the target is first, last, in the middle, and absent entirely.</p>
+</section>
+<section class="item" id="sec2">
+<h2>Video 1: Binary search in 4 minutes</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/fDKIpRe8GW4?cc_load_policy=1&amp;rel=0" title="Video: Binary search in 4 minutes (Michael Sambol)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Michael Sambol</strong> · 4:00 · 249,492 views · 3y ago · captions — <a href="https://www.youtube.com/watch?v=fDKIpRe8GW4" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>A fast, focused explanation of binary search: how the algorithm maintains a search range, checks the middle element, and discards half the array on each step. The description links to a code implementation on GitHub, so the walkthrough is tied to actual working code. In four minutes it should cover the sorted-array requirement and the logarithmic running time.</p>
+<h3>Why this video</h3>
+<p>Michael Sambol&#39;s algorithm videos are widely used for their accuracy and economy, making this an efficient reference for the Binary Search subtopic and an easy one to rewatch while you translate the logic into JavaScript.</p>
+</section>
+<section class="item" id="sec3">
+<h2>Video 2: Lec-14: Linear Search in Data Structure by #Naina Mam | Time Complexity</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/t9gErvSVid0?cc_load_policy=1&amp;rel=0" title="Video: Lec-14: Linear Search in Data Structure by #Naina Mam | Time Complexity (Gate Smashers)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Gate Smashers</strong> · 12:28 · 521,952 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=t9gErvSVid0" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>A lecture-style walkthrough of linear search as a data structures topic, stepping through how the algorithm scans an array element by element until it finds the target or reaches the end. Based on the title, it also covers the time complexity of linear search, which should include the best, average, and worst cases. The pace is slower and more instructional than a quick summary video, so expect worked examples on the board.</p>
+<h3>Why this video</h3>
+<p>Gate Smashers is a well-known computer science teaching channel, and this video pairs the mechanics of linear search with its complexity analysis, which directly supports the &quot;What Is a Searching Algorithm?&quot; and &quot;Linear Search&quot; subtopics.</p>
+</section>
+<section class="item" id="sec4">
+<h2>Video 3: Binary Search - Basic Algorithms Fast (15)</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/TW3OXyTJ6Pg?cc_load_policy=1&amp;rel=0" title="Video: Binary Search - Basic Algorithms Fast (15) (Begin Coding Fast)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Begin Coding Fast</strong> · 7:50 · 715 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=TW3OXyTJ6Pg" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>Part of a beginner-oriented series on basic algorithms, this video walks through binary search as an example of the divide-and-conquer strategy, explaining how the algorithm repeatedly splits the data set. At nearly eight minutes it has room for a slower trace of the steps than a summary video allows. Expect emphasis on the conceptual idea of halving the problem as well as the procedure itself.</p>
+<h3>Why this video</h3>
+<p>It reinforces binary search from a coding-fundamentals perspective and frames it as divide-and-conquer, which is useful background when you compare binary search against linear search and explain why the two have different growth rates.</p>
+</section>
+<section class="item" id="sec5">
+<h2>How These Videos Support the Learning Outcomes</h2>
+<p>Together these videos give you the step-by-step procedures you need to implement searching manually in JavaScript (MO1), and the contrast between the linear search lecture and the two binary search explanations lets you compare requirements, procedures, and appropriate use cases side by side (MO2). Both the linear search lecture&#39;s complexity discussion and the binary search videos&#39; halving argument build the reasoning behind O(n) versus O(log n) (MO3), which in turn is what you use to decide whether sorting first and searching with binary search is worth it for a given data set and access pattern (MO4). Use the videos for the algorithms and analysis, then rely on the module&#39;s code examples and practice work for the JavaScript implementations and traversal techniques (MO5).</p>
+</section>
+<section class="item" id="sec6">
+<h2>About These Videos</h2>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+
+<footer class="presemaker-credit" data-credit="2" style="margin-top:2rem;padding:14px 8px;border-top:1px solid #ddd;background:#fff;text-align:center;font:13px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#595959;"><svg width="20" height="20" viewBox="0 0 2048 2048" aria-hidden="true" focusable="false" style="vertical-align:-5px;margin-right:7px"><rect width="2048" height="2048" rx="384" fill="#0F6E6E"/><path fill="#0A5050" d="M1024 1000 344 832v816l680 168zm0 0 680-168v816l-680 168z"/><path fill="#fff" d="M1024 944 384 784v808l640 160zm0 0 640-160v808l-640 160z"/><rect x="1002" y="944" width="44" height="808" fill="#0F6E6E"/><rect x="936" y="246" width="176" height="448" rx="44" fill="#fff"/><rect x="800" y="382" width="448" height="176" rx="44" fill="#fff"/></svg>Created with <a href="https://softwareplus.ai/coursebuilder/" target="_blank" rel="noopener" style="color:#2f5d8f;font-weight:600;text-decoration:none;">CourseBuilder+</a><span aria-hidden="true"> · </span><a href="https://softwareplus.ai/" target="_blank" rel="noopener" style="color:#2f5d8f;text-decoration:none;">SoftwarePlus.ai</a></footer>
+</body>
+</html>

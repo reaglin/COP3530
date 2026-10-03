@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hash Function Design and Properties</title>
+<style>
+body{font-family:'Segoe UI',Arial,sans-serif;max-width:820px;margin:2rem auto;padding:0 1.25rem;color:#222;line-height:1.55}
+h1{font-size:1.9rem;border-bottom:2px solid #ddd;padding-bottom:.4rem}
+h2{font-size:1.3rem;color:#1f3864;margin-top:1.6rem}
+body{padding-left:1.1rem;padding-right:1.1rem}
+ul,ol{margin:.4rem 0 1rem 1.4rem}
+li{margin:.25rem 0}
+nav.toc{background:rgba(128,128,128,.08);border:1px solid rgba(128,128,128,.25);border-radius:8px;padding:.6rem 1rem;margin:1.2rem 0}
+nav.toc strong{display:block;margin-bottom:.3rem}
+nav.toc a{display:block;text-decoration:none;padding:.12rem 0}
+section.item{border-top:1px solid rgba(128,128,128,.22);padding-top:.3rem}
+table{border-collapse:collapse;width:100%;margin:.8rem 0}
+th,td{border:1px solid rgba(128,128,128,.45);padding:.4rem .6rem;text-align:left;vertical-align:top}
+thead th{background:rgba(128,128,128,.18);font-weight:600}
+tbody tr:nth-child(even){background:rgba(128,128,128,.08)}
+</style>
+</head>
+<body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Hash Tables: Structure and Collision Resolution</a></div>
+<h1>Hash Function Design and Properties</h1>
+<nav class="toc"><strong>Contents</strong>
+<a href="#sec1">Introduction</a>
+<a href="#sec2">Video 1: L-6.1: What is hashing with example | Hashing in data structure</a>
+<a href="#sec3">Video 2: L-6.2: Collision Resolution Techniques in Hashing | What are the collision resolution techniques?</a>
+<a href="#sec4">Video 3: Hash tables in 4 minutes</a>
+<a href="#sec5">How These Videos Support the Learning Outcomes</a>
+<a href="#sec6">About These Videos</a>
+</nav>
+<section class="item" id="sec1">
+<h2>Introduction</h2>
+<p>A hash function is the engine of a hash table: it takes a key — a string, an integer, or any other value — and converts it into an index in an underlying array. Everything a hash table promises, including near constant-time insertion, lookup, and deletion, depends on how well that conversion is done. In this topic we look closely at the three properties that define a good hash function: determinism (the same key must always produce the same index), uniform distribution (keys should spread evenly across the table rather than piling into a few slots), and computational speed (hashing must be cheap, since it happens on every operation).</p>
+<p>We also examine the mechanics behind common hash functions. For integers, the division method using the modulo operation is the usual starting point; for strings, techniques typically combine character codes with a multiplier (polynomial rolling hashes) before reducing the result modulo the table size. The modulo operation is what guarantees that any hash value lands inside the array bounds, and the choice of table size — prime versus power of two — directly affects how evenly values are distributed.</p>
+<p>Finally, we consider what goes wrong when a hash function is poorly designed. Clustering, long collision chains, and lookups that degrade from O(1) toward O(n) are all symptoms of non-uniform hashing. As you watch the videos below, pay attention to how each one computes an index from a key, where collisions appear, and how the table size influences the result — those observations connect directly to the collision resolution strategies covered next in this module.</p>
+</section>
+<section class="item" id="sec2">
+<h2>Video 1: L-6.1: What is hashing with example | Hashing in data structure</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/W5q0xgxmRd8?cc_load_policy=1&amp;rel=0" title="Video: L-6.1: What is hashing with example | Hashing in data structure (Gate Smashers)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Gate Smashers</strong> · 5:53 · 2,565,032 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=W5q0xgxmRd8" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>This is the introductory lecture in Gate Smashers&#39; hashing series, explaining what hashing is and walking through a worked example of mapping keys into a hash table. Based on its title and description, it should cover the basic idea of a hash function, how a key is transformed into an array index (typically via the division/modulo method), and why hashing gives fast access compared to searching a list. It also introduces the point at which two keys map to the same slot — a collision.</p>
+<h3>Why this video</h3>
+<p>It is the clearest starting point for the foundational idea behind MO1: how a hash function maps keys to indices, with concrete numeric examples that make the role of the modulo operation visible. Gate Smashers is a widely used exam-prep channel with a step-by-step lecture style, and this video has been watched millions of times by data structures students.</p>
+</section>
+<section class="item" id="sec3">
+<h2>Video 2: L-6.2: Collision Resolution Techniques in Hashing | What are the collision resolution techniques?</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/j612Fj-mgCY?cc_load_policy=1&amp;rel=0" title="Video: L-6.2: Collision Resolution Techniques in Hashing | What are the collision resolution techniques? (Gate Smashers)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Gate Smashers</strong> · 5:33 · 1,323,306 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=j612Fj-mgCY" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>The follow-up lecture in the same series, this video addresses what happens when two keys hash to the same index and surveys the standard collision resolution techniques. Its description frames collisions as the central problem, so expect an overview of approaches such as chaining and open addressing with probing. It serves as the bridge between hash function design and the collision handling strategies treated later in this module.</p>
+<h3>Why this video</h3>
+<p>Collisions are the direct consequence of imperfect or poorly chosen hash functions, so this video shows students why uniform distribution matters in practice rather than only in theory. Watching it immediately after the first lecture keeps the explanation and notation consistent.</p>
+</section>
+<section class="item" id="sec4">
+<h2>Video 3: Hash tables in 4 minutes</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/knV86FlSXJ8?cc_load_policy=1&amp;rel=0" title="Video: Hash tables in 4 minutes (Michael Sambol)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Michael Sambol</strong> · 3:52 · 389,765 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=knV86FlSXJ8" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>A compact, fast-paced overview of hash tables from Michael Sambol, covering the structure and its core operations in under four minutes. The description links to a Python implementation on GitHub, so the explanation is tied to working code rather than abstract diagrams alone. Expect the hash function, index computation, and basic collision handling to be summarized efficiently.</p>
+<h3>Why this video</h3>
+<p>Sambol&#39;s algorithms videos are known for precise, concise explanations, making this an excellent review or a quick first pass before the longer lectures. The accompanying code repository is useful preparation for implementing your own hash function and table later in the module.</p>
+</section>
+<section class="item" id="sec5">
+<h2>How These Videos Support the Learning Outcomes</h2>
+<p>Together these videos build the conceptual base this module requires. The Gate Smashers introduction and the Sambol overview both target MO1 directly, showing how a hash function maps a key to an array index and why determinism, even distribution, and cheap computation are necessary properties. The Gate Smashers collision resolution lecture previews MO2 by surveying chaining and probing strategies, and all three videos make the connection to MO3 visible: as collisions accumulate, performance drifts away from O(1). The linked implementation code in the Sambol video gives you a concrete model to adapt when you construct and test your own hash table for MO4.</p>
+</section>
+<section class="item" id="sec6">
+<h2>About These Videos</h2>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+
+<footer class="presemaker-credit" data-credit="2" style="margin-top:2rem;padding:14px 8px;border-top:1px solid #ddd;background:#fff;text-align:center;font:13px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#595959;"><svg width="20" height="20" viewBox="0 0 2048 2048" aria-hidden="true" focusable="false" style="vertical-align:-5px;margin-right:7px"><rect width="2048" height="2048" rx="384" fill="#0F6E6E"/><path fill="#0A5050" d="M1024 1000 344 832v816l680 168zm0 0 680-168v816l-680 168z"/><path fill="#fff" d="M1024 944 384 784v808l640 160zm0 0 640-160v808l-640 160z"/><rect x="1002" y="944" width="44" height="808" fill="#0F6E6E"/><rect x="936" y="246" width="176" height="448" rx="44" fill="#fff"/><rect x="800" y="382" width="448" height="176" rx="44" fill="#fff"/></svg>Created with <a href="https://softwareplus.ai/coursebuilder/" target="_blank" rel="noopener" style="color:#2f5d8f;font-weight:600;text-decoration:none;">CourseBuilder+</a><span aria-hidden="true"> · </span><a href="https://softwareplus.ai/" target="_blank" rel="noopener" style="color:#2f5d8f;text-decoration:none;">SoftwarePlus.ai</a></footer>
+</body>
+</html>

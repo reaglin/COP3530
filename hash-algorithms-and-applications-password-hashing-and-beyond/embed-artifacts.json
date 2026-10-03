@@ -1,5 +1,10 @@
 ﻿[
   {
+    "title": "Hash Algorithms and Applications: Password Hashing and Beyond (module page)",
+    "href": "index.html",
+    "type": "Module page"
+  },
+  {
     "title": "Hash Algorithms and Applications: Password Hashing and Beyond \u2014 Topics \u0026 Learning Outcomes",
     "href": "topics-outcomes.html",
     "type": "Page"
@@ -50,8 +55,43 @@
     "type": "Content"
   },
   {
-    "title": "Hash Algorithms and Applications: Password Hashing and Beyond \u2014 Module Topics",
-    "href": "content/module_topics.html",
+    "title": "Introduction to Hashing Algorithms",
+    "href": "content/Hash_Algorithms_and_t1_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "Cryptographic Hash Functions",
+    "href": "content/Hash_Algorithms_and_t2_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "Password Hashing Fundamentals",
+    "href": "content/Hash_Algorithms_and_t3_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "Salting and Advanced Password Protection Techniques",
+    "href": "content/Hash_Algorithms_and_t4_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "Ensuring Data Integrity with Hashing",
+    "href": "content/Hash_Algorithms_and_t5_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "Common Attacks and Vulnerabilities",
+    "href": "content/Hash_Algorithms_and_t6_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "Best Practices and Real-World Applications",
+    "href": "content/Hash_Algorithms_and_t7_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "Hash Algorithms and Applications: Password Hashing and Beyond",
+    "href": "content/Hash_Algorithms_and_videos_merged.html",
     "type": "Content"
   }
 ]

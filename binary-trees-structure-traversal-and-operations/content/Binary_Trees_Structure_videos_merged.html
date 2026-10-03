@@ -1,0 +1,350 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Binary Trees: Structure, Traversal, and Operations</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+body{font-family:'Segoe UI',Arial,sans-serif;max-width:820px;margin:2rem auto;padding:0 1.25rem;color:#222;line-height:1.55}
+h1{font-size:1.9rem;border-bottom:2px solid #ddd;padding-bottom:.4rem}
+h2{font-size:1.3rem;color:#1f3864;margin-top:1.6rem}
+body{padding-left:1.1rem;padding-right:1.1rem}
+ul,ol{margin:.4rem 0 1rem 1.4rem}
+li{margin:.25rem 0}
+nav.toc{background:rgba(128,128,128,.08);border:1px solid rgba(128,128,128,.25);border-radius:8px;padding:.6rem 1rem;margin:1.2rem 0}
+nav.toc strong{display:block;margin-bottom:.3rem}
+nav.toc a{display:block;text-decoration:none;padding:.12rem 0}
+section.item{border-top:1px solid rgba(128,128,128,.22);padding-top:.3rem}
+table{border-collapse:collapse;width:100%;margin:.8rem 0}
+th,td{border:1px solid rgba(128,128,128,.45);padding:.4rem .6rem;text-align:left;vertical-align:top}
+thead th{background:rgba(128,128,128,.18);font-weight:600}
+tbody tr:nth-child(even){background:rgba(128,128,128,.08)}
+</style>
+<style>section.merged-part{border-top:2px solid rgba(128,128,128,.3);margin-top:2rem;padding-top:.5rem}nav.toc{background:rgba(128,128,128,.08);border:1px solid rgba(128,128,128,.25);border-radius:8px;padding:.6rem 1rem;margin:1.2rem 0}nav.toc a{display:block;text-decoration:none;padding:.12rem 0}</style>
+</head>
+<body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Binary Trees: Structure, Traversal, and Operations</a></div>
+<h1>Binary Trees: Structure, Traversal, and Operations</h1>
+<nav class="toc"><strong>Contents</strong>
+<a href="#part1">Introduction to Binary Trees</a>
+<a href="#part2">Node Structure and Tree Anatomy</a>
+<a href="#part3">Binary Search Trees (BST) Concepts</a>
+<a href="#part4">Insertion and Search Operations</a>
+<a href="#part5">Deletion Operations</a>
+<a href="#part6">Tree Traversal Strategies</a>
+<a href="#part7">Implementing a BST in JavaScript</a>
+</nav>
+<section class="merged-part" id="part1">
+<h2>Introduction to Binary Trees</h2>
+<section class="item" id="p1-sec1">
+<h3>Introduction</h3>
+<p>A binary tree is a hierarchical data structure built from nodes connected by edges, where every node has at most two children, conventionally called the left child and the right child. Unlike arrays and linked lists, which arrange data in a single line, trees branch — and that branching is what makes them so useful for organizing data that will later be searched, sorted, or traversed. Before you can insert into or search a binary search tree, you need fluency with the vocabulary: node, edge, root, leaf, parent, child, sibling, subtree, depth, and height.</p>
+<p>This topic is the foundation for everything else in the module. The root node is the single entry point with no parent; leaf nodes are the endpoints with no children; every other node sits in a parent-child relationship that defines the shape of the structure. The "binary constraint" — at most two children per node — is the structural rule that separates binary trees from general trees, and it is what makes traversal and search algorithms predictable enough to analyze.</p>
+<p>As you watch, focus on the terminology and on the pictures. Try to redraw each example tree yourself and label the root, the leaves, and the edges. Ask yourself for every diagram: how many children does each node have, which nodes are parents of which, and would this structure still qualify as a binary tree if one more child were added? Pay attention also to how speakers distinguish a general binary tree from the more constrained variants (full, complete, perfect, and binary search trees) that come later in the module.</p>
+</section>
+<section class="item" id="p1-sec2">
+<h3>Video 1: Introduction to Trees</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/oI0QhFzBSRo?cc_load_policy=1&amp;rel=0" title="Video: Introduction to Trees (CodeWithHarry)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>CodeWithHarry</strong> · 17:10 · 608,904 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=oI0QhFzBSRo" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A beginner-friendly introduction to the tree data structure in general, covering what a tree is and walking through the core terminology — root, children, siblings, and related terms — with diagrams. It establishes nodes and edges as the building blocks of any tree before narrowing toward more specific tree types. Expect a slower, example-driven pace with hand-drawn illustrations.</p>
+<h4>Why this video</h4>
+<p>CodeWithHarry is a widely followed programming channel with a strong track record for clear beginner explanations, and this video directly covers the Nodes and Edges, Root Node, Leaf Nodes, and Parent-Child Relationships subtopics in one place.</p>
+</section>
+<section class="item" id="p1-sec3">
+<h3>Video 2: Binary Trees</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/5XPMZqbT9AU?cc_load_policy=1&amp;rel=0" title="Video: Binary Trees (Professor Kevin Wortman)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Professor Kevin Wortman</strong> · 11:06 · 217 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=5XPMZqbT9AU" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A concise lecture-style treatment of binary trees specifically, presenting the formal definitions and terminology that underpin binary search trees. Because it is framed as a prerequisite to BSTs, it is likely to emphasize the structural rule that each node has at most two children and to name the left and right subtrees precisely. Slides accompany the presentation.</p>
+<h4>Why this video</h4>
+<p>Delivered by a university instructor in a course context much like this one, it targets the Binary Constraint subtopic head-on and gives you the precise definitions you will need when the module moves to BST ordering.</p>
+</section>
+<section class="item" id="p1-sec4">
+<h3>Video 3: 0329: Binary trees</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/mgsCbH9hYM4?cc_load_policy=1&amp;rel=0" title="Video: 0329: Binary trees (cs128)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>cs128</strong> · 11:15 · 4,634 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=mgsCbH9hYM4" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A classroom lecture segment on binary trees from a university CS course, presented as the lead-in to binary search trees in the following class. It discusses the binary tree structure itself and why that structure is useful, positioning it as the basis for search-oriented variants. The format is an in-class explanation rather than a polished production.</p>
+<h4>Why this video</h4>
+<p>It offers a second academic perspective at a similar level to this course and explicitly bridges from the general binary tree structure to binary search trees, reinforcing the distinction you are expected to make in MO1.</p>
+</section>
+<section class="item" id="p1-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these three videos build the vocabulary and structural intuition required by MO1: identifying nodes, edges, the root, leaves, and parent-child relationships, and recognizing the at-most-two-children rule that defines a binary tree. CodeWithHarry supplies the broad tree terminology, while the Wortman and cs128 lectures narrow that terminology to binary trees and point forward to the ordering property that distinguishes a BST. Although traversal (MO2), insertion and deletion (MO3), complexity analysis (MO4), and JavaScript implementation (MO5) are addressed in later topics, none of that work is possible without the structural foundation and shared vocabulary these videos establish here.</p>
+</section>
+<section class="item" id="p1-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part2">
+<h2>Node Structure and Tree Anatomy</h2>
+<section class="item" id="p2-sec1">
+<h3>Introduction</h3>
+<p>Before you can traverse, search, or rebalance a tree, you need a precise vocabulary for its parts. A binary tree is built from nodes, and each node is a small, self-contained unit: a field holding the data (often called the key or value) and two reference fields pointing to a left child and a right child. When either reference is null, that side of the node is empty — and a node with two null references is a leaf. Everything else about tree structure follows from how these nodes are linked together.</p>
+<p>From those links come the relationships and measurements you will use all semester. One node is designated the root (the only node with no parent); every other node has exactly one parent and up to two children. The depth of a node is the number of edges from the root down to it, the height of a node is the number of edges on the longest downward path to a leaf, and the height of the tree is the height of its root. Any node, taken together with everything beneath it, forms a subtree — which is why so many tree algorithms are naturally recursive. Nodes sharing the same depth form a level, and a tree is considered balanced when the left and right subtrees of every node have heights that differ by at most a small constant.</p>
+<p>These ideas are not just terminology. Tree height directly determines how long a search or insertion takes, so the difference between a balanced tree and a degenerate, list-like tree is the difference between logarithmic and linear performance. As you watch the videos below, pay attention to three things: how height and depth are defined (some sources count edges, others count nodes, so note which convention is used), how a recursive height computation mirrors the subtree structure, and what makes the minimum and maximum possible heights of an n-node tree so far apart.</p>
+</section>
+<section class="item" id="p2-sec2">
+<h3>Video 1: Height of Binary Tree | Height of a Binary Tree | Binary Tree Data Structure | DSA-One Course #57</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/hyAqgckHUiA?cc_load_policy=1&amp;rel=0" title="Video: Height of Binary Tree | Height of a Binary Tree | Binary Tree Data Structure | DSA-One Course #57 (Anuj Kumar Sharma)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Anuj Kumar Sharma</strong> · 8:36 · 104,989 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=hyAqgckHUiA" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>This video works through the classic problem of computing the height of a binary tree, framed as a coding exercise within a larger data structures course. Based on its title and description, it should walk through the recursive idea that a node's height depends on the heights of its left and right subtrees, then build that into code. Expect a concrete, step-by-step treatment rather than a purely theoretical one.</p>
+<h4>Why this video</h4>
+<p>It directly targets the height subtopic and makes the recursive subtree decomposition visible, which is exactly the mental model you need for later traversal and balance work. As part of a sequenced DSA course series, it assumes the same node-with-two-pointers structure introduced in this topic.</p>
+</section>
+<section class="item" id="p2-sec3">
+<h3>Video 2: Binary Tree Height Bounds</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/YaXjkF_3uLA?cc_load_policy=1&amp;rel=0" title="Video: Binary Tree Height Bounds (Professor Kevin Wortman)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Professor Kevin Wortman</strong> · 8:25 · 191 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=YaXjkF_3uLA" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A short, lecture-style treatment of the minimum and maximum height a binary tree can have for a given number of nodes, delivered with slides by a university instructor. It should establish the lower bound achieved by a full or complete tree and the upper bound reached by a degenerate chain of nodes. The emphasis is on reasoning about bounds rather than on writing code.</p>
+<h4>Why this video</h4>
+<p>This is the conceptual bridge between tree anatomy and performance: it explains why balance matters by showing how far apart the best and worst possible heights are. The academic framing and slide-based presentation make it a good complement to the more code-focused videos.</p>
+</section>
+<section class="item" id="p2-sec4">
+<h3>Video 3: Balanced Binary Tree | Minimum Depth of a Binary Tree | LeetCode Java | Geekific</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/xacG0i5MShQ?cc_load_policy=1&amp;rel=0" title="Video: Balanced Binary Tree | Minimum Depth of a Binary Tree | LeetCode Java | Geekific (Geekific)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Geekific</strong> · 4:50 · 873 views · 3y ago · captions — <a href="https://www.youtube.com/watch?v=xacG0i5MShQ" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>Part of Geekific's tree series, this video addresses what it means for a binary tree to be balanced and how to compute the minimum depth of a tree, presented with Java solutions to the corresponding LeetCode problems. It should contrast depth measured to the nearest leaf with height measured to the farthest leaf, and show how a balance check compares left and right subtree heights at every node.</p>
+<h4>Why this video</h4>
+<p>It covers the balance and depth subtopics together and clarifies the depth-versus-height distinction that students most often confuse. The short runtime and accompanying GitHub repository make it easy to pair the explanation with runnable code.</p>
+</section>
+<section class="item" id="p2-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these videos build the structural vocabulary MO1 requires — nodes, root, parent and child links, leaves, subtrees, depth, and height — with each term grounded in a worked example rather than a definition list. Because every tree algorithm you will write later is recursive over subtrees, the height computation shown here is the same pattern you will reuse when tracing traversals (MO2) and implementing insert, search, and delete (MO3, MO5). Most importantly, the height-bounds and balance discussions set up MO4 directly: once you can see that an n-node tree may be as short as roughly log n or as tall as n, the gap between best-case and worst-case BST performance, and its dependence on insertion order, follows naturally.</p>
+</section>
+<section class="item" id="p2-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part3">
+<h2>Binary Search Trees (BST) Concepts</h2>
+<section class="item" id="p3-sec1">
+<h3>Introduction</h3>
+<p>A binary search tree (BST) is a binary tree with one extra rule attached to it: for every node, all values in its left subtree are smaller than the node's value, and all values in its right subtree are larger. That single ordering property is what separates a BST from a general binary tree, and it is the reason a BST can do useful work that an unordered tree cannot. Each node still looks familiar — a data field plus left and right child pointers — but the arrangement of those nodes now carries meaning.</p>
+<p>The payoff is search. Because you can compare a target value to the current node and discard an entire subtree in one step, searching a BST resembles binary search on a sorted array: you halve the remaining possibilities at each level rather than inspecting every node. That gives O(log n) behavior when the tree is reasonably balanced. The catch, which this topic also introduces, is that performance depends on height, not on node count alone — inserting already-sorted data produces a long, skinny tree that degrades to O(n), essentially a linked list wearing a tree costume.</p>
+<p>As you watch these videos, keep three questions in mind. First, how is the ordering property stated — does it apply only to immediate children, or to entire subtrees? (The subtree version is the correct one.) Second, how does each presenter walk a search path, and can you predict the comparisons before they do? Third, what does the tree look like in the worst case, and what does that do to the running time? You will use these ideas immediately when you move on to insertion, deletion, and your own implementation.</p>
+</section>
+<section class="item" id="p3-sec2">
+<h3>Video 1: Binary Search Trees: Introduction &amp; Properties</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/XQJJhNiGlL0?cc_load_policy=1&amp;rel=0" title="Video: Binary Search Trees: Introduction &amp; Properties (CodeWithHarry)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>CodeWithHarry</strong> · 14:28 · 373,063 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=XQJJhNiGlL0" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>CodeWithHarry introduces the binary search tree as an ordered or sorted binary tree, working through the defining ordering property and the structural vocabulary that goes with it. Based on the title and description, expect a definition-first treatment with drawn examples showing which trees qualify as BSTs and which do not. The pacing suits a first exposure to the concept.</p>
+<h4>Why this video</h4>
+<p>This is the most direct match for the subtopics on the BST ordering property and BST versus general binary tree, and the channel is a well-known, heavily viewed source for introductory data structures explanations.</p>
+</section>
+<section class="item" id="p3-sec3">
+<h3>Video 2: Binary Search Trees (BST) Explained and Implemented in Java with Examples | Geekific</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/zIX3zQP0khM?cc_load_policy=1&amp;rel=0" title="Video: Binary Search Trees (BST) Explained and Implemented in Java with Examples | Geekific (Geekific)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Geekific</strong> · 19:57 · 36,955 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=zIX3zQP0khM" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>Geekific explains BSTs conceptually and then implements one in Java, so you see the node structure — data plus left and right references — turned into actual class definitions. The video follows the channel's broader tree series and includes concrete examples, with source code available through the linked repository. At roughly twenty minutes it is the longest and most detailed of the three.</p>
+<h4>Why this video</h4>
+<p>Seeing the Node and tree classes written out reinforces the BST node structure subtopic and gives you a code-level model you can translate into JavaScript for your own implementation work.</p>
+</section>
+<section class="item" id="p3-sec4">
+<h3>Video 3: Binary Search Tree Data Structure | BST Introduction | Searching, Implementation | DSAOne Course #66</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/b8hE6t14NDs?cc_load_policy=1&amp;rel=0" title="Video: Binary Search Tree Data Structure | BST Introduction | Searching, Implementation | DSAOne Course #66 (Anuj Kumar Sharma)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Anuj Kumar Sharma</strong> · 12:24 · 41,279 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=b8hE6t14NDs" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>Anuj Kumar Sharma introduces the BST within the DSAOne course sequence, and the description signals an explicit comparison with other data structures alongside searching and implementation. Expect coverage of why the ordering property makes lookups fast and a walkthrough of the search procedure itself. It is the shortest of the three and works well as a focused review.</p>
+<h4>Why this video</h4>
+<p>The comparison framing and the emphasis on searching line up closely with the subtopics on how BST ordering enables efficient search and on BST performance relative to other structures.</p>
+</section>
+<section class="item" id="p3-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these videos target the conceptual half of the module. All three establish the BST ordering property and contrast a BST with a general binary tree, which is the distinguishing skill named in MO1, and each demonstrates the search procedure that underlies MO3 and motivates the height-versus-performance reasoning in MO4. The Geekific implementation video models the Node and tree class design you will need for MO5, even though it uses Java rather than JavaScript — the structure transfers directly. Traversal algorithms (MO2) and the three deletion cases (MO3) are developed in other topics of this module, so treat these videos as the foundation those later operations build on.</p>
+</section>
+<section class="item" id="p3-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part4">
+<h2>Insertion and Search Operations</h2>
+<section class="item" id="p4-sec1">
+<h3>Introduction</h3>
+<p>A binary search tree (BST) is more than a tree of nodes — it is a tree that obeys an ordering property: for every node, all keys in its left subtree are smaller, and all keys in its right subtree are larger. Insertion and search are the two operations that both depend on and preserve this property. When you insert, you start at the root and repeatedly move left or right by comparing the new key to the current node, until you reach an empty spot where the new node belongs. Search follows the exact same path logic, except it stops when it finds a match or runs out of nodes to visit.</p>
+<p>This matters in COP3530 because the BST is the first structure where the shape of the data determines performance. Each comparison discards roughly half of the remaining tree when the tree is reasonably balanced, giving O(log n) behavior for both insert and search. But insert values in sorted order and the tree degenerates into a chain — a linked list in disguise — and performance collapses to O(n). Understanding why requires connecting the insertion logic to the resulting tree height, not just memorizing two complexity classes.</p>
+<p>As you watch, keep three things in view. First, track the comparison at each node and notice that insertion and search share identical traversal logic. Second, watch how the code expresses this — iteratively with a while loop and a trailing parent pointer, or recursively by returning subtrees. Third, pay attention to the examples used: ask yourself what the tree would look like if the same keys had arrived in a different order, and what that does to the number of comparisons.</p>
+</section>
+<section class="item" id="p4-sec2">
+<h3>Video 1: Insertion in a Binary Search Tree</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/ZxPePWp0n3Y?cc_load_policy=1&amp;rel=0" title="Video: Insertion in a Binary Search Tree (CodeWithHarry)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>CodeWithHarry</strong> · 17:42 · 346,609 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=ZxPePWp0n3Y" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A focused walkthrough of the BST insertion operation, covering how a new key is placed so that the ordering property is preserved. Based on the title and description, expect step-by-step tracing of how the algorithm descends from the root, comparing the new key at each node to decide whether to go left or right, until it finds the empty position where the node attaches. At nearly eighteen minutes, it has room to work through concrete examples rather than just state the rule.</p>
+<h4>Why this video</h4>
+<p>CodeWithHarry is a well-established programming channel, and this video's single-operation focus matches the Insertion Logic subtopic directly, giving you the comparison-by-comparison reasoning before you try to write it in code.</p>
+</section>
+<section class="item" id="p4-sec3">
+<h3>Video 2: Binary Search Trees (BST) Explained and Implemented in Java with Examples | Geekific</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/zIX3zQP0khM?cc_load_policy=1&amp;rel=0" title="Video: Binary Search Trees (BST) Explained and Implemented in Java with Examples | Geekific (Geekific)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Geekific</strong> · 19:57 · 36,955 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=zIX3zQP0khM" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A broader treatment of binary search trees that explains the structure and then implements it in Java with worked examples, from the Geekific data structures series. Expect coverage of the BST ordering property as the defining constraint, followed by code for the core operations including insertion and search. The implementation portion shows how node classes and tree classes are organized in practice.</p>
+<h4>Why this video</h4>
+<p>Seeing a full class-based implementation — node definition, tree class, insert and search methods — gives you the structural template you will translate into your own JavaScript version, and the explanation-then-code format reinforces why each line of code exists.</p>
+</section>
+<section class="item" id="p4-sec4">
+<h3>Video 3: Binary search in 4 minutes</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/fDKIpRe8GW4?cc_load_policy=1&amp;rel=0" title="Video: Binary search in 4 minutes (Michael Sambol)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Michael Sambol</strong> · 4:00 · 249,492 views · 3y ago · captions — <a href="https://www.youtube.com/watch?v=fDKIpRe8GW4" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A compact four-minute explanation of binary search, the halving strategy that underlies BST search performance. It covers how repeatedly discarding half of the remaining candidates produces logarithmic running time, with accompanying code linked in the description. This is the algorithmic idea that explains why BST search is fast when the tree is well-shaped.</p>
+<h4>Why this video</h4>
+<p>Michael Sambol's videos are known for being tight and accurate, and this one isolates the halving intuition you need to understand the best-case O(log n) result — and, by contrast, why a degenerate tree that never halves anything degrades to O(n).</p>
+</section>
+<section class="item" id="p4-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these videos reinforce the ordering property that separates a BST from a general binary tree (MO1) and supply the insert and search logic you must be able to apply by hand while keeping that property intact (MO3). The Geekific implementation demonstrates the Node and tree class structure with working insert and search methods, giving you a concrete model to adapt when building your own JavaScript BST (MO5). The binary search video supplies the halving argument behind logarithmic performance, which is the foundation for reasoning about how tree height — and therefore insertion order and balance — drives the gap between best-case and worst-case cost for both operations (MO4).</p>
+</section>
+<section class="item" id="p4-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part5">
+<h2>Deletion Operations</h2>
+<section class="item" id="p5-sec1">
+<h3>Introduction</h3>
+<p>Deletion is the trickiest of the three core binary search tree operations. Insertion and search only ever move downward along a single path, but deletion removes a node that other nodes depend on, so the tree must be repaired afterward. The standard approach breaks the problem into three cases based on how many children the target node has: zero (a leaf), one, or two.</p>
+<p>The first two cases are straightforward — a leaf can simply be unlinked from its parent, and a node with a single child can be replaced by that child. The third case requires more care: a node with two children cannot simply be removed, so its value is overwritten with either its in-order successor (the smallest value in the right subtree) or its in-order predecessor (the largest value in the left subtree), and then that replacement node is deleted recursively. Either choice preserves the BST ordering property, which is the invariant everything else in this module depends on.</p>
+<p>As you watch, pay attention to three things: how each video identifies which case applies, how the parent pointer or returned subtree reference is reattached after removal, and how the successor or predecessor is located. Try pausing and predicting the resulting tree before the presenter reveals it — tracing deletions by hand is the fastest way to internalize the logic you will later implement in code.</p>
+</section>
+<section class="item" id="p5-sec2">
+<h3>Video 1: Delete a Node in BST | Deletion in BST | Delete a Node in Binary Search Tree | DSA-One Course #68</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/petKaikRiIA?cc_load_policy=1&amp;rel=0" title="Video: Delete a Node in BST | Deletion in BST | Delete a Node in Binary Search Tree | DSA-One Course #68 (Anuj Kumar Sharma)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Anuj Kumar Sharma</strong> · 13:17 · 85,597 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=petKaikRiIA" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A walkthrough of node deletion in a binary search tree as part of a broader DSA course series. Based on its title and length, it should cover all three deletion cases with worked diagrams and then translate the logic into code, including how the in-order successor is used when a node has two children.</p>
+<h4>Why this video</h4>
+<p>At roughly thirteen minutes it is long enough to treat each case carefully rather than rushing, making it a good primary overview of the three-case framework that organizes this topic.</p>
+</section>
+<section class="item" id="p5-sec3">
+<h3>Video 2: BST Removal Code</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/Ts_ZVOPXq3A?cc_load_policy=1&amp;rel=0" title="Video: BST Removal Code (Professor Kevin Wortman)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Professor Kevin Wortman</strong> · 12:16 · 104 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=Ts_ZVOPXq3A" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A lecture-style video from a university instructor focused specifically on the code for removing an element from a BST, with accompanying slides. Expect close attention to implementation details such as recursive structure, return values, and correctly relinking parent and child references.</p>
+<h4>Why this video</h4>
+<p>It complements the conceptual treatment by showing how the three cases appear in actual source code, which directly supports the implementation work later in this module.</p>
+</section>
+<section class="item" id="p5-sec4">
+<h3>Video 3: AVL trees in 5 minutes — Deletions</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/PBkXmhiCP1M?cc_load_policy=1&amp;rel=0" title="Video: AVL trees in 5 minutes — Deletions (Michael Sambol)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Michael Sambol</strong> · 5:20 · 89,410 views · 3y ago · captions — <a href="https://www.youtube.com/watch?v=PBkXmhiCP1M" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A concise explanation of the delete method for AVL trees, a self-balancing variant of the BST. It builds on ordinary BST deletion and then addresses the rotations needed to restore balance after a node is removed.</p>
+<h4>Why this video</h4>
+<p>This is an extension video: it shows why preserving BST integrity after deletion matters beyond ordering alone, and previews how tree height and balance affect performance.</p>
+</section>
+<section class="item" id="p5-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>These videos target MO3 most directly: together they cover all three deletion cases and the role of the in-order successor and predecessor in keeping the ordering property intact. The code-focused walkthrough from Professor Wortman bridges toward MO5 by showing how the case analysis becomes a working delete method with correct reference handling, which you can adapt to your JavaScript BST class. The AVL deletion video supports MO4 by connecting the shape of the tree after modification to height and worst-case performance, while all three reinforce MO1 and MO2 by requiring you to reason about parent-child relationships, leaves, and in-order ordering as you trace each example.</p>
+</section>
+<section class="item" id="p5-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part6">
+<h2>Tree Traversal Strategies</h2>
+<section class="item" id="p6-sec1">
+<h3>Introduction</h3>
+<p>Traversal is how we systematically visit every node in a binary tree exactly once. Because a tree has no single linear order built into it, we have to choose a rule for the order in which we touch the root and its two subtrees. The three classic depth-first rules are in-order (left, root, right), pre-order (root, left, right), and post-order (left, right, root). Each is a tiny variation on the same recursive idea, but each produces a very different output sequence.</p>
+<p>Those differences matter in practice. In-order traversal on a binary search tree produces the keys in sorted order, which is why it is the go-to for printing or validating a BST and for finding an in-order successor during deletion. Pre-order is the natural choice for copying or serializing a tree, since the root is emitted before its children and can be rebuilt first. Post-order visits children before their parent, which is exactly what you want when freeing memory, deleting a tree, or computing values that depend on subtree results (like height or expression evaluation). You should also be comfortable with both the recursive version, which is short and mirrors the definition, and the iterative version, which makes the hidden call stack explicit.</p>
+<p>As you watch, keep a small sample tree on paper and trace along with the speaker rather than just listening. Pay attention to the moment a node is actually "visited" (printed) versus merely passed through on the way down, since that single detail is what separates the three strategies. For the iterative videos, watch what gets pushed onto the stack and when, and ask yourself how that sequence reproduces the recursive behavior.</p>
+</section>
+<section class="item" id="p6-sec2">
+<h3>Video 1: Traversal in Binary Tree (InOrder, PostOrder and PreOrder Traversals)</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/UbwkQmCWcDM?cc_load_policy=1&amp;rel=0" title="Video: Traversal in Binary Tree (InOrder, PostOrder and PreOrder Traversals) (CodeWithHarry)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>CodeWithHarry</strong> · 13:27 · 359,099 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=UbwkQmCWcDM" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A broad introduction to traversing a binary tree that walks through all three depth-first strategies — in-order, pre-order, and post-order — in a single lesson. Based on the title and description, it explains the visiting order for each strategy and demonstrates the traversal on example trees so you can see how the output sequence differs.</p>
+<h4>Why this video</h4>
+<p>This is the best starting point for the topic because it covers all three traversal orders together, making the contrast between them explicit; CodeWithHarry is a widely used programming-education channel known for step-by-step explanations aimed at beginners.</p>
+</section>
+<section class="item" id="p6-sec3">
+<h3>Video 2: In-order Traversal Algorithm | Tree Traversal | Visualization, Code, Example</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/4_UDUj1j1KQ?cc_load_policy=1&amp;rel=0" title="Video: In-order Traversal Algorithm | Tree Traversal | Visualization, Code, Example (ygongcode)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>ygongcode</strong> · 4:29 · 56,303 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=4_UDUj1j1KQ" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A focused, short treatment of in-order traversal that pairs a visualization of the node-visiting order with the corresponding code and a worked example. The emphasis is on seeing the recursion unfold visually rather than only reading the algorithm.</p>
+<h4>Why this video</h4>
+<p>In-order is the traversal you will use most often with BSTs (sorted output, in-order successor), so a dedicated visual walkthrough is worth the four minutes; the animation directly supports tracing node sequences by hand.</p>
+</section>
+<section class="item" id="p6-sec4">
+<h3>Video 3: Iterative Postorder Traversal of a Binary Tree | Implementation</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/m4Wb3kXk_iA?cc_load_policy=1&amp;rel=0" title="Video: Iterative Postorder Traversal of a Binary Tree | Implementation (Dinesh Varyani)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Dinesh Varyani</strong> · 14:34 · 8,108 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=m4Wb3kXk_iA" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>An implementation-oriented video on performing post-order traversal iteratively — that is, without recursion — using an explicit stack. Expect a discussion of why post-order is the trickiest of the three to convert to an iterative form and a code walkthrough of the resulting algorithm.</p>
+<h4>Why this video</h4>
+<p>It fills the recursive-versus-iterative subtopic with the hardest and most instructive case, and Dinesh Varyani's channel is known for detailed, animation-supported data structures and algorithms implementations.</p>
+</section>
+<section class="item" id="p6-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these videos target MO2 most directly: the CodeWithHarry overview establishes all three visiting orders so you can predict node sequences, while the in-order visualization reinforces the traversal most tied to BST sorted output and to finding the in-order successor used in deletion (MO3). The iterative post-order video extends the same ideas into implementation detail — explicit stack management and code structure — which supports writing working traversal methods in your own BST class (MO5). Watching all three also sharpens your sense of tree shape, subtree relationships, and root-to-leaf structure that underpins MO1.</p>
+</section>
+<section class="item" id="p6-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part7">
+<h2>Implementing a BST in JavaScript</h2>
+<section class="item" id="p7-sec1">
+<h3>Introduction</h3>
+<p>So far you have reasoned about binary search trees on paper — drawing nodes, following edges, and tracing where a value belongs. This topic turns that reasoning into working code. You will define a Node class that stores a value plus left and right references, wrap it in a BinarySearchTree class that tracks the root, and then add methods one at a time: insert, search (lookup), the three traversals, and finally delete with its three cases.</p>
+<p>This matters because the code forces you to be precise in ways a diagram does not. Where does a new node actually get attached? What does your method return when the tree is empty, or when the key is not found? How do you reconnect a subtree after removing a node with two children? Writing the implementation yourself is the fastest way to discover which parts of the concept you only half understood.</p>
+<p>The videos below are from a Java-based DSA series, and that is deliberate: the class structure, the recursive insert, and the recursive search translate almost line for line into JavaScript. While watching, focus on the shape of the logic rather than the syntax — the base case of each recursion, the comparison that chooses left versus right, and the fact that each recursive call returns a subtree reference that the parent must reassign. Then rewrite each method in JavaScript yourself, replacing class fields and types with plain JavaScript properties, and test it on a small tree you build by hand.</p>
+</section>
+<section class="item" id="p7-sec2">
+<h3>Video 1: How to represent Binary Search Tree in Java? | Animation</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/B1Mau6NCHx0?cc_load_policy=1&amp;rel=0" title="Video: How to represent Binary Search Tree in Java? | Animation (Dinesh Varyani)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Dinesh Varyani</strong> · 10:07 · 17,329 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=B1Mau6NCHx0" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>An animated walkthrough of how a binary search tree is represented in code: the node object holding a value and left/right child references, and the tree class that holds a reference to the root. Expect visual diagrams showing how individual node objects link together to form the overall tree structure in memory.</p>
+<h4>Why this video</h4>
+<p>This maps directly onto the first two subtopics — defining the Node class and setting up the BinarySearchTree class — and the animation makes the reference-based structure concrete before any method logic is introduced.</p>
+</section>
+<section class="item" id="p7-sec3">
+<h3>Video 2: How to insert a value in a Binary Search Tree (Recursive) | Implementation</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/ZHLAiHiYgeI?cc_load_policy=1&amp;rel=0" title="Video: How to insert a value in a Binary Search Tree (Recursive) | Implementation (Dinesh Varyani)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Dinesh Varyani</strong> · 7:23 · 16,176 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=ZHLAiHiYgeI" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>Covers the recursive implementation of inserting a value into a BST: comparing the new key against the current node, descending left or right accordingly, and creating the node when an empty position is reached. The implementation is shown step by step alongside an animated view of the tree growing.</p>
+<h4>Why this video</h4>
+<p>Insertion is the method every other operation depends on, and this video shows the recursive pattern — including returning the subtree back up to the caller — that you will reuse when writing insert and delete in JavaScript.</p>
+</section>
+<section class="item" id="p7-sec4">
+<h3>Video 3: How to search a given key in a Binary Search Tree (Recursive) | Implementation</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/wL1oxXrEgr4?cc_load_policy=1&amp;rel=0" title="Video: How to search a given key in a Binary Search Tree (Recursive) | Implementation (Dinesh Varyani)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Dinesh Varyani</strong> · 6:40 · 8,451 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=wL1oxXrEgr4" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>Walks through recursively searching a BST for a given key: checking the current node, returning when a match or an empty reference is found, and otherwise recursing into the left or right subtree based on the comparison. The animation illustrates the single downward path the search follows.</p>
+<h4>Why this video</h4>
+<p>It covers the search/lookup subtopic with the same recursive structure as the insert video, reinforcing the pattern and making clear why a BST search touches only one path from root to leaf.</p>
+</section>
+<section class="item" id="p7-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>These three videos directly support MO5 by modeling the exact building blocks of a BST implementation — node and tree class definitions, a recursive insert, and a recursive search — in a form you can translate into JavaScript and validate with your own test cases. They also reinforce MO1, since representing a node with value plus left and right references makes the structural vocabulary of roots, children, and leaves concrete, and MO3, by demonstrating insertion and search logic that preserves the ordering property. Because the videos stop short of deletion and traversal, you should pair them with the module's course materials and your own coding practice to complete the delete cases (MO3), the in-order, pre-order, and post-order methods (MO2), and the complexity analysis that ties tree height to performance (MO4).</p>
+</section>
+<section class="item" id="p7-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+
+<footer class="presemaker-credit" data-credit="2" style="margin-top:2rem;padding:14px 8px;border-top:1px solid #ddd;background:#fff;text-align:center;font:13px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#595959;"><svg width="20" height="20" viewBox="0 0 2048 2048" aria-hidden="true" focusable="false" style="vertical-align:-5px;margin-right:7px"><rect width="2048" height="2048" rx="384" fill="#0F6E6E"/><path fill="#0A5050" d="M1024 1000 344 832v816l680 168zm0 0 680-168v816l-680 168z"/><path fill="#fff" d="M1024 944 384 784v808l640 160zm0 0 640-160v808l-640 160z"/><rect x="1002" y="944" width="44" height="808" fill="#0F6E6E"/><rect x="936" y="246" width="176" height="448" rx="44" fill="#fff"/><rect x="800" y="382" width="448" height="176" rx="44" fill="#fff"/></svg>Created with <a href="https://softwareplus.ai/coursebuilder/" target="_blank" rel="noopener" style="color:#2f5d8f;font-weight:600;text-decoration:none;">CourseBuilder+</a><span aria-hidden="true"> · </span><a href="https://softwareplus.ai/" target="_blank" rel="noopener" style="color:#2f5d8f;text-decoration:none;">SoftwarePlus.ai</a></footer>
+</body>
+</html>

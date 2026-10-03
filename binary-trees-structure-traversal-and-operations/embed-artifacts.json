@@ -1,5 +1,10 @@
 ﻿[
   {
+    "title": "Binary Trees: Structure, Traversal, and Operations (module page)",
+    "href": "index.html",
+    "type": "Module page"
+  },
+  {
     "title": "Binary Trees: Structure, Traversal, and Operations \u2014 Topics \u0026 Learning Outcomes",
     "href": "topics-outcomes.html",
     "type": "Page"
@@ -50,8 +55,43 @@
     "type": "Content"
   },
   {
-    "title": "Binary Trees: Structure, Traversal, and Operations \u2014 Module Topics",
-    "href": "content/module_topics.html",
+    "title": "Introduction to Binary Trees",
+    "href": "content/Binary_Trees_Structure_t1_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "Node Structure and Tree Anatomy",
+    "href": "content/Binary_Trees_Structure_t2_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "Binary Search Trees (BST) Concepts",
+    "href": "content/Binary_Trees_Structure_t3_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "Insertion and Search Operations",
+    "href": "content/Binary_Trees_Structure_t4_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "Deletion Operations",
+    "href": "content/Binary_Trees_Structure_t5_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "Tree Traversal Strategies",
+    "href": "content/Binary_Trees_Structure_t6_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "Implementing a BST in JavaScript",
+    "href": "content/Binary_Trees_Structure_t7_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "Binary Trees: Structure, Traversal, and Operations",
+    "href": "content/Binary_Trees_Structure_videos_merged.html",
     "type": "Content"
   }
 ]

@@ -1,0 +1,305 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Sorting Algorithms: Comparison and Implementation</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+body{font-family:'Segoe UI',Arial,sans-serif;max-width:820px;margin:2rem auto;padding:0 1.25rem;color:#222;line-height:1.55}
+h1{font-size:1.9rem;border-bottom:2px solid #ddd;padding-bottom:.4rem}
+h2{font-size:1.3rem;color:#1f3864;margin-top:1.6rem}
+body{padding-left:1.1rem;padding-right:1.1rem}
+ul,ol{margin:.4rem 0 1rem 1.4rem}
+li{margin:.25rem 0}
+nav.toc{background:rgba(128,128,128,.08);border:1px solid rgba(128,128,128,.25);border-radius:8px;padding:.6rem 1rem;margin:1.2rem 0}
+nav.toc strong{display:block;margin-bottom:.3rem}
+nav.toc a{display:block;text-decoration:none;padding:.12rem 0}
+section.item{border-top:1px solid rgba(128,128,128,.22);padding-top:.3rem}
+table{border-collapse:collapse;width:100%;margin:.8rem 0}
+th,td{border:1px solid rgba(128,128,128,.45);padding:.4rem .6rem;text-align:left;vertical-align:top}
+thead th{background:rgba(128,128,128,.18);font-weight:600}
+tbody tr:nth-child(even){background:rgba(128,128,128,.08)}
+</style>
+<style>section.merged-part{border-top:2px solid rgba(128,128,128,.3);margin-top:2rem;padding-top:.5rem}nav.toc{background:rgba(128,128,128,.08);border:1px solid rgba(128,128,128,.25);border-radius:8px;padding:.6rem 1rem;margin:1.2rem 0}nav.toc a{display:block;text-decoration:none;padding:.12rem 0}</style>
+</head>
+<body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Sorting Algorithms: Comparison and Implementation</a></div>
+<h1>Sorting Algorithms: Comparison and Implementation</h1>
+<nav class="toc"><strong>Contents</strong>
+<a href="#part1">Introduction to Sorting Algorithms</a>
+<a href="#part2">Bubble Sort</a>
+<a href="#part3">Insertion Sort</a>
+<a href="#part4">Merge Sort</a>
+<a href="#part5">Quicksort</a>
+<a href="#part6">Comparing Sorting Algorithms</a>
+</nav>
+<section class="merged-part" id="part1">
+<h2>Introduction to Sorting Algorithms</h2>
+<section class="item" id="p1-sec1">
+<h3>Introduction</h3>
+<p>Sorting is one of the most studied problems in computer science: given a collection of items and a rule for comparing them, rearrange the collection so the items appear in order. It sounds simple, but the way you do it determines how much time and memory your program consumes, and that difference becomes dramatic as data grows from dozens of elements to millions.</p>
+<p>In this module you will implement several sorting algorithms, so this introductory topic gives you the vocabulary and measuring tools you need first. Key terms include comparison-based sorting, stability (whether equal elements keep their original relative order), in-place sorting (whether extra memory proportional to the input is required), and best, average, and worst cases. Time complexity and space complexity, expressed in Big O notation, are the two formal criteria we use to compare algorithms, while practical performance characteristics explain why an O(n^2) algorithm can still beat an O(n log n) one on small or nearly sorted inputs.</p>
+<p>As you watch the videos below, focus on the criteria rather than memorizing any single algorithm. Ask yourself: what is being counted (comparisons, swaps, extra arrays)? How does the cost change when the input is already sorted, reverse sorted, or random? Keep a running glossary of the terms you hear so that when we start coding bubble, insertion, merge, and quicksort in JavaScript, the analysis language is already familiar.</p>
+</section>
+<section class="item" id="p1-sec2">
+<h3>Video 1: Introduction to Sorting Algorithms</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/ByLlEk7zmyw?cc_load_policy=1&amp;rel=0" title="Video: Introduction to Sorting Algorithms (CodeWithHarry)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>CodeWithHarry</strong> · 9:49 · 358,918 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=ByLlEk7zmyw" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A beginner-oriented opening lecture on sorting within a data structures series. Based on its title and description, it explains what sorting means, why sorting algorithms are needed, and where sorting shows up in everyday programming tasks before any specific algorithm is coded.</p>
+<h4>Why this video</h4>
+<p>It maps directly onto the first two subtopics, What Is a Sorting Algorithm and Why Sorting Algorithms Matter, and CodeWithHarry is a widely followed instructional channel whose data structures series is paced for students meeting the material for the first time.</p>
+</section>
+<section class="item" id="p1-sec3">
+<h3>Video 2: Sorting Algorithms Time and Space Complexity | Sorting Algorithms | Big-O | Geekific</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/UqmKiz2P0Lw?cc_load_policy=1&amp;rel=0" title="Video: Sorting Algorithms Time and Space Complexity | Sorting Algorithms | Big-O | Geekific (Geekific)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Geekific</strong> · 13:39 · 21,750 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=UqmKiz2P0Lw" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>This video focuses on comparing sorting algorithms by their time and space complexity using Big-O notation. Geekific frames it as a wrap-up of a multi-week sorting series, so it is likely to summarize best, average, and worst cases alongside memory usage across the common algorithms.</p>
+<h4>Why this video</h4>
+<p>It gives concentrated coverage of the two evaluation criteria at the heart of this topic, time complexity and space complexity, and the side-by-side comparison format models exactly the kind of reasoning you will do in later assignments.</p>
+</section>
+<section class="item" id="p1-sec4">
+<h3>Video 3: 10 Sorting Algorithms Easily Explained</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/rbbTd-gkajw?cc_load_policy=1&amp;rel=0" title="Video: 10 Sorting Algorithms Easily Explained (Coding with Lewis)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Coding with Lewis</strong> · 10:48 · 348,227 views · 2y ago · captions — <a href="https://www.youtube.com/watch?v=rbbTd-gkajw" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A fast, visual tour of ten different sorting algorithms, explaining the basic idea behind each one. Expect short conceptual explanations and animations rather than deep derivations, giving you a mental map of the sorting landscape and how approaches differ from one another.</p>
+<h4>Why this video</h4>
+<p>It is a useful breadth video for the Practical Performance Characteristics subtopic, showing that there are many strategies with different trade-offs and helping you place bubble, insertion, merge, and quicksort in a wider context.</p>
+</section>
+<section class="item" id="p1-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these videos build the conceptual foundation the module outcomes depend on. The CodeWithHarry introduction and the Coding with Lewis overview establish what sorting algorithms do and how they differ, preparing you to implement and later differentiate among them (MO1, MO3). The Geekific comparison video supplies the Big O vocabulary and the time and space complexity framework you will apply when analyzing best, average, and worst cases (MO2). Taken as a set, they also give you the criteria, data size, input order, memory use, and stability, that you will weigh when choosing an algorithm for a specific scenario (MO4).</p>
+</section>
+<section class="item" id="p1-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part2">
+<h2>Bubble Sort</h2>
+<section class="item" id="p2-sec1">
+<h3>Introduction</h3>
+<p>Bubble sort is the traditional starting point for studying sorting algorithms. The idea is simple: repeatedly walk through the list, compare each pair of adjacent elements, and swap them when they are out of order. Larger values "bubble" toward the end of the array with each pass, and after enough passes the data is sorted. Because the logic is short and visual, bubble sort is an ideal place to build the habits you will need for harder algorithms: tracing nested loops, counting comparisons and swaps, and reasoning about what is guaranteed after each pass.</p>
+<p>In this course, bubble sort serves as the baseline against which insertion sort, merge sort, and quicksort are measured. Its nested-loop structure gives O(n^2) comparisons in the average and worst cases, and an early-exit optimization (stop when a full pass produces no swaps) brings the best case down to O(n) on already-sorted input. It sorts in place with O(1) extra space and, when implemented with a strict greater-than comparison, it is stable — properties you will reuse when you compare algorithms later in the module.</p>
+<p>The videos below use C++ and Java for their code walkthroughs, so as you watch, focus on the structure rather than the syntax: where the outer loop ends, why the inner loop shrinks on each pass, and where the swap happens. Then rewrite the same logic in JavaScript using a temporary variable or array destructuring for the swap. Pay particular attention to the "swapped" flag in the optimized version and to the honest discussion of when bubble sort is a reasonable choice (tiny or nearly sorted datasets, teaching, quick prototypes) and when it clearly is not (anything large).</p>
+</section>
+<section class="item" id="p2-sec2">
+<h3>Video 1: Bubble Sort Algorithm | C++ / Java | Complete explanation for Beginners and Code | DSAOne Course #17</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/bBQkErahU9c?cc_load_policy=1&amp;rel=0" title="Video: Bubble Sort Algorithm | C++ / Java | Complete explanation for Beginners and Code | DSAOne Course #17 (Anuj Kumar Sharma)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Anuj Kumar Sharma</strong> · 14:22 · 162,882 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=bBQkErahU9c" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A beginner-oriented lecture from the DSAOne course that explains how bubble sort works step by step before moving into a full code implementation in C++ and Java. Expect a walkthrough of the pass-by-pass behavior of the algorithm, the nested loop structure, and a discussion of its time complexity.</p>
+<h4>Why this video</h4>
+<p>At roughly fourteen minutes it is the most thorough of the three, covering the "what it is," "step-by-step logic," and "time complexity" subtopics in one place, and the pacing is aimed squarely at students meeting the algorithm for the first time.</p>
+</section>
+<section class="item" id="p2-sec3">
+<h3>Video 2: Bubble Sort Explained and Implemented with Examples in Java | Sorting Algorithms | Geekific</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/F9F9TXq9Fh4?cc_load_policy=1&amp;rel=0" title="Video: Bubble Sort Explained and Implemented with Examples in Java | Sorting Algorithms | Geekific (Geekific)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Geekific</strong> · 10:34 · 6,348 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=F9F9TXq9Fh4" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>Geekific opens its sorting algorithms series by explaining bubble sort with worked examples and then implementing it in Java. The video pairs a visual trace of the swapping process with the corresponding code, and the channel maintains a public GitHub repository where the implementation can be read alongside the explanation.</p>
+<h4>Why this video</h4>
+<p>It gives you a second, independently produced explanation of the same algorithm, which is useful for confirming your understanding, and its example-then-code structure makes it easy to translate the logic into JavaScript yourself.</p>
+</section>
+<section class="item" id="p2-sec4">
+<h3>Video 3: Optimised Bubble Sort</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/D6XBpxL9Q6E?cc_load_policy=1&amp;rel=0" title="Video: Optimised Bubble Sort (BigOCast)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>BigOCast</strong> · 4:31 · 2,791 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=D6XBpxL9Q6E" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A short, focused video on the optimized form of bubble sort, in which a flag tracks whether any swap occurred during a pass so the algorithm can terminate early. It is likely to show how this small change affects the behavior of the algorithm on already-sorted or nearly sorted input.</p>
+<h4>Why this video</h4>
+<p>This is the piece most introductory treatments gloss over, and it is exactly what separates the O(n) best case from the O(n^2) worst case — essential for the complexity analysis and for judging the algorithm's practical use cases.</p>
+</section>
+<section class="item" id="p2-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these videos give you the loop structure and swap mechanics you need to write bubble sort yourself in JavaScript (MO1), while the complexity discussions in the first video and the early-exit optimization in the third let you distinguish best-case O(n) from average- and worst-case O(n^2) behavior with O(1) extra space (MO2). Seeing the in-place swapping of adjacent elements makes bubble sort's stability and in-place properties concrete, giving you a reference point for comparing it against insertion, merge, and quicksort (MO3). Finally, the attention these videos pay to when bubble sort performs acceptably versus when it breaks down on large inputs supports the judgment you will need when selecting an algorithm for a given scenario (MO4).</p>
+</section>
+<section class="item" id="p2-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part3">
+<h2>Insertion Sort</h2>
+<section class="item" id="p3-sec1">
+<h3>Introduction</h3>
+<p>Insertion sort builds a sorted region at the front of an array one element at a time. On each pass it takes the next unsorted element, compares it backward against the already-sorted portion, shifts larger elements one position to the right, and drops the element into the gap. The mental model most people use is sorting a hand of playing cards: you pick up one card at a time and slide it into its correct place among the cards you already hold.</p>
+<p>In this course, insertion sort matters for two reasons. First, it is simple enough that you can trace every comparison and shift by hand, which makes it an ideal vehicle for learning how to count operations and derive Big O bounds. Second, its performance profile is genuinely useful: it runs in linear time on nearly-sorted input, sorts in place with O(1) extra memory, and is stable, which is why real-world hybrid sorts fall back to it for small subarrays.</p>
+<p>The videos below are taught in C++ and Java, but the algorithm is language-independent — the loop structure translates directly to JavaScript, so watch the logic and then write your own JS version. As you watch, pay attention to three things: the role of the inner while loop (shifting versus swapping), why the comparison uses a strict greater-than (this is what preserves stability), and how the number of shifts changes between already-sorted, random, and reverse-sorted input. Those observations are exactly what you need for the complexity and comparison subtopics.</p>
+</section>
+<section class="item" id="p3-sec2">
+<h3>Video 1: Insertion Sort Algorithm | C++ / Java Complete explanation for Beginners and Code | DSAOne Course 18</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/wWhAhp6PIuQ?cc_load_policy=1&amp;rel=0" title="Video: Insertion Sort Algorithm | C++ / Java Complete explanation for Beginners and Code | DSAOne Course 18 (Anuj Kumar Sharma)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Anuj Kumar Sharma</strong> · 17:24 · 207,951 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=wWhAhp6PIuQ" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A beginner-oriented walkthrough of the insertion sort algorithm from the DSAOne course series, covering the core idea and a complete code implementation in C++ and Java. At roughly 17 minutes it is the longest of the three, so it has room to explain the reasoning behind each loop before showing the code. Expect a step-by-step trace of how elements are shifted into position followed by a line-by-line coding segment.</p>
+<h4>Why this video</h4>
+<p>Its length and explicit beginner framing make it a strong first watch for the "How Insertion Sort Works" and "Step-by-Step Example" subtopics, and the complete code walkthrough gives you a reference structure to port into JavaScript.</p>
+</section>
+<section class="item" id="p3-sec3">
+<h3>Video 2: Insertion Sort in Java -  Part 1 | Animation | Sorting Algorithms</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/W3TklBfIK9U?cc_load_policy=1&amp;rel=0" title="Video: Insertion Sort in Java -  Part 1 | Animation | Sorting Algorithms (Dinesh Varyani)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Dinesh Varyani</strong> · 13:26 · 17,807 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=W3TklBfIK9U" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>Part 1 of Dinesh Varyani's insertion sort coverage, built around animated slides that visualize the algorithm as it progresses through an array. The animation focus means you should see the sorted and unsorted regions, the element being inserted, and the backward shifting made visible rather than just described. The implementation shown is in Java.</p>
+<h4>Why this video</h4>
+<p>Animation is particularly effective for insertion sort because the shifting behavior is hard to follow from code alone; this video directly supports the step-by-step example subtopic and builds the intuition you need for the complexity analysis.</p>
+</section>
+<section class="item" id="p3-sec4">
+<h3>Video 3: Insertion Sort Explained and Implemented with Examples in Java | Sorting Algorithms | Geekific</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/ZUZi8HJY8kc?cc_load_policy=1&amp;rel=0" title="Video: Insertion Sort Explained and Implemented with Examples in Java | Sorting Algorithms | Geekific (Geekific)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Geekific</strong> · 11:21 · 5,039 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=ZUZi8HJY8kc" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>Geekific's concise explanation of insertion sort, combining the conceptual explanation with a worked example and a Java implementation, with source code available on the channel's GitHub repository. At about 11 minutes it is the most compact treatment of the three and is part of a broader sorting algorithms series. Videos in this series typically close by noting the algorithm's complexity and properties.</p>
+<h4>Why this video</h4>
+<p>It serves well as a review or second pass after a longer video, and its placement within a full sorting-algorithms series makes it useful for seeing where insertion sort sits relative to the other algorithms in this module.</p>
+</section>
+<section class="item" id="p3-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these videos give you the algorithmic logic and concrete code structure needed for MO1 — once you can follow the outer loop, the key variable, and the inner shifting loop, translating insertion sort into JavaScript is straightforward. The traced examples and animations let you count comparisons and shifts on sorted, random, and reverse-sorted input, which is the evidence base for the best-, average-, and worst-case Big O analysis in MO2 and for recognizing that the algorithm uses only constant extra space. Observing that equal elements are never swapped past one another, and that all work happens within the original array, supports the stability and in-place discussion in MO3. Finally, seeing insertion sort alongside the other algorithms in these channels' sorting series helps you reason about when its near-linear behavior on nearly-sorted or small data makes it the right choice, which is the judgment MO4 asks for.</p>
+</section>
+<section class="item" id="p3-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part4">
+<h2>Merge Sort</h2>
+<section class="item" id="p4-sec1">
+<h3>Introduction</h3>
+<p>Merge sort is the classic example of divide-and-conquer: split an array in half, sort each half recursively, then merge the two sorted halves back into one sorted array. The real work happens not in the splitting but in the merge step, where two already-sorted sequences are combined in linear time by repeatedly taking the smaller of the two front elements. Because the array is halved at every level of recursion and each level does O(n) merging work, merge sort runs in O(n log n) time on every input — best, average, and worst case alike.</p>
+<p>That consistency is why merge sort matters in this course. Unlike bubble sort or insertion sort, it does not degrade on reversed or random data, and unlike quicksort it has no pathological worst case. The trade-off is memory: a straightforward implementation allocates auxiliary arrays, giving O(n) auxiliary space rather than quicksort's in-place behavior. Merge sort is also stable, which matters when you sort records by one key after another.</p>
+<p>As you watch these videos, trace the recursion carefully: note the base case (an array of length 0 or 1 is already sorted), the point where recursion stops and merging begins, and the order in which merges actually execute. Pay particular attention to the merge helper — the two index pointers, the comparison, and the cleanup loops that copy any leftover elements. The videos below use C++ and Java, so translate the logic into JavaScript as you go; the control flow is identical, and array slicing in JavaScript often makes the code shorter than the examples shown.</p>
+</section>
+<section class="item" id="p4-sec2">
+<h3>Video 1: L-3.3: How Merge Sort Works?? Full explanation with example</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/tn9hxD8gx2M?cc_load_policy=1&amp;rel=0" title="Video: L-3.3: How Merge Sort Works?? Full explanation with example (Gate Smashers)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Gate Smashers</strong> · 9:52 · 1,582,402 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=tn9hxD8gx2M" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A concise lecture walking through how merge sort works step by step on a worked example, showing the recursive division of the array and the merging back together. It focuses on building intuition for the divide-and-conquer strategy rather than on code.</p>
+<h4>Why this video</h4>
+<p>Gate Smashers is a widely followed exam-prep channel known for clear blackboard-style explanations, and this short video is the fastest way to internalize the recursive structure and the divide-and-conquer idea before you write any code.</p>
+</section>
+<section class="item" id="p4-sec3">
+<h3>Video 2: Merge Sort Algorithm | C++ / Java Complete explanation for Beginners and Code | DSA-One Course #21</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/aDX3MFL0tYs?cc_load_policy=1&amp;rel=0" title="Video: Merge Sort Algorithm | C++ / Java Complete explanation for Beginners and Code | DSA-One Course #21 (Anuj Kumar Sharma)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Anuj Kumar Sharma</strong> · 19:51 · 263,951 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=aDX3MFL0tYs" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>Part of the DSA-One course, this longer video covers the concepts behind merge sort and then develops a complete implementation in C++ and Java, including the merge helper function. It is paced for beginners and works through the code line by line.</p>
+<h4>Why this video</h4>
+<p>The extended runtime allows the instructor to connect the conceptual picture to actual code, which is exactly the bridge you need before writing your own JavaScript version with its recursive calls and merge routine.</p>
+</section>
+<section class="item" id="p4-sec4">
+<h3>Video 3: Merge Sort Algorithm Explained and Implemented with Examples in Java | Sorting Algorithms | Geekific</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/U4g1dMry4W4?cc_load_policy=1&amp;rel=0" title="Video: Merge Sort Algorithm Explained and Implemented with Examples in Java | Sorting Algorithms | Geekific (Geekific)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Geekific</strong> · 15:07 · 8,589 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=U4g1dMry4W4" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>Geekific explains merge sort with examples and then implements it in Java, situating it alongside the channel's other sorting algorithm videos. The description points to a public GitHub repository where the code can be read and compared.</p>
+<h4>Why this video</h4>
+<p>This video reinforces the implementation from a second perspective and places merge sort in the context of other sorting algorithms, supporting the comparison work on time complexity, space usage, and practical trade-offs.</p>
+</section>
+<section class="item" id="p4-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these videos move from intuition to implementation to comparison. The Gate Smashers lecture establishes the divide-and-conquer strategy and recursive structure you will mirror when coding merge sort in JavaScript (MO1), while the Anuj Kumar Sharma and Geekific videos show full implementations, including the merge helper, that you can translate line by line. All three address why the recursion depth of log n combined with linear merging yields O(n log n) in every case, and the implementations make the auxiliary array usage visible so you can reason about O(n) space (MO2). Seeing merge sort coded next to other sorting algorithms supports the stability and in-place comparisons (MO3) and gives you the evidence needed to argue when merge sort is the right choice versus quicksort or insertion sort for a given data size and memory budget (MO4).</p>
+</section>
+<section class="item" id="p4-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part5">
+<h2>Quicksort</h2>
+<section class="item" id="p5-sec1">
+<h3>Introduction</h3>
+<p>Quicksort is a divide-and-conquer sorting algorithm built around a single powerful idea: partitioning. You choose one element as the pivot, rearrange the array so that everything smaller sits to the pivot's left and everything larger sits to its right, and then recursively sort the two sides. Unlike merge sort, the combining step is free — once both halves are sorted in place, the whole array is sorted.</p>
+<p>This topic matters because quicksort is the algorithm most language runtimes reach for in practice. Its average-case running time is O(n log n) with small constant factors and no large auxiliary array, but a poor pivot choice on already-sorted or adversarial input degrades it to O(n^2). Understanding why that happens — and how pivot strategies such as median-of-three or randomization push you back toward the average case — is exactly the kind of reasoning this module asks you to do.</p>
+<p>As you watch, keep three questions in front of you. First, trace the partition loop carefully: which pointers move, when do swaps happen, and where does the pivot finally land? Second, notice how the recursion depth depends on how balanced the partitions are, since that is the source of both the best and worst cases. Third, watch the code structure — the videos below use Python and Java, so plan to translate the same recursive structure into JavaScript, where array indices, swaps, and recursive calls work much the same way.</p>
+</section>
+<section class="item" id="p5-sec2">
+<h3>Video 1: 3.1 : Quicksort</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/4w2N6ON79Y4?cc_load_policy=1&amp;rel=0" title="Video: 3.1 : Quicksort (IIT Madras - B.S. Degree Programme)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>IIT Madras - B.S. Degree Programme</strong> · 17:58 · 28,961 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=4w2N6ON79Y4" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A university lecture from Prof. Madhavan's "Programming, Data Structures and Algorithms using Python" course that introduces quicksort as a divide-and-conquer method. It is likely to develop the partitioning idea in detail, explain how the pivot splits the array into smaller and larger halves, and discuss the running time that results from balanced versus unbalanced partitions.</p>
+<h4>Why this video</h4>
+<p>At nearly eighteen minutes from an IIT Madras degree programme, this is the most thorough conceptual treatment of the set and directly addresses partitioning strategy, average-case efficiency, and best versus worst-case behavior.</p>
+</section>
+<section class="item" id="p5-sec3">
+<h3>Video 2: Quick Sort Algorithm Explained and Implemented with Examples in Java | Sorting Algorithms | Geekific</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/aY0yYfztKMY?cc_load_policy=1&amp;rel=0" title="Video: Quick Sort Algorithm Explained and Implemented with Examples in Java | Sorting Algorithms | Geekific (Geekific)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Geekific</strong> · 10:24 · 6,755 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=aY0yYfztKMY" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>Geekific walks through the quick sort algorithm with worked examples and then implements it in Java. Expect a visual trace of how elements are swapped around the pivot during partitioning, followed by the recursive code that calls partition on each sub-range.</p>
+<h4>Why this video</h4>
+<p>Seeing a complete, compilable implementation alongside the example trace makes the translation to JavaScript straightforward, since the loop and recursion structure carries over almost line for line.</p>
+</section>
+<section class="item" id="p5-sec4">
+<h3>Video 3: 3.3 : Implementation of Quicksort Algorithm</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/rqYRw5XAmGI?cc_load_policy=1&amp;rel=0" title="Video: 3.3 : Implementation of Quicksort Algorithm (IIT Madras - B.S. Degree Programme)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>IIT Madras - B.S. Degree Programme</strong> · 3:57 · 15,494 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=rqYRw5XAmGI" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A short follow-up lecture in the same IIT Madras series devoted specifically to implementing quicksort in code. In under four minutes it is likely to turn the partitioning idea into a concrete recursive function, showing how index bounds are passed down and how the pivot position is returned.</p>
+<h4>Why this video</h4>
+<p>It is a compact, focused companion to the first lecture, useful for checking that your own implementation handles the partition boundaries and recursive calls correctly.</p>
+</section>
+<section class="item" id="p5-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these videos move from concept to code: the IIT Madras lecture establishes the partitioning strategy and the complexity analysis that separates the O(n log n) average case from the O(n^2) worst case, supporting MO2, while its implementation companion and the Geekific Java walkthrough give you two working versions of the recursive structure you will rewrite in JavaScript for MO1. The discussion of pivot selection and unbalanced partitions feeds MO3 and MO4 by showing that quicksort's in-place, low-overhead behavior is an advantage on typical data but a liability on sorted or adversarial input — exactly the trade-off you weigh when choosing a sorting algorithm for a given scenario.</p>
+</section>
+<section class="item" id="p5-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part6">
+<h2>Comparing Sorting Algorithms</h2>
+<section class="item" id="p6-sec1">
+<h3>Introduction</h3>
+<p>Once you can write bubble sort, insertion sort, merge sort, and quicksort, the next question is the one that actually matters in practice: which one should you use, and why? This topic puts the four algorithms side by side and compares them on the dimensions that drive real decisions — best, average, and worst-case time complexity, extra memory usage, whether equal elements keep their original relative order (stability), and how each behaves on small inputs versus large ones.</p>
+<p>Input order matters more than students usually expect. Insertion sort is nearly linear on data that is already almost sorted, while a naive quicksort pivot choice can degrade to O(n^2) on sorted input. Memory matters too: merge sort's O(n) auxiliary space can be a problem on large datasets, and quicksort still carries recursion stack overhead even though it sorts in place. Building a mental comparison table — algorithm, best/average/worst time, space, stable or not, typical use case — is the core skill of this topic.</p>
+<p>As you watch the videos below, keep that table open and fill it in. Note where different sources agree on the Big O values, pay attention to any assumptions being made (such as pivot strategy or whether a linked list or array is being sorted), and watch the animated comparisons to connect the abstract complexity classes to visible differences in how many operations each algorithm performs.</p>
+</section>
+<section class="item" id="p6-sec2">
+<h3>Video 1: Sorting Algorithms Time and Space Complexity | Sorting Algorithms | Big-O | Geekific</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/UqmKiz2P0Lw?cc_load_policy=1&amp;rel=0" title="Video: Sorting Algorithms Time and Space Complexity | Sorting Algorithms | Big-O | Geekific (Geekific)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Geekific</strong> · 13:39 · 21,750 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=UqmKiz2P0Lw" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>This Geekific video walks through the time and space complexity of the common sorting algorithms, framing each one in Big-O terms. Based on its title and description, it summarizes a series of earlier algorithm videos and consolidates the best-case, average-case, and worst-case costs along with memory usage. Expect the kind of overview that maps directly onto a comparison table.</p>
+<h4>Why this video</h4>
+<p>It is the most directly on-topic video for the Time Complexity Overview and Space Complexity Considerations subtopics, and the channel's accompanying GitHub repository lets you check implementations against the stated complexities.</p>
+</section>
+<section class="item" id="p6-sec3">
+<h3>Video 2: 10 Sorting Algorithms Easily Explained</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/rbbTd-gkajw?cc_load_policy=1&amp;rel=0" title="Video: 10 Sorting Algorithms Easily Explained (Coding with Lewis)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Coding with Lewis</strong> · 10:48 · 348,227 views · 2y ago · captions — <a href="https://www.youtube.com/watch?v=rbbTd-gkajw" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>Coding with Lewis gives a fast, visual tour of ten sorting algorithms, explaining the basic idea behind each one. Because it covers a wide range rather than one algorithm in depth, it is useful for seeing how bubble, insertion, merge, and quicksort relate to the broader family of sorting approaches and where each tends to be used.</p>
+<h4>Why this video</h4>
+<p>Its breadth supports the side-by-side comparison and algorithm-selection subtopics, and the short, clearly explained format makes it a good orientation or review before you work through the formal analysis.</p>
+</section>
+<section class="item" id="p6-sec4">
+<h3>Video 3: Shell sort vs Insertion sort</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/g06hNBhoS1k?cc_load_policy=1&amp;rel=0" title="Video: Shell sort vs Insertion sort (udiprod)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>udiprod</strong> · 6:23 · 179,029 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=g06hNBhoS1k" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>This udiprod video introduces shell sort and then runs it head-to-head against insertion sort in an animated race. The visual match-up shows how two algorithms on the same data can diverge dramatically in the number of operations they perform as input size grows.</p>
+<h4>Why this video</h4>
+<p>udiprod is known for accurate, carefully built algorithm animations, and this direct comparison makes the Performance on Small vs. Large Datasets and Impact of Input Order subtopics concrete in a way that a complexity table alone cannot.</p>
+</section>
+<section class="item" id="p6-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these videos reinforce the analytical and decision-making outcomes of the module. The Geekific overview supports MO2 by stating best, average, and worst-case time and space complexities in Big O terms for the algorithms you implement in MO1. The Coding with Lewis survey supports MO3 and MO4 by placing bubble, insertion, merge, and quicksort within a wider set of approaches and highlighting their practical niches. The udiprod head-to-head animation supports MO3 and MO4 by demonstrating visually how input size and ordering change which algorithm finishes first, which is exactly the reasoning you will apply when selecting an algorithm for a given scenario.</p>
+</section>
+<section class="item" id="p6-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+
+<footer class="presemaker-credit" data-credit="2" style="margin-top:2rem;padding:14px 8px;border-top:1px solid #ddd;background:#fff;text-align:center;font:13px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#595959;"><svg width="20" height="20" viewBox="0 0 2048 2048" aria-hidden="true" focusable="false" style="vertical-align:-5px;margin-right:7px"><rect width="2048" height="2048" rx="384" fill="#0F6E6E"/><path fill="#0A5050" d="M1024 1000 344 832v816l680 168zm0 0 680-168v816l-680 168z"/><path fill="#fff" d="M1024 944 384 784v808l640 160zm0 0 640-160v808l-640 160z"/><rect x="1002" y="944" width="44" height="808" fill="#0F6E6E"/><rect x="936" y="246" width="176" height="448" rx="44" fill="#fff"/><rect x="800" y="382" width="448" height="176" rx="44" fill="#fff"/></svg>Created with <a href="https://softwareplus.ai/coursebuilder/" target="_blank" rel="noopener" style="color:#2f5d8f;font-weight:600;text-decoration:none;">CourseBuilder+</a><span aria-hidden="true"> · </span><a href="https://softwareplus.ai/" target="_blank" rel="noopener" style="color:#2f5d8f;text-decoration:none;">SoftwarePlus.ai</a></footer>
+</body>
+</html>

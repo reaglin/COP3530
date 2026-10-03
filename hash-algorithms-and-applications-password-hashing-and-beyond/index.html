@@ -1,455 +1,179 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hash Algorithms and Applications: Password Hashing and Beyond — COP3530</title>
-  <style>
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    :root {
-      --color-bg: #f4f6f9;
-      --color-surface: #ffffff;
-      --color-border: #dde2ea;
-      --color-primary: #1a4f8a;
-      --color-primary-light: #2563b0;
-      --color-accent: #0f7b6c;
-      --color-accent-light: #e6f4f2;
-      --color-text: #1e2430;
-      --color-muted: #5a6376;
-      --color-badge-bg: #eef2f8;
-      --color-badge-text: #1a4f8a;
-      --color-filetype-bg: #f0faf8;
-      --color-filetype-text: #0f7b6c;
-      --radius: 8px;
-      --shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
-      --shadow-hover: 0 6px 18px rgba(0, 0, 0, 0.12);
-      --font-main: 'Segoe UI', system-ui, -apple-system, sans-serif;
-    }
-
-    body {
-      font-family: var(--font-main);
-      background-color: var(--color-bg);
-      color: var(--color-text);
-      line-height: 1.6;
-      min-height: 100vh;
-    }
-
-    /* ── Header ── */
-    header {
-      background: linear-gradient(135deg, #0d3264 0%, #1a4f8a 60%, #1e6fa0 100%);
-      color: #fff;
-      padding: 3rem 1.5rem 2.5rem;
-      text-align: center;
-    }
-
-    header .course-label {
-      display: inline-block;
-      font-size: 0.78rem;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      background: rgba(255, 255, 255, 0.15);
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      border-radius: 20px;
-      padding: 0.28rem 0.9rem;
-      margin-bottom: 1.1rem;
-      color: #cfe4f8;
-    }
-
-    header h1 {
-      font-size: clamp(1.5rem, 3.5vw, 2.4rem);
-      font-weight: 700;
-      line-height: 1.25;
-      letter-spacing: -0.02em;
-      margin-bottom: 1rem;
-      max-width: 780px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    header p.intro {
-      font-size: 1.02rem;
-      color: #cfe4f8;
-      max-width: 680px;
-      margin: 0 auto;
-      line-height: 1.7;
-    }
-
-    /* ── Main layout ── */
-    main {
-      max-width: 1100px;
-      margin: 2.5rem auto 3.5rem;
-      padding: 0 1.25rem;
-    }
-
-    .section-header {
-      display: flex;
-      align-items: baseline;
-      gap: 0.75rem;
-      margin-bottom: 1.4rem;
-    }
-
-    .section-header h2 {
-      font-size: 1.15rem;
-      font-weight: 700;
-      color: var(--color-primary);
-    }
-
-    .section-header .count {
-      font-size: 0.82rem;
-      color: var(--color-muted);
-      background: var(--color-badge-bg);
-      border-radius: 20px;
-      padding: 0.15rem 0.65rem;
-      font-weight: 600;
-    }
-
-    /* ── Card grid ── */
-    .card-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 1.25rem;
-    }
-
-    .card {
-      background: var(--color-surface);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 1.35rem 1.4rem 1.3rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.65rem;
-      transition: box-shadow 0.2s ease, transform 0.2s ease;
-    }
-
-    .card:hover {
-      box-shadow: var(--shadow-hover);
-      transform: translateY(-2px);
-    }
-
-    /* ── Card meta row ── */
-    .card-meta {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-    }
-
-    .badge {
-      font-size: 0.72rem;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      padding: 0.2rem 0.6rem;
-      border-radius: 20px;
-      text-transform: uppercase;
-    }
-
-    .badge-type {
-      background: var(--color-badge-bg);
-      color: var(--color-badge-text);
-      border: 1px solid #c5d5ed;
-    }
-
-    .badge-filetype {
-      background: var(--color-filetype-bg);
-      color: var(--color-filetype-text);
-      border: 1px solid #b3ddd8;
-      font-family: 'Courier New', Courier, monospace;
-    }
-
-    /* ── Card title row ── */
-    .card-title-row {
-      display: flex;
-      align-items: flex-start;
-      gap: 0.55rem;
-      flex-wrap: wrap;
-    }
-
-    .card-title {
-      font-size: 1.02rem;
-      font-weight: 700;
-      color: var(--color-text);
-      line-height: 1.35;
-      flex: 1 1 auto;
-    }
-
-    .card-title a {
-      color: var(--color-primary-light);
-      text-decoration: none;
-      transition: color 0.15s;
-    }
-
-    .card-title a:hover {
-      color: var(--color-primary);
-      text-decoration: underline;
-    }
-
-    .source-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.25rem;
-      font-size: 0.74rem;
-      font-weight: 600;
-      color: var(--color-accent);
-      text-decoration: none;
-      background: var(--color-accent-light);
-      border: 1px solid #a8d8d2;
-      border-radius: 5px;
-      padding: 0.18rem 0.5rem;
-      white-space: nowrap;
-      flex-shrink: 0;
-      transition: background 0.15s, color 0.15s;
-      align-self: flex-start;
-      margin-top: 0.05rem;
-    }
-
-    .source-link:hover {
-      background: #c5ecea;
-      color: #0a5e52;
-    }
-
-    .source-link::before {
-      content: '⬇';
-      font-size: 0.68rem;
-    }
-
-    /* ── Description ── */
-    .card-description {
-      font-size: 0.88rem;
-      color: var(--color-muted);
-      line-height: 1.65;
-      flex: 1;
-    }
-
-    /* ── Footer ── */
-    footer {
-      text-align: center;
-      padding: 1.5rem 1rem 2rem;
-      font-size: 0.8rem;
-      color: var(--color-muted);
-      border-top: 1px solid var(--color-border);
-    }
-
-    /* ── Responsive ── */
-    @media (max-width: 600px) {
-      header {
-        padding: 2.2rem 1.2rem 2rem;
-      }
-
-      .card-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .card {
-        padding: 1.1rem 1.15rem;
-      }
-    }
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hash Algorithms and Applications: Password Hashing and Beyond — COP3530 - Data Structures</title>
+  <link rel="stylesheet" href="../assets/site.css">
 </head>
 <body>
-<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ COP3530 - Data Structures</a></div>
-<div style="border:1px solid #c9d4e3;background:#f5f8fc;border-radius:8px;padding:10px 16px;margin:0 0 18px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;font-family:'Segoe UI',Arial,sans-serif"><strong style="color:#1a3c6e">Module outline:</strong><a href="topics-outcomes.html#topics" style="color:#1a3c6e;font-weight:600;text-decoration:none">📋 Module Topics</a><a href="topics-outcomes.html#outcomes" style="color:#137333;font-weight:600;text-decoration:none">🎯 Student Learning Outcomes</a></div>
-
-  <header>
-    <div class="course-label">COP3530 — Data Structures</div>
-    <h1>Hash Algorithms and Applications: Password Hashing and Beyond</h1>
-    <p class="intro">
-      Explore how hash functions underpin modern security and data integrity — from cryptographic
-      properties and password storage fundamentals to real-world applications, attack vectors,
-      and industry best practices. Use the resources below to navigate this module's topics and materials.
-    </p>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="hero">
+    <div class="hero-inner">
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="../index.html">COP3530 - Data Structures</a><span class="sep" aria-hidden="true">›</span><span class="current">Hash Algorithms and Applications: Password Hashing and Beyond</span>
+  </nav>
+      <div class="hero-label">Module 11</div>
+      <h1>Hash Algorithms and Applications: Password Hashing and Beyond</h1>
+      <p class="hero-desc">This lesson examines real-world applications of hashing algorithms, with a focus on cryptographic hash functions and password hashing techniques such as salting. Students will explore how hashing ensures data integrity and security in modern software systems.</p>
+    </div>
   </header>
-
-  <main>
-    <div class="section-header">
-      <h2>Module Artifacts</h2>
-      <span class="count">9 items</span>
-    </div>
-
-    <div class="card-grid">
-
-      <!-- Artifact 1: Module Topics -->
-      <div class="card">
-        <div class="card-meta">
-          <span class="badge badge-type">Module Topics</span>
-          <span class="badge badge-filetype">.json</span>
-        </div>
-        <div class="card-title-row">
-          <span class="card-title">
-            <a href="content/module_topics.html">Module Topics</a>
-          </span>
-          <a class="source-link" href="source/hierarchy.json">source file</a>
-        </div>
-        <p class="card-description">
-          Outlines the module's learning topics — from basic hash function concepts and cryptographic
-          properties (preimage and collision resistance) through password hashing fundamentals and beyond —
-          serving as a navigational overview for learners and instructors to understand the scope and sequence
-          of the module.
-        </p>
-      </div>
-
-      <!-- Artifact 2: Introduction to Hashing Algorithms -->
-      <div class="card">
-        <div class="card-meta">
-          <span class="badge badge-type">Topic Detail</span>
-          <span class="badge badge-filetype">.html</span>
-        </div>
-        <div class="card-title-row">
-          <span class="card-title">
-            <a href="content/Hash_Algorithms_and_interactive_topics_t1.html">Introduction to Hashing Algorithms</a>
-          </span>
-        </div>
-        <p class="card-description">
-          This reading introduces hashing algorithms by explaining what they are, how they transform
-          arbitrary input into fixed-length output, and why they are central to security, data integrity,
-          and authentication — serving as a conceptual starting point for learners new to the topic.
-        </p>
-      </div>
-
-      <!-- Artifact 3: Cryptographic Hash Functions -->
-      <div class="card">
-        <div class="card-meta">
-          <span class="badge badge-type">Topic Detail</span>
-          <span class="badge badge-filetype">.html</span>
-        </div>
-        <div class="card-title-row">
-          <span class="card-title">
-            <a href="content/Hash_Algorithms_and_interactive_topics_t2.html">Cryptographic Hash Functions</a>
-          </span>
-        </div>
-        <p class="card-description">
-          This reading explains the defining properties of cryptographic hash functions (arbitrary input,
-          fixed-length digest, determinism, avalanche effect, and one-way nature), covering how they underpin
-          modern information security and how learners should evaluate and distinguish them from general-purpose
-          hash functions.
-        </p>
-      </div>
-
-      <!-- Artifact 4: Password Hashing Fundamentals -->
-      <div class="card">
-        <div class="card-meta">
-          <span class="badge badge-type">Topic Detail</span>
-          <span class="badge badge-filetype">.html</span>
-        </div>
-        <div class="card-title-row">
-          <span class="card-title">
-            <a href="content/Hash_Algorithms_and_interactive_topics_t3.html">Password Hashing Fundamentals</a>
-          </span>
-        </div>
-        <p class="card-description">
-          This reading covers why secure password storage matters, the history of mishandled credential
-          storage, and the fundamentals of hashing passwords — explaining why plaintext and weakly hashed
-          storage fail and establishing the baseline techniques learners and developers should apply.
-        </p>
-      </div>
-
-      <!-- Artifact 5: Salting and Advanced Password Protection Techniques -->
-      <div class="card">
-        <div class="card-meta">
-          <span class="badge badge-type">Topic Detail</span>
-          <span class="badge badge-filetype">.html</span>
-        </div>
-        <div class="card-title-row">
-          <span class="card-title">
-            <a href="content/Hash_Algorithms_and_interactive_topics_t4.html">Salting and Advanced Password Protection Techniques</a>
-          </span>
-        </div>
-        <p class="card-description">
-          This reading explains the salting technique — why it is necessary on top of basic password hashing,
-          how unique salts defeat precomputed attacks such as rainbow tables, and what additional advanced
-          password-protection strategies (e.g., key stretching, adaptive algorithms) learners and developers
-          should adopt.
-        </p>
-      </div>
-
-      <!-- Artifact 6: Ensuring Data Integrity with Hashing -->
-      <div class="card">
-        <div class="card-meta">
-          <span class="badge badge-type">Topic Detail</span>
-          <span class="badge badge-filetype">.html</span>
-        </div>
-        <div class="card-title-row">
-          <span class="card-title">
-            <a href="content/Hash_Algorithms_and_interactive_topics_t5.html">Ensuring Data Integrity with Hashing</a>
-          </span>
-        </div>
-        <p class="card-description">
-          This reading describes how hash functions are used beyond passwords to verify data integrity —
-          covering checksum verification for downloads, software package signing, and tampered-document
-          detection — showing learners how to apply hashing as a practical integrity assurance tool.
-        </p>
-      </div>
-
-      <!-- Artifact 7: Common Attacks and Vulnerabilities -->
-      <div class="card">
-        <div class="card-meta">
-          <span class="badge badge-type">Topic Detail</span>
-          <span class="badge badge-filetype">.html</span>
-        </div>
-        <div class="card-title-row">
-          <span class="card-title">
-            <a href="content/Hash_Algorithms_and_interactive_topics_t6.html">Common Attacks and Vulnerabilities</a>
-          </span>
-        </div>
-        <p class="card-description">
-          This reading surveys common attacks that exploit weaknesses in hashing systems — such as brute-force,
-          dictionary, rainbow table, collision, and length-extension attacks — helping learners and instructors
-          understand what goes wrong when hash functions are misapplied or weakened.
-        </p>
-      </div>
-
-      <!-- Artifact 8: Best Practices and Real-World Applications (Topic Detail) -->
-      <div class="card">
-        <div class="card-meta">
-          <span class="badge badge-type">Topic Detail</span>
-          <span class="badge badge-filetype">.html</span>
-        </div>
-        <div class="card-title-row">
-          <span class="card-title">
-            <a href="content/Hash_Algorithms_and_interactive_topics_t7.html">Best Practices and Real-World Applications</a>
-          </span>
-        </div>
-        <p class="card-description">
-          This reading consolidates best practices for selecting and applying the right cryptographic hash
-          algorithm for each use case (password storage, file integrity, digital signatures) and illustrates
-          real-world applications, helping learners translate theoretical knowledge into correct implementation
-          decisions.
-        </p>
-      </div>
-
-      <!-- Artifact 9: Best Practices and Real-World Applications (Text Content) -->
-      <div class="card">
-        <div class="card-meta">
-          <span class="badge badge-type">Text Content</span>
-          <span class="badge badge-filetype">.html</span>
-        </div>
-        <div class="card-title-row">
-          <span class="card-title">
-            <a href="content/Hash_Algorithms_and_interactive.html">Best Practices and Real-World Applications</a>
-          </span>
-        </div>
-        <p class="card-description">
-          This reading covers the same best-practices and real-world applications content as the preceding
-          Topic Detail, consolidating guidance on choosing appropriate hash algorithms by context and
-          illustrating deployment scenarios — learners can use it as a reference or review resource alongside
-          the preceding readings.
-        </p>
-      </div>
-
-    </div>
+  <main class="page-wrap" id="main">
+<section aria-labelledby="topics-h">
+<h2 id="topics-h">Topics</h2>
+<p class="section-intro">This module covers 7 topics. Open a topic to see its subtopics.</p>
+<ol class="topic-list">
+<li><a class="topic-card" href="topics-outcomes.html#topic-1"><span class="topic-num" aria-hidden="true">1</span><span class="topic-text"><span class="topic-title">Introduction to Hashing Algorithms</span><span class="topic-meta">6 subtopics</span></span></a></li>
+<li><a class="topic-card" href="topics-outcomes.html#topic-2"><span class="topic-num" aria-hidden="true">2</span><span class="topic-text"><span class="topic-title">Cryptographic Hash Functions</span><span class="topic-meta">7 subtopics</span></span></a></li>
+<li><a class="topic-card" href="topics-outcomes.html#topic-3"><span class="topic-num" aria-hidden="true">3</span><span class="topic-text"><span class="topic-title">Password Hashing Fundamentals</span><span class="topic-meta">6 subtopics</span></span></a></li>
+<li><a class="topic-card" href="topics-outcomes.html#topic-4"><span class="topic-num" aria-hidden="true">4</span><span class="topic-text"><span class="topic-title">Salting and Advanced Password Protection Techniques</span><span class="topic-meta">7 subtopics</span></span></a></li>
+<li><a class="topic-card" href="topics-outcomes.html#topic-5"><span class="topic-num" aria-hidden="true">5</span><span class="topic-text"><span class="topic-title">Ensuring Data Integrity with Hashing</span><span class="topic-meta">6 subtopics</span></span></a></li>
+<li><a class="topic-card" href="topics-outcomes.html#topic-6"><span class="topic-num" aria-hidden="true">6</span><span class="topic-text"><span class="topic-title">Common Attacks and Vulnerabilities</span><span class="topic-meta">7 subtopics</span></span></a></li>
+<li><a class="topic-card" href="topics-outcomes.html#topic-7"><span class="topic-num" aria-hidden="true">7</span><span class="topic-text"><span class="topic-title">Best Practices and Real-World Applications</span><span class="topic-meta">6 subtopics</span></span></a></li>
+</ol>
+<p class="more-links"><a href="topics-outcomes.html#topics">All topics and subtopics</a><a href="topics-outcomes.html#outcomes">Student learning outcomes</a></p>
+</section>
+<section aria-labelledby="content-h">
+<h2 id="content-h">Module Content</h2>
+<p class="section-intro">16 items.</p>
+<ul class="content-grid">
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">📄</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topic Detail</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Hash_Algorithms_and_interactive_topics_t1.html">Introduction to Hashing Algorithms</a></div>
+    <p class="content-desc">This reading introduces hashing algorithms by explaining what they are, how they transform arbitrary input into fixed-length output, and why they are central to security, data integrity, and authentication — serving as a conceptual starting point for learners new to the topic.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">📄</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topic Detail</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Hash_Algorithms_and_interactive_topics_t2.html">Cryptographic Hash Functions</a></div>
+    <p class="content-desc">This reading explains the defining properties of cryptographic hash functions (arbitrary input, fixed-length digest, determinism, avalanche effect, and one-way nature), covering how they underpin modern information security and how learners should evaluate and distinguish them from general-purpose hash functions.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">📄</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topic Detail</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Hash_Algorithms_and_interactive_topics_t3.html">Password Hashing Fundamentals</a></div>
+    <p class="content-desc">This reading covers why secure password storage matters, the history of mishandled credential storage, and the fundamentals of hashing passwords — explaining why plaintext and weakly hashed storage fail and establishing the baseline techniques learners and developers should apply.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">📄</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topic Detail</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Hash_Algorithms_and_interactive_topics_t4.html">Salting and Advanced Password Protection Techniques</a></div>
+    <p class="content-desc">This reading explains the salting technique — why it is necessary on top of basic password hashing, how unique salts defeat precomputed attacks such as rainbow tables, and what additional advanced password-protection strategies (e.g., key stretching, adaptive algorithms) learners and developers should adopt.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">📄</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topic Detail</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Hash_Algorithms_and_interactive_topics_t5.html">Ensuring Data Integrity with Hashing</a></div>
+    <p class="content-desc">This reading describes how hash functions are used beyond passwords to verify data integrity — covering checksum verification for downloads, software package signing, and tampered-document detection — showing learners how to apply hashing as a practical integrity assurance tool.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">📄</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topic Detail</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Hash_Algorithms_and_interactive_topics_t6.html">Common Attacks and Vulnerabilities</a></div>
+    <p class="content-desc">This reading surveys common attacks that exploit weaknesses in hashing systems — such as brute-force, dictionary, rainbow table, collision, and length-extension attacks — helping learners and instructors understand what goes wrong when hash functions are misapplied or weakened.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">📄</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topic Detail</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Hash_Algorithms_and_interactive_topics_t7.html">Best Practices and Real-World Applications</a></div>
+    <p class="content-desc">This reading consolidates best practices for selecting and applying the right cryptographic hash algorithm for each use case (password storage, file integrity, digital signatures) and illustrates real-world applications, helping learners translate theoretical knowledge into correct implementation decisions.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">📄</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Reading</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Hash_Algorithms_and_interactive.html">Best Practices and Real-World Applications</a></div>
+    <p class="content-desc">This reading covers the same best-practices and real-world applications content as artifact 7, consolidating guidance on choosing appropriate hash algorithms by context and illustrating deployment scenarios — learners can use it as a reference or review resource alongside the preceding readings.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">🎬</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topics and Embedded Video</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Hash_Algorithms_and_t1_videos.html">Introduction to Hashing Algorithms — Videos</a></div>
+    <p class="content-desc">A foundational reading that defines hash functions, digests, determinism, and the avalanche effect, giving learners the vocabulary and core concepts needed before moving into security-focused hashing topics.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">🎬</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topics and Embedded Video</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Hash_Algorithms_and_t2_videos.html">Cryptographic Hash Functions — Videos</a></div>
+    <p class="content-desc">A lesson contrasting the hash functions used for hash-table bucketing with cryptographic hash functions, explaining the added security properties (preimage, second-preimage, and collision resistance) and common algorithms like MD5 and SHA-256 that learners study to understand when each is appropriate.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">🎬</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topics and Embedded Video</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Hash_Algorithms_and_t3_videos.html">Password Hashing Fundamentals — Videos</a></div>
+    <p class="content-desc">A reading on why plain-text and simple cryptographic hashes are inadequate for password storage, walking learners through breach scenarios, password reuse risks, and the need for slow, purpose-built password hashing.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">🎬</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topics and Embedded Video</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Hash_Algorithms_and_t4_videos.html">Salting and Advanced Password Protection Techniques — Videos</a></div>
+    <p class="content-desc">A topic page covering salting — adding unique random values per password — along with peppers, work factors, and defenses against precomputed rainbow tables, used by learners to understand how to store passwords safely.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">🎬</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topics and Embedded Video</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Hash_Algorithms_and_t5_videos.html">Ensuring Data Integrity with Hashing — Videos</a></div>
+    <p class="content-desc">A lesson applying hashing to data integrity, showing how digests verify downloaded files, detect tampering in messages, and serve as fingerprints that change drastically with any bit-level modification.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">🎬</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topics and Embedded Video</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Hash_Algorithms_and_t6_videos.html">Common Attacks and Vulnerabilities — Videos</a></div>
+    <p class="content-desc">A survey of attacks against hashing schemes — brute-force, dictionary and wordlist attacks, rainbow tables, missing salts, outdated algorithms, and timing side channels — so learners can recognize and avoid these vulnerabilities in their own code.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">🎬</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topics and Embedded Video</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Hash_Algorithms_and_t7_videos.html">Best Practices and Real-World Applications — Videos</a></div>
+    <p class="content-desc">A capstone reading that synthesizes the module into practical deployment guidance, including how to pick the right algorithm for the job (e.g., SHA-256 for integrity versus slow KDFs for passwords) and how hashing appears in real production systems.</p>
+  </div>
+</li>
+<li class="content-card">
+  <div class="content-icon" aria-hidden="true">🎬</div>
+  <div class="content-body">
+    <div class="content-meta"><span class="pill">Topics and Embedded Video</span><span class="pill pill-format"><span aria-hidden="true">🌐 </span>Web page</span></div>
+    <div class="content-title"><a href="content/Hash_Algorithms_and_videos_merged.html">Hash Algorithms and Applications: Password Hashing and Beyond — 7 topics (merged)</a></div>
+    <p class="content-desc">A consolidated, all-in-one version of the module&#39;s readings compiled into a single document, useful for review, printing, or studying every topic from introduction through best practices in one pass.</p>
+  </div>
+</li>
+</ul>
+</section>
+<nav class="module-nav" aria-label="Modules">
+  <a href="../hash-tables-structure-and-collision-resolution/index.html">← Hash Tables: Structure and Collision Resolution</a>
+  <a class="center-link" href="../index.html">↑ All modules</a>
+  <a href="../binary-trees-structure-traversal-and-operations/index.html">Binary Trees: Structure, Traversal, and Operations →</a>
+</nav>
   </main>
-
-  <footer>
-    COP3530 — Data Structures &nbsp;·&nbsp; Hash Algorithms and Applications: Password Hashing and Beyond
-  </footer>
-
-
-<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
-<section class="presemaker-extras" style="max-width:1000px;margin:2rem auto;padding:0 1rem;"><h2>Topics &amp; Learning Outcomes</h2><p><a href="topics-outcomes.html">View Topics &amp; Learning Outcomes</a></p></section><script src="embed-inject.js" defer></script></body>
+<script src="embed-inject.js" defer></script>
+<footer class="presemaker-credit" data-credit="2" style="margin-top:2rem;padding:14px 8px;border-top:1px solid #ddd;background:#fff;text-align:center;font:13px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#595959;"><svg width="20" height="20" viewBox="0 0 2048 2048" aria-hidden="true" focusable="false" style="vertical-align:-5px;margin-right:7px"><rect width="2048" height="2048" rx="384" fill="#0F6E6E"/><path fill="#0A5050" d="M1024 1000 344 832v816l680 168zm0 0 680-168v816l-680 168z"/><path fill="#fff" d="M1024 944 384 784v808l640 160zm0 0 640-160v808l-640 160z"/><rect x="1002" y="944" width="44" height="808" fill="#0F6E6E"/><rect x="936" y="246" width="176" height="448" rx="44" fill="#fff"/><rect x="800" y="382" width="448" height="176" rx="44" fill="#fff"/></svg>Created with <a href="https://softwareplus.ai/coursebuilder/" target="_blank" rel="noopener" style="color:#2f5d8f;font-weight:600;text-decoration:none;">CourseBuilder+</a><span aria-hidden="true"> · </span><a href="https://softwareplus.ai/" target="_blank" rel="noopener" style="color:#2f5d8f;text-decoration:none;">SoftwarePlus.ai</a></footer>
+</body>
 </html>

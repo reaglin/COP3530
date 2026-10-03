@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Recursive List Traversal</title>
+<style>
+body{font-family:'Segoe UI',Arial,sans-serif;max-width:820px;margin:2rem auto;padding:0 1.25rem;color:#222;line-height:1.55}
+h1{font-size:1.9rem;border-bottom:2px solid #ddd;padding-bottom:.4rem}
+h2{font-size:1.3rem;color:#1f3864;margin-top:1.6rem}
+body{padding-left:1.1rem;padding-right:1.1rem}
+ul,ol{margin:.4rem 0 1rem 1.4rem}
+li{margin:.25rem 0}
+nav.toc{background:rgba(128,128,128,.08);border:1px solid rgba(128,128,128,.25);border-radius:8px;padding:.6rem 1rem;margin:1.2rem 0}
+nav.toc strong{display:block;margin-bottom:.3rem}
+nav.toc a{display:block;text-decoration:none;padding:.12rem 0}
+section.item{border-top:1px solid rgba(128,128,128,.22);padding-top:.3rem}
+table{border-collapse:collapse;width:100%;margin:.8rem 0}
+th,td{border:1px solid rgba(128,128,128,.45);padding:.4rem .6rem;text-align:left;vertical-align:top}
+thead th{background:rgba(128,128,128,.18);font-weight:600}
+tbody tr:nth-child(even){background:rgba(128,128,128,.08)}
+</style>
+</head>
+<body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Recursion: Concepts and Implementation</a></div>
+<h1>Recursive List Traversal</h1>
+<nav class="toc"><strong>Contents</strong>
+<a href="#sec1">Introduction</a>
+<a href="#sec2">Video 1: Lists, Slices, &amp; Recursion</a>
+<a href="#sec3">Video 2: Singly-Linked List: Recursive Operations</a>
+<a href="#sec4">Video 3: Sum an Array Recursively in JavaScript</a>
+<a href="#sec5">How These Videos Support the Learning Outcomes</a>
+<a href="#sec6">About These Videos</a>
+</nav>
+<section class="item" id="sec1">
+<h2>Introduction</h2>
+<p>Recursive list traversal is the idea that a list — whether a JavaScript array or a linked list — can be processed by handling one element and then handing the rest of the structure to the same function again. Instead of writing a loop with an index counter, you define the problem in terms of itself: the first element plus the result of traversing everything after it. The base case is what stops the process, usually an empty list (or an index that has run past the end, or a null node), and it is what keeps the recursion from running forever.</p>
+<p>This matters in COP3530 because lists are the structures you will work with constantly, and many of the data structures later in the course — linked lists, trees, graphs — are defined recursively. Once you can see a list as &quot;a head plus a smaller list,&quot; recursive solutions for summing, searching, counting, printing, and transforming elements all follow the same shape. You will also see clearly how each call adds a stack frame, which connects list traversal back to the call stack discussion and to the practical limits of recursion on large inputs.</p>
+<p>As you watch, pay attention to three things: exactly how each author states the base case, how the &quot;rest of the list&quot; is produced (a slice, an incremented index, or a next pointer), and where the work on the current element happens — before the recursive call or after it returns. Also try to mentally compare each recursive version with the loop you would have written instead, so you can judge which is clearer and which is cheaper.</p>
+</section>
+<section class="item" id="sec2">
+<h2>Video 1: Lists, Slices, &amp; Recursion</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/cZGDdkfSrBQ?cc_load_policy=1&amp;rel=0" title="Video: Lists, Slices, &amp; Recursion (John DeNero)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>John DeNero</strong> · 8:44 · 5,929 views · 1y ago · captions — <a href="https://www.youtube.com/watch?v=cZGDdkfSrBQ" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>A lecture from John DeNero on combining lists with recursion, with emphasis on slicing as the mechanism for producing the smaller sub-list that gets passed to the next call. Expect examples where a list is split into a first element and the remaining slice, and where the recursion bottoms out on an empty or very short list. The talk frames recursion as a natural way to express operations over sequences.</p>
+<h3>Why this video</h3>
+<p>DeNero is a well-known CS instructor, and this video goes directly at the core mental model of the topic: the base case for a list and the step that shrinks it, which supports the &quot;What Is Recursive List Traversal?&quot; and base-case subtopics.</p>
+</section>
+<section class="item" id="sec3">
+<h2>Video 2: Singly-Linked List: Recursive Operations</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/AVjPPv2kCrQ?cc_load_policy=1&amp;rel=0" title="Video: Singly-Linked List: Recursive Operations (Professor Kevin Wortman)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Professor Kevin Wortman</strong> · 12:31 · 1,187 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=AVjPPv2kCrQ" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>Professor Kevin Wortman designs and implements recursive operations on a singly-linked list, showing how a node-and-next structure maps onto recursive definitions. The video covers how to write operations that handle the current node, recurse on the rest of the list, and terminate when the end of the list is reached. Accompanying slides walk through the design reasoning as well as the code.</p>
+<h3>Why this video</h3>
+<p>It extends the topic beyond arrays to a genuinely recursive data structure, making the base case (an empty or null list) and the per-element processing step especially concrete, and it reinforces recursive versus iterative thinking for lists.</p>
+</section>
+<section class="item" id="sec4">
+<h2>Video 3: Sum an Array Recursively in JavaScript</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/cPxXLMnHgiw?cc_load_policy=1&amp;rel=0" title="Video: Sum an Array Recursively in JavaScript (Learn with Shikaar)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Learn with Shikaar</strong> · 3:08 · 21 views · 1y ago · captions — <a href="https://www.youtube.com/watch?v=cPxXLMnHgiw" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>A short, focused tutorial that computes the sum of all elements of an array recursively in JavaScript. It should show the function signature, the base case for an exhausted array, and the combination step that adds the current element to the result of the recursive call. The example is small enough to trace by hand, line by line.</p>
+<h3>Why this video</h3>
+<p>This is the most direct match to the JavaScript implementation subtopic: it is a compact, classic array-traversal example you can trace through the call stack and adapt to other per-element operations.</p>
+</section>
+<section class="item" id="sec5">
+<h2>How These Videos Support the Learning Outcomes</h2>
+<p>Together these videos move from concept to code. DeNero&#39;s lecture and Wortman&#39;s linked-list session make the base case versus recursive case explicit for list structures, supporting MO1, while the JavaScript sum example gives a working implementation of list traversal in the language used in this course (MO2). Tracing the sum or linked-list examples call by call lets you see stack frames accumulate and then resolve as results are combined on the way back up (MO3). Because each video presents a problem you could also solve with a simple loop, they give you material for judging when recursion is the clearer choice and when iteration is cheaper (MO4), and the per-call stack growth they display is exactly the cost that motivates the stack-overflow and efficiency concerns in MO5.</p>
+</section>
+<section class="item" id="sec6">
+<h2>About These Videos</h2>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+
+<footer class="presemaker-credit" data-credit="2" style="margin-top:2rem;padding:14px 8px;border-top:1px solid #ddd;background:#fff;text-align:center;font:13px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#595959;"><svg width="20" height="20" viewBox="0 0 2048 2048" aria-hidden="true" focusable="false" style="vertical-align:-5px;margin-right:7px"><rect width="2048" height="2048" rx="384" fill="#0F6E6E"/><path fill="#0A5050" d="M1024 1000 344 832v816l680 168zm0 0 680-168v816l-680 168z"/><path fill="#fff" d="M1024 944 384 784v808l640 160zm0 0 640-160v808l-640 160z"/><rect x="1002" y="944" width="44" height="808" fill="#0F6E6E"/><rect x="936" y="246" width="176" height="448" rx="44" fill="#fff"/><rect x="800" y="382" width="448" height="176" rx="44" fill="#fff"/></svg>Created with <a href="https://softwareplus.ai/coursebuilder/" target="_blank" rel="noopener" style="color:#2f5d8f;font-weight:600;text-decoration:none;">CourseBuilder+</a><span aria-hidden="true"> · </span><a href="https://softwareplus.ai/" target="_blank" rel="noopener" style="color:#2f5d8f;text-decoration:none;">SoftwarePlus.ai</a></footer>
+</body>
+</html>

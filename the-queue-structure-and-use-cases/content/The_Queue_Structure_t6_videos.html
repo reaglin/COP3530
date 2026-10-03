@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Queues vs. Stacks: A Comparison</title>
+<style>
+body{font-family:'Segoe UI',Arial,sans-serif;max-width:820px;margin:2rem auto;padding:0 1.25rem;color:#222;line-height:1.55}
+h1{font-size:1.9rem;border-bottom:2px solid #ddd;padding-bottom:.4rem}
+h2{font-size:1.3rem;color:#1f3864;margin-top:1.6rem}
+body{padding-left:1.1rem;padding-right:1.1rem}
+ul,ol{margin:.4rem 0 1rem 1.4rem}
+li{margin:.25rem 0}
+nav.toc{background:rgba(128,128,128,.08);border:1px solid rgba(128,128,128,.25);border-radius:8px;padding:.6rem 1rem;margin:1.2rem 0}
+nav.toc strong{display:block;margin-bottom:.3rem}
+nav.toc a{display:block;text-decoration:none;padding:.12rem 0}
+section.item{border-top:1px solid rgba(128,128,128,.22);padding-top:.3rem}
+table{border-collapse:collapse;width:100%;margin:.8rem 0}
+th,td{border:1px solid rgba(128,128,128,.45);padding:.4rem .6rem;text-align:left;vertical-align:top}
+thead th{background:rgba(128,128,128,.18);font-weight:600}
+tbody tr:nth-child(even){background:rgba(128,128,128,.08)}
+</style>
+</head>
+<body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ The Queue: Structure and Use Cases</a></div>
+<h1>Queues vs. Stacks: A Comparison</h1>
+<nav class="toc"><strong>Contents</strong>
+<a href="#sec1">Introduction</a>
+<a href="#sec2">Video 1: Lec-30: Introduction to Stack | PUSH and POP operations | Data Structure</a>
+<a href="#sec3">Video 2: Lec-46: Introduction to Queue Data structure with real life example | Data Structure #queue</a>
+<a href="#sec4">Video 3: Implement Queue using Stacks | Explained, Visualized and Implemented | Geekific</a>
+<a href="#sec5">How These Videos Support the Learning Outcomes</a>
+<a href="#sec6">About These Videos</a>
+</nav>
+<section class="item" id="sec1">
+<h2>Introduction</h2>
+<p>Queues and stacks are both linear structures that restrict where you may insert and remove elements, but they restrict them in opposite ways. A queue follows FIFO (first in, first out): items enter at the rear and leave from the front, so the element that has waited longest is served first. A stack follows LIFO (last in, first out): items are pushed and popped at a single end, so the most recently added element is removed first. That single difference in the point of access is what drives everything else about how the two structures behave.</p>
+<p>This comparison matters because in practice you rarely choose a structure by its name; you choose it by the ordering behavior a problem demands. Scheduling, buffering, breadth-first traversal, and any &quot;serve in arrival order&quot; situation point toward a queue. Undo histories, expression evaluation, backtracking, recursion and call stacks, and depth-first traversal point toward a stack. Being able to justify that choice is as important in this course as being able to code either structure.</p>
+<p>As you watch the videos below, pay attention to three things: the vocabulary of the operations (push/pop versus enqueue/dequeue), where the pointers or indices live (top versus front and rear), and the real-world examples used to motivate each structure. The third video goes a step further and shows that the two structures are related closely enough that one can be simulated with the other — a useful way to confirm that you really understand what each ordering principle costs you.</p>
+</section>
+<section class="item" id="sec2">
+<h2>Video 1: Lec-30: Introduction to Stack | PUSH and POP operations | Data Structure</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/HRDHgKrYHgU?cc_load_policy=1&amp;rel=0" title="Video: Lec-30: Introduction to Stack | PUSH and POP operations | Data Structure (Gate Smashers)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Gate Smashers</strong> · 6:46 · 325,606 views · 3y ago · captions — <a href="https://www.youtube.com/watch?v=HRDHgKrYHgU" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>An introductory lecture on the stack abstract data type, covering the LIFO ordering principle and the two core operations, PUSH and POP. Based on its title and description, it should walk through how the top pointer moves as elements are added and removed, and likely touches on overflow and underflow conditions. It is the stack half of the comparison you are building.</p>
+<h3>Why this video</h3>
+<p>Gate Smashers lectures are widely used exam-prep material known for clear, step-by-step explanations, and this one gives you the precise stack terminology and single point of access you need to contrast against the queue.</p>
+</section>
+<section class="item" id="sec3">
+<h2>Video 2: Lec-46: Introduction to Queue Data structure with real life example | Data Structure #queue</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/YMzZTTO2MpE?cc_load_policy=1&amp;rel=0" title="Video: Lec-46: Introduction to Queue Data structure with real life example | Data Structure #queue (Gate Smashers)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Gate Smashers</strong> · 9:05 · 227,905 views · 3y ago · captions — <a href="https://www.youtube.com/watch?v=YMzZTTO2MpE" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>An introduction to the queue data structure that, as the title indicates, motivates it with a real-life example. Expect coverage of the FIFO ordering principle, the front and rear ends, and the enqueue and dequeue operations that act on them. It pairs directly with the stack lecture from the same channel.</p>
+<h3>Why this video</h3>
+<p>Using the same instructor and format as the stack video makes the side-by-side comparison of ordering principles, operations, and points of access very easy to see, and the real-life example supports the &quot;when would I use this&quot; subtopics.</p>
+</section>
+<section class="item" id="sec4">
+<h2>Video 3: Implement Queue using Stacks | Explained, Visualized and Implemented | Geekific</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/dGv0QeJf5F8?cc_load_policy=1&amp;rel=0" title="Video: Implement Queue using Stacks | Explained, Visualized and Implemented | Geekific (Geekific)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Geekific</strong> · 4:07 · 3,200 views · 3y ago · captions — <a href="https://www.youtube.com/watch?v=dGv0QeJf5F8" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>A short, focused Geekific video on the classic problem of implementing a queue using two stacks, with visualization and code. It should show how pushing onto one stack and transferring to a second reverses the order, converting LIFO behavior into FIFO behavior, and discuss the cost of that transfer.</p>
+<h3>Why this video</h3>
+<p>This is the best possible test of whether you truly understand the difference between the two orderings, and it reinforces the idea that ordering behavior — not the container — is what you are really selecting when you choose a structure.</p>
+</section>
+<section class="item" id="sec5">
+<h2>How These Videos Support the Learning Outcomes</h2>
+<p>Together these videos target the comparison outcomes of the module. The queue lecture reinforces the FIFO principle and the enqueue/dequeue operations that define it (MO1), while the stack lecture supplies the LIFO counterpart with its push/pop operations and single top-of-stack access point; watched together they give you the direct contrast in ordering principles, points of access, and typical use cases called for by MO4. The implement-a-queue-using-stacks video deepens that contrast by forcing you to reason about what it costs to convert one ordering into the other, which is exactly the kind of reasoning MO5 asks for when justifying a structure choice for a given problem. These videos support, but do not replace, the module&#39;s coverage of array-based and linked-list queue implementations and their complexity trade-offs (MO2, MO3).</p>
+</section>
+<section class="item" id="sec6">
+<h2>About These Videos</h2>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+
+<footer class="presemaker-credit" data-credit="2" style="margin-top:2rem;padding:14px 8px;border-top:1px solid #ddd;background:#fff;text-align:center;font:13px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#595959;"><svg width="20" height="20" viewBox="0 0 2048 2048" aria-hidden="true" focusable="false" style="vertical-align:-5px;margin-right:7px"><rect width="2048" height="2048" rx="384" fill="#0F6E6E"/><path fill="#0A5050" d="M1024 1000 344 832v816l680 168zm0 0 680-168v816l-680 168z"/><path fill="#fff" d="M1024 944 384 784v808l640 160zm0 0 640-160v808l-640 160z"/><rect x="1002" y="944" width="44" height="808" fill="#0F6E6E"/><rect x="936" y="246" width="176" height="448" rx="44" fill="#fff"/><rect x="800" y="382" width="448" height="176" rx="44" fill="#fff"/></svg>Created with <a href="https://softwareplus.ai/coursebuilder/" target="_blank" rel="noopener" style="color:#2f5d8f;font-weight:600;text-decoration:none;">CourseBuilder+</a><span aria-hidden="true"> · </span><a href="https://softwareplus.ai/" target="_blank" rel="noopener" style="color:#2f5d8f;text-decoration:none;">SoftwarePlus.ai</a></footer>
+</body>
+</html>

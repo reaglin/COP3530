@@ -1,0 +1,351 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Hash Algorithms and Applications: Password Hashing and Beyond</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+body{font-family:'Segoe UI',Arial,sans-serif;max-width:820px;margin:2rem auto;padding:0 1.25rem;color:#222;line-height:1.55}
+h1{font-size:1.9rem;border-bottom:2px solid #ddd;padding-bottom:.4rem}
+h2{font-size:1.3rem;color:#1f3864;margin-top:1.6rem}
+body{padding-left:1.1rem;padding-right:1.1rem}
+ul,ol{margin:.4rem 0 1rem 1.4rem}
+li{margin:.25rem 0}
+nav.toc{background:rgba(128,128,128,.08);border:1px solid rgba(128,128,128,.25);border-radius:8px;padding:.6rem 1rem;margin:1.2rem 0}
+nav.toc strong{display:block;margin-bottom:.3rem}
+nav.toc a{display:block;text-decoration:none;padding:.12rem 0}
+section.item{border-top:1px solid rgba(128,128,128,.22);padding-top:.3rem}
+table{border-collapse:collapse;width:100%;margin:.8rem 0}
+th,td{border:1px solid rgba(128,128,128,.45);padding:.4rem .6rem;text-align:left;vertical-align:top}
+thead th{background:rgba(128,128,128,.18);font-weight:600}
+tbody tr:nth-child(even){background:rgba(128,128,128,.08)}
+</style>
+<style>section.merged-part{border-top:2px solid rgba(128,128,128,.3);margin-top:2rem;padding-top:.5rem}nav.toc{background:rgba(128,128,128,.08);border:1px solid rgba(128,128,128,.25);border-radius:8px;padding:.6rem 1rem;margin:1.2rem 0}nav.toc a{display:block;text-decoration:none;padding:.12rem 0}</style>
+</head>
+<body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Hash Algorithms and Applications: Password Hashing and Beyond</a></div>
+<h1>Hash Algorithms and Applications: Password Hashing and Beyond</h1>
+<nav class="toc"><strong>Contents</strong>
+<a href="#part1">Introduction to Hashing Algorithms</a>
+<a href="#part2">Cryptographic Hash Functions</a>
+<a href="#part3">Password Hashing Fundamentals</a>
+<a href="#part4">Salting and Advanced Password Protection Techniques</a>
+<a href="#part5">Ensuring Data Integrity with Hashing</a>
+<a href="#part6">Common Attacks and Vulnerabilities</a>
+<a href="#part7">Best Practices and Real-World Applications</a>
+</nav>
+<section class="merged-part" id="part1">
+<h2>Introduction to Hashing Algorithms</h2>
+<section class="item" id="p1-sec1">
+<h3>Introduction</h3>
+<p>A hash function takes an input of any size — a password, a file, a sentence, a multi-gigabyte disk image — and produces a fixed-length output, often called a digest or hash value. The same input always produces the same output, but even a one-bit change to the input should produce a completely different-looking digest. That deterministic, one-way transformation is the foundation for everything else in this module: password storage, file integrity checks, HMACs, and digital signatures all rest on it.</p>
+<p>In this course you will meet hashing from two directions. In data structures, hash functions map keys into buckets of a hash table, where speed and even distribution matter most and collisions are expected and handled. In security, cryptographic hash functions must additionally resist attacks: it should be infeasible to recover the input from the digest (preimage resistance) or to find two inputs with the same digest (collision resistance). Recognizing that these are related but different design goals — and that MD5 is still fine for a checksum but broken for signatures — is a key takeaway.</p>
+<p>As you watch, keep a short list going: What makes hashing different from encryption? (Hint: there is no key and no way back.) What does the avalanche effect look like in a worked example? Which algorithms are named, and what output lengths do they produce? Where does the speaker mention integrity verification, and what exactly is being compared to what?</p>
+</section>
+<section class="item" id="p1-sec2">
+<h3>Video 1: Hashing and Digital Signatures - CompTIA Security+ SY0-701 - 1.4</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/EcGmQjl6XEo?cc_load_policy=1&amp;rel=0" title="Video: Hashing and Digital Signatures - CompTIA Security+ SY0-701 - 1.4 (Professor Messer)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Professor Messer</strong> · 10:25 · 370,236 views · 2y ago · captions — <a href="https://www.youtube.com/watch?v=EcGmQjl6XEo" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A CompTIA Security+ lesson covering hashing and its role in digital signatures. Based on the title and exam objective 1.4, it should define hash functions as one-way digests, discuss collisions and algorithms such as MD5 and SHA, and explain how hashing is combined with public-key cryptography to provide integrity, authentication, and non-repudiation. Expect practical framing around verifying downloaded files and signing messages.</p>
+<h4>Why this video</h4>
+<p>Professor Messer is a widely used, exam-aligned certification instructor whose explanations are concise and accurate, and this video connects the core properties of cryptographic hashes directly to data integrity — two of the subtopics here — while previewing the digital signature material later in the module.</p>
+</section>
+<section class="item" id="p1-sec3">
+<h3>Video 2: Hashing - what it is, how it's used and why it matters - with MD5 and SHA2-256 examples</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/ipljtD-ZdQ4?cc_load_policy=1&amp;rel=0" title="Video: Hashing - what it is, how it's used and why it matters - with MD5 and SHA2-256 examples (LearnCantrill)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>LearnCantrill</strong> · 13:20 · 16,634 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=ipljtD-ZdQ4" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A walkthrough of what hashing is, how it is used, and why it matters, with concrete MD5 and SHA2-256 examples. The description indicates the video steps through the hashing process and shows how it supports other security processes, so expect demonstrations of fixed-length output and how small input changes alter the digest entirely.</p>
+<h4>Why this video</h4>
+<p>Seeing real MD5 and SHA-256 digests produced side by side makes fixed-length output and the avalanche effect tangible rather than abstract, and Adrian Cantrill is a well-regarded cloud and security trainer known for clear, example-driven explanations.</p>
+</section>
+<section class="item" id="p1-sec4">
+<h3>Video 3: Hash Functions</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/FXUhBrqS5Bk?cc_load_policy=1&amp;rel=0" title="Video: Hash Functions (Professor Kevin Wortman)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Professor Kevin Wortman</strong> · 13:15 · 623 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=FXUhBrqS5Bk" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A lecture-style treatment of hash functions specifically as they are used in the hash table data structure, delivered with accompanying slides. It should cover how a hash function maps keys to array indices, what makes a hash function good for table use, and why collisions arise and must be handled.</p>
+<h4>Why this video</h4>
+<p>This is the data-structures half of the picture that the security-oriented videos do not cover, and contrasting a hash-table hash function with a cryptographic one sharpens your understanding of what "core properties" actually means in each context.</p>
+</section>
+<section class="item" id="p1-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>These three videos build the shared vocabulary the rest of the module depends on. The MD5 and SHA-256 demonstrations and the discussion of collisions and one-way transformation prepare you for MO1, where you must distinguish hashing from encryption and compare preimage resistance, collision resistance, and the avalanche effect across algorithms. The integrity and digital signature material supports MO4 by showing how a digest is used to verify that data has not changed in transit or storage. The hash-table lecture clarifies why general-purpose hash functions are engineered for speed — the insight that later motivates MO2, MO3, and MO5, where deliberately slow, salted password hashing algorithms are introduced as the correct tool for credential storage.</p>
+</section>
+<section class="item" id="p1-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part2">
+<h2>Cryptographic Hash Functions</h2>
+<section class="item" id="p2-sec1">
+<h3>Introduction</h3>
+<p>In earlier parts of this course you used hash functions to spread keys across buckets in a hash table. The goal there was speed and even distribution; if two keys occasionally collided, chaining or probing handled it. Cryptographic hash functions start from the same basic idea — map arbitrary input to a fixed-size digest — but add security requirements that general-purpose hashes never promise: it must be infeasible to recover an input from its digest (preimage resistance), infeasible to find two inputs with the same digest (collision resistance), and a one-bit change in the input should scramble roughly half the output bits (the avalanche effect).</p>
+<p>These properties are what make a digest usable as a stand-in for data itself: in file integrity checks, digital signatures, message authentication codes, blockchain structures, and — with important caveats covered later in this module — password storage. They also explain why algorithm choice matters. MD5 still computes quickly and is still seen in legacy systems, but practical collision attacks have broken it for any security purpose; SHA-256, part of the SHA-2 family, remains the common default for integrity and signing work.</p>
+<p>As you watch, keep two questions in your head. First, which security property is each example relying on — is the system protected because digests are hard to invert, or because collisions are hard to find? Second, notice how small an input change needs to be before the digest becomes unrecognizable; that visual demonstration of the avalanche effect is the fastest way to internalize why digests work as fingerprints.</p>
+</section>
+<section class="item" id="p2-sec2">
+<h3>Video 1: TLS Essentials 5: Integrity with cryptographic hash functions</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/Nsf9csdBhBE?cc_load_policy=1&amp;rel=0" title="Video: TLS Essentials 5: Integrity with cryptographic hash functions (Cyrill Gössi)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Cyrill Gössi</strong> · 7:50 · 743 views · 3y ago · captions — <a href="https://www.youtube.com/watch?v=Nsf9csdBhBE" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>Part of a TLS course, this lesson explains how cryptographic hash functions provide integrity, covering the defining properties of such functions and how they are used to detect tampering with transmitted data. It frames hashing inside a real protocol rather than as an abstract exercise.</p>
+<h4>Why this video</h4>
+<p>It directly addresses the security-properties and role-in-security-systems subtopics, and Cyrill Gössi's TLS series is a careful, well-structured treatment aimed at learners who need correctness as well as intuition.</p>
+</section>
+<section class="item" id="p2-sec3">
+<h3>Video 2: Cryptography with Python 26: Using MD5, SHA-1, SHA-2, SHA-3 in Python</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/ut4UolmfG7M?cc_load_policy=1&amp;rel=0" title="Video: Cryptography with Python 26: Using MD5, SHA-1, SHA-2, SHA-3 in Python (Cyrill Gössi)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Cyrill Gössi</strong> · 11:42 · 629 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=ut4UolmfG7M" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A hands-on Python walkthrough showing how to compute digests with MD5, SHA-1, SHA-2 and SHA-3 using standard library tooling. It compares the algorithms side by side so you can see differences in digest length and usage.</p>
+<h4>Why this video</h4>
+<p>Running the same input through MD5 and SHA-256 yourself is the most concrete way to grasp digest sizes, the avalanche effect, and why the older algorithms are treated as legacy; it maps directly onto the MD5 and SHA-2 subtopics.</p>
+</section>
+<section class="item" id="p2-sec4">
+<h3>Video 3: What are Hash Functions? | Hashing Data Structure</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/dj7MYmhrebE?cc_load_policy=1&amp;rel=0" title="Video: What are Hash Functions? | Hashing Data Structure (Dinesh Varyani)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Dinesh Varyani</strong> · 10:38 · 14,543 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=dj7MYmhrebE" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A data-structures-oriented introduction to hash functions: what a hash function is, how it maps keys to fixed-size outputs, what makes a hash function good, and how collisions arise. Expect animated slides and worked examples in the style of a standard DSA course module.</p>
+<h4>Why this video</h4>
+<p>It establishes the general-purpose baseline you need before you can see what the word "cryptographic" adds, which is exactly the first subtopic here; Dinesh Varyani's DSA series is a widely used, clearly animated reference for this material.</p>
+</section>
+<section class="item" id="p2-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these videos build the foundation MO1 depends on: the DSA video anchors what an ordinary hash function does, the TLS lesson adds the security properties — preimage resistance, collision resistance, avalanche — that distinguish cryptographic hashes and separates hashing from encryption in a protocol context, and the Python walkthrough lets you compare MD5, SHA-1, SHA-2 and SHA-3 in practice. The integrity focus of the TLS video also previews MO4, since checksums, HMACs and signatures all rest on these same guarantees. Understanding why fast general-purpose digests like MD5 and SHA-256 behave as they do is the prerequisite for the later discussions of password-specific algorithms, salting and work factors in MO2, MO3 and MO5.</p>
+</section>
+<section class="item" id="p2-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part3">
+<h2>Password Hashing Fundamentals</h2>
+<section class="item" id="p3-sec1">
+<h3>Introduction</h3>
+<p>Storing passwords sounds simple until you consider what happens when a database is stolen. If passwords sit in plain text, a single breach hands an attacker every account immediately — and because people reuse passwords, the damage spreads to other services. The natural fix, running each password through a cryptographic hash like MD5 or SHA-256, is better but still weak: those functions are designed to be fast, which is exactly what an attacker guessing billions of candidates per second wants. Precomputed rainbow tables make matters worse, since identical passwords produce identical digests.</p>
+<p>This topic walks through the fixes that modern systems actually use. A unique, randomly generated salt per user makes precomputation useless and ensures two users with the same password get different stored values. Dedicated password hashing algorithms — bcrypt, scrypt, and Argon2 — add a deliberately tunable work factor (and in scrypt's and Argon2's case, memory cost) so that each guess is expensive for the attacker while still fast enough for a legitimate login. You will also see the login verification flow: the system retrieves the stored salt and parameters, recomputes the hash from the submitted password, and compares the results.</p>
+<p>As you watch, keep a few questions in mind. What exactly gets stored in the users table, and why does the salt not need to be secret? Where does a pepper differ from a salt? How would you choose a work factor, and what should happen to it as hardware gets faster? Finally, notice how the attack methods described in the third video map back to the specific defenses introduced in the first two.</p>
+</section>
+<section class="item" id="p3-sec2">
+<h3>Video 1: System Design: How to store passwords in the database?</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/zt8Cocdy15c?cc_load_policy=1&amp;rel=0" title="Video: System Design: How to store passwords in the database? (ByteByteGo)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>ByteByteGo</strong> · 3:44 · 250,151 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=zt8Cocdy15c" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A short, system-design-oriented walkthrough of how passwords should be kept in a database. Based on its title and channel, it is likely to contrast plain-text and naive hash storage with a salted, dedicated password-hashing approach, and to show the registration and login verification flow including what columns a users table actually holds.</p>
+<h4>Why this video</h4>
+<p>ByteByteGo is known for tight, well-diagrammed system design explanations, and at under four minutes it gives a compact overview that frames the whole topic — storage format, salting, and login-time verification — before you dive into details.</p>
+</section>
+<section class="item" id="p3-sec3">
+<h3>Video 2: Salting, peppering, and hashing passwords</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/FvstbO787Qo?cc_load_policy=1&amp;rel=0" title="Video: Salting, peppering, and hashing passwords (mCoding)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>mCoding</strong> · 8:56 · 74,761 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=FvstbO787Qo" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>This video focuses on what an attacker can do with a leaked password database and how salting, peppering, and hashing change that calculus. Expect coverage of why fast general-purpose hashes are a poor fit for passwords, how a per-user salt defeats precomputed tables, and how a secret pepper stored outside the database adds a further layer.</p>
+<h4>Why this video</h4>
+<p>It is the clearest match for the salting subtopic and is the only one of the three that explicitly addresses peppering, giving you the vocabulary distinction between salt and pepper that the module expects you to use precisely.</p>
+</section>
+<section class="item" id="p3-sec4">
+<h3>Video 3: How Hackers Steal Passwords: 5 Attack Methods Explained</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/vKPGZHoHX8k?cc_load_policy=1&amp;rel=0" title="Video: How Hackers Steal Passwords: 5 Attack Methods Explained (IBM Technology)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>IBM Technology</strong> · 13:07 · 1,752,070 views · 1y ago · captions — <a href="https://www.youtube.com/watch?v=vKPGZHoHX8k" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>An IBM Technology explainer covering five common methods attackers use to obtain passwords. Based on the title and description, it is likely to walk through techniques such as brute-force and dictionary guessing, credential theft and reuse, and social-engineering approaches like phishing, along with practical countermeasures.</p>
+<h4>Why this video</h4>
+<p>Understanding the attacker's toolkit is what justifies work factors and salting in the first place; IBM Technology is a reputable producer, and this video supplies the threat-model context that makes the defensive design choices in the other two videos meaningful.</p>
+</section>
+<section class="item" id="p3-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these videos target the password-specific portion of the module. The ByteByteGo and mCoding videos directly support MO2 and MO5 by showing why general-purpose hashes are insufficient, how salts (and peppers) are generated and stored, and how a dedicated algorithm with a tunable work factor underpins a sound storage-and-verification design. The mCoding video also reinforces MO1 by highlighting the speed property of cryptographic hashes that makes them unsuitable here. The IBM Technology video supports MO3 by surveying real attack vectors and their countermeasures, giving you the threat model you will need when evaluating brute-force, dictionary, and rainbow-table risks. MO4's integrity applications are addressed elsewhere in the module; use these videos to build the credential-storage foundation.</p>
+</section>
+<section class="item" id="p3-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part4">
+<h2>Salting and Advanced Password Protection Techniques</h2>
+<section class="item" id="p4-sec1">
+<h3>Introduction</h3>
+<p>Hashing a password is only the first step in protecting it. If two users choose the same password, a plain hash produces the same output for both, and attackers can precompute enormous tables of hashes for common passwords and look up stolen values almost instantly. Salting — adding a unique, random value to each password before hashing — breaks those precomputed attacks and forces an attacker to work on every account separately.</p>
+<p>This topic builds on what you already know about hash functions and applies it to the practical problem of storing credentials. You will look at how salts are generated with a cryptographically secure random source and stored alongside the hash, how a related secret called a pepper differs from a salt, and how key stretching deliberately makes each hash computation slow. From there the topic moves to the algorithms built for this job: bcrypt, scrypt, and Argon2, each with tunable work factors (and, for scrypt and Argon2, memory cost) that let defenders raise the price of an offline cracking attempt.</p>
+<p>While watching, keep three questions in mind. First, which specific attack does each defense stop — rainbow tables, dictionary attacks, or raw brute force? Second, what has to be stored in the database, and what must stay secret? Third, how do you choose parameters: what makes a work factor "high enough" without making legitimate logins unacceptably slow?</p>
+</section>
+<section class="item" id="p4-sec2">
+<h3>Video 1: Foundations of Cryptography 2-6: Salt, Pepper, Key-Stretching</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/j9fgiadeKcE?cc_load_policy=1&amp;rel=0" title="Video: Foundations of Cryptography 2-6: Salt, Pepper, Key-Stretching (TechKnowSurge)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>TechKnowSurge</strong> · 8:57 · 1,224 views · 2y ago · captions — <a href="https://www.youtube.com/watch?v=j9fgiadeKcE" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>This lesson from a foundations-of-cryptography series walks through what happens when a password database is compromised, and introduces salt, pepper, and key stretching as the layered defenses against offline cracking. Expect it to explain why a per-user random salt defeats precomputed hash tables, how a pepper differs from a salt in where it is stored, and why deliberately slow, repeated hashing raises the cost of guessing attacks.</p>
+<h4>Why this video</h4>
+<p>It is the most direct match for the core subtopics here — salting, salt storage, and key stretching — and covers them in one compact, structured lesson from a course-style channel rather than as scattered tips.</p>
+</section>
+<section class="item" id="p4-sec3">
+<h3>Video 2: Rainbow Tables Explained | Crack Passwords Like a Pro</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/T0QfilwNFE4?cc_load_policy=1&amp;rel=0" title="Video: Rainbow Tables Explained | Crack Passwords Like a Pro (Shree Learning Academy)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Shree Learning Academy</strong> · 7:09 · 7,903 views · 3y ago · captions — <a href="https://www.youtube.com/watch?v=T0QfilwNFE4" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>This video explains what rainbow tables are and how attackers use them to reverse unsalted password hashes, including the idea of trading storage space for cracking speed through precomputation. It situates rainbow tables within the broader landscape of password attacks and points toward the countermeasures that make them ineffective.</p>
+<h4>Why this video</h4>
+<p>Understanding the attack is what makes the defense make sense, and this video gives the rainbow table concept the dedicated treatment it needs before you can argue convincingly for per-user salts.</p>
+</section>
+<section class="item" id="p4-sec4">
+<h3>Video 3: How Bcrypt Keeps Your Passwords Safe</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/ufaleJvrJqA?cc_load_policy=1&amp;rel=0" title="Video: How Bcrypt Keeps Your Passwords Safe (WhatIsMyIP)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>WhatIsMyIP</strong> · 3:20 · 1,944 views · 1y ago · captions — <a href="https://www.youtube.com/watch?v=ufaleJvrJqA" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A short, focused overview of bcrypt and how it protects stored passwords, likely covering its built-in salting and its adjustable cost factor that slows down hashing on purpose. In a few minutes it gives you the practical picture of why a purpose-built password hashing function is used instead of a fast general-purpose hash.</p>
+<h4>Why this video</h4>
+<p>It grounds the abstract idea of key stretching in a specific, widely deployed algorithm, giving you a concrete reference point for comparing bcrypt with scrypt and Argon2.</p>
+</section>
+<section class="item" id="p4-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these videos move from attack to defense to implementation. The rainbow table video supplies the threat model behind MO3, making clear which attack vector salting actually neutralizes, while the salt/pepper/key-stretching lesson supplies the countermeasures themselves — per-user salts, peppers, and iterated hashing — and explains what gets stored where. The bcrypt video supports MO2 by showing why a deliberately slow, salted, work-factor-tunable algorithm beats applying SHA-256 directly to a password, and it gives you a concrete model to extend toward scrypt and Argon2. Taken as a set, they prepare you for MO5: designing a password storage scheme with a modern algorithm, secure salt generation, and sensible work factor tuning.</p>
+<p>Note that the videos emphasize bcrypt and classic defenses; you should pair them with the module readings on scrypt's memory-hardness and Argon2's current status as the recommended default.</p>
+</section>
+<section class="item" id="p4-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part5">
+<h2>Ensuring Data Integrity with Hashing</h2>
+<section class="item" id="p5-sec1">
+<h3>Introduction</h3>
+<p>Hashing is not only for storing passwords. Because a cryptographic hash produces a short, fixed-size fingerprint that changes drastically when even one bit of input changes, hashes are the standard tool for answering the question "is this data exactly what it was supposed to be?" In this topic you will see that idea applied to downloaded files, messages in transit, and software distributed by vendors.</p>
+<p>The key distinction to keep in mind is what each mechanism actually proves. A plain checksum or file hash detects accidental corruption and, if the published hash comes from a trustworthy source, lets you spot a tampered download. An HMAC adds a shared secret key, so only someone holding that key can produce or verify the tag — this gives integrity plus authentication between two parties. A digital signature uses a private key to sign a hash of the message, so anyone with the corresponding public key can verify both integrity and origin, and the signer cannot credibly deny having signed it.</p>
+<p>As you watch, look for three things: where the hash function sits in each workflow (what exactly is being hashed), what secret or key material is involved, and what threat each mechanism does and does not defend against. Those three questions are the backbone of the comparison you will be asked to make between checksums, HMACs, and digital signatures.</p>
+</section>
+<section class="item" id="p5-sec2">
+<h3>Video 1: Hashing and Digital Signatures - CompTIA Security+ SY0-701 - 1.4</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/EcGmQjl6XEo?cc_load_policy=1&amp;rel=0" title="Video: Hashing and Digital Signatures - CompTIA Security+ SY0-701 - 1.4 (Professor Messer)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Professor Messer</strong> · 10:25 · 370,249 views · 2y ago · captions — <a href="https://www.youtube.com/watch?v=EcGmQjl6XEo" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A concise lesson from the CompTIA Security+ SY0-701 certification course covering hashing and digital signatures. Based on the exam objective it addresses, it should introduce hash functions and their properties, show how hashes are used to confirm that data has not changed, and then explain how signing a hash with a private key produces a digital signature that others verify with the public key. Expect coverage of related concepts such as collisions and salting as they appear in the Security+ objectives.</p>
+<h4>Why this video</h4>
+<p>Professor Messer is a long-established, well-regarded producer of certification training, and this video maps directly onto the integrity-verification and digital-signature subtopics in a tightly organized ten minutes.</p>
+</section>
+<section class="item" id="p5-sec3">
+<h3>Video 2: Digital Signatures - Data authenticity and integrity protection</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/BkKFJ1yZRgI?cc_load_policy=1&amp;rel=0" title="Video: Digital Signatures - Data authenticity and integrity protection (LearnCantrill)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>LearnCantrill</strong> · 9:27 · 22,709 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=BkKFJ1yZRgI" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>This video walks step by step through how public key cryptography and hashing combine to produce a digital signature. Its description indicates a focus on how signing provides authenticity and integrity protection, so expect a walkthrough of the sender hashing a message, signing the hash with a private key, and the recipient verifying with the public key.</p>
+<h4>Why this video</h4>
+<p>It gives a slower, diagram-driven treatment of the signature workflow that complements the faster certification-style overview, reinforcing exactly why the hash step is essential to signing.</p>
+</section>
+<section class="item" id="p5-sec4">
+<h3>Video 3: Always Check This When You Download Software!</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/aNDw1QMV-lM?cc_load_policy=1&amp;rel=0" title="Video: Always Check This When You Download Software! (ThioJoe)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>ThioJoe</strong> · 11:36 · 142,453 views · 3y ago · captions — <a href="https://www.youtube.com/watch?v=aNDw1QMV-lM" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A practical, consumer-oriented video on checking file hashes when you download software. It should demonstrate how to compute a hash of a downloaded file, compare it against the value published by the vendor, and explain why a mismatch matters — the everyday application of checksums to software distribution integrity.</p>
+<h4>Why this video</h4>
+<p>This is the hands-on counterpart to the theory videos: it turns the checksum subtopic into something you can actually do, and it surfaces the practical caveats about trusting the published hash.</p>
+</section>
+<section class="item" id="p5-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these videos target MO4 most directly: the ThioJoe walkthrough makes checksum-based software distribution verification concrete, while the Professor Messer and LearnCantrill videos build the digital signature half of the picture, including the HMAC and keyed-authentication ideas that support MO3. The Security+ lesson also reinforces MO1 by revisiting core hash properties such as collisions and the role of hashing versus encryption. After watching, you should be able to place checksums, HMACs, and digital signatures on a spectrum of increasing guarantees and justify which one fits a given real-world scenario.</p>
+</section>
+<section class="item" id="p5-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part6">
+<h2>Common Attacks and Vulnerabilities</h2>
+<section class="item" id="p6-sec1">
+<h3>Introduction</h3>
+<p>Hashing is only as strong as the way it is used. A hash function that looks secure on paper can fail badly in practice when passwords are short, salts are missing, the algorithm is outdated, or the comparison code leaks information about how long it took to run. This topic surveys the attacks that exploit those weaknesses: brute-force and dictionary/wordlist guessing, precomputed rainbow tables, collision attacks against deprecated functions like MD5 and SHA-1, the consequences of unsalted hashing, and timing attacks on hash comparison.</p>
+<p>In COP3530 you already think about cost in terms of time and space. These attacks are the security version of that same reasoning: an attacker is choosing between spending computation (guess every candidate) and spending storage (precompute a huge table of hashes), and defenses like salting, peppering, and key stretching exist to push that cost beyond what is practical. Understanding the tradeoff is what lets you argue why bcrypt, scrypt, or Argon2 belong in an authentication system instead of a bare call to SHA-256.</p>
+<p>As you watch, keep a running list in two columns: the attack, and the specific countermeasure that defeats it. Pay attention to why a salt kills rainbow tables but does little against a targeted brute-force attack, why collision resistance matters for signatures and integrity checks more than for password storage, and why the birthday problem means collision resistance is roughly half the bit length of the digest.</p>
+</section>
+<section class="item" id="p6-sec2">
+<h3>Video 1: Password Attacks - CompTIA Security+ SY0-701 - 2.4</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/-ZfbifHwEVE?cc_load_policy=1&amp;rel=0" title="Video: Password Attacks - CompTIA Security+ SY0-701 - 2.4 (Professor Messer)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Professor Messer</strong> · 7:16 · 162,498 views · 2y ago · captions — <a href="https://www.youtube.com/watch?v=-ZfbifHwEVE" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A concise overview of how attackers go after passwords, covering the difference between online and offline guessing, brute-force attacks, and dictionary or wordlist approaches that exploit predictable human password choices. Based on the title and CompTIA Security+ objective 2.4, it should also address why stored password hashes are the real target and how salting changes the attacker's economics.</p>
+<h4>Why this video</h4>
+<p>Professor Messer is a well-known, carefully-scripted certification trainer, and this video maps directly onto the brute-force, dictionary/wordlist, and unsalted-hashing subtopics in a compact seven minutes.</p>
+</section>
+<section class="item" id="p6-sec3">
+<h3>Video 2: Cryptographic Attacks - CompTIA Security+ SY0-701 - 2.4</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/7aJaEQy6Yoc?cc_load_policy=1&amp;rel=0" title="Video: Cryptographic Attacks - CompTIA Security+ SY0-701 - 2.4 (Professor Messer)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Professor Messer</strong> · 9:31 · 181,179 views · 2y ago · captions — <a href="https://www.youtube.com/watch?v=7aJaEQy6Yoc" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>This video surveys attacks aimed at the cryptography itself rather than at the user, which for Security+ objective 2.4 typically includes birthday and collision attacks, downgrade attacks, and the problems with deprecated algorithms. Expect discussion of why older hash functions are retired once practical attacks appear.</p>
+<h4>Why this video</h4>
+<p>It pairs with the password-attacks video to cover the other half of this topic — collision attacks and weak or deprecated hash functions — from the same clear, exam-focused producer.</p>
+</section>
+<section class="item" id="p6-sec4">
+<h3>Video 3: Birthday Attacks Explained | Brute Force vs. Birthday Attack</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/tkFeRAyePAI?cc_load_policy=1&amp;rel=0" title="Video: Birthday Attacks Explained | Brute Force vs. Birthday Attack (Shree Learning Academy)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Shree Learning Academy</strong> · 6:13 · 16,679 views · 3y ago · captions — <a href="https://www.youtube.com/watch?v=tkFeRAyePAI" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A focused explanation of the birthday attack: why finding any two inputs that collide is far easier than finding a preimage for one specific hash, and how the birthday paradox makes the effort roughly the square root of the naive search space. The video contrasts this directly with straightforward brute force.</p>
+<h4>Why this video</h4>
+<p>It gives the mathematical intuition behind collision resistance that the broader survey videos only mention, which is exactly what you need to explain why digest length matters when choosing a hash function.</p>
+</section>
+<section class="item" id="p6-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these videos give you the attacker's perspective that MO3 asks you to evaluate: the Professor Messer pair maps the landscape of brute-force, dictionary, rainbow table, and cryptographic attacks along with their standard countermeasures, while the birthday attack video supplies the reasoning behind collision resistance that underpins MO1's comparison of MD5 and SHA-256. Seeing concretely how unsalted, fast, general-purpose hashes fall to precomputation and high-speed guessing is also the motivation for MO2 and MO5 — it is the reason a secure design you write later should use a salted, work-factor-tuned algorithm such as bcrypt, scrypt, or Argon2.</p>
+</section>
+<section class="item" id="p6-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part7">
+<h2>Best Practices and Real-World Applications</h2>
+<section class="item" id="p7-sec1">
+<h3>Introduction</h3>
+<p>Everything you have learned about hash functions in this module comes together here: how practitioners actually choose and deploy hashing in production systems. Choosing "the right hash for the job" is not one decision but several — a fast general-purpose digest like SHA-256 is appropriate for file integrity and digital signatures, while password storage calls for a deliberately slow, memory-hard algorithm such as bcrypt, scrypt, or Argon2 with per-user salts and a tuned work factor. The same primitive also appears in message authentication (HMAC), in TLS handshakes and certificates, in blockchain block linking and Merkle trees, and in digital forensics where a hash value serves as a tamper-evident fingerprint of seized evidence.</p>
+<p>This matters in COP3530 because hashing is where a data structures concept meets real security consequences. A hash table and a password database use the same underlying idea, but the engineering requirements are opposite: one wants speed, the other wants slowness and unpredictability. Understanding that distinction — and the surrounding practices of salting, peppering, key stretching, standards compliance, and periodic re-evaluation as hardware improves — is what separates a working implementation from a safe one.</p>
+<p>As you watch the videos below, keep three questions in mind. First, what property of the hash function is each application relying on (preimage resistance, collision resistance, the avalanche effect, or just speed)? Second, what attack is each countermeasure defending against — a salt stops rainbow tables, a pepper defends against a database-only leak, a work factor slows brute force. Third, where does the secret live in each scheme: in nothing (a plain digest), in a stored server-side value (a pepper), in a shared key (HMAC), or in a private key (digital signatures).</p>
+</section>
+<section class="item" id="p7-sec2">
+<h3>Video 1: Salting, peppering, and hashing passwords</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/FvstbO787Qo?cc_load_policy=1&amp;rel=0" title="Video: Salting, peppering, and hashing passwords (mCoding)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>mCoding</strong> · 8:56 · 74,761 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=FvstbO787Qo" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>This video walks through what an attacker can actually do with a leaked password database and why storing raw or naively hashed passwords fails. It explains salting as a per-user random value that defeats precomputed rainbow tables, peppering as a secret value kept outside the database, and how these combine with hashing in a realistic authentication flow.</p>
+<h4>Why this video</h4>
+<p>It directly addresses the salting and peppering subtopic with a practical, attacker-centered framing, and mCoding is a well-regarded programming channel known for careful, implementation-level explanations rather than hand-waving.</p>
+</section>
+<section class="item" id="p7-sec3">
+<h3>Video 2: What is Hashing in Blockchain | Blockchain Hashing Explained</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/5Nbia23Ju_E?cc_load_policy=1&amp;rel=0" title="Video: What is Hashing in Blockchain | Blockchain Hashing Explained (Learn with Whiteboard)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Learn with Whiteboard</strong> · 5:50 · 16,828 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=5Nbia23Ju_E" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A short whiteboard-style overview of how hash functions are used in blockchain systems — how a block's contents are reduced to a fixed-length digest, how each block references the hash of the previous one, and why changing any past data invalidates the chain. Expect coverage of basic hash properties such as determinism and the avalanche effect in the context of distributed ledgers.</p>
+<h4>Why this video</h4>
+<p>It gives concise, beginner-friendly coverage of the blockchain and distributed ledger subtopic, connecting the abstract collision-resistance property you studied earlier to a concrete tamper-evidence mechanism.</p>
+</section>
+<section class="item" id="p7-sec4">
+<h3>Video 3: Hashing and Digital Signatures - CompTIA Security+ SY0-701 - 1.4</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/EcGmQjl6XEo?cc_load_policy=1&amp;rel=0" title="Video: Hashing and Digital Signatures - CompTIA Security+ SY0-701 - 1.4 (Professor Messer)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Professor Messer</strong> · 10:25 · 370,236 views · 2y ago · captions — <a href="https://www.youtube.com/watch?v=EcGmQjl6XEo" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>Reviewed a second time, this video is also the best single reference in the set for the vocabulary used by compliance frameworks and certification standards around hashing and signatures. Watch it again with an eye to terminology you will need when reading security documentation.</p>
+<h4>Why this video</h4>
+<p>Its standards-oriented presentation supports the industry standards, compliance, and ongoing vigilance subtopic, where precise and conventional terminology matters.</p>
+</section>
+<section class="item" id="p7-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these videos move from theory to deployment. The mCoding video is the core support for MO2, MO3, and MO5, showing why dedicated password hashing with salts, peppers, and work factors beats a bare cryptographic digest and what an attacker gains from a leaked database. The Professor Messer lesson supports MO1 and MO4 by contrasting hashing with encryption-based mechanisms and showing how digests, HMACs, and digital signatures provide integrity and authenticity in software distribution, secure communications, and forensic evidence handling. The blockchain video reinforces MO1 and MO4 from a different angle, demonstrating how collision resistance and the avalanche effect make chained hashes a practical tamper-detection structure. Watched as a set, they give you the comparative judgment MO1 through MO5 ask for: knowing not just how hash functions work, but which one to reach for in a given situation and why.</p>
+</section>
+<section class="item" id="p7-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+
+<footer class="presemaker-credit" data-credit="2" style="margin-top:2rem;padding:14px 8px;border-top:1px solid #ddd;background:#fff;text-align:center;font:13px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#595959;"><svg width="20" height="20" viewBox="0 0 2048 2048" aria-hidden="true" focusable="false" style="vertical-align:-5px;margin-right:7px"><rect width="2048" height="2048" rx="384" fill="#0F6E6E"/><path fill="#0A5050" d="M1024 1000 344 832v816l680 168zm0 0 680-168v816l-680 168z"/><path fill="#fff" d="M1024 944 384 784v808l640 160zm0 0 640-160v808l-640 160z"/><rect x="1002" y="944" width="44" height="808" fill="#0F6E6E"/><rect x="936" y="246" width="176" height="448" rx="44" fill="#fff"/><rect x="800" y="382" width="448" height="176" rx="44" fill="#fff"/></svg>Created with <a href="https://softwareplus.ai/coursebuilder/" target="_blank" rel="noopener" style="color:#2f5d8f;font-weight:600;text-decoration:none;">CourseBuilder+</a><span aria-hidden="true"> · </span><a href="https://softwareplus.ai/" target="_blank" rel="noopener" style="color:#2f5d8f;text-decoration:none;">SoftwarePlus.ai</a></footer>
+</body>
+</html>

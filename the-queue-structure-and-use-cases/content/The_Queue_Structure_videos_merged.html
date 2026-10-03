@@ -1,0 +1,296 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>The Queue: Structure and Use Cases</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+body{font-family:'Segoe UI',Arial,sans-serif;max-width:820px;margin:2rem auto;padding:0 1.25rem;color:#222;line-height:1.55}
+h1{font-size:1.9rem;border-bottom:2px solid #ddd;padding-bottom:.4rem}
+h2{font-size:1.3rem;color:#1f3864;margin-top:1.6rem}
+body{padding-left:1.1rem;padding-right:1.1rem}
+ul,ol{margin:.4rem 0 1rem 1.4rem}
+li{margin:.25rem 0}
+nav.toc{background:rgba(128,128,128,.08);border:1px solid rgba(128,128,128,.25);border-radius:8px;padding:.6rem 1rem;margin:1.2rem 0}
+nav.toc strong{display:block;margin-bottom:.3rem}
+nav.toc a{display:block;text-decoration:none;padding:.12rem 0}
+section.item{border-top:1px solid rgba(128,128,128,.22);padding-top:.3rem}
+table{border-collapse:collapse;width:100%;margin:.8rem 0}
+th,td{border:1px solid rgba(128,128,128,.45);padding:.4rem .6rem;text-align:left;vertical-align:top}
+thead th{background:rgba(128,128,128,.18);font-weight:600}
+tbody tr:nth-child(even){background:rgba(128,128,128,.08)}
+</style>
+<style>section.merged-part{border-top:2px solid rgba(128,128,128,.3);margin-top:2rem;padding-top:.5rem}nav.toc{background:rgba(128,128,128,.08);border:1px solid rgba(128,128,128,.25);border-radius:8px;padding:.6rem 1rem;margin:1.2rem 0}nav.toc a{display:block;text-decoration:none;padding:.12rem 0}</style>
+</head>
+<body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ The Queue: Structure and Use Cases</a></div>
+<h1>The Queue: Structure and Use Cases</h1>
+<nav class="toc"><strong>Contents</strong>
+<a href="#part1">Introduction to the Queue Data Structure</a>
+<a href="#part2">The FIFO Principle</a>
+<a href="#part3">Queue Operations</a>
+<a href="#part4">Implementing a Queue</a>
+<a href="#part5">Real-World Applications of Queues</a>
+<a href="#part6">Queues vs. Stacks: A Comparison</a>
+</nav>
+<section class="merged-part" id="part1">
+<h2>Introduction to the Queue Data Structure</h2>
+<section class="item" id="p1-sec1">
+<h3>Introduction</h3>
+<p>A queue is one of the most intuitive data structures you will meet in this course, because you already use one every time you wait in line. Formally, a queue is an ordered collection in which elements are added at one end, called the rear or tail, and removed from the other end, called the front or head. This single restriction produces the First-In, First-Out (FIFO) ordering principle: the element that has waited the longest is the next one to leave.</p>
+<p>In COP3530 the queue matters for two reasons. First, it is a clean example of an abstract data type (ADT): the interface — enqueue, dequeue, peek, isEmpty — is defined by behavior, not by any particular implementation, and the same interface can be built on an array or on a linked list. Second, queues appear constantly inside larger algorithms and systems, from CPU and print scheduling to breadth-first search on graphs, so understanding them now pays off later in the course.</p>
+<p>As you watch the videos below, keep three questions in mind. What exactly happens to the front and rear pointers during an enqueue and a dequeue? Which conditions count as edge cases (empty queue, full queue, a single remaining element)? And how does the queue's access pattern differ from a stack's, where insertion and removal happen at the same end? Being able to answer those questions in your own words is the goal of this topic.</p>
+</section>
+<section class="item" id="p1-sec2">
+<h3>Video 1: Lec-46: Introduction to Queue Data structure with real life example | Data Structure #queue</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/YMzZTTO2MpE?cc_load_policy=1&amp;rel=0" title="Video: Lec-46: Introduction to Queue Data structure with real life example | Data Structure #queue (Gate Smashers)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Gate Smashers</strong> · 9:05 · 227,838 views · 3y ago · captions — <a href="https://www.youtube.com/watch?v=YMzZTTO2MpE" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>This lecture introduces the queue data structure from scratch, using an everyday real-life analogy — the kind of waiting line you stand in — to motivate the FIFO rule. It covers the basic vocabulary of front and rear, the enqueue and dequeue operations, and where queues show up in computing. At roughly nine minutes it is the most leisurely of the three videos and spends time on conceptual grounding rather than code.</p>
+<h4>Why this video</h4>
+<p>Gate Smashers is a widely followed exam-preparation channel known for clear, blackboard-style CS explanations, and the real-life framing makes this an ideal first exposure to the FIFO principle and core terminology before any implementation details appear.</p>
+</section>
+<section class="item" id="p1-sec3">
+<h3>Video 2: Queues in 3 minutes</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/D6gu-_tmEpQ?cc_load_policy=1&amp;rel=0" title="Video: Queues in 3 minutes (Michael Sambol)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Michael Sambol</strong> · 3:10 · 135,890 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=D6gu-_tmEpQ" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A compact, three-minute overview of queues that moves quickly through the definition, the FIFO ordering, and the standard operations. The description links to a Python implementation on GitHub and cites Introduction to Algorithms, so expect a presentation grounded in standard textbook treatment. Use it as a fast summary or a review pass.</p>
+<h4>Why this video</h4>
+<p>Michael Sambol's short algorithm videos are well regarded for accuracy and economy; this one gives you a precise, textbook-aligned statement of what a queue is, which complements the longer conceptual lecture.</p>
+</section>
+<section class="item" id="p1-sec4">
+<h3>Video 3: Queues Explained and Implemented with Arrays and LinkedLists in Java | Data Structures | Geekific</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/b6VAlM0-RaE?cc_load_policy=1&amp;rel=0" title="Video: Queues Explained and Implemented with Arrays and LinkedLists in Java | Data Structures | Geekific (Geekific)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Geekific</strong> · 12:01 · 3,165 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=b6VAlM0-RaE" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>This video explains the queue and then walks through implementing it in Java two different ways: with an array and with a linked list. Expect discussion of the operations in code, the structural differences between the two backing representations, and the practical details that come with each. A GitHub repository is linked for the accompanying source.</p>
+<h4>Why this video</h4>
+<p>It bridges the gap between the queue as an abstract data type and the queue as working code, directly supporting the subtopic on ADTs and previewing the array versus linked list comparison that the rest of the module develops.</p>
+</section>
+<section class="item" id="p1-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these videos build the conceptual foundation the module's outcomes depend on. The Gate Smashers lecture and the Sambol summary give you two independent statements of the FIFO principle and the enqueue/dequeue operations, which is exactly what MO1 asks you to define and explain. The Geekific video takes the next step by showing array-based and linked list-based implementations side by side, previewing the coding work in MO2 and giving you the concrete picture of each representation you will need when you reason about time and space trade-offs in MO3. Finally, by making the queue's single-direction access pattern explicit, all three videos set up the contrast with the stack that MO4 and MO5 require — once you can say precisely where a queue inserts and removes, deciding between a queue and a stack for a given scenario becomes a matter of matching the required ordering to the structure.</p>
+</section>
+<section class="item" id="p1-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part2">
+<h2>The FIFO Principle</h2>
+<section class="item" id="p2-sec1">
+<h3>Introduction</h3>
+<p>A queue is one of the simplest data structures to describe and one of the easiest to misuse if you do not take its ordering rule seriously. That rule is FIFO: First-In, First-Out. The first element placed into the queue is the first element taken out, and no operation is allowed to violate that order. Insertion happens at one end (the rear, via enqueue) and removal happens at the other (the front, via dequeue), which is what keeps the ordering honest.</p>
+<p>FIFO matters in this course for two reasons. First, it is a defining constraint, not a convenience: the queue is interesting precisely because it refuses to let you reach into the middle. That restriction is what makes it predictable and what makes it the right tool for scheduling, buffering, print spooling, breadth-first traversal, and any situation where arrival order should determine service order. Second, FIFO becomes much clearer when you set it beside LIFO, the stack's ordering rule, where insertion and removal share a single end.</p>
+<p>While watching, pay attention to three things: where elements enter and where they leave, how the front and rear positions move as operations occur, and how the stack's single point of access produces reversed output compared to the queue's preserved order. If you can predict the exact sequence of outputs for a given sequence of operations on both structures, you understand the principle.</p>
+</section>
+<section class="item" id="p2-sec2">
+<h3>Video 1: Lec-46: Introduction to Queue Data structure with real life example | Data Structure #queue</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/YMzZTTO2MpE?cc_load_policy=1&amp;rel=0" title="Video: Lec-46: Introduction to Queue Data structure with real life example | Data Structure #queue (Gate Smashers)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Gate Smashers</strong> · 9:05 · 227,838 views · 3y ago · captions — <a href="https://www.youtube.com/watch?v=YMzZTTO2MpE" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>This lecture introduces the queue as an abstract data type and grounds it in a real-life analogy, which is the standard way of making the FIFO rule intuitive. Expect coverage of the basic structure of a queue, the roles of the front and rear ends, and how insertion and removal operations follow First-In, First-Out ordering. It serves as the foundational overview for the module.</p>
+<h4>Why this video</h4>
+<p>Gate Smashers produces exam-oriented computer science lectures with a reputation for clear, step-by-step explanations, and this video directly addresses what FIFO means and how insertion and removal work under it — the core of this topic.</p>
+</section>
+<section class="item" id="p2-sec3">
+<h3>Video 2: Lec-30: Introduction to Stack | PUSH and POP operations | Data Structure</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/HRDHgKrYHgU?cc_load_policy=1&amp;rel=0" title="Video: Lec-30: Introduction to Stack | PUSH and POP operations | Data Structure (Gate Smashers)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Gate Smashers</strong> · 6:46 · 325,606 views · 3y ago · captions — <a href="https://www.youtube.com/watch?v=HRDHgKrYHgU" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>This lecture introduces the stack and its two fundamental operations, PUSH and POP, explaining how both occur at a single end of the structure. It is likely to walk through how elements accumulate and are removed in reverse order of insertion, which is the LIFO principle. Although the subject is the stack, it provides the contrast you need to understand the queue.</p>
+<h4>Why this video</h4>
+<p>Understanding FIFO is sharpest by comparison, and this companion lecture from the same instructor supplies the LIFO side of the contrast with consistent terminology and presentation style, supporting the FIFO-versus-LIFO subtopic directly.</p>
+</section>
+<section class="item" id="p2-sec4">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these two videos cover the conceptual half of the module. The queue introduction supports MO1 by defining FIFO and showing how it governs enqueue and dequeue at opposite ends of the structure, and it begins the work of MO5 by connecting the ordering rule to realistic scenarios where arrival order should determine service order. The stack lecture supports MO4 by supplying the LIFO contrast — a single point of access producing reversed output — so you can articulate precisely how the two structures differ in ordering and access. Note that implementation details and complexity trade-offs (MO2 and MO3) are addressed elsewhere in the module; your goal here is to be fluent in the ordering principle before you write any code.</p>
+</section>
+<section class="item" id="p2-sec5">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part3">
+<h2>Queue Operations</h2>
+<section class="item" id="p3-sec1">
+<h3>Introduction</h3>
+<p>A queue is an abstract data type that organizes elements in first-in, first-out (FIFO) order: items join at one end, called the rear or tail, and leave from the other end, called the front or head. What makes the queue useful is not a clever internal layout but the small, strictly defined set of operations it exposes. In this topic you study those operations one at a time — enqueue, dequeue, peek (front), and isEmpty — and learn exactly what each one does to the structure's state.</p>
+<p>These operations matter because every later queue topic depends on them. When you implement a queue with an array or a linked list, you are really deciding how to make these four behaviors correct and efficient. Edge cases live here too: dequeueing or peeking an empty queue (underflow) and enqueueing into a full fixed-size array (overflow) are the conditions that separate working code from code that silently corrupts data.</p>
+<p>As you watch, track two things. First, the front and rear indices or pointers: note precisely when each one moves, and what values they hold when the queue is empty versus holding one element. Second, the expected outcome of each operation — what is returned, what changes, and what error or condition is signaled when the operation cannot be performed.</p>
+</section>
+<section class="item" id="p3-sec2">
+<h3>Video 1: Lec-47: Enqueue(), Dequeue() &amp; other Operations on Queue  | Data Structure</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/jvSdGoNnQo4?cc_load_policy=1&amp;rel=0" title="Video: Lec-47: Enqueue(), Dequeue() &amp; other Operations on Queue  | Data Structure (Gate Smashers)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Gate Smashers</strong> · 9:32 · 204,938 views · 3y ago · captions — <a href="https://www.youtube.com/watch?v=jvSdGoNnQo4" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>This lecture walks through the primary queue operations, centering on enqueue() and dequeue() and touching on the other standard operations a queue supports. Based on the title and series, expect step-by-step tracing of how elements enter at the rear and leave from the front, with the front and rear markers updated as the queue changes. It establishes the vocabulary and expected behavior you will reuse in every queue implementation.</p>
+<h4>Why this video</h4>
+<p>It is the direct match for the enqueue, dequeue, and peek subtopics, presented by Gate Smashers, a well-known exam-prep channel whose data structures lectures are widely used and consistently clear on operation mechanics.</p>
+</section>
+<section class="item" id="p3-sec3">
+<h3>Video 2: Lec-49: isfull() and isempty() in queue | Queue operations | Data Structure</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/2K1qUZy-hAw?cc_load_policy=1&amp;rel=0" title="Video: Lec-49: isfull() and isempty() in queue | Queue operations | Data Structure (Gate Smashers)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Gate Smashers</strong> · 7:27 · 74,476 views · 3y ago · captions — <a href="https://www.youtube.com/watch?v=2K1qUZy-hAw" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>This video focuses specifically on the status-checking operations of a queue: isEmpty() and isFull(). It explains the conditions on the front and rear values that signal an empty queue versus a full one, which is what guards a dequeue against underflow and an enqueue against overflow. Expect the boundary conditions to be stated as explicit tests you can write in code.</p>
+<h4>Why this video</h4>
+<p>It covers the isEmpty subtopic head-on and supplies the precise edge-case conditions that determine the expected outcome of every other queue operation.</p>
+</section>
+<section class="item" id="p3-sec4">
+<h3>Video 3: Lec-50: Implementation of Queue using Array | Enqueue() in Queue | Data Structure #gatesmashers</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/hGbphQIOHYs?cc_load_policy=1&amp;rel=0" title="Video: Lec-50: Implementation of Queue using Array | Enqueue() in Queue | Data Structure #gatesmashers (Gate Smashers)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Gate Smashers</strong> · 13:15 · 143,376 views · 3y ago · captions — <a href="https://www.youtube.com/watch?v=hGbphQIOHYs" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>Here the operations are applied to a concrete array-based queue. The lecture covers how a queue is represented in an array and how enqueue() is implemented against that representation, including the index bookkeeping and the full-queue check. It connects the abstract operation definitions to actual code and memory layout.</p>
+<h4>Why this video</h4>
+<p>It shows the operations in practice rather than in the abstract, which reinforces how each operation's expected behavior constrains an implementation — useful preparation for writing your own queue.</p>
+</section>
+<section class="item" id="p3-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these videos build the operational foundation the module outcomes rest on. The first lecture ties enqueue and dequeue to FIFO ordering and the movement of front and rear, supporting MO1 and giving you the access-pattern vocabulary needed later to contrast queues with stacks (MO4, MO5). The isEmpty/isFull lecture supplies the edge-case conditions that MO2 requires you to handle correctly in code, and the array implementation video shows those operations realized in a concrete structure, which is the starting point for comparing array-based and linked list-based designs and their complexity trade-offs (MO2, MO3).</p>
+</section>
+<section class="item" id="p3-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part4">
+<h2>Implementing a Queue</h2>
+<section class="item" id="p4-sec1">
+<h3>Introduction</h3>
+<p>A queue is an abstract data type defined by its behavior: elements enter at the rear and leave from the front, in first-in-first-out order. Knowing that behavior is not the same as being able to build it. In this topic you move from the concept to the code, implementing the queue two different ways — on top of a fixed-size array and on top of a linked list — and seeing exactly what each choice costs you.</p>
+<p>The array-based version is usually the first one students write, and it is also the one that exposes the most interesting problems. Where do front and rear pointers start? What happens when rear reaches the end of the array but space has been freed at the front? How do you distinguish an empty queue from a full one? The linked list version avoids the fixed-capacity problem but introduces pointer bookkeeping of its own, especially when the queue becomes empty and both head and tail must be reset.</p>
+<p>As you watch, keep a running list of three things: the exact conditions that signal overflow and underflow, the pointer updates performed by enqueue and dequeue, and the time and space cost of each operation. You should finish this topic able to argue for one implementation over the other given a specific scenario, not just recite that both are O(1) for the core operations.</p>
+</section>
+<section class="item" id="p4-sec2">
+<h3>Video 1: Lec-50: Implementation of Queue using Array | Enqueue() in Queue | Data Structure #gatesmashers</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/hGbphQIOHYs?cc_load_policy=1&amp;rel=0" title="Video: Lec-50: Implementation of Queue using Array | Enqueue() in Queue | Data Structure #gatesmashers (Gate Smashers)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Gate Smashers</strong> · 13:15 · 143,376 views · 3y ago · captions — <a href="https://www.youtube.com/watch?v=hGbphQIOHYs" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>This lecture walks through building a queue on top of an array, focusing on the enqueue operation and the front and rear index variables that track the queue's boundaries. Based on its title and placement in a sequenced data structures series, it is likely to cover the initial values of the pointers, the overflow condition when rear reaches the end of the array, and the step-by-step code for inserting an element.</p>
+<h4>Why this video</h4>
+<p>Gate Smashers produces exam-oriented data structures lectures with careful step-by-step tracing, which makes it a strong fit for the array-based implementation and edge-case handling subtopics where small index errors matter most.</p>
+</section>
+<section class="item" id="p4-sec3">
+<h3>Video 2: Lec-51: Implementation of Queue using Linked List | Enqueue() in Queue | Data Structure</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/XqtbBB-Y-Zs?cc_load_policy=1&amp;rel=0" title="Video: Lec-51: Implementation of Queue using Linked List | Enqueue() in Queue | Data Structure (Gate Smashers)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Gate Smashers</strong> · 11:35 · 103,436 views · 3y ago · captions — <a href="https://www.youtube.com/watch?v=XqtbBB-Y-Zs" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>The follow-up lecture in the same series implements the queue using a linked list, with enqueue highlighted in the title. Expect coverage of node creation, maintaining front and rear pointers, the special case of inserting into an empty queue, and how dynamic allocation removes the fixed-capacity limit of the array version.</p>
+<h4>Why this video</h4>
+<p>Watching this immediately after the array lecture gives you the same instructor, notation, and worked style applied to the second implementation, which makes the structural trade-offs between the two approaches easier to see directly.</p>
+</section>
+<section class="item" id="p4-sec4">
+<h3>Video 3: Queues Explained and Implemented with Arrays and LinkedLists in Java | Data Structures | Geekific</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/b6VAlM0-RaE?cc_load_policy=1&amp;rel=0" title="Video: Queues Explained and Implemented with Arrays and LinkedLists in Java | Data Structures | Geekific (Geekific)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Geekific</strong> · 12:01 · 3,165 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=b6VAlM0-RaE" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>Geekific explains the queue ADT and then implements it both ways in Java, so array-based and linked-list-based versions appear side by side in a single video. The description points to an accompanying GitHub repository, so the full source for the core operations is available to read and run alongside the explanation.</p>
+<h4>Why this video</h4>
+<p>Its dual-implementation format directly serves the trade-offs subtopic, and seeing real compilable Java code bridges the gap between the pseudocode in the lectures and the code you will write for this course.</p>
+</section>
+<section class="item" id="p4-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these videos carry you from the FIFO definition into working code (MO1, MO2): the first two lectures build the array-based and linked list-based queues separately, with explicit attention to pointer initialization, overflow and underflow conditions, and the empty-queue edge case, while the Geekific video shows both implementations in compilable Java you can study and extend. Presenting the two approaches in parallel also sets up the comparison required by MO3, since you can weigh fixed capacity and index arithmetic against per-node memory overhead and pointer maintenance while both implementations are fresh. The implementation-level detail here reinforces the access-point reasoning — insert at rear, remove at front — that you will contrast with stack behavior when addressing MO4 and MO5.</p>
+</section>
+<section class="item" id="p4-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part5">
+<h2>Real-World Applications of Queues</h2>
+<section class="item" id="p5-sec1">
+<h3>Introduction</h3>
+<p>A queue is more than a classroom exercise in enqueue and dequeue. Nearly every system you interact with daily relies on something arriving first being served first: jobs waiting for a CPU, documents waiting for a printer, packets waiting for a network card, customers waiting for a support agent. In this topic we take the FIFO principle you learned abstractly and trace it through real systems so you can recognize a queue when you meet one in the wild.</p>
+<p>The subtopics each highlight a different reason FIFO is the right fit. Task scheduling uses it for fairness and predictable wait times. Print spooling and data buffering use it to decouple a fast producer from a slow consumer. Message queues in distributed systems use it so that services can hand off work reliably without being online at the same moment. Breadth-first search uses it to explore a graph level by level, which is a purely algorithmic use with no waiting line in sight. Customer service and ticketing systems use it because people expect order of arrival to be respected.</p>
+<p>As you watch the videos below, keep two questions in mind. First, what would break if the ordering guarantee were removed — would the result merely be unfair, or would it be wrong? Second, where is the queue actually stored, and who is producing and who is consuming? Being able to answer those two questions is what separates memorizing FIFO from being able to choose a queue for a problem you have never seen before.</p>
+</section>
+<section class="item" id="p5-sec2">
+<h3>Video 1: Lec-46: Introduction to Queue Data structure with real life example | Data Structure #queue</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/YMzZTTO2MpE?cc_load_policy=1&amp;rel=0" title="Video: Lec-46: Introduction to Queue Data structure with real life example | Data Structure #queue (Gate Smashers)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Gate Smashers</strong> · 9:05 · 227,905 views · 3y ago · captions — <a href="https://www.youtube.com/watch?v=YMzZTTO2MpE" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>Revisit this lecture after the other two if the applied examples raised questions about the underlying mechanics. The explanation of how front and rear move during enqueue and dequeue is what underpins every scheduling, spooling, and buffering example in this topic.</p>
+<h4>Why this video</h4>
+<p>Grounding the applied material back in the core operations keeps the real-world discussion anchored to the abstract data type the module is actually assessing.</p>
+</section>
+<section class="item" id="p5-sec3">
+<h3>Video 2: Lecture 18: Power of Stacks and Queues: Advanced Applications in Java|Dijkstra's Algorithm Explained</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/ncPxL3via0c?cc_load_policy=1&amp;rel=0" title="Video: Lecture 18: Power of Stacks and Queues: Advanced Applications in Java|Dijkstra's Algorithm Explained (Study Hub)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Study Hub</strong> · 13:20 · 621 views · 2y ago · captions — <a href="https://www.youtube.com/watch?v=ncPxL3via0c" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A lecture that treats stacks and queues together and moves past basic operations into applied uses, including how stacks manage function calls and recursion, and extending to graph work such as Dijkstra's algorithm in Java. The side-by-side treatment makes the contrast between LIFO and FIFO concrete rather than definitional. Expect code-level discussion rather than pure theory.</p>
+<h4>Why this video</h4>
+<p>It supports the algorithmic end of this topic — the queue as a traversal engine in BFS and related graph algorithms — while the stack comparison helps you justify which structure fits a given access pattern.</p>
+</section>
+<section class="item" id="p5-sec4">
+<h3>Video 3: SQS Standard Queues vs FIFO (First in First Out) Queues</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/yj-BRhfr9z8?cc_load_policy=1&amp;rel=0" title="Video: SQS Standard Queues vs FIFO (First in First Out) Queues (LearnCantrill)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>LearnCantrill</strong> · 3:30 · 8,818 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=yj-BRhfr9z8" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A short, focused comparison of Amazon SQS Standard queues and SQS FIFO queues, walking through the architectural differences between the two. It covers what a managed message queue service actually guarantees about ordering and delivery, and where each queue type is appropriate. This is a production cloud service, not a textbook structure.</p>
+<h4>Why this video</h4>
+<p>This is the clearest link to the message queues in distributed systems subtopic, and it shows that strict FIFO ordering is a deliberate design choice with trade-offs — a point that sharpens your understanding of why the guarantee matters.</p>
+</section>
+<section class="item" id="p5-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these videos reinforce MO1 by repeatedly showing the FIFO principle governing enqueue and dequeue, first through everyday analogies and then through a cloud service that sells ordering as a feature. The stacks-and-queues lecture directly serves MO4 and MO5 by contrasting LIFO and FIFO access patterns in code and by demonstrating queue use inside graph algorithms, giving you concrete scenarios to justify a structure choice. The SQS comparison extends MO5 to a systems-level decision. Note that MO2 and MO3 — writing array-based and linked-list-based implementations and comparing their complexity — are addressed in the implementation materials elsewhere in this module rather than in these application-focused videos.</p>
+</section>
+<section class="item" id="p5-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part6">
+<h2>Queues vs. Stacks: A Comparison</h2>
+<section class="item" id="p6-sec1">
+<h3>Introduction</h3>
+<p>Queues and stacks are both linear structures that restrict where you may insert and remove elements, but they restrict them in opposite ways. A queue follows FIFO (first in, first out): items enter at the rear and leave from the front, so the element that has waited longest is served first. A stack follows LIFO (last in, first out): items are pushed and popped at a single end, so the most recently added element is removed first. That single difference in the point of access is what drives everything else about how the two structures behave.</p>
+<p>This comparison matters because in practice you rarely choose a structure by its name; you choose it by the ordering behavior a problem demands. Scheduling, buffering, breadth-first traversal, and any "serve in arrival order" situation point toward a queue. Undo histories, expression evaluation, backtracking, recursion and call stacks, and depth-first traversal point toward a stack. Being able to justify that choice is as important in this course as being able to code either structure.</p>
+<p>As you watch the videos below, pay attention to three things: the vocabulary of the operations (push/pop versus enqueue/dequeue), where the pointers or indices live (top versus front and rear), and the real-world examples used to motivate each structure. The third video goes a step further and shows that the two structures are related closely enough that one can be simulated with the other — a useful way to confirm that you really understand what each ordering principle costs you.</p>
+</section>
+<section class="item" id="p6-sec2">
+<h3>Video 1: Lec-30: Introduction to Stack | PUSH and POP operations | Data Structure</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/HRDHgKrYHgU?cc_load_policy=1&amp;rel=0" title="Video: Lec-30: Introduction to Stack | PUSH and POP operations | Data Structure (Gate Smashers)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Gate Smashers</strong> · 6:46 · 325,606 views · 3y ago · captions — <a href="https://www.youtube.com/watch?v=HRDHgKrYHgU" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>An introductory lecture on the stack abstract data type, covering the LIFO ordering principle and the two core operations, PUSH and POP. Based on its title and description, it should walk through how the top pointer moves as elements are added and removed, and likely touches on overflow and underflow conditions. It is the stack half of the comparison you are building.</p>
+<h4>Why this video</h4>
+<p>Gate Smashers lectures are widely used exam-prep material known for clear, step-by-step explanations, and this one gives you the precise stack terminology and single point of access you need to contrast against the queue.</p>
+</section>
+<section class="item" id="p6-sec3">
+<h3>Video 2: Lec-46: Introduction to Queue Data structure with real life example | Data Structure #queue</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/YMzZTTO2MpE?cc_load_policy=1&amp;rel=0" title="Video: Lec-46: Introduction to Queue Data structure with real life example | Data Structure #queue (Gate Smashers)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Gate Smashers</strong> · 9:05 · 227,905 views · 3y ago · captions — <a href="https://www.youtube.com/watch?v=YMzZTTO2MpE" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>An introduction to the queue data structure that, as the title indicates, motivates it with a real-life example. Expect coverage of the FIFO ordering principle, the front and rear ends, and the enqueue and dequeue operations that act on them. It pairs directly with the stack lecture from the same channel.</p>
+<h4>Why this video</h4>
+<p>Using the same instructor and format as the stack video makes the side-by-side comparison of ordering principles, operations, and points of access very easy to see, and the real-life example supports the "when would I use this" subtopics.</p>
+</section>
+<section class="item" id="p6-sec4">
+<h3>Video 3: Implement Queue using Stacks | Explained, Visualized and Implemented | Geekific</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/dGv0QeJf5F8?cc_load_policy=1&amp;rel=0" title="Video: Implement Queue using Stacks | Explained, Visualized and Implemented | Geekific (Geekific)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Geekific</strong> · 4:07 · 3,200 views · 3y ago · captions — <a href="https://www.youtube.com/watch?v=dGv0QeJf5F8" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A short, focused Geekific video on the classic problem of implementing a queue using two stacks, with visualization and code. It should show how pushing onto one stack and transferring to a second reverses the order, converting LIFO behavior into FIFO behavior, and discuss the cost of that transfer.</p>
+<h4>Why this video</h4>
+<p>This is the best possible test of whether you truly understand the difference between the two orderings, and it reinforces the idea that ordering behavior — not the container — is what you are really selecting when you choose a structure.</p>
+</section>
+<section class="item" id="p6-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these videos target the comparison outcomes of the module. The queue lecture reinforces the FIFO principle and the enqueue/dequeue operations that define it (MO1), while the stack lecture supplies the LIFO counterpart with its push/pop operations and single top-of-stack access point; watched together they give you the direct contrast in ordering principles, points of access, and typical use cases called for by MO4. The implement-a-queue-using-stacks video deepens that contrast by forcing you to reason about what it costs to convert one ordering into the other, which is exactly the kind of reasoning MO5 asks for when justifying a structure choice for a given problem. These videos support, but do not replace, the module's coverage of array-based and linked-list queue implementations and their complexity trade-offs (MO2, MO3).</p>
+</section>
+<section class="item" id="p6-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+
+<footer class="presemaker-credit" data-credit="2" style="margin-top:2rem;padding:14px 8px;border-top:1px solid #ddd;background:#fff;text-align:center;font:13px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#595959;"><svg width="20" height="20" viewBox="0 0 2048 2048" aria-hidden="true" focusable="false" style="vertical-align:-5px;margin-right:7px"><rect width="2048" height="2048" rx="384" fill="#0F6E6E"/><path fill="#0A5050" d="M1024 1000 344 832v816l680 168zm0 0 680-168v816l-680 168z"/><path fill="#fff" d="M1024 944 384 784v808l640 160zm0 0 640-160v808l-640 160z"/><rect x="1002" y="944" width="44" height="808" fill="#0F6E6E"/><rect x="936" y="246" width="176" height="448" rx="44" fill="#fff"/><rect x="800" y="382" width="448" height="176" rx="44" fill="#fff"/></svg>Created with <a href="https://softwareplus.ai/coursebuilder/" target="_blank" rel="noopener" style="color:#2f5d8f;font-weight:600;text-decoration:none;">CourseBuilder+</a><span aria-hidden="true"> · </span><a href="https://softwareplus.ai/" target="_blank" rel="noopener" style="color:#2f5d8f;text-decoration:none;">SoftwarePlus.ai</a></footer>
+</body>
+</html>

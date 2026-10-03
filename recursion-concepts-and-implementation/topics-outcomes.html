@@ -18,13 +18,13 @@ li{margin:5px 0}
 .el-body{color:#555}
 .prefix{color:#555;font-style:italic;margin:6px 0 14px}
 .mo{border:1px solid #e2e2e2;border-radius:6px;padding:12px 16px;margin:12px 0}
-.mo .code{font-size:.8rem;color:#888;text-transform:uppercase;letter-spacing:.04em}
+.mo .code{font-size:.8rem;color:#595959;text-transform:uppercase;letter-spacing:.04em}
 .mo .statement{font-weight:600;margin:4px 0 8px}
 .meta span{display:inline-block;background:#eef2f8;color:#1a3c6e;border-radius:3px;padding:1px 8px;margin:0 6px 0 0;font-size:.85rem}
 .meta .map{background:#eaf6ec;color:#137333}
 .co{margin:7px 0}
 .co .code{font-weight:600;color:#1a3c6e;margin-right:6px}
-.empty{color:#888}
+.empty{color:#595959}
 </style>
 </head>
 <body>
@@ -33,7 +33,7 @@ li{margin:5px 0}
 <div class="toc"><a href="#topics">📋 Module Topics</a><a href="#outcomes">🎯 Student Learning Outcomes</a></div>
 
 <h2 id="topics">Module Topics</h2>
-<h3>What is Recursion?</h3>
+<h3 id="topic-1">What is Recursion?</h3>
 <div class="summary">Introduces recursion as a programming strategy where a function calls itself to solve a problem. Establishes the conceptual foundation before diving into technical details.</div>
 <ul>
 <li><strong>Defining Recursion</strong> <span class="el-body">— Recursion is a programming strategy in which a function solves a problem by calling itself as part of its own definition.</span></li>
@@ -42,7 +42,7 @@ li{margin:5px 0}
 <li><strong>Why Recursion Matters as a Strategy</strong> <span class="el-body">— Recursion is more than a syntax feature — it is a high-level problem-solving strategy that appears across classic algorithms and data structures.</span></li>
 <li><strong>The Conceptual Building Blocks of a Recursive Function</strong> <span class="el-body">— Every recursive function relies on two essential conceptual components: a point where it stops, and a step where it calls itself.</span></li>
 </ul>
-<h3>Base Cases and Recursive Cases</h3>
+<h3 id="topic-2">Base Cases and Recursive Cases</h3>
 <div class="summary">Explains the two essential components of any recursive function: the base case that stops recursion and the recursive case that progresses toward it. Covers why both are necessary to avoid infinite loops.</div>
 <ul>
 <li><strong>What Is a Base Case?</strong> <span class="el-body">— The base case is the condition in a recursive function that stops further recursive calls and returns a direct result.</span></li>
@@ -52,7 +52,7 @@ li{margin:5px 0}
 <li><strong>Ensuring the Recursive Case Converges</strong> <span class="el-body">— The recursive case must consistently reduce the problem size so that the base case is eventually reached on every valid input.</span></li>
 <li><strong>Infinite Recursion and Stack Overflow</strong> <span class="el-body">— When a base case is missing or unreachable, the function calls itself without end, eventually exhausting the call stack and causing a runtime error.</span></li>
 </ul>
-<h3>The Call Stack and Recursion</h3>
+<h3 id="topic-3">The Call Stack and Recursion</h3>
 <div class="summary">Describes how the call stack manages recursive function calls, tracking execution context at each level. Explores stack frames, stack depth, and the risk of stack overflow.</div>
 <ul>
 <li><strong>What Is the Call Stack?</strong> <span class="el-body">— The call stack is a data structure the JavaScript runtime uses to track the execution of function calls in a program.</span></li>
@@ -62,7 +62,7 @@ li{margin:5px 0}
 <li><strong>Stack Overflow: When Recursion Goes Too Deep</strong> <span class="el-body">— A stack overflow error occurs when the call stack exceeds its maximum allowed size, typically because recursion has gone too deep without reaching a base case.</span></li>
 <li><strong>Preventing and Mitigating Stack Overflow</strong> <span class="el-body">— Developers can reduce the risk of stack overflow by carefully designing base cases, limiting input size, or restructuring recursion to use less stack space.</span></li>
 </ul>
-<h3>Implementing Factorial with Recursion</h3>
+<h3 id="topic-4">Implementing Factorial with Recursion</h3>
 <div class="summary">Walks through building a classic recursive factorial function in JavaScript as a concrete first implementation. Connects the mathematical definition of factorial to recursive code structure.</div>
 <ul>
 <li><strong>The Mathematical Definition of Factorial</strong> <span class="el-body">— Factorial is a mathematical operation defined recursively: n! equals n multiplied by (n-1)!, with 0! defined as 1.</span></li>
@@ -72,7 +72,7 @@ li{margin:5px 0}
 <li><strong>Tracing Execution Through the Call Stack</strong> <span class="el-body">— Tracing how factorial(3) executes step by step reveals how JavaScript manages recursive calls using the call stack.</span></li>
 <li><strong>Connecting Mathematical Structure to Code Structure</strong> <span class="el-body">— The factorial implementation demonstrates a direct one-to-one correspondence between a mathematical recursive definition and recursive JavaScript code.</span></li>
 </ul>
-<h3>Fibonacci Sequence Using Recursion</h3>
+<h3 id="topic-5">Fibonacci Sequence Using Recursion</h3>
 <div class="summary">Guides students through implementing the Fibonacci sequence recursively in JavaScript, illustrating functions with multiple recursive calls. Discusses the trade-offs of naive recursive Fibonacci in terms of performance.</div>
 <ul>
 <li><strong>What Is the Fibonacci Sequence?</strong> <span class="el-body">— The Fibonacci sequence is a series of numbers where each number is the sum of the two preceding ones, starting from 0 and 1.</span></li>
@@ -82,7 +82,7 @@ li{margin:5px 0}
 <li><strong>Performance Trade-offs of Naive Recursive Fibonacci</strong> <span class="el-body">— The naive recursive implementation of Fibonacci has significant performance drawbacks due to the repeated recalculation of the same subproblems.</span></li>
 <li><strong>Tracing a Small Fibonacci Example by Hand</strong> <span class="el-body">— Manually tracing through a small Fibonacci call, such as fibonacci(4), helps solidify understanding of how recursive calls expand and resolve.</span></li>
 </ul>
-<h3>Recursive List Traversal</h3>
+<h3 id="topic-6">Recursive List Traversal</h3>
 <div class="summary">Demonstrates how recursion can be applied to traverse and process lists or array structures in JavaScript. Highlights how recursive thinking simplifies problems that involve repeated nested or sequential processing.</div>
 <ul>
 <li><strong>What Is Recursive List Traversal?</strong> <span class="el-body">— Recursive list traversal is the technique of processing each element in a list or array by having a function call itself on a progressively smaller portion of the structure.</span></li>
@@ -92,7 +92,7 @@ li{margin:5px 0}
 <li><strong>Recursive Thinking vs. Iterative Thinking for Lists</strong> <span class="el-body">— Recursive list traversal encourages a different mental model compared to iterative loops — focusing on &#39;what to do with one element&#39; rather than &#39;how to loop through all elements&#39;.</span></li>
 <li><strong>The Call Stack During List Traversal</strong> <span class="el-body">— Each recursive call to traverse a list adds a new frame to the JavaScript call stack, which holds the current element and the remaining list for that call.</span></li>
 </ul>
-<h3>When to Use Recursion</h3>
+<h3 id="topic-7">When to Use Recursion</h3>
 <div class="summary">Compares recursion to iterative approaches, helping students recognize problem types best suited to recursive solutions. Covers readability, performance considerations, and practical guidelines for choosing recursion.</div>
 <ul>
 <li><strong>Recursion vs. Iteration: Core Trade-offs</strong> <span class="el-body">— Recursion and iteration are two fundamental approaches to solving repetitive problems, and choosing between them involves weighing clarity against performance.</span></li>
@@ -134,6 +134,6 @@ li{margin:5px 0}
 <div class="co"><span class="code">CO3</span>Implement data structures and algorithms in computer code.</div>
 <div class="co"><span class="code">CO4</span>Analyze the performance of algorithms and data structures</div>
 
-<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
+<footer class="presemaker-credit" data-credit="2" style="margin-top:2rem;padding:14px 8px;border-top:1px solid #ddd;background:#fff;text-align:center;font:13px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#595959;"><svg width="20" height="20" viewBox="0 0 2048 2048" aria-hidden="true" focusable="false" style="vertical-align:-5px;margin-right:7px"><rect width="2048" height="2048" rx="384" fill="#0F6E6E"/><path fill="#0A5050" d="M1024 1000 344 832v816l680 168zm0 0 680-168v816l-680 168z"/><path fill="#fff" d="M1024 944 384 784v808l640 160zm0 0 640-160v808l-640 160z"/><rect x="1002" y="944" width="44" height="808" fill="#0F6E6E"/><rect x="936" y="246" width="176" height="448" rx="44" fill="#fff"/><rect x="800" y="382" width="448" height="176" rx="44" fill="#fff"/></svg>Created with <a href="https://softwareplus.ai/coursebuilder/" target="_blank" rel="noopener" style="color:#2f5d8f;font-weight:600;text-decoration:none;">CourseBuilder+</a><span aria-hidden="true"> · </span><a href="https://softwareplus.ai/" target="_blank" rel="noopener" style="color:#2f5d8f;text-decoration:none;">SoftwarePlus.ai</a></footer>
 </body>
 </html>

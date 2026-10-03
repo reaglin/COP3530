@@ -1,0 +1,341 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>2 - Lists and Arrays: Structure and Introduction to Big O Notation</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+body{font-family:'Segoe UI',Arial,sans-serif;max-width:820px;margin:2rem auto;padding:0 1.25rem;color:#222;line-height:1.55}
+h1{font-size:1.9rem;border-bottom:2px solid #ddd;padding-bottom:.4rem}
+h2{font-size:1.3rem;color:#1f3864;margin-top:1.6rem}
+body{padding-left:1.1rem;padding-right:1.1rem}
+ul,ol{margin:.4rem 0 1rem 1.4rem}
+li{margin:.25rem 0}
+nav.toc{background:rgba(128,128,128,.08);border:1px solid rgba(128,128,128,.25);border-radius:8px;padding:.6rem 1rem;margin:1.2rem 0}
+nav.toc strong{display:block;margin-bottom:.3rem}
+nav.toc a{display:block;text-decoration:none;padding:.12rem 0}
+section.item{border-top:1px solid rgba(128,128,128,.22);padding-top:.3rem}
+table{border-collapse:collapse;width:100%;margin:.8rem 0}
+th,td{border:1px solid rgba(128,128,128,.45);padding:.4rem .6rem;text-align:left;vertical-align:top}
+thead th{background:rgba(128,128,128,.18);font-weight:600}
+tbody tr:nth-child(even){background:rgba(128,128,128,.08)}
+</style>
+<style>section.merged-part{border-top:2px solid rgba(128,128,128,.3);margin-top:2rem;padding-top:.5rem}nav.toc{background:rgba(128,128,128,.08);border:1px solid rgba(128,128,128,.25);border-radius:8px;padding:.6rem 1rem;margin:1.2rem 0}nav.toc a{display:block;text-decoration:none;padding:.12rem 0}</style>
+</head>
+<body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ 2 - Lists and Arrays: Structure and Introduction to Big O Notation</a></div>
+<h1>2 - Lists and Arrays: Structure and Introduction to Big O Notation</h1>
+<nav class="toc"><strong>Contents</strong>
+<a href="#part1">Introduction to Lists and Arrays</a>
+<a href="#part2">Array Structure and Memory Layout</a>
+<a href="#part3">List Structure and Dynamic Behavior</a>
+<a href="#part4">Core Data Operations on Lists and Arrays</a>
+<a href="#part5">Introduction to Computational Complexity</a>
+<a href="#part6">Big O Notation Fundamentals</a>
+<a href="#part7">Applying Big O to List and Array Operations</a>
+</nav>
+<section class="merged-part" id="part1">
+<h2>Introduction to Lists and Arrays</h2>
+<section class="item" id="p1-sec1">
+<h3>Introduction</h3>
+<p>Data structures are the organized ways we store data in memory so that a program can find it, change it, and reuse it efficiently. Arrays and lists are the two starting points for almost every other structure you will meet in this course: an array is a fixed-size block of contiguous memory whose elements are reached by index, while a linked list is a chain of nodes where each node holds a value and a reference to the next node. Both are ordered collections, but they organize memory in very different ways, and that difference drives everything else.</p>
+<p>This topic matters because the rest of COP3530 builds on it. Stacks, queues, hash tables, trees, and graphs are all implemented on top of array-like or node-based storage, and the trade-offs you learn here — fast indexed access versus cheap insertion and deletion — reappear constantly. Getting comfortable now with how memory is laid out, what indexing really means, and when resizing is required will make the Big O analysis later in the module feel like a natural next step rather than a separate subject.</p>
+<p>As you watch, keep a short comparison table going. For each structure, note: how elements are located (by index or by following links), whether the size is fixed or grows, what happens when you insert or delete at the front, middle, or end, and what extra memory the structure costs. Try to express each answer in plain words first; attaching Big O labels comes later in the module.</p>
+</section>
+<section class="item" id="p1-sec2">
+<h3>Video 1: Lec-17: Arrays vs Linked Lists | Data Structures</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/d4pp0noHOB8?cc_load_policy=1&amp;rel=0" title="Video: Lec-17: Arrays vs Linked Lists | Data Structures (Gate Smashers)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Gate Smashers</strong> · 8:41 · 244,396 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=d4pp0noHOB8" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A lecture-style comparison of arrays and linked lists, contrasting contiguous versus linked memory allocation, static versus dynamic sizing, and the cost of accessing, inserting, and deleting elements. It is framed for exam and interview preparation, so it emphasizes the points that are most often tested.</p>
+<h4>Why this video</h4>
+<p>This is the most direct match for the "Arrays vs. Lists: Key Differences" subtopic and pulls the module's comparison together in one place. The Gate Smashers channel is widely used by computer science students and works through the trade-offs step by step on the board.</p>
+</section>
+<section class="item" id="p1-sec3">
+<h3>Video 2: 10 Key Data Structures We Use Every Day</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/ouipSd_5ivQ?cc_load_policy=1&amp;rel=0" title="Video: 10 Key Data Structures We Use Every Day (ByteByteGo)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>ByteByteGo</strong> · 8:43 · 451,698 views · 3y ago · captions — <a href="https://www.youtube.com/watch?v=ouipSd_5ivQ" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A fast, animated tour of ten data structures that appear in everyday software, almost certainly including arrays and linked lists along with stacks, queues, hash tables, trees, and graphs. Based on the title and channel, it focuses on what each structure looks like and where it is actually used in real systems rather than on code details.</p>
+<h4>Why this video</h4>
+<p>It gives you the big-picture answer to "what are data structures?" and shows where arrays and lists sit among the others, which is a useful frame before you study either one closely. ByteByteGo is a well-known systems-oriented channel whose clear animations suit an introductory overview.</p>
+</section>
+<section class="item" id="p1-sec4">
+<h3>Video 3: Linked lists in 4 minutes</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/F8AbOfQwl1c?cc_load_policy=1&amp;rel=0" title="Video: Linked lists in 4 minutes (Michael Sambol)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Michael Sambol</strong> · 4:22 · 217,408 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=F8AbOfQwl1c" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A concise four-minute explanation of linked lists from Michael Sambol, with accompanying Python code linked in the description. Expect a walkthrough of nodes and references, how the list is traversed from the head, and the basic insertion and deletion operations.</p>
+<h4>Why this video</h4>
+<p>It defines lists precisely and visually, covering the node-and-pointer structure that distinguishes them from arrays. Sambol's short, textbook-aligned videos are a reliable, no-filler complement to your reading on the "Defining Lists" subtopic.</p>
+</section>
+<section class="item" id="p1-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these videos move from the general to the specific. The ByteByteGo overview establishes what data structures are and why we choose among them, the Sambol video defines the linked list and its node-based organization, and the Gate Smashers lecture sets arrays and lists side by side on memory layout, sizing, and operation cost — directly supporting MO1 and MO2. The access, search, insertion, and deletion behaviors demonstrated here are the raw material you will label with O(1), O(n), and O(n squared) in the Big O portion of the module (MO3), and the trade-off reasoning modeled in the comparison video previews the kind of justification MO4 asks you to produce when selecting a structure for a given use case.</p>
+</section>
+<section class="item" id="p1-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part2">
+<h2>Array Structure and Memory Layout</h2>
+<section class="item" id="p2-sec1">
+<h3>Introduction</h3>
+<p>An array is the simplest and most fundamental data structure you will study in this course: a fixed-size block of memory holding elements of the same type, laid out one after another with no gaps. Because the elements are contiguous, the computer does not need to search for an element — it can compute exactly where element i lives using the address of the first element, the index, and the size of each element. That single idea, direct address calculation, is why array access is constant time and why arrays serve as the building block for so many other structures.</p>
+<p>The details matter. Zero-based indexing is not an arbitrary convention; it falls out of the address formula, since the first element sits zero elements away from the base address. Fixed size and static allocation matter too: when an array is declared, the space is reserved up front, so growing it later usually means allocating a new, larger block and copying. And accessing an element by index is a completely different operation from searching for a value — one is a calculation, the other requires examining elements until you find a match.</p>
+<p>As you watch, pay attention to three things: how the memory address of an element is computed, where in memory arrays actually live (stack versus heap, and who hands out that memory), and the distinction between knowing an index and having to look for a value. Keep a mental note of how these mechanics will later explain the Big O costs you will assign to array operations.</p>
+</section>
+<section class="item" id="p2-sec2">
+<h3>Video 1: Lec-3: Arrays in Data Structure by #Naina Mam | Initialization, Declaration, Memory Representation</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/6e6yKtr2VGI?cc_load_policy=1&amp;rel=0" title="Video: Lec-3: Arrays in Data Structure by #Naina Mam | Initialization, Declaration, Memory Representation (Gate Smashers)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Gate Smashers</strong> · 11:07 · 603,033 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=6e6yKtr2VGI" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A lecture-style introduction to arrays as a data structure, covering declaration, initialization, and how arrays are represented in memory. Based on its title and framing, it should walk through contiguous storage, indexing, and the address calculation used to locate an element from a base address and index.</p>
+<h4>Why this video</h4>
+<p>This is the most directly on-topic video for the core subtopics — what an array is, contiguous storage, zero-based indexing, and direct address calculation — and Gate Smashers is a well-established exam-prep channel known for clear, worked whiteboard explanations.</p>
+</section>
+<section class="item" id="p2-sec3">
+<h3>Video 2: Stack vs Heap Memory - Simple Explanation</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/5OJRqkYbK-4?cc_load_policy=1&amp;rel=0" title="Video: Stack vs Heap Memory - Simple Explanation (Alex Hyett)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Alex Hyett</strong> · 5:28 · 458,562 views · 3y ago · captions — <a href="https://www.youtube.com/watch?v=5OJRqkYbK-4" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A short, plain-language explanation of the difference between stack memory and heap memory in a running program. Expect coverage of how stack memory is allocated automatically and reclaimed when a function returns, while heap memory is requested explicitly and persists until released.</p>
+<h4>Why this video</h4>
+<p>It supplies the background needed to understand fixed size and static allocation: whether an array is declared with a compile-time size on the stack or allocated dynamically on the heap changes how its memory is reserved and released.</p>
+</section>
+<section class="item" id="p2-sec4">
+<h3>Video 3: Allocators, Explained Simply</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/GZ6PuLikw84?cc_load_policy=1&amp;rel=0" title="Video: Allocators, Explained Simply (Nic Barker)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Nic Barker</strong> · 10:37 · 50,944 views · 1y ago · captions — <a href="https://www.youtube.com/watch?v=GZ6PuLikw84" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>An accessible overview of what an allocator is and what it does, using visual examples to show how blocks of memory are handed out to a program. It should illustrate how a program obtains a contiguous region of memory and why requesting a larger block later may require new space.</p>
+<h4>Why this video</h4>
+<p>Nic Barker's visual approach makes the mechanics of reserving contiguous memory concrete, which reinforces why an array's size is fixed at allocation and why growing one is not free.</p>
+</section>
+<section class="item" id="p2-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these videos build the memory-level foundation the module's outcomes depend on. The arrays lecture directly supports MO1 by establishing the array's contiguous, fixed-size layout — the baseline you will contrast with linked list structures — and supports MO2 and MO3 by showing that element access is a direct address computation rather than a search, which is the concrete reason access is O(1) while searching an unsorted array is O(n). The stack-versus-heap and allocator videos deepen the sizing-behavior half of MO1 and feed into MO4 by making clear what it actually costs to reserve or re-reserve a contiguous block, so that your later trade-off arguments about choosing arrays versus lists rest on how memory really works rather than on memorized complexity classes.</p>
+</section>
+<section class="item" id="p2-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part3">
+<h2>List Structure and Dynamic Behavior</h2>
+<section class="item" id="p3-sec1">
+<h3>Introduction</h3>
+<p>An array gives you a fixed block of memory: you decide how many slots you need, and that decision is locked in when the array is created. A list, by contrast, is designed to be dynamic — it grows and shrinks as elements are added and removed, so the programmer does not have to predict the final size in advance. This topic examines how that dynamic behavior is actually achieved, either by reallocating and copying a larger backing array behind the scenes, or by linking separately allocated nodes together so that each new element simply gets its own piece of memory.</p>
+<p>These mechanics matter for the rest of the course because they explain where the cost of an operation comes from. Resizing an array is not free: a new, larger block must be allocated and every existing element copied into it. Linked structures avoid that copying but give up the constant-time indexed access that contiguous memory provides. Understanding both mechanisms is what lets you say, with evidence, why one structure is the better fit for a given use case.</p>
+<p>As you watch, pay attention to three things: what happens in memory at the moment a structure runs out of room, how elements are shifted or re-linked when something is inserted or removed in the middle, and how you reach the element at a particular position. Keep a running list of the trade-offs you notice — fixed versus variable size, contiguous versus scattered memory, cheap indexing versus cheap insertion. Those notes will feed directly into the Big O discussion later in this module.</p>
+</section>
+<section class="item" id="p3-sec2">
+<h3>Video 1: How to resize an Array in Java ? | Animation</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/7IV3DRYaZxI?cc_load_policy=1&amp;rel=0" title="Video: How to resize an Array in Java ? | Animation (Dinesh Varyani)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Dinesh Varyani</strong> · 9:06 · 33,033 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=7IV3DRYaZxI" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>An animated walkthrough of how an array is resized in Java. Based on its title and format, it should show visually what happens when a fixed-size array fills up: allocating a new, larger array, copying the existing elements across, and redirecting the reference to the new block. This is the mechanism that sits underneath dynamic array-backed lists.</p>
+<h4>Why this video</h4>
+<p>The animation makes the hidden cost of "growing" an array visible, which is exactly what the subtopics on variable sizing and memory allocation require; Dinesh Varyani's DSA series is a widely used, structured treatment of these fundamentals.</p>
+</section>
+<section class="item" id="p3-sec3">
+<h3>Video 2: How to resize an Array in Java ? | Implementation</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/CCLPUWyVg2A?cc_load_policy=1&amp;rel=0" title="Video: How to resize an Array in Java ? | Implementation (Dinesh Varyani)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Dinesh Varyani</strong> · 9:07 · 30,232 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=CCLPUWyVg2A" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>The implementation companion to the animation video, working through resizing an array in Java in actual code. Expect to see the allocation of a larger array, the copy loop or copy utility, and the bookkeeping needed to track capacity versus the number of elements stored.</p>
+<h4>Why this video</h4>
+<p>Watching the code immediately after the animation connects the conceptual picture to concrete steps, reinforcing why dynamic resizing involves work proportional to the number of elements already stored.</p>
+</section>
+<section class="item" id="p3-sec4">
+<h3>Video 3: C++ Tutorial - LINKED LISTS</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/m7rrk65GiXY?cc_load_policy=1&amp;rel=0" title="Video: C++ Tutorial - LINKED LISTS (LinkedIn Learning)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>LinkedIn Learning</strong> · 6:14 · 229,433 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=m7rrk65GiXY" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A short C++ tutorial on linked lists, presented as a way to store a set of elements that can grow and shrink dynamically. It should introduce nodes, the pointers that connect them, and how the structure expands without needing one contiguous block of memory. The description explicitly frames linked lists as the dynamic alternative to fixed storage.</p>
+<h4>Why this video</h4>
+<p>This video supplies the other half of the comparison — element management through linking rather than copying — and comes from LinkedIn Learning, a professional training producer, making it a clear contrast to the array-resizing videos.</p>
+</section>
+<section class="item" id="p3-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these videos build the structural foundation the module's outcomes depend on. The two resizing videos show the memory layout and sizing behavior of arrays, while the linked list video shows how a dynamic structure manages elements without a fixed contiguous block, supporting MO1's array-versus-list comparison. Seeing copying, shifting, and pointer re-linking in action prepares you to describe access, search, insertion, and deletion and to notice that cost depends on position (MO2). Those observations are the raw material for naming operations as O(1) or O(n) once Big O notation is introduced (MO3), and for arguing which structure suits a given use case (MO4).</p>
+</section>
+<section class="item" id="p3-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part4">
+<h2>Core Data Operations on Lists and Arrays</h2>
+<section class="item" id="p4-sec1">
+<h3>Introduction</h3>
+<p>Every data structure, no matter how simple or complex, is ultimately judged by what you can do with it and how much that costs. For lists and arrays, four operations form the core vocabulary: accessing an element at a given position, searching for an element by value, inserting a new element, and deleting an existing one. This topic asks you to describe each of these precisely — what steps the machine actually performs — before attaching any complexity notation to them.</p>
+<p>The critical insight in this topic is that cost depends on position. Accessing the fifth element of an array is not the same work as accessing the fifth element of a singly linked list; inserting at the front of an array is not the same work as inserting at the end. Once you can articulate why shifting elements, traversing pointers, or indexing directly differ in effort, Big O notation becomes a natural shorthand rather than a memorized table.</p>
+<p>The videos below extend the same operation vocabulary to other structures. As you watch, keep a running mental checklist: for each operation shown, ask where the work happens, whether the position of the operation changes the amount of work, and how the structure's layout makes some operations cheap and others expensive. That habit of questioning — not the specific structures demonstrated — is what carries into the rest of the course.</p>
+</section>
+<section class="item" id="p4-sec2">
+<h3>Video 1: Trie Data Structure | Insertion, Deletion &amp; Searching in a Trie | DSA-One Course #99</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/soJgGe1CQHw?cc_load_policy=1&amp;rel=0" title="Video: Trie Data Structure | Insertion, Deletion &amp; Searching in a Trie | DSA-One Course #99 (Anuj Kumar Sharma)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Anuj Kumar Sharma</strong> · 18:10 · 71,323 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=soJgGe1CQHw" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>This lecture introduces the trie, a tree-based structure used for storing strings, and walks through how insertion, deletion, and searching are performed on it. Based on the title and description, you can expect a step-by-step treatment of each operation, likely with diagrams showing how characters are placed along paths from the root. It is part of a larger DSA course sequence, so it assumes some comfort with basic structures.</p>
+<h4>Why this video</h4>
+<p>It demonstrates the same four-operation framework — insert, delete, search — applied to a structure very different from a flat array, which helps you see that these operations are a universal lens for analyzing any data structure rather than something specific to lists.</p>
+</section>
+<section class="item" id="p4-sec3">
+<h3>Video 2: Lec-30: Introduction to Stack | PUSH and POP operations | Data Structure</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/HRDHgKrYHgU?cc_load_policy=1&amp;rel=0" title="Video: Lec-30: Introduction to Stack | PUSH and POP operations | Data Structure (Gate Smashers)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Gate Smashers</strong> · 6:46 · 325,598 views · 3y ago · captions — <a href="https://www.youtube.com/watch?v=HRDHgKrYHgU" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>This Gate Smashers lecture introduces the stack and the two operations that define it, PUSH and POP, which are insertion and deletion restricted to a single end of the structure. Expect a clear explanation of how elements enter and leave, likely with worked examples of the top pointer moving as operations occur. The video is part of a widely used data structures lecture series aimed at exam and interview preparation.</p>
+<h4>Why this video</h4>
+<p>Because a stack restricts insertion and deletion to one position, it is a clean illustration of the subtopic on how operation cost varies by position — it shows why limiting where operations can happen makes them cheap and predictable.</p>
+</section>
+<section class="item" id="p4-sec4">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Both videos reinforce MO2 by presenting insertion, deletion, and search as the defining operations of a data structure and showing exactly what steps each requires. The stack lecture speaks directly to the idea that position determines cost, since restricting insertion and deletion to one end keeps those operations constant-time, which supports the reasoning behind MO3. The trie video widens your view by applying the same operation vocabulary to a structure with a very different layout, which supports MO1's emphasis on how structural characteristics shape behavior and prepares you for the trade-off reasoning required by MO4. Use both as practice in asking the central question of this module: for this structure and this position, how much work does the operation actually take?</p>
+</section>
+<section class="item" id="p4-sec5">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part5">
+<h2>Introduction to Computational Complexity</h2>
+<section class="item" id="p5-sec1">
+<h3>Introduction</h3>
+<p>Computational complexity is the study of how the cost of running an algorithm grows as the amount of data it handles grows. Instead of timing code with a stopwatch — which depends on your machine, your language, and what else your computer is doing — we count the operations an algorithm performs as a function of the input size, usually called n. This gives us a machine-independent way to compare two approaches before we ever write them.</p>
+<p>This matters in COP3530 because almost every decision you make about data structures is really a decision about cost. Reading the tenth item of an array, searching an unsorted list, or inserting at the front of a structure all have different costs, and those differences only become visible when n is large. Complexity analysis is the vocabulary you will use for the rest of the course to justify why one structure beats another for a given job.</p>
+<p>As you watch, pay attention to four things: how each presenter identifies the input size, which operations they decide to count, how they distinguish best, average, and worst cases, and why they throw away constants and lower-order terms. That last habit — abstraction — can feel like cheating at first, but it is what lets us say something true about an algorithm's behavior at any scale rather than a single measurement on one computer.</p>
+</section>
+<section class="item" id="p5-sec2">
+<h3>Video 1: Analyzing algorithms in 6 minutes — Intro</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/2_Ud0TESsa0?cc_load_policy=1&amp;rel=0" title="Video: Analyzing algorithms in 6 minutes — Intro (Michael Sambol)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Michael Sambol</strong> · 6:29 · 32,160 views · 2y ago · captions — <a href="https://www.youtube.com/watch?v=2_Ud0TESsa0" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A fast, focused introduction to what it means to analyze an algorithm, covering how we reason about running time in terms of input size rather than wall-clock seconds. The video is framed as the first part of a short series, with a follow-up on asymptotic notation, so it likely sets up the counting-operations mindset that Big O then formalizes. Code examples are referenced in the description.</p>
+<h4>Why this video</h4>
+<p>Michael Sambol's algorithm videos are widely used by CS students for their brevity and correctness, and this one is deliberately scoped as the conceptual starting point — ideal for the "What Is Computational Complexity?" and "Input Size as the Key Variable" subtopics before you meet the notation itself.</p>
+</section>
+<section class="item" id="p5-sec3">
+<h3>Video 2: Data Structures &amp; Algorithms - Complexity Analysis - Best, Average, &amp; Worst Case</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/D7jaCDDSF18?cc_load_policy=1&amp;rel=0" title="Video: Data Structures &amp; Algorithms - Complexity Analysis - Best, Average, &amp; Worst Case (Dr. Joanne Skiles)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Dr. Joanne Skiles</strong> · 14:14 · 4,167 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=D7jaCDDSF18" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A longer, lecture-style treatment of complexity analysis that focuses specifically on best case, average case, and worst case. Expect worked reasoning about how the same algorithm can behave very differently depending on the particular input it receives, and why we usually quote the worst case when comparing algorithms.</p>
+<h4>Why this video</h4>
+<p>This is the most direct coverage of the "Worst, Best, and Average Cases" subtopic, and its university-course framing means it spends enough time on the distinction for the ideas to stick rather than rushing past them.</p>
+</section>
+<section class="item" id="p5-sec4">
+<h3>Video 3: Time Complexity of an Algorithm</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/6CWVNRAIAEY?cc_load_policy=1&amp;rel=0" title="Video: Time Complexity of an Algorithm (Dinesh Varyani)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Dinesh Varyani</strong> · 5:23 · 156,408 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=6CWVNRAIAEY" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A compact explanation of time complexity that walks through how to count the cost of individual operations in a piece of code and express the total as a function of n. Videos in this series are animation-driven and typically build from simple statements and loops up to a general running-time expression.</p>
+<h4>Why this video</h4>
+<p>Dinesh Varyani's DSA series is a popular, well-structured resource, and this video connects the abstract idea of complexity to concrete line-by-line operation costs — exactly the bridge needed for the "Operations and Their Costs" and "The Purpose of Abstraction in Complexity" subtopics.</p>
+</section>
+<section class="item" id="p5-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these videos give you the analytical language the rest of the module depends on. Sambol's introduction and Varyani's operation-counting walkthrough prepare you to classify list and array operations as O(1), O(n), or O(n squared) (MO3) by making input size and per-operation cost explicit, which in turn supports describing how the cost of access, search, insertion, and deletion varies by position (MO2). Dr. Skiles's treatment of best, average, and worst cases gives you the precision needed to compare structures honestly rather than citing a single number, which is the foundation for evaluating efficiency trade-offs and justifying a data structure choice for a specific use case (MO4). While these videos do not themselves contrast array and list memory layouts (MO1), they supply the cost framework you will apply to that comparison in the rest of the module.</p>
+</section>
+<section class="item" id="p5-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part6">
+<h2>Big O Notation Fundamentals</h2>
+<section class="item" id="p6-sec1">
+<h3>Introduction</h3>
+<p>Big O notation is the standard vocabulary computer scientists use to describe how the cost of an algorithm grows as the size of its input grows. Instead of measuring runtime in seconds — which depends on your machine, your compiler, and what else is running — Big O describes the shape of the growth curve: does the work stay flat as data grows (O(1)), grow in step with the data (O(n)), or explode as the data grows (O(n^2))?</p>
+<p>In this module, Big O is the tool that lets you compare arrays and lists honestly. Accessing an element by index in an array is a constant-time operation; searching an unsorted list means potentially touching every element; nested loops over the same collection produce quadratic behavior. Once you can label these patterns, you can justify choosing one structure over another instead of guessing.</p>
+<p>As you watch, focus on three habits. First, learn to count operations in terms of n rather than in absolute numbers. Second, practice dropping constants and non-dominant terms — why 3n + 50 is simply O(n), and why n^2 + n collapses to O(n^2). Third, build intuition for the relative ordering of complexity classes so that, when you later analyze insertion or deletion at the front versus the back of a structure, the Big O label comes naturally.</p>
+</section>
+<section class="item" id="p6-sec2">
+<h3>Video 1: Introduction to Big-O Notation with Examples | Time and Space Complexity Simplified | Geekific</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/W0Fwot0KNjA?cc_load_policy=1&amp;rel=0" title="Video: Introduction to Big-O Notation with Examples | Time and Space Complexity Simplified | Geekific (Geekific)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Geekific</strong> · 15:25 · 5,255 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=W0Fwot0KNjA" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A fifteen-minute introduction to Big-O notation that, based on its title and description, walks through both time and space complexity with worked examples. Expect coverage of what Big-O means conceptually and how common complexity classes such as constant, linear, and quadratic time arise from simple code patterns. The longer runtime allows for a slower, example-driven build-up rather than a quick definition.</p>
+<h4>Why this video</h4>
+<p>This is the best starting point for the subtopics "What Is Big O Notation?" and the individual O(1), O(n), and O(n^2) classes, since it is framed explicitly as an introduction with examples. Geekific produces accessible, beginner-oriented programming and data-structures content, which suits students meeting these ideas for the first time.</p>
+</section>
+<section class="item" id="p6-sec3">
+<h3>Video 2: Analyzing algorithms in 7 minutes — Asymptotic Notation</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/u8AprTUkJjM?cc_load_policy=1&amp;rel=0" title="Video: Analyzing algorithms in 7 minutes — Asymptotic Notation (Michael Sambol)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Michael Sambol</strong> · 7:10 · 40,301 views · 2y ago · captions — <a href="https://www.youtube.com/watch?v=u8AprTUkJjM" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A concise seven-minute treatment of asymptotic notation that covers Big-O alongside its companions, Theta and Omega. It frames Big-O as one member of a family of notations used to bound an algorithm's growth rate, which clarifies what Big-O is actually asserting (an upper bound) rather than treating it as a vague efficiency score.</p>
+<h4>Why this video</h4>
+<p>Michael Sambol is a well-regarded source for short, precise algorithms explanations, and this video adds the formal grounding behind the informal definition. It directly supports "Comparing Complexity Classes" by showing how growth rates are ordered and bounded.</p>
+</section>
+<section class="item" id="p6-sec4">
+<h3>Video 3: Calculating Time Complexity of a Polynomial Algorithm (Big O)</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/V8undz_8y2o?cc_load_policy=1&amp;rel=0" title="Video: Calculating Time Complexity of a Polynomial Algorithm (Big O) (Dinesh Varyani)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Dinesh Varyani</strong> · 9:07 · 72,379 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=V8undz_8y2o" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A focused walkthrough of how to calculate the time complexity of a polynomial algorithm, taking an expression with multiple terms and reducing it to a single Big O class. Expect step-by-step reasoning about which term dominates as n grows large and why lower-order terms and multiplicative constants can be discarded.</p>
+<h4>Why this video</h4>
+<p>This video targets the "Dropping Constants and Non-Dominant Terms" subtopic more directly than a general introduction does, which is exactly the step students most often get wrong. Dinesh Varyani's DSA series is known for methodical, worked-example instruction that you can follow along with on paper.</p>
+</section>
+<section class="item" id="p6-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these videos build the analytical vocabulary the module's outcomes depend on. The introductory and asymptotic-notation videos establish what Big O means and how complexity classes are ordered, which is the foundation for MO3 — classifying list and array operations as O(1), O(n), or O(n^2). The polynomial-analysis video supplies the simplification technique you need to reduce a counted operation expression to a clean complexity label, reinforcing the same outcome with hands-on practice. Once that vocabulary is in place, you can apply it to the operation-by-operation discussion in MO2 and use it as evidence when comparing memory layout and sizing behavior (MO1) or defending a data structure choice for a given use case (MO4).</p>
+</section>
+<section class="item" id="p6-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part7">
+<h2>Applying Big O to List and Array Operations</h2>
+<section class="item" id="p7-sec1">
+<h3>Introduction</h3>
+<p>Big O notation becomes genuinely useful the moment you apply it to real operations on real structures. In this topic you take the four core operations you already know — access, search, insertion, and deletion — and attach a cost class to each one as it behaves on an array and on a linked list. Accessing an array element by index is O(1) because address arithmetic finds the slot directly, while searching an unsorted sequence is O(n) because, in the worst case, every element must be examined. Insertion and deletion are the interesting cases: the cost depends on position, since shifting elements in an array or walking to a node in a list changes the work required.</p>
+<p>This matters because data structure selection is an engineering decision, not a style preference. Once you can say that an array gives O(1) indexed access but O(n) insertion at the front, and that a linked list reverses that profile, you can justify a choice for a specific use case rather than guessing. That reasoning — matching the operations your program performs most often to the structure that makes them cheap — is the skill the rest of COP3530 builds on.</p>
+<p>As you watch, focus on the counting method: how does the presenter decide which statements execute once versus n times, and how do constants and lower-order terms get dropped? Pay attention to the vocabulary of complexity classes so you can recognize O(1), O(n), and O(n^2) patterns on sight, and keep asking yourself which array or list operation each example resembles.</p>
+</section>
+<section class="item" id="p7-sec2">
+<h3>Video 1: Calculating Time complexity of a Linear Algorithm (Big O)</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/kf2xZiYRds0?cc_load_policy=1&amp;rel=0" title="Video: Calculating Time complexity of a Linear Algorithm (Big O) (Dinesh Varyani)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Dinesh Varyani</strong> · 8:00 · 79,306 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=kf2xZiYRds0" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A companion video from the same series that analyzes an algorithm whose running time grows in proportion to the input, arriving at O(n). Expect a loop-based example where the presenter counts how many times each statement executes as a function of n, then simplifies the resulting expression. It should make clear why constants and lower-order terms are discarded in the final notation.</p>
+<h4>Why this video</h4>
+<p>Linear time is the cost of searching an unsorted array or list and of the shifting and traversal work in many insertions and deletions, so this video supplies the analysis pattern you will reuse for all of those operations. Watching it immediately after the constant-time video makes the contrast between O(1) and O(n) concrete.</p>
+</section>
+<section class="item" id="p7-sec3">
+<h3>Video 2: Calculating Time Complexity of Constant Algorithm (Big O)</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/tydym0S6PfE?cc_load_policy=1&amp;rel=0" title="Video: Calculating Time Complexity of Constant Algorithm (Big O) (Dinesh Varyani)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Dinesh Varyani</strong> · 4:37 · 82,145 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=tydym0S6PfE" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>This video walks through how to determine that an algorithm runs in constant time, counting the operations in a simple code fragment and showing why the total does not grow as the input size increases. Based on its title and the channel's data structures series, it should establish the O(1) notation and the reasoning behind dropping constant factors. It is the shortest of the three and serves as the natural starting point.</p>
+<h4>Why this video</h4>
+<p>O(1) is the cost class behind array access by index, so a focused, step-by-step derivation of constant time gives you the formal justification for a claim you will use constantly. Dinesh Varyani's DSA series is a widely used, beginner-oriented treatment that keeps the counting explicit.</p>
+</section>
+<section class="item" id="p7-sec4">
+<h3>Video 3: The Big Five Time Complexities in Data Structures (big-O)</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/IdvbSVSt85s?cc_load_policy=1&amp;rel=0" title="Video: The Big Five Time Complexities in Data Structures (big-O) (Professor Kevin Wortman)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Professor Kevin Wortman</strong> · 8:07 · 419 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=IdvbSVSt85s" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>Professor Kevin Wortman surveys the five efficiency classes that come up most often in data structures work: O(1), O(log n), O(n), O(n log n), and O(n^2). Rather than deriving one algorithm in detail, it frames the classes as a ranked vocabulary and, per the description, is built around a slide deck aimed at data structures students. This gives you the comparative picture needed to rank operations against one another.</p>
+<h4>Why this video</h4>
+<p>Comparing list and array operations requires knowing the ordering of complexity classes, not just how to compute one, and this video supplies exactly that frame from a computer science instructor teaching the data structures context. It also previews O(n^2), which appears when operations are nested inside loops.</p>
+</section>
+<section class="item" id="p7-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these videos give you the analytical tools that MO3 and MO4 require. The constant-time and linear-time videos teach the counting procedure that lets you classify an operation as O(1) or O(n), which is precisely what MO3 asks you to do for array access and sequential search; the complexity-classes survey adds O(n^2) and establishes the ranking among classes. That ranking is what makes MO4 possible — once you can order the classes, you can weigh an array's cheap indexed access against a list's cheaper front insertion and defend a choice. The videos reinforce MO2 indirectly as well, since the cost of insertion and deletion by position is only meaningful once you can count the shifting or traversal steps involved, and they support the structural comparison in MO1 by giving you a quantitative vocabulary for the differences between the two layouts.</p>
+</section>
+<section class="item" id="p7-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+
+<footer class="presemaker-credit" data-credit="2" style="margin-top:2rem;padding:14px 8px;border-top:1px solid #ddd;background:#fff;text-align:center;font:13px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#595959;"><svg width="20" height="20" viewBox="0 0 2048 2048" aria-hidden="true" focusable="false" style="vertical-align:-5px;margin-right:7px"><rect width="2048" height="2048" rx="384" fill="#0F6E6E"/><path fill="#0A5050" d="M1024 1000 344 832v816l680 168zm0 0 680-168v816l-680 168z"/><path fill="#fff" d="M1024 944 384 784v808l640 160zm0 0 640-160v808l-640 160z"/><rect x="1002" y="944" width="44" height="808" fill="#0F6E6E"/><rect x="936" y="246" width="176" height="448" rx="44" fill="#fff"/><rect x="800" y="382" width="448" height="176" rx="44" fill="#fff"/></svg>Created with <a href="https://softwareplus.ai/coursebuilder/" target="_blank" rel="noopener" style="color:#2f5d8f;font-weight:600;text-decoration:none;">CourseBuilder+</a><span aria-hidden="true"> · </span><a href="https://softwareplus.ai/" target="_blank" rel="noopener" style="color:#2f5d8f;text-decoration:none;">SoftwarePlus.ai</a></footer>
+</body>
+</html>

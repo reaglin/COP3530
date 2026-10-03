@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Omega and Theta Notations</title>
+<style>
+body{font-family:'Segoe UI',Arial,sans-serif;max-width:820px;margin:2rem auto;padding:0 1.25rem;color:#222;line-height:1.55}
+h1{font-size:1.9rem;border-bottom:2px solid #ddd;padding-bottom:.4rem}
+h2{font-size:1.3rem;color:#1f3864;margin-top:1.6rem}
+body{padding-left:1.1rem;padding-right:1.1rem}
+ul,ol{margin:.4rem 0 1rem 1.4rem}
+li{margin:.25rem 0}
+nav.toc{background:rgba(128,128,128,.08);border:1px solid rgba(128,128,128,.25);border-radius:8px;padding:.6rem 1rem;margin:1.2rem 0}
+nav.toc strong{display:block;margin-bottom:.3rem}
+nav.toc a{display:block;text-decoration:none;padding:.12rem 0}
+section.item{border-top:1px solid rgba(128,128,128,.22);padding-top:.3rem}
+table{border-collapse:collapse;width:100%;margin:.8rem 0}
+th,td{border:1px solid rgba(128,128,128,.45);padding:.4rem .6rem;text-align:left;vertical-align:top}
+thead th{background:rgba(128,128,128,.18);font-weight:600}
+tbody tr:nth-child(even){background:rgba(128,128,128,.08)}
+</style>
+</head>
+<body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Computational Complexity: Deep Dive into Analysis</a></div>
+<h1>Omega and Theta Notations</h1>
+<nav class="toc"><strong>Contents</strong>
+<a href="#sec1">Introduction</a>
+<a href="#sec2">Video 1: Analyzing algorithms in 7 minutes — Asymptotic Notation</a>
+<a href="#sec3">Video 2: Introduction to Big-Theta Notation</a>
+<a href="#sec4">Video 3: Introduction to Big-Omega Notation</a>
+<a href="#sec5">How These Videos Support the Learning Outcomes</a>
+<a href="#sec6">About These Videos</a>
+</nav>
+<section class="item" id="sec1">
+<h2>Introduction</h2>
+<p>So far in this module you have used Big O to describe how an algorithm&#39;s running time grows in the worst case — an upper bound on the work required. But an upper bound alone tells an incomplete story. If someone says an algorithm is O(n^2), that statement is technically true even for an algorithm that always runs in constant time, because Big O only promises the growth is no worse than the stated function. To describe performance precisely, we need two more tools: Omega notation for lower bounds and Theta notation for tight bounds.</p>
+<p>Omega (Ω) says the running time grows at least as fast as some function — it establishes a floor. Theta (Θ) applies when the upper and lower bounds match, pinning the growth rate from both directions and giving the most informative single description of an algorithm&#39;s behavior. Together, O, Ω, and Θ form a vocabulary that lets you state exactly what you are claiming: a guarantee you will never exceed, a limit you cannot beat, or an exact characterization of growth.</p>
+<p>While watching these videos, pay close attention to the formal definitions — each notation is defined by an inequality involving constants c and n0, and the differences between them come down to the direction of that inequality. Also notice how the speakers connect the formal definitions back to familiar algorithms. Ask yourself for each course algorithm we have studied, such as linear search, binary search, bubble sort, and merge sort, whether its best case and worst case match. When they match, Theta applies; when they differ, you must be careful to say which case you are describing.</p>
+</section>
+<section class="item" id="sec2">
+<h2>Video 1: Analyzing algorithms in 7 minutes — Asymptotic Notation</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/u8AprTUkJjM?cc_load_policy=1&amp;rel=0" title="Video: Analyzing algorithms in 7 minutes — Asymptotic Notation (Michael Sambol)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Michael Sambol</strong> · 7:10 · 40,301 views · 2y ago · captions — <a href="https://www.youtube.com/watch?v=u8AprTUkJjM" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>A compact overview of all three asymptotic notations — Theta, Big O, and Omega — presented together in about seven minutes. Based on its title and description, the video walks through what each notation means and how they relate to one another as descriptions of an algorithm&#39;s growth rate. It is part of a series on algorithm analysis, so it assumes you have already met the basic idea of asymptotic behavior.</p>
+<h3>Why this video</h3>
+<p>Michael Sambol&#39;s algorithm videos are widely used by CS students for their brevity and precision, and this one directly supports the &quot;Comparing O, Ω, and Θ: A Unified View&quot; subtopic by treating the three notations side by side rather than in isolation.</p>
+</section>
+<section class="item" id="sec3">
+<h2>Video 2: Introduction to Big-Theta Notation</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/1DJRhwlsg9I?cc_load_policy=1&amp;rel=0" title="Video: Introduction to Big-Theta Notation (Mathispower4u)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Mathispower4u</strong> · 4:59 · 17,505 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=1DJRhwlsg9I" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>A focused introduction to Big-Theta notation from the Mathispower4u channel. Expect a careful, example-driven treatment of the formal definition — the constants and threshold value that must exist for a function to be Θ of another — with worked examples demonstrating how to verify the relationship.</p>
+<h3>Why this video</h3>
+<p>This video gives the mathematical grounding behind tight bounds that a quick overview cannot, which is exactly what the &quot;Theta Notation: Capturing Tight Bounds&quot; subtopic requires.</p>
+</section>
+<section class="item" id="sec4">
+<h2>Video 3: Introduction to Big-Omega Notation</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/kUqqll8yOlc?cc_load_policy=1&amp;rel=0" title="Video: Introduction to Big-Omega Notation (Mathispower4u)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Mathispower4u</strong> · 4:13 · 2,852 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=kUqqll8yOlc" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>A short companion video introducing Big-Omega notation in the same style and from the same channel as the Theta video. It should present the formal definition of a lower bound and show, through examples, how to establish that one function is Ω of another.</p>
+<h3>Why this video</h3>
+<p>Watching this alongside the Theta video reinforces how the definitions differ only in the direction of the inequality, supporting the &quot;Omega Notation: Defining Lower Bounds&quot; subtopic with consistent terminology and notation.</p>
+</section>
+<section class="item" id="sec5">
+<h2>How These Videos Support the Learning Outcomes</h2>
+<p>These three videos work together to build the comparative understanding MO1 requires: the Mathispower4u pair supplies rigorous, definition-level treatment of Omega and Theta individually, while the Sambol video places all three notations in a single unified frame so you can articulate the distinct role each plays. The formal definitions and worked examples give you the machinery to justify your notation choices as MO5 asks — deciding whether your analytical goal is a worst-case guarantee, a proven lower bound, or a confirmed tight bound. Once you can distinguish the three notations, you can apply them correctly when deriving best-case, worst-case, and average-case complexities for the course algorithms in MO2, recognizing when a single Theta statement suffices and when separate case-by-case bounds are necessary.</p>
+</section>
+<section class="item" id="sec6">
+<h2>About These Videos</h2>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+
+<footer class="presemaker-credit" data-credit="2" style="margin-top:2rem;padding:14px 8px;border-top:1px solid #ddd;background:#fff;text-align:center;font:13px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#595959;"><svg width="20" height="20" viewBox="0 0 2048 2048" aria-hidden="true" focusable="false" style="vertical-align:-5px;margin-right:7px"><rect width="2048" height="2048" rx="384" fill="#0F6E6E"/><path fill="#0A5050" d="M1024 1000 344 832v816l680 168zm0 0 680-168v816l-680 168z"/><path fill="#fff" d="M1024 944 384 784v808l640 160zm0 0 640-160v808l-640 160z"/><rect x="1002" y="944" width="44" height="808" fill="#0F6E6E"/><rect x="936" y="246" width="176" height="448" rx="44" fill="#fff"/><rect x="800" y="382" width="448" height="176" rx="44" fill="#fff"/></svg>Created with <a href="https://softwareplus.ai/coursebuilder/" target="_blank" rel="noopener" style="color:#2f5d8f;font-weight:600;text-decoration:none;">CourseBuilder+</a><span aria-hidden="true"> · </span><a href="https://softwareplus.ai/" target="_blank" rel="noopener" style="color:#2f5d8f;text-decoration:none;">SoftwarePlus.ai</a></footer>
+</body>
+</html>

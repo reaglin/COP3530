@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Adjacency List Representation</title>
+<style>
+body{font-family:'Segoe UI',Arial,sans-serif;max-width:820px;margin:2rem auto;padding:0 1.25rem;color:#222;line-height:1.55}
+h1{font-size:1.9rem;border-bottom:2px solid #ddd;padding-bottom:.4rem}
+h2{font-size:1.3rem;color:#1f3864;margin-top:1.6rem}
+body{padding-left:1.1rem;padding-right:1.1rem}
+ul,ol{margin:.4rem 0 1rem 1.4rem}
+li{margin:.25rem 0}
+nav.toc{background:rgba(128,128,128,.08);border:1px solid rgba(128,128,128,.25);border-radius:8px;padding:.6rem 1rem;margin:1.2rem 0}
+nav.toc strong{display:block;margin-bottom:.3rem}
+nav.toc a{display:block;text-decoration:none;padding:.12rem 0}
+section.item{border-top:1px solid rgba(128,128,128,.22);padding-top:.3rem}
+table{border-collapse:collapse;width:100%;margin:.8rem 0}
+th,td{border:1px solid rgba(128,128,128,.45);padding:.4rem .6rem;text-align:left;vertical-align:top}
+thead th{background:rgba(128,128,128,.18);font-weight:600}
+tbody tr:nth-child(even){background:rgba(128,128,128,.08)}
+</style>
+</head>
+<body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Graphs: Structure, Representation, and Traversal</a></div>
+<h1>Adjacency List Representation</h1>
+<nav class="toc"><strong>Contents</strong>
+<a href="#sec1">Introduction</a>
+<a href="#sec2">Video 1: 0406: Adjacency-list representation</a>
+<a href="#sec3">Video 2: 0406: Graph representation alternatives revisited</a>
+<a href="#sec4">Video 3: Adjacency List Representation of an Undirected Graph in Java | Implementation</a>
+<a href="#sec5">How These Videos Support the Learning Outcomes</a>
+<a href="#sec6">About These Videos</a>
+</nav>
+<section class="item" id="sec1">
+<h2>Introduction</h2>
+<p>A graph is just a set of vertices and the edges that connect them, but before you can run any algorithm on one, you have to decide how to store it in memory. The adjacency list is the representation you will use most often in this course: for every vertex, you keep a list (or array, or set) of the vertices it connects to. In JavaScript this usually looks like an object or a Map whose keys are vertex labels and whose values are arrays of neighbors.</p>
+<p>The reason this representation matters is efficiency. An adjacency matrix stores a cell for every possible pair of vertices, which costs O(V^2) space no matter how few edges exist; an adjacency list costs roughly O(V + E), which is a huge win for sparse graphs such as road networks, social graphs, or dependency graphs. The trade-off is that checking &quot;is there an edge from u to v?&quot; requires scanning u&#39;s list instead of a single constant-time lookup, so neither representation is universally better.</p>
+<p>As you watch, pay attention to three things. First, how the structure changes between directed and undirected graphs: in an undirected graph each edge appears twice, once in each endpoint&#39;s list. Second, how the authors count space and time, and which operations favor the list versus the matrix. Third, the mechanics of actually building the structure in code, so you can translate the Java or pseudocode you see into the JavaScript Graph class you will write later in this module.</p>
+</section>
+<section class="item" id="sec2">
+<h2>Video 1: 0406: Adjacency-list representation</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/wcITWm3bSMg?cc_load_policy=1&amp;rel=0" title="Video: 0406: Adjacency-list representation (cs128)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>cs128</strong> · 8:37 · 4,855 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=wcITWm3bSMg" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>A focused lecture segment that defines the adjacency-list representation of a graph G = (V, E) as an array of lists indexed by vertex, with each list holding that vertex&#39;s neighbors. Based on its framing, it should walk through how edges are recorded for a sample graph and discuss the storage requirements of the structure.</p>
+<h3>Why this video</h3>
+<p>It gives the precise, textbook-style definition you need for &quot;What Is an Adjacency List?&quot; and &quot;Space Complexity of the Adjacency List,&quot; from a course-lecture channel whose terminology matches standard data structures texts.</p>
+</section>
+<section class="item" id="sec3">
+<h2>Video 2: 0406: Graph representation alternatives revisited</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/3d4Z78XqFik?cc_load_policy=1&amp;rel=0" title="Video: 0406: Graph representation alternatives revisited (cs128)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>cs128</strong> · 9:56 · 3,702 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=3d4Z78XqFik" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>This follow-up lecture revisits the competing ways to represent a graph and compares them operation by operation, noting for example that an adjacency matrix affords direct access for an edge-existence check while an adjacency list does not. Expect discussion of which representation is faster for iterating over a vertex&#39;s neighbors versus testing a single edge, and how sparse and dense graphs change the answer.</p>
+<h3>Why this video</h3>
+<p>It directly serves the &quot;Adjacency List vs. Adjacency Matrix&quot; and &quot;When to Choose an Adjacency List&quot; subtopics by framing the decision as a set of explicit trade-offs rather than a single right answer.</p>
+</section>
+<section class="item" id="sec4">
+<h2>Video 3: Adjacency List Representation of an Undirected Graph in Java | Implementation</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/6rDKLqFLfh0?cc_load_policy=1&amp;rel=0" title="Video: Adjacency List Representation of an Undirected Graph in Java | Implementation (Dinesh Varyani)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Dinesh Varyani</strong> · 9:44 · 19,609 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=6rDKLqFLfh0" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>An implementation-oriented walkthrough that builds an adjacency list for an undirected graph in Java, showing how vertices are stored and how each edge is inserted into the lists of both endpoints. The video is part of a larger DSA series and uses animated slides alongside the code.</p>
+<h3>Why this video</h3>
+<p>Seeing an undirected graph built edge by edge makes the directed-versus-undirected distinction concrete, and the code structure maps cleanly onto the JavaScript Graph class you are asked to write, even though the syntax is Java.</p>
+</section>
+<section class="item" id="sec5">
+<h2>How These Videos Support the Learning Outcomes</h2>
+<p>Together these videos build the representation knowledge the module depends on. The first establishes the adjacency list definition and its O(V + E) storage, and the second sets it against the adjacency matrix with explicit operation-by-operation trade-offs, which is exactly the comparison required by MO2. The third shows an undirected graph being constructed edge by edge, reinforcing the directed/undirected distinction in MO1 and giving you an implementation template to adapt for the JavaScript Graph class in MO4. Because BFS and DFS (MO3 and MO5) are normally run over an adjacency list, the fluency you gain here is a prerequisite for tracing and coding those traversals later in the module.</p>
+</section>
+<section class="item" id="sec6">
+<h2>About These Videos</h2>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+
+<footer class="presemaker-credit" data-credit="2" style="margin-top:2rem;padding:14px 8px;border-top:1px solid #ddd;background:#fff;text-align:center;font:13px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#595959;"><svg width="20" height="20" viewBox="0 0 2048 2048" aria-hidden="true" focusable="false" style="vertical-align:-5px;margin-right:7px"><rect width="2048" height="2048" rx="384" fill="#0F6E6E"/><path fill="#0A5050" d="M1024 1000 344 832v816l680 168zm0 0 680-168v816l-680 168z"/><path fill="#fff" d="M1024 944 384 784v808l640 160zm0 0 640-160v808l-640 160z"/><rect x="1002" y="944" width="44" height="808" fill="#0F6E6E"/><rect x="936" y="246" width="176" height="448" rx="44" fill="#fff"/><rect x="800" y="382" width="448" height="176" rx="44" fill="#fff"/></svg>Created with <a href="https://softwareplus.ai/coursebuilder/" target="_blank" rel="noopener" style="color:#2f5d8f;font-weight:600;text-decoration:none;">CourseBuilder+</a><span aria-hidden="true"> · </span><a href="https://softwareplus.ai/" target="_blank" rel="noopener" style="color:#2f5d8f;text-decoration:none;">SoftwarePlus.ai</a></footer>
+</body>
+</html>

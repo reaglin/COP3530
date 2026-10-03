@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>List Structure and Dynamic Behavior</title>
+<style>
+body{font-family:'Segoe UI',Arial,sans-serif;max-width:820px;margin:2rem auto;padding:0 1.25rem;color:#222;line-height:1.55}
+h1{font-size:1.9rem;border-bottom:2px solid #ddd;padding-bottom:.4rem}
+h2{font-size:1.3rem;color:#1f3864;margin-top:1.6rem}
+body{padding-left:1.1rem;padding-right:1.1rem}
+ul,ol{margin:.4rem 0 1rem 1.4rem}
+li{margin:.25rem 0}
+nav.toc{background:rgba(128,128,128,.08);border:1px solid rgba(128,128,128,.25);border-radius:8px;padding:.6rem 1rem;margin:1.2rem 0}
+nav.toc strong{display:block;margin-bottom:.3rem}
+nav.toc a{display:block;text-decoration:none;padding:.12rem 0}
+section.item{border-top:1px solid rgba(128,128,128,.22);padding-top:.3rem}
+table{border-collapse:collapse;width:100%;margin:.8rem 0}
+th,td{border:1px solid rgba(128,128,128,.45);padding:.4rem .6rem;text-align:left;vertical-align:top}
+thead th{background:rgba(128,128,128,.18);font-weight:600}
+tbody tr:nth-child(even){background:rgba(128,128,128,.08)}
+</style>
+</head>
+<body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ 2 - Lists and Arrays: Structure and Introduction to Big O Notation</a></div>
+<h1>List Structure and Dynamic Behavior</h1>
+<nav class="toc"><strong>Contents</strong>
+<a href="#sec1">Introduction</a>
+<a href="#sec2">Video 1: How to resize an Array in Java ? | Animation</a>
+<a href="#sec3">Video 2: How to resize an Array in Java ? | Implementation</a>
+<a href="#sec4">Video 3: C++ Tutorial - LINKED LISTS</a>
+<a href="#sec5">How These Videos Support the Learning Outcomes</a>
+<a href="#sec6">About These Videos</a>
+</nav>
+<section class="item" id="sec1">
+<h2>Introduction</h2>
+<p>An array gives you a fixed block of memory: you decide how many slots you need, and that decision is locked in when the array is created. A list, by contrast, is designed to be dynamic — it grows and shrinks as elements are added and removed, so the programmer does not have to predict the final size in advance. This topic examines how that dynamic behavior is actually achieved, either by reallocating and copying a larger backing array behind the scenes, or by linking separately allocated nodes together so that each new element simply gets its own piece of memory.</p>
+<p>These mechanics matter for the rest of the course because they explain where the cost of an operation comes from. Resizing an array is not free: a new, larger block must be allocated and every existing element copied into it. Linked structures avoid that copying but give up the constant-time indexed access that contiguous memory provides. Understanding both mechanisms is what lets you say, with evidence, why one structure is the better fit for a given use case.</p>
+<p>As you watch, pay attention to three things: what happens in memory at the moment a structure runs out of room, how elements are shifted or re-linked when something is inserted or removed in the middle, and how you reach the element at a particular position. Keep a running list of the trade-offs you notice — fixed versus variable size, contiguous versus scattered memory, cheap indexing versus cheap insertion. Those notes will feed directly into the Big O discussion later in this module.</p>
+</section>
+<section class="item" id="sec2">
+<h2>Video 1: How to resize an Array in Java ? | Animation</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/7IV3DRYaZxI?cc_load_policy=1&amp;rel=0" title="Video: How to resize an Array in Java ? | Animation (Dinesh Varyani)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Dinesh Varyani</strong> · 9:06 · 33,033 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=7IV3DRYaZxI" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>An animated walkthrough of how an array is resized in Java. Based on its title and format, it should show visually what happens when a fixed-size array fills up: allocating a new, larger array, copying the existing elements across, and redirecting the reference to the new block. This is the mechanism that sits underneath dynamic array-backed lists.</p>
+<h3>Why this video</h3>
+<p>The animation makes the hidden cost of &quot;growing&quot; an array visible, which is exactly what the subtopics on variable sizing and memory allocation require; Dinesh Varyani&#39;s DSA series is a widely used, structured treatment of these fundamentals.</p>
+</section>
+<section class="item" id="sec3">
+<h2>Video 2: How to resize an Array in Java ? | Implementation</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/CCLPUWyVg2A?cc_load_policy=1&amp;rel=0" title="Video: How to resize an Array in Java ? | Implementation (Dinesh Varyani)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Dinesh Varyani</strong> · 9:07 · 30,232 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=CCLPUWyVg2A" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>The implementation companion to the animation video, working through resizing an array in Java in actual code. Expect to see the allocation of a larger array, the copy loop or copy utility, and the bookkeeping needed to track capacity versus the number of elements stored.</p>
+<h3>Why this video</h3>
+<p>Watching the code immediately after the animation connects the conceptual picture to concrete steps, reinforcing why dynamic resizing involves work proportional to the number of elements already stored.</p>
+</section>
+<section class="item" id="sec4">
+<h2>Video 3: C++ Tutorial - LINKED LISTS</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/m7rrk65GiXY?cc_load_policy=1&amp;rel=0" title="Video: C++ Tutorial - LINKED LISTS (LinkedIn Learning)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>LinkedIn Learning</strong> · 6:14 · 229,433 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=m7rrk65GiXY" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>A short C++ tutorial on linked lists, presented as a way to store a set of elements that can grow and shrink dynamically. It should introduce nodes, the pointers that connect them, and how the structure expands without needing one contiguous block of memory. The description explicitly frames linked lists as the dynamic alternative to fixed storage.</p>
+<h3>Why this video</h3>
+<p>This video supplies the other half of the comparison — element management through linking rather than copying — and comes from LinkedIn Learning, a professional training producer, making it a clear contrast to the array-resizing videos.</p>
+</section>
+<section class="item" id="sec5">
+<h2>How These Videos Support the Learning Outcomes</h2>
+<p>Together these videos build the structural foundation the module&#39;s outcomes depend on. The two resizing videos show the memory layout and sizing behavior of arrays, while the linked list video shows how a dynamic structure manages elements without a fixed contiguous block, supporting MO1&#39;s array-versus-list comparison. Seeing copying, shifting, and pointer re-linking in action prepares you to describe access, search, insertion, and deletion and to notice that cost depends on position (MO2). Those observations are the raw material for naming operations as O(1) or O(n) once Big O notation is introduced (MO3), and for arguing which structure suits a given use case (MO4).</p>
+</section>
+<section class="item" id="sec6">
+<h2>About These Videos</h2>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+
+<footer class="presemaker-credit" data-credit="2" style="margin-top:2rem;padding:14px 8px;border-top:1px solid #ddd;background:#fff;text-align:center;font:13px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#595959;"><svg width="20" height="20" viewBox="0 0 2048 2048" aria-hidden="true" focusable="false" style="vertical-align:-5px;margin-right:7px"><rect width="2048" height="2048" rx="384" fill="#0F6E6E"/><path fill="#0A5050" d="M1024 1000 344 832v816l680 168zm0 0 680-168v816l-680 168z"/><path fill="#fff" d="M1024 944 384 784v808l640 160zm0 0 640-160v808l-640 160z"/><rect x="1002" y="944" width="44" height="808" fill="#0F6E6E"/><rect x="936" y="246" width="176" height="448" rx="44" fill="#fff"/><rect x="800" y="382" width="448" height="176" rx="44" fill="#fff"/></svg>Created with <a href="https://softwareplus.ai/coursebuilder/" target="_blank" rel="noopener" style="color:#2f5d8f;font-weight:600;text-decoration:none;">CourseBuilder+</a><span aria-hidden="true"> · </span><a href="https://softwareplus.ai/" target="_blank" rel="noopener" style="color:#2f5d8f;text-decoration:none;">SoftwarePlus.ai</a></footer>
+</body>
+</html>

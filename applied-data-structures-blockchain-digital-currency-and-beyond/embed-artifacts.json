@@ -1,5 +1,10 @@
 ﻿[
   {
+    "title": "Applied Data Structures: Blockchain, Digital Currency, and Beyond (module page)",
+    "href": "index.html",
+    "type": "Module page"
+  },
+  {
     "title": "Applied Data Structures: Blockchain, Digital Currency, and Beyond \u2014 Topics \u0026 Learning Outcomes",
     "href": "topics-outcomes.html",
     "type": "Page"
@@ -40,8 +45,33 @@
     "type": "Content"
   },
   {
-    "title": "Applied Data Structures: Blockchain, Digital Currency, and Beyond \u2014 Module Topics",
-    "href": "content/module_topics.html",
+    "title": "Foundations of Data Structures in Real-World Systems",
+    "href": "content/Applied_Data_Structures_t1_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "Blockchain Architecture and Data Structures",
+    "href": "content/Applied_Data_Structures_t2_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "Digital Currency Systems",
+    "href": "content/Applied_Data_Structures_t3_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "Graphs and Social Network Applications",
+    "href": "content/Applied_Data_Structures_t4_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "Combining Data Structures in Complex Systems",
+    "href": "content/Applied_Data_Structures_t5_videos.html",
+    "type": "Content"
+  },
+  {
+    "title": "Applied Data Structures: Blockchain, Digital Currency, and Beyond",
+    "href": "content/Applied_Data_Structures_videos_merged.html",
     "type": "Content"
   }
 ]

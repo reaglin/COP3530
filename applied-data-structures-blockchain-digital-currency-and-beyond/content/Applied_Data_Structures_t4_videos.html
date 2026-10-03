@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Graphs and Social Network Applications</title>
+<style>
+body{font-family:'Segoe UI',Arial,sans-serif;max-width:820px;margin:2rem auto;padding:0 1.25rem;color:#222;line-height:1.55}
+h1{font-size:1.9rem;border-bottom:2px solid #ddd;padding-bottom:.4rem}
+h2{font-size:1.3rem;color:#1f3864;margin-top:1.6rem}
+body{padding-left:1.1rem;padding-right:1.1rem}
+ul,ol{margin:.4rem 0 1rem 1.4rem}
+li{margin:.25rem 0}
+nav.toc{background:rgba(128,128,128,.08);border:1px solid rgba(128,128,128,.25);border-radius:8px;padding:.6rem 1rem;margin:1.2rem 0}
+nav.toc strong{display:block;margin-bottom:.3rem}
+nav.toc a{display:block;text-decoration:none;padding:.12rem 0}
+section.item{border-top:1px solid rgba(128,128,128,.22);padding-top:.3rem}
+table{border-collapse:collapse;width:100%;margin:.8rem 0}
+th,td{border:1px solid rgba(128,128,128,.45);padding:.4rem .6rem;text-align:left;vertical-align:top}
+thead th{background:rgba(128,128,128,.18);font-weight:600}
+tbody tr:nth-child(even){background:rgba(128,128,128,.08)}
+</style>
+</head>
+<body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Applied Data Structures: Blockchain, Digital Currency, and Beyond</a></div>
+<h1>Graphs and Social Network Applications</h1>
+<nav class="toc"><strong>Contents</strong>
+<a href="#sec1">Introduction</a>
+<a href="#sec2">Video 1: L-4.15: BFS &amp; DFS | Breadth First Search | Depth First Search | Graph Traversing | DAA</a>
+<a href="#sec3">Video 2: Breadth-first search in 4 minutes</a>
+<a href="#sec4">Video 3: Depth-first search in 4 minutes</a>
+<a href="#sec5">How These Videos Support the Learning Outcomes</a>
+<a href="#sec6">About These Videos</a>
+</nav>
+<section class="item" id="sec1">
+<h2>Introduction</h2>
+<p>Social networks are, at their core, graphs: people (or accounts, pages, wallets) are vertices, and relationships (friendship, following, messaging, transactions) are edges. Once you model a platform this way, questions that sound social become questions about graph structure — How many hops separate two users? Which accounts sit at the center of a cluster? Which groups of users are densely connected to each other but sparsely connected to everyone else? How fast would a post spread if it started here?</p>
+<p>In this module you have been looking at how real systems compose data structures to meet concrete requirements, and graphs are the structure that carries relationship and influence. Two representation choices dominate practice: the adjacency matrix, which gives constant-time edge lookup at the cost of space proportional to the square of the vertex count, and the adjacency list, which is far more compact for the sparse graphs that real social networks actually are. On top of whichever representation you choose, the two workhorse traversals — breadth-first search and depth-first search — power features such as degrees-of-separation and &quot;people you may know&quot; (BFS, which explores level by level) and connected-component or community discovery (DFS, which dives deep along a path before backtracking).</p>
+<p>The videos below focus on those traversals, since mastering BFS and DFS mechanics is what makes the application-level topics (centrality, information flow, platform design) tractable. While you watch, pay attention to three things: the auxiliary structure each algorithm uses (queue for BFS, stack or recursion for DFS), how the visited set prevents infinite looping in cyclic graphs, and the order in which vertices are discovered. Then mentally re-map each example graph onto a friend network and ask what the traversal output would mean in that setting.</p>
+</section>
+<section class="item" id="sec2">
+<h2>Video 1: L-4.15: BFS &amp; DFS | Breadth First Search | Depth First Search | Graph Traversing | DAA</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/N2P7w22tN9c?cc_load_policy=1&amp;rel=0" title="Video: L-4.15: BFS &amp; DFS | Breadth First Search | Depth First Search | Graph Traversing | DAA (Gate Smashers)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Gate Smashers</strong> · 11:16 · 2,509,205 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=N2P7w22tN9c" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>A side-by-side introduction to breadth-first search and depth-first search as graph traversal strategies, covering how each algorithm visits vertices and the supporting structures (queue for BFS, stack/recursion for DFS) that produce those orders. Based on its title and course framing (DAA), it is likely to work through traversal examples on sample graphs and discuss the algorithms&#39; behavior and complexity.</p>
+<h3>Why this video</h3>
+<p>Because it presents both traversals in one lecture, it is the best starting point for seeing how BFS and DFS differ in exploration order — the distinction that explains why one suits connection discovery and the other suits component and community exploration. Gate Smashers is a widely used exam-prep channel with a step-by-step lecture style, and the view count reflects its popularity with CS students.</p>
+</section>
+<section class="item" id="sec3">
+<h2>Video 2: Breadth-first search in 4 minutes</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/HZ5YTanv5QE?cc_load_policy=1&amp;rel=0" title="Video: Breadth-first search in 4 minutes (Michael Sambol)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Michael Sambol</strong> · 3:59 · 603,429 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=HZ5YTanv5QE" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>A compact four-minute treatment of breadth-first search: the level-by-level exploration pattern, the queue that drives it, and the visited marking that keeps traversal finite. The description links to a Python implementation, so you can read the code alongside the explanation.</p>
+<h3>Why this video</h3>
+<p>Short, precise videos like this are ideal for review before tracing BFS by hand on a social graph, which is exactly what connection discovery and shortest-hop (degrees-of-separation) features require. Michael Sambol&#39;s algorithm series is well known for accurate, no-filler visual walkthroughs paired with published code.</p>
+</section>
+<section class="item" id="sec4">
+<h2>Video 3: Depth-first search in 4 minutes</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/Urx87-NMm6c?cc_load_policy=1&amp;rel=0" title="Video: Depth-first search in 4 minutes (Michael Sambol)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Michael Sambol</strong> · 4:01 · 550,064 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=Urx87-NMm6c" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>The companion video on depth-first search, explaining how the algorithm follows one path as far as possible before backtracking, and how recursion or an explicit stack implements that behavior. A linked Python implementation is provided for readers who want to connect the trace to working code.</p>
+<h3>Why this video</h3>
+<p>DFS is the traversal behind connected-component identification and the clustering intuitions underlying community detection, so a clean, correct explanation of its backtracking behavior directly supports that subtopic. Watching it immediately after the BFS video makes the structural contrast between the two algorithms easy to internalize.</p>
+</section>
+<section class="item" id="sec5">
+<h2>How These Videos Support the Learning Outcomes</h2>
+<p>These three videos concentrate on MO3: by the end of them you should be able to trace BFS and DFS step by step on a graph, name the auxiliary structure each uses, and explain why BFS produces shortest-hop distances while DFS reaches entire connected regions — the mechanics behind connection discovery and community detection features. They also provide the operational grounding for MO2, since the per-vertex neighbor iteration shown in every traversal trace is precisely the operation that adjacency lists make cheap and adjacency matrices make expensive on sparse social graphs; keep that cost comparison in mind as you watch. Finally, because MO4 and MO5 ask you to evaluate and design multi-structure systems, treat these traversals as components you can now justify choosing: the videos supply the algorithmic behavior, and your course readings on representations, centrality, and platform case studies supply the design context in which that behavior pays off.</p>
+</section>
+<section class="item" id="sec6">
+<h2>About These Videos</h2>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+
+<footer class="presemaker-credit" data-credit="2" style="margin-top:2rem;padding:14px 8px;border-top:1px solid #ddd;background:#fff;text-align:center;font:13px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#595959;"><svg width="20" height="20" viewBox="0 0 2048 2048" aria-hidden="true" focusable="false" style="vertical-align:-5px;margin-right:7px"><rect width="2048" height="2048" rx="384" fill="#0F6E6E"/><path fill="#0A5050" d="M1024 1000 344 832v816l680 168zm0 0 680-168v816l-680 168z"/><path fill="#fff" d="M1024 944 384 784v808l640 160zm0 0 640-160v808l-640 160z"/><rect x="1002" y="944" width="44" height="808" fill="#0F6E6E"/><rect x="936" y="246" width="176" height="448" rx="44" fill="#fff"/><rect x="800" y="382" width="448" height="176" rx="44" fill="#fff"/></svg>Created with <a href="https://softwareplus.ai/coursebuilder/" target="_blank" rel="noopener" style="color:#2f5d8f;font-weight:600;text-decoration:none;">CourseBuilder+</a><span aria-hidden="true"> · </span><a href="https://softwareplus.ai/" target="_blank" rel="noopener" style="color:#2f5d8f;text-decoration:none;">SoftwarePlus.ai</a></footer>
+</body>
+</html>

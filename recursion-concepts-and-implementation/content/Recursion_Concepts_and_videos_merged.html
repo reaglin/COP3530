@@ -1,0 +1,350 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Recursion: Concepts and Implementation</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+body{font-family:'Segoe UI',Arial,sans-serif;max-width:820px;margin:2rem auto;padding:0 1.25rem;color:#222;line-height:1.55}
+h1{font-size:1.9rem;border-bottom:2px solid #ddd;padding-bottom:.4rem}
+h2{font-size:1.3rem;color:#1f3864;margin-top:1.6rem}
+body{padding-left:1.1rem;padding-right:1.1rem}
+ul,ol{margin:.4rem 0 1rem 1.4rem}
+li{margin:.25rem 0}
+nav.toc{background:rgba(128,128,128,.08);border:1px solid rgba(128,128,128,.25);border-radius:8px;padding:.6rem 1rem;margin:1.2rem 0}
+nav.toc strong{display:block;margin-bottom:.3rem}
+nav.toc a{display:block;text-decoration:none;padding:.12rem 0}
+section.item{border-top:1px solid rgba(128,128,128,.22);padding-top:.3rem}
+table{border-collapse:collapse;width:100%;margin:.8rem 0}
+th,td{border:1px solid rgba(128,128,128,.45);padding:.4rem .6rem;text-align:left;vertical-align:top}
+thead th{background:rgba(128,128,128,.18);font-weight:600}
+tbody tr:nth-child(even){background:rgba(128,128,128,.08)}
+</style>
+<style>section.merged-part{border-top:2px solid rgba(128,128,128,.3);margin-top:2rem;padding-top:.5rem}nav.toc{background:rgba(128,128,128,.08);border:1px solid rgba(128,128,128,.25);border-radius:8px;padding:.6rem 1rem;margin:1.2rem 0}nav.toc a{display:block;text-decoration:none;padding:.12rem 0}</style>
+</head>
+<body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Recursion: Concepts and Implementation</a></div>
+<h1>Recursion: Concepts and Implementation</h1>
+<nav class="toc"><strong>Contents</strong>
+<a href="#part1">What is Recursion?</a>
+<a href="#part2">Base Cases and Recursive Cases</a>
+<a href="#part3">The Call Stack and Recursion</a>
+<a href="#part4">Implementing Factorial with Recursion</a>
+<a href="#part5">Fibonacci Sequence Using Recursion</a>
+<a href="#part6">Recursive List Traversal</a>
+<a href="#part7">When to Use Recursion</a>
+</nav>
+<section class="merged-part" id="part1">
+<h2>What is Recursion?</h2>
+<section class="item" id="p1-sec1">
+<h3>Introduction</h3>
+<p>Recursion is a problem-solving strategy in which a function solves a problem by calling itself on a smaller version of that same problem. Instead of writing an explicit loop that repeats work, you describe the problem in terms of itself: a factorial of n is n times the factorial of n-1; the length of a list is one plus the length of the rest of the list. This self-referential way of thinking takes practice, which is why this topic focuses on the concept before we move into stack frames, tracing, and performance.</p>
+<p>In COP3530, recursion matters because so many data structures are themselves recursive. A linked list is a node followed by another list; a tree is a node with subtrees. Once you are comfortable with recursive thinking, traversals, searches, and divide-and-conquer algorithms become much easier to express and reason about. Recursion is also the natural lead-in to understanding the call stack, which you will need for debugging and for recognizing why stack overflow happens.</p>
+<p>As you watch these videos, look for three things. First, the two required pieces of any recursive function: a base case that stops the recursion and a recursive case that moves toward that base case. Second, how each presenter compares a recursive solution to an equivalent iterative one, and what they say about readability versus performance. Third, the vocabulary you will reuse all module long — base case, recursive call, stack, and divide and conquer.</p>
+</section>
+<section class="item" id="p1-sec2">
+<h3>Video 1: Introduction to recursion | Recursion series</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/44TwrxjfIfo?cc_load_policy=1&amp;rel=0" title="Video: Introduction to recursion | Recursion series (WilliamFiset)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>WilliamFiset</strong> · 6:57 · 25,152 views · 3y ago · captions — <a href="https://www.youtube.com/watch?v=44TwrxjfIfo" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A concise introduction to recursion from WilliamFiset's dedicated recursion series. Based on its title and description, it defines what a recursive function is and breaks it into its required components, specifically the base case and the recursive call. Expect a focus on the structural anatomy of a recursive function rather than a single worked application.</p>
+<h4>Why this video</h4>
+<p>It maps directly onto the subtopics of defining recursion and the conceptual building blocks of a recursive function, and WilliamFiset is a well-regarded producer of algorithms and data structures material at exactly this level.</p>
+</section>
+<section class="item" id="p1-sec3">
+<h3>Video 2: Recursion Simply Explained with Code Examples - Python for Beginners</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/m1Fjdnj_Mds?cc_load_policy=1&amp;rel=0" title="Video: Recursion Simply Explained with Code Examples - Python for Beginners (Python Simplified)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Python Simplified</strong> · 9:07 · 251,293 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=m1Fjdnj_Mds" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A beginner-friendly walkthrough of recursion with code examples, framed around the idea of dividing and conquering a problem into smaller pieces. The description indicates it also compares approaches in terms of speed, so expect some discussion of recursion versus an iterative alternative. Examples are shown in Python, but the logic transfers directly to the JavaScript you will write in this module.</p>
+<h4>Why this video</h4>
+<p>It covers both why recursion matters as a strategy and the recursion-versus-iteration comparison, and its clear, example-driven pacing makes it a good first exposure if the idea of a function calling itself still feels strange.</p>
+</section>
+<section class="item" id="p1-sec4">
+<h3>Video 3: What is Recursion? | Recursion Made Simple | Introduction to Recursive Methods | Geekific</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/r8KJ2AJWkHs?cc_load_policy=1&amp;rel=0" title="Video: What is Recursion? | Recursion Made Simple | Introduction to Recursive Methods | Geekific (Geekific)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Geekific</strong> · 9:16 · 4,762 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=r8KJ2AJWkHs" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>Geekific's introduction to recursive methods, aimed at making the core idea simple and intuitive. Expect a definition of recursion, an explanation of how a recursive method is structured, and worked examples demonstrating the self-referential pattern in action.</p>
+<h4>Why this video</h4>
+<p>It reinforces the same conceptual foundation from a different angle, which helps the self-referential idea stick, and it keeps the framing at the introductory level this topic calls for.</p>
+</section>
+<section class="item" id="p1-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these videos build the conceptual base the rest of the module depends on. All three identify and explain the base case and the recursive case, which is the direct target of MO1 and the prerequisite for reasoning about infinite recursion. The code examples model the structure you will reproduce when implementing factorial, Fibonacci, and list traversal in JavaScript (MO2), and the discussion of how recursive calls break a problem into smaller subproblems prepares you to trace the call stack in the next topic (MO3). The recursion-versus-iteration comparisons, including the comments on relative speed, give you the starting criteria for choosing between the two approaches (MO4) and for recognizing that naive recursive solutions can carry real performance costs (MO5), which later material in this module examines in detail.</p>
+</section>
+<section class="item" id="p1-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part2">
+<h2>Base Cases and Recursive Cases</h2>
+<section class="item" id="p2-sec1">
+<h3>Introduction</h3>
+<p>Every recursive function is built from two parts. The base case is the condition under which the function stops calling itself and simply returns a value; the recursive case is the branch in which the function calls itself on a smaller or simpler version of the original problem. Think of the recursive case as the engine that drives the computation forward and the base case as the brake that stops it at the right moment.</p>
+<p>Both parts are required, and they must work together. A function with no reachable base case never stops, and each unfinished call keeps a stack frame alive until the runtime runs out of space and throws a stack overflow error. Just as dangerous is a recursive case that does not actually converge — for example, calling the function again on the same input, or shrinking the input in a way that skips past the stopping condition. In this course you will see this pattern repeatedly in factorial, Fibonacci, list and tree traversal, and divide-and-conquer algorithms, so recognizing the two components quickly is a skill worth building now.</p>
+<p>As you watch the videos below, do three things. First, pause at each code example and point to the exact line that is the base case and the exact line that is the recursive case. Second, ask how the argument changes on each call and convince yourself it must eventually reach the base case. Third, notice how the speakers describe what happens on the call stack, since that is how an unterminated recursion turns into a crash rather than an infinite loop.</p>
+</section>
+<section class="item" id="p2-sec2">
+<h3>Video 1: Introduction to recursion | Recursion series</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/44TwrxjfIfo?cc_load_policy=1&amp;rel=0" title="Video: Introduction to recursion | Recursion series (WilliamFiset)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>WilliamFiset</strong> · 6:57 · 25,152 views · 3y ago · captions — <a href="https://www.youtube.com/watch?v=44TwrxjfIfo" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A concise introduction to recursion from WilliamFiset that, according to its description, walks through the components that make up a recursive function, including the base case and the recursive call. Expect clear definitions and simple worked examples showing how a function reduces a problem toward its stopping condition.</p>
+<h4>Why this video</h4>
+<p>It targets exactly the two-part structure this topic is about, and WilliamFiset is a well-regarded source for algorithms and data structures content, making it a good, short first watch before the longer examples.</p>
+</section>
+<section class="item" id="p2-sec3">
+<h3>Video 2: Recursion Simply Explained with Code Examples - Python for Beginners</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/m1Fjdnj_Mds?cc_load_policy=1&amp;rel=0" title="Video: Recursion Simply Explained with Code Examples - Python for Beginners (Python Simplified)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Python Simplified</strong> · 9:07 · 251,293 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=m1Fjdnj_Mds" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A beginner-friendly explanation of recursion using code examples, framed around the divide-and-conquer idea of breaking a problem into smaller pieces. The description also notes a comparison of speed, so expect some discussion of how recursive solutions stack up against iterative ones.</p>
+<h4>Why this video</h4>
+<p>The step-by-step code walkthroughs make the base case and the shrinking argument of the recursive case easy to see, and the recursion-versus-iteration comparison connects this topic to later decisions about when recursion is the right tool.</p>
+</section>
+<section class="item" id="p2-sec4">
+<h3>Video 3: Recursion Finally Makes Sense | Why Recursion Breaks Your Code | Geekific</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/JOJemq2seMk?cc_load_policy=1&amp;rel=0" title="Video: Recursion Finally Makes Sense | Why Recursion Breaks Your Code | Geekific (Geekific)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Geekific</strong> · 9:59 · 982 views · 8mo ago · captions — <a href="https://www.youtube.com/watch?v=JOJemq2seMk" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>Geekific's take on recursion, framed around why recursion breaks code — which points directly at what goes wrong when the base case is missing or the recursive case fails to converge. The tags indicate coverage of tail recursion alongside general recursion in a Java and data-structures context.</p>
+<h4>Why this video</h4>
+<p>It is the best fit for the infinite recursion and stack overflow subtopics, since it approaches recursion from the failure side, and the tail recursion material previews strategies for reducing stack depth.</p>
+</section>
+<section class="item" id="p2-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these videos build directly toward the module outcomes. All three define and locate the base case and the recursive case in working code, which supports MO1, and the Geekific video's focus on why recursion breaks reinforces the link between a missing or non-converging base case and stack overflow (MO1, MO5). The coded examples in the WilliamFiset and Python Simplified videos give you patterns you can translate into JavaScript implementations of factorial, Fibonacci, and list traversal (MO2) and give you something concrete to trace call by call (MO3). The recursion-versus-iteration comparison in the Python Simplified video, together with the tail recursion discussion in the Geekific video, supports evaluating when recursion is the better choice and how to reduce its costs (MO4, MO5).</p>
+</section>
+<section class="item" id="p2-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part3">
+<h2>The Call Stack and Recursion</h2>
+<section class="item" id="p3-sec1">
+<h3>Introduction</h3>
+<p>Every time your program calls a function, the runtime has to remember where it was, what the local variables held, and where to send the return value. It does this with the call stack: a last-in, first-out structure of stack frames, one frame per active call. Recursion is where this bookkeeping becomes visible, because a single recursive function can have dozens or thousands of frames alive at once, each holding its own copy of the parameters and local state.</p>
+<p>This topic matters in COP3530 because you cannot reason about recursive correctness or cost without a mental model of the stack. Tracing how frames are pushed on the way down to the base case and popped on the way back up is the same skill you will use later for tree traversals, divide-and-conquer sorting, and graph search. It is also where recursion fails: too much depth means stack overflow, and knowing why that happens tells you how to avoid it (a reachable base case, shallower recursion, memoization, or an iterative rewrite).</p>
+<p>As you watch, keep a pen handy and draw the stack yourself. Look specifically for: what information a single frame stores, the exact moment the base case stops new frames from being created, the order in which frames resolve, and how the maximum depth relates to the input size. If a video uses Python or pseudocode rather than JavaScript, focus on the stack behavior — the mechanism is the same across languages.</p>
+</section>
+<section class="item" id="p3-sec2">
+<h3>Video 1: Lec-44: Understanding Call Stack with example | Data Structure #gatesmashers #Stack</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/x9yuHFyuWZg?cc_load_policy=1&amp;rel=0" title="Video: Lec-44: Understanding Call Stack with example | Data Structure #gatesmashers #Stack (Gate Smashers)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Gate Smashers</strong> · 8:52 · 65,296 views · 3y ago · captions — <a href="https://www.youtube.com/watch?v=x9yuHFyuWZg" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A lecture that builds up the concept of the call stack from first principles, using a worked example to show how function calls are pushed and popped as a program executes. Expect coverage of what a stack frame holds, how the return address and control flow are tracked, and the last-in-first-out ordering that governs which call finishes first.</p>
+<h4>Why this video</h4>
+<p>Gate Smashers is a widely used exam-prep channel for core CS topics, and this lecture gives you the foundational, language-neutral picture of the call stack that the other two videos assume — a direct match for the "What Is the Call Stack?" and "Stack Frames and Execution Context" subtopics.</p>
+</section>
+<section class="item" id="p3-sec3">
+<h3>Video 2: 13: How Recursion Works Internally | Call Stack Explained with Example</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/oFAlof7v_a8?cc_load_policy=1&amp;rel=0" title="Video: 13: How Recursion Works Internally | Call Stack Explained with Example (Amulya's Academy)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Amulya's Academy</strong> · 6:45 · 288 views · 2mo ago · captions — <a href="https://www.youtube.com/watch?v=oFAlof7v_a8" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>This tutorial walks through a simple countdown function to show what happens internally when a function calls itself. Based on its description, it traces the call stack as each recursive call adds a frame, reaches the base case, and then unwinds as the frames return in reverse order.</p>
+<h4>Why this video</h4>
+<p>A short, example-driven treatment of exactly the subtopic "How Recursive Calls Build the Stack," and the countdown example is simple enough that you can replicate the trace by hand before attempting factorial or Fibonacci.</p>
+</section>
+<section class="item" id="p3-sec4">
+<h3>Video 3: 18: Python Recursion Depth Explained | Call Stack &amp; Stack Frames</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/JY-pYqogBLU?cc_load_policy=1&amp;rel=0" title="Video: 18: Python Recursion Depth Explained | Call Stack &amp; Stack Frames (Amulya's Academy)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Amulya's Academy</strong> · 3:08 · 165 views · 1mo ago · captions — <a href="https://www.youtube.com/watch?v=JY-pYqogBLU" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A brief explainer on recursion depth, using factorial and Fibonacci as the running examples. It connects depth to the number of stack frames in play and discusses the limit that a language runtime places on how deep recursion may go before it fails.</p>
+<h4>Why this video</h4>
+<p>It covers "Stack Depth and Recursion Depth" and leads naturally into stack overflow, using the same classic functions you will implement in this module, so the depth analysis transfers directly to your own code.</p>
+</section>
+<section class="item" id="p3-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these videos give you the execution model behind the module outcomes. The call stack lecture and the countdown walkthrough let you trace frame-by-frame growth and resolution of a recursive call, which is precisely what MO3 asks for with factorial(3) or fibonacci(4). Seeing the base case act as the point where frames stop accumulating reinforces MO1's distinction between base and recursive cases and why a missing base case leads to overflow. The recursion depth video ties input size to stack consumption, supporting MO5's focus on the costs of naive recursion and on mitigation strategies, and giving you concrete evidence to weigh when deciding between recursion and iteration under MO4. The implementation work for MO2 happens in JavaScript in your own exercises, but the stack reasoning these videos build is what makes those implementations predictable rather than mysterious.</p>
+</section>
+<section class="item" id="p3-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part4">
+<h2>Implementing Factorial with Recursion</h2>
+<section class="item" id="p4-sec1">
+<h3>Introduction</h3>
+<p>Factorial is the traditional first recursive function for a reason: its mathematical definition is already recursive. We write n! = n * (n-1)! for n &gt; 1, and we declare 1! = 1 (and 0! = 1) as the stopping point. That definition hands you both pieces of a recursive function — a base case that returns an answer directly, and a recursive case that reduces the problem to a smaller version of itself.</p>
+<p>In this topic you will translate that definition into JavaScript line by line: check for the base case first, then return n * factorial(n - 1). You will then trace factorial(4) by hand, watching stack frames pile up as each call waits on the one below it, and watching the multiplications resolve on the way back out. This tracing habit is the single most valuable skill in the module — it is how you will later reason about Fibonacci, list traversal, and stack overflow risk.</p>
+<p>The videos below use Python rather than JavaScript. That is intentional: recursion is a control-flow idea, not a language feature, and the base case / recursive call / call stack structure is identical. As you watch, focus on where the base case is tested, what the recursive call returns, and how the presenter describes the calls unwinding. Then rewrite each example in JavaScript yourself — the syntax change is small, and doing the translation is good practice for MO2.</p>
+</section>
+<section class="item" id="p4-sec2">
+<h3>Video 1: Simple Explanation of Recursion | Recursion Python| Data Structures &amp; Algorithms Tutorial Python #20</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/9bsK03SlmNM?cc_load_policy=1&amp;rel=0" title="Video: Simple Explanation of Recursion | Recursion Python| Data Structures &amp; Algorithms Tutorial Python #20 (codebasics)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>codebasics</strong> · 14:51 · 139,936 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=9bsK03SlmNM" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A beginner-oriented introduction to recursion that, as the description promises, aims for an explanation simple enough for a high school student. Expect a walkthrough of what it means for a function to call itself, why a stopping condition is required, and worked code examples in Python (factorial and Fibonacci are the usual companions in this tutorial series).</p>
+<h4>Why this video</h4>
+<p>codebasics is a well-known data structures and algorithms tutorial channel, and this entry sits inside an ordered DSA series, so the treatment of base case versus recursive case is deliberate and paced for first-time learners.</p>
+</section>
+<section class="item" id="p4-sec3">
+<h3>Video 2: Recursion Simply Explained with Code Examples - Python for Beginners</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/m1Fjdnj_Mds?cc_load_policy=1&amp;rel=0" title="Video: Recursion Simply Explained with Code Examples - Python for Beginners (Python Simplified)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Python Simplified</strong> · 9:07 · 251,293 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=m1Fjdnj_Mds" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A compact explanation of recursion with code examples, framed around the divide-and-conquer idea of breaking a problem into smaller instances of itself. The description also notes a comparison of speed, so expect some discussion of how recursive solutions stack up against iterative ones.</p>
+<h4>Why this video</h4>
+<p>The short runtime makes it a good second pass on the same ideas, and the recursion-versus-iteration performance angle previews the trade-off reasoning you will need later in the module.</p>
+</section>
+<section class="item" id="p4-sec4">
+<h3>Video 3: L77: Recursion - an illustration | sum of n numbers, factorial &amp; more</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/PAUlGa9wAxA?cc_load_policy=1&amp;rel=0" title="Video: L77: Recursion - an illustration | sum of n numbers, factorial &amp; more (IIT Madras - B.S. Degree Programme)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>IIT Madras - B.S. Degree Programme</strong> · 15:24 · 35,997 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=PAUlGa9wAxA" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A lecture-style illustration of recursion that works through concrete examples, including the sum of n numbers and factorial. Because it builds from sum before reaching factorial, you should see the same structural pattern — base case, then a call on a smaller input — applied more than once.</p>
+<h4>Why this video</h4>
+<p>This is formal university coursework from the IIT Madras B.S. Degree Programme, and it is the closest match to this topic because factorial is named explicitly and presented alongside a sibling example that makes the mathematical structure to code structure connection obvious.</p>
+</section>
+<section class="item" id="p4-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these videos build the foundation the module outcomes rest on. All three force you to separate the base case from the recursive case and explain why the stopping condition prevents runaway recursion (MO1), and their worked factorial code gives you a template to reimplement in JavaScript and later extend to Fibonacci and list traversal (MO2). The step-by-step walkthroughs of calls being made and returned support hand-tracing stack frames for something like factorial(3) (MO3), while the recursion-versus-iteration and speed discussion in the Python Simplified video opens the evaluation and performance questions addressed by MO4 and MO5.</p>
+</section>
+<section class="item" id="p4-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part5">
+<h2>Fibonacci Sequence Using Recursion</h2>
+<section class="item" id="p5-sec1">
+<h3>Introduction</h3>
+<p>The Fibonacci sequence is defined by a simple rule: each number is the sum of the two before it, starting from 0 and 1. That definition is itself recursive, which makes Fibonacci the classic example of a function whose recursive case contains two recursive calls instead of one. In this topic you will write fibonacci(n) in JavaScript, decide which values must be handled as base cases (typically n equal to 0 and n equal to 1), and confirm that every path through the function eventually reaches one of them.</p>
+<p>What makes Fibonacci more interesting than factorial is what happens to the call stack. Because each call spawns two more calls, the execution forms a branching tree rather than a single chain, and the same subproblems get recomputed over and over. Tracing fibonacci(4) or fibonacci(5) by hand on paper is the fastest way to see this: you will notice fib(2) appearing several times in the tree. That redundancy is why the naive version grows roughly exponentially in running time, even though it is only a few lines of code.</p>
+<p>The videos below approach Fibonacci from the dynamic programming side, which is exactly where this conversation leads. As you watch, pay attention to how the presenter describes the repeated subproblems in the recursion tree, how memoization (the top-down approach) stores results so each value is computed only once, and how the bottom-up approach replaces recursion with a loop entirely. The code shown is not JavaScript, but the recursive structure, base cases and stack behavior translate directly; focus on the logic and then re-express it in JavaScript yourself.</p>
+</section>
+<section class="item" id="p5-sec2">
+<h3>Video 1: Top Down Approach - Fibonacci Number in Dynamic Programming | Implementation</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/gX36VvycDnY?cc_load_policy=1&amp;rel=0" title="Video: Top Down Approach - Fibonacci Number in Dynamic Programming | Implementation (Dinesh Varyani)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Dinesh Varyani</strong> · 9:40 · 4,468 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=gX36VvycDnY" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>This video walks through implementing the top-down (memoized) approach to computing Fibonacci numbers. It starts from the recursive definition with its base cases and shows how adding a cache for already-computed values changes the recursion from exponential to linear work. Expect a line-by-line implementation walkthrough rather than pure theory.</p>
+<h4>Why this video</h4>
+<p>It directly addresses the performance trade-off subtopic by showing what the naive recursion wastes and how memoization fixes it, while keeping the recursive structure and base cases visible.</p>
+</section>
+<section class="item" id="p5-sec3">
+<h3>Video 2: Bottom Up Approach - Fibonacci Number in Dynamic Programming | Animation</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/8Upn_Z_VjQw?cc_load_policy=1&amp;rel=0" title="Video: Bottom Up Approach - Fibonacci Number in Dynamic Programming | Animation (Dinesh Varyani)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Dinesh Varyani</strong> · 13:04 · 6,722 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=8Upn_Z_VjQw" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>An animated explanation of the bottom-up approach to Fibonacci, building the sequence from the smallest values upward instead of recursing downward. The animation is intended to make the order of computation and the reuse of previously computed values easy to follow visually.</p>
+<h4>Why this video</h4>
+<p>The animation gives you a concrete picture of which subproblems get computed and in what order, which is useful context for comparing recursion against iteration and for judging when recursion is the better choice.</p>
+</section>
+<section class="item" id="p5-sec4">
+<h3>Video 3: Bottom Up Approach - Fibonacci Number in Dynamic Programming | Implementation</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/I6AJxmyQ9dA?cc_load_policy=1&amp;rel=0" title="Video: Bottom Up Approach - Fibonacci Number in Dynamic Programming | Implementation (Dinesh Varyani)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Dinesh Varyani</strong> · 7:34 · 4,400 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=I6AJxmyQ9dA" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>This is the coding counterpart to the bottom-up animation, implementing the iterative Fibonacci solution step by step. It should show how the loop replaces the recursive calls and how only a small amount of stored state is needed.</p>
+<h4>Why this video</h4>
+<p>Seeing the iterative version implemented right after the recursive one makes the readability-versus-performance comparison concrete and shows one practical way to avoid deep call stacks entirely.</p>
+</section>
+<section class="item" id="p5-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these videos reinforce the module outcomes around Fibonacci. All three begin from the recursive definition and its base cases, supporting your ability to separate base case from recursive case (MO1) and to write the function yourself in JavaScript (MO2). The discussion of repeated subproblems in the recursion tree directly supports tracing how the call stack branches and resolves for a small input such as fibonacci(4) (MO3). The contrast between the top-down memoized version and the bottom-up iterative version gives you the evidence needed to argue when recursion is appropriate and when iteration is preferable (MO4), and the explicit treatment of redundant recalculation plus the stack-free loop addresses the performance trade-offs and stack overflow mitigation strategies (MO5).</p>
+</section>
+<section class="item" id="p5-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part6">
+<h2>Recursive List Traversal</h2>
+<section class="item" id="p6-sec1">
+<h3>Introduction</h3>
+<p>Recursive list traversal is the idea that a list — whether a JavaScript array or a linked list — can be processed by handling one element and then handing the rest of the structure to the same function again. Instead of writing a loop with an index counter, you define the problem in terms of itself: the first element plus the result of traversing everything after it. The base case is what stops the process, usually an empty list (or an index that has run past the end, or a null node), and it is what keeps the recursion from running forever.</p>
+<p>This matters in COP3530 because lists are the structures you will work with constantly, and many of the data structures later in the course — linked lists, trees, graphs — are defined recursively. Once you can see a list as "a head plus a smaller list," recursive solutions for summing, searching, counting, printing, and transforming elements all follow the same shape. You will also see clearly how each call adds a stack frame, which connects list traversal back to the call stack discussion and to the practical limits of recursion on large inputs.</p>
+<p>As you watch, pay attention to three things: exactly how each author states the base case, how the "rest of the list" is produced (a slice, an incremented index, or a next pointer), and where the work on the current element happens — before the recursive call or after it returns. Also try to mentally compare each recursive version with the loop you would have written instead, so you can judge which is clearer and which is cheaper.</p>
+</section>
+<section class="item" id="p6-sec2">
+<h3>Video 1: Lists, Slices, &amp; Recursion</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/cZGDdkfSrBQ?cc_load_policy=1&amp;rel=0" title="Video: Lists, Slices, &amp; Recursion (John DeNero)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>John DeNero</strong> · 8:44 · 5,929 views · 1y ago · captions — <a href="https://www.youtube.com/watch?v=cZGDdkfSrBQ" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A lecture from John DeNero on combining lists with recursion, with emphasis on slicing as the mechanism for producing the smaller sub-list that gets passed to the next call. Expect examples where a list is split into a first element and the remaining slice, and where the recursion bottoms out on an empty or very short list. The talk frames recursion as a natural way to express operations over sequences.</p>
+<h4>Why this video</h4>
+<p>DeNero is a well-known CS instructor, and this video goes directly at the core mental model of the topic: the base case for a list and the step that shrinks it, which supports the "What Is Recursive List Traversal?" and base-case subtopics.</p>
+</section>
+<section class="item" id="p6-sec3">
+<h3>Video 2: Singly-Linked List: Recursive Operations</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/AVjPPv2kCrQ?cc_load_policy=1&amp;rel=0" title="Video: Singly-Linked List: Recursive Operations (Professor Kevin Wortman)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Professor Kevin Wortman</strong> · 12:31 · 1,187 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=AVjPPv2kCrQ" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>Professor Kevin Wortman designs and implements recursive operations on a singly-linked list, showing how a node-and-next structure maps onto recursive definitions. The video covers how to write operations that handle the current node, recurse on the rest of the list, and terminate when the end of the list is reached. Accompanying slides walk through the design reasoning as well as the code.</p>
+<h4>Why this video</h4>
+<p>It extends the topic beyond arrays to a genuinely recursive data structure, making the base case (an empty or null list) and the per-element processing step especially concrete, and it reinforces recursive versus iterative thinking for lists.</p>
+</section>
+<section class="item" id="p6-sec4">
+<h3>Video 3: Sum an Array Recursively in JavaScript</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/cPxXLMnHgiw?cc_load_policy=1&amp;rel=0" title="Video: Sum an Array Recursively in JavaScript (Learn with Shikaar)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Learn with Shikaar</strong> · 3:08 · 21 views · 1y ago · captions — <a href="https://www.youtube.com/watch?v=cPxXLMnHgiw" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A short, focused tutorial that computes the sum of all elements of an array recursively in JavaScript. It should show the function signature, the base case for an exhausted array, and the combination step that adds the current element to the result of the recursive call. The example is small enough to trace by hand, line by line.</p>
+<h4>Why this video</h4>
+<p>This is the most direct match to the JavaScript implementation subtopic: it is a compact, classic array-traversal example you can trace through the call stack and adapt to other per-element operations.</p>
+</section>
+<section class="item" id="p6-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these videos move from concept to code. DeNero's lecture and Wortman's linked-list session make the base case versus recursive case explicit for list structures, supporting MO1, while the JavaScript sum example gives a working implementation of list traversal in the language used in this course (MO2). Tracing the sum or linked-list examples call by call lets you see stack frames accumulate and then resolve as results are combined on the way back up (MO3). Because each video presents a problem you could also solve with a simple loop, they give you material for judging when recursion is the clearer choice and when iteration is cheaper (MO4), and the per-call stack growth they display is exactly the cost that motivates the stack-overflow and efficiency concerns in MO5.</p>
+</section>
+<section class="item" id="p6-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part7">
+<h2>When to Use Recursion</h2>
+<section class="item" id="p7-sec1">
+<h3>Introduction</h3>
+<p>Recursion is not just a clever trick — it is a design choice. Almost any recursive routine can be rewritten as a loop, and almost any loop can be rewritten recursively, so the real question in this topic is not "can I?" but "should I?" You will compare the two approaches along several axes: how naturally each one maps to the structure of the problem, how readable the resulting code is, and what each costs in time and memory once the call stack gets involved.</p>
+<p>Some problems are self-similar by nature. Trees, nested lists, divide-and-conquer sorting, graph and directory traversal, and backtracking searches all break down into smaller copies of themselves, and recursive code for them is often shorter and closer to the definition of the problem. Simple linear repetition — summing an array, counting to n, scanning a list — usually reads more clearly and runs faster as a loop. Learning to spot which category a problem falls into is the practical skill this topic is building.</p>
+<p>As you watch, keep two questions in mind. First, what is the shape of the problem the speaker is solving — is it linear, or does it branch? Second, what is the hidden cost — how many stack frames pile up, and are any subproblems being recomputed? Note especially the naive Fibonacci example, which appears repeatedly in this course as the standard illustration of how an elegant recursive definition can become an exponentially expensive program.</p>
+</section>
+<section class="item" id="p7-sec2">
+<h3>Video 1: Lec-45: The Magic of Recursion: Understanding the Power of Recursive Functions | Time Complexity</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/E3i5Tm9k38s?cc_load_policy=1&amp;rel=0" title="Video: Lec-45: The Magic of Recursion: Understanding the Power of Recursive Functions | Time Complexity (Gate Smashers)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Gate Smashers</strong> · 13:54 · 68,701 views · 3y ago · captions — <a href="https://www.youtube.com/watch?v=E3i5Tm9k38s" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A lecture-style walkthrough of why recursion works and what it costs, framed around recursive functions and their time complexity. Based on the title and channel, expect the instructor to trace recursive calls step by step and connect the call pattern to a complexity analysis, in the exam-and-interview style Gate Smashers is known for.</p>
+<h4>Why this video</h4>
+<p>It directly supports the performance side of this topic — understanding how the number of recursive calls translates into running time is the foundation for judging when recursion is the wrong tool.</p>
+</section>
+<section class="item" id="p7-sec3">
+<h3>Video 2: Recursion Simply Explained with Code Examples - Python for Beginners</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/m1Fjdnj_Mds?cc_load_policy=1&amp;rel=0" title="Video: Recursion Simply Explained with Code Examples - Python for Beginners (Python Simplified)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Python Simplified</strong> · 9:07 · 251,293 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=m1Fjdnj_Mds" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A beginner-friendly explanation of recursion using concrete code examples, with an explicit divide-and-conquer framing. The description signals a comparison of speed between approaches, so expect the video to weigh a recursive solution against an alternative rather than just presenting recursion in isolation.</p>
+<h4>Why this video</h4>
+<p>The side-by-side comparison and emphasis on divide-and-conquer map closely onto the recursion-versus-iteration trade-off and the question of which problem types suit recursion; the examples are written clearly enough to transfer to JavaScript.</p>
+</section>
+<section class="item" id="p7-sec4">
+<h3>Video 3: Understanding Recursion With Trees | Trees and Recursion | Recursive Data Structures | Geekific</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/yV48gGo5Mkc?cc_load_policy=1&amp;rel=0" title="Video: Understanding Recursion With Trees | Trees and Recursion | Recursive Data Structures | Geekific (Geekific)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Geekific</strong> · 5:24 · 28,700 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=yV48gGo5Mkc" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A short, focused look at recursion in the context of trees and other recursive data structures. In about five minutes it should show why a structure that is defined in terms of smaller copies of itself invites a recursive traversal rather than a loop.</p>
+<h4>Why this video</h4>
+<p>It gives you the clearest single case for choosing recursion — self-similar data — and Geekific's concise, example-driven format makes the structural argument easy to retain and reuse when evaluating new problems.</p>
+</section>
+<section class="item" id="p7-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these videos extend the mechanics covered earlier in the module toward judgment. The Gate Smashers lecture reinforces how recursive calls accumulate and what that means for running time, supporting your ability to trace call behavior (MO3) and to recognize the cost of naive recursive implementations such as Fibonacci (MO5). The Python Simplified video models an explicit comparison between recursive and alternative solutions, giving you the reasoning pattern you need to justify a choice on grounds of structure, readability, and performance (MO4), while its worked examples reinforce the base-case and recursive-case distinction (MO1) and translate readily to the JavaScript implementations you will write (MO2). The Geekific video supplies the strongest positive case for recursion — recursive data structures like trees — so that your evaluation in MO4 rests on problem shape and not just on personal preference.</p>
+</section>
+<section class="item" id="p7-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+
+<footer class="presemaker-credit" data-credit="2" style="margin-top:2rem;padding:14px 8px;border-top:1px solid #ddd;background:#fff;text-align:center;font:13px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#595959;"><svg width="20" height="20" viewBox="0 0 2048 2048" aria-hidden="true" focusable="false" style="vertical-align:-5px;margin-right:7px"><rect width="2048" height="2048" rx="384" fill="#0F6E6E"/><path fill="#0A5050" d="M1024 1000 344 832v816l680 168zm0 0 680-168v816l-680 168z"/><path fill="#fff" d="M1024 944 384 784v808l640 160zm0 0 640-160v808l-640 160z"/><rect x="1002" y="944" width="44" height="808" fill="#0F6E6E"/><rect x="936" y="246" width="176" height="448" rx="44" fill="#fff"/><rect x="800" y="382" width="448" height="176" rx="44" fill="#fff"/></svg>Created with <a href="https://softwareplus.ai/coursebuilder/" target="_blank" rel="noopener" style="color:#2f5d8f;font-weight:600;text-decoration:none;">CourseBuilder+</a><span aria-hidden="true"> · </span><a href="https://softwareplus.ai/" target="_blank" rel="noopener" style="color:#2f5d8f;text-decoration:none;">SoftwarePlus.ai</a></footer>
+</body>
+</html>

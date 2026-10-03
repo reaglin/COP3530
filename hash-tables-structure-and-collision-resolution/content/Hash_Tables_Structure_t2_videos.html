@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Internal Array-Based Design</title>
+<style>
+body{font-family:'Segoe UI',Arial,sans-serif;max-width:820px;margin:2rem auto;padding:0 1.25rem;color:#222;line-height:1.55}
+h1{font-size:1.9rem;border-bottom:2px solid #ddd;padding-bottom:.4rem}
+h2{font-size:1.3rem;color:#1f3864;margin-top:1.6rem}
+body{padding-left:1.1rem;padding-right:1.1rem}
+ul,ol{margin:.4rem 0 1rem 1.4rem}
+li{margin:.25rem 0}
+nav.toc{background:rgba(128,128,128,.08);border:1px solid rgba(128,128,128,.25);border-radius:8px;padding:.6rem 1rem;margin:1.2rem 0}
+nav.toc strong{display:block;margin-bottom:.3rem}
+nav.toc a{display:block;text-decoration:none;padding:.12rem 0}
+section.item{border-top:1px solid rgba(128,128,128,.22);padding-top:.3rem}
+table{border-collapse:collapse;width:100%;margin:.8rem 0}
+th,td{border:1px solid rgba(128,128,128,.45);padding:.4rem .6rem;text-align:left;vertical-align:top}
+thead th{background:rgba(128,128,128,.18);font-weight:600}
+tbody tr:nth-child(even){background:rgba(128,128,128,.08)}
+</style>
+</head>
+<body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Hash Tables: Structure and Collision Resolution</a></div>
+<h1>Internal Array-Based Design</h1>
+<nav class="toc"><strong>Contents</strong>
+<a href="#sec1">Introduction</a>
+<a href="#sec2">Video 1: Hash Tables Overview</a>
+<a href="#sec3">Video 2: L-6.1: What is hashing with example | Hashing in data structure</a>
+<a href="#sec4">Video 3: Hash tables in 4 minutes</a>
+<a href="#sec5">How These Videos Support the Learning Outcomes</a>
+<a href="#sec6">About These Videos</a>
+</nav>
+<section class="item" id="sec1">
+<h2>Introduction</h2>
+<p>A hash table is not a new kind of memory — it is a clever way of using an ordinary array. The array gives you constant-time access to any slot once you know its index, and the hash function is the piece that turns a key (a string, a number, an object) into one of those indices. Understanding this layering is the key to the whole module: everything else, including collisions and load factor, follows from the fact that we are squeezing a large space of possible keys into a fixed, finite set of array positions.</p>
+<p>In this topic we focus on the mechanics of that mapping. A hash function takes a key, computes a numeric hash code, and then reduces it into the valid index range (commonly with the modulo operator against the table size). Because the result is computed rather than searched for, storage and retrieval can be O(1) on average — but only if the function is fast to compute and spreads keys reasonably evenly. The function must also be deterministic: the same key must always produce the same index, or you will store a value in one slot and look for it in another.</p>
+<p>While watching, pay attention to three things. First, how each presenter describes the step from key to hash code to array index. Second, what assumptions they make about table size and the modulo step. Third, the moment collisions are introduced — notice that collisions are an unavoidable consequence of the array-based design, not a bug in it. That observation sets up the collision resolution material later in this module.</p>
+</section>
+<section class="item" id="sec2">
+<h2>Video 1: Hash Tables Overview</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/H9Alh1NFePQ?cc_load_policy=1&amp;rel=0" title="Video: Hash Tables Overview (Professor Kevin Wortman)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Professor Kevin Wortman</strong> · 11:29 · 386 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=H9Alh1NFePQ" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>A lecture-style overview of the hash table data structure from a university instructor, delivered with accompanying slides. Based on its framing as an overview, it should cover the underlying array, the role of the hash function in choosing a slot, and the basic insert and lookup operations, before moving toward collisions and performance.</p>
+<h3>Why this video</h3>
+<p>The longest and most academic of the three, this video gives the fuller treatment of why an array underpins the structure and how that choice drives retrieval efficiency — a good match for a course-level introduction to internal design.</p>
+</section>
+<section class="item" id="sec3">
+<h2>Video 2: L-6.1: What is hashing with example | Hashing in data structure</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/W5q0xgxmRd8?cc_load_policy=1&amp;rel=0" title="Video: L-6.1: What is hashing with example | Hashing in data structure (Gate Smashers)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Gate Smashers</strong> · 5:53 · 2,565,032 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=W5q0xgxmRd8" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>A worked introduction to hashing in data structures that defines the concept and walks through an example. Expect a concrete demonstration of taking keys, applying a hash function such as modulo division, and placing values into numbered positions in a table.</p>
+<h3>Why this video</h3>
+<p>Gate Smashers is a widely used exam-prep channel, and this heavily viewed lesson is built around a step-by-step example, which makes the key-to-index mapping and the determinism requirement easy to see in practice.</p>
+</section>
+<section class="item" id="sec4">
+<h2>Video 3: Hash tables in 4 minutes</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/knV86FlSXJ8?cc_load_policy=1&amp;rel=0" title="Video: Hash tables in 4 minutes (Michael Sambol)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Michael Sambol</strong> · 3:52 · 389,765 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=knV86FlSXJ8" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>A compact, four-minute summary of hash tables from a channel known for short algorithm explainers, with accompanying Python code linked in the description. It condenses the essentials: hashing a key to an index, storing and retrieving values, and the performance characteristics of the structure.</p>
+<h3>Why this video</h3>
+<p>Michael Sambol&#39;s videos are accurate and tightly edited, making this an efficient first pass or a review after the longer lectures, and the linked code lets you connect the array-and-hash-function idea to an actual implementation.</p>
+</section>
+<section class="item" id="sec5">
+<h2>How These Videos Support the Learning Outcomes</h2>
+<p>Together these videos build the foundation for MO1: each one shows a hash function converting a key into an array index, and collectively they emphasize that the computation must be fast, deterministic, and spread keys across the table. By making clear that a finite array cannot hold a limitless key space, they also set up MO2 and MO3 — collisions and load factor become natural consequences of the array-based design rather than isolated topics, and the claim of O(1) average access is shown to depend on how well keys distribute. The shortest video&#39;s linked implementation code points ahead to MO4, where you will write your own hash function and chaining-based table.</p>
+</section>
+<section class="item" id="sec6">
+<h2>About These Videos</h2>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+
+<footer class="presemaker-credit" data-credit="2" style="margin-top:2rem;padding:14px 8px;border-top:1px solid #ddd;background:#fff;text-align:center;font:13px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#595959;"><svg width="20" height="20" viewBox="0 0 2048 2048" aria-hidden="true" focusable="false" style="vertical-align:-5px;margin-right:7px"><rect width="2048" height="2048" rx="384" fill="#0F6E6E"/><path fill="#0A5050" d="M1024 1000 344 832v816l680 168zm0 0 680-168v816l-680 168z"/><path fill="#fff" d="M1024 944 384 784v808l640 160zm0 0 640-160v808l-640 160z"/><rect x="1002" y="944" width="44" height="808" fill="#0F6E6E"/><rect x="936" y="246" width="176" height="448" rx="44" fill="#fff"/><rect x="800" y="382" width="448" height="176" rx="44" fill="#fff"/></svg>Created with <a href="https://softwareplus.ai/coursebuilder/" target="_blank" rel="noopener" style="color:#2f5d8f;font-weight:600;text-decoration:none;">CourseBuilder+</a><span aria-hidden="true"> · </span><a href="https://softwareplus.ai/" target="_blank" rel="noopener" style="color:#2f5d8f;text-decoration:none;">SoftwarePlus.ai</a></footer>
+</body>
+</html>

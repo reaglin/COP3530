@@ -18,13 +18,13 @@ li{margin:5px 0}
 .el-body{color:#555}
 .prefix{color:#555;font-style:italic;margin:6px 0 14px}
 .mo{border:1px solid #e2e2e2;border-radius:6px;padding:12px 16px;margin:12px 0}
-.mo .code{font-size:.8rem;color:#888;text-transform:uppercase;letter-spacing:.04em}
+.mo .code{font-size:.8rem;color:#595959;text-transform:uppercase;letter-spacing:.04em}
 .mo .statement{font-weight:600;margin:4px 0 8px}
 .meta span{display:inline-block;background:#eef2f8;color:#1a3c6e;border-radius:3px;padding:1px 8px;margin:0 6px 0 0;font-size:.85rem}
 .meta .map{background:#eaf6ec;color:#137333}
 .co{margin:7px 0}
 .co .code{font-weight:600;color:#1a3c6e;margin-right:6px}
-.empty{color:#888}
+.empty{color:#595959}
 </style>
 </head>
 <body>
@@ -33,7 +33,7 @@ li{margin:5px 0}
 <div class="toc"><a href="#topics">📋 Module Topics</a><a href="#outcomes">🎯 Student Learning Outcomes</a></div>
 
 <h2 id="topics">Module Topics</h2>
-<h3>Introduction to Lists and Arrays</h3>
+<h3 id="topic-1">Introduction to Lists and Arrays</h3>
 <div class="summary">An overview of lists and arrays as fundamental data structures, including their definitions, characteristics, and how they are represented in JavaScript.</div>
 <ul>
 <li><strong>What Are Lists and Arrays?</strong> <span class="el-body">— Lists and arrays are fundamental data structures used to store collections of elements in an ordered sequence.</span></li>
@@ -42,7 +42,7 @@ li{margin:5px 0}
 <li><strong>Ordered Sequence and Indexing</strong> <span class="el-body">— The ordered nature of arrays means each element occupies a specific position, and that position is used to retrieve or modify the element.</span></li>
 <li><strong>Why Lists and Arrays Matter in Algorithms</strong> <span class="el-body">— Lists and arrays serve as the foundation for implementing and understanding a wide range of algorithms, including insertion, deletion, searching, and traversal.</span></li>
 </ul>
-<h3>Insertion Operations</h3>
+<h3 id="topic-2">Insertion Operations</h3>
 <div class="summary">Covers the algorithms and techniques for inserting elements into lists and arrays, including insertion at the beginning, end, and arbitrary positions in JavaScript.</div>
 <ul>
 <li><strong>Understanding Array Insertion</strong> <span class="el-body">— Insertion is the operation of placing a new element into an array or list at a specified position, requiring careful management of existing elements.</span></li>
@@ -52,7 +52,7 @@ li{margin:5px 0}
 <li><strong>Manual Insertion Algorithm</strong> <span class="el-body">— Beyond built-in methods, understanding how to implement insertion manually reinforces the underlying mechanics of shifting elements within an array.</span></li>
 <li><strong>Time and Space Complexity of Insertion</strong> <span class="el-body">— Analyzing the complexity of insertion operations helps developers choose the most efficient approach based on where in the array the element must be placed.</span></li>
 </ul>
-<h3>Deletion Operations</h3>
+<h3 id="topic-3">Deletion Operations</h3>
 <div class="summary">Explores methods for removing elements from lists and arrays, examining different deletion scenarios and their JavaScript implementations.</div>
 <ul>
 <li><strong>Understanding Deletion in Arrays</strong> <span class="el-body">— Deletion is the process of removing an element from an array or list, which may require shifting remaining elements to fill the gap left behind.</span></li>
@@ -63,7 +63,7 @@ li{margin:5px 0}
 <li><strong>Filtering as a Non-Mutating Deletion</strong> <span class="el-body">— JavaScript&#39;s `filter()` method provides a way to create a new array with certain elements excluded, without modifying the original array.</span></li>
 <li><strong>Time Complexity of Deletion Operations</strong> <span class="el-body">— The efficiency of a deletion operation varies based on the position of the element and the method used, and this has practical implications for algorithm design.</span></li>
 </ul>
-<h3>Searching Algorithms</h3>
+<h3 id="topic-4">Searching Algorithms</h3>
 <div class="summary">Introduces common searching techniques such as linear search and binary search, with hands-on JavaScript implementations applied to lists and arrays.</div>
 <ul>
 <li><strong>What Is a Searching Algorithm?</strong> <span class="el-body">— A searching algorithm is a step-by-step procedure used to locate a specific element within a list or array.</span></li>
@@ -73,7 +73,7 @@ li{margin:5px 0}
 <li><strong>Implementing Binary Search in JavaScript</strong> <span class="el-body">— A binary search function in JavaScript maintains low and high pointer variables to track the current search boundaries within the sorted array.</span></li>
 <li><strong>Comparing Linear Search and Binary Search</strong> <span class="el-body">— Understanding when to use linear versus binary search depends on factors such as whether the data is sorted and the size of the dataset.</span></li>
 </ul>
-<h3>Traversal Techniques</h3>
+<h3 id="topic-5">Traversal Techniques</h3>
 <div class="summary">Examines how to systematically visit and process each element in a list or array, including various traversal patterns implemented in JavaScript.</div>
 <ul>
 <li><strong>What Is Traversal?</strong> <span class="el-body">— Traversal is the process of systematically visiting every element in a list or array exactly once in order to read or process its value.</span></li>
@@ -84,7 +84,7 @@ li{margin:5px 0}
 <li><strong>Step and Skip Traversal Patterns</strong> <span class="el-body">— Not all traversals visit every consecutive element; some advance by more than one index per step or visit only elements meeting a condition.</span></li>
 <li><strong>Nested Traversal for Multi-Dimensional Arrays</strong> <span class="el-body">— When working with arrays of arrays (2D or multi-dimensional arrays), nested loops are used to traverse both the outer and inner arrays.</span></li>
 </ul>
-<h3>Time and Space Complexity Analysis</h3>
+<h3 id="topic-6">Time and Space Complexity Analysis</h3>
 <div class="summary">Analyzes the efficiency of list and array operations using Big O notation, comparing the time and space complexity of insertion, deletion, searching, and traversal algorithms.</div>
 <ul>
 <li><strong>Introduction to Big O Notation</strong> <span class="el-body">— Big O notation is the standard language used to describe how the runtime or memory usage of an algorithm scales as the input size grows.</span></li>
@@ -128,6 +128,6 @@ li{margin:5px 0}
 <div class="co"><span class="code">CO3</span>Implement data structures and algorithms in computer code.</div>
 <div class="co"><span class="code">CO4</span>Analyze the performance of algorithms and data structures</div>
 
-<footer class="presemaker-credit" style="margin-top:2rem;padding:14px 0;border-top:1px solid #ddd;text-align:center;font:13px/1.4 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#777;">Created with <a href="https://apps.microsoft.com/detail/9mt854nv3fgf?hl=en-US&amp;gl=US" target="_blank" rel="noopener" style="color:#3b6ea5;text-decoration:none;">PreseMaker</a></footer>
+<footer class="presemaker-credit" data-credit="2" style="margin-top:2rem;padding:14px 8px;border-top:1px solid #ddd;background:#fff;text-align:center;font:13px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#595959;"><svg width="20" height="20" viewBox="0 0 2048 2048" aria-hidden="true" focusable="false" style="vertical-align:-5px;margin-right:7px"><rect width="2048" height="2048" rx="384" fill="#0F6E6E"/><path fill="#0A5050" d="M1024 1000 344 832v816l680 168zm0 0 680-168v816l-680 168z"/><path fill="#fff" d="M1024 944 384 784v808l640 160zm0 0 640-160v808l-640 160z"/><rect x="1002" y="944" width="44" height="808" fill="#0F6E6E"/><rect x="936" y="246" width="176" height="448" rx="44" fill="#fff"/><rect x="800" y="382" width="448" height="176" rx="44" fill="#fff"/></svg>Created with <a href="https://softwareplus.ai/coursebuilder/" target="_blank" rel="noopener" style="color:#2f5d8f;font-weight:600;text-decoration:none;">CourseBuilder+</a><span aria-hidden="true"> · </span><a href="https://softwareplus.ai/" target="_blank" rel="noopener" style="color:#2f5d8f;text-decoration:none;">SoftwarePlus.ai</a></footer>
 </body>
 </html>

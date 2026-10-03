@@ -1,0 +1,350 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Computational Complexity: Deep Dive into Analysis</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+body{font-family:'Segoe UI',Arial,sans-serif;max-width:820px;margin:2rem auto;padding:0 1.25rem;color:#222;line-height:1.55}
+h1{font-size:1.9rem;border-bottom:2px solid #ddd;padding-bottom:.4rem}
+h2{font-size:1.3rem;color:#1f3864;margin-top:1.6rem}
+body{padding-left:1.1rem;padding-right:1.1rem}
+ul,ol{margin:.4rem 0 1rem 1.4rem}
+li{margin:.25rem 0}
+nav.toc{background:rgba(128,128,128,.08);border:1px solid rgba(128,128,128,.25);border-radius:8px;padding:.6rem 1rem;margin:1.2rem 0}
+nav.toc strong{display:block;margin-bottom:.3rem}
+nav.toc a{display:block;text-decoration:none;padding:.12rem 0}
+section.item{border-top:1px solid rgba(128,128,128,.22);padding-top:.3rem}
+table{border-collapse:collapse;width:100%;margin:.8rem 0}
+th,td{border:1px solid rgba(128,128,128,.45);padding:.4rem .6rem;text-align:left;vertical-align:top}
+thead th{background:rgba(128,128,128,.18);font-weight:600}
+tbody tr:nth-child(even){background:rgba(128,128,128,.08)}
+</style>
+<style>section.merged-part{border-top:2px solid rgba(128,128,128,.3);margin-top:2rem;padding-top:.5rem}nav.toc{background:rgba(128,128,128,.08);border:1px solid rgba(128,128,128,.25);border-radius:8px;padding:.6rem 1rem;margin:1.2rem 0}nav.toc a{display:block;text-decoration:none;padding:.12rem 0}</style>
+</head>
+<body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Computational Complexity: Deep Dive into Analysis</a></div>
+<h1>Computational Complexity: Deep Dive into Analysis</h1>
+<nav class="toc"><strong>Contents</strong>
+<a href="#part1">Foundations of Computational Complexity</a>
+<a href="#part2">Big O Notation Revisited</a>
+<a href="#part3">Best, Worst, and Average Case Analysis</a>
+<a href="#part4">Omega and Theta Notations</a>
+<a href="#part5">Comparing Asymptotic Notations</a>
+<a href="#part6">Complexity Analysis of Known Algorithms</a>
+<a href="#part7">Practical Implications of Complexity</a>
+</nav>
+<section class="merged-part" id="part1">
+<h2>Foundations of Computational Complexity</h2>
+<section class="item" id="p1-sec1">
+<h3>Introduction</h3>
+<p>Computational complexity theory is the study of how the resources an algorithm consumes — primarily time, but also space — grow as the size of its input grows. Rather than timing code on one machine with one data set, we count the operations that dominate the work and describe how that count scales. This abstraction lets us compare algorithms fairly, independent of hardware, programming language, or compiler.</p>
+<p>In COP3530, this vocabulary is the foundation for everything that follows. Every data structure you meet this semester — arrays, linked lists, trees, hash tables, heaps, graphs — is judged by the cost of its operations, and those costs are stated in asymptotic terms. Before you can argue that one structure is the right choice for a problem, you need to be fluent in input size n, in best-, worst-, and average-case analysis, and in the notations Big O, Omega, and Theta.</p>
+<p>As you watch the videos below, keep three questions in mind. First, what exactly is being counted, and what is being treated as the input size? Second, which case is under discussion — is the speaker describing a guarantee that always holds, or a happy accident on a lucky input? Third, which notation is appropriate for that claim: an upper bound (O), a lower bound (Omega), or a tight bound (Theta)? Being deliberate about these distinctions now will save you a great deal of confusion later.</p>
+</section>
+<section class="item" id="p1-sec2">
+<h3>Video 1: Analyzing algorithms in 6 minutes — Intro</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/2_Ud0TESsa0?cc_load_policy=1&amp;rel=0" title="Video: Analyzing algorithms in 6 minutes — Intro (Michael Sambol)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Michael Sambol</strong> · 6:29 · 32,160 views · 2y ago · captions — <a href="https://www.youtube.com/watch?v=2_Ud0TESsa0" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A compact introduction to what it means to analyze an algorithm: how running time is expressed as a function of input size, and why we count operations rather than measure seconds. Based on its title and framing as the first part of a two-video sequence, it should set up the motivation and basic machinery of analysis before notation is formally introduced. It links directly to the companion asymptotic notation video as the intended next step.</p>
+<h4>Why this video</h4>
+<p>Michael Sambol's algorithm videos are a widely used, carefully scripted series known for precise, textbook-aligned explanations in a few minutes. This one maps directly onto the opening subtopics — what complexity theory is, why efficiency matters, and input size as the central variable.</p>
+</section>
+<section class="item" id="p1-sec3">
+<h3>Video 2: Analyzing algorithms in 7 minutes — Asymptotic Notation</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/u8AprTUkJjM?cc_load_policy=1&amp;rel=0" title="Video: Analyzing algorithms in 7 minutes — Asymptotic Notation (Michael Sambol)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Michael Sambol</strong> · 7:10 · 40,301 views · 2y ago · captions — <a href="https://www.youtube.com/watch?v=u8AprTUkJjM" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>The follow-up video focuses specifically on asymptotic notation, covering Theta, Big O, and Omega as described in its own summary. Expect definitions of each notation and the distinction between tight bounds, upper bounds, and lower bounds, with examples of how functions are classified. It is the natural continuation of the introductory video in the same series.</p>
+<h4>Why this video</h4>
+<p>It treats all three notations together rather than defaulting to Big O alone, which is exactly the distinction this topic asks you to master, and it comes from the same clear, accurate source as the introduction.</p>
+</section>
+<section class="item" id="p1-sec4">
+<h3>Video 3: Time Complexity &amp; Big O notation | Analysis and Calculation | Java C++ Anuj Bhaiya ✅DSAOne Course #1</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/N89PN_uyelU?cc_load_policy=1&amp;rel=0" title="Video: Time Complexity &amp; Big O notation | Analysis and Calculation | Java C++ Anuj Bhaiya ✅DSAOne Course #1 (Anuj Kumar Sharma)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Anuj Kumar Sharma</strong> · 17:05 · 1,043,506 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=N89PN_uyelU" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A longer, more tutorial-style treatment of time complexity and Big O notation aimed at students beginning a data structures course, with analysis and hand calculation shown in Java and C++ contexts. As the opening lesson of a full DSA series, it is likely to work through counting operations in loops and nested loops and deriving a Big O expression step by step. Its length allows for more worked examples than the shorter videos.</p>
+<h4>Why this video</h4>
+<p>The extra time and worked calculations give you practice translating code patterns — single loops, nested loops — into growth rate classes, reinforcing the mental model of growth rate categories introduced in this topic.</p>
+</section>
+<section class="item" id="p1-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these videos build the vocabulary and habits the module outcomes depend on. The Sambol pair directly supports MO1 and MO5 by defining Big O, Omega, and Theta side by side so you can articulate which bound a given claim is actually making, while the introductory video grounds MO2 by establishing input size and the idea that the same algorithm can behave differently on different inputs. The longer Anuj Kumar Sharma video supports MO3 by walking through the derivation of complexity from loop structures and the practice of dropping lower-order terms and constants. Collectively they supply the conceptual framework you will apply in MO4 when comparing candidate algorithms on scalability and trade-offs; the specific case analyses of search and sorting algorithms will be developed further in the module's later materials and exercises.</p>
+</section>
+<section class="item" id="p1-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part2">
+<h2>Big O Notation Revisited</h2>
+<section class="item" id="p2-sec1">
+<h3>Introduction</h3>
+<p>Big O notation is the standard language for describing how an algorithm's running time or memory use grows as the input size grows. Rather than measuring seconds on a particular machine, Big O captures an upper bound on the rate of growth, which lets us compare algorithms in a way that stays meaningful across hardware, languages, and compilers. In this topic we revisit that idea carefully: what the notation actually asserts, the common growth classes you will see again and again (constant, logarithmic, linear, linearithmic, quadratic, exponential), and why constants and lower-order terms are dropped when only the dominant term matters at scale.</p>
+<p>This matters throughout COP3530 because nearly every data structure decision you make is justified with a complexity argument. When you choose a hash table over a sorted array, or a balanced tree over a linked list, you are claiming something about growth rates. Reading Big O fluently also means recognizing patterns in code: a single loop over n elements, nested loops, a loop that halves the search space each iteration, or a recursive call structure each map to a predictable class.</p>
+<p>As you watch, pay attention to three things. First, how each presenter defines Big O formally versus how they use it informally. Second, how they move from a piece of code to a growth expression and then simplify it. Third, the connection between Big O and worst-case analysis — Big O is often used for worst-case guarantees, but the notation itself and the case being analyzed are two separate choices, and keeping them distinct will save you confusion later in this module.</p>
+</section>
+<section class="item" id="p2-sec2">
+<h3>Video 1: Analyzing algorithms in 7 minutes — Asymptotic Notation</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/u8AprTUkJjM?cc_load_policy=1&amp;rel=0" title="Video: Analyzing algorithms in 7 minutes — Asymptotic Notation (Michael Sambol)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Michael Sambol</strong> · 7:10 · 40,301 views · 2y ago · captions — <a href="https://www.youtube.com/watch?v=u8AprTUkJjM" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A compact overview of asymptotic notation that covers Big O alongside Theta and Omega, explaining what each bound expresses about an algorithm's growth. Expect formal-style definitions and comparisons that place Big O in context as the upper bound rather than treating it in isolation. The video is part of a series and references an introductory companion video.</p>
+<h4>Why this video</h4>
+<p>Michael Sambol's algorithm videos are widely used for their precision and brevity, and this one directly addresses the distinction between upper, lower, and tight bounds that the topic depends on. It is the best short reference for understanding what Big O represents as opposed to what it is casually used to mean.</p>
+</section>
+<section class="item" id="p2-sec3">
+<h3>Video 2: Time Complexity &amp; Big O notation | Analysis and Calculation | Java C++ Anuj Bhaiya ✅DSAOne Course #1</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/N89PN_uyelU?cc_load_policy=1&amp;rel=0" title="Video: Time Complexity &amp; Big O notation | Analysis and Calculation | Java C++ Anuj Bhaiya ✅DSAOne Course #1 (Anuj Kumar Sharma)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Anuj Kumar Sharma</strong> · 17:05 · 1,043,506 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=N89PN_uyelU" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A longer, example-driven lesson on time complexity and Big O aimed at students learning data structures and algorithms, with code in Java and C++. Based on its title and description, it walks through analyzing and calculating complexity for code segments, which typically means loops, nested loops, and the simplification steps that drop constants and lower-order terms. It is the opening video of a full DSA course series.</p>
+<h4>Why this video</h4>
+<p>The extended runtime allows for worked calculations rather than definitions alone, which supports the subtopics on interpreting Big O for algorithm patterns and on dropping constants. Its very large view count reflects its popularity as an accessible entry point for exactly this material.</p>
+</section>
+<section class="item" id="p2-sec4">
+<h3>Video 3: Introduction to Big-O Notation</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/QjpdOf7Y7dk?cc_load_policy=1&amp;rel=0" title="Video: Introduction to Big-O Notation (Mathispower4u)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Mathispower4u</strong> · 4:40 · 2,882 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=QjpdOf7Y7dk" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A brief, mathematically oriented introduction to Big-O notation from the Mathispower4u channel. It is likely to present the formal definition in terms of functions, constants, and a threshold value, and to show how one function is bounded above by another. The short length makes it a focused look at the underlying mathematics.</p>
+<h4>Why this video</h4>
+<p>This video supplies the formal, mathematical grounding that complements the code-centric treatments, which is useful when you need to justify why constants and lower-order terms can be discarded. Mathispower4u is a long-running instructional math channel with a consistent, step-by-step presentation style.</p>
+</section>
+<section class="item" id="p2-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these videos cover both halves of the topic. The Sambol video separates Big O from Omega and Theta and explains what each bound claims, supporting MO1 and the reasoning about analytical goals in MO5. The Mathispower4u video supplies the formal definition that justifies dropping constants and lower-order terms, while the Anuj Kumar Sharma video applies that reasoning to actual code, giving you practice classifying single loops, nested loops, and similar patterns into growth classes as required by MO3. The emphasis across all three on upper bounds and worst-case framing prepares you for the case-by-case derivations in MO2, and the comparison of growth classes gives you the vocabulary needed to argue about scalability and algorithm selection in MO4.</p>
+</section>
+<section class="item" id="p2-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part3">
+<h2>Best, Worst, and Average Case Analysis</h2>
+<section class="item" id="p3-sec1">
+<h3>Introduction</h3>
+<p>Every algorithm you write will behave differently depending on what you feed it. A linear search that finds its target in the first slot does almost no work; the same search looking for a value that isn't there must examine every element. Best-, worst-, and average-case analysis is the vocabulary we use to describe that variation precisely, instead of saying vaguely that an algorithm is "usually fast."</p>
+<p>In this module the three cases sit alongside asymptotic notation. The two ideas are related but not the same: a case describes which input you are analyzing, while Big O, Omega, and Theta describe how you bound the resulting cost function. Keeping them separate is one of the most common stumbling blocks in COP3530, and it matters because exam questions, interview questions, and real design decisions all hinge on knowing which case a stated bound refers to.</p>
+<p>As you watch, focus on three things. First, how does each speaker characterize the specific input that triggers each case — not just the formula, but the data arrangement that causes it? Second, how is the average case actually computed, since it requires assumptions about input distribution rather than a single example? Third, note which algorithms have three different answers (linear search, bubble sort, quicksort) and which collapse to the same bound in all cases (selection sort, merge sort), and ask yourself why.</p>
+</section>
+<section class="item" id="p3-sec2">
+<h3>Video 1: Data Structures &amp; Algorithms - Complexity Analysis - Best, Average, &amp; Worst Case</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/D7jaCDDSF18?cc_load_policy=1&amp;rel=0" title="Video: Data Structures &amp; Algorithms - Complexity Analysis - Best, Average, &amp; Worst Case (Dr. Joanne Skiles)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Dr. Joanne Skiles</strong> · 14:14 · 4,167 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=D7jaCDDSF18" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A university-style lecture on complexity analysis that treats best, average, and worst case as its central organizing idea. At fourteen minutes it is the longest of the three videos, so expect room for worked examples and step-by-step reasoning about how different inputs lead to different operation counts. It is presented as part of a broader data structures and algorithms series, so the terminology should line up with what a course like this one uses.</p>
+<h4>Why this video</h4>
+<p>This is the most direct match to the topic, covering all three cases in one coherent treatment rather than as a side note, and its lecture format suits the subtopics on defining the cases and identifying them for a given algorithm.</p>
+</section>
+<section class="item" id="p3-sec3">
+<h3>Video 2: Analyzing algorithms in 6 minutes — Intro</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/2_Ud0TESsa0?cc_load_policy=1&amp;rel=0" title="Video: Analyzing algorithms in 6 minutes — Intro (Michael Sambol)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Michael Sambol</strong> · 6:29 · 32,160 views · 2y ago · captions — <a href="https://www.youtube.com/watch?v=2_Ud0TESsa0" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A fast, tightly scripted introduction to analyzing algorithms from Michael Sambol, whose short-form algorithms videos are widely used by CS students. In six minutes it sets up the basic question of how we measure an algorithm's cost and why we reason about input size rather than wall-clock time, and it links out to a companion video on asymptotic notation. Expect code examples used to motivate counting operations.</p>
+<h4>Why this video</h4>
+<p>Sambol's videos are known for accuracy and economy, and this one supplies the analytical framing — what we count and why — that best/worst/average case analysis rests on, while its pairing with an asymptotic notation video reinforces the distinction between case and bound.</p>
+</section>
+<section class="item" id="p3-sec4">
+<h3>Video 3: Time Complexity of an Algorithm</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/6CWVNRAIAEY?cc_load_policy=1&amp;rel=0" title="Video: Time Complexity of an Algorithm (Dinesh Varyani)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Dinesh Varyani</strong> · 5:23 · 156,408 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=6CWVNRAIAEY" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A concise explainer on the time complexity of an algorithm from Dinesh Varyani's long-running DSA series, using animated slides to walk through how running time is expressed as a function of input size. With over 150,000 views it is a well-tested introduction, and it supplies the counting-and-simplifying mechanics you need before assigning a complexity to any particular case.</p>
+<h4>Why this video</h4>
+<p>It reinforces the computational core of the topic — deriving a cost expression from code — which is exactly the skill you apply three separate times when producing best-, worst-, and average-case results, and the visual slide format makes the derivations easy to follow and re-watch.</p>
+</section>
+<section class="item" id="p3-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these videos build the foundation for MO2 and MO3: they define the three cases, demonstrate how to count dominant operations in loops and searches, and show how to simplify the resulting expressions into standard growth rates for familiar algorithms. Sambol's introduction and its explicit link to asymptotic notation support MO1 and MO5 by keeping the idea of a case distinct from the idea of a bound, which is what lets you justify saying "O for a worst-case guarantee" versus "Theta for a tight bound." Finally, seeing how the three cases diverge across different algorithms prepares you for MO4, where you weigh scalability and practical performance when choosing between candidate algorithms for a given scenario.</p>
+</section>
+<section class="item" id="p3-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part4">
+<h2>Omega and Theta Notations</h2>
+<section class="item" id="p4-sec1">
+<h3>Introduction</h3>
+<p>So far in this module you have used Big O to describe how an algorithm's running time grows in the worst case — an upper bound on the work required. But an upper bound alone tells an incomplete story. If someone says an algorithm is O(n^2), that statement is technically true even for an algorithm that always runs in constant time, because Big O only promises the growth is no worse than the stated function. To describe performance precisely, we need two more tools: Omega notation for lower bounds and Theta notation for tight bounds.</p>
+<p>Omega (Ω) says the running time grows at least as fast as some function — it establishes a floor. Theta (Θ) applies when the upper and lower bounds match, pinning the growth rate from both directions and giving the most informative single description of an algorithm's behavior. Together, O, Ω, and Θ form a vocabulary that lets you state exactly what you are claiming: a guarantee you will never exceed, a limit you cannot beat, or an exact characterization of growth.</p>
+<p>While watching these videos, pay close attention to the formal definitions — each notation is defined by an inequality involving constants c and n0, and the differences between them come down to the direction of that inequality. Also notice how the speakers connect the formal definitions back to familiar algorithms. Ask yourself for each course algorithm we have studied, such as linear search, binary search, bubble sort, and merge sort, whether its best case and worst case match. When they match, Theta applies; when they differ, you must be careful to say which case you are describing.</p>
+</section>
+<section class="item" id="p4-sec2">
+<h3>Video 1: Analyzing algorithms in 7 minutes — Asymptotic Notation</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/u8AprTUkJjM?cc_load_policy=1&amp;rel=0" title="Video: Analyzing algorithms in 7 minutes — Asymptotic Notation (Michael Sambol)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Michael Sambol</strong> · 7:10 · 40,301 views · 2y ago · captions — <a href="https://www.youtube.com/watch?v=u8AprTUkJjM" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A compact overview of all three asymptotic notations — Theta, Big O, and Omega — presented together in about seven minutes. Based on its title and description, the video walks through what each notation means and how they relate to one another as descriptions of an algorithm's growth rate. It is part of a series on algorithm analysis, so it assumes you have already met the basic idea of asymptotic behavior.</p>
+<h4>Why this video</h4>
+<p>Michael Sambol's algorithm videos are widely used by CS students for their brevity and precision, and this one directly supports the "Comparing O, Ω, and Θ: A Unified View" subtopic by treating the three notations side by side rather than in isolation.</p>
+</section>
+<section class="item" id="p4-sec3">
+<h3>Video 2: Introduction to Big-Theta Notation</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/1DJRhwlsg9I?cc_load_policy=1&amp;rel=0" title="Video: Introduction to Big-Theta Notation (Mathispower4u)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Mathispower4u</strong> · 4:59 · 17,505 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=1DJRhwlsg9I" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A focused introduction to Big-Theta notation from the Mathispower4u channel. Expect a careful, example-driven treatment of the formal definition — the constants and threshold value that must exist for a function to be Θ of another — with worked examples demonstrating how to verify the relationship.</p>
+<h4>Why this video</h4>
+<p>This video gives the mathematical grounding behind tight bounds that a quick overview cannot, which is exactly what the "Theta Notation: Capturing Tight Bounds" subtopic requires.</p>
+</section>
+<section class="item" id="p4-sec4">
+<h3>Video 3: Introduction to Big-Omega Notation</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/kUqqll8yOlc?cc_load_policy=1&amp;rel=0" title="Video: Introduction to Big-Omega Notation (Mathispower4u)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Mathispower4u</strong> · 4:13 · 2,852 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=kUqqll8yOlc" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A short companion video introducing Big-Omega notation in the same style and from the same channel as the Theta video. It should present the formal definition of a lower bound and show, through examples, how to establish that one function is Ω of another.</p>
+<h4>Why this video</h4>
+<p>Watching this alongside the Theta video reinforces how the definitions differ only in the direction of the inequality, supporting the "Omega Notation: Defining Lower Bounds" subtopic with consistent terminology and notation.</p>
+</section>
+<section class="item" id="p4-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>These three videos work together to build the comparative understanding MO1 requires: the Mathispower4u pair supplies rigorous, definition-level treatment of Omega and Theta individually, while the Sambol video places all three notations in a single unified frame so you can articulate the distinct role each plays. The formal definitions and worked examples give you the machinery to justify your notation choices as MO5 asks — deciding whether your analytical goal is a worst-case guarantee, a proven lower bound, or a confirmed tight bound. Once you can distinguish the three notations, you can apply them correctly when deriving best-case, worst-case, and average-case complexities for the course algorithms in MO2, recognizing when a single Theta statement suffices and when separate case-by-case bounds are necessary.</p>
+</section>
+<section class="item" id="p4-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part5">
+<h2>Comparing Asymptotic Notations</h2>
+<section class="item" id="p5-sec1">
+<h3>Introduction</h3>
+<p>When we analyze an algorithm, we rarely want a single number — we want a statement about how the running time behaves as the input grows. Big O, Omega, and Theta are the three standard tools for making that statement precise. Big O gives an upper bound (the work grows no faster than this), Omega gives a lower bound (the work grows at least this fast), and Theta gives a tight bound (the growth is pinned between the two, up to constant factors).</p>
+<p>In this course these notations are not interchangeable vocabulary; they encode different claims. Saying linear search is O(n) is a guarantee about the worst case, while saying any comparison sort is Omega(n log n) is a claim about an inherent limit, and saying merge sort is Theta(n log n) says both bounds coincide. Choosing the wrong notation can make a correct analysis say the wrong thing, which is why this topic focuses on the relationships among the three and on when each is the right reporting choice.</p>
+<p>As you watch the videos below, pay attention to three things: the formal definitions with their constants c and n0, the picture of a function being sandwiched between scaled versions of another, and the logical relationship that f is Theta(g) exactly when f is both O(g) and Omega(g). Also note how speakers distinguish best/worst/average case from upper/lower/tight bound — these two ideas are related but are not the same thing, and conflating them is the most common error students make here.</p>
+</section>
+<section class="item" id="p5-sec2">
+<h3>Video 1: Analyzing algorithms in 7 minutes — Asymptotic Notation</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/u8AprTUkJjM?cc_load_policy=1&amp;rel=0" title="Video: Analyzing algorithms in 7 minutes — Asymptotic Notation (Michael Sambol)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Michael Sambol</strong> · 7:10 · 40,301 views · 2y ago · captions — <a href="https://www.youtube.com/watch?v=u8AprTUkJjM" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A compact overview of all three asymptotic notations — Theta, Big O, and Omega — presented in about seven minutes. Based on its title and description, it introduces each notation in turn and is part of a short series that begins with a separate introduction video on analyzing algorithms. Expect formal definitions along with the constant-and-threshold conditions that make each bound precise.</p>
+<h4>Why this video</h4>
+<p>Michael Sambol's algorithms videos are widely used by CS students for their brevity and fidelity to standard textbook definitions, and this one covers all three notations side by side, which is exactly the comparison this topic is built around.</p>
+</section>
+<section class="item" id="p5-sec3">
+<h3>Video 2: Introducing Asymptotic Notations</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/J56ggSnbyKY?cc_load_policy=1&amp;rel=0" title="Video: Introducing Asymptotic Notations (Back To Back SWE)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Back To Back SWE</strong> · 5:17 · 37,132 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=J56ggSnbyKY" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>An introductory treatment of asymptotic notation from the Back To Back SWE channel, aimed at learners meeting these symbols for the first time. Given the channel's interview-prep orientation, it likely emphasizes intuition about growth rates and how the notations are actually used when discussing algorithm efficiency, rather than heavy formal proof.</p>
+<h4>Why this video</h4>
+<p>It offers a second, more conversational explanation of the same definitions, which helps if the formal version feels abstract, and it connects the notations to the practical habit of describing an algorithm's cost in interviews and code reviews.</p>
+</section>
+<section class="item" id="p5-sec4">
+<h3>Video 3: Introduction to Big-Theta Notation</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/1DJRhwlsg9I?cc_load_policy=1&amp;rel=0" title="Video: Introduction to Big-Theta Notation (Mathispower4u)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Mathispower4u</strong> · 4:59 · 17,505 views · 4y ago · captions — <a href="https://www.youtube.com/watch?v=1DJRhwlsg9I" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A focused lesson on Big-Theta notation from the Mathispower4u channel. As a mathematics-oriented video, it most likely works through the formal definition with explicit constants and bounds and demonstrates verifying that one function is Theta of another through worked examples.</p>
+<h4>Why this video</h4>
+<p>Theta is the notation students most often misuse, and a dedicated mathematical treatment reinforces the key relationship that a tight bound requires establishing both the upper and lower bound simultaneously.</p>
+</section>
+<section class="item" id="p5-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these videos build directly toward MO1 and MO5: the Sambol and Back To Back SWE videos present Big O, Omega, and Theta as a related set so you can articulate what each one claims, and the Mathispower4u video on Theta reinforces why a tight bound is a stronger statement than either bound alone — the reasoning you need to justify your notation choice. The formal definitions and growth-rate intuition in these videos also underpin MO2 and MO3, since deriving best-, worst-, and average-case complexities and classifying loops or recursive halving all depend on comparing growth and discarding lower-order terms. Applying that vocabulary to concrete algorithm selection trade-offs (MO4) is left to the course readings, assignments, and worked examples that follow.</p>
+</section>
+<section class="item" id="p5-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part6">
+<h2>Complexity Analysis of Known Algorithms</h2>
+<section class="item" id="p6-sec1">
+<h3>Introduction</h3>
+<p>So far in this course you have learned the vocabulary of asymptotic analysis — Big O, Omega, and Theta — and the mechanics of counting operations. This topic puts that vocabulary to work on algorithms you already know how to code: linear search, binary search, bubble sort, selection sort, and merge sort. The goal is not to memorize a table of complexities but to be able to reconstruct each result from the structure of the algorithm itself.</p>
+<p>That skill matters because the same handful of structural patterns reappear constantly. A single pass over n elements gives you O(n); a loop nested inside another loop over the same data gives you O(n^2); repeatedly halving a search space gives you O(log n); and splitting a problem in half and merging the results gives you O(n log n). Once you can recognize these patterns, you can analyze unfamiliar code without memorizing anything new.</p>
+<p>As you watch the videos below, pay attention to three things: which operation is being counted as the dominant one, how the count changes between the best, average, and worst case, and why a particular notation is chosen to report the result. Notice especially that an algorithm can have different best- and worst-case behavior — optimized bubble sort is the classic example — and that reporting only Big O hides that distinction. Try pausing each video and deriving the bound yourself before the presenter states it.</p>
+</section>
+<section class="item" id="p6-sec2">
+<h3>Video 1: Binary search in 4 minutes</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/fDKIpRe8GW4?cc_load_policy=1&amp;rel=0" title="Video: Binary search in 4 minutes (Michael Sambol)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Michael Sambol</strong> · 4:00 · 249,492 views · 3y ago · captions — <a href="https://www.youtube.com/watch?v=fDKIpRe8GW4" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A compact walkthrough of the binary search algorithm, covering how the search range is repeatedly halved against a sorted array and including a link to a Python implementation. Expect a trace of the algorithm on example data alongside a statement of its logarithmic running time.</p>
+<h4>Why this video</h4>
+<p>Binary search is the canonical example of the recursive-halving pattern, and this short, widely-viewed explanation from a well-known algorithms channel gives you a concrete mental model for why repeated halving yields O(log n) rather than O(n).</p>
+</section>
+<section class="item" id="p6-sec3">
+<h3>Video 2: Sorting Algorithms Time and Space Complexity | Sorting Algorithms | Big-O | Geekific</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/UqmKiz2P0Lw?cc_load_policy=1&amp;rel=0" title="Video: Sorting Algorithms Time and Space Complexity | Sorting Algorithms | Big-O | Geekific (Geekific)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Geekific</strong> · 13:39 · 21,750 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=UqmKiz2P0Lw" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A broader survey that collects the time and space complexities of the standard sorting algorithms and relates them to Big-O notation. Based on its title and series context, it is likely to cover bubble sort, selection sort, insertion sort, merge sort and others, comparing their best, average and worst cases side by side.</p>
+<h4>Why this video</h4>
+<p>It directly supports the bubble sort, selection sort, and merge sort subtopics in one place, and the side-by-side comparison is useful practice for justifying why one algorithm scales better than another.</p>
+</section>
+<section class="item" id="p6-sec4">
+<h3>Video 3: Optimized Bubble Sort | Best Case | O(n) Time Complexity | Sorting Algorithms |DAA</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/g6hr8B3OWio?cc_load_policy=1&amp;rel=0" title="Video: Optimized Bubble Sort | Best Case | O(n) Time Complexity | Sorting Algorithms |DAA (Gate Smashers)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Gate Smashers</strong> · 8:32 · 67,682 views · 3y ago · captions — <a href="https://www.youtube.com/watch?v=g6hr8B3OWio" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A focused lecture on the optimized version of bubble sort — the variant that stops early when a pass makes no swaps — and why that modification produces O(n) best-case behavior. The video explains the reasoning behind the best case in contrast to the usual quadratic result.</p>
+<h4>Why this video</h4>
+<p>It is the clearest illustration in this set of why best case and worst case must be derived separately, which is exactly the distinction you need when deciding between Big O, Omega, and Theta for a given algorithm.</p>
+</section>
+<section class="item" id="p6-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these videos move from a single algorithm to a comparative view. The binary search video gives you the recursive-halving pattern behind O(log n), and the optimized bubble sort video shows how a small implementation change separates best-case from worst-case behavior — both directly supporting the derivation of best, worst, and average cases (MO2) and the classification of loop and halving patterns into growth-rate categories (MO3). The sorting comparison video assembles the complexities of bubble, selection, and merge sort in one frame, which is the raw material for comparing scalability and time-space trade-offs when selecting an algorithm (MO4). Where the videos report a single Big O figure, use the best-case/worst-case contrast raised in the bubble sort video to practice articulating which bound you actually need and why (MO1, MO5).</p>
+</section>
+<section class="item" id="p6-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+<section class="merged-part" id="part7">
+<h2>Practical Implications of Complexity</h2>
+<section class="item" id="p7-sec1">
+<h3>Introduction</h3>
+<p>Up to this point in the module you have been learning how to analyze algorithms: identifying dominant operations, dropping lower-order terms, and expressing growth rates with asymptotic notation. This topic asks the natural follow-up question: so what? Complexity analysis earns its place in software engineering because it lets you predict how a program will behave at scales you have not tested yet, and because it gives you a shared vocabulary for defending design decisions to teammates, managers, and clients.</p>
+<p>Practical implications show up in several recurring decisions. Which sorting routine or search strategy should you reach for given the size and shape of your data? Where should you spend your limited optimization effort — on the O(n^2) nested loop or on the constant-factor tweak that feels slow but barely matters? When is it worth spending extra memory (a hash table, a cache, a precomputed index) to buy down running time, and when does that trade go the wrong way? And how do you explain "this will be fine for a thousand records but not for ten million" to someone who does not read asymptotic notation?</p>
+<p>The three videos below review the analytical tools and then apply them to concrete algorithm comparisons. While watching, keep a practical lens: note how each algorithm's time and space costs would influence a real selection decision, pay attention to where best-case and worst-case behavior diverge (that gap is exactly what you must communicate to stakeholders), and watch for the common code patterns that quietly push an implementation into a higher growth class.</p>
+</section>
+<section class="item" id="p7-sec2">
+<h3>Video 1: Sorting Algorithms Time and Space Complexity | Sorting Algorithms | Big-O | Geekific</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/UqmKiz2P0Lw?cc_load_policy=1&amp;rel=0" title="Video: Sorting Algorithms Time and Space Complexity | Sorting Algorithms | Big-O | Geekific (Geekific)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Geekific</strong> · 13:39 · 21,750 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=UqmKiz2P0Lw" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>This video walks through the standard sorting algorithms and compares their time complexity alongside their space complexity, as the title indicates. Expect side-by-side treatment of best, average, and worst cases for the common sorts, with Big-O used as the comparison language. The format lends itself to building a reference table you can consult when choosing a sort.</p>
+<h4>Why this video</h4>
+<p>Sorting is the classic setting for algorithm selection and time-versus-space trade-offs, so this video maps directly onto the "Choosing the Right Algorithm for the Job" and "Balancing Time and Space Complexity Trade-offs" subtopics. Geekific is an established programming-education channel, and the comparative framing makes the practical consequences of each choice easy to see.</p>
+</section>
+<section class="item" id="p7-sec3">
+<h3>Video 2: Big-O Notation Explained | Time &amp; Space Complexity in Programming | Geekific Remastered</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/APGPA3nN5a4?cc_load_policy=1&amp;rel=0" title="Video: Big-O Notation Explained | Time &amp; Space Complexity in Programming | Geekific Remastered (Geekific)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Geekific</strong> · 8:36 · 2,992 views · 1y ago · captions — <a href="https://www.youtube.com/watch?v=APGPA3nN5a4" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A remastered explainer on Big-O notation that covers both time and space complexity in programming contexts. Based on its description, it frames the material around writing efficient code and preparing for technical interviews, so it likely moves from notation basics to how growth rates translate into real performance differences.</p>
+<h4>Why this video</h4>
+<p>It gives you the compact vocabulary needed to reason about and communicate performance expectations, which underpins every subtopic here. The interview-and-efficiency framing keeps the focus on why complexity matters in practice rather than on formalism alone.</p>
+</section>
+<section class="item" id="p7-sec4">
+<h3>Video 3: Time and Space Complexity of Algorithms</h3>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/5GJH8CmWoxs?cc_load_policy=1&amp;rel=0" title="Video: Time and Space Complexity of Algorithms (Lagnesh Thakur)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen=""></iframe></div>
+<p class="video-meta"><strong>Lagnesh Thakur</strong> · 7:12 · 5,102 views · 3y ago · captions — <a href="https://www.youtube.com/watch?v=5GJH8CmWoxs" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h4>About this video</h4>
+<p>A short, focused introduction to the time and space complexity of algorithms, presented as groundwork for applying these ideas to later material. In roughly seven minutes it should establish how to measure the work an algorithm does and the memory it consumes, using representative examples.</p>
+<h4>Why this video</h4>
+<p>Its brevity and emphasis on using the concepts downstream make it a good consolidating review before you tackle optimization priorities and scalability reasoning. Hearing the same ideas explained by a different presenter helps confirm your understanding of the time-space pairing at the heart of this topic.</p>
+</section>
+<section class="item" id="p7-sec5">
+<h3>How These Videos Support the Learning Outcomes</h3>
+<p>Together these videos reinforce the notation fluency behind MO1 and MO5 by repeatedly showing how Big-O and related notations are used to state performance claims, and they revisit best-, average-, and worst-case analysis of familiar sorts and searches in support of MO2. The sorting comparison video in particular supports MO3, since each algorithm's classification follows from recognizing nested loops, partitioning, and recursive halving in its structure. Most importantly, the explicit pairing of time with space costs and the side-by-side comparison of candidate algorithms give you exactly the evidence base MO4 calls for when evaluating an algorithm choice for a given scenario and explaining that choice in terms of scalability and trade-offs.</p>
+</section>
+<section class="item" id="p7-sec6">
+<h3>About These Videos</h3>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+</section>
+
+<footer class="presemaker-credit" data-credit="2" style="margin-top:2rem;padding:14px 8px;border-top:1px solid #ddd;background:#fff;text-align:center;font:13px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#595959;"><svg width="20" height="20" viewBox="0 0 2048 2048" aria-hidden="true" focusable="false" style="vertical-align:-5px;margin-right:7px"><rect width="2048" height="2048" rx="384" fill="#0F6E6E"/><path fill="#0A5050" d="M1024 1000 344 832v816l680 168zm0 0 680-168v816l-680 168z"/><path fill="#fff" d="M1024 944 384 784v808l640 160zm0 0 640-160v808l-640 160z"/><rect x="1002" y="944" width="44" height="808" fill="#0F6E6E"/><rect x="936" y="246" width="176" height="448" rx="44" fill="#fff"/><rect x="800" y="382" width="448" height="176" rx="44" fill="#fff"/></svg>Created with <a href="https://softwareplus.ai/coursebuilder/" target="_blank" rel="noopener" style="color:#2f5d8f;font-weight:600;text-decoration:none;">CourseBuilder+</a><span aria-hidden="true"> · </span><a href="https://softwareplus.ai/" target="_blank" rel="noopener" style="color:#2f5d8f;text-decoration:none;">SoftwarePlus.ai</a></footer>
+</body>
+</html>

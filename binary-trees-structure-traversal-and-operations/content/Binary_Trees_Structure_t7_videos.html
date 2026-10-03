@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Implementing a BST in JavaScript</title>
+<style>
+body{font-family:'Segoe UI',Arial,sans-serif;max-width:820px;margin:2rem auto;padding:0 1.25rem;color:#222;line-height:1.55}
+h1{font-size:1.9rem;border-bottom:2px solid #ddd;padding-bottom:.4rem}
+h2{font-size:1.3rem;color:#1f3864;margin-top:1.6rem}
+body{padding-left:1.1rem;padding-right:1.1rem}
+ul,ol{margin:.4rem 0 1rem 1.4rem}
+li{margin:.25rem 0}
+nav.toc{background:rgba(128,128,128,.08);border:1px solid rgba(128,128,128,.25);border-radius:8px;padding:.6rem 1rem;margin:1.2rem 0}
+nav.toc strong{display:block;margin-bottom:.3rem}
+nav.toc a{display:block;text-decoration:none;padding:.12rem 0}
+section.item{border-top:1px solid rgba(128,128,128,.22);padding-top:.3rem}
+table{border-collapse:collapse;width:100%;margin:.8rem 0}
+th,td{border:1px solid rgba(128,128,128,.45);padding:.4rem .6rem;text-align:left;vertical-align:top}
+thead th{background:rgba(128,128,128,.18);font-weight:600}
+tbody tr:nth-child(even){background:rgba(128,128,128,.08)}
+</style>
+</head>
+<body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Binary Trees: Structure, Traversal, and Operations</a></div>
+<h1>Implementing a BST in JavaScript</h1>
+<nav class="toc"><strong>Contents</strong>
+<a href="#sec1">Introduction</a>
+<a href="#sec2">Video 1: How to represent Binary Search Tree in Java? | Animation</a>
+<a href="#sec3">Video 2: How to insert a value in a Binary Search Tree (Recursive) | Implementation</a>
+<a href="#sec4">Video 3: How to search a given key in a Binary Search Tree (Recursive) | Implementation</a>
+<a href="#sec5">How These Videos Support the Learning Outcomes</a>
+<a href="#sec6">About These Videos</a>
+</nav>
+<section class="item" id="sec1">
+<h2>Introduction</h2>
+<p>So far you have reasoned about binary search trees on paper — drawing nodes, following edges, and tracing where a value belongs. This topic turns that reasoning into working code. You will define a Node class that stores a value plus left and right references, wrap it in a BinarySearchTree class that tracks the root, and then add methods one at a time: insert, search (lookup), the three traversals, and finally delete with its three cases.</p>
+<p>This matters because the code forces you to be precise in ways a diagram does not. Where does a new node actually get attached? What does your method return when the tree is empty, or when the key is not found? How do you reconnect a subtree after removing a node with two children? Writing the implementation yourself is the fastest way to discover which parts of the concept you only half understood.</p>
+<p>The videos below are from a Java-based DSA series, and that is deliberate: the class structure, the recursive insert, and the recursive search translate almost line for line into JavaScript. While watching, focus on the shape of the logic rather than the syntax — the base case of each recursion, the comparison that chooses left versus right, and the fact that each recursive call returns a subtree reference that the parent must reassign. Then rewrite each method in JavaScript yourself, replacing class fields and types with plain JavaScript properties, and test it on a small tree you build by hand.</p>
+</section>
+<section class="item" id="sec2">
+<h2>Video 1: How to represent Binary Search Tree in Java? | Animation</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/B1Mau6NCHx0?cc_load_policy=1&amp;rel=0" title="Video: How to represent Binary Search Tree in Java? | Animation (Dinesh Varyani)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Dinesh Varyani</strong> · 10:07 · 17,329 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=B1Mau6NCHx0" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>An animated walkthrough of how a binary search tree is represented in code: the node object holding a value and left/right child references, and the tree class that holds a reference to the root. Expect visual diagrams showing how individual node objects link together to form the overall tree structure in memory.</p>
+<h3>Why this video</h3>
+<p>This maps directly onto the first two subtopics — defining the Node class and setting up the BinarySearchTree class — and the animation makes the reference-based structure concrete before any method logic is introduced.</p>
+</section>
+<section class="item" id="sec3">
+<h2>Video 2: How to insert a value in a Binary Search Tree (Recursive) | Implementation</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/ZHLAiHiYgeI?cc_load_policy=1&amp;rel=0" title="Video: How to insert a value in a Binary Search Tree (Recursive) | Implementation (Dinesh Varyani)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Dinesh Varyani</strong> · 7:23 · 16,176 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=ZHLAiHiYgeI" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>Covers the recursive implementation of inserting a value into a BST: comparing the new key against the current node, descending left or right accordingly, and creating the node when an empty position is reached. The implementation is shown step by step alongside an animated view of the tree growing.</p>
+<h3>Why this video</h3>
+<p>Insertion is the method every other operation depends on, and this video shows the recursive pattern — including returning the subtree back up to the caller — that you will reuse when writing insert and delete in JavaScript.</p>
+</section>
+<section class="item" id="sec4">
+<h2>Video 3: How to search a given key in a Binary Search Tree (Recursive) | Implementation</h2>
+<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:.6rem 0;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/wL1oxXrEgr4?cc_load_policy=1&amp;rel=0" title="Video: How to search a given key in a Binary Search Tree (Recursive) | Implementation (Dinesh Varyani)" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-meta"><strong>Dinesh Varyani</strong> · 6:40 · 8,451 views · 5y ago · captions — <a href="https://www.youtube.com/watch?v=wL1oxXrEgr4" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<h3>About this video</h3>
+<p>Walks through recursively searching a BST for a given key: checking the current node, returning when a match or an empty reference is found, and otherwise recursing into the left or right subtree based on the comparison. The animation illustrates the single downward path the search follows.</p>
+<h3>Why this video</h3>
+<p>It covers the search/lookup subtopic with the same recursive structure as the insert video, reinforcing the pattern and making clear why a BST search touches only one path from root to leaf.</p>
+</section>
+<section class="item" id="sec5">
+<h2>How These Videos Support the Learning Outcomes</h2>
+<p>These three videos directly support MO5 by modeling the exact building blocks of a BST implementation — node and tree class definitions, a recursive insert, and a recursive search — in a form you can translate into JavaScript and validate with your own test cases. They also reinforce MO1, since representing a node with value plus left and right references makes the structural vocabulary of roots, children, and leaves concrete, and MO3, by demonstrating insertion and search logic that preserves the ordering property. Because the videos stop short of deletion and traversal, you should pair them with the module&#39;s course materials and your own coding practice to complete the delete cases (MO3), the in-order, pre-order, and post-order methods (MO2), and the complexity analysis that ties tree height to performance (MO4).</p>
+</section>
+<section class="item" id="sec6">
+<h2>About These Videos</h2>
+<p>These videos were chosen from YouTube on October 2, 2026. Each has captions; the player turns them on. Videos on YouTube can be changed or removed — if one no longer plays, tell your instructor. If a player does not appear, use its Watch on YouTube link.</p>
+</section>
+
+<footer class="presemaker-credit" data-credit="2" style="margin-top:2rem;padding:14px 8px;border-top:1px solid #ddd;background:#fff;text-align:center;font:13px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#595959;"><svg width="20" height="20" viewBox="0 0 2048 2048" aria-hidden="true" focusable="false" style="vertical-align:-5px;margin-right:7px"><rect width="2048" height="2048" rx="384" fill="#0F6E6E"/><path fill="#0A5050" d="M1024 1000 344 832v816l680 168zm0 0 680-168v816l-680 168z"/><path fill="#fff" d="M1024 944 384 784v808l640 160zm0 0 640-160v808l-640 160z"/><rect x="1002" y="944" width="44" height="808" fill="#0F6E6E"/><rect x="936" y="246" width="176" height="448" rx="44" fill="#fff"/><rect x="800" y="382" width="448" height="176" rx="44" fill="#fff"/></svg>Created with <a href="https://softwareplus.ai/coursebuilder/" target="_blank" rel="noopener" style="color:#2f5d8f;font-weight:600;text-decoration:none;">CourseBuilder+</a><span aria-hidden="true"> · </span><a href="https://softwareplus.ai/" target="_blank" rel="noopener" style="color:#2f5d8f;text-decoration:none;">SoftwarePlus.ai</a></footer>
+</body>
+</html>
