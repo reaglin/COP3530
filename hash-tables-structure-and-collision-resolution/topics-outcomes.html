@@ -25,16 +25,25 @@ li{margin:5px 0}
 .co{margin:7px 0}
 .co .code{font-weight:600;color:#1a3c6e;margin-right:6px}
 .empty{color:#595959}
+.tm-jump{margin:2px 0 8px;font-size:.92rem}
+.tm-jump a{color:#1a3c6e;font-weight:600}
+ul.tm li{margin:7px 0}
+ul.tm a{color:#1a3c6e;font-weight:600}
+.tm-kind{display:inline-block;background:#eef2f8;color:#1a3c6e;border-radius:3px;padding:1px 8px;margin-left:6px;font-size:.82rem}
+.tm-also{color:#555;font-size:.88rem}
+.tm-back{margin:0 0 4px;font-size:.88rem}
+.tm-back a{color:#1a3c6e}
 </style>
 </head>
 <body>
 <div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Hash Tables: Structure and Collision Resolution</a></div>
 <h1>Hash Tables: Structure and Collision Resolution — Topics &amp; Learning Outcomes</h1>
-<div class="toc"><a href="#topics">📋 Module Topics</a><a href="#outcomes">🎯 Student Learning Outcomes</a></div>
+<div class="toc"><a href="#topics">📋 Module Topics</a><a href="#outcomes">🎯 Student Learning Outcomes</a><a href="#materials">📚 Materials for Each Topic</a></div>
 
 <h2 id="topics">Module Topics</h2>
-<h3 id="topic-1">Introduction to Hash Tables</h3>
+<h3 id="topic-1">1. Introduction to Hash Tables</h3>
 <div class="summary">Overview of the hash table data structure and its core purpose as a key-value store. Introduces the concept of hashing and why hash tables are widely used in software development.</div>
+<p class="tm-jump"><a href="#materials-topic-1">Materials for topic 1 (2)</a></p>
 <ul>
 <li><strong>What Is a Hash Table?</strong> <span class="el-body">— A hash table is a data structure that stores data as key-value pairs, enabling efficient insertion, deletion, and lookup operations.</span></li>
 <li><strong>The Concept of Hashing</strong> <span class="el-body">— Hashing is the process of converting a key into a numeric index using a function called a hash function, which determines where the key-value pair is stored in the underlying array.</span></li>
@@ -42,8 +51,9 @@ li{margin:5px 0}
 <li><strong>Why Hash Tables Are Widely Used</strong> <span class="el-body">— Hash tables are one of the most commonly used data structures in software development because they offer average-case constant time performance for core operations.</span></li>
 <li><strong>The Role of the Underlying Array</strong> <span class="el-body">— Internally, a hash table relies on a fixed-size array to store its data, with the hash function translating keys into valid array indices.</span></li>
 </ul>
-<h3 id="topic-2">Internal Array-Based Design</h3>
+<h3 id="topic-2">2. Internal Array-Based Design</h3>
 <div class="summary">Explains how hash tables are built on top of arrays and how hash functions map keys to array indices. Covers the role of hash functions in determining storage location and retrieval efficiency.</div>
+<p class="tm-jump"><a href="#materials-topic-2">Materials for topic 2 (2)</a></p>
 <ul>
 <li><strong>Arrays as the Foundation of Hash Tables</strong> <span class="el-body">— A hash table is built on top of a fixed-size array that serves as its underlying storage structure.</span></li>
 <li><strong>The Role of Hash Functions</strong> <span class="el-body">— A hash function is the mechanism that converts a key into a numeric index, determining exactly where data is stored in the internal array.</span></li>
@@ -51,8 +61,9 @@ li{margin:5px 0}
 <li><strong>Storage and Retrieval Efficiency</strong> <span class="el-body">— Because the hash function computes the storage location directly, both inserting and looking up a value can ideally be done in constant time, O(1).</span></li>
 <li><strong>Determinism and Consistency Requirements</strong> <span class="el-body">— A hash function must be deterministic, meaning it always produces the same output index for the same input key, every time it is called.</span></li>
 </ul>
-<h3 id="topic-3">Hash Function Design and Properties</h3>
+<h3 id="topic-3">3. Hash Function Design and Properties</h3>
 <div class="summary">Examines what makes a good hash function, including uniformity, determinism, and speed. Discusses common hashing techniques and how poor hash functions lead to performance problems.</div>
+<p class="tm-jump"><a href="#materials-topic-3">Materials for topic 3 (2)</a></p>
 <ul>
 <li><strong>Determinism: The Foundational Property</strong> <span class="el-body">— A hash function must be deterministic, meaning it always produces the same output for the same input.</span></li>
 <li><strong>Uniform Distribution of Hash Values</strong> <span class="el-body">— A good hash function spreads keys as evenly as possible across all available buckets in the underlying array.</span></li>
@@ -61,8 +72,9 @@ li{margin:5px 0}
 <li><strong>The Role of the Modulo Operation</strong> <span class="el-body">— After computing a raw hash value, the modulo operation maps that value into a valid array index within the table&#39;s bounds.</span></li>
 <li><strong>Consequences of Poor Hash Function Design</strong> <span class="el-body">— A badly designed hash function can negate all the performance advantages that hash tables are meant to provide.</span></li>
 </ul>
-<h3 id="topic-4">Collision Resolution: Chaining</h3>
+<h3 id="topic-4">4. Collision Resolution: Chaining</h3>
 <div class="summary">Covers the chaining strategy for handling collisions, where multiple key-value pairs at the same index are stored in a linked list or similar structure. Analyzes the trade-offs and performance implications of chaining.</div>
+<p class="tm-jump"><a href="#materials-topic-4">Materials for topic 4 (2)</a></p>
 <ul>
 <li><strong>What Is Chaining?</strong> <span class="el-body">— Chaining is a collision resolution strategy where each slot in the hash table&#39;s underlying array holds a collection — typically a linked list — of all key-value pairs that hash to the same index.</span></li>
 <li><strong>Inserting with Chaining</strong> <span class="el-body">— To insert a key-value pair, the hash function maps the key to an index, and the pair is appended to (or prepended to) the linked list stored at that bucket.</span></li>
@@ -71,8 +83,9 @@ li{margin:5px 0}
 <li><strong>Load Factor and Its Effect on Chain Length</strong> <span class="el-body">— The load factor — the ratio of stored entries to the number of buckets — is the primary metric that governs how long chains grow and therefore how efficient chaining remains.</span></li>
 <li><strong>Trade-offs of Chaining vs. Other Strategies</strong> <span class="el-body">— Chaining is straightforward to implement and handles high load factors more gracefully than open addressing, but it introduces memory overhead from storing list node pointers.</span></li>
 </ul>
-<h3 id="topic-5">Collision Resolution: Open Addressing</h3>
+<h3 id="topic-5">5. Collision Resolution: Open Addressing</h3>
 <div class="summary">Introduces open addressing techniques such as linear probing, quadratic probing, and double hashing as alternatives to chaining. Discusses how each technique locates an alternative slot when a collision occurs.</div>
+<p class="tm-jump"><a href="#materials-topic-5">Materials for topic 5 (2)</a></p>
 <ul>
 <li><strong>What Is Open Addressing?</strong> <span class="el-body">— Open addressing is a collision resolution strategy where all entries are stored directly within the hash table array itself, rather than in separate linked structures.</span></li>
 <li><strong>Linear Probing</strong> <span class="el-body">— Linear probing resolves collisions by checking consecutive slots in the array, one at a time, until an empty slot is found.</span></li>
@@ -82,8 +95,9 @@ li{margin:5px 0}
 <li><strong>Handling Deletions in Open Addressing</strong> <span class="el-body">— Deleting an entry in an open addressing table requires care because simply clearing a slot can break the probe sequences of other keys.</span></li>
 <li><strong>Load Factor and Performance in Open Addressing</strong> <span class="el-body">— The load factor — the ratio of stored entries to total table slots — has a direct and significant impact on open addressing performance.</span></li>
 </ul>
-<h3 id="topic-6">Performance Analysis of Hash Tables</h3>
+<h3 id="topic-6">6. Performance Analysis of Hash Tables</h3>
 <div class="summary">Analyzes the time and space complexity of hash table operations including insertion, deletion, and lookup. Explores how load factor and collision frequency impact average and worst-case performance.</div>
+<p class="tm-jump"><a href="#materials-topic-6">Materials for topic 6 (2)</a></p>
 <ul>
 <li><strong>Time Complexity of Core Operations</strong> <span class="el-body">— Hash table insertion, deletion, and lookup all have an average-case time complexity of O(1), making them highly efficient for most practical use cases.</span></li>
 <li><strong>Understanding Load Factor</strong> <span class="el-body">— The load factor (λ) is the ratio of the number of stored elements to the total number of available buckets, and it is the primary driver of hash table performance.</span></li>
@@ -93,8 +107,9 @@ li{margin:5px 0}
 <li><strong>Worst-Case Performance and Pathological Inputs</strong> <span class="el-body">— Worst-case hash table performance is O(n) per operation and occurs when all keys hash to the same index, collapsing the structure into a linear search.</span></li>
 <li><strong>Space Complexity and Resizing Costs</strong> <span class="el-body">— Hash tables have O(n) space complexity, but the underlying array is often allocated with extra capacity to maintain a healthy load factor, introducing a space-versus-time trade-off.</span></li>
 </ul>
-<h3 id="topic-7">Implementing a Hash Table in JavaScript</h3>
+<h3 id="topic-7">7. Implementing a Hash Table in JavaScript</h3>
 <div class="summary">Guides students through a hands-on JavaScript implementation of a hash table incorporating a hash function and a chosen collision resolution strategy. Reinforces theoretical concepts through practical coding exercises.</div>
+<p class="tm-jump"><a href="#materials-topic-7">Materials for topic 7 (2)</a></p>
 <ul>
 <li><strong>Setting Up the HashTable Class</strong> <span class="el-body">— The foundation of a JavaScript hash table implementation is a class that encapsulates an internal array and its size.</span></li>
 <li><strong>Writing the Hash Function</strong> <span class="el-body">— A hash function converts a string key into a valid numeric index within the bounds of the internal array.</span></li>
@@ -131,6 +146,50 @@ li{margin:5px 0}
 <div class="co"><span class="code">CO2</span>Select the correct data structure and algorithm to solve specific problems</div>
 <div class="co"><span class="code">CO3</span>Implement data structures and algorithms in computer code.</div>
 <div class="co"><span class="code">CO4</span>Analyze the performance of algorithms and data structures</div>
+<h2 id="materials">Materials for Each Topic</h2>
+<p class="prefix">What has been made for each topic. Materials that cover the whole module are listed on the module page.</p>
+<h3 id="materials-topic-1">1. Introduction to Hash Tables</h3>
+<p class="tm-back"><a href="#topic-1">↑ Back to topic 1</a></p>
+<ul class="tm">
+<li><a href="content/Hash_Tables_Structure_interactive_topics_t1.html">Introduction to Hash Tables</a> <span class="tm-kind">Topic Detail · Web page</span></li>
+<li><a href="content/Hash_Tables_Structure_t1_videos.html">Introduction to Hash Tables — Videos</a> <span class="tm-kind">Topic Videos · Web page</span></li>
+</ul>
+<h3 id="materials-topic-2">2. Internal Array-Based Design</h3>
+<p class="tm-back"><a href="#topic-2">↑ Back to topic 2</a></p>
+<ul class="tm">
+<li><a href="content/Hash_Tables_Structure_interactive_topics_t2.html">Internal Array-Based Design</a> <span class="tm-kind">Topic Detail · Web page</span></li>
+<li><a href="content/Hash_Tables_Structure_t2_videos.html">Internal Array-Based Design — Videos</a> <span class="tm-kind">Topic Videos · Web page</span></li>
+</ul>
+<h3 id="materials-topic-3">3. Hash Function Design and Properties</h3>
+<p class="tm-back"><a href="#topic-3">↑ Back to topic 3</a></p>
+<ul class="tm">
+<li><a href="content/Hash_Tables_Structure_interactive_topics_t3.html">Hash Function Design and Properties</a> <span class="tm-kind">Topic Detail · Web page</span></li>
+<li><a href="content/Hash_Tables_Structure_t3_videos.html">Hash Function Design and Properties — Videos</a> <span class="tm-kind">Topic Videos · Web page</span></li>
+</ul>
+<h3 id="materials-topic-4">4. Collision Resolution: Chaining</h3>
+<p class="tm-back"><a href="#topic-4">↑ Back to topic 4</a></p>
+<ul class="tm">
+<li><a href="content/Hash_Tables_Structure_interactive_topics_t4.html">Collision Resolution: Chaining</a> <span class="tm-kind">Topic Detail · Web page</span></li>
+<li><a href="content/Hash_Tables_Structure_t4_videos.html">Collision Resolution: Chaining — Videos</a> <span class="tm-kind">Topic Videos · Web page</span></li>
+</ul>
+<h3 id="materials-topic-5">5. Collision Resolution: Open Addressing</h3>
+<p class="tm-back"><a href="#topic-5">↑ Back to topic 5</a></p>
+<ul class="tm">
+<li><a href="content/Hash_Tables_Structure_interactive_topics_t5.html">Collision Resolution: Open Addressing</a> <span class="tm-kind">Topic Detail · Web page</span></li>
+<li><a href="content/Hash_Tables_Structure_t5_videos.html">Collision Resolution: Open Addressing — Videos</a> <span class="tm-kind">Topic Videos · Web page</span></li>
+</ul>
+<h3 id="materials-topic-6">6. Performance Analysis of Hash Tables</h3>
+<p class="tm-back"><a href="#topic-6">↑ Back to topic 6</a></p>
+<ul class="tm">
+<li><a href="content/Hash_Tables_Structure_interactive_topics_t6.html">Performance Analysis of Hash Tables</a> <span class="tm-kind">Topic Detail · Web page</span></li>
+<li><a href="content/Hash_Tables_Structure_t6_videos.html">Performance Analysis of Hash Tables — Videos</a> <span class="tm-kind">Topic Videos · Web page</span></li>
+</ul>
+<h3 id="materials-topic-7">7. Implementing a Hash Table in JavaScript</h3>
+<p class="tm-back"><a href="#topic-7">↑ Back to topic 7</a></p>
+<ul class="tm">
+<li><a href="content/Hash_Tables_Structure_interactive_topics_t7.html">Implementing a Hash Table in JavaScript</a> <span class="tm-kind">Topic Detail · Web page</span></li>
+<li><a href="content/Hash_Tables_Structure_t7_videos.html">Implementing a Hash Table in JavaScript — Videos</a> <span class="tm-kind">Topic Videos · Web page</span></li>
+</ul>
 
 <footer class="presemaker-credit" data-credit="2" style="margin-top:2rem;padding:14px 8px;border-top:1px solid #ddd;background:#fff;text-align:center;font:13px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#595959;"><svg width="20" height="20" viewBox="0 0 2048 2048" aria-hidden="true" focusable="false" style="vertical-align:-5px;margin-right:7px"><rect width="2048" height="2048" rx="384" fill="#0F6E6E"/><path fill="#0A5050" d="M1024 1000 344 832v816l680 168zm0 0 680-168v816l-680 168z"/><path fill="#fff" d="M1024 944 384 784v808l640 160zm0 0 640-160v808l-640 160z"/><rect x="1002" y="944" width="44" height="808" fill="#0F6E6E"/><rect x="936" y="246" width="176" height="448" rx="44" fill="#fff"/><rect x="800" y="382" width="448" height="176" rx="44" fill="#fff"/></svg>Created with <a href="https://softwareplus.ai/coursebuilder/" target="_blank" rel="noopener" style="color:#2f5d8f;font-weight:600;text-decoration:none;">CourseBuilder+</a><span aria-hidden="true"> · </span><a href="https://softwareplus.ai/" target="_blank" rel="noopener" style="color:#2f5d8f;text-decoration:none;">SoftwarePlus.ai</a></footer>
 </body>

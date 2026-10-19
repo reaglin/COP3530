@@ -25,16 +25,25 @@ li{margin:5px 0}
 .co{margin:7px 0}
 .co .code{font-weight:600;color:#1a3c6e;margin-right:6px}
 .empty{color:#595959}
+.tm-jump{margin:2px 0 8px;font-size:.92rem}
+.tm-jump a{color:#1a3c6e;font-weight:600}
+ul.tm li{margin:7px 0}
+ul.tm a{color:#1a3c6e;font-weight:600}
+.tm-kind{display:inline-block;background:#eef2f8;color:#1a3c6e;border-radius:3px;padding:1px 8px;margin-left:6px;font-size:.82rem}
+.tm-also{color:#555;font-size:.88rem}
+.tm-back{margin:0 0 4px;font-size:.88rem}
+.tm-back a{color:#1a3c6e}
 </style>
 </head>
 <body>
 <div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Applied Data Structures: Blockchain, Digital Currency, and Beyond</a></div>
 <h1>Applied Data Structures: Blockchain, Digital Currency, and Beyond — Topics &amp; Learning Outcomes</h1>
-<div class="toc"><a href="#topics">📋 Module Topics</a><a href="#outcomes">🎯 Student Learning Outcomes</a></div>
+<div class="toc"><a href="#topics">📋 Module Topics</a><a href="#outcomes">🎯 Student Learning Outcomes</a><a href="#materials">📚 Materials for Each Topic</a></div>
 
 <h2 id="topics">Module Topics</h2>
-<h3 id="topic-1">Foundations of Data Structures in Real-World Systems</h3>
+<h3 id="topic-1">1. Foundations of Data Structures in Real-World Systems</h3>
 <div class="summary">Reviews core data structures including hash tables, trees, and graphs as building blocks for complex computing applications. Establishes the conceptual framework for understanding how these structures are combined in practice.</div>
+<p class="tm-jump"><a href="#materials-topic-1">Materials for topic 1 (2)</a></p>
 <ul>
 <li><strong>Hash Tables as Lookup Foundations</strong> <span class="el-body">— Hash tables provide fast key-value storage and retrieval, forming a critical building block in many real-world computing systems.</span></li>
 <li><strong>Trees as Hierarchical Organizers</strong> <span class="el-body">— Tree structures model hierarchical relationships and enable efficient search, insertion, and ordering operations across many domains.</span></li>
@@ -42,8 +51,9 @@ li{margin:5px 0}
 <li><strong>Composition of Structures in Practice</strong> <span class="el-body">— Complex computing systems rarely rely on a single data structure; instead, they compose multiple structures to balance competing performance and functional requirements.</span></li>
 <li><strong>Conceptual Framework for System Analysis</strong> <span class="el-body">— A shared conceptual vocabulary around data structures allows engineers and analysts to reason about, communicate, and evaluate system designs systematically.</span></li>
 </ul>
-<h3 id="topic-2">Blockchain Architecture and Data Structures</h3>
+<h3 id="topic-2">2. Blockchain Architecture and Data Structures</h3>
 <div class="summary">Examines how blockchain technology leverages linked data structures, cryptographic hashing, and trees to create immutable, distributed ledgers. Traces the specific structural decisions that make blockchain secure and verifiable.</div>
+<p class="tm-jump"><a href="#materials-topic-2">Materials for topic 2 (2)</a></p>
 <ul>
 <li><strong>The Linked-List Foundation of a Blockchain</strong> <span class="el-body">— At its core, a blockchain is a linked list where each node (block) holds a reference to the previous block, forming a chronological chain.</span></li>
 <li><strong>Cryptographic Hashing as the Integrity Mechanism</strong> <span class="el-body">— Cryptographic hash functions convert block data into a fixed-length digest that acts as a unique fingerprint, binding blocks together securely.</span></li>
@@ -52,8 +62,9 @@ li{margin:5px 0}
 <li><strong>Distributed Ledger and the Role of Consensus</strong> <span class="el-body">— A blockchain is replicated across many nodes simultaneously, so structural integrity must be maintained without a central authority through consensus algorithms.</span></li>
 <li><strong>Immutability and the Structural Guarantee</strong> <span class="el-body">— The architectural choices of hash-linking, Merkle trees, and distributed consensus together produce the property of immutability — recorded data cannot be changed without network-wide detection.</span></li>
 </ul>
-<h3 id="topic-3">Digital Currency Systems</h3>
+<h3 id="topic-3">3. Digital Currency Systems</h3>
 <div class="summary">Explores how cryptocurrencies and digital payment systems rely on underlying data structures to manage transactions, wallets, and consensus. Connects blockchain fundamentals to the practical mechanics of digital currency.</div>
+<p class="tm-jump"><a href="#materials-topic-3">Materials for topic 3 (2)</a></p>
 <ul>
 <li><strong>Wallets and Key-Value Storage</strong> <span class="el-body">— Digital currency wallets rely on hash table structures to map public keys to account balances and transaction histories.</span></li>
 <li><strong>Transaction Data and the UTXO Model</strong> <span class="el-body">— Many cryptocurrencies, including Bitcoin, represent spendable funds as Unspent Transaction Outputs (UTXOs) rather than simple account balances.</span></li>
@@ -63,8 +74,9 @@ li{margin:5px 0}
 <li><strong>Blockchain as a Linked List of Blocks</strong> <span class="el-body">— At its core, a blockchain is a linked list where each block contains a cryptographic hash pointer to the previous block, creating an immutable chain.</span></li>
 <li><strong>Scalability Challenges and Data Structure Trade-Offs</strong> <span class="el-body">— As digital currency networks grow, the size and complexity of their underlying data structures create scalability bottlenecks that developers must address.</span></li>
 </ul>
-<h3 id="topic-4">Graphs and Social Network Applications</h3>
+<h3 id="topic-4">4. Graphs and Social Network Applications</h3>
 <div class="summary">Investigates how graph data structures model relationships, influence, and information flow within social networks. Highlights real-world algorithms and traversal strategies used by modern platforms.</div>
+<p class="tm-jump"><a href="#materials-topic-4">Materials for topic 4 (2)</a></p>
 <ul>
 <li><strong>Graph Fundamentals for Social Networks</strong> <span class="el-body">— A graph is a data structure composed of nodes (vertices) and edges that model relationships between entities, making it ideal for representing social connections.</span></li>
 <li><strong>Adjacency Representations and Storage Trade-offs</strong> <span class="el-body">— Social networks with millions of users require efficient graph storage strategies, with adjacency lists and adjacency matrices offering different performance trade-offs.</span></li>
@@ -74,8 +86,9 @@ li{margin:5px 0}
 <li><strong>Information Flow and Viral Propagation</strong> <span class="el-body">— Graph traversal strategies directly model how content, rumors, or trends propagate through a social network, informing how platforms design recommendation and alert systems.</span></li>
 <li><strong>Real-World Platform Applications of Graph Structures</strong> <span class="el-body">— Modern social platforms integrate graph data structures with other components such as hash tables and caches to deliver friend recommendations, feed ranking, and network analytics at scale.</span></li>
 </ul>
-<h3 id="topic-5">Combining Data Structures in Complex Systems</h3>
+<h3 id="topic-5">5. Combining Data Structures in Complex Systems</h3>
 <div class="summary">Analyzes how real-world applications integrate multiple data structures simultaneously to achieve performance, scalability, and functionality. Uses case studies to illustrate the trade-offs involved in structural design decisions.</div>
+<p class="tm-jump"><a href="#materials-topic-5">Materials for topic 5 (2)</a></p>
 <ul>
 <li><strong>Why Real-World Systems Require Multiple Data Structures</strong> <span class="el-body">— No single data structure optimally solves every requirement of a complex system. Real-world applications combine structures to balance competing needs such as fast lookup, ordered traversal, and relationship modeling.</span></li>
 <li><strong>Blockchain as a Case Study in Structural Integration</strong> <span class="el-body">— Blockchain technology is a prime example of multiple data structures working in concert to achieve security, immutability, and verifiability. It combines linked lists, hash functions, and Merkle trees into a unified architecture.</span></li>
@@ -117,6 +130,38 @@ li{margin:5px 0}
 <div class="co"><span class="code">CO2</span>Select the correct data structure and algorithm to solve specific problems</div>
 <div class="co"><span class="code">CO3</span>Implement data structures and algorithms in computer code.</div>
 <div class="co"><span class="code">CO4</span>Analyze the performance of algorithms and data structures</div>
+<h2 id="materials">Materials for Each Topic</h2>
+<p class="prefix">What has been made for each topic. Materials that cover the whole module are listed on the module page.</p>
+<h3 id="materials-topic-1">1. Foundations of Data Structures in Real-World Systems</h3>
+<p class="tm-back"><a href="#topic-1">↑ Back to topic 1</a></p>
+<ul class="tm">
+<li><a href="content/Applied_Data_Structures_interactive_topics_t1.html">Foundations of Data Structures in Real-World Systems</a> <span class="tm-kind">Topic Detail · Web page</span></li>
+<li><a href="content/Applied_Data_Structures_t1_videos.html">Foundations of Data Structures in Real-World Systems — Videos</a> <span class="tm-kind">Topic Videos · Web page</span></li>
+</ul>
+<h3 id="materials-topic-2">2. Blockchain Architecture and Data Structures</h3>
+<p class="tm-back"><a href="#topic-2">↑ Back to topic 2</a></p>
+<ul class="tm">
+<li><a href="content/Applied_Data_Structures_interactive_topics_t2.html">Blockchain Architecture and Data Structures</a> <span class="tm-kind">Topic Detail · Web page</span></li>
+<li><a href="content/Applied_Data_Structures_t2_videos.html">Blockchain Architecture and Data Structures — Videos</a> <span class="tm-kind">Topic Videos · Web page</span></li>
+</ul>
+<h3 id="materials-topic-3">3. Digital Currency Systems</h3>
+<p class="tm-back"><a href="#topic-3">↑ Back to topic 3</a></p>
+<ul class="tm">
+<li><a href="content/Applied_Data_Structures_interactive_topics_t3.html">Digital Currency Systems</a> <span class="tm-kind">Topic Detail · Web page</span></li>
+<li><a href="content/Applied_Data_Structures_t3_videos.html">Digital Currency Systems — Videos</a> <span class="tm-kind">Topic Videos · Web page</span></li>
+</ul>
+<h3 id="materials-topic-4">4. Graphs and Social Network Applications</h3>
+<p class="tm-back"><a href="#topic-4">↑ Back to topic 4</a></p>
+<ul class="tm">
+<li><a href="content/Applied_Data_Structures_interactive_topics_t4.html">Graphs and Social Network Applications</a> <span class="tm-kind">Topic Detail · Web page</span></li>
+<li><a href="content/Applied_Data_Structures_t4_videos.html">Graphs and Social Network Applications — Videos</a> <span class="tm-kind">Topic Videos · Web page</span></li>
+</ul>
+<h3 id="materials-topic-5">5. Combining Data Structures in Complex Systems</h3>
+<p class="tm-back"><a href="#topic-5">↑ Back to topic 5</a></p>
+<ul class="tm">
+<li><a href="content/Applied_Data_Structures_interactive_topics_t5.html">Combining Data Structures in Complex Systems</a> <span class="tm-kind">Topic Detail · Web page</span></li>
+<li><a href="content/Applied_Data_Structures_t5_videos.html">Combining Data Structures in Complex Systems — Videos</a> <span class="tm-kind">Topic Videos · Web page</span></li>
+</ul>
 
 <footer class="presemaker-credit" data-credit="2" style="margin-top:2rem;padding:14px 8px;border-top:1px solid #ddd;background:#fff;text-align:center;font:13px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#595959;"><svg width="20" height="20" viewBox="0 0 2048 2048" aria-hidden="true" focusable="false" style="vertical-align:-5px;margin-right:7px"><rect width="2048" height="2048" rx="384" fill="#0F6E6E"/><path fill="#0A5050" d="M1024 1000 344 832v816l680 168zm0 0 680-168v816l-680 168z"/><path fill="#fff" d="M1024 944 384 784v808l640 160zm0 0 640-160v808l-640 160z"/><rect x="1002" y="944" width="44" height="808" fill="#0F6E6E"/><rect x="936" y="246" width="176" height="448" rx="44" fill="#fff"/><rect x="800" y="382" width="448" height="176" rx="44" fill="#fff"/></svg>Created with <a href="https://softwareplus.ai/coursebuilder/" target="_blank" rel="noopener" style="color:#2f5d8f;font-weight:600;text-decoration:none;">CourseBuilder+</a><span aria-hidden="true"> · </span><a href="https://softwareplus.ai/" target="_blank" rel="noopener" style="color:#2f5d8f;text-decoration:none;">SoftwarePlus.ai</a></footer>
 </body>

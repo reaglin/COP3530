@@ -1,0 +1,751 @@
+﻿<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Branch &amp; Bug</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@500;600;700&family=Unbounded:wght@600;800&display=swap">
+<style>
+/* Layout: a field-study board. The weighted graph is the specimen tray on the left; the right column holds the token pile, the bug's live readout (cost, best, route, log), then the result. */
+:root {
+  --bg: #e9ecf2; --panel: #ffffff; --sunk: #f1f3f8; --ink: #171b2b; --muted: #5a6178; --line: #cfd4e2; --edge: #8a90a6;
+  --accent: #3346c4; --accent-ink: #ffffff; --accent-soft: #e0e4fa;
+  --bug: #c42f2a; --bug-soft: #fadedc; --tok: #c98a06; --tok-soft: #fbefcf; --tok-ink: #3a2a00;
+  --ok: #1f7a43; --ok-soft: #dcf0e2;
+  --f-display: 'Unbounded', 'Segoe UI', system-ui, sans-serif;
+  --f-body: 'Atkinson Hyperlegible', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --f-mono: 'IBM Plex Mono', ui-monospace, Consolas, monospace;
+  --r: 10px;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0f1220; --panel: #171b2c; --sunk: #1d2236; --ink: #e4e7f2; --muted: #9aa1b8; --line: #2c3350; --edge: #6d7491;
+  --accent: #8f9cff; --accent-ink: #0d1030; --accent-soft: #22284d;
+  --bug: #ff6f66; --bug-soft: #3d1b1b; --tok: #f0b93a; --tok-soft: #3a2e10; --tok-ink: #2a1e00;
+  --ok: #6fca8e; --ok-soft: #15301f; color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #0f1220; --panel: #171b2c; --sunk: #1d2236; --ink: #e4e7f2; --muted: #9aa1b8; --line: #2c3350; --edge: #6d7491;
+  --accent: #8f9cff; --accent-ink: #0d1030; --accent-soft: #22284d;
+  --bug: #ff6f66; --bug-soft: #3d1b1b; --tok: #f0b93a; --tok-soft: #3a2e10; --tok-ink: #2a1e00;
+  --ok: #6fca8e; --ok-soft: #15301f; color-scheme: dark; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 400 16px/1.55 var(--f-body); }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--ink); }
+h1, h2, h3 { font-family: var(--f-display); font-weight: 800; line-height: 1.08; margin: 0; text-wrap: balance; letter-spacing: -.01em; }
+button, input { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.mono { font-family: var(--f-mono); }
+
+.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--ink); color: var(--bg); }
+.bar-in { max-width: 1200px; margin: 0 auto; padding-block: 10px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; justify-content: space-between; }
+.brand { display: flex; gap: 10px; align-items: center; font: 800 17px var(--f-display); }
+.brand svg { width: 30px; height: 30px; }
+.meta { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.chip { font: 600 12px/1 var(--f-mono); padding: 7px 10px; border-radius: 99px; border: 1px solid color-mix(in srgb, var(--bg) 35%, transparent); white-space: nowrap; }
+.chip.you { background: var(--ok); color: var(--panel); border-color: var(--ok); }
+.chip.bugc { background: var(--bug); color: var(--panel); border-color: var(--bug); }
+button.chip { background: transparent; cursor: pointer; }
+button.chip:hover { background: color-mix(in srgb, var(--bg) 15%, transparent); }
+
+.wrap { max-width: 1200px; margin: 0 auto; padding-block: 22px 64px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.eyebrow { font: 700 12px/1.2 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin: 0 0 8px; }
+.small { font-size: 14px; color: var(--muted); margin: 0; }
+.btn { border: 1px solid var(--line); background: var(--panel); padding: 10px 16px; border-radius: var(--r); cursor: pointer; font-weight: 700; min-height: 44px; }
+.btn:hover { background: var(--sunk); }
+.btn.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.btn.primary:hover { filter: brightness(1.08); background: var(--accent); }
+.btn.red { background: var(--bug); color: var(--panel); border-color: var(--bug); }
+.btn.red:hover { filter: brightness(1.08); background: var(--bug); }
+.btn.on { background: var(--accent-soft); border-color: var(--accent); }
+.btn.sm { min-height: 34px; padding: 5px 11px; font-size: 14px; }
+.btn:disabled { opacity: .45; cursor: not-allowed; }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+
+/* ---------- start ---------- */
+.start { display: grid; grid-template-columns: 1.25fr 1fr; gap: 32px; align-items: start; }
+.start > * { min-width: 0; }
+.start h1 { font-size: clamp(46px, 8vw, 96px); line-height: .92; letter-spacing: -.04em; }
+.start h1 em { font-style: normal; color: var(--bug); }
+.lede { font-size: 18px; max-width: 34em; margin: 16px 0 18px; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); padding: 22px; display: grid; gap: 14px; }
+.card h2 { font-size: 24px; }
+.rules { margin: 0; padding-left: 22px; display: grid; gap: 5px; }
+.fld { display: grid; gap: 6px; }
+.fld > span { font: 700 13px var(--f-mono); color: var(--muted); }
+input[type=text] { width: 100%; padding: 10px 12px; border: 1px solid var(--line); border-radius: var(--r); background: var(--sunk); min-height: 46px; font-size: 17px; }
+.err { color: var(--bug); font-weight: 700; margin: 0; font-size: 14px; }
+.specimen { background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); padding: 10px; }
+
+/* ---------- play ---------- */
+.play { display: grid; gap: 16px; }
+.gmap { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; }
+.gp { background: var(--panel); border: 1.5px solid var(--line); border-radius: 8px; padding: 7px 8px; display: grid; gap: 1px; min-width: 0; }
+.gp b { font: 700 12px var(--f-mono); }
+.gp span { font: 500 11.5px var(--f-mono); color: var(--muted); }
+.gp.now { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-soft); }
+.gp.win { border-color: var(--ok); background: var(--ok-soft); }
+.gp.lose { border-color: var(--bug); background: var(--bug-soft); }
+.gp.tie { border-color: var(--tok); background: var(--tok-soft); }
+.board { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 16px; align-items: start; }
+.field { background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; min-width: 0; }
+.fstrip { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 16px; font: 500 12px/1.2 var(--f-mono); letter-spacing: .05em; text-transform: uppercase; padding: 10px 16px; background: var(--sunk); border-bottom: 1px solid var(--line); color: var(--muted); }
+.fstrip b { color: var(--ink); }
+.gwrap { overflow-x: auto; }
+.gsvg { display: block; width: 100%; min-width: 520px; height: auto; touch-action: manipulation; user-select: none; -webkit-user-select: none; }
+.swipe { display: none; }
+@media (max-width: 560px) { .swipe { display: block; padding: 8px 16px 0; font-size: 13px; color: var(--muted); } }
+.fnote { padding: 10px 16px 14px; border-top: 1px dashed var(--line); font-size: 14.5px; color: var(--muted); }
+.side { display: grid; gap: 12px; min-width: 0; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 64px); }
+.pane { background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); padding: 14px; display: grid; gap: 10px; min-width: 0; }
+.pane h3 { font-size: 16px; }
+.pile { display: flex; align-items: center; gap: 14px; }
+.pilebtn { width: 64px; height: 64px; border-radius: 50%; border: 0; padding: 0; cursor: grab; background: transparent; touch-action: none; flex: none; }
+.pilebtn svg { width: 64px; height: 64px; display: block; }
+.stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+.stat { background: var(--sunk); border-radius: 8px; padding: 8px 10px; display: grid; gap: 0; min-width: 0; }
+.stat span { font: 600 11px var(--f-mono); text-transform: uppercase; letter-spacing: .05em; color: var(--muted); }
+.stat b { font: 700 22px/1.2 var(--f-mono); font-variant-numeric: tabular-nums; }
+.route { font: 600 14px var(--f-mono); overflow-wrap: anywhere; }
+.log { list-style: none; margin: 0; padding: 0; max-height: 260px; overflow-y: auto; display: grid; gap: 3px; font-size: 13.5px; }
+.log li { display: grid; grid-template-columns: 52px 1fr; gap: 8px; align-items: baseline; padding: 3px 6px; border-radius: 6px; }
+.log li:last-child { background: var(--accent-soft); }
+.lt { font: 700 10.5px var(--f-mono); text-align: center; border-radius: 4px; padding: 2px 0; }
+.lt.move { background: var(--sunk); color: var(--ink); }
+.lt.back { background: var(--sunk); color: var(--muted); }
+.lt.cut { background: var(--bug-soft); color: var(--bug); }
+.lt.best { background: var(--ok-soft); color: var(--ok); }
+.outcome { display: grid; gap: 8px; }
+.oc-row { display: grid; grid-template-columns: 24px 1fr auto; gap: 8px; align-items: baseline; padding: 6px 10px; border-radius: 8px; font-size: 14.5px; }
+.oc-row.saved { background: var(--ok-soft); } .oc-row.eaten { background: var(--bug-soft); } .oc-row.missed { background: var(--sunk); }
+.oc-row b { font-family: var(--f-mono); }
+.verdict { display: flex; justify-content: space-between; align-items: baseline; background: var(--ink); color: var(--bg); padding: 10px 14px; border-radius: 8px; font-family: var(--f-mono); }
+.verdict b { font-size: 20px; }
+
+/* svg graph */
+.ed line { stroke: var(--edge); stroke-width: 3; stroke-linecap: round; }
+.ed.walked line { stroke: var(--bug); stroke-opacity: .45; }
+.ed.cut line { stroke: var(--bug); stroke-dasharray: 6 6; stroke-width: 4; stroke-opacity: 1; }
+.ed.bestp line { stroke: var(--ok); stroke-width: 7; stroke-opacity: 1; }
+.ed .wbg { fill: var(--panel); stroke: var(--line); stroke-width: 1.5; }
+.ed .wt { font: 700 14px var(--f-mono); fill: var(--ink); text-anchor: middle; dominant-baseline: central; }
+.ed.cut .wbg { stroke: var(--bug); fill: var(--bug-soft); }
+.vx { cursor: pointer; outline: none; }
+.vx .hit { fill: transparent; }
+.vx .vc { fill: var(--sunk); stroke: var(--ink); stroke-width: 2.5; transition: fill .25s; }
+.vx .vl { font: 700 17px var(--f-mono); fill: var(--ink); text-anchor: middle; dominant-baseline: central; pointer-events: none; }
+.vx.vis .vc { fill: var(--bug-soft); stroke: var(--bug); }
+.vx.st .vc, .vx.fi .vc { stroke: var(--accent); stroke-width: 4; fill: var(--accent-soft); }
+.vx.st, .vx.fi { cursor: default; }
+.vx .tag { font: 700 10px var(--f-mono); fill: var(--accent); text-anchor: middle; letter-spacing: .08em; pointer-events: none; }
+.vx:focus-visible .vc { stroke: var(--accent); stroke-width: 4; }
+.vx.drop .vc { stroke: var(--tok); stroke-width: 5; }
+.tokg { pointer-events: none; transition: transform .35s, opacity .35s; }
+.tokg .t1 { fill: var(--tok); stroke: var(--tok-ink); stroke-width: 1.5; }
+.tokg .t2 { fill: none; stroke: var(--tok-ink); stroke-width: 1.2; stroke-dasharray: 2 2; }
+.tokg.gone { opacity: 0; transform: scale(.2); }
+.badge rect { stroke-width: 1.5; }
+.badge text { font: 700 10.5px var(--f-mono); text-anchor: middle; dominant-baseline: central; }
+.badge.saved rect { fill: var(--ok-soft); stroke: var(--ok); } .badge.saved text { fill: var(--ok); }
+.badge.eaten rect { fill: var(--bug-soft); stroke: var(--bug); } .badge.eaten text { fill: var(--bug); }
+.badge.missed rect { fill: var(--sunk); stroke: var(--muted); } .badge.missed text { fill: var(--muted); }
+.bugsp .bb { fill: var(--bug); stroke: var(--ink); stroke-width: 1.5; }
+.bugsp .bh { fill: var(--ink); }
+.bugsp .bl { stroke: var(--ink); stroke-width: 2; stroke-linecap: round; }
+.bugsp .bs { fill: var(--ink); }
+.bugsp .bd { stroke: var(--ink); stroke-width: 1.2; }
+.ghost { position: fixed; z-index: 50; pointer-events: none; transform: translate(-50%, -50%); width: 44px; height: 44px; }
+
+/* ---------- report ---------- */
+.report { background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); padding: 24px; display: grid; gap: 20px; }
+.rep-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; align-items: flex-end; border-bottom: 3px solid var(--ink); padding-bottom: 16px; }
+.rep-name { font-size: clamp(32px, 5.5vw, 52px); overflow-wrap: anywhere; }
+.rep-meta { margin: 6px 0 0; color: var(--muted); }
+.rep-score { display: flex; gap: 18px; align-items: flex-end; }
+.rs { display: grid; justify-items: center; }
+.rs b { font: 800 72px/1 var(--f-display); }
+.rs span { font: 700 12px var(--f-mono); text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+.rs.you b { color: var(--ok); } .rs.bg b { color: var(--bug); }
+.rep-verdict { font: 800 22px var(--f-display); }
+.tscroll { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+.rep th { font: 700 11px var(--f-mono); letter-spacing: .05em; text-transform: uppercase; color: var(--muted); text-align: left; padding: 8px; border-bottom: 1px solid var(--line); }
+.rep td { padding: 8px; border-bottom: 1px solid var(--line); font-size: 15px; }
+.rep .n { text-align: right; font-family: var(--f-mono); }
+.rep tfoot td { border-bottom: 0; font-weight: 700; padding-top: 12px; }
+
+/* ---------- cheat sheet ---------- */
+html.locked, html.locked body { overflow: hidden; }
+.overlay { position: fixed; inset: 0; z-index: 20; background: color-mix(in srgb, var(--ink) 55%, transparent); display: flex; justify-content: center; align-items: stretch; padding: calc(env(safe-area-inset-top, 0px) + 16px) max(16px, env(safe-area-inset-right, 0px)) calc(env(safe-area-inset-bottom, 0px) + 16px) max(16px, env(safe-area-inset-left, 0px)); }
+.sheet { background: var(--panel); width: 100%; max-width: 960px; border-radius: var(--r); border: 1px solid var(--line); display: flex; flex-direction: column; min-height: 0; overflow: hidden; }
+.sheet-head { display: flex; flex-wrap: wrap; gap: 10px 16px; justify-content: space-between; align-items: flex-end; padding: 18px 20px 12px; border-bottom: 1px solid var(--line); }
+.sheet-head h2 { font-size: clamp(22px, 4vw, 30px); }
+.printnote { margin: 0; padding: 10px 20px; background: var(--tok-soft); font-size: 14px; border-bottom: 1px solid var(--line); }
+.sheet-body { overflow-y: auto; padding: 4px 20px 20px; display: grid; gap: 4px; min-height: 0; flex: 1; }
+.sheet-foot { padding: 12px 20px; border-top: 1px solid var(--line); display: flex; justify-content: flex-end; gap: 10px; }
+.cs { padding-top: 16px; display: grid; gap: 10px; }
+.cs + .cs { border-top: 1px solid var(--line); }
+.cs h3 { font-size: 19px; color: var(--accent); }
+.cs p { margin: 0; max-width: 62em; }
+.cs ul, .cs ol { margin: 0; padding-left: 22px; display: grid; gap: 5px; max-width: 62em; }
+.cs-split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 16px; align-items: start; }
+.cs-split > * { min-width: 0; }
+.cs-split .gsvg { min-width: 0; }
+.cst th { font: 700 11.5px var(--f-mono); color: var(--muted); text-align: left; padding: 5px 7px; border-bottom: 1px solid var(--line); }
+.cst td { padding: 5px 7px; border-bottom: 1px solid var(--line); font-size: 14px; vertical-align: top; }
+.cst td.m { font-family: var(--f-mono); white-space: nowrap; }
+.pseudo { margin: 0; background: var(--sunk); border: 1px solid var(--line); border-radius: 6px; padding: 10px 12px; overflow-x: auto; font: 500 13px/1.55 var(--f-mono); }
+
+@media (max-width: 920px) {
+  .start, .board, .cs-split { grid-template-columns: minmax(0, 1fr); }
+  .side { position: static; }
+}
+@media (max-width: 520px) {
+  .gmap { gap: 4px; } .gp { padding: 6px 4px; text-align: center; }
+  .report { padding: 16px; } .rep .opt { display: none; } .rep th, .rep td { padding: 7px 4px; }
+  .rs b { font-size: 56px; }
+  .sheet-head, .printnote, .sheet-body, .sheet-foot { padding-left: 14px; padding-right: 14px; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+@media print {
+  body { background: #fff; color: #000; }
+  body::before { display: none; }
+  html.locked .bar, html.locked .wrap, .sheet-foot, .printnote, .sheet-head .actions { display: none !important; }
+  html.locked, html.locked body { overflow: visible; }
+  .overlay { position: static; background: none; padding: 0; display: block; }
+  .sheet { border: 0; max-width: none; overflow: visible; display: block; background: #fff; }
+  .sheet-body { overflow: visible; padding: 0; display: block; }
+  .cs { break-inside: avoid; }
+}
+</style>
+</head><body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Graphs: Structure, Representation, and Traversal</a></div>
+
+<div id="app"></div>
+
+<script>
+(function () {
+  'use strict';
+  const STANDALONE = true; // true in the downloadable copy, where printing works
+  const GRAPHS = 10;
+  // Each graph is bigger and denser than the one before: n vertices on a c x r grid, d = chance of a diagonal edge in each grid square.
+  const SIZES = [
+    { n: 6, c: 4, r: 2, d: .30 }, { n: 7, c: 4, r: 2, d: .35 }, { n: 8, c: 4, r: 2, d: .40 }, { n: 9, c: 4, r: 3, d: .40 }, { n: 10, c: 4, r: 3, d: .45 },
+    { n: 11, c: 5, r: 3, d: .45 }, { n: 12, c: 5, r: 3, d: .50 }, { n: 13, c: 6, r: 3, d: .50 }, { n: 14, c: 5, r: 4, d: .55 }, { n: 16, c: 6, r: 4, d: .55 }];
+  const HEIGHT = { 2: 360, 3: 440, 4: 540 };
+  const VW = 720, VH = 440;
+  const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const app = document.getElementById('app');
+  let S, runId = 0;
+
+  const fresh = () => ({ screen: 'start', name: '', nameErr: false, graphs: [], cur: 0, guide: false, speed: 1, finished: null });
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const rint = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+  const shuffle = a => { for (let i = a.length - 1; i > 0; i--) { const j = rint(0, i); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+
+  // ===== the bug: depth-first branch and bound =====
+  // Neighbors are tried cheapest edge first (ties alphabetical). A vertex already on the current route is never re-entered.
+  // An edge is abandoned when (cost so far + edge weight) >= the best complete route found so far.
+  function solve(g) {
+    const ev = []; let best = Infinity, bestPath = null;
+    const visited = new Set([g.start]), on = new Set([g.start]), path = [g.start];
+    const dfs = (v, cost) => {
+      if (v === g.finish) {
+        best = cost; bestPath = path.slice();
+        ev.push({ t: 'best', v, cost, path: path.slice() });
+        return;
+      }
+      for (const [u, w] of g.adj[v]) {
+        if (on.has(u)) continue;
+        if (cost + w >= best) { ev.push({ t: 'cut', from: v, to: u, w, cost, best }); continue; }
+        ev.push({ t: 'move', from: v, to: u, w, cost: cost + w, best });
+        visited.add(u); on.add(u); path.push(u);
+        dfs(u, cost + w);
+        path.pop(); on.delete(u);
+        ev.push({ t: 'back', from: u, to: v, cost, best });
+      }
+    };
+    dfs(g.start, 0);
+    ev.push({ t: 'done', best });
+    return { ev, best, bestPath, visited: [...visited] };
+  }
+  function buildAdj(g) {
+    g.adj = g.V.map(() => []);
+    g.E.forEach(e => { g.adj[e.a].push([e.b, e.w]); g.adj[e.b].push([e.a, e.w]); });
+    g.adj.forEach(list => list.sort((p, q) => p[1] - q[1] || g.V[p[0]].label.localeCompare(g.V[q[0]].label)));
+  }
+
+  // ===== graph generation =====
+  function genGraph(cfg, round, relax) {
+    for (let tries = 0; tries < 600; tries++) {
+      const cells = [];
+      for (let c = 0; c < cfg.c; c++) for (let r = 0; r < cfg.r; r++) cells.push({ c, r });
+      const sr = rint(0, cfg.r - 1), fr = rint(0, cfg.r - 1);
+      const sCell = cells.find(x => x.c === 0 && x.r === sr);
+      const fCell = cells.find(x => x.c === cfg.c - 1 && x.r === fr);
+      let pool = shuffle(cells.filter(x => x !== sCell && x !== fCell));
+      const keep = new Set([sCell, fCell, ...pool.slice(0, cfg.n - 2)]);
+      const kept = cells.filter(x => keep.has(x));
+      const xs = c => 70 + c * ((VW - 140) / (cfg.c - 1));
+      const ys = r => cfg.r === 2 ? [100, 260][r] : 70 + r * ((HEIGHT[cfg.r] - 140) / (cfg.r - 1));
+      const pts = kept.map(x => ({ c: x.c, r: x.r, x: xs(x.c) + (x === sCell || x === fCell ? 0 : rint(-24, 24)), y: ys(x.r) + rint(-22, 22) }));
+      // labels left to right, top to bottom
+      const order = pts.map((p, i) => i).sort((a, b) => pts[a].x - pts[b].x || pts[a].y - pts[b].y);
+      const V = order.map((i, k) => ({ id: k, label: String.fromCharCode(65 + k), x: pts[i].x, y: pts[i].y, c: pts[i].c, r: pts[i].r }));
+      const at = (c, r) => V.find(v => v.c === c && v.r === r);
+      const E = []; const has = new Set();
+      const add = (a, b) => { const k = Math.min(a, b) + '-' + Math.max(a, b); if (a === b || has.has(k)) return; has.add(k); E.push({ a, b, w: rint(1, 9) }); };
+      for (const v of V) {
+        const rt = at(v.c + 1, v.r), dn = at(v.c, v.r + 1);
+        if (rt && Math.random() < .7 + cfg.d * .4) add(v.id, rt.id);
+        if (dn && Math.random() < .6 + cfg.d * .5) add(v.id, dn.id);
+      }
+      for (let c = 0; c < cfg.c - 1; c++) for (let r = 0; r < cfg.r - 1; r++) {
+        if (Math.random() > cfg.d) continue;
+        if (Math.random() < .5) { const a = at(c, r), b = at(c + 1, r + 1); if (a && b) add(a.id, b.id); }
+        else { const a = at(c + 1, r), b = at(c, r + 1); if (a && b) add(a.id, b.id); }
+      }
+      // connect components (nearest pair)
+      const par = V.map((_, i) => i);
+      const find = i => par[i] === i ? i : (par[i] = find(par[i]));
+      E.forEach(e => { par[find(e.a)] = find(e.b); });
+      let guard = 0;
+      while (new Set(V.map(v => find(v.id))).size > 1 && guard++ < 20) {
+        const root0 = find(0); let bestD = Infinity, pair = null;
+        for (const a of V) for (const b of V) if (find(a.id) === root0 && find(b.id) !== root0) {
+          const d = Math.hypot(a.x - b.x, a.y - b.y); if (d < bestD) { bestD = d; pair = [a.id, b.id]; }
+        }
+        add(pair[0], pair[1]); par[find(pair[0])] = find(pair[1]);
+      }
+      const g = { h: HEIGHT[cfg.r], V, E, start: V.find(v => v.c === sCell.c && v.r === sCell.r).id, finish: V.find(v => v.c === fCell.c && v.r === fCell.r).id };
+      buildAdj(g);
+      const sol = solve(g);
+      const unvisited = V.length - sol.visited.length;
+      const moves = sol.ev.filter(e => e.t === 'move').length;
+      const bests = sol.ev.filter(e => e.t === 'best').length;
+      const cuts = sol.ev.filter(e => e.t === 'cut').length;
+      const lvl = relax ? 0 : Math.floor(round / 3);
+      if (!relax && E.length < V.length + Math.floor(round / 2)) continue; // later graphs need more loops
+      const small = V.length <= 7;
+      if (unvisited < (small ? 1 : 2 + lvl) || unvisited > V.length - 3) continue;
+      if (moves < Math.min(6, V.length - 1) || moves > 14 + 4 * round || cuts < (small ? 1 : 2 + lvl)) continue;
+      if (sol.bestPath.length < 4) continue;
+      if (round >= 1 && bests < 2) continue;
+      if (!relax && round >= 6 && bests < 3) continue;
+      g.sol = sol; g.tokens = []; g.phase = 'place'; g.result = null;
+      return g;
+    }
+    return null;
+  }
+  function newGame(name) {
+    const graphs = SIZES.map((cfg, i) => { let g = null, k = 0; while (!g) g = genGraph(cfg, i, k++ > 4); return g; });
+    Object.assign(S, fresh(), { screen: 'play', name, graphs, speed: S.speed || 1 });
+  }
+
+  // ===== scoring =====
+  function score(g) {
+    const vis = new Set(g.sol.visited), tok = new Set(g.tokens);
+    const res = { saved: [], eaten: [], missed: [], clear: [] };
+    g.V.forEach(v => {
+      if (v.id === g.start || v.id === g.finish) return;
+      if (tok.has(v.id)) (vis.has(v.id) ? res.eaten : res.saved).push(v.id);
+      else (vis.has(v.id) ? res.clear : res.missed).push(v.id);
+    });
+    res.you = res.saved.length; res.bug = res.eaten.length + res.missed.length;
+    return res;
+  }
+  const totals = () => S.graphs.reduce((a, g) => { if (g.result) { a.you += g.result.you; a.bug += g.result.bug; } return a; }, { you: 0, bug: 0 });
+  const G = () => S.graphs[S.cur];
+  const L = (g, id) => g.V[id].label;
+
+  // ===== drawing =====
+  const BUG = `<g class="bugsp"><line class="bl" x1="-9" y1="-6" x2="-15" y2="-13"/><line class="bl" x1="-11" y1="0" x2="-18" y2="0"/><line class="bl" x1="-9" y1="6" x2="-15" y2="13"/><line class="bl" x1="9" y1="-6" x2="15" y2="-13"/><line class="bl" x1="11" y1="0" x2="18" y2="0"/><line class="bl" x1="9" y1="6" x2="15" y2="13"/><ellipse class="bb" cx="0" cy="2" rx="11" ry="13"/><line class="bd" x1="0" y1="-10" x2="0" y2="15"/><circle class="bs" cx="-5" cy="2" r="2.4"/><circle class="bs" cx="5" cy="6" r="2.4"/><circle class="bs" cx="4" cy="-3" r="1.8"/><circle class="bh" cx="0" cy="-13" r="6"/></g>`;
+  const TOKEN = `<circle class="t1" r="11"/><circle class="t2" r="6.5"/>`;
+  function edgeKey(a, b) { return Math.min(a, b) + '-' + Math.max(a, b); }
+  function graphSVG(g, o) {
+    o = o || {};
+    const tok = new Set(g.tokens || []);
+    const bestSet = new Set();
+    if (o.bestPath) for (let i = 1; i < o.bestPath.length; i++) bestSet.add(edgeKey(o.bestPath[i - 1], o.bestPath[i]));
+    const vis = new Set(o.visited || []);
+    const outcome = {};
+    if (o.result) ['saved', 'eaten', 'missed'].forEach(k => o.result[k].forEach(id => { outcome[id] = k; }));
+    const edges = g.E.map(e => {
+      const a = g.V[e.a], b = g.V[e.b], k = edgeKey(e.a, e.b);
+      const mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2;
+      return `<g class="ed${bestSet.has(k) ? ' bestp' : ''}" data-e="${k}"><line x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}"/><circle class="wbg" cx="${mx}" cy="${my}" r="14"/><text class="wt" x="${mx}" y="${my}">${e.w}</text></g>`;
+    }).join('');
+    const verts = g.V.map(v => {
+      const st = v.id === g.start, fi = v.id === g.finish;
+      const cls = `vx${st ? ' st' : ''}${fi ? ' fi' : ''}${vis.has(v.id) && !st && !fi ? ' vis' : ''}`;
+      const inter = o.interactive && !st && !fi;
+      const attrs = inter ? ` data-v="${v.id}" role="button" tabindex="0" aria-label="Vertex ${v.label}${tok.has(v.id) ? ', token placed' : ''}. Press to toggle a token."` : ` aria-label="Vertex ${v.label}${st ? ' (start)' : fi ? ' (finish)' : ''}"`;
+      let h = `<g class="${cls}"${attrs} id="${o.idp || 'v'}${v.id}" transform="translate(${v.x},${v.y})"><circle class="hit" r="32"/><circle class="vc" r="22"/><text class="vl">${v.label}</text>`;
+      if (st) h += `<text class="tag" y="38">START</text>`;
+      if (fi) h += `<text class="tag" y="38">FINISH</text>`;
+      if (tok.has(v.id) && outcome[v.id] !== 'eaten') h += `<g class="tokg" transform="translate(18,-18)">${TOKEN}</g>`;
+      if (outcome[v.id]) {
+        const txt = { saved: '+1 YOU', eaten: 'EATEN', missed: 'MISSED' }[outcome[v.id]];
+        h += `<g class="badge ${outcome[v.id]}" transform="translate(0,38)"><rect x="-30" y="-10" width="60" height="20" rx="10"/><text>${txt}</text></g>`;
+      }
+      return h + '</g>';
+    }).join('');
+    const s = g.V[g.start];
+    const bug = o.bug ? `<g id="bug" transform="translate(${s.x},${s.y - 4})" style="${o.bugHidden ? 'display:none' : ''}">${BUG}</g>` : '';
+    return `<svg class="gsvg" viewBox="0 0 ${VW} ${g.h || VH}" role="img" aria-label="${o.aria || 'Weighted graph'}">${edges}${verts}${bug}</svg>`;
+  }
+
+  // ===== screens =====
+  const BRAND = `<svg viewBox="-20 -22 40 42" aria-hidden="true"><g style="--ink:var(--bg)">${BUG}</g></svg>`;
+  function bar() {
+    const t = totals();
+    const play = S.screen !== 'start';
+    return `<header class="bar"><div class="bar-in"><div class="brand">${BRAND}Branch &amp; Bug</div><div class="meta">
+      ${play ? `<span class="chip">${esc(S.name)}</span><span class="chip">Graph ${Math.min(S.cur + 1, GRAPHS)} / ${GRAPHS}</span><span class="chip you">You ${t.you}</span><span class="chip bugc">Bug ${t.bug}</span>` : ''}
+      <button class="chip" data-act="guide">Cheat sheet</button></div></div></header>`;
+  }
+  let HERO = null;
+  function heroGraph() {
+    if (!HERO) {
+      const V = [[70, 220], [230, 100], [230, 340], [410, 120], [410, 330], [600, 220]].map((p, i) => ({ id: i, label: 'ABCDEF'[i], x: p[0], y: p[1] }));
+      const E = [[0, 1, 2], [0, 2, 4], [1, 3, 6], [1, 2, 3], [2, 4, 1], [3, 5, 2], [4, 5, 7], [3, 4, 5]].map(e => ({ a: e[0], b: e[1], w: e[2] }));
+      HERO = { V, E, start: 0, finish: 5, tokens: [] };
+      buildAdj(HERO); HERO.sol = solve(HERO);
+    }
+    return HERO;
+  }
+  function startScreen() {
+    const h = heroGraph();
+    return `<div class="start">
+      <div>
+        <p class="eyebrow">Data structures · Graphs · Depth-first search</p>
+        <h1>Branch <em>&amp;</em> Bug</h1>
+        <p class="lede">A traversal bug hunts for the cheapest route from start to finish, depth first, abandoning any branch that can no longer beat its best. Guess which vertices it will never reach and guard them with tokens.</p>
+        <div class="specimen">${graphSVG(h, { bug: true, aria: 'Example weighted graph with the bug at the start' })}</div>
+      </div>
+      <form class="card" id="startForm" novalidate>
+        <h2>How the bug hunts</h2>
+        <ol class="rules">
+          <li>From each vertex the bug tries the cheapest edge first (equal weights: alphabetical order).</li>
+          <li>It never steps onto a vertex already on its current route; it backs up when it runs out of edges.</li>
+          <li>Reaching Finish records that route's cost as the best so far.</li>
+          <li>Before taking an edge, it checks: if cost so far + edge weight would be <b>equal to or more than</b> the best, it abandons that edge.</li>
+          <li>It keeps going until every option is explored or abandoned.</li>
+        </ol>
+        <h2>How you score</h2>
+        <ul class="rules">
+          <li>Put a token on every vertex you think the bug will <b>never</b> visit. Start and Finish are always visited.</li>
+          <li>Token survives: <b>+1 you</b>. Token eaten: <b>+1 bug</b>. An unvisited vertex with no token: <b>+1 bug</b>.</li>
+          <li>Ten graphs, each bigger and more tangled than the last. Beat the bug's total.</li>
+        </ul>
+        <label class="fld"><span>Your name (appears on your score report)</span>
+          <input type="text" id="nameIn" autocomplete="name" maxlength="60" value="${esc(S.name)}" placeholder="First and last name"></label>
+        ${S.nameErr ? '<p class="err">Enter your name to start.</p>' : ''}
+        <div class="actions"><button class="btn primary" type="submit">Start graph 1</button><button class="btn" type="button" data-act="guide">Open the cheat sheet</button></div>
+        <p class="small">Print the cheat sheet first if you want it beside you while you play.</p>
+      </form>
+    </div>`;
+  }
+  function gmap() {
+    return `<div class="gmap">${S.graphs.map((g, i) => {
+      let cls = i === S.cur && S.screen === 'play' ? ' now' : '';
+      let sub = `${g.V.length} vertices`;
+      if (g.result) { cls += g.result.you > g.result.bug ? ' win' : g.result.you < g.result.bug ? ' lose' : ' tie'; sub = `You ${g.result.you} · Bug ${g.result.bug}`; }
+      return `<div class="gp${cls}"><b>Graph ${i + 1}</b><span>${sub}</span></div>`;
+    }).join('')}</div>`;
+  }
+  const PILE = `<svg viewBox="-32 -32 64 64" aria-hidden="true"><g class="tokg" transform="translate(-6,6)">${TOKEN}</g><g class="tokg" transform="translate(6,2)">${TOKEN}</g><g class="tokg" transform="translate(0,-8)">${TOKEN}</g></svg>`;
+  function playScreen() {
+    const g = G();
+    const placing = g.phase === 'place', running = g.phase === 'run', done = g.phase === 'done';
+    const svg = graphSVG(g, {
+      interactive: placing, bug: true, bugHidden: placing,
+      visited: done ? g.sol.visited : [g.start, g.finish].filter(x => x === g.start),
+      bestPath: done ? g.sol.bestPath : null, result: done ? g.result : null,
+      aria: `Graph ${S.cur + 1}: ${g.V.length} vertices, start ${L(g, g.start)}, finish ${L(g, g.finish)}`,
+    });
+    let side = '';
+    if (placing) {
+      side = `<div class="pane"><h3>Place tokens</h3>
+        <div class="pile"><button class="pilebtn" id="pile" aria-label="Token pile. Drag a token onto a vertex.">${PILE}</button>
+        <p class="small">Drag a token onto a vertex, or tap a vertex to add or remove one. Drag a token off the graph to take it back.</p></div>
+        <p class="small"><b class="mono">${g.tokens.length}</b> token${g.tokens.length === 1 ? '' : 's'} placed on ${g.V.length - 2} possible vertices.</p>
+        <div class="actions"><button class="btn red" data-act="run">Release the bug</button><button class="btn" data-act="clearTok"${g.tokens.length ? '' : ' disabled'}>Remove all tokens</button></div></div>
+        <div class="pane"><h3>The bug's rules</h3><p class="small">Cheapest edge first (ties alphabetical) · never re-enters a vertex on its current route · abandons an edge when cost + weight ≥ best complete route so far.</p></div>`;
+    } else {
+      const sp = [1, 2, 4].map(x => `<button class="btn sm${S.speed === x ? ' on' : ''}" data-speed="${x}">${x}×</button>`).join('');
+      side = `<div class="pane"><div class="actions" style="justify-content:space-between"><h3>Bug readout</h3>${running ? `<div class="actions">${sp}<button class="btn sm" data-act="skipRun">Skip to end</button></div>` : ''}</div>
+          <div class="stats"><div class="stat"><span>Cost</span><b id="stCost">${done ? '—' : 0}</b></div><div class="stat"><span>Best</span><b id="stBest">${done ? g.sol.best : '∞'}</b></div><div class="stat"><span>Eaten</span><b id="stEaten">${done ? g.result.eaten.length : 0}</b></div></div>
+          <div><span class="small">${done ? 'Cheapest route' : 'Current route'}</span><div class="route" id="stRoute">${done ? g.sol.bestPath.map(id => L(g, id)).join(' → ') + ` (cost ${g.sol.best})` : L(g, g.start)}</div></div>
+          <ol class="log" id="log" aria-live="polite">${done ? logHTML(g, g.sol.ev) : ''}</ol></div>`;
+      if (done) {
+        const r = g.result;
+        const names = ids => ids.length ? ids.map(id => L(g, id)).join(', ') : 'none';
+        const verdict = r.you > r.bug ? 'You beat the bug' : r.you < r.bug ? 'The bug wins this graph' : 'Tie';
+        side += `<div class="pane outcome"><h3>Graph ${S.cur + 1} result</h3>
+          <div class="oc-row saved"><b>+${r.saved.length}</b><span>Tokens that survived: ${names(r.saved)}</span><b>you</b></div>
+          <div class="oc-row eaten"><b>+${r.eaten.length}</b><span>Tokens eaten: ${names(r.eaten)}</span><b>bug</b></div>
+          <div class="oc-row missed"><b>+${r.missed.length}</b><span>Never visited, but no token: ${names(r.missed)}</span><b>bug</b></div>
+          <div class="verdict"><span>${verdict}</span><b>${r.you} – ${r.bug}</b></div>
+          <div class="actions"><button class="btn primary" data-act="next">${S.cur === GRAPHS - 1 ? 'See my score report' : 'Next graph'}</button></div></div>`;
+      }
+    }
+    return `<div class="play">${gmap()}
+      <div class="board">
+        <section class="field" aria-label="Graph">
+          <div class="fstrip"><span>Graph <b>${S.cur + 1}</b> of ${GRAPHS} · <b>${g.V.length}</b> vertices · <b>${g.E.length}</b> edges</span><span>Start <b>${L(g, g.start)}</b> → Finish <b>${L(g, g.finish)}</b></span></div>
+          <p class="swipe">Swipe sideways to see the whole graph.</p><div class="gwrap" id="gwrap">${svg}</div>
+          <p class="fnote">${placing ? 'Trace the bug in your head: cheapest edge first, then think about which branches become too expensive once it has found a route to Finish.' : done ? 'Green edges: the cheapest route. Red-tinted vertices were visited. Badges show how each token or empty vertex scored.' : 'Dashed red edges were abandoned: taking them would cost at least as much as the best route already found.'}</p>
+        </section>
+        <aside class="side">${side}</aside>
+      </div></div>`;
+  }
+  function logLine(g, e) {
+    if (e.t === 'move') return ['move', 'MOVE', `${L(g, e.from)} → ${L(g, e.to)} (+${e.w}) cost ${e.cost}`];
+    if (e.t === 'back') return ['back', 'BACK', `${L(g, e.from)} → ${L(g, e.to)}, cost ${e.cost}`];
+    if (e.t === 'cut') return ['cut', 'CUT', `${L(g, e.from)}–${L(g, e.to)}: ${e.cost} + ${e.w} = ${e.cost + e.w} ≥ best ${e.best}`];
+    if (e.t === 'best') return ['best', 'BEST', `Finish reached: ${e.path.map(id => L(g, id)).join('→')} cost ${e.cost}`];
+    if (e.t === 'done') return ['best', 'DONE', `No options left. Cheapest route costs ${e.best}.`];
+    return null;
+  }
+  function logHTML(g, evs) { return evs.map(e => { const l = logLine(g, e); return l ? `<li><span class="lt ${l[0]}">${l[1]}</span><span>${l[2]}</span></li>` : ''; }).join(''); }
+
+  function reportScreen() {
+    const t = totals(), d = new Date(S.finished || Date.now());
+    const verdict = t.you > t.bug ? 'You beat the bug.' : t.you < t.bug ? 'The bug won this time.' : 'A dead heat with the bug.';
+    const rows = S.graphs.map((g, i) => { const r = g.result; return `<tr><td class="n">${i + 1}</td><td class="n opt">${g.V.length}</td><td class="n opt">${g.tokens.length}</td><td class="n">${r.saved.length}</td><td class="n">${r.eaten.length}</td><td class="n">${r.missed.length}</td><td class="n"><b>${r.you}</b></td><td class="n"><b>${r.bug}</b></td></tr>`; }).join('');
+    const totalV = S.graphs.reduce((a, g) => a + g.V.length - g.sol.visited.length, 0);
+    return `<section class="report">
+      <div class="rep-head">
+        <div><p class="eyebrow">Branch &amp; Bug · Score report</p><h2 class="rep-name">${esc(S.name)}</h2>
+          <p class="rep-meta">${d.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}, ${d.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' })} · ${GRAPHS} graphs · ${totalV} unvisited vertices in all</p>
+          <p class="rep-verdict">${verdict}</p></div>
+        <div class="rep-score"><div class="rs you"><b>${t.you}</b><span>You</span></div><div class="rs bg"><b>${t.bug}</b><span>Bug</span></div></div>
+      </div>
+      ${gmap()}
+      <div class="tscroll"><table class="rep"><thead><tr><th class="n">Graph</th><th class="n opt">Vertices</th><th class="n opt">Tokens</th><th class="n">Saved</th><th class="n">Eaten</th><th class="n">Missed</th><th class="n">You</th><th class="n">Bug</th></tr></thead>
+      <tbody>${rows}</tbody><tfoot><tr><td colspan="3" class="opt">Total</td><td class="n">${S.graphs.reduce((a, g) => a + g.result.saved.length, 0)}</td><td class="n">${S.graphs.reduce((a, g) => a + g.result.eaten.length, 0)}</td><td class="n">${S.graphs.reduce((a, g) => a + g.result.missed.length, 0)}</td><td class="n">${t.you}</td><td class="n">${t.bug}</td></tr></tfoot></table></div>
+      <p class="small">Take a screenshot of this report (with your name and score showing) and upload it to submit.</p>
+      <div class="actions"><button class="btn" data-act="again">Play ten new graphs</button></div>
+    </section>`;
+  }
+  function guideSheet() {
+    const h = heroGraph();
+    const rows = h.sol.ev.map((e, i) => { const l = logLine(h, e); return l ? `<tr><td class="m">${i + 1}</td><td class="m">${l[1]}</td><td>${l[2]}</td></tr>` : ''; }).join('');
+    const unv = h.V.filter(v => !h.sol.visited.includes(v.id)).map(v => v.label);
+    return `<div class="overlay" data-act="guideBg"><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="gTitle">
+      <div class="sheet-head"><div><p class="eyebrow">Branch &amp; Bug</p><h2 id="gTitle">Depth-first branch and bound</h2></div>
+        <div class="actions">${STANDALONE ? '<button class="btn" data-act="print">Print</button>' : ''}<button class="btn" data-act="guideClose">Close</button></div></div>
+      ${STANDALONE ? '' : '<p class="printnote">To print this sheet, open the downloadable copy of the game and use its Print button (or Ctrl+P / Cmd+P).</p>'}
+      <div class="sheet-body">
+        <div class="cs"><h3>Graph vocabulary</h3>
+          <ul><li>A <b>graph</b> is a set of <b>vertices</b> (A, B, C…) joined by <b>edges</b>. These graphs are <b>undirected</b>: an edge can be walked either way.</li>
+            <li>Each edge has an integer <b>weight</b> (its cost). A route's cost is the sum of its edge weights.</li>
+            <li>A <b>simple path</b> never repeats a vertex.</li></ul></div>
+        <div class="cs"><h3>Depth-first search (DFS)</h3>
+          <p>DFS follows one branch as deep as it can before trying the next one, backing up (backtracking) when it reaches a dead end. A stack, or recursion, remembers where to back up to.</p>
+          <pre class="pseudo">dfs(v, cost):
+  if v == finish:
+      best = cost                    # a cheaper complete route
+      return
+  for (u, w) in neighbors(v), cheapest edge first:
+      if u is on the current route: skip
+      if cost + w >= best: abandon   # the bound: cannot beat best
+      else: move to u; dfs(u, cost + w); back up to v</pre></div>
+        <div class="cs"><h3>Branch and bound</h3>
+          <p>Every edge weight is positive, so a route only gets more expensive as it grows. Once the bug knows a complete route of cost <i>best</i>, any partial route whose cost reaches <i>best</i> can never win, so the whole branch beyond it is skipped. That is why some vertices are never visited. Before the first route is found, best is ∞ and nothing is abandoned, so the first greedy dive visits the most.</p></div>
+        <div class="cs"><h3>Worked example</h3>
+          <div class="cs-split"><div class="specimen">${graphSVG(h, { visited: h.sol.visited, bestPath: h.sol.bestPath, aria: 'Worked example graph' })}</div>
+          <div class="tscroll"><table class="cst"><thead><tr><th>#</th><th>Step</th><th>What the bug does</th></tr></thead><tbody>${rows}</tbody></table></div></div>
+          <p>Cheapest route: ${h.sol.bestPath.map(id => h.V[id].label).join(' → ')} (cost ${h.sol.best}). Never visited: ${unv.length ? unv.join(', ') : 'none'}.</p></div>
+        <div class="cs"><h3>Strategy</h3>
+          <ul><li>Trace the first dive yourself: from Start, keep taking the cheapest edge to a vertex not on your route. Every vertex on that dive is eaten.</li>
+            <li>Note the cost when the bug first reaches Finish. That number is the bound.</li>
+            <li>A vertex is safe only if every route to it from Start costs at least the best route's cost by the time the bug would take its last edge.</li>
+            <li>Better routes found later make the bound tighter, so they never make the bug visit more.</li></ul></div>
+        <div class="cs"><h3>Scoring</h3>
+          <ul><li>Token on a vertex the bug never visits: +1 you.</li><li>Token eaten: +1 bug.</li><li>Unvisited vertex with no token: +1 bug.</li><li>A visited vertex without a token scores nothing.</li><li>Ten graphs, growing from 6 to 16 vertices; your name and both totals appear on the report you screenshot and submit.</li></ul></div>
+      </div>
+      <div class="sheet-foot">${STANDALONE ? '<button class="btn" data-act="print">Print</button>' : ''}<button class="btn primary" data-act="guideClose">Back to the game</button></div>
+    </div></div>`;
+  }
+
+  function render() {
+    const y = window.scrollY;
+    const main = S.screen === 'start' ? startScreen() : S.screen === 'play' ? playScreen() : reportScreen();
+    app.innerHTML = bar() + `<main class="wrap">${main}</main>` + (S.guide ? guideSheet() : '');
+    document.documentElement.classList.toggle('locked', !!S.guide);
+    window.scrollTo(0, y);
+    const lg = document.getElementById('log'); if (lg) lg.scrollTop = lg.scrollHeight;
+  }
+
+  // ===== tokens =====
+  function setToken(id, on) {
+    const g = G(); if (g.phase !== 'place') return;
+    id = Number(id);
+    if (id === g.start || id === g.finish) return;
+    const has = g.tokens.includes(id);
+    if (on && !has) g.tokens.push(id);
+    if (!on && has) g.tokens = g.tokens.filter(x => x !== id);
+    render();
+  }
+
+  // ===== the run =====
+  const wait = ms => new Promise(r => setTimeout(r, ms));
+  function tween(el, from, to, ms, my) {
+    return new Promise(res => {
+      const ang = Math.atan2(to.y - from.y, to.x - from.x) * 180 / Math.PI + 90;
+      if (reduce || ms < 30) { el.setAttribute('transform', `translate(${to.x},${to.y - 4}) rotate(${ang})`); return res(); }
+      const t0 = performance.now();
+      const f = now => {
+        if (my !== runId) return res();
+        const k = Math.min(1, (now - t0) / ms), e = k < .5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
+        el.setAttribute('transform', `translate(${from.x + (to.x - from.x) * e},${from.y + (to.y - from.y) * e - 4}) rotate(${ang})`);
+        k < 1 ? requestAnimationFrame(f) : res();
+      };
+      requestAnimationFrame(f);
+    });
+  }
+  async function run() {
+    const g = G(); if (g.phase !== 'place') return;
+    g.phase = 'run'; render();
+    const my = ++runId;
+    const bug = document.getElementById('bug'); bug.style.display = '';
+    const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+    const log = document.getElementById('log');
+    const tok = new Set(g.tokens);
+    const route = [g.start]; let eaten = 0;
+    const dur = base => reduce ? 30 : base / S.speed;
+    for (const e of g.sol.ev) {
+      if (my !== runId) return;
+      const l = logLine(g, e);
+      if (l) { const li = document.createElement('li'); li.innerHTML = `<span class="lt ${l[0]}">${l[1]}</span><span>${l[2]}</span>`; log.appendChild(li); log.scrollTop = log.scrollHeight; }
+      if (e.t === 'move' || e.t === 'back') {
+        const edge = document.querySelector(`[data-e="${edgeKey(e.from, e.to)}"]`);
+        if (e.t === 'move' && edge) edge.classList.add('walked');
+        await tween(bug, g.V[e.from], g.V[e.to], dur(e.t === 'move' ? 620 : 380), my);
+        if (my !== runId) return;
+        if (e.t === 'move') {
+          route.push(e.to);
+          const vx = document.getElementById('v' + e.to); if (vx && e.to !== g.finish) vx.classList.add('vis');
+          if (tok.has(e.to)) { tok.delete(e.to); eaten++; const t = vx && vx.querySelector('.tokg'); if (t) t.classList.add('gone'); set('stEaten', eaten); }
+        } else route.pop();
+        set('stCost', e.cost);
+        set('stRoute', route.map(id => L(g, id)).join(' → '));
+        await wait(dur(e.t === 'move' ? 160 : 60));
+      } else if (e.t === 'cut') {
+        const edge = document.querySelector(`[data-e="${edgeKey(e.from, e.to)}"]`);
+        if (edge) edge.classList.add('cut');
+        await wait(dur(700));
+      } else if (e.t === 'best') {
+        set('stBest', e.cost);
+        await wait(dur(900));
+      }
+    }
+    if (my !== runId) return;
+    endRun();
+  }
+  function endRun() {
+    runId++;
+    const g = G(); if (g.phase === 'done') return;
+    g.phase = 'done'; g.result = score(g);
+    render();
+  }
+  function next() {
+    S.cur++;
+    if (S.cur >= GRAPHS) { S.cur = GRAPHS - 1; S.screen = 'report'; S.finished = new Date().toISOString(); }
+    render(); window.scrollTo(0, 0);
+  }
+
+  // ===== input =====
+  let suppressClick = false;
+  app.addEventListener('click', e => {
+    if (suppressClick) { suppressClick = false; return; }
+    const sp = e.target.closest('[data-speed]');
+    if (sp) { S.speed = Number(sp.dataset.speed); document.querySelectorAll('[data-speed]').forEach(b => b.classList.toggle('on', Number(b.dataset.speed) === S.speed)); return; }
+    const a = e.target.closest('[data-act]');
+    if (a) {
+      const act = a.dataset.act;
+      if (act === 'guideBg') { if (e.target === a) { S.guide = false; render(); } return; }
+      if (act === 'guide') { S.guide = true; render(); return; }
+      if (act === 'guideClose') { S.guide = false; render(); return; }
+      if (act === 'print') { try { window.print(); } catch (_) {} return; }
+      if (act === 'run') return run();
+      if (act === 'skipRun') return endRun();
+      if (act === 'clearTok') { G().tokens = []; render(); return; }
+      if (act === 'next') return next();
+      if (act === 'again') { const name = S.name, speed = S.speed; S = fresh(); S.name = name; S.speed = speed; render(); window.scrollTo(0, 0); return; }
+      return;
+    }
+    const v = e.target.closest('[data-v]');
+    if (v) { const g = G(); const id = Number(v.dataset.v); setToken(id, !g.tokens.includes(id)); }
+  });
+  app.addEventListener('submit', e => {
+    e.preventDefault();
+    const v = (document.getElementById('nameIn').value || '').trim();
+    if (!v) { S.name = ''; S.nameErr = true; render(); document.getElementById('nameIn').focus(); return; }
+    newGame(v); render(); window.scrollTo(0, 0);
+  });
+  app.addEventListener('input', e => { if (e.target.id === 'nameIn') S.name = e.target.value; });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && S.guide) { S.guide = false; render(); return; }
+    const v = e.target.closest && e.target.closest('[data-v]');
+    if (v && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); const g = G(); const id = Number(v.dataset.v); setToken(id, !g.tokens.includes(id)); const el = document.getElementById('v' + id); if (el) el.focus(); }
+  });
+
+  // drag tokens from the pile, or off / between vertices
+  let drag = null;
+  app.addEventListener('pointerdown', e => {
+    if (S.screen !== 'play' || G().phase !== 'place') return;
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
+    const pile = e.target.closest('#pile');
+    const v = e.target.closest('[data-v]');
+    if (pile) { drag = { from: null, x0: e.clientX, y0: e.clientY, pid: e.pointerId, moved: false }; e.preventDefault(); }
+    else if (v && G().tokens.includes(Number(v.dataset.v))) drag = { from: Number(v.dataset.v), x0: e.clientX, y0: e.clientY, pid: e.pointerId, moved: false };
+  });
+  const vAt = (x, y) => { const el = document.elementFromPoint(x, y); return el && el.closest('[data-v]'); };
+  window.addEventListener('pointermove', e => {
+    if (!drag || e.pointerId !== drag.pid) return;
+    if (!drag.moved) {
+      if (Math.hypot(e.clientX - drag.x0, e.clientY - drag.y0) < 7) return;
+      drag.moved = true;
+      const gh = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      gh.setAttribute('viewBox', '-16 -16 32 32'); gh.setAttribute('class', 'ghost');
+      gh.innerHTML = `<g class="tokg" transform="scale(1.3)">${TOKEN}</g>`;
+      document.body.appendChild(gh); drag.ghost = gh;
+      if (drag.from != null) { const t = document.querySelector(`#v${drag.from} .tokg`); if (t) t.style.opacity = '.3'; }
+    }
+    e.preventDefault();
+    drag.ghost.style.left = e.clientX + 'px'; drag.ghost.style.top = e.clientY + 'px';
+    const h = vAt(e.clientX, e.clientY);
+    if (h !== drag.hot) { if (drag.hot) drag.hot.classList.remove('drop'); drag.hot = h; if (h) h.classList.add('drop'); }
+  }, { passive: false });
+  function endDrag(e, cancel) {
+    if (!drag || e.pointerId !== drag.pid) return;
+    const d = drag; drag = null;
+    if (!d.moved) return;
+    suppressClick = true; setTimeout(() => { suppressClick = false; }, 0);
+    if (d.ghost) d.ghost.remove();
+    if (d.hot) d.hot.classList.remove('drop');
+    const g = G();
+    const h = cancel ? null : vAt(e.clientX, e.clientY);
+    const to = h ? Number(h.dataset.v) : null;
+    if (d.from != null) g.tokens = g.tokens.filter(x => x !== d.from);
+    if (to != null && !g.tokens.includes(to)) g.tokens.push(to);
+    if (cancel && d.from != null) g.tokens.push(d.from);
+    render();
+  }
+  window.addEventListener('pointerup', e => endDrag(e, false));
+  window.addEventListener('pointercancel', e => endDrag(e, true));
+
+  // ===== boot =====
+  function start(data) {
+    S = data && data.S ? data.S : fresh();
+    if (S.screen === 'play' && S.graphs[S.cur] && S.graphs[S.cur].phase === 'run') { S.graphs[S.cur].phase = 'done'; S.graphs[S.cur].result = score(S.graphs[S.cur]); }
+    render();
+  }
+  try { window.claude?.hot?.snapshot?.(() => ({ S })); } catch (_) {}
+  if (window.claude?.hot?.ready) window.claude.hot.ready(start); else start(window.claude?.hot?.data ?? {});
+})();
+</script>
+
+<footer class="presemaker-credit" data-credit="2" style="margin-top:2rem;padding:14px 8px;border-top:1px solid #ddd;background:#fff;text-align:center;font:13px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#595959;"><svg width="20" height="20" viewBox="0 0 2048 2048" aria-hidden="true" focusable="false" style="vertical-align:-5px;margin-right:7px"><rect width="2048" height="2048" rx="384" fill="#0F6E6E"/><path fill="#0A5050" d="M1024 1000 344 832v816l680 168zm0 0 680-168v816l-680 168z"/><path fill="#fff" d="M1024 944 384 784v808l640 160zm0 0 640-160v808l-640 160z"/><rect x="1002" y="944" width="44" height="808" fill="#0F6E6E"/><rect x="936" y="246" width="176" height="448" rx="44" fill="#fff"/><rect x="800" y="382" width="448" height="176" rx="44" fill="#fff"/></svg>Created with <a href="https://softwareplus.ai/coursebuilder/" target="_blank" rel="noopener" style="color:#2f5d8f;font-weight:600;text-decoration:none;">CourseBuilder+</a><span aria-hidden="true"> · </span><a href="https://softwareplus.ai/" target="_blank" rel="noopener" style="color:#2f5d8f;text-decoration:none;">SoftwarePlus.ai</a></footer>
+</body></html>

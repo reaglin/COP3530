@@ -25,16 +25,25 @@ li{margin:5px 0}
 .co{margin:7px 0}
 .co .code{font-weight:600;color:#1a3c6e;margin-right:6px}
 .empty{color:#595959}
+.tm-jump{margin:2px 0 8px;font-size:.92rem}
+.tm-jump a{color:#1a3c6e;font-weight:600}
+ul.tm li{margin:7px 0}
+ul.tm a{color:#1a3c6e;font-weight:600}
+.tm-kind{display:inline-block;background:#eef2f8;color:#1a3c6e;border-radius:3px;padding:1px 8px;margin-left:6px;font-size:.82rem}
+.tm-also{color:#555;font-size:.88rem}
+.tm-back{margin:0 0 4px;font-size:.88rem}
+.tm-back a{color:#1a3c6e}
 </style>
 </head>
 <body>
 <div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ The Queue: Structure and Use Cases</a></div>
 <h1>The Queue: Structure and Use Cases — Topics &amp; Learning Outcomes</h1>
-<div class="toc"><a href="#topics">📋 Module Topics</a><a href="#outcomes">🎯 Student Learning Outcomes</a></div>
+<div class="toc"><a href="#topics">📋 Module Topics</a><a href="#outcomes">🎯 Student Learning Outcomes</a><a href="#materials">📚 Materials for Each Topic</a></div>
 
 <h2 id="topics">Module Topics</h2>
-<h3 id="topic-1">Introduction to the Queue Data Structure</h3>
+<h3 id="topic-1">1. Introduction to the Queue Data Structure</h3>
 <div class="summary">This topic establishes what a queue is and where it fits within the broader landscape of data structures. Students are introduced to the queue as an ordered collection with specific rules governing how data enters and exits.</div>
+<p class="tm-jump"><a href="#materials-topic-1">Materials for topic 1 (2)</a></p>
 <ul>
 <li><strong>What Is a Queue?</strong> <span class="el-body">— A queue is an ordered collection of elements designed so that items are added at one end and removed from the other.</span></li>
 <li><strong>The FIFO Principle</strong> <span class="el-body">— The defining rule of a queue is First-In, First-Out (FIFO), meaning the element that has been waiting the longest is always the next one to be processed.</span></li>
@@ -42,8 +51,9 @@ li{margin:5px 0}
 <li><strong>Queues as Abstract Data Types</strong> <span class="el-body">— A queue is classified as an abstract data type (ADT), meaning it is defined by its behavior and rules rather than by any single specific implementation.</span></li>
 <li><strong>Queues Among Other Data Structures</strong> <span class="el-body">— Understanding where the queue fits in the broader landscape of data structures helps clarify when it is the appropriate tool to use.</span></li>
 </ul>
-<h3 id="topic-2">The FIFO Principle</h3>
+<h3 id="topic-2">2. The FIFO Principle</h3>
 <div class="summary">This topic explains the First-In, First-Out principle that defines queue behavior. Students learn how FIFO governs the order of insertion and removal, distinguishing queues from other data structures.</div>
+<p class="tm-jump"><a href="#materials-topic-2">Materials for topic 2 (2)</a></p>
 <ul>
 <li><strong>What FIFO Means</strong> <span class="el-body">— FIFO stands for First-In, First-Out, the core principle that defines how a queue operates.</span></li>
 <li><strong>Insertion and Removal Under FIFO</strong> <span class="el-body">— FIFO governs both where new elements enter the queue and where elements exit, keeping these two ends distinct.</span></li>
@@ -51,8 +61,9 @@ li{margin:5px 0}
 <li><strong>Why FIFO Matters for Fairness and Order</strong> <span class="el-body">— The FIFO principle naturally encodes fairness by ensuring every element is processed in the exact order it arrived.</span></li>
 <li><strong>FIFO as a Defining Constraint of the Queue</strong> <span class="el-body">— FIFO is not just a behavioral tendency of queues — it is the defining rule that distinguishes a queue from other data structures.</span></li>
 </ul>
-<h3 id="topic-3">Queue Operations</h3>
+<h3 id="topic-3">3. Queue Operations</h3>
 <div class="summary">This topic covers the core operations performed on a queue, including enqueue, dequeue, peek, and isEmpty. Students examine the mechanics and expected behavior of each operation.</div>
+<p class="tm-jump"><a href="#materials-topic-3">Materials for topic 3 (2)</a></p>
 <ul>
 <li><strong>The Enqueue Operation</strong> <span class="el-body">— Enqueue is the operation that adds a new element to the back (rear) of the queue.</span></li>
 <li><strong>The Dequeue Operation</strong> <span class="el-body">— Dequeue removes and returns the element at the front of the queue, following the FIFO principle.</span></li>
@@ -60,8 +71,9 @@ li{margin:5px 0}
 <li><strong>The isEmpty Operation</strong> <span class="el-body">— isEmpty checks whether the queue currently contains any elements, returning a boolean result.</span></li>
 <li><strong>Operation Behavior and Expected Outcomes</strong> <span class="el-body">— Each queue operation has a well-defined expected behavior that ensures the integrity of the FIFO ordering.</span></li>
 </ul>
-<h3 id="topic-4">Implementing a Queue</h3>
+<h3 id="topic-4">4. Implementing a Queue</h3>
 <div class="summary">This topic explores the primary approaches to implementing a queue, such as using arrays or linked lists. Students implement queue operations in code and evaluate the trade-offs of each approach.</div>
+<p class="tm-jump"><a href="#materials-topic-4">Materials for topic 4 (2)</a></p>
 <ul>
 <li><strong>Array-Based Queue Implementation</strong> <span class="el-body">— A queue can be implemented using a fixed-size or dynamic array, where one end serves as the front and the other as the rear.</span></li>
 <li><strong>Linked List-Based Queue Implementation</strong> <span class="el-body">— A queue can also be implemented using a singly linked list, where the head node represents the front and the tail node represents the rear.</span></li>
@@ -70,8 +82,9 @@ li{margin:5px 0}
 <li><strong>Handling Edge Cases in Implementation</strong> <span class="el-body">— Robust queue implementations must correctly handle boundary conditions that arise during normal operation.</span></li>
 <li><strong>Time and Space Complexity Analysis</strong> <span class="el-body">— Evaluating the complexity of queue operations helps students understand the efficiency guarantees each implementation provides.</span></li>
 </ul>
-<h3 id="topic-5">Real-World Applications of Queues</h3>
+<h3 id="topic-5">5. Real-World Applications of Queues</h3>
 <div class="summary">This topic connects queue concepts to practical use cases such as task scheduling, print spooling, and data buffering. Students analyze how the FIFO principle makes queues suitable for these scenarios.</div>
+<p class="tm-jump"><a href="#materials-topic-5">Materials for topic 5 (2)</a></p>
 <ul>
 <li><strong>Task Scheduling and the FIFO Guarantee</strong> <span class="el-body">— Operating systems and applications use queues to schedule tasks, ensuring that processes are handled in the order they arrive.</span></li>
 <li><strong>Print Spooling</strong> <span class="el-body">— Print spooling is one of the most classic real-world illustrations of a queue, where multiple print jobs are lined up and processed one at a time.</span></li>
@@ -80,8 +93,9 @@ li{margin:5px 0}
 <li><strong>Breadth-First Search (BFS) in Algorithms</strong> <span class="el-body">— Queues are the underlying data structure that drives breadth-first search, enabling level-by-level exploration of graphs and trees.</span></li>
 <li><strong>Customer Service and Ticketing Systems</strong> <span class="el-body">— Help desks, call centers, and online ticketing systems model customer requests as queue entries to provide fair, orderly service.</span></li>
 </ul>
-<h3 id="topic-6">Queues vs. Stacks: A Comparison</h3>
+<h3 id="topic-6">6. Queues vs. Stacks: A Comparison</h3>
 <div class="summary">This topic directly compares the queue and stack data structures, highlighting differences in ordering principles, operations, and appropriate use cases. Students develop the ability to select the right structure for a given problem.</div>
+<p class="tm-jump"><a href="#materials-topic-6">Materials for topic 6 (2)</a></p>
 <ul>
 <li><strong>Ordering Principles: FIFO vs. LIFO</strong> <span class="el-body">— The most fundamental difference between queues and stacks is the order in which elements are accessed and removed.</span></li>
 <li><strong>Core Operations Compared</strong> <span class="el-body">— Both queues and stacks share a similar set of fundamental operations, but the naming conventions and points of access differ.</span></li>
@@ -122,6 +136,44 @@ li{margin:5px 0}
 <div class="co"><span class="code">CO2</span>Select the correct data structure and algorithm to solve specific problems</div>
 <div class="co"><span class="code">CO3</span>Implement data structures and algorithms in computer code.</div>
 <div class="co"><span class="code">CO4</span>Analyze the performance of algorithms and data structures</div>
+<h2 id="materials">Materials for Each Topic</h2>
+<p class="prefix">What has been made for each topic. Materials that cover the whole module are listed on the module page.</p>
+<h3 id="materials-topic-1">1. Introduction to the Queue Data Structure</h3>
+<p class="tm-back"><a href="#topic-1">↑ Back to topic 1</a></p>
+<ul class="tm">
+<li><a href="content/The_Queue_Structure_interactive_topics_t1.html">Introduction to the Queue Data Structure</a> <span class="tm-kind">Topic Detail · Web page</span></li>
+<li><a href="content/The_Queue_Structure_t1_videos.html">Introduction to the Queue Data Structure — Videos</a> <span class="tm-kind">Topic Videos · Web page</span></li>
+</ul>
+<h3 id="materials-topic-2">2. The FIFO Principle</h3>
+<p class="tm-back"><a href="#topic-2">↑ Back to topic 2</a></p>
+<ul class="tm">
+<li><a href="content/The_Queue_Structure_interactive_topics_t2.html">The FIFO Principle</a> <span class="tm-kind">Topic Detail · Web page</span></li>
+<li><a href="content/The_Queue_Structure_t2_videos.html">The FIFO Principle — Videos</a> <span class="tm-kind">Topic Videos · Web page</span></li>
+</ul>
+<h3 id="materials-topic-3">3. Queue Operations</h3>
+<p class="tm-back"><a href="#topic-3">↑ Back to topic 3</a></p>
+<ul class="tm">
+<li><a href="content/The_Queue_Structure_interactive_topics_t3.html">Queue Operations</a> <span class="tm-kind">Topic Detail · Web page</span></li>
+<li><a href="content/The_Queue_Structure_t3_videos.html">Queue Operations — Videos</a> <span class="tm-kind">Topic Videos · Web page</span></li>
+</ul>
+<h3 id="materials-topic-4">4. Implementing a Queue</h3>
+<p class="tm-back"><a href="#topic-4">↑ Back to topic 4</a></p>
+<ul class="tm">
+<li><a href="content/The_Queue_Structure_interactive_topics_t4.html">Implementing a Queue</a> <span class="tm-kind">Topic Detail · Web page</span></li>
+<li><a href="content/The_Queue_Structure_t4_videos.html">Implementing a Queue — Videos</a> <span class="tm-kind">Topic Videos · Web page</span></li>
+</ul>
+<h3 id="materials-topic-5">5. Real-World Applications of Queues</h3>
+<p class="tm-back"><a href="#topic-5">↑ Back to topic 5</a></p>
+<ul class="tm">
+<li><a href="content/The_Queue_Structure_interactive_topics_t5.html">Real-World Applications of Queues</a> <span class="tm-kind">Topic Detail · Web page</span></li>
+<li><a href="content/The_Queue_Structure_t5_videos.html">Real-World Applications of Queues — Videos</a> <span class="tm-kind">Topic Videos · Web page</span></li>
+</ul>
+<h3 id="materials-topic-6">6. Queues vs. Stacks: A Comparison</h3>
+<p class="tm-back"><a href="#topic-6">↑ Back to topic 6</a></p>
+<ul class="tm">
+<li><a href="content/The_Queue_Structure_interactive_topics_t6.html">Queues vs. Stacks: A Comparison</a> <span class="tm-kind">Topic Detail · Web page</span></li>
+<li><a href="content/The_Queue_Structure_t6_videos.html">Queues vs. Stacks: A Comparison — Videos</a> <span class="tm-kind">Topic Videos · Web page</span></li>
+</ul>
 
 <footer class="presemaker-credit" data-credit="2" style="margin-top:2rem;padding:14px 8px;border-top:1px solid #ddd;background:#fff;text-align:center;font:13px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#595959;"><svg width="20" height="20" viewBox="0 0 2048 2048" aria-hidden="true" focusable="false" style="vertical-align:-5px;margin-right:7px"><rect width="2048" height="2048" rx="384" fill="#0F6E6E"/><path fill="#0A5050" d="M1024 1000 344 832v816l680 168zm0 0 680-168v816l-680 168z"/><path fill="#fff" d="M1024 944 384 784v808l640 160zm0 0 640-160v808l-640 160z"/><rect x="1002" y="944" width="44" height="808" fill="#0F6E6E"/><rect x="936" y="246" width="176" height="448" rx="44" fill="#fff"/><rect x="800" y="382" width="448" height="176" rx="44" fill="#fff"/></svg>Created with <a href="https://softwareplus.ai/coursebuilder/" target="_blank" rel="noopener" style="color:#2f5d8f;font-weight:600;text-decoration:none;">CourseBuilder+</a><span aria-hidden="true"> · </span><a href="https://softwareplus.ai/" target="_blank" rel="noopener" style="color:#2f5d8f;text-decoration:none;">SoftwarePlus.ai</a></footer>
 </body>

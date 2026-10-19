@@ -25,16 +25,25 @@ li{margin:5px 0}
 .co{margin:7px 0}
 .co .code{font-weight:600;color:#1a3c6e;margin-right:6px}
 .empty{color:#595959}
+.tm-jump{margin:2px 0 8px;font-size:.92rem}
+.tm-jump a{color:#1a3c6e;font-weight:600}
+ul.tm li{margin:7px 0}
+ul.tm a{color:#1a3c6e;font-weight:600}
+.tm-kind{display:inline-block;background:#eef2f8;color:#1a3c6e;border-radius:3px;padding:1px 8px;margin-left:6px;font-size:.82rem}
+.tm-also{color:#555;font-size:.88rem}
+.tm-back{margin:0 0 4px;font-size:.88rem}
+.tm-back a{color:#1a3c6e}
 </style>
 </head>
 <body>
 <div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Binary Trees: Structure, Traversal, and Operations</a></div>
 <h1>Binary Trees: Structure, Traversal, and Operations — Topics &amp; Learning Outcomes</h1>
-<div class="toc"><a href="#topics">📋 Module Topics</a><a href="#outcomes">🎯 Student Learning Outcomes</a></div>
+<div class="toc"><a href="#topics">📋 Module Topics</a><a href="#outcomes">🎯 Student Learning Outcomes</a><a href="#materials">📚 Materials for Each Topic</a></div>
 
 <h2 id="topics">Module Topics</h2>
-<h3 id="topic-1">Introduction to Binary Trees</h3>
+<h3 id="topic-1">1. Introduction to Binary Trees</h3>
 <div class="summary">Defines binary trees as a foundational data structure and explains core terminology including nodes, edges, roots, leaves, and parent-child relationships. Establishes the structural rules that distinguish binary trees from other tree types.</div>
+<p class="tm-jump"><a href="#materials-topic-1">Materials for topic 1 (2)</a></p>
 <ul>
 <li><strong>What Is a Binary Tree?</strong> <span class="el-body">— A binary tree is a hierarchical data structure composed of nodes connected by edges, where each node holds a value and links to at most two child nodes.</span></li>
 <li><strong>Nodes and Edges</strong> <span class="el-body">— Nodes are the fundamental units of a binary tree, each storing a data value and references to its children, while edges are the directional links connecting a parent node to a child node.</span></li>
@@ -43,8 +52,9 @@ li{margin:5px 0}
 <li><strong>Parent-Child Relationships</strong> <span class="el-body">— In a binary tree, every node except the root has exactly one parent, and each node can be the parent of zero, one, or two children, forming a strict hierarchical relationship.</span></li>
 <li><strong>The Binary Constraint: Structural Rules</strong> <span class="el-body">— The defining rule of a binary tree is that every node may have at most two children, conventionally referred to as the left child and the right child.</span></li>
 </ul>
-<h3 id="topic-2">Node Structure and Tree Anatomy</h3>
+<h3 id="topic-2">2. Node Structure and Tree Anatomy</h3>
 <div class="summary">Examines how individual nodes are constructed, including data storage and left and right child pointers. Covers key tree properties such as height, depth, and balance.</div>
+<p class="tm-jump"><a href="#materials-topic-2">Materials for topic 2 (2)</a></p>
 <ul>
 <li><strong>Anatomy of a Binary Tree Node</strong> <span class="el-body">— A binary tree node is the fundamental building block of the tree structure, containing three core components: a data field and two child references.</span></li>
 <li><strong>Root, Parent, and Child Relationships</strong> <span class="el-body">— Binary trees are organized through hierarchical relationships between nodes, starting from a single entry point called the root.</span></li>
@@ -53,8 +63,9 @@ li{margin:5px 0}
 <li><strong>Subtrees and Tree Levels</strong> <span class="el-body">— A binary tree can be understood recursively as a root node connected to a left subtree and a right subtree, each of which is itself a binary tree.</span></li>
 <li><strong>Tree Balance</strong> <span class="el-body">— Balance refers to how evenly the nodes of a tree are distributed between left and right subtrees, directly impacting the performance of tree operations.</span></li>
 </ul>
-<h3 id="topic-3">Binary Search Trees (BST) Concepts</h3>
+<h3 id="topic-3">3. Binary Search Trees (BST) Concepts</h3>
 <div class="summary">Introduces the binary search tree as a specialized binary tree where left child values are less than the parent and right child values are greater. Explains how this ordering property enables efficient search operations.</div>
+<p class="tm-jump"><a href="#materials-topic-3">Materials for topic 3 (2)</a></p>
 <ul>
 <li><strong>The BST Ordering Property</strong> <span class="el-body">— A Binary Search Tree is a specialized binary tree that enforces a strict ordering rule on every node in the structure.</span></li>
 <li><strong>BST Node Structure</strong> <span class="el-body">— Each node in a Binary Search Tree holds a value and references to its left and right children, forming the backbone of the tree.</span></li>
@@ -62,8 +73,9 @@ li{margin:5px 0}
 <li><strong>BST vs. General Binary Tree</strong> <span class="el-body">— While all BSTs are binary trees, not all binary trees are BSTs — the key distinction lies in the presence of the ordering constraint.</span></li>
 <li><strong>BST Height and Performance</strong> <span class="el-body">— The efficiency of BST operations is directly tied to the height of the tree, which depends on the order in which values are inserted.</span></li>
 </ul>
-<h3 id="topic-4">Insertion and Search Operations</h3>
+<h3 id="topic-4">4. Insertion and Search Operations</h3>
 <div class="summary">Describes the logic for inserting new nodes into a BST while maintaining the ordering property, and outlines how search leverages that structure to locate values efficiently. Includes analysis of best and worst case performance.</div>
+<p class="tm-jump"><a href="#materials-topic-4">Materials for topic 4 (2)</a></p>
 <ul>
 <li><strong>BST Ordering Property</strong> <span class="el-body">— Every insertion and search operation in a BST relies on the fundamental ordering property that governs node placement.</span></li>
 <li><strong>Insertion Logic</strong> <span class="el-body">— Inserting a new node into a BST follows a recursive or iterative comparison process that preserves the ordering property.</span></li>
@@ -73,8 +85,9 @@ li{margin:5px 0}
 <li><strong>Worst Case Performance</strong> <span class="el-body">— In the worst case, a BST degrades to O(n) time for insertion and search when the tree becomes skewed or unbalanced.</span></li>
 <li><strong>Comparing Best and Worst Case Scenarios</strong> <span class="el-body">— Understanding the gap between best and worst case performance helps developers make informed decisions about when and how to use BSTs.</span></li>
 </ul>
-<h3 id="topic-5">Deletion Operations</h3>
+<h3 id="topic-5">5. Deletion Operations</h3>
 <div class="summary">Covers the three cases of node deletion in a BST: removing a leaf, a node with one child, and a node with two children. Explains how the in-order successor or predecessor is used to preserve BST integrity.</div>
+<p class="tm-jump"><a href="#materials-topic-5">Materials for topic 5 (2)</a></p>
 <ul>
 <li><strong>Overview of BST Deletion Cases</strong> <span class="el-body">— Deleting a node from a Binary Search Tree requires handling three distinct cases depending on the structure of the node being removed.</span></li>
 <li><strong>Case 1: Deleting a Leaf Node</strong> <span class="el-body">— A leaf node has no children, making it the simplest case to handle during deletion.</span></li>
@@ -84,8 +97,9 @@ li{margin:5px 0}
 <li><strong>The In-Order Predecessor</strong> <span class="el-body">— The in-order predecessor is the largest node in the left subtree and serves as an alternative replacement node during deletion.</span></li>
 <li><strong>Preserving BST Integrity After Deletion</strong> <span class="el-body">— Regardless of which case applies, the fundamental goal of deletion is to ensure the BST property holds for every node in the tree after the operation.</span></li>
 </ul>
-<h3 id="topic-6">Tree Traversal Strategies</h3>
+<h3 id="topic-6">6. Tree Traversal Strategies</h3>
 <div class="summary">Explores in-order, pre-order, and post-order traversal algorithms, detailing the sequence in which nodes are visited for each approach. Highlights practical use cases such as sorted output and tree serialization.</div>
+<p class="tm-jump"><a href="#materials-topic-6">Materials for topic 6 (2)</a></p>
 <ul>
 <li><strong>In-Order Traversal (Left → Root → Right)</strong> <span class="el-body">— In-order traversal visits the left subtree first, then the root node, and finally the right subtree, producing nodes in ascending sorted order for a binary search tree.</span></li>
 <li><strong>Pre-Order Traversal (Root → Left → Right)</strong> <span class="el-body">— Pre-order traversal visits the root node first, then recursively traverses the left subtree, followed by the right subtree.</span></li>
@@ -94,8 +108,9 @@ li{margin:5px 0}
 <li><strong>Practical Use Cases for Each Traversal</strong> <span class="el-body">— Each traversal strategy is suited to specific real-world tasks, and selecting the correct one is critical to solving tree-based problems efficiently.</span></li>
 <li><strong>Traversal and Tree Serialization</strong> <span class="el-body">— Tree serialization is the process of converting a tree structure into a linear sequence of values that can be stored or transmitted and later reconstructed.</span></li>
 </ul>
-<h3 id="topic-7">Implementing a BST in JavaScript</h3>
+<h3 id="topic-7">7. Implementing a BST in JavaScript</h3>
 <div class="summary">Guides students through a hands-on JavaScript implementation of a binary search tree, including class and method definitions for insertion, deletion, and traversal. Reinforces conceptual understanding through working code examples.</div>
+<p class="tm-jump"><a href="#materials-topic-7">Materials for topic 7 (2)</a></p>
 <ul>
 <li><strong>Defining the Node Class</strong> <span class="el-body">— Every BST is built from individual nodes, each storing a value and references to its left and right children. In JavaScript, a Node class provides the blueprint for these building blocks.</span></li>
 <li><strong>Setting Up the BinarySearchTree Class</strong> <span class="el-body">— The BST itself is represented as a class that tracks the root node and exposes methods for insertion, deletion, and traversal.</span></li>
@@ -137,6 +152,50 @@ li{margin:5px 0}
 <div class="co"><span class="code">CO2</span>Select the correct data structure and algorithm to solve specific problems</div>
 <div class="co"><span class="code">CO3</span>Implement data structures and algorithms in computer code.</div>
 <div class="co"><span class="code">CO4</span>Analyze the performance of algorithms and data structures</div>
+<h2 id="materials">Materials for Each Topic</h2>
+<p class="prefix">What has been made for each topic. Materials that cover the whole module are listed on the module page.</p>
+<h3 id="materials-topic-1">1. Introduction to Binary Trees</h3>
+<p class="tm-back"><a href="#topic-1">↑ Back to topic 1</a></p>
+<ul class="tm">
+<li><a href="content/Binary_Trees_Structure_interactive_topics_t1.html">Introduction to Binary Trees</a> <span class="tm-kind">Topic Detail · Web page</span></li>
+<li><a href="content/Binary_Trees_Structure_t1_videos.html">Introduction to Binary Trees — Videos</a> <span class="tm-kind">Topic Videos · Web page</span></li>
+</ul>
+<h3 id="materials-topic-2">2. Node Structure and Tree Anatomy</h3>
+<p class="tm-back"><a href="#topic-2">↑ Back to topic 2</a></p>
+<ul class="tm">
+<li><a href="content/Binary_Trees_Structure_interactive_topics_t2.html">Node Structure and Tree Anatomy</a> <span class="tm-kind">Topic Detail · Web page</span></li>
+<li><a href="content/Binary_Trees_Structure_t2_videos.html">Node Structure and Tree Anatomy — Videos</a> <span class="tm-kind">Topic Videos · Web page</span></li>
+</ul>
+<h3 id="materials-topic-3">3. Binary Search Trees (BST) Concepts</h3>
+<p class="tm-back"><a href="#topic-3">↑ Back to topic 3</a></p>
+<ul class="tm">
+<li><a href="content/Binary_Trees_Structure_interactive_topics_t3.html">Binary Search Trees (BST) Concepts</a> <span class="tm-kind">Topic Detail · Web page</span></li>
+<li><a href="content/Binary_Trees_Structure_t3_videos.html">Binary Search Trees (BST) Concepts — Videos</a> <span class="tm-kind">Topic Videos · Web page</span></li>
+</ul>
+<h3 id="materials-topic-4">4. Insertion and Search Operations</h3>
+<p class="tm-back"><a href="#topic-4">↑ Back to topic 4</a></p>
+<ul class="tm">
+<li><a href="content/Binary_Trees_Structure_interactive_topics_t4.html">Insertion and Search Operations</a> <span class="tm-kind">Topic Detail · Web page</span></li>
+<li><a href="content/Binary_Trees_Structure_t4_videos.html">Insertion and Search Operations — Videos</a> <span class="tm-kind">Topic Videos · Web page</span></li>
+</ul>
+<h3 id="materials-topic-5">5. Deletion Operations</h3>
+<p class="tm-back"><a href="#topic-5">↑ Back to topic 5</a></p>
+<ul class="tm">
+<li><a href="content/Binary_Trees_Structure_interactive_topics_t5.html">Deletion Operations</a> <span class="tm-kind">Topic Detail · Web page</span></li>
+<li><a href="content/Binary_Trees_Structure_t5_videos.html">Deletion Operations — Videos</a> <span class="tm-kind">Topic Videos · Web page</span></li>
+</ul>
+<h3 id="materials-topic-6">6. Tree Traversal Strategies</h3>
+<p class="tm-back"><a href="#topic-6">↑ Back to topic 6</a></p>
+<ul class="tm">
+<li><a href="content/Binary_Trees_Structure_interactive_topics_t6.html">Tree Traversal Strategies</a> <span class="tm-kind">Topic Detail · Web page</span></li>
+<li><a href="content/Binary_Trees_Structure_t6_videos.html">Tree Traversal Strategies — Videos</a> <span class="tm-kind">Topic Videos · Web page</span></li>
+</ul>
+<h3 id="materials-topic-7">7. Implementing a BST in JavaScript</h3>
+<p class="tm-back"><a href="#topic-7">↑ Back to topic 7</a></p>
+<ul class="tm">
+<li><a href="content/Binary_Trees_Structure_interactive_topics_t7.html">Implementing a BST in JavaScript</a> <span class="tm-kind">Topic Detail · Web page</span></li>
+<li><a href="content/Binary_Trees_Structure_t7_videos.html">Implementing a BST in JavaScript — Videos</a> <span class="tm-kind">Topic Videos · Web page</span></li>
+</ul>
 
 <footer class="presemaker-credit" data-credit="2" style="margin-top:2rem;padding:14px 8px;border-top:1px solid #ddd;background:#fff;text-align:center;font:13px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#595959;"><svg width="20" height="20" viewBox="0 0 2048 2048" aria-hidden="true" focusable="false" style="vertical-align:-5px;margin-right:7px"><rect width="2048" height="2048" rx="384" fill="#0F6E6E"/><path fill="#0A5050" d="M1024 1000 344 832v816l680 168zm0 0 680-168v816l-680 168z"/><path fill="#fff" d="M1024 944 384 784v808l640 160zm0 0 640-160v808l-640 160z"/><rect x="1002" y="944" width="44" height="808" fill="#0F6E6E"/><rect x="936" y="246" width="176" height="448" rx="44" fill="#fff"/><rect x="800" y="382" width="448" height="176" rx="44" fill="#fff"/></svg>Created with <a href="https://softwareplus.ai/coursebuilder/" target="_blank" rel="noopener" style="color:#2f5d8f;font-weight:600;text-decoration:none;">CourseBuilder+</a><span aria-hidden="true"> · </span><a href="https://softwareplus.ai/" target="_blank" rel="noopener" style="color:#2f5d8f;text-decoration:none;">SoftwarePlus.ai</a></footer>
 </body>

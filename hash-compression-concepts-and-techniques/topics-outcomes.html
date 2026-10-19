@@ -25,16 +25,25 @@ li{margin:5px 0}
 .co{margin:7px 0}
 .co .code{font-weight:600;color:#1a3c6e;margin-right:6px}
 .empty{color:#595959}
+.tm-jump{margin:2px 0 8px;font-size:.92rem}
+.tm-jump a{color:#1a3c6e;font-weight:600}
+ul.tm li{margin:7px 0}
+ul.tm a{color:#1a3c6e;font-weight:600}
+.tm-kind{display:inline-block;background:#eef2f8;color:#1a3c6e;border-radius:3px;padding:1px 8px;margin-left:6px;font-size:.82rem}
+.tm-also{color:#555;font-size:.88rem}
+.tm-back{margin:0 0 4px;font-size:.88rem}
+.tm-back a{color:#1a3c6e}
 </style>
 </head>
 <body>
 <div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Hash Compression: Concepts and Techniques</a></div>
 <h1>Hash Compression: Concepts and Techniques — Topics &amp; Learning Outcomes</h1>
-<div class="toc"><a href="#topics">📋 Module Topics</a><a href="#outcomes">🎯 Student Learning Outcomes</a></div>
+<div class="toc"><a href="#topics">📋 Module Topics</a><a href="#outcomes">🎯 Student Learning Outcomes</a><a href="#materials">📚 Materials for Each Topic</a></div>
 
 <h2 id="topics">Module Topics</h2>
-<h3 id="topic-1">Introduction to Hash Compression</h3>
+<h3 id="topic-1">1. Introduction to Hash Compression</h3>
 <div class="summary">Defines hash compression and explains the fundamental problem of mapping large key spaces to smaller, bounded index ranges. Establishes the motivation and core vocabulary for understanding hash functions.</div>
+<p class="tm-jump"><a href="#materials-topic-1">Materials for topic 1 (2)</a></p>
 <ul>
 <li><strong>What Is Hash Compression?</strong> <span class="el-body">— Hash compression is the process of transforming a value from a large key space into a smaller, bounded index range suitable for use in a data structure such as a hash table.</span></li>
 <li><strong>The Core Problem: Large Key Spaces</strong> <span class="el-body">— The fundamental challenge in hashing is that the universe of possible keys is vastly larger than the number of available storage positions.</span></li>
@@ -43,8 +52,9 @@ li{margin:5px 0}
 <li><strong>Core Vocabulary</strong> <span class="el-body">— Understanding hash compression requires familiarity with a set of foundational terms that appear throughout the study of hash functions and hash tables.</span></li>
 <li><strong>Properties of an Effective Hash Function</strong> <span class="el-body">— Not all mappings from keys to indices are equally useful; a good hash function must satisfy several important properties to support efficient data access.</span></li>
 </ul>
-<h3 id="topic-2">Modular Arithmetic as a Compression Strategy</h3>
+<h3 id="topic-2">2. Modular Arithmetic as a Compression Strategy</h3>
 <div class="summary">Explores the use of the modulo operation to compress hash values into a target index range. Examines how table size selection affects the quality and uniformity of the resulting distribution.</div>
+<p class="tm-jump"><a href="#materials-topic-2">Materials for topic 2 (2)</a></p>
 <ul>
 <li><strong>The Role of Modular Arithmetic in Hash Compression</strong> <span class="el-body">— Modular arithmetic provides a straightforward mechanism for compressing an arbitrary hash value into a bounded index range suitable for a hash table.</span></li>
 <li><strong>How the Modulo Operation Reduces Key Space</strong> <span class="el-body">— The modulo operation effectively wraps a large numeric domain around a fixed-size table, collapsing an enormous key space into a manageable index range.</span></li>
@@ -53,8 +63,9 @@ li{margin:5px 0}
 <li><strong>Limitations and Failure Cases of Simple Modular Compression</strong> <span class="el-body">— While easy to implement, the basic modulo method can perform poorly when input keys exhibit certain structured or repetitive patterns.</span></li>
 <li><strong>Relationship Between Load Factor and Table Size Choice</strong> <span class="el-body">— The table size m directly determines the load factor, which measures how full the table is and influences both collision frequency and performance.</span></li>
 </ul>
-<h3 id="topic-3">Folding and Other Compression Techniques</h3>
+<h3 id="topic-3">3. Folding and Other Compression Techniques</h3>
 <div class="summary">Introduces folding methods that divide keys into segments and combine them to produce a compressed index. Surveys additional compression strategies and compares their approaches to reducing key space.</div>
+<p class="tm-jump"><a href="#materials-topic-3">Materials for topic 3 (2)</a></p>
 <ul>
 <li><strong>Introduction to Folding</strong> <span class="el-body">— Folding is a compression technique that divides a key into multiple segments of equal or near-equal size and combines those segments to produce a smaller index value.</span></li>
 <li><strong>Shift Folding</strong> <span class="el-body">— Shift folding divides the key into segments and adds them together directly, shifting each segment into alignment before summing.</span></li>
@@ -63,8 +74,9 @@ li{margin:5px 0}
 <li><strong>Mid-Square Method</strong> <span class="el-body">— The mid-square method squares the key value and then extracts the middle digits of the result as the compressed index.</span></li>
 <li><strong>Comparing Compression Strategies</strong> <span class="el-body">— Different compression techniques vary in computational cost, implementation complexity, and the quality of distribution they produce across the hash table.</span></li>
 </ul>
-<h3 id="topic-4">Distribution Properties of Hash Functions</h3>
+<h3 id="topic-4">4. Distribution Properties of Hash Functions</h3>
 <div class="summary">Analyzes how well different compression techniques spread keys uniformly across the index range. Discusses concepts such as clustering, load factor, and what makes a distribution desirable for hash table performance.</div>
+<p class="tm-jump"><a href="#materials-topic-4">Materials for topic 4 (2)</a></p>
 <ul>
 <li><strong>Uniform Distribution as the Ideal Goal</strong> <span class="el-body">— A well-designed hash function should spread keys as evenly as possible across all available index slots in the hash table.</span></li>
 <li><strong>Clustering and Its Impact on Performance</strong> <span class="el-body">— Clustering occurs when a disproportionate number of keys hash to the same or nearby index slots, creating hotspots in the table.</span></li>
@@ -73,8 +85,9 @@ li{margin:5px 0}
 <li><strong>Measuring Distribution Quality</strong> <span class="el-body">— Evaluating how well a hash function distributes keys requires quantitative measures that go beyond simply counting collisions.</span></li>
 <li><strong>Desirable Properties for Hash Table Performance</strong> <span class="el-body">— Beyond uniformity, a distribution is considered desirable when it remains stable and predictable across a wide variety of input key sets.</span></li>
 </ul>
-<h3 id="topic-5">Comparing and Selecting Compression Methods</h3>
+<h3 id="topic-5">5. Comparing and Selecting Compression Methods</h3>
 <div class="summary">Provides a framework for evaluating trade-offs among compression strategies based on efficiency, uniformity, and implementation complexity. Guides students in choosing an appropriate method for a given use case.</div>
+<p class="tm-jump"><a href="#materials-topic-5">Materials for topic 5 (2)</a></p>
 <ul>
 <li><strong>Understanding Compression Efficiency</strong> <span class="el-body">— Efficiency in a compression method refers to how well it utilizes the available index range while minimizing wasted slots and collisions.</span></li>
 <li><strong>Evaluating Distribution Uniformity</strong> <span class="el-body">— Uniformity measures how evenly a compression function spreads hash values across the index range, which is critical for balanced hash table performance.</span></li>
@@ -110,6 +123,38 @@ li{margin:5px 0}
 <div class="co"><span class="code">CO2</span>Select the correct data structure and algorithm to solve specific problems</div>
 <div class="co"><span class="code">CO3</span>Implement data structures and algorithms in computer code.</div>
 <div class="co"><span class="code">CO4</span>Analyze the performance of algorithms and data structures</div>
+<h2 id="materials">Materials for Each Topic</h2>
+<p class="prefix">What has been made for each topic. Materials that cover the whole module are listed on the module page.</p>
+<h3 id="materials-topic-1">1. Introduction to Hash Compression</h3>
+<p class="tm-back"><a href="#topic-1">↑ Back to topic 1</a></p>
+<ul class="tm">
+<li><a href="content/Hash_Compression_Concepts_interactive_topics_t1.html">Introduction to Hash Compression</a> <span class="tm-kind">Topic Detail · Web page</span></li>
+<li><a href="content/Hash_Compression_Concepts_t1_videos.html">Introduction to Hash Compression — Videos</a> <span class="tm-kind">Topic Videos · Web page</span></li>
+</ul>
+<h3 id="materials-topic-2">2. Modular Arithmetic as a Compression Strategy</h3>
+<p class="tm-back"><a href="#topic-2">↑ Back to topic 2</a></p>
+<ul class="tm">
+<li><a href="content/Hash_Compression_Concepts_interactive_topics_t2.html">Modular Arithmetic as a Compression Strategy</a> <span class="tm-kind">Topic Detail · Web page</span></li>
+<li><a href="content/Hash_Compression_Concepts_t2_videos.html">Modular Arithmetic as a Compression Strategy — Videos</a> <span class="tm-kind">Topic Videos · Web page</span></li>
+</ul>
+<h3 id="materials-topic-3">3. Folding and Other Compression Techniques</h3>
+<p class="tm-back"><a href="#topic-3">↑ Back to topic 3</a></p>
+<ul class="tm">
+<li><a href="content/Hash_Compression_Concepts_interactive_topics_t3.html">Folding and Other Compression Techniques</a> <span class="tm-kind">Topic Detail · Web page</span></li>
+<li><a href="content/Hash_Compression_Concepts_t3_videos.html">Folding and Other Compression Techniques — Videos</a> <span class="tm-kind">Topic Videos · Web page</span></li>
+</ul>
+<h3 id="materials-topic-4">4. Distribution Properties of Hash Functions</h3>
+<p class="tm-back"><a href="#topic-4">↑ Back to topic 4</a></p>
+<ul class="tm">
+<li><a href="content/Hash_Compression_Concepts_interactive_topics_t4.html">Distribution Properties of Hash Functions</a> <span class="tm-kind">Topic Detail · Web page</span></li>
+<li><a href="content/Hash_Compression_Concepts_t4_videos.html">Distribution Properties of Hash Functions — Videos</a> <span class="tm-kind">Topic Videos · Web page</span></li>
+</ul>
+<h3 id="materials-topic-5">5. Comparing and Selecting Compression Methods</h3>
+<p class="tm-back"><a href="#topic-5">↑ Back to topic 5</a></p>
+<ul class="tm">
+<li><a href="content/Hash_Compression_Concepts_interactive_topics_t5.html">Comparing and Selecting Compression Methods</a> <span class="tm-kind">Topic Detail · Web page</span></li>
+<li><a href="content/Hash_Compression_Concepts_t5_videos.html">Comparing and Selecting Compression Methods — Videos</a> <span class="tm-kind">Topic Videos · Web page</span></li>
+</ul>
 
 <footer class="presemaker-credit" data-credit="2" style="margin-top:2rem;padding:14px 8px;border-top:1px solid #ddd;background:#fff;text-align:center;font:13px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#595959;"><svg width="20" height="20" viewBox="0 0 2048 2048" aria-hidden="true" focusable="false" style="vertical-align:-5px;margin-right:7px"><rect width="2048" height="2048" rx="384" fill="#0F6E6E"/><path fill="#0A5050" d="M1024 1000 344 832v816l680 168zm0 0 680-168v816l-680 168z"/><path fill="#fff" d="M1024 944 384 784v808l640 160zm0 0 640-160v808l-640 160z"/><rect x="1002" y="944" width="44" height="808" fill="#0F6E6E"/><rect x="936" y="246" width="176" height="448" rx="44" fill="#fff"/><rect x="800" y="382" width="448" height="176" rx="44" fill="#fff"/></svg>Created with <a href="https://softwareplus.ai/coursebuilder/" target="_blank" rel="noopener" style="color:#2f5d8f;font-weight:600;text-decoration:none;">CourseBuilder+</a><span aria-hidden="true"> · </span><a href="https://softwareplus.ai/" target="_blank" rel="noopener" style="color:#2f5d8f;text-decoration:none;">SoftwarePlus.ai</a></footer>
 </body>

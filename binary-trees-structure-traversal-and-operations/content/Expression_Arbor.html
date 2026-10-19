@@ -1,0 +1,803 @@
+﻿<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="../index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Binary Trees: Structure, Traversal, and Operations</a></div>
+<title>Expression Arbor</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: a potting bench. The expression card on top, a tray of tiles on the left, the growing tree on the right, and the walk (traversal output) underneath it. */
+:root {
+  --bg: #e8ede7; --panel: #ffffff; --sunk: #f2f5f0; --ink: #17241c; --muted: #56675c; --line: #cad6cc;
+  --accent: #2c6a3a; --accent-ink: #ffffff; --accent-soft: #d9eadb;
+  --op: #a8530c; --op-soft: #fbe7d3;
+  --num: #1d5a8c; --num-soft: #deebf7;
+  --par: #6a5a8f; --par-soft: #ece7f5;
+  --ok: #1f7a43; --ok-soft: #dcf0e2; --no: #b3261e; --no-soft: #f8e0dd; --part: #8f6300; --part-soft: #f6ecd2;
+  --f-display: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif;
+  --f-body: 'Atkinson Hyperlegible', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --f-mono: 'JetBrains Mono', ui-monospace, Consolas, monospace;
+  --r: 10px;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0e1511; --panel: #16201a; --sunk: #1c2821; --ink: #e2ebe4; --muted: #9aab9f; --line: #2c3b31;
+  --accent: #7cc98c; --accent-ink: #0b2213; --accent-soft: #1b3a24;
+  --op: #f2a35c; --op-soft: #3a2713; --num: #8dbdf0; --num-soft: #172b40; --par: #b9a8e3; --par-soft: #29233d;
+  --ok: #6fca8e; --ok-soft: #15301f; --no: #f2847b; --no-soft: #3b1c19; --part: #e3b64c; --part-soft: #3a2f12; color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #0e1511; --panel: #16201a; --sunk: #1c2821; --ink: #e2ebe4; --muted: #9aab9f; --line: #2c3b31;
+  --accent: #7cc98c; --accent-ink: #0b2213; --accent-soft: #1b3a24;
+  --op: #f2a35c; --op-soft: #3a2713; --num: #8dbdf0; --num-soft: #172b40; --par: #b9a8e3; --par-soft: #29233d;
+  --ok: #6fca8e; --ok-soft: #15301f; --no: #f2847b; --no-soft: #3b1c19; --part: #e3b64c; --part-soft: #3a2f12; color-scheme: dark; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 400 16px/1.55 var(--f-body); }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--ink); }
+h1, h2, h3 { font-family: var(--f-display); font-weight: 800; line-height: 1.05; margin: 0; text-wrap: balance; letter-spacing: -.01em; }
+button, input { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--num); outline-offset: 2px; }
+.mono { font-family: var(--f-mono); }
+
+.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--ink); color: var(--bg); }
+.bar-in { max-width: 1180px; margin: 0 auto; padding-block: 10px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; justify-content: space-between; }
+.brand { display: flex; gap: 10px; align-items: center; font: 800 20px var(--f-display); letter-spacing: .01em; }
+.brand svg { width: 28px; height: 28px; }
+.brand .bl { stroke: var(--bg); stroke-width: 2; }
+.brand .bn { fill: var(--accent); stroke: var(--bg); stroke-width: 2; }
+.meta { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.chip { font: 500 12px/1 var(--f-mono); padding: 7px 10px; border-radius: 99px; border: 1px solid color-mix(in srgb, var(--bg) 35%, transparent); white-space: nowrap; }
+.chip.score { background: var(--bg); color: var(--ink); font-weight: 700; }
+button.chip { background: transparent; cursor: pointer; }
+button.chip:hover { background: color-mix(in srgb, var(--bg) 15%, transparent); }
+
+.wrap { max-width: 1180px; margin: 0 auto; padding-block: 22px 64px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.eyebrow { font: 700 12px/1.2 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin: 0 0 8px; }
+.small { font-size: 14px; color: var(--muted); margin: 0; }
+.btn { border: 1px solid var(--line); background: var(--panel); padding: 10px 16px; border-radius: var(--r); cursor: pointer; font-weight: 700; min-height: 44px; }
+.btn:hover { background: var(--sunk); }
+.btn.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.btn.primary:hover { filter: brightness(1.08); background: var(--accent); }
+.btn.warn { border-color: var(--no); color: var(--no); }
+.btn:disabled { opacity: .45; cursor: not-allowed; }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+
+/* ---------- start ---------- */
+.start { display: grid; grid-template-columns: 1.2fr 1fr; gap: 32px; align-items: start; }
+.start > * { min-width: 0; }
+.start h1 { font-size: clamp(54px, 9.5vw, 116px); line-height: .86; letter-spacing: -.04em; }
+.start h1 span { color: var(--accent); display: block; }
+.lede { font-size: 18px; max-width: 34em; margin: 18px 0 18px; }
+.hero { background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); padding: 14px; display: grid; gap: 10px; }
+.walks { display: grid; gap: 6px; }
+.walkrow { display: grid; grid-template-columns: 96px 1fr; gap: 10px; align-items: baseline; font-size: 14px; }
+.walkrow b { font: 700 12px var(--f-mono); text-transform: uppercase; letter-spacing: .05em; color: var(--muted); }
+.walkrow code { font: 600 16px var(--f-mono); }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); padding: 22px; display: grid; gap: 14px; }
+.card h2 { font-size: 28px; }
+.rules { margin: 0; padding-left: 22px; display: grid; gap: 4px; }
+.fld { display: grid; gap: 6px; }
+.fld > span { font: 700 13px var(--f-mono); color: var(--muted); }
+input[type=text] { width: 100%; padding: 10px 12px; border: 1px solid var(--line); border-radius: var(--r); background: var(--sunk); min-height: 46px; font-size: 17px; }
+.err { color: var(--no); font-weight: 700; margin: 0; font-size: 14px; }
+
+/* ---------- play ---------- */
+.play { display: grid; gap: 16px; }
+.rmap { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 5px; }
+.rp { background: var(--panel); border: 1.5px solid var(--line); border-radius: 8px; padding: 6px 4px; text-align: center; display: grid; gap: 1px; min-width: 0; }
+.rp b { font: 700 12px var(--f-mono); }
+.rp span { font: 500 10.5px var(--f-mono); color: var(--muted); }
+.rp.now { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-soft); }
+.rp.done { border-color: var(--ok); background: var(--ok-soft); }
+.rp.done span { color: var(--ok); font-weight: 700; }
+.rp.skipped { border-color: var(--no); background: var(--no-soft); }
+
+.mission { background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; }
+.mstrip { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 16px; font: 500 12px/1 var(--f-mono); letter-spacing: .06em; text-transform: uppercase; padding: 10px 18px; background: var(--sunk); border-bottom: 1px solid var(--line); color: var(--muted); }
+.mstrip .worth { color: var(--ink); font-weight: 700; }
+.mbody { padding: 16px 18px 18px; display: flex; flex-wrap: wrap; gap: 14px 28px; align-items: center; }
+.method { display: grid; gap: 2px; padding-right: 26px; border-right: 2px solid var(--line); }
+.method .mname { font: 800 30px/1 var(--f-display); color: var(--accent); }
+.method .mord { font: 500 13px var(--f-mono); color: var(--muted); }
+.eqwrap { display: grid; gap: 4px; min-width: 0; }
+.eqlab { font: 700 12px var(--f-mono); text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+.eq { font: 700 clamp(24px, 4.4vw, 38px)/1.15 var(--f-mono); letter-spacing: .02em; overflow-wrap: anywhere; }
+
+.bench { display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: 16px; align-items: start; }
+.tray, .build { background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); padding: 14px; display: grid; gap: 12px; min-width: 0; }
+.tray { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 64px); }
+.tray.drop-hot { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+.phead { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.phead h3 { font-size: 20px; }
+.tiles { display: flex; flex-wrap: wrap; gap: 10px; min-height: 60px; align-content: flex-start; }
+.tray .empty { font-size: 14px; color: var(--muted); }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 12px; font-size: 12.5px; color: var(--muted); }
+.legend i { display: inline-block; width: 12px; height: 12px; vertical-align: -1px; margin-right: 4px; border: 2px solid; }
+.legend .ln { border-color: var(--num); background: var(--num-soft); border-radius: 50%; }
+.legend .lo { border-color: var(--op); background: var(--op-soft); border-radius: 3px; }
+.legend .lp { border-color: var(--par); background: var(--par-soft); border-radius: 3px; border-style: dashed; }
+
+/* node + tile shapes (shared) */
+.tile, .tn { width: 54px; height: 54px; display: grid; place-items: center; font: 700 22px/1 var(--f-mono); border: 2.5px solid; user-select: none; -webkit-user-select: none; touch-action: none; color: var(--ink); }
+.k-num { background: var(--num-soft); border-color: var(--num); border-radius: 50%; }
+.k-op { background: var(--op-soft); border-color: var(--op); border-radius: 14px; }
+.k-par { background: var(--par-soft); border-color: var(--par); border-radius: 14px; border-style: dashed; }
+.tile { cursor: grab; padding: 0; transition: transform .12s; }
+.tile:hover { transform: translateY(-2px); }
+.tile.sel, .tn.sel { box-shadow: 0 0 0 4px var(--accent); }
+.tile.lifted, .tn.lifted { opacity: .35; }
+.ghost { position: fixed; z-index: 50; pointer-events: none; transform: translate(-50%, -50%) scale(1.08); box-shadow: 0 10px 24px rgba(0,0,0,.25); }
+
+.hint { font-size: 14px; background: var(--accent-soft); border-radius: 8px; padding: 8px 12px; margin: 0; }
+.canvas { overflow-x: auto; background: var(--sunk); border: 1px solid var(--line); border-radius: 8px; min-height: 180px; display: flex; padding: 6px; }
+.tree { position: relative; margin: 0 auto; flex: none; }
+.tree svg.edges { position: absolute; inset: 0; overflow: visible; }
+.edges .e { stroke: var(--muted); stroke-width: 2.4; }
+.edges .es { stroke: var(--line); stroke-width: 2; stroke-dasharray: 5 4; }
+.tree .tn { position: absolute; transform: translate(-50%, -50%); cursor: grab; transition: box-shadow .2s, transform .2s; }
+.tree.ro .tn { cursor: default; }
+.tn.cur { transform: translate(-50%, -50%) scale(1.14); box-shadow: 0 0 0 6px var(--accent); }
+.tn.visited { border-color: var(--accent); }
+.vo { position: absolute; top: -9px; left: -9px; min-width: 22px; height: 22px; border-radius: 99px; background: var(--accent); color: var(--accent-ink); font: 700 11.5px/22px var(--f-mono); text-align: center; padding: 0 5px; }
+.slot { position: absolute; transform: translate(-50%, -50%); width: 40px; height: 40px; border-radius: 50%; border: 2px dashed var(--muted); background: var(--sunk); color: var(--muted); font: 700 11px var(--f-mono); cursor: pointer; padding: 0; opacity: .75; }
+.slot.root { width: 96px; height: 58px; border-radius: 14px; font-size: 14px; opacity: 1; border-color: var(--accent); color: var(--accent); }
+.has-sel .slot, .is-dragging .slot { opacity: 1; border-color: var(--accent); color: var(--accent); }
+.slot:hover, .slot.hot { opacity: 1; background: var(--accent-soft); border-color: var(--accent); border-style: solid; color: var(--accent); }
+.tn-x { position: absolute; transform: translate(-50%, -50%); width: 22px; height: 22px; border-radius: 50%; border: 1px solid var(--line); background: var(--panel); color: var(--muted); font: 700 13px/1 var(--f-body); cursor: pointer; padding: 0; display: grid; place-items: center; }
+.tn-x:hover { color: var(--no); border-color: var(--no); }
+
+.walk { display: grid; gap: 8px; }
+.wrow { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 10px; align-items: center; }
+.wrow > b { font: 700 12px var(--f-mono); text-transform: uppercase; letter-spacing: .05em; color: var(--muted); }
+.strip { display: flex; flex-wrap: wrap; gap: 5px; min-height: 40px; align-items: center; }
+.tok { min-width: 34px; height: 38px; padding: 0 8px; display: grid; place-items: center; border-radius: 6px; background: var(--sunk); border: 1px solid var(--line); font: 700 17px var(--f-mono); }
+.tok.par { color: var(--muted); }
+.tok.good { background: var(--ok-soft); border-color: var(--ok); }
+.tok.bad { background: var(--no-soft); border-color: var(--no); }
+.strip.stale { opacity: .5; }
+.fb { border-radius: 8px; padding: 12px 14px; display: grid; gap: 8px; }
+.fb p { margin: 0; }
+.fb ul { margin: 0; padding-left: 20px; display: grid; gap: 4px; }
+.fb.ok { background: var(--ok-soft); border-left: 5px solid var(--ok); }
+.fb.no { background: var(--no-soft); border-left: 5px solid var(--no); }
+.fb.info { background: var(--part-soft); border-left: 5px solid var(--part); }
+.fb.skip { background: var(--sunk); border-left: 5px solid var(--muted); }
+.fb h3 { font-size: 20px; }
+.answer { display: grid; gap: 6px; }
+
+/* ---------- report ---------- */
+.report { background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); padding: 24px; display: grid; gap: 20px; }
+.rep-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; align-items: flex-end; border-bottom: 3px solid var(--ink); padding-bottom: 16px; }
+.rep-name { font-size: clamp(36px, 6vw, 58px); overflow-wrap: anywhere; }
+.rep-meta { margin: 6px 0 0; color: var(--muted); }
+.rep-score { font-family: var(--f-display); display: flex; align-items: baseline; gap: 6px; }
+.rep-score b { font-size: 92px; font-weight: 800; line-height: .9; color: var(--accent); }
+.rep-score span { font-size: 26px; font-weight: 700; color: var(--muted); }
+.tscroll { overflow-x: auto; }
+table { border-collapse: collapse; font-variant-numeric: tabular-nums; width: 100%; }
+.rep th { font: 700 11px var(--f-mono); letter-spacing: .05em; text-transform: uppercase; color: var(--muted); text-align: left; padding: 8px; border-bottom: 1px solid var(--line); }
+.rep td { padding: 8px; border-bottom: 1px solid var(--line); font-size: 15px; }
+.rep td.eqc { font: 600 14px var(--f-mono); }
+.rep .n { text-align: right; font-family: var(--f-mono); }
+.rep tfoot td { border-bottom: 0; font-weight: 700; padding-top: 12px; }
+
+/* ---------- cheat sheet ---------- */
+html.locked, html.locked body { overflow: hidden; }
+.overlay { position: fixed; inset: 0; z-index: 20; background: color-mix(in srgb, var(--ink) 55%, transparent); display: flex; justify-content: center; align-items: stretch; padding: calc(env(safe-area-inset-top, 0px) + 16px) max(16px, env(safe-area-inset-right, 0px)) calc(env(safe-area-inset-bottom, 0px) + 16px) max(16px, env(safe-area-inset-left, 0px)); }
+.sheet { background: var(--panel); width: 100%; max-width: 940px; border-radius: var(--r); border: 1px solid var(--line); display: flex; flex-direction: column; min-height: 0; overflow: hidden; }
+.sheet-head { display: flex; flex-wrap: wrap; gap: 10px 16px; justify-content: space-between; align-items: flex-end; padding: 18px 20px 12px; border-bottom: 1px solid var(--line); }
+.sheet-head h2 { font-size: clamp(26px, 4.5vw, 34px); }
+.printnote { margin: 0; padding: 10px 20px; background: var(--part-soft); font-size: 14px; border-bottom: 1px solid var(--line); }
+.sheet-body { overflow-y: auto; padding: 4px 20px 20px; display: grid; gap: 4px; min-height: 0; flex: 1; }
+.sheet-foot { padding: 12px 20px; border-top: 1px solid var(--line); display: flex; justify-content: flex-end; gap: 10px; }
+.cs { padding-top: 16px; display: grid; gap: 10px; }
+.cs + .cs { border-top: 1px solid var(--line); }
+.cs h3 { font-size: 22px; color: var(--accent); }
+.cs p { margin: 0; max-width: 62em; }
+.cs ul, .cs ol { margin: 0; padding-left: 22px; display: grid; gap: 5px; max-width: 62em; }
+.cs-split { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 18px; align-items: center; }
+.cs-split > * { min-width: 0; }
+.cst th { font: 700 12px var(--f-mono); color: var(--muted); text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--line); }
+.cst td { padding: 7px 8px; border-bottom: 1px solid var(--line); vertical-align: top; font-size: 15px; }
+.cst td code { font: 700 15px var(--f-mono); white-space: nowrap; }
+.pseudo { margin: 0; background: var(--sunk); border: 1px solid var(--line); border-radius: 6px; padding: 10px 12px; overflow-x: auto; font: 500 13px/1.55 var(--f-mono); }
+
+@media (max-width: 860px) {
+  .start { grid-template-columns: 1fr; }
+  .bench { grid-template-columns: minmax(0, 1fr); }
+  .tray { position: static; }
+  .method { border-right: 0; padding-right: 0; }
+  .rmap { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .cs-split { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 520px) {
+  .wrow { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+  .walkrow { grid-template-columns: 1fr; gap: 0; }
+  .report { padding: 16px; }
+  .rep th, .rep td { padding: 7px 4px; }
+  .rep .opt { display: none; }
+  .sheet-head, .printnote, .sheet-body, .sheet-foot { padding-left: 14px; padding-right: 14px; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+@media print {
+  body { background: #fff; color: #000; }
+  body::before { display: none; }
+  html.locked .bar, html.locked .wrap, .sheet-foot, .printnote, .sheet-head .actions { display: none !important; }
+  html.locked, html.locked body { overflow: visible; }
+  .overlay { position: static; background: none; padding: 0; display: block; }
+  .sheet { border: 0; max-width: none; overflow: visible; display: block; background: #fff; }
+  .sheet-body { overflow: visible; padding: 0; display: block; }
+  .cs { break-inside: avoid; }
+  .tscroll { overflow: visible; }
+}
+</style>
+
+<div id="app"></div>
+
+<script>
+(function () {
+  'use strict';
+  const STANDALONE = false; // set true in the downloadable copy, where printing works
+  const OPS = ['+', '-', '*', '/'];
+  const PREC = { '+': 1, '-': 1, '*': 2, '/': 2 };
+  const M = {
+    pre:  { name: 'Preorder',  notation: 'Prefix',  order: 'Node → Left → Right', code: 'NLR' },
+    in:   { name: 'Inorder',   notation: 'Infix',   order: 'Left → Node → Right', code: 'LNR' },
+    post: { name: 'Postorder', notation: 'Postfix', order: 'Left → Right → Node', code: 'LRN' },
+  };
+  const ROUNDS = 10, PENALTY = 3, HINT_COST = 1;
+  const NODEW = 66, SLOTW = 50, ROOTW = 110, LEVEL = 84, TOP = 40;
+  const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const app = document.getElementById('app');
+  let S;
+
+  const fresh = () => ({ screen: 'start', name: '', nameErr: false, rounds: [], cur: 0, sel: null, busy: false, fb: null, out: null, guide: false, confirmSkip: false, finished: null });
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const rint = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+  const shuffle = a => { for (let i = a.length - 1; i > 0; i--) { const j = rint(0, i); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+
+  // ===== expression trees =====
+  const TA = { tok: h => h.t, l: h => h.l || null, r: h => h.r || null };
+  // Walk a tree with any accessor. Inorder adds the minimum parentheses needed (left-associative), which makes infix output unique per tree.
+  function walk(method, root, A) {
+    const ev = [];
+    const pre = h => { if (h == null) return; ev.push({ h, tok: A.tok(h) }); pre(A.l(h)); pre(A.r(h)); };
+    const post = h => { if (h == null) return; post(A.l(h)); post(A.r(h)); ev.push({ h, tok: A.tok(h) }); };
+    const inn = (h, pp, right) => {
+      if (h == null) return;
+      const p = PREC[A.tok(h)];
+      const wrap = p !== undefined && (p < pp || (right && p === pp));
+      const cp = p === undefined ? 99 : p;
+      if (wrap) ev.push({ paren: true, tok: '(' });
+      inn(A.l(h), cp, false); ev.push({ h, tok: A.tok(h) }); inn(A.r(h), cp, true);
+      if (wrap) ev.push({ paren: true, tok: ')' });
+    };
+    if (method === 'pre') pre(root); else if (method === 'post') post(root); else inn(root, 0, false);
+    return ev;
+  }
+  const toks = (method, t) => walk(method, t, TA).map(e => e.tok);
+  function fmt(tokens, method) {
+    const s = tokens.join(' ');
+    return method === 'in' ? s.replace(/\( /g, '(').replace(/ \)/g, ')') : s;
+  }
+  function genTree(k, digits) {
+    if (k === 0) return { t: String(digits.pop()) };
+    const op = OPS[rint(0, 3)];
+    const lk = rint(0, k - 1);
+    return { t: op, l: genTree(lk, digits), r: genTree(k - 1 - lk, digits) };
+  }
+  function evalTree(t) {
+    if (!t.l) return Number(t.t);
+    const a = evalTree(t.l), b = evalTree(t.r);
+    return t.t === '+' ? a + b : t.t === '-' ? a - b : t.t === '*' ? a * b : a / b;
+  }
+  const fmtNum = v => Number.isInteger(v) ? String(v) : String(Math.round(v * 1000) / 1000);
+  const kindOf = tok => PREC[tok] ? 'op' : (tok === '(' || tok === ')') ? 'par' : 'num';
+
+  function makeRound(i, method, prevKey) {
+    const k = i < 3 ? 2 : i < 6 ? 3 : 4;
+    let t, key;
+    for (let tries = 0; tries < 100; tries++) {
+      t = genTree(k, shuffle([1, 2, 3, 4, 5, 6, 7, 8, 9]).slice(0, k + 1));
+      const inf = toks('in', t);
+      key = inf.join('');
+      if (i >= 2 && !inf.includes('(') && Math.random() < 0.8) continue;
+      if (key === prevKey) continue;
+      break;
+    }
+    const pairs = Math.min(2, Math.max(1, toks('in', t).filter(x => x === '(').length));
+    const list = toks('pre', t);
+    for (let p = 0; p < pairs; p++) list.push('(', ')');
+    const tiles = shuffle(list.map(tok => ({ tok, kind: kindOf(tok) }))).map((x, j) => ({ ...x, id: 'r' + i + 't' + j }));
+    return { i, method, k, target: t, key, eq: toks(method, t), tiles, infix: toks('in', t), nodes: {}, root: null, wrong: 0, hint: false, status: 'play', points: 0 };
+  }
+  function newGame(name) {
+    const rest = shuffle(['pre', 'in', 'post', 'pre', 'in', 'post', ['pre', 'in', 'post'][rint(0, 2)]]);
+    const seq = ['in', 'pre', 'post', ...rest];
+    const rounds = [];
+    seq.forEach((m, i) => rounds.push(makeRound(i, m, i ? rounds[i - 1].key : '')));
+    Object.assign(S, fresh(), { screen: 'play', name, rounds });
+  }
+
+  // ===== student tree helpers =====
+  const R = () => S.rounds[S.cur];
+  const tileOf = (r, id) => r.tiles.find(t => t.id === id);
+  const SA = r => ({ tok: id => tileOf(r, id).tok, l: id => r.nodes[id].l, r: id => r.nodes[id].r });
+  function parentOf(r, id) {
+    for (const pid in r.nodes) { if (r.nodes[pid].l === id) return [pid, 'l']; if (r.nodes[pid].r === id) return [pid, 'r']; }
+    return null;
+  }
+  function inSubtree(r, top, x) {
+    if (top == null) return false;
+    if (top === x) return true;
+    return inSubtree(r, r.nodes[top].l, x) || inSubtree(r, r.nodes[top].r, x);
+  }
+  function detach(r, id) {
+    if (r.root === id) { r.root = null; return; }
+    const p = parentOf(r, id); if (p) r.nodes[p[0]][p[1]] = null;
+  }
+  function removeSub(r, id) {
+    detach(r, id);
+    const del = x => { if (x == null || !r.nodes[x]) return; const n = r.nodes[x]; delete r.nodes[x]; del(n.l); del(n.r); };
+    del(id);
+  }
+  const locked = () => S.busy || !R() || R().status !== 'play';
+  function edited() {
+    S.sel = null; S.confirmSkip = false;
+    if (S.out) S.out.stale = true;
+    if (S.fb && S.fb.kind === 'info') S.fb = null;
+    render();
+  }
+  function place(id, slot) {
+    const r = R(); if (locked()) return;
+    let pid = null, side = 'root';
+    if (slot !== 'root') { const k = slot.lastIndexOf(':'); pid = slot.slice(0, k); side = slot.slice(k + 1); if (!r.nodes[pid]) return; }
+    if (side === 'root' ? r.root != null : r.nodes[pid][side] != null) return;
+    if (r.nodes[id]) {
+      if (pid !== null && inSubtree(r, id, pid)) { S.fb = { kind: 'info', msg: 'A node cannot move into its own subtree.' }; S.sel = null; render(); return; }
+      detach(r, id);
+    } else r.nodes[id] = { l: null, r: null };
+    if (side === 'root') r.root = id; else r.nodes[pid][side] = id;
+    edited();
+  }
+  function toTray(id) { const r = R(); if (locked() || !r.nodes[id]) return; removeSub(r, id); edited(); }
+
+  // ===== traversal =====
+  function traverse() {
+    const r = R(); if (locked() || r.root == null) return;
+    for (const id in r.nodes) {
+      const t = tileOf(r, id), n = r.nodes[id];
+      if (t.kind === 'op' && (n.l == null || n.r == null)) {
+        const need = n.l == null && n.r == null ? 'a left and a right operand' : n.l == null ? 'a left operand' : 'a right operand';
+        S.fb = { kind: 'info', msg: `Finish the tree first: the ${t.tok} operator still needs ${need}. Every operator has exactly two children. (No points lost.)` };
+        S.sel = null; render(); return;
+      }
+    }
+    const ev = walk(r.method, r.root, SA(r));
+    S.busy = true; S.fb = null; S.sel = null; S.confirmSkip = false;
+    S.out = { tokens: [], order: {}, stale: false, done: false, mismatch: -1 };
+    render();
+    const strip = document.getElementById('yourStrip');
+    const stepT = reduce ? 40 : 560, parT = reduce ? 20 : 240;
+    let i = 0, n = 0;
+    const step = () => {
+      document.querySelectorAll('.tn.cur').forEach(x => x.classList.remove('cur'));
+      if (i >= ev.length) { finish(); return; }
+      const e = ev[i++];
+      S.out.tokens.push(e.tok);
+      const span = document.createElement('span');
+      span.className = 'tok' + (e.paren ? ' par' : ''); span.textContent = e.tok;
+      if (strip) strip.appendChild(span);
+      if (!e.paren) {
+        n++; S.out.order[e.h] = n;
+        const el = document.querySelector(`[data-node="${e.h}"]`);
+        if (el) { el.classList.add('cur', 'visited'); const b = document.createElement('span'); b.className = 'vo'; b.textContent = n; el.appendChild(b); }
+      }
+      setTimeout(step, e.paren ? parT : stepT);
+    };
+    setTimeout(step, reduce ? 0 : 300);
+  }
+  function finish() {
+    const r = R(), out = S.out;
+    const used = Object.keys(r.nodes);
+    const issues = [];
+    const parUsed = used.filter(id => tileOf(r, id).kind === 'par');
+    if (parUsed.length) issues.push('Your tree contains a parenthesis tile. Expression trees never store parentheses: the shape of the tree already shows which operation happens first.');
+    used.forEach(id => { const t = tileOf(r, id), nd = r.nodes[id]; if (t.kind === 'num' && (nd.l || nd.r)) issues.push(`The number ${t.tok} has a child. Operands are always leaves; only operators have children.`); });
+    const unused = r.tiles.filter(t => t.kind !== 'par' && !r.nodes[t.id]).map(t => t.tok);
+    if (unused.length) issues.push(`Still in the tray: ${unused.join(', ')}. Every number and operator in the expression appears exactly once in the tree.`);
+    let mm = -1;
+    for (let j = 0; j < Math.max(out.tokens.length, r.eq.length); j++) if (out.tokens[j] !== r.eq[j]) { mm = j; break; }
+    out.done = true; out.mismatch = mm; S.busy = false;
+    if (!issues.length && mm === -1) {
+      r.points = worth(r); r.status = 'done';
+      S.fb = { kind: 'ok' };
+    } else {
+      r.wrong++;
+      S.fb = { kind: 'no', issues, mm };
+    }
+    render();
+  }
+  function skip() {
+    const r = R(); if (locked()) return;
+    if (!S.confirmSkip) { S.confirmSkip = true; render(); return; }
+    r.status = 'skipped'; r.points = 0; S.confirmSkip = false; S.fb = { kind: 'skip' }; S.sel = null;
+    render();
+  }
+  function next() {
+    S.cur++; S.sel = null; S.fb = null; S.out = null; S.confirmSkip = false;
+    if (S.cur >= ROUNDS) { S.cur = ROUNDS - 1; S.screen = 'report'; S.finished = new Date().toISOString(); }
+    render();
+    window.scrollTo(0, 0);
+  }
+  const total = () => S.rounds.reduce((a, r) => a + r.points, 0);
+  const worth = r => Math.max(1, 10 - PENALTY * r.wrong - (r.hint ? HINT_COST : 0));
+
+  // ===== tree rendering =====
+  function viewStudent(r, editable) {
+    const v = (id, parent, side) => {
+      if (id == null) return editable ? { slot: true, key: parent + ':' + side, side } : null;
+      const t = tileOf(r, id);
+      return { id, tok: t.tok, kind: t.kind, l: v(r.nodes[id].l, id, 'l'), r: v(r.nodes[id].r, id, 'r') };
+    };
+    if (r.root == null) return editable ? { slot: true, key: 'root', side: 'root' } : null;
+    return v(r.root, null, 'root');
+  }
+  function viewTarget(t) {
+    let n = 0;
+    const v = x => x ? { id: 'v' + (n++), tok: x.t, kind: kindOf(x.t), l: v(x.l), r: v(x.r) } : null;
+    return v(t);
+  }
+  function layout(view) {
+    const items = [], edges = []; let x = 0, maxD = 0;
+    const go = (n, d) => {
+      if (!n) return null;
+      maxD = Math.max(maxD, d);
+      if (n.slot) { const w = n.side === 'root' ? ROOTW : SLOTW; const me = { n, d, cx: x + w / 2 }; x += w; items.push(me); return me; }
+      const L = go(n.l, d + 1);
+      const me = { n, d, cx: x + NODEW / 2 }; x += NODEW; items.push(me);
+      const Rr = go(n.r, d + 1);
+      if (L && Rr) me.cx = (L.cx + Rr.cx) / 2;
+      if (L) edges.push([me, L]); if (Rr) edges.push([me, Rr]);
+      return me;
+    };
+    go(view, 0);
+    items.forEach(it => { it.cy = TOP + it.d * LEVEL; });
+    return { items, edges, w: Math.max(x, 60), h: TOP * 2 + maxD * LEVEL };
+  }
+  function treeHTML(view, o) {
+    o = o || {};
+    if (!view) return '';
+    const L = layout(view);
+    const lines = L.edges.map(([a, b]) => `<line class="${b.n.slot ? 'es' : 'e'}" x1="${a.cx}" y1="${a.cy}" x2="${b.cx}" y2="${b.cy}"/>`).join('');
+    const parts = L.items.map(it => {
+      const n = it.n, pos = `left:${it.cx}px;top:${it.cy}px`;
+      if (n.slot) {
+        const label = n.side === 'root' ? 'Root' : n.side.toUpperCase();
+        const aria = n.side === 'root' ? 'Root slot' : `${n.side === 'l' ? 'Left' : 'Right'} slot`;
+        return `<button class="slot${n.side === 'root' ? ' root' : ''}" data-slot="${n.key}" style="${pos}" aria-label="${aria}">${label}</button>`;
+      }
+      const ord = o.order && o.order[n.id];
+      const cls = `tn k-${n.kind}${S.sel === n.id ? ' sel' : ''}${ord ? ' visited' : ''}`;
+      const attrs = o.editable ? ` data-node="${n.id}" role="button" tabindex="0" aria-label="Node ${esc(n.tok)}. Drag to move, or select and pick a slot."` : ` aria-label="${esc(n.tok)}"`;
+      let h = `<div class="${cls}"${attrs} style="${pos}">${esc(n.tok)}${ord ? `<span class="vo">${ord}</span>` : ''}</div>`;
+      if (o.editable) h += `<button class="tn-x" data-remove="${n.id}" style="left:${it.cx + 25}px;top:${it.cy - 25}px" aria-label="Return ${esc(n.tok)} and everything below it to the tray" title="Return to tray">×</button>`;
+      return h;
+    }).join('');
+    return `<div class="tree${o.editable ? '' : ' ro'}" style="width:${L.w}px;height:${L.h}px"><svg class="edges" width="${L.w}" height="${L.h}" aria-hidden="true">${lines}</svg>${parts}</div>`;
+  }
+
+  // ===== screens =====
+  const BRAND = `<svg viewBox="0 0 28 28" aria-hidden="true"><line class="bl" x1="14" y1="7" x2="7" y2="20"/><line class="bl" x1="14" y1="7" x2="21" y2="20"/><circle class="bn" cx="14" cy="7" r="5"/><circle class="bn" cx="7" cy="21" r="4.5"/><circle class="bn" cx="21" cy="21" r="4.5"/></svg>`;
+  function bar() {
+    const play = S.screen !== 'start';
+    return `<header class="bar"><div class="bar-in"><div class="brand">${BRAND}Expression Arbor</div><div class="meta">
+      ${play ? `<span class="chip">${esc(S.name)}</span><span class="chip">Round ${Math.min(S.cur + 1, ROUNDS)} / ${ROUNDS}</span><span class="chip score">${total()} / 100</span>` : ''}
+      <button class="chip" data-act="guide">Cheat sheet</button></div></div></header>`;
+  }
+  const HERO = { t: '*', l: { t: '-', l: { t: '7' }, r: { t: '2' } }, r: { t: '+', l: { t: '3' }, r: { t: '4' } } };
+  function startScreen() {
+    return `<div class="start">
+      <div>
+        <p class="eyebrow">Data structures · Expression trees</p>
+        <h1>Expression<span>Arbor</span></h1>
+        <p class="lede">Grow the binary tree behind an arithmetic expression, then walk it. Each round gives an equation in ordinary PEMDAS form and names a traversal. Build the tree, and the walk turns it into prefix, infix or postfix notation.</p>
+        <div class="hero">
+          <div class="canvas">${treeHTML(viewTarget(HERO))}</div>
+          <div class="walks">
+            <div class="walkrow"><b>Preorder</b><code>${fmt(toks('pre', HERO), 'pre')}</code></div>
+            <div class="walkrow"><b>Inorder</b><code>${fmt(toks('in', HERO), 'in')}</code></div>
+            <div class="walkrow"><b>Postorder</b><code>${fmt(toks('post', HERO), 'post')}</code></div>
+          </div>
+        </div>
+      </div>
+      <form class="card" id="startForm" novalidate>
+        <h2>Before you start</h2>
+        <ol class="rules">
+          <li>Each round gives an equation in normal PEMDAS form and a traversal: preorder → prefix, inorder → infix, postorder → postfix.</li>
+          <li>Drag a tile onto <b>Root</b>. Every node you place opens a left (L) and right (R) slot for the next tiles.</li>
+          <li>Not every tile belongs in the tree.</li>
+          <li>Press <b>Traverse</b> to walk your tree. Your tree must be the equation's tree, so the walk produces the correct notation token for token.</li>
+          <li>10 rounds, 10 points each. A wrong traversal costs ${PENALTY} points and you can fix the tree (a solved round is worth at least 1). A hint shows the expected output for ${HINT_COST} point. Showing the answer scores 0.</li>
+        </ol>
+        <p class="small">Tip: you can also tap a tile, then tap a slot.</p>
+        <label class="fld"><span>Your name (appears on your score report)</span>
+          <input type="text" id="nameIn" autocomplete="name" maxlength="60" value="${esc(S.name)}" placeholder="First and last name"></label>
+        ${S.nameErr ? '<p class="err">Enter your name to start.</p>' : ''}
+        <div class="actions"><button class="btn primary" type="submit">Start round 1</button><button class="btn" type="button" data-act="guide">Open the cheat sheet</button></div>
+        <p class="small">Print the cheat sheet first if you want it beside you while you play.</p>
+      </form>
+    </div>`;
+  }
+  function roundMap() {
+    return `<div class="rmap" aria-label="Rounds">${S.rounds.map((r, i) => {
+      const cls = r.status === 'done' ? 'done' : r.status === 'skipped' ? 'skipped' : i === S.cur ? 'now' : '';
+      const sub = r.status === 'play' ? M[r.method].code : `${r.points} pts`;
+      return `<div class="rp ${cls}${i === S.cur ? ' now' : ''}"><b>R${i + 1}</b><span>${sub}</span></div>`;
+    }).join('')}</div>`;
+  }
+  function playScreen() {
+    const r = R(), m = M[r.method];
+    const playing = r.status === 'play';
+    const trayTiles = r.tiles.filter(t => !r.nodes[t.id]);
+    const selTile = S.sel ? tileOf(r, S.sel) : null;
+    const selPlaced = S.sel && r.nodes[S.sel];
+    const hint = !playing ? '' : S.busy ? `<p class="hint">Walking the tree in ${m.name.toLowerCase()} order: ${m.order}.</p>`
+      : selTile ? `<p class="hint">${selPlaced ? `Moving <b class="mono">${esc(selTile.tok)}</b> and everything below it: pick an empty slot, or tap the tray to return it.` : `Placing <b class="mono">${esc(selTile.tok)}</b>: pick an empty slot, or tap the tile again to cancel.`}</p>`
+      : r.root == null ? '<p class="hint">Start with the root. Which tile belongs at the top of this tree?</p>' : '';
+    const editable = playing;
+    const view = r.status === 'skipped' ? viewStudent(r, false) : viewStudent(r, editable);
+    const order = S.out && S.out.done && !S.out.stale ? S.out.order : null;
+    const treeBox = view ? treeHTML(view, { editable, order }) : '<p class="small" style="margin:auto">No tree was built.</p>';
+
+    // walk rows
+    let walk = '';
+    const tgt = r.eq.map((t, j) => {
+      let c = 'tok' + (t === '(' || t === ')' ? ' par' : '');
+      return `<span class="${c}">${esc(t)}</span>`;
+    }).join('');
+    if (r.hint || r.status !== 'play') walk += `<div class="wrow"><b>Expected ${m.notation.toLowerCase()}</b><div class="strip">${tgt}</div></div>`;
+    else walk += `<div class="wrow"><b>Expected ${m.notation.toLowerCase()}</b><div class="actions"><button class="btn" data-act="hint"${S.busy ? ' disabled' : ''}>Hint: show the expected ${m.notation.toLowerCase()} output (−${HINT_COST} pt)</button></div></div>`;
+    if (S.out) {
+      const mine = S.out.done ? S.out.tokens.map((t, j) => {
+        let c = 'tok' + (t === '(' || t === ')' ? ' par' : '');
+        if (!S.out.stale) c += (S.out.mismatch === -1 || j < S.out.mismatch) ? ' good' : j === S.out.mismatch ? ' bad' : '';
+        return `<span class="${c}">${esc(t)}</span>`;
+      }).join('') : '';
+      walk += `<div class="wrow"><b>${S.out.stale ? 'Last walk' : 'Your walk'}</b><div class="strip${S.out.stale ? ' stale' : ''}" id="yourStrip" aria-live="polite">${mine}</div></div>`;
+    }
+
+    // feedback
+    let fb = '';
+    const f = S.fb;
+    if (f && f.kind === 'info') fb = `<div class="fb info"><p>${f.msg}</p></div>`;
+    if (f && f.kind === 'no') {
+      const tip = `Find the root first: in the equation it is the operator applied last (the lowest-precedence operator outside all parentheses, the rightmost if tied). Then check the walk order: ${m.name} visits ${m.order}.`;
+      const list = f.issues.slice();
+      if (f.mm !== -1) list.push(`Your ${m.name.toLowerCase()} walk first differs from the expected ${m.notation.toLowerCase()} output at position ${f.mm + 1} (marked in red).`);
+      fb = `<div class="fb no"><h3>Not yet. −${PENALTY} points</h3><ul>${list.map(x => `<li>${x}</li>`).join('')}</ul><p>${tip}</p><p><b>This round is now worth ${worth(r)} point${worth(r) === 1 ? '' : 's'}.</b> Fix the tree and traverse again.</p></div>`;
+    }
+    if (r.status === 'done') {
+      fb = `<div class="fb ok"><h3>Correct. +${r.points} points</h3><p>Your ${m.name.toLowerCase()} walk produces the correct ${m.notation.toLowerCase()} expression. The badges show the visiting order.</p>
+        <p>Evaluated bottom-up (a postorder walk), this tree equals <b class="mono">${fmtNum(evalTree(r.target))}</b>.</p>
+        <div class="actions"><button class="btn primary" data-act="next">${S.cur === ROUNDS - 1 ? 'See my score report' : 'Next round'}</button></div></div>`;
+    }
+    if (r.status === 'skipped') {
+      fb = `<div class="fb skip"><h3>Answer shown. 0 points</h3>
+        <div class="answer"><b>The correct tree</b><div class="canvas">${treeHTML(viewTarget(r.target))}</div></div>
+        <div class="walks"><div class="walkrow"><b>Prefix</b><code>${fmt(toks('pre', r.target), 'pre')}</code></div><div class="walkrow"><b>Infix</b><code>${fmt(toks('in', r.target), 'in')}</code></div><div class="walkrow"><b>Postfix</b><code>${fmt(toks('post', r.target), 'post')}</code></div></div>
+        <div class="actions"><button class="btn primary" data-act="next">${S.cur === ROUNDS - 1 ? 'See my score report' : 'Next round'}</button></div></div>`;
+    }
+
+    const ctl = playing ? `<div class="actions">
+        <button class="btn primary" data-act="traverse"${r.root == null || S.busy ? ' disabled' : ''}>Traverse</button>
+        <button class="btn" data-act="clear"${r.root == null || S.busy ? ' disabled' : ''}>Clear tree</button>
+        <button class="btn${S.confirmSkip ? ' warn' : ''}" data-act="skip"${S.busy ? ' disabled' : ''}>${S.confirmSkip ? 'Confirm: show answer for 0 points' : 'Show answer'}</button>
+      </div>` : '';
+
+    return `<div class="play">
+      ${roundMap()}
+      <section class="mission" aria-label="Round ${S.cur + 1}">
+        <div class="mstrip"><span>Round ${S.cur + 1} of ${ROUNDS} · ${r.k} operators</span><span class="worth">${r.status === 'play' ? `Worth ${worth(r)} pts` : `Scored ${r.points} pts`}</span></div>
+        <div class="mbody">
+          <div class="method"><span class="eqlab">Traversal</span><span class="mname">${m.name}</span><span class="mord">${m.order}</span></div>
+          <div class="eqwrap"><span class="eqlab">Equation (standard PEMDAS order)</span><div class="eq">${esc(fmt(r.infix, 'in'))}</div><span class="small">Build its expression tree, then walk it with a ${m.name.toLowerCase()} traversal to produce ${m.notation.toLowerCase()} notation.</span></div>
+        </div>
+      </section>
+      <div class="bench">
+        <section class="tray" data-tray aria-label="Tile tray">
+          <div class="phead"><h3>Tiles</h3><span class="small">${trayTiles.length} left</span></div>
+          <div class="tiles">${trayTiles.length ? trayTiles.map(t => `<button class="tile k-${t.kind}${S.sel === t.id ? ' sel' : ''}" data-tile="${t.id}" aria-label="Tile ${esc(t.tok)}"${playing ? '' : ' disabled'}>${esc(t.tok)}</button>`).join('') : '<span class="empty">Tray is empty.</span>'}</div>
+          <div class="legend"><span><i class="ln"></i>number</span><span><i class="lo"></i>operator</span><span><i class="lp"></i>parenthesis</span></div>
+        </section>
+        <section class="build" aria-label="Your tree">
+          <div class="phead"><h3>Your tree</h3><span class="small">${m.name}: ${m.order}</span></div>
+          ${hint}
+          <div class="canvas${S.sel ? ' has-sel' : ''}">${treeBox}</div>
+          ${ctl}
+          <div class="walk">${walk}</div>
+          ${fb}
+        </section>
+      </div>
+    </div>`;
+  }
+  function reportScreen() {
+    const d = new Date(S.finished || Date.now());
+    const rows = S.rounds.map((r, i) => `<tr><td class="n">${i + 1}</td><td>${M[r.method].name}</td><td class="eqc">${esc(fmt(r.infix, 'in'))}</td><td class="n opt">${r.wrong}</td><td class="opt">${r.hint ? 'Yes' : ''}</td><td>${r.status === 'done' ? 'Solved' : 'Answer shown'}</td><td class="n"><b>${r.points}</b></td></tr>`).join('');
+    const solved = S.rounds.filter(r => r.status === 'done').length;
+    const clean = S.rounds.filter(r => r.status === 'done' && r.wrong === 0).length;
+    return `<section class="report">
+      <div class="rep-head">
+        <div><p class="eyebrow">Expression Arbor · Score report</p><h2 class="rep-name">${esc(S.name)}</h2>
+        <p class="rep-meta">${d.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}, ${d.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' })} · ${solved} of ${ROUNDS} trees solved · ${clean} on the first try</p></div>
+        <div class="rep-score"><b>${total()}</b><span>/ 100</span></div>
+      </div>
+      <div class="tscroll"><table class="rep"><thead><tr><th class="n">#</th><th>Traversal</th><th>Equation</th><th class="n opt">Wrong walks</th><th class="opt">Hint</th><th>Result</th><th class="n">Points</th></tr></thead>
+        <tbody>${rows}</tbody><tfoot><tr><td></td><td colspan="2">Total</td><td class="opt"></td><td class="opt"></td><td></td><td class="n">${total()}</td></tr></tfoot></table></div>
+      <p class="small">Take a screenshot of this report (with your name and score showing) and upload it to submit.</p>
+      <div class="actions"><button class="btn" data-act="again">Play a new set of 10</button></div>
+    </section>`;
+  }
+  function guideSheet() {
+    const ex = { t: '*', l: { t: '+', l: { t: '3' }, r: { t: '4' } }, r: { t: '2' } };
+    return `<div class="overlay" data-act="guideBg"><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="gTitle">
+      <div class="sheet-head"><div><p class="eyebrow">Expression Arbor</p><h2 id="gTitle">Traversal cheat sheet</h2></div>
+        <div class="actions">${STANDALONE ? '<button class="btn" data-act="print">Print</button>' : ''}<button class="btn" data-act="guideClose">Close</button></div></div>
+      ${STANDALONE ? '' : '<p class="printnote">To print this sheet, open the downloadable copy of the game and use its Print button (or Ctrl+P / Cmd+P).</p>'}
+      <div class="sheet-body">
+        <div class="cs"><h3>What an expression tree stores</h3>
+          <div class="cs-split"><div class="canvas">${treeHTML(viewTarget(ex))}</div>
+          <ul><li><b>Operators</b> (+ − * /) are internal nodes with exactly two children: the left operand and the right operand.</li>
+            <li><b>Numbers</b> (operands) are always leaves.</li>
+            <li><b>No parentheses.</b> Grouping is shown by depth: an operation lower in the tree happens first. The tree above is (3 + 4) * 2.</li>
+            <li>Evaluating the tree is a postorder walk: evaluate both children, then apply the operator.</li></ul></div></div>
+        <div class="cs"><h3>The three traversals</h3>
+          <div class="tscroll"><table class="cst"><thead><tr><th>Traversal</th><th>Visit order</th><th>Produces</th><th>Example tree gives</th></tr></thead><tbody>
+            <tr><td><b>Preorder</b></td><td>Node, Left, Right (NLR)</td><td>Prefix (Polish) notation</td><td><code>${fmt(toks('pre', ex), 'pre')}</code></td></tr>
+            <tr><td><b>Inorder</b></td><td>Left, Node, Right (LNR)</td><td>Infix notation (add parentheses where needed)</td><td><code>${fmt(toks('in', ex), 'in')}</code></td></tr>
+            <tr><td><b>Postorder</b></td><td>Left, Right, Node (LRN)</td><td>Postfix (reverse Polish) notation</td><td><code>${fmt(toks('post', ex), 'post')}</code></td></tr>
+          </tbody></table></div>
+          <pre class="pseudo">preorder(n):  if n: visit(n); preorder(n.left); preorder(n.right)
+inorder(n):   if n: inorder(n.left); visit(n); inorder(n.right)
+postorder(n): if n: postorder(n.left); postorder(n.right); visit(n)</pre></div>
+        <div class="cs"><h3>Finding the root</h3>
+          <ul><li><b>Prefix:</b> the first token is the root. Everything after it splits into the left subtree's tokens, then the right subtree's.</li>
+            <li><b>Postfix:</b> the last token is the root. Read right to left: the right subtree comes just before the root.</li>
+            <li><b>Infix:</b> the root is the operator applied last: the lowest-precedence operator that is outside all parentheses. If several tie, take the rightmost (left-to-right evaluation). Split the expression there into left and right halves and repeat.</li>
+            <li>Precedence: * and / bind tighter than + and −.</li></ul></div>
+        <div class="cs"><h3>Inorder and parentheses</h3>
+          <p>A plain inorder walk loses grouping: both (3 + 4) * 2 and 3 + 4 * 2 would print as 3 + 4 * 2. In this game the inorder walk adds a pair of parentheses around a subtree only when it is needed: when the child operator has lower precedence than its parent, or equal precedence on the right side (8 − (3 − 1) keeps its parentheses).</p></div>
+        <div class="cs"><h3>Scoring</h3>
+          <ul><li>10 rounds, 10 points each, 100 total.</li><li>Each wrong traversal costs ${PENALTY} points. The hint (the expected prefix, infix or postfix output) costs ${HINT_COST}. A solved round always earns at least 1.</li><li>Traverse is blocked, with no penalty, while an operator still has an empty slot.</li><li>Show answer ends the round with 0 points.</li><li>Your name and final score appear on the report you screenshot and submit.</li></ul></div>
+      </div>
+      <div class="sheet-foot">${STANDALONE ? '<button class="btn" data-act="print">Print</button>' : ''}<button class="btn primary" data-act="guideClose">Back to the game</button></div>
+    </div></div>`;
+  }
+
+  function render() {
+    const y = window.scrollY;
+    let main = S.screen === 'start' ? startScreen() : S.screen === 'play' ? playScreen() : reportScreen();
+    app.innerHTML = bar() + `<main class="wrap">${main}</main>` + (S.guide ? guideSheet() : '');
+    document.documentElement.classList.toggle('locked', !!S.guide);
+    window.scrollTo(0, y);
+  }
+
+  // ===== input: clicks =====
+  let suppressClick = false;
+  function handleSelect(id) {
+    if (locked()) return;
+    S.sel = S.sel === id ? null : id;
+    if (S.fb && S.fb.kind === 'info') S.fb = null;
+    render();
+  }
+  app.addEventListener('click', e => {
+    if (suppressClick) { suppressClick = false; e.preventDefault(); return; }
+    const a = e.target.closest('[data-act]');
+    if (a) {
+      const act = a.dataset.act;
+      if (act === 'guideBg') { if (e.target === a) { S.guide = false; render(); } return; }
+      if (act === 'guide') { S.guide = true; render(); return; }
+      if (act === 'guideClose') { S.guide = false; render(); return; }
+      if (act === 'print') { try { window.print(); } catch (_) {} return; }
+      if (act === 'traverse') return traverse();
+      if (act === 'clear') { const r = R(); if (locked()) return; r.nodes = {}; r.root = null; edited(); return; }
+      if (act === 'skip') return skip();
+      if (act === 'hint') { const r = R(); if (locked() || r.hint) return; r.hint = true; render(); return; }
+      if (act === 'next') return next();
+      if (act === 'again') { const name = S.name; S = fresh(); S.name = name; render(); return; }
+      return;
+    }
+    const rm = e.target.closest('[data-remove]');
+    if (rm) return toTray(rm.dataset.remove);
+    const tile = e.target.closest('[data-tile]');
+    if (tile) return handleSelect(tile.dataset.tile);
+    const node = e.target.closest('[data-node]');
+    if (node) return handleSelect(node.dataset.node);
+    const slot = e.target.closest('[data-slot]');
+    if (slot) {
+      if (S.sel) place(S.sel, slot.dataset.slot);
+      else { S.fb = { kind: 'info', msg: 'Pick a tile first (tap it, or drag it onto this slot).' }; render(); }
+      return;
+    }
+    if (e.target.closest('[data-tray]') && S.sel) {
+      const r = R(); if (r.nodes[S.sel]) toTray(S.sel); else { S.sel = null; render(); }
+    }
+  });
+  app.addEventListener('submit', e => {
+    e.preventDefault();
+    const v = (document.getElementById('nameIn').value || '').trim();
+    if (!v) { S.name = ''; S.nameErr = true; render(); document.getElementById('nameIn').focus(); return; }
+    newGame(v); render(); window.scrollTo(0, 0);
+  });
+  app.addEventListener('input', e => { if (e.target.id === 'nameIn') S.name = e.target.value; });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { if (S.guide) { S.guide = false; render(); } else if (S.sel) { S.sel = null; render(); } return; }
+    const n = e.target.closest && e.target.closest('[data-node]');
+    if (n && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); handleSelect(n.dataset.node); }
+  });
+
+  // ===== input: drag (pointer events work for mouse, pen and touch) =====
+  let drag = null;
+  app.addEventListener('pointerdown', e => {
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
+    if (e.target.closest('[data-remove]')) return;
+    const el = e.target.closest('[data-tile],[data-node]');
+    if (!el || locked()) return;
+    drag = { id: el.dataset.tile || el.dataset.node, el, x0: e.clientX, y0: e.clientY, pid: e.pointerId, moved: false, ghost: null, hot: null };
+  });
+  function hotAt(x, y) {
+    const under = document.elementFromPoint(x, y);
+    if (!under) return null;
+    return under.closest('[data-slot]') || under.closest('[data-tray]');
+  }
+  window.addEventListener('pointermove', e => {
+    if (!drag || e.pointerId !== drag.pid) return;
+    if (!drag.moved) {
+      if (Math.hypot(e.clientX - drag.x0, e.clientY - drag.y0) < 7) return;
+      drag.moved = true;
+      const g = drag.el.cloneNode(true);
+      g.querySelectorAll('.vo').forEach(x => x.remove());
+      g.classList.remove('sel', 'cur'); g.classList.add('ghost'); g.removeAttribute('data-node'); g.removeAttribute('data-tile');
+      g.style.left = '0px'; g.style.top = '0px';
+      document.body.appendChild(g); drag.ghost = g;
+      drag.el.classList.add('lifted');
+      document.body.classList.add('is-dragging');
+      document.querySelectorAll('.canvas').forEach(c => c.classList.add('has-sel'));
+    }
+    e.preventDefault();
+    drag.ghost.style.left = e.clientX + 'px'; drag.ghost.style.top = e.clientY + 'px';
+    const h = hotAt(e.clientX, e.clientY);
+    if (h !== drag.hot) {
+      if (drag.hot) drag.hot.classList.remove('hot', 'drop-hot');
+      drag.hot = h;
+      if (h) h.classList.add(h.dataset.slot !== undefined ? 'hot' : 'drop-hot');
+    }
+  }, { passive: false });
+  function endDrag(e, cancel) {
+    if (!drag || e.pointerId !== drag.pid) return;
+    const d = drag; drag = null;
+    if (!d.moved) return; // a plain click; the click handler selects
+    suppressClick = true; setTimeout(() => { suppressClick = false; }, 0);
+    if (d.ghost) d.ghost.remove();
+    document.body.classList.remove('is-dragging');
+    if (d.hot) d.hot.classList.remove('hot', 'drop-hot');
+    const h = cancel ? null : hotAt(e.clientX, e.clientY);
+    if (h && h.dataset.slot !== undefined) { S.sel = null; place(d.id, h.dataset.slot); return; }
+    if (h && R().nodes[d.id]) { toTray(d.id); return; }
+    render();
+  }
+  window.addEventListener('pointerup', e => endDrag(e, false));
+  window.addEventListener('pointercancel', e => endDrag(e, true));
+
+  // ===== boot (keeps an in-progress game across live updates of the page) =====
+  function start(data) {
+    S = data && data.S ? data.S : fresh();
+    if (S.busy) { S.busy = false; S.out = null; }
+    render();
+  }
+  try { window.claude?.hot?.snapshot?.(() => ({ S })); } catch (_) {}
+  if (window.claude?.hot?.ready) window.claude.hot.ready(start); else start(window.claude?.hot?.data ?? {});
+})();
+</script>
+
+
+<footer class="presemaker-credit" data-credit="2" style="margin-top:2rem;padding:14px 8px;border-top:1px solid #ddd;background:#fff;text-align:center;font:13px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#595959;"><svg width="20" height="20" viewBox="0 0 2048 2048" aria-hidden="true" focusable="false" style="vertical-align:-5px;margin-right:7px"><rect width="2048" height="2048" rx="384" fill="#0F6E6E"/><path fill="#0A5050" d="M1024 1000 344 832v816l680 168zm0 0 680-168v816l-680 168z"/><path fill="#fff" d="M1024 944 384 784v808l640 160zm0 0 640-160v808l-640 160z"/><rect x="1002" y="944" width="44" height="808" fill="#0F6E6E"/><rect x="936" y="246" width="176" height="448" rx="44" fill="#fff"/><rect x="800" y="382" width="448" height="176" rx="44" fill="#fff"/></svg>Created with <a href="https://softwareplus.ai/coursebuilder/" target="_blank" rel="noopener" style="color:#2f5d8f;font-weight:600;text-decoration:none;">CourseBuilder+</a><span aria-hidden="true"> · </span><a href="https://softwareplus.ai/" target="_blank" rel="noopener" style="color:#2f5d8f;text-decoration:none;">SoftwarePlus.ai</a></footer>
+</body></html>

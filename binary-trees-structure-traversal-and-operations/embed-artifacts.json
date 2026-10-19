@@ -93,5 +93,15 @@
     "title": "Binary Trees: Structure, Traversal, and Operations",
     "href": "content/Binary_Trees_Structure_videos_merged.html",
     "type": "Content"
+  },
+  {
+    "title": "Expression Arbor",
+    "href": "content/Expression_Arbor.html",
+    "type": "Content"
+  },
+  {
+    "title": "Expression Arbor \u2014 Interactive Expression Tree \u0026 Traversal Practice",
+    "href": "content/ext_2c582e58.html",
+    "type": "Content"
   }
 ]

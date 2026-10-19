@@ -2,5 +2,10 @@
   "RepoUrl": "https://github.com/reaglin/COP3530",
   "Branch": "gh-pages",
   "IncludeQuizzes": true,
-  "Theme": "classic"
+  "Theme": "classic",
+  "SiteSearch": false,
+  "SiteUrl": "https://reaglin.github.io/COP3530/",
+  "SiteUrlTyped": "",
+  "GoogleVerification": "",
+  "GoogleVerificationTyped": ""
 }

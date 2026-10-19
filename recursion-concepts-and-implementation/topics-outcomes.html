@@ -25,16 +25,25 @@ li{margin:5px 0}
 .co{margin:7px 0}
 .co .code{font-weight:600;color:#1a3c6e;margin-right:6px}
 .empty{color:#595959}
+.tm-jump{margin:2px 0 8px;font-size:.92rem}
+.tm-jump a{color:#1a3c6e;font-weight:600}
+ul.tm li{margin:7px 0}
+ul.tm a{color:#1a3c6e;font-weight:600}
+.tm-kind{display:inline-block;background:#eef2f8;color:#1a3c6e;border-radius:3px;padding:1px 8px;margin-left:6px;font-size:.82rem}
+.tm-also{color:#555;font-size:.88rem}
+.tm-back{margin:0 0 4px;font-size:.88rem}
+.tm-back a{color:#1a3c6e}
 </style>
 </head>
 <body>
 <div class="pm-backlink" style="font-family:'Segoe UI',Arial,sans-serif;padding:8px 16px;background:#f5f8fc;border-bottom:1px solid #dce3ec"><a href="index.html" style="color:#1a3c6e;font-weight:600;text-decoration:none">↑ Recursion: Concepts and Implementation</a></div>
 <h1>Recursion: Concepts and Implementation — Topics &amp; Learning Outcomes</h1>
-<div class="toc"><a href="#topics">📋 Module Topics</a><a href="#outcomes">🎯 Student Learning Outcomes</a></div>
+<div class="toc"><a href="#topics">📋 Module Topics</a><a href="#outcomes">🎯 Student Learning Outcomes</a><a href="#materials">📚 Materials for Each Topic</a></div>
 
 <h2 id="topics">Module Topics</h2>
-<h3 id="topic-1">What is Recursion?</h3>
+<h3 id="topic-1">1. What is Recursion?</h3>
 <div class="summary">Introduces recursion as a programming strategy where a function calls itself to solve a problem. Establishes the conceptual foundation before diving into technical details.</div>
+<p class="tm-jump"><a href="#materials-topic-1">Materials for topic 1 (2)</a></p>
 <ul>
 <li><strong>Defining Recursion</strong> <span class="el-body">— Recursion is a programming strategy in which a function solves a problem by calling itself as part of its own definition.</span></li>
 <li><strong>The Self-Referential Nature of Recursive Thinking</strong> <span class="el-body">— Recursion requires thinking about a problem in terms of itself — breaking it into a case that can be handled now and a remainder that looks just like the original problem.</span></li>
@@ -42,8 +51,9 @@ li{margin:5px 0}
 <li><strong>Why Recursion Matters as a Strategy</strong> <span class="el-body">— Recursion is more than a syntax feature — it is a high-level problem-solving strategy that appears across classic algorithms and data structures.</span></li>
 <li><strong>The Conceptual Building Blocks of a Recursive Function</strong> <span class="el-body">— Every recursive function relies on two essential conceptual components: a point where it stops, and a step where it calls itself.</span></li>
 </ul>
-<h3 id="topic-2">Base Cases and Recursive Cases</h3>
+<h3 id="topic-2">2. Base Cases and Recursive Cases</h3>
 <div class="summary">Explains the two essential components of any recursive function: the base case that stops recursion and the recursive case that progresses toward it. Covers why both are necessary to avoid infinite loops.</div>
+<p class="tm-jump"><a href="#materials-topic-2">Materials for topic 2 (2)</a></p>
 <ul>
 <li><strong>What Is a Base Case?</strong> <span class="el-body">— The base case is the condition in a recursive function that stops further recursive calls and returns a direct result.</span></li>
 <li><strong>What Is a Recursive Case?</strong> <span class="el-body">— The recursive case is the part of the function where it calls itself with a modified argument, moving step by step toward the base case.</span></li>
@@ -52,8 +62,9 @@ li{margin:5px 0}
 <li><strong>Ensuring the Recursive Case Converges</strong> <span class="el-body">— The recursive case must consistently reduce the problem size so that the base case is eventually reached on every valid input.</span></li>
 <li><strong>Infinite Recursion and Stack Overflow</strong> <span class="el-body">— When a base case is missing or unreachable, the function calls itself without end, eventually exhausting the call stack and causing a runtime error.</span></li>
 </ul>
-<h3 id="topic-3">The Call Stack and Recursion</h3>
+<h3 id="topic-3">3. The Call Stack and Recursion</h3>
 <div class="summary">Describes how the call stack manages recursive function calls, tracking execution context at each level. Explores stack frames, stack depth, and the risk of stack overflow.</div>
+<p class="tm-jump"><a href="#materials-topic-3">Materials for topic 3 (2)</a></p>
 <ul>
 <li><strong>What Is the Call Stack?</strong> <span class="el-body">— The call stack is a data structure the JavaScript runtime uses to track the execution of function calls in a program.</span></li>
 <li><strong>Stack Frames and Execution Context</strong> <span class="el-body">— Each entry placed onto the call stack is called a stack frame, and it stores all the information needed to execute that particular function call.</span></li>
@@ -62,8 +73,9 @@ li{margin:5px 0}
 <li><strong>Stack Overflow: When Recursion Goes Too Deep</strong> <span class="el-body">— A stack overflow error occurs when the call stack exceeds its maximum allowed size, typically because recursion has gone too deep without reaching a base case.</span></li>
 <li><strong>Preventing and Mitigating Stack Overflow</strong> <span class="el-body">— Developers can reduce the risk of stack overflow by carefully designing base cases, limiting input size, or restructuring recursion to use less stack space.</span></li>
 </ul>
-<h3 id="topic-4">Implementing Factorial with Recursion</h3>
+<h3 id="topic-4">4. Implementing Factorial with Recursion</h3>
 <div class="summary">Walks through building a classic recursive factorial function in JavaScript as a concrete first implementation. Connects the mathematical definition of factorial to recursive code structure.</div>
+<p class="tm-jump"><a href="#materials-topic-4">Materials for topic 4 (2)</a></p>
 <ul>
 <li><strong>The Mathematical Definition of Factorial</strong> <span class="el-body">— Factorial is a mathematical operation defined recursively: n! equals n multiplied by (n-1)!, with 0! defined as 1.</span></li>
 <li><strong>Identifying the Base Case</strong> <span class="el-body">— Every recursive factorial function must include a base case that stops the recursion — in this instance, when n equals 0.</span></li>
@@ -72,8 +84,9 @@ li{margin:5px 0}
 <li><strong>Tracing Execution Through the Call Stack</strong> <span class="el-body">— Tracing how factorial(3) executes step by step reveals how JavaScript manages recursive calls using the call stack.</span></li>
 <li><strong>Connecting Mathematical Structure to Code Structure</strong> <span class="el-body">— The factorial implementation demonstrates a direct one-to-one correspondence between a mathematical recursive definition and recursive JavaScript code.</span></li>
 </ul>
-<h3 id="topic-5">Fibonacci Sequence Using Recursion</h3>
+<h3 id="topic-5">5. Fibonacci Sequence Using Recursion</h3>
 <div class="summary">Guides students through implementing the Fibonacci sequence recursively in JavaScript, illustrating functions with multiple recursive calls. Discusses the trade-offs of naive recursive Fibonacci in terms of performance.</div>
+<p class="tm-jump"><a href="#materials-topic-5">Materials for topic 5 (2)</a></p>
 <ul>
 <li><strong>What Is the Fibonacci Sequence?</strong> <span class="el-body">— The Fibonacci sequence is a series of numbers where each number is the sum of the two preceding ones, starting from 0 and 1.</span></li>
 <li><strong>Defining the Base Cases</strong> <span class="el-body">— As with all recursive functions, the Fibonacci implementation requires base cases to stop the recursion from running indefinitely.</span></li>
@@ -82,8 +95,9 @@ li{margin:5px 0}
 <li><strong>Performance Trade-offs of Naive Recursive Fibonacci</strong> <span class="el-body">— The naive recursive implementation of Fibonacci has significant performance drawbacks due to the repeated recalculation of the same subproblems.</span></li>
 <li><strong>Tracing a Small Fibonacci Example by Hand</strong> <span class="el-body">— Manually tracing through a small Fibonacci call, such as fibonacci(4), helps solidify understanding of how recursive calls expand and resolve.</span></li>
 </ul>
-<h3 id="topic-6">Recursive List Traversal</h3>
+<h3 id="topic-6">6. Recursive List Traversal</h3>
 <div class="summary">Demonstrates how recursion can be applied to traverse and process lists or array structures in JavaScript. Highlights how recursive thinking simplifies problems that involve repeated nested or sequential processing.</div>
+<p class="tm-jump"><a href="#materials-topic-6">Materials for topic 6 (2)</a></p>
 <ul>
 <li><strong>What Is Recursive List Traversal?</strong> <span class="el-body">— Recursive list traversal is the technique of processing each element in a list or array by having a function call itself on a progressively smaller portion of the structure.</span></li>
 <li><strong>Defining the Base Case for List Traversal</strong> <span class="el-body">— As with all recursive functions, a base case must be defined to stop recursion and prevent infinite loops when traversing a list.</span></li>
@@ -92,8 +106,9 @@ li{margin:5px 0}
 <li><strong>Recursive Thinking vs. Iterative Thinking for Lists</strong> <span class="el-body">— Recursive list traversal encourages a different mental model compared to iterative loops — focusing on &#39;what to do with one element&#39; rather than &#39;how to loop through all elements&#39;.</span></li>
 <li><strong>The Call Stack During List Traversal</strong> <span class="el-body">— Each recursive call to traverse a list adds a new frame to the JavaScript call stack, which holds the current element and the remaining list for that call.</span></li>
 </ul>
-<h3 id="topic-7">When to Use Recursion</h3>
+<h3 id="topic-7">7. When to Use Recursion</h3>
 <div class="summary">Compares recursion to iterative approaches, helping students recognize problem types best suited to recursive solutions. Covers readability, performance considerations, and practical guidelines for choosing recursion.</div>
+<p class="tm-jump"><a href="#materials-topic-7">Materials for topic 7 (2)</a></p>
 <ul>
 <li><strong>Recursion vs. Iteration: Core Trade-offs</strong> <span class="el-body">— Recursion and iteration are two fundamental approaches to solving repetitive problems, and choosing between them involves weighing clarity against performance.</span></li>
 <li><strong>Problem Types Best Suited to Recursion</strong> <span class="el-body">— Certain problem structures map so naturally onto recursion that a recursive solution is significantly easier to design and understand than an iterative one.</span></li>
@@ -133,6 +148,50 @@ li{margin:5px 0}
 <div class="co"><span class="code">CO2</span>Select the correct data structure and algorithm to solve specific problems</div>
 <div class="co"><span class="code">CO3</span>Implement data structures and algorithms in computer code.</div>
 <div class="co"><span class="code">CO4</span>Analyze the performance of algorithms and data structures</div>
+<h2 id="materials">Materials for Each Topic</h2>
+<p class="prefix">What has been made for each topic. Materials that cover the whole module are listed on the module page.</p>
+<h3 id="materials-topic-1">1. What is Recursion?</h3>
+<p class="tm-back"><a href="#topic-1">↑ Back to topic 1</a></p>
+<ul class="tm">
+<li><a href="content/Recursion_Concepts_and_interactive_topics_t1.html">What is Recursion?</a> <span class="tm-kind">Topic Detail · Web page</span></li>
+<li><a href="content/Recursion_Concepts_and_t1_videos.html">What is Recursion? — Videos</a> <span class="tm-kind">Topic Videos · Web page</span></li>
+</ul>
+<h3 id="materials-topic-2">2. Base Cases and Recursive Cases</h3>
+<p class="tm-back"><a href="#topic-2">↑ Back to topic 2</a></p>
+<ul class="tm">
+<li><a href="content/Recursion_Concepts_and_interactive_topics_t2.html">Base Cases and Recursive Cases</a> <span class="tm-kind">Topic Detail · Web page</span></li>
+<li><a href="content/Recursion_Concepts_and_t2_videos.html">Base Cases and Recursive Cases — Videos</a> <span class="tm-kind">Topic Videos · Web page</span></li>
+</ul>
+<h3 id="materials-topic-3">3. The Call Stack and Recursion</h3>
+<p class="tm-back"><a href="#topic-3">↑ Back to topic 3</a></p>
+<ul class="tm">
+<li><a href="content/Recursion_Concepts_and_interactive_topics_t3.html">The Call Stack and Recursion</a> <span class="tm-kind">Topic Detail · Web page</span></li>
+<li><a href="content/Recursion_Concepts_and_t3_videos.html">The Call Stack and Recursion — Videos</a> <span class="tm-kind">Topic Videos · Web page</span></li>
+</ul>
+<h3 id="materials-topic-4">4. Implementing Factorial with Recursion</h3>
+<p class="tm-back"><a href="#topic-4">↑ Back to topic 4</a></p>
+<ul class="tm">
+<li><a href="content/Recursion_Concepts_and_interactive_topics_t4.html">Implementing Factorial with Recursion</a> <span class="tm-kind">Topic Detail · Web page</span></li>
+<li><a href="content/Recursion_Concepts_and_t4_videos.html">Implementing Factorial with Recursion — Videos</a> <span class="tm-kind">Topic Videos · Web page</span></li>
+</ul>
+<h3 id="materials-topic-5">5. Fibonacci Sequence Using Recursion</h3>
+<p class="tm-back"><a href="#topic-5">↑ Back to topic 5</a></p>
+<ul class="tm">
+<li><a href="content/Recursion_Concepts_and_interactive_topics_t5.html">Fibonacci Sequence Using Recursion</a> <span class="tm-kind">Topic Detail · Web page</span></li>
+<li><a href="content/Recursion_Concepts_and_t5_videos.html">Fibonacci Sequence Using Recursion — Videos</a> <span class="tm-kind">Topic Videos · Web page</span></li>
+</ul>
+<h3 id="materials-topic-6">6. Recursive List Traversal</h3>
+<p class="tm-back"><a href="#topic-6">↑ Back to topic 6</a></p>
+<ul class="tm">
+<li><a href="content/Recursion_Concepts_and_interactive_topics_t6.html">Recursive List Traversal</a> <span class="tm-kind">Topic Detail · Web page</span></li>
+<li><a href="content/Recursion_Concepts_and_t6_videos.html">Recursive List Traversal — Videos</a> <span class="tm-kind">Topic Videos · Web page</span></li>
+</ul>
+<h3 id="materials-topic-7">7. When to Use Recursion</h3>
+<p class="tm-back"><a href="#topic-7">↑ Back to topic 7</a></p>
+<ul class="tm">
+<li><a href="content/Recursion_Concepts_and_interactive_topics_t7.html">When to Use Recursion</a> <span class="tm-kind">Topic Detail · Web page</span></li>
+<li><a href="content/Recursion_Concepts_and_t7_videos.html">When to Use Recursion — Videos</a> <span class="tm-kind">Topic Videos · Web page</span></li>
+</ul>
 
 <footer class="presemaker-credit" data-credit="2" style="margin-top:2rem;padding:14px 8px;border-top:1px solid #ddd;background:#fff;text-align:center;font:13px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#595959;"><svg width="20" height="20" viewBox="0 0 2048 2048" aria-hidden="true" focusable="false" style="vertical-align:-5px;margin-right:7px"><rect width="2048" height="2048" rx="384" fill="#0F6E6E"/><path fill="#0A5050" d="M1024 1000 344 832v816l680 168zm0 0 680-168v816l-680 168z"/><path fill="#fff" d="M1024 944 384 784v808l640 160zm0 0 640-160v808l-640 160z"/><rect x="1002" y="944" width="44" height="808" fill="#0F6E6E"/><rect x="936" y="246" width="176" height="448" rx="44" fill="#fff"/><rect x="800" y="382" width="448" height="176" rx="44" fill="#fff"/></svg>Created with <a href="https://softwareplus.ai/coursebuilder/" target="_blank" rel="noopener" style="color:#2f5d8f;font-weight:600;text-decoration:none;">CourseBuilder+</a><span aria-hidden="true"> · </span><a href="https://softwareplus.ai/" target="_blank" rel="noopener" style="color:#2f5d8f;text-decoration:none;">SoftwarePlus.ai</a></footer>
 </body>
